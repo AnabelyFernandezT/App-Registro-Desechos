@@ -93,8 +93,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
             }
         }
         rowItems=result;
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
-        adapterList();
+        recyclerviewAdapter.setTaskList(rowItems);
+        //recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        //adapterList();
         //recyclerviewAdapter = new ManifiestoAdapter(getActivity());
         //recyclerviewAdapter.setTaskList(rowItems);
         //recyclerView.setAdapter(recyclerviewAdapter);
@@ -138,9 +139,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                 }
             }
         });
-        DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
-        recyclerView.addItemDecoration(divider);
+        //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
+        //recyclerView.addItemDecoration(divider);
     }
 
     @Override

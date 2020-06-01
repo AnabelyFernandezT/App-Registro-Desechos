@@ -68,20 +68,23 @@ public class SearchView extends LinearLayout {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(timer != null) timer.cancel();
+                //if(timer != null) timer.cancel();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 if(mOnSearchListener!=null && !dataSearh.equals(txtBuscar.getText().toString())){
                     dataSearh = txtBuscar.getText().toString();
+                    mOnSearchListener.onSearch(dataSearh);
+                    /*
                     timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            mOnSearchListener.onSearch(dataSearh);
+
                         }
                     }, DELAY);
+                     */
                 }
             }
         });
