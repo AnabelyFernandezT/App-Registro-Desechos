@@ -26,7 +26,25 @@ public class PaqueteEntity {
     @NonNull
     private String guardian;
 
-    public PaqueteEntity() {
+    private Boolean flagAdicionales;
+
+    private Boolean flagAdicionalFunda;
+
+    private Boolean flagAdicionalGuardian;
+
+    private Integer paquetePorRecolccion;
+
+
+    public PaqueteEntity(@NonNull Integer idSistema, @NonNull Integer index, @NonNull String descripcion, @NonNull String funda, @NonNull String guardian, Boolean flagAdicionales, Boolean flagAdicionalFunda, Boolean flagAdicionalGuardian, Integer paquetePorRecolccion) {
+        this.idSistema = idSistema;
+        this.index = index;
+        this.descripcion = descripcion;
+        this.funda = funda;
+        this.guardian = guardian;
+        this.flagAdicionales = flagAdicionales;
+        this.flagAdicionalFunda = flagAdicionalFunda;
+        this.flagAdicionalGuardian = flagAdicionalGuardian;
+        this.paquetePorRecolccion = paquetePorRecolccion;
     }
 
     public Integer get_id() {
@@ -80,5 +98,37 @@ public class PaqueteEntity {
 
     public void setIndex(@NonNull Integer index) {
         this.index = index;
+    }
+
+    public Boolean getFlagAdicionales() {
+        return flagAdicionales;
+    }
+
+    public void setFlagAdicionales(Boolean flagAdicionales) {
+        this.flagAdicionales = flagAdicionales;
+    }
+
+    public Boolean getFlagAdicionalFunda() {
+        return flagAdicionalFunda;
+    }
+
+    public void setFlagAdicionalFunda(Boolean flagAdicionalFunda) {
+        this.flagAdicionalFunda = flagAdicionalFunda;
+    }
+
+    public Boolean getFlagAdicionalGuardian() {
+        return flagAdicionalGuardian;
+    }
+
+    public void setFlagAdicionalGuardian(Boolean flagAdicionalGuardian) {
+        this.flagAdicionalGuardian = flagAdicionalGuardian;
+    }
+
+    public Integer getPaquetePorRecolccion() {
+        return paquetePorRecolccion;
+    }
+
+    public void setPaquetePorRecolccion(Integer paquetePorRecolccion) {
+        this.paquetePorRecolccion = paquetePorRecolccion;
     }
 }
