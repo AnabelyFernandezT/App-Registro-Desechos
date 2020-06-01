@@ -250,7 +250,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     private void existePaquetes(){
-        if(!MyApp.getDBO().paqueteDao().existePaquetes()){
+      /*  if(!MyApp.getDBO().paqueteDao().existePaquetes()){
             MyApp.getDBO().paqueteDao().saveOrUpdate(1,1,"PQH1","55x50","PC 1");
             MyApp.getDBO().paqueteDao().saveOrUpdate(2,2,"PQH2","63x76","PC 2");
             MyApp.getDBO().paqueteDao().saveOrUpdate(3,3,"PQH3","63x76","PC 1");
@@ -269,7 +269,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             MyApp.getDBO().paqueteDao().saveOrUpdate(16,4,"PQHV4","55x50","PC 2");
             MyApp.getDBO().paqueteDao().saveOrUpdate(17,5,"PQHV5","63x76","PC 4");
             MyApp.getDBO().paqueteDao().saveOrUpdate(18,6,"PQHV6","55x50","PC 4");
-        }
+        }*/
     }
     /*
 

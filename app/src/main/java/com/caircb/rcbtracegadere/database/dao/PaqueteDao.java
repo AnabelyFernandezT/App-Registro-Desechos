@@ -21,7 +21,8 @@ public abstract class PaqueteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createPaquete(PaqueteEntity entity);
 
-    public void saveOrUpdate(Integer paqueteID, Integer index, String descripcion, String funda, String guardian){
+    public void saveOrUpdate(Integer paqueteID, Integer index, String descripcion, String funda, String guardian,
+                             int flagAdicionales, int flagAdicionalFunda, int flagAdicionalGuardian, int paquetePorRecolccion){
         PaqueteEntity paquete = fechConsultaPaqueteEspecifico(paqueteID);
         if(paquete==null){
             paquete = new PaqueteEntity();
@@ -30,11 +31,19 @@ public abstract class PaqueteDao {
             paquete.setDescripcion(descripcion);
             paquete.setFunda(funda);
             paquete.setGuardian(guardian);
+            paquete.setFlagAdicionales(flagAdicionales);
+            paquete.setFlagAdicionalFunda(flagAdicionalFunda);
+            paquete.setFlagAdicionalGuardian(flagAdicionalGuardian);
+            paquete.setPaquetePorRecolccion(paquetePorRecolccion);
         }else{
             paquete.setIndex(index);
             paquete.setDescripcion(descripcion);
             paquete.setFunda(funda);
             paquete.setGuardian(guardian);
+            paquete.setFlagAdicionales(flagAdicionales);
+            paquete.setFlagAdicionalFunda(flagAdicionalFunda);
+            paquete.setFlagAdicionalGuardian(flagAdicionalGuardian);
+            paquete.setPaquetePorRecolccion(paquetePorRecolccion);
         }
 
         createPaquete(paquete);
