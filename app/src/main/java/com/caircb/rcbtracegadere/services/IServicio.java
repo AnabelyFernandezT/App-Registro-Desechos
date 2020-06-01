@@ -3,8 +3,10 @@ package com.caircb.rcbtracegadere.services;
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
+import com.caircb.rcbtracegadere.models.request.RequestPaquetes;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
+import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
 
 import java.util.List;
 
@@ -19,6 +21,9 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerHojaRuta")
     Call<List<DtoManifiesto>> getHojaRuta(@Body RequestHojaRuta model);
+
+    @POST("Catalogo/ObtenerCatalogoPaquetes")
+    Call<List<DtoPaquetes>> getPaquetes();
 
 
 
