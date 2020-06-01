@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -92,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("MissingPermission")
     private void login(){
         //validar entrada de datos
         user.setError(null);
@@ -123,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             String myAndroidDeviceSim="";
 
             TelephonyManager mTelephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            if (mTelephony.getDeviceId() != null){
+            if (mTelephony!=null && mTelephony.getDeviceId() != null){
                 myAndroidDeviceId = mTelephony.getDeviceId();
                 myAndroidDeviceSim = mTelephony.getSimSerialNumber();
             }else{
