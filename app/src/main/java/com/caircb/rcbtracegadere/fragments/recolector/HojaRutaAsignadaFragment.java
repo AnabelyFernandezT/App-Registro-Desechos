@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
+import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.ManifiestoFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
@@ -34,13 +35,13 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
     LinearLayout btnRetornarListHojaRuta;
 
-    Window window;
-    RecyclerView recyclerView;
-    ManifiestoAdapter recyclerviewAdapter;
+    private Window window;
+    private RecyclerView recyclerView;
+    private ManifiestoAdapter recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
-
+    private SearchView searchView;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -71,6 +72,14 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         recyclerviewAdapter = new ManifiestoAdapter(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
+        searchView = getView().findViewById(R.id.searchViewManifiestos);
+
+        searchView.setOnSearchListener(new SearchView.OnSearchListener() {
+            @Override
+            public void onSearch(String data) {
+                String h ="";
+            }
+        });
     }
 
     private void initItems() {
