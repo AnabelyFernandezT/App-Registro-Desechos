@@ -35,7 +35,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     BigDecimal subtotal= BigDecimal.ZERO;
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
-    Integer position,idManifiesto,idManifiestoDetalle;
+    Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete;
 
     public interface OnBultoListener {
         public void onSuccessful(BigDecimal valor, int position, int cantidad, boolean isClose);
@@ -49,12 +49,14 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             @NonNull Context context,
             @NonNull Integer position,
             @NonNull Integer idManifiesto,
-            @NonNull Integer idManifiestoDetalle) {
+            @NonNull Integer idManifiestoDetalle,
+            @NonNull Integer tipoPaquete) {
         super(context, R.layout.dialog_bultos);
 
         this.position=position;
         this.idManifiesto=idManifiesto;
         this.idManifiestoDetalle=idManifiestoDetalle;
+        this.tipoPaquete = tipoPaquete;
     }
 
     @Override
@@ -144,11 +146,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void createBulto(BigDecimal imput){
         if(imput.doubleValue()>0) {
-
             //si es tipo paquete .. solicitar escoger un tipo...
-            showTipoPaquete(imput);
-
-
+            if(tipoPaquete!=null) {
+                showTipoPaquete(imput);
+            }else{
+                addBulto(imput,"");
+            }
         }
     }
 

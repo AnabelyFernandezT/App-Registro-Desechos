@@ -152,7 +152,7 @@ public class ManifiestoFragment extends MyFragment implements OnCameraListener, 
                     tab1 = TabManifiestoGeneralFragment.newInstance(manifiestoID,bloqueado);
                     return  tab1;
                 case 1:
-                    tab2 = TabManifiestoDetalleFragment.newInstance(manifiestoID,bloqueado);
+                    tab2 = TabManifiestoDetalleFragment.newInstance(manifiestoID,tab1.getTipoPaquete(),bloqueado);
                     return tab2;
                 case 2:
                     tab3 = TabManifiestoAdicionalFragment.newInstance(manifiestoID,bloqueado);

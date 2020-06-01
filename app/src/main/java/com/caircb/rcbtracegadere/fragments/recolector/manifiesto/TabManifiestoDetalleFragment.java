@@ -32,11 +32,12 @@ public class TabManifiestoDetalleFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "idAppManifiesto";
     private static final String ARG_PARAM2 = "Manifiestobloqueado";
+    private static final String ARG_PARAM3 = "tipoPaquete";
 
     View view;
     ListView LtsManifiestoDetalle,mDialogMenuItems;
 
-    Integer idAppManifiesto;
+    Integer idAppManifiesto,tipoPaquete;
     boolean bloquear;
     private List<RowItemManifiesto> detalles;
     ManifiestoDetalleBaseAdapter adapterDetalleManifiesto;
@@ -46,11 +47,12 @@ public class TabManifiestoDetalleFragment extends Fragment {
     //DialogPaquetes dialogPaquetes;
     Window window;
 
-    public static TabManifiestoDetalleFragment newInstance (Integer manifiestoID, Boolean bloqueado){
+    public static TabManifiestoDetalleFragment newInstance (Integer manifiestoID, Integer tipoPaquete,Boolean bloqueado){
         TabManifiestoDetalleFragment f = new TabManifiestoDetalleFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
         args.putBoolean(ARG_PARAM2, bloqueado);
+        args.putInt(ARG_PARAM3, tipoPaquete!=null?tipoPaquete:0);
         f.setArguments(args);
         return f;
     }
@@ -61,6 +63,8 @@ public class TabManifiestoDetalleFragment extends Fragment {
         if (getArguments() != null) {
             idAppManifiesto= getArguments().getInt(ARG_PARAM1);
             bloquear = getArguments().getBoolean(ARG_PARAM2);
+            tipoPaquete = getArguments().getInt(ARG_PARAM3);
+            if(tipoPaquete==0)tipoPaquete=null;
         }
     }
 
@@ -124,7 +128,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
     private void openDialogBultos(Integer position){
         if(dialogBultos==null){
             dialogOpcioneItem.dismiss();
-            dialogBultos = new DialogBultos(getActivity(),position,idAppManifiesto,detalles.get(position).getId());
+            dialogBultos = new DialogBultos(getActivity(),position,idAppManifiesto,detalles.get(position).getId(),tipoPaquete);
             dialogBultos.setCancelable(false);
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {

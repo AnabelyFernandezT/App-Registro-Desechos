@@ -44,6 +44,7 @@ public class DtoManifiesto {
     private Integer estadoApp;
     private Boolean eliminado;
     private Date fechaTemp;
+    private Integer tipoPaquete;
     private List<DtoManifiestoDetalle> hojaRutaDetalle;
     private List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo;
     private String numManifiestoCliente;
@@ -393,5 +394,13 @@ public class DtoManifiesto {
 
     public void setIdTecnicoGenerador(String idTecnicoGenerador) {
         this.idTecnicoGenerador = idTecnicoGenerador;
+    }
+
+    public Integer getTipoPaquete() {
+        return tipoPaquete;
+    }
+
+    public void setTipoPaquete(Integer tipoPaquete) {
+        this.tipoPaquete = tipoPaquete;
     }
 }

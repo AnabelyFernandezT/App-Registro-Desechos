@@ -84,7 +84,7 @@ public class ManifiestoEntity {
     @NonNull
     private Integer estado;
 
-
+    private Integer tipoPaquete;
 
     public Integer getIdTecnicoManifiesto() {
         return idTecnicoManifiesto;
@@ -374,6 +374,14 @@ public class ManifiestoEntity {
 
     public void setEmpresaTransportista(String empresaTransportista) {
         this.empresaTransportista = empresaTransportista;
+    }
+
+    public Integer getTipoPaquete() {
+        return tipoPaquete;
+    }
+
+    public void setTipoPaquete(Integer tipoPaquete) {
+        this.tipoPaquete = tipoPaquete;
     }
 }
 

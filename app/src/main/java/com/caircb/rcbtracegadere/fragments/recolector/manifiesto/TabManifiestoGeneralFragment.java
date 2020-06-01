@@ -33,10 +33,11 @@ public class TabManifiestoGeneralFragment extends Fragment {
     private static final String ARG_PARAM1 = "idAppManifiesto";
     private static final String ARG_PARAM2 = "Manifiestobloqueado";
 
-    Integer idAppManifiesto;
-    Boolean bloquear;
-    View view;
-    TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
+    private  Integer idAppManifiesto;
+    private Boolean bloquear;
+    private  Integer tipoPaquete=null;
+    private View view;
+    private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
             txtClienteCanton,txtClienteParroquia,txtTransReco,txtTransRecoAux,txtIdentificacion,txtNombre,txtCorreo,txtTelefono,
             txtGenTecCelular,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista;
 
@@ -274,6 +275,8 @@ public class TabManifiestoGeneralFragment extends Fragment {
                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                 imgFirmaTecnicoTrasnsportista.setImageBitmap(imagen);
             }
+
+            tipoPaquete = manifiesto.getTipoPaquete();
         }
     }
 
@@ -289,6 +292,9 @@ public class TabManifiestoGeneralFragment extends Fragment {
         return view;
     }
 
+    public Integer getTipoPaquete(){
+        return tipoPaquete!=null?(tipoPaquete>0?tipoPaquete:null):null;
+    }
 
 
 }

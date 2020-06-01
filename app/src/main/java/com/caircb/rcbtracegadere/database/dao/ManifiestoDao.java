@@ -119,6 +119,7 @@ public abstract class ManifiestoDao {
             //numeroLicenciaAmbientalDestinatario
             entity.setEstado(manifiesto.getEstadoApp());
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
+            entity.setTipoPaquete(manifiesto.getTipoPaquete());
 
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
@@ -163,6 +164,7 @@ public abstract class ManifiestoDao {
             //numeroLicenciaAmbientalDestinatario
             entity.setEstado(manifiesto.getEstadoApp());
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
+            entity.setTipoPaquete(manifiesto.getTipoPaquete());
         }
 
         if (entity!=null) createManifiesto(entity);
