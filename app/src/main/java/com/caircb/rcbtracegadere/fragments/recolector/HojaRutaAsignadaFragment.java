@@ -23,6 +23,7 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,16 +78,40 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         searchView.setOnSearchListener(new SearchView.OnSearchListener() {
             @Override
             public void onSearch(String data) {
-                String h ="";
+                filtro(data);
             }
         });
     }
+
+    private void filtro(String texto){
+        List<ItemManifiesto> result = new ArrayList<>();
+        List<ItemManifiesto> listaItems = new ArrayList<>() ;
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        for(ItemManifiesto reg : listaItems){
+            if (reg.getCliente().toLowerCase().contains(texto.toLowerCase())){
+                result.add(reg);
+            }
+        }
+        rowItems=result;
+        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        adapterList();
+        //recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        //recyclerviewAdapter.setTaskList(rowItems);
+        //recyclerView.setAdapter(recyclerviewAdapter);
+
+    }
+
 
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
         rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        adapterList();
+
+    }
+
+    private void adapterList(){
         recyclerviewAdapter.setTaskList(rowItems);
         recyclerView.setAdapter(recyclerviewAdapter);
 
