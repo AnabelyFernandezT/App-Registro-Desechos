@@ -28,6 +28,7 @@ import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItem;
+import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -63,6 +64,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     FragmentManager fm;
 
     UserConsultarCatalogosTask consultarCatalogosTask;
+    PaquetesTask paquetesTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,26 +252,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     private void existePaquetes(){
-      /*  if(!MyApp.getDBO().paqueteDao().existePaquetes()){
-            MyApp.getDBO().paqueteDao().saveOrUpdate(1,1,"PQH1","55x50","PC 1");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(2,2,"PQH2","63x76","PC 2");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(3,3,"PQH3","63x76","PC 1");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(4,4,"PQH4","55x50","PC 2");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(5,5,"PQH5","63x76","PC 4");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(6,6,"PQH6","55x50","PC 4");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(7,1,"PQHI1","55x50","PC 1");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(8,2,"PQHI2","63x76","PC 2");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(9,3,"PQHI3","63x76","PC 1");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(10,4,"PQHI4","55x50","PC 2");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(11,5,"PQHI5","63x76","PC 4");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(12,6,"PQHI6","55x50","PC 4");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(13,1,"PQHV1","55x50","PC 1");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(14,2,"PQHV2","63x76","PC 2");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(15,3,"PQHV3","63x76","PC 1");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(16,4,"PQHV4","55x50","PC 2");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(17,5,"PQHV5","63x76","PC 4");
-            MyApp.getDBO().paqueteDao().saveOrUpdate(18,6,"PQHV6","55x50","PC 4");
-        }*/
+       if(!MyApp.getDBO().paqueteDao().existePaquetes()){
+           // MyApp.getDBO().paqueteDao().saveOrUpdate(1,1,"PQH1","55x50","PC 1");
+                paquetesTask = new PaquetesTask(this);
+                paquetesTask.execute();
+
+        }
     }
     /*
 
