@@ -6,6 +6,9 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
+
+import java.util.List;
 
 
 @Dao
@@ -18,34 +21,29 @@ public abstract class PaqueteDao {
     @Query("select * from tb_paquetes where idSistema=:id")
     public abstract PaqueteEntity fechConsultaPaqueteEspecifico(Integer id);
 
+    @Query("select * from tb_paquetes")
+    public abstract PaqueteEntity fechConsultaPaquete();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createPaquete(PaqueteEntity entity);
 
-    public void saveOrUpdate(Integer paqueteID, Integer index, String descripcion, String funda, String guardian,
-                             int flagAdicionales, int flagAdicionalFunda, int flagAdicionalGuardian, int paquetePorRecolccion){
-        PaqueteEntity paquete = fechConsultaPaqueteEspecifico(paqueteID);
-        if(paquete==null){
-            paquete = new PaqueteEntity();
-            paquete.setIdSistema(paqueteID);
-            paquete.setIndex(index);
-            paquete.setDescripcion(descripcion);
-            paquete.setFunda(funda);
-            paquete.setGuardian(guardian);
-            paquete.setFlagAdicionales(flagAdicionales);
-            paquete.setFlagAdicionalFunda(flagAdicionalFunda);
-            paquete.setFlagAdicionalGuardian(flagAdicionalGuardian);
-            paquete.setPaquetePorRecolccion(paquetePorRecolccion);
-        }else{
-            paquete.setIndex(index);
-            paquete.setDescripcion(descripcion);
-            paquete.setFunda(funda);
-            paquete.setGuardian(guardian);
-            paquete.setFlagAdicionales(flagAdicionales);
-            paquete.setFlagAdicionalFunda(flagAdicionalFunda);
-            paquete.setFlagAdicionalGuardian(flagAdicionalGuardian);
-            paquete.setPaquetePorRecolccion(paquetePorRecolccion);
+    public void saveOrUpdate(List<DtoPaquetes> paquetes ){
+
+        for (DtoPaquetes p:paquetes) {
+            PaqueteEntity paquete = fechConsultaPaquete();
+            if(paquete==null){
+                paquete = new PaqueteEntity(p.getIdSistema(),p.getIndex(),p.getDescripcion(),p.getFunda(),p.getGuardian(),
+                        p.getFlagAdicionales(),p.getFlagAdicionalFunda(),p.getFlagAdicionalGuardian(),p.getPaquetePorRecolccion());
+            }else{
+                paquete.setDescripcion(p.getDescripcion());
+                paquete.setFunda(p.getFunda());
+                paquete.setGuardian(p.getGuardian());
+                paquete.setFlagAdicionales(p.getFlagAdicionales());
+                paquete.setFlagAdicionalFunda(p.getFlagAdicionalFunda());
+                paquete.setPaquetePorRecolccion(p.getPaquetePorRecolccion());
+            }
+            createPaquete(paquete);
         }
 
-        createPaquete(paquete);
     }
 }
