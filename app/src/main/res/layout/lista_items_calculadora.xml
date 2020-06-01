@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView android:id="@+id/txtItem"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="2dp"
+                android:textSize="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:text="hhhhh"/>
+            <TextView
+                android:visibility="gone"
+                android:textSize="11dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/txtItemTipo"
+                android:text=""
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:padding="1dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="1dp"
+                android:src="@drawable/rcb_btn_elminar_valor"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

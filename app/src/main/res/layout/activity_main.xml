@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout
+            android:id="@+id/f_header"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:minHeight="@dimen/dimen_header"
+            android:background="@color/app_header"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/header_message"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="50dp">
+                <TextView
+                    android:textSize="16dp"
+                    android:textColor="@color/app_text_white"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Sin conexión a internet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_portal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/f_header">
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:orientation="vertical"
+        android:layout_gravity="start"
+        android:layout_width="240dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/shape_main"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iconUsuario"
+                android:layout_height="80dp"
+                android:layout_width="80dp"
+                android:src="@mipmap/usuario"/>
+            <TextView
+                android:textSize="14sp"
+                android:id="@+id/nombreLugarTrabajo"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"/>
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/txtNombreLugarTrabajo"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:layout_height="wrap_content"
+                android:textColor="#fff"/>
+
+            <TextView
+                android:textSize="12sp"
+                android:id="@+id/nombreUsuario"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"/>
+
+
+        </LinearLayout>
+
+        <ListView android:id="@+id/menu_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:dividerHeight="0dp"
+            android:background="#fff"/>
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

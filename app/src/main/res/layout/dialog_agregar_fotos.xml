@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp"
+    android:orientation="vertical" >
+    <!--header-->
+    <LinearLayout
+        android:id="@+id/header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <RelativeLayout
+            android:gravity="center|center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FOTOGRAFIAS"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <androidx.gridlayout.widget.GridLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:columnCount="2"
+            app:rowCount="3">
+
+            <LinearLayout
+                android:clickable="true"
+                android:id="@+id/btnPhoto1"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_border"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+                <ImageView
+                    android:id="@+id/imgPhoto1"
+                    android:src="@mipmap/ic_camara"
+                    android:alpha="0.8"
+                    android:scaleType="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:clickable="true"
+                android:id="@+id/btnPhoto2"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_border"
+                android:layout_width="0dp"
+                android:padding="10dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+                <ImageButton
+                    android:id="@+id/imgPhoto2"
+                    android:clickable="false"
+                    android:alpha="0.8"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_camara"
+                    android:scaleType="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:clickable="true"
+                android:id="@+id/btnPhoto3"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_border"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:padding="10dp"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+                <ImageButton
+                    android:id="@+id/imgPhoto3"
+                    android:clickable="false"
+                    android:alpha="0.8"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_camara"
+                    android:scaleType="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:clickable="true"
+                android:id="@+id/btnPhoto4"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_border"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+                <ImageButton
+                    android:id="@+id/imgPhoto4"
+                    android:clickable="false"
+                    android:alpha="0.8"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_camara"
+                    android:scaleType="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+
+
+        </androidx.gridlayout.widget.GridLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <LinearLayout
+            android:clickable="true"
+            android:id="@+id/btnPhotosBack"
+            android:orientation="horizontal"
+            android:background="@drawable/ic_button_skin_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_marginRight="-4dp"
+                    android:clickable="false"
+                    android:src="@mipmap/ic_button_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="OK"
+                    android:textColor="#fff"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                        <TextView
+                            style="@style/TextViewTitleItem"
+                            android:text="UNIDAD"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txtItemUnidad"
+                            android:text="KILOGRAMO"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextViewTitleItem"
+                        android:text="PESO"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/txtItemPeso"
+                        android:text="00.000"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="left"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextViewTitleItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CANTIDAD"
+                        android:textAlignment="center" />
+                    <TextView
+                        android:id="@+id/txtItemCantidadBulto"
+                        android:text="0"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                style="@style/TextViewTitleItem"
+                android:text="TRATAMIENTO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtItemTratamiento"
+                android:text=""
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                style="@style/TextViewTitleItem"
+                android:text="DESCRIPCION"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtItemDescripcion"
+                android:textSize="18dp"
+                android:text="descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="normal" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btnEleminarItem"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="48dp"
+            android:layout_height="match_parent">
+            <CheckBox
+                android:scaleY="1.7"
+                android:scaleX="1.7"
+                android:id="@+id/chkEstadoItemDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:gravity="center"
+                android:focusableInTouchMode="false"/>
+
+            <ImageView
+                android:visibility="gone"
+                android:src="@mipmap/icon_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
