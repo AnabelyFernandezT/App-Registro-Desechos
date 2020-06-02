@@ -1,4 +1,4 @@
-package com.caircb.rcbtracegadere.fragments.planta;
+package com.caircb.rcbtracegadere.fragments.impresora;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
@@ -27,13 +28,15 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HojaRutaAsignadaPlantaFragment#newInstance} factory method to
+ * Use the {@link ImpresoraConfirgurarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.OnClickListener {
+public class ImpresoraConfirgurarFragment extends MyFragment implements View.OnClickListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
+
+    Window window;
     RecyclerView recyclerView;
     ManifiestoAdapter recyclerviewAdapter;
 
@@ -47,8 +50,8 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
      * @return A new instance of fragment HojaRutaAsignadaFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HojaRutaAsignadaPlantaFragment newInstance() {
-        return new HojaRutaAsignadaPlantaFragment();
+    public static ImpresoraConfirgurarFragment newInstance() {
+        return new ImpresoraConfirgurarFragment();
     }
 
     @Override
@@ -59,7 +62,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada, container, false));
+        setView(inflater.inflate(R.layout.fragment_impresora, container, false));
         //setHideHeader();
         //init();
         //initItems();
