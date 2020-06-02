@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 public final class Utils {
 
     public static Bitmap StringToBitMap(String encodedString){
@@ -56,4 +58,5 @@ public final class Utils {
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+
 }
