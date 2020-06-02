@@ -60,9 +60,9 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada, container, false));
-        //setHideHeader();
-        //init();
-        //initItems();
+        setHideHeader();
+        init();
+        initItems();
         return getView();
     }
 
