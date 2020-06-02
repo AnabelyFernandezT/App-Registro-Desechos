@@ -20,6 +20,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
+import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
+import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfirgurarFragment;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyAppCompatActivity;
@@ -217,7 +219,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                         if(mdialog!=null){
                             mdialog.dismiss();
                             openMenuOpcion();
-                            //NavegationFragment(ImpresoraFragment.create());
+                            NavegationFragment(ImpresoraConfigurarFragment.create());
                         }
                     }
                     else if (item.getNombre().equals("Aplicacion")){

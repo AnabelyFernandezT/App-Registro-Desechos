@@ -28,4 +28,9 @@
         <item name="android:textColor">@color/app_text_white</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="DialogMessagesTheme">
+        <item name="android:textSize">28dp</item>
+    </style>
+
 </resources>
