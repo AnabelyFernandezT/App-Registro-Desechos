@@ -106,7 +106,7 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
         MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().saveOrUpdate(idAppManifiseto,id,check);
         //dbHelper.close();
     }
-    public void setOnClickOpenFotografias(@Nullable ManifiestoNoRecoleccionBaseAdapterR.OnClickOpenFotografias l){
+    public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
         mOnClickOpenFotografias = l;
     }
 }
