@@ -9,7 +9,6 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +17,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.ManifiestoFragment;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto1.Manifiesto1Fragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
@@ -123,7 +121,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        setNavegate(Manifiesto1Fragment.newInstance());
+                        setNavegate(new Manifiesto2Fragment());
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -155,6 +153,6 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     @Override
     public void onDestroy() {
         super.onDestroy();
-        recyclerView.destroyDrawingCache();
+        //recyclerView.destroyDrawingCache();
     }
 }
