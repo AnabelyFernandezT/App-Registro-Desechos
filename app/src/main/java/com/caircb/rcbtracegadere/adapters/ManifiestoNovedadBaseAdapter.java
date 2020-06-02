@@ -34,7 +34,6 @@ public class ManifiestoNovedadBaseAdapter extends ArrayAdapter<RowItemHojaRutaCa
                                         List<RowItemHojaRutaCatalogo> items, boolean desactivarComp) {
         super(context, R.layout.list_item_hoja_ruta_novedad, items);
         this.context = context;
-        this._noChek=false;
         this.desactivarComp = desactivarComp;
     }
 

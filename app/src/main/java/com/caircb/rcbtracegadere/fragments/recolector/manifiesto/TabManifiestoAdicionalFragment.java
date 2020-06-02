@@ -7,18 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
-import com.caircb.rcbtracegadere.dialogs.DialogAudio;
+import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.utils.Utils;
@@ -37,16 +40,21 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     EditText txtNovedadEncontrada;
     ListView LtsManifiestoObservaciones, LtsMotivoNoRecoleccion;
     DialogAgregarFotografias dialogAgregarFotografias;
-    LinearLayout btnAudio;
     Window window;
-    DialogAudio dialogAudio;
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     List<RowItemNoRecoleccion> motivoNoRecoleccion;
+
     ManifiestoNovedadBaseAdapter adapter;
     ManifiestoNoRecoleccionBaseAdapter adapterN;
+
     Integer idAppManifiesto;
     boolean bloquear;
+
+    private OnRecyclerTouchListener touchListener;
+    RecyclerView recyclerViewLtsManifiestoObservaciones, recyclerViewLtsMotivoNoRecoleccion;
+    ManifiestoNovedadBaseAdapterR recyclerAdapterNovedades;
+    ManifiestoNoRecoleccionBaseAdapterR recyclerAdapterNoRecolecciones;
 
     public static TabManifiestoAdicionalFragment newInstance (Integer manifiestoID, Boolean bloqueado){
         TabManifiestoAdicionalFragment f = new TabManifiestoAdicionalFragment();
@@ -78,23 +86,85 @@ public class TabManifiestoAdicionalFragment extends Fragment {
 
     private void init(){
         txtNovedadEncontrada = view.findViewById(R.id.txtNovedadEncontrada);
-        LtsManifiestoObservaciones = view.findViewById(R.id.LtsManifiestoObservaciones);
-        LtsMotivoNoRecoleccion = view.findViewById(R.id.LtsMotivoNoRecoleccion);
-        btnAudio = view.findViewById(R.id.btn_audio);
-        btnAudio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogAudio = new DialogAudio(getContext());
-                dialogAudio.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialogAudio.setCancelable(false);
-                dialogAudio.show();
-            }
-        });
+
+        //LtsManifiestoObservaciones = view.findViewById(R.id.LtsManifiestoObservaciones);
+        //LtsMotivoNoRecoleccion = view.findViewById(R.id.LtsMotivoNoRecoleccion);
+
+        recyclerViewLtsMotivoNoRecoleccion = view.findViewById(R.id.LtsMotivoNoRecoleccion);
+        recyclerViewLtsManifiestoObservaciones = view.findViewById(R.id.LtsManifiestoObservaciones);
 
     }
 
     private void loadData(){
         novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
+
+        /**Obvervaciones (Novedades)**/
+        recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getActivity(), novedadfrecuentes, bloquear);
+        recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapter.OnClickOpenFotografias() {
+            @Override
+            public void onShow(Integer catalogoID, final Integer position) {
+                String nombre = "";
+                if(dialogAgregarFotografias==null){
+                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idAppManifiesto,catalogoID,1);
+                    dialogAgregarFotografias.setCancelable(false);
+                    dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                        @Override
+                        public void onSuccessful(Integer cantidad) {
+                            if(dialogAgregarFotografias!=null && dialogAgregarFotografias.isShowing()){
+                                dialogAgregarFotografias.dismiss();
+                                dialogAgregarFotografias=null;
+
+                                novedadfrecuentes.get(position).setNumFotos(cantidad);
+                                recyclerAdapterNovedades.notifyDataSetChanged();
+
+                            }
+                        }
+                    });
+                    dialogAgregarFotografias.show();
+
+                    window = dialogAgregarFotografias.getWindow();
+                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                }
+            }
+        });
+        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+
+
+        motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idAppManifiesto);
+        recyclerViewLtsMotivoNoRecoleccion.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerAdapterNoRecolecciones = new ManifiestoNoRecoleccionBaseAdapterR(this.getContext(), motivoNoRecoleccion,idAppManifiesto, bloquear);
+        recyclerAdapterNoRecolecciones.setOnClickOpenFotografias(new ManifiestoNoRecoleccionBaseAdapterR.OnClickOpenFotografias() {
+            @Override
+            public void onShow(Integer catalogoID, final Integer position) {
+                if(dialogAgregarFotografias==null){
+                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idAppManifiesto,catalogoID,2);
+                    dialogAgregarFotografias.setCancelable(false);
+                    dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                        @Override
+                        public void onSuccessful(Integer cantidad) {
+                            if(dialogAgregarFotografias!=null && dialogAgregarFotografias.isShowing()){
+                                dialogAgregarFotografias.dismiss();
+                                dialogAgregarFotografias=null;
+
+                                motivoNoRecoleccion.get(position).setNumFotos(cantidad);
+
+                                recyclerAdapterNoRecolecciones.notifyDataSetChanged();
+                            }
+                        }
+                    });
+                    dialogAgregarFotografias.show();
+
+                    window = dialogAgregarFotografias.getWindow();
+                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                }
+            }
+        });
+        recyclerViewLtsMotivoNoRecoleccion.setAdapter(recyclerAdapterNoRecolecciones);
+
+/*
         adapter = new ManifiestoNovedadBaseAdapter(this.getContext(), novedadfrecuentes, bloquear);
         adapter.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapter.OnClickOpenFotografias() {
             @Override
@@ -112,8 +182,6 @@ public class TabManifiestoAdicionalFragment extends Fragment {
 
                                 novedadfrecuentes.get(position).setNumFotos(cantidad);
                                 adapter.notifyDataSetChanged();
-                                //adapter.notifyDataSetChanged();
-                                //loadData();
                             }
                         }
                     });
@@ -159,7 +227,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         });
         LtsMotivoNoRecoleccion.setAdapter(adapterN);
         Utils.setListViewHeightBasedOnChildren(LtsMotivoNoRecoleccion);
-
+*/
     }
 
     public void setMakePhoto(Integer code) {
