@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
+import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.ManifiestoFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +43,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
+    private SearchView searchView;
 
     /**
      * Use this factory method to create a new instance of
@@ -60,7 +63,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada, container, false));
+        setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada_planta, container, false));
         setHideHeader();
         init();
         initItems();
@@ -72,6 +75,21 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
         recyclerviewAdapter = new ManifiestoAdapter(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
+        searchView = getView().findViewById(R.id.searchViewManifiestos);
+        searchView.setOnSearchListener(new SearchView.OnSearchListener() {
+            @Override
+            public void onSearch(String data) {
+                filtro(data);
+            }
+        });
+    }
+
+    private void filtro(String texto){
+        List<ItemManifiesto> result = new ArrayList<>();
+        List<ItemManifiesto> listaItems = new ArrayList<>() ;
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        rowItems=listaItems;
+        recyclerviewAdapter.setTaskList(rowItems);
     }
 
     private void initItems() {

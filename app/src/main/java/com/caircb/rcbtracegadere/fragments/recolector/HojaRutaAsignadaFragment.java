@@ -86,20 +86,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
-        for(ItemManifiesto reg : listaItems){
-            if (reg.getCliente().toLowerCase().contains(texto.toLowerCase())){
-                result.add(reg);
-            }
-        }
-        rowItems=result;
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
-        //recyclerviewAdapter = new ManifiestoAdapter(getActivity());
-        //adapterList();
-        //recyclerviewAdapter = new ManifiestoAdapter(getActivity());
-        //recyclerviewAdapter.setTaskList(rowItems);
-        //recyclerView.setAdapter(recyclerviewAdapter);
-
     }
 
 
