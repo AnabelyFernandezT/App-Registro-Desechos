@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -14,7 +15,7 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 
 public class DialogFirma extends MyDialog {
 
-    Button btnCancelar,btnAplicar;
+    LinearLayout btnCancelar,btnAplicar;
     SignaturePad signaturePad;
 
     public interface OnSignaturePadListener {
@@ -35,8 +36,8 @@ public class DialogFirma extends MyDialog {
     }
 
     private void init(){
-        btnCancelar = (Button)getView().findViewById(R.id.btnCancelarFirma);
-        btnAplicar = (Button)getView().findViewById(R.id.btnAplicarFirma);
+        btnCancelar = getView().findViewById(R.id.btnCancelarFirma);
+        btnAplicar = getView().findViewById(R.id.btnAplicarFirma);
         signaturePad = (SignaturePad)getView().findViewById(R.id.signature_pad_generador);
 
         //------------------------------------------------------------------------------------------
