@@ -26,6 +26,7 @@ public class UserConsultarCedulaTask extends MyRetrofitApi implements RetrofitCa
     public UserConsultarCedulaTask(Context context, String identificacion) {
         super(context);
         this.identificacion=identificacion;
+        progressShow("Consultando...");
     }
 
     @Override
@@ -34,14 +35,17 @@ public class UserConsultarCedulaTask extends MyRetrofitApi implements RetrofitCa
             @Override
             public void onResponse(Call<DtoIdentificacion> call, Response<DtoIdentificacion> response) {
                 if(response.isSuccessful()){
+                    progressHide();
                     if(mOnResponseListener!=null)mOnResponseListener.onSuccessful(response.body());
                 }else{
+                    progressHide();
                     if(mOnResponseListener!=null)mOnResponseListener.onFailure();
                 }
             }
 
             @Override
             public void onFailure(Call<DtoIdentificacion> call, Throwable t) {
+                progressHide();
                 if(mOnResponseListener!=null)mOnResponseListener.onFailure();
             }
         });
