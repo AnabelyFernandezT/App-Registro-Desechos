@@ -16,6 +16,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
+import com.caircb.rcbtracegadere.dialogs.DialogAudio;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.utils.Utils;
@@ -27,11 +28,13 @@ public class TabManifiestoAdicional extends LinearLayout {
     Window window;
     boolean bloquear;
     EditText txtNovedadEncontrada;
+    LinearLayout btnAudio;
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     List<RowItemNoRecoleccion> motivoNoRecoleccion;
 
     DialogAgregarFotografias dialogAgregarFotografias;
+    DialogAudio dialogAudio;
 
     RecyclerView recyclerViewLtsManifiestoObservaciones, recyclerViewLtsMotivoNoRecoleccion;
     ManifiestoNovedadBaseAdapterR recyclerAdapterNovedades;
@@ -50,6 +53,16 @@ public class TabManifiestoAdicional extends LinearLayout {
 
         recyclerViewLtsMotivoNoRecoleccion = this.findViewById(R.id.LtsMotivoNoRecoleccion);
         recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
+        btnAudio = this.findViewById(R.id.btn_audio);
+        btnAudio.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogAudio = new DialogAudio(getContext());
+                dialogAudio.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAudio.setCancelable(false);
+                dialogAudio.show();
+            }
+        });
     }
 
     private void loadData(){
