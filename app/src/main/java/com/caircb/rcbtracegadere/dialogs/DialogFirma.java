@@ -56,6 +56,7 @@ public class DialogFirma extends MyDialog {
             public void onClick(View v) {
                 if(mOnSignaturePadListener!=null){
                     mOnSignaturePadListener.onSuccessful(signaturePad.isEmpty()?null:signaturePad.getSignatureBitmap());
+
                 }
             }
         });

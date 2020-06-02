@@ -74,7 +74,7 @@ public class Manifiesto2Fragment extends MyFragment implements View.OnClickListe
         TabHost.TabSpec spec=tabs.newTabSpec("GENERAL");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto);
+                tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto, 2);
                 return tabManifiestoGeneral;
             }
         });
