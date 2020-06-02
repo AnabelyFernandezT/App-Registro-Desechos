@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+
+import java.util.List;
 
 
 public class Manifiesto2Fragment extends MyFragment implements View.OnClickListener {
@@ -18,10 +22,12 @@ public class Manifiesto2Fragment extends MyFragment implements View.OnClickListe
     private static final String ARG_PARAM1 = "manifiestoID";
 
     LinearLayout btnManifiestoCancel;
-    Integer idAppManifiesto;
+
     TabManifiestoGeneral tabManifiestoGeneral;
     TabManifiestoDetalle tabManifiestoDetalle;
     TabManifiestoAdicional tabManifiestoAdicional;
+
+    Integer idAppManifiesto;
 
 
     public Manifiesto2Fragment() {
@@ -49,6 +55,7 @@ public class Manifiesto2Fragment extends MyFragment implements View.OnClickListe
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_hoja_ruta2, container, false));
         init();
+        initTab();
         return getView();
     }
 
@@ -56,17 +63,21 @@ public class Manifiesto2Fragment extends MyFragment implements View.OnClickListe
 
         btnManifiestoCancel = getView().findViewById(R.id.btnManifiestoCancel);
         btnManifiestoCancel.setOnClickListener(this);
+    }
 
+
+
+    private void initTab(){
         TabHost tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
         tabs.setup();
 
         TabHost.TabSpec spec=tabs.newTabSpec("GENERAL");
         spec.setContent(new TabHost.TabContentFactory() {
-                            public View createTabContent(String tag) {
-                                tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto);
-                                return tabManifiestoGeneral;
-                            }
-                        });
+            public View createTabContent(String tag) {
+                tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto);
+                return tabManifiestoGeneral;
+            }
+        });
         spec.setIndicator("GENERAL");
         tabs.addTab(spec);
 

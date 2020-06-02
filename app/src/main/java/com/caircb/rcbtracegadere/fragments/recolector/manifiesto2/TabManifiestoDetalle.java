@@ -26,6 +26,7 @@ public class TabManifiestoDetalle extends LinearLayout {
         super(context);
         this.idAppManifiesto=manifiestoID;
         this.tipoManifiesto=tipoManifiestoID;
+        this.detalles = detalles;
         View.inflate(context, R.layout.tab_manifiesto_detalle, this);
         init();
         loadData();
@@ -39,8 +40,8 @@ public class TabManifiestoDetalle extends LinearLayout {
     private void loadData(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
 
