@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -121,16 +122,9 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            String myAndroidDeviceId = "";
+            String myAndroidDeviceId = getDeviceId(this);
             String myAndroidDeviceSim="";
 
-            TelephonyManager mTelephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            if (mTelephony!=null && mTelephony.getDeviceId() != null){
-                myAndroidDeviceId = mTelephony.getDeviceId();
-                myAndroidDeviceSim = mTelephony.getSimSerialNumber();
-            }else{
-                myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-            }
 
             //MySession.setIdDevice(telephonyManager.getDeviceId().toString());
             MySession.setIdDevice(myAndroidDeviceId);
@@ -164,6 +158,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         mAuthorization.loginUser(userStr,passStr);
+    }
+
+    @SuppressLint("MissingPermission")
+    public static String getDeviceId(Context context) {
+
+        String deviceId;
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            deviceId = Settings.Secure.getString(
+                    context.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+        } else {
+            final TelephonyManager mTelephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            if (mTelephony.getDeviceId() != null) {
+                deviceId = mTelephony.getDeviceId();
+            } else {
+                deviceId = Settings.Secure.getString(
+                        context.getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+            }
+        }
+
+        return deviceId;
     }
 
     @Override

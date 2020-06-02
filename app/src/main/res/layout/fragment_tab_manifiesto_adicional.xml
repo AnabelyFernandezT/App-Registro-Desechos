@@ -184,6 +184,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical"/>
+
+                <LinearLayout
+                    android:id="@+id/btn_audio"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_background_button_keyboard"
+                    android:gravity="center">
+
+                    <ImageButton
+                        style="@style/Widget.AppCompat.ImageButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:src="@mipmap/next" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- MOTIVOS NO RECOLECCION-->

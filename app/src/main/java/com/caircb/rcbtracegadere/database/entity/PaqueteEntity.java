@@ -34,17 +34,7 @@ public class PaqueteEntity {
 
     private Integer paquetePorRecolccion;
 
-
-    public PaqueteEntity(@NonNull Integer idSistema, @NonNull Integer index, @NonNull String descripcion, @NonNull String funda, @NonNull String guardian, Boolean flagAdicionales, Boolean flagAdicionalFunda, Boolean flagAdicionalGuardian, Integer paquetePorRecolccion) {
-        this.idSistema = idSistema;
-        this.index = index;
-        this.descripcion = descripcion;
-        this.funda = funda;
-        this.guardian = guardian;
-        this.flagAdicionales = flagAdicionales;
-        this.flagAdicionalFunda = flagAdicionalFunda;
-        this.flagAdicionalGuardian = flagAdicionalGuardian;
-        this.paquetePorRecolccion = paquetePorRecolccion;
+    public PaqueteEntity() {
     }
 
     public Integer get_id() {
