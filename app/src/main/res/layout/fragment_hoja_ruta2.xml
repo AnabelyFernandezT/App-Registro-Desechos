@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.recolector.manifiesto2.Manifiesto2Fragment">
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/m_footer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!--
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:alpha="0.7"
+                                android:background="#444"
+                                android:gravity="center"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:id="@+id/lblCliente"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="CLIENTE"
+                                    android:textColor="#fff"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NÚMERO DE MANIFIESTO:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtNumManifiesto"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NUMERO MANIFIESTO DETALLE:"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/txtNumManifiestoCliente"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:maxLength="10" />
+
+                                <ImageButton
+                                    android:id="@+id/btnNumManifiestoCliente"
+                                    android:layout_width="60dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@mipmap/ic_buscar48" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NOMBRE:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtClienteNombre"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="IDENTIFICACIÓN:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtClienteIdentificacion"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TELÉFONO:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtClienteTelefono"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="DIRECCIÓN:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtClienteDireccion"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PROVINCIA:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtClienteProvincia"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CANTON:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtClienteCanton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PARROQUIA:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtClienteParroquia"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:alpha="0.7"
+                                android:background="#444"
+                                android:gravity="center"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:id="@+id/lblTrasporte"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="TRANSPORTE"
+                                    android:textColor="#fff"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="EMPRESA TRANSPORTISTA:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtempresaTransportista"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CONDUCTOR DE RECOLECCIÓN:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtTransReco"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="AUXILIAR DE RECOLECCIÓN:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtTransRecoAux"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="FIRMA:"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:id="@+id/btnAgregarFirmaTransportista"
+                                android:layout_width="match_parent"
+                                android:layout_height="140dp"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/border_dotted"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/txtFirmaMensajeTransportista"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Presione aquí para firmar" />
+
+                                <ImageView
+                                    android:id="@+id/imgFirmaTecnicoTrasnsportista"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:alpha="0.7"
+                                android:background="#444"
+                                android:gravity="center"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:id="@+id/lblDestinatario"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="DESTINATARIO"
+                                    android:textColor="#fff"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="EMPRESA DESTINATARIO:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtEmpresaDestinatario"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:maxLength="10" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:alpha="0.7"
+                                android:background="#444"
+                                android:gravity="center"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:id="@+id/lblGeneradorTecnico"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="GENERADOR TECNICO"
+                                    android:textColor="#fff"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TECNICO IDENTIFICACION:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtIdentificacion"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:maxLength="10" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TECNICO RESPONSABLE:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtNombre"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TECNICO CORREO:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtCorreo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TECNICO TELEFONO:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtTelefono"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TECNICO CELULAR:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtGenTecCelular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="10" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="IDENTIFICACIÓN:"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/txtGenTecIdentificacion"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:inputType="number"
+                                    android:maxLength="10" />
+
+                                <ImageButton
+                                    android:id="@+id/btnBuscarIdentificacion"
+                                    android:layout_width="60dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@mipmap/ic_buscar48" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="RESPONSABLE:"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/txtGenTecNombre"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CORREO:"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/txtGenTecCorreo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TELEFONO:"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/txtGenTecTelefono"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="10" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="FIRMA:"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:id="@+id/btnAgregarFirma"
+                                android:layout_width="match_parent"
+                                android:layout_height="140dp"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/border_dotted"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/txtFirmaMensaje"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Presione aquí para firmar" />
+
+                                <ImageView
+                                    android:id="@+id/imgFirmaTecnico"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp"/>
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp"/>
+                     -->
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+    <LinearLayout
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="3dp"
+        android:id="@+id/m_footer"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:background="@drawable/rcb_border_footer"
+        android:layout_height="60dp">
+
+
+        <LinearLayout
+            android:clickable="true"
+            android:id="@+id/btnManifiestoCancel"
+            android:orientation="horizontal"
+            android:background="@drawable/ic_button_skin_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_marginRight="-4dp"
+                    android:clickable="false"
+                    android:src="@mipmap/ic_button_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="CANCELAR"
+                    android:textColor="#fff"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:clickable="true"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btnManifiestoNext"
+            android:orientation="horizontal"
+            android:background="@drawable/ic_button_skin_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="SIGUIENTE"
+                    android:textColor="#fff"
+                    android:textSize="14dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:clickable="false"
+                    android:src="@mipmap/ic_button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
