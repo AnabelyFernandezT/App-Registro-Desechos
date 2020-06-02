@@ -121,7 +121,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        setNavegate(new Manifiesto2Fragment());
+                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
