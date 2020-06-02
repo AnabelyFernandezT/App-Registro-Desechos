@@ -76,7 +76,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
         idAppManifiesto = this.getArguments().getInt(ARG_PARAM1);
         bloquear = this.getArguments().getBoolean(ARG_PARAM2);
         init();
-        loadData();
+        //loadData();
         return view;
     }
 

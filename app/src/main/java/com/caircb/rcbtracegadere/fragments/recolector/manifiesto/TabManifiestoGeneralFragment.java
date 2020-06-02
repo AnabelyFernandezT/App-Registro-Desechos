@@ -1,7 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto;
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -54,9 +52,6 @@ public class TabManifiestoGeneralFragment extends Fragment {
 
 
 
-    //Activity activity;
-    private Context mContext;
-
     public static TabManifiestoGeneralFragment newInstance (Integer manifiestoID, Boolean bloqueado){
         TabManifiestoGeneralFragment f = new TabManifiestoGeneralFragment();
         Bundle args = new Bundle();
@@ -69,13 +64,13 @@ public class TabManifiestoGeneralFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getActivity().getApplicationContext();
         if (getArguments() != null) {
             idAppManifiesto= getArguments().getInt(ARG_PARAM1);
             bloquear = getArguments().getBoolean(ARG_PARAM2);
         }
     }
 
+    /*
     private void init() {
 
         txtNumManifiesto = view.findViewById(R.id.txtNumManifiesto) ;
@@ -130,12 +125,6 @@ public class TabManifiestoGeneralFragment extends Fragment {
         btnBuscarIdentificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /* if(txtGenTecIdentificacion.getText().toString().length()==10){
-                    consultarIdentidadTask = new UserConsultarIdentidadTask(getActivity(),listenerIdentificacion);
-                    consultarIdentidadTask.execute(txtGenTecIdentificacion.getText().toString());
-                }else{
-                    messageBox("Recuerde que debe ingresar 10 caracteres.");
-                }*/
 
                 TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
                 if (tecnico!=null){
@@ -143,8 +132,7 @@ public class TabManifiestoGeneralFragment extends Fragment {
                     txtGenTecCorreo.setText(tecnico.getCorreo());
                     txtGenTecTelefono.setText(tecnico.getTelefono());
                 }else {
-                    //messageB("Debe registrarse");
-                    Toast.makeText(mContext, "Usuario no registrado", Toast.LENGTH_SHORT).show();
+
                     txtGenTecNombre.setText("");
                     txtGenTecCorreo.setText("");
                     txtGenTecTelefono.setText("");
@@ -224,7 +212,7 @@ public class TabManifiestoGeneralFragment extends Fragment {
 
 
     }
-
+    */
     private void loadDataManifiesto(){
         //dbHelper.open();
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
@@ -287,8 +275,8 @@ public class TabManifiestoGeneralFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_tab_manifiesto_general, container, false);
         idAppManifiesto = this.getArguments().getInt(ARG_PARAM1);
 
-        init();
-        loadDataManifiesto();
+        //init();
+        //loadDataManifiesto();
         return view;
     }
 
