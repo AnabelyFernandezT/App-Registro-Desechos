@@ -18,8 +18,6 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
-import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.ManifiestoFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;

@@ -86,7 +86,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             public void onClick(View v) {
                 dialogAudio = new DialogAudio(getContext());
                 dialogAudio.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialogAudio.setCancelable(true);
+                dialogAudio.setCancelable(false);
                 dialogAudio.show();
             }
         });
