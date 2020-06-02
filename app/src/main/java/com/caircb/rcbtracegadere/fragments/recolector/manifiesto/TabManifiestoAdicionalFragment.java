@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
+import com.caircb.rcbtracegadere.dialogs.DialogAudio;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.utils.Utils;
@@ -35,7 +37,9 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     EditText txtNovedadEncontrada;
     ListView LtsManifiestoObservaciones, LtsMotivoNoRecoleccion;
     DialogAgregarFotografias dialogAgregarFotografias;
+    LinearLayout btnAudio;
     Window window;
+    DialogAudio dialogAudio;
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     List<RowItemNoRecoleccion> motivoNoRecoleccion;
@@ -76,6 +80,16 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         txtNovedadEncontrada = view.findViewById(R.id.txtNovedadEncontrada);
         LtsManifiestoObservaciones = view.findViewById(R.id.LtsManifiestoObservaciones);
         LtsMotivoNoRecoleccion = view.findViewById(R.id.LtsMotivoNoRecoleccion);
+        btnAudio = view.findViewById(R.id.btn_audio);
+        btnAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogAudio = new DialogAudio(getContext());
+                dialogAudio.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAudio.setCancelable(true);
+                dialogAudio.show();
+            }
+        });
 
     }
 

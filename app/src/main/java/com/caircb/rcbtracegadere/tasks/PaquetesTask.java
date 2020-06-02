@@ -6,6 +6,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.models.request.RequestPaquetes;
+import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
 import com.caircb.rcbtracegadere.services.WebService;
 
@@ -17,8 +18,15 @@ import retrofit2.Response;
 
 public class PaquetesTask extends MyRetrofitApi implements RetrofitCallbacks {
 
-    public PaquetesTask(Context context) {
+    public interface TaskListener {
+        public void onSuccessful();
+    }
+    private final TaskListener taskListener;
+
+    public PaquetesTask(Context context, TaskListener listener) {
         super(context);
+        this.taskListener = listener;
+
     }
 
     @Override
@@ -27,8 +35,15 @@ public class PaquetesTask extends MyRetrofitApi implements RetrofitCallbacks {
         WebService.api().getPaquetes().enqueue(new Callback<List<DtoPaquetes>>() {
             @Override
             public void onResponse(Call<List<DtoPaquetes>> call, Response<List<DtoPaquetes>> response) {
-                if (response.isSuccessful()){
-                    MyApp.getDBO().paqueteDao().saveOrUpdate(response.body());
+                if(response.isSuccessful()){
+                    final List<DtoPaquetes> respuesta = response.body();
+                    //final Integer cont =respuesta.size();
+
+                    for (DtoPaquetes reg:respuesta){
+                        MyApp.getDBO().paqueteDao().saveOrUpdate(reg);
+                        message("actualizado");
+
+                    }
                 }
             }
 
@@ -37,5 +52,6 @@ public class PaquetesTask extends MyRetrofitApi implements RetrofitCallbacks {
 
             }
         });
+
     }
-}
+    }

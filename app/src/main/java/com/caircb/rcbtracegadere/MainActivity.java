@@ -65,6 +65,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     UserConsultarCatalogosTask consultarCatalogosTask;
     PaquetesTask paquetesTask;
+    PaquetesTask.TaskListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,10 +253,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     private void existePaquetes(){
+
        if(!MyApp.getDBO().paqueteDao().existePaquetes()){
            // MyApp.getDBO().paqueteDao().saveOrUpdate(1,1,"PQH1","55x50","PC 1");
-                paquetesTask = new PaquetesTask(this);
+                paquetesTask = new PaquetesTask(this, listener);
                 paquetesTask.execute();
+
 
         }
     }

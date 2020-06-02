@@ -5,7 +5,9 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
 
 import java.util.List;
@@ -15,10 +17,10 @@ import java.util.List;
 public abstract class PaqueteDao {
 
 
-    @Query("select count(*) from tb_paquetes LIMIT 1")
+    @Query("select count(*) from tb_paquetes  LIMIT 1")
     public abstract boolean existePaquetes();
 
-    @Query("select * from tb_paquetes where idSistema=:id")
+    @Query("select * from tb_paquetes where idSistema=:id limit 1")
     public abstract PaqueteEntity fechConsultaPaqueteEspecifico(Integer id);
 
     @Query("select * from tb_paquetes")
@@ -27,22 +29,45 @@ public abstract class PaqueteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createPaquete(PaqueteEntity entity);
 
-    public void saveOrUpdate(List<DtoPaquetes> paquetes ){
+    public void saveOrUpdate(DtoPaquetes paquetes ){
 
-        for (DtoPaquetes p:paquetes) {
             PaqueteEntity paquete = fechConsultaPaquete();
             if(paquete==null){
-                paquete = new PaqueteEntity(p.getIdSistema(),p.getIndex(),p.getDescripcion(),p.getFunda(),p.getGuardian(),
-                        p.getFlagAdicionales(),p.getFlagAdicionalFunda(),p.getFlagAdicionalGuardian(),p.getPaquetePorRecolccion());
+                paquete = new PaqueteEntity();
+                paquete.setIdSistema(paquete.getIdSistema());
+                paquete.setIndex(paquete.getIndex());
+                paquete.setDescripcion(paquetes.getDescripcion());
+                paquete.setFunda(paquetes.getFunda());
+                paquete.setGuardian(paquetes.getGuardian());
+                paquete.setFlagAdicionales(paquetes.getFlagAdicionales());
+                paquete.setFlagAdicionalGuardian(paquete.getFlagAdicionalGuardian());
+                paquete.setFlagAdicionalFunda(paquetes.getFlagAdicionalFunda());
+                paquete.setPaquetePorRecolccion(paquetes.getPaquetePorRecolccion());
+
             }else{
-                paquete.setDescripcion(p.getDescripcion());
-                paquete.setFunda(p.getFunda());
-                paquete.setGuardian(p.getGuardian());
-                paquete.setFlagAdicionales(p.getFlagAdicionales());
-                paquete.setFlagAdicionalFunda(p.getFlagAdicionalFunda());
-                paquete.setPaquetePorRecolccion(p.getPaquetePorRecolccion());
+                paquete.setDescripcion(paquetes.getDescripcion());
+                paquete.setFunda(paquetes.getFunda());
+                paquete.setGuardian(paquetes.getGuardian());
+                paquete.setFlagAdicionales(paquetes.getFlagAdicionales());
+                paquete.setFlagAdicionalGuardian(paquete.getFlagAdicionalGuardian());
+                paquete.setFlagAdicionalFunda(paquetes.getFlagAdicionalFunda());
+                paquete.setPaquetePorRecolccion(paquetes.getPaquetePorRecolccion());
             }
             createPaquete(paquete);
+
+    }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract void createManifiesto(ManifiestoEntity entity);
+
+    public void saveOrUpdate2(DtoPaquetes paquetes){
+        PaqueteEntity entity;
+        entity = fechConsultaPaqueteEspecifico(paquetes.getIdSistema());
+        if (entity==null){
+        //entity = new PaqueteEntity();
+
+        }else{
+
         }
 
     }
