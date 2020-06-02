@@ -55,7 +55,7 @@ public class Manifiesto1Fragment extends MyFragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setView(inflater.inflate(R.layout.fragment_hoja_ruta, container, false));
+        //setView(inflater.inflate(R.layout.fragment_hoja_ruta, container, false));
         setHideHeader();
         init();
         return getView();
@@ -70,7 +70,7 @@ public class Manifiesto1Fragment extends MyFragment implements View.OnClickListe
 
         fragments =new ArrayList<>();
 
-        fragments.add(new TabFragmentGeneral());
+        //fragments.add(new TabFragmentGeneral());
         fragments.add(TabFragmentDetalle.newInstance(idAppManifiesto,0));
         fragments.add(new TabFragmentAdicional());
 

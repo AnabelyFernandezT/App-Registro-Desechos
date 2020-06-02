@@ -19,6 +19,7 @@ public class Manifiesto2Fragment extends MyFragment implements View.OnClickListe
 
     LinearLayout btnManifiestoCancel;
     TabManifiestoGeneral tabManifiestoGeneral;
+    TabManifiestoDetalle tabManifiestoDetalle;
     public Manifiesto2Fragment() {
         // Required empty public constructor
     }
@@ -55,18 +56,22 @@ public class Manifiesto2Fragment extends MyFragment implements View.OnClickListe
         spec.setContent(new TabHost.TabContentFactory() {
                             public View createTabContent(String tag) {
                                 tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),2);
-                                //tv.setText("The Text of " + tag);
                                 return tabManifiestoGeneral;
                             }
                         });
         spec.setIndicator("GENERAL");
         tabs.addTab(spec);
-/*
+
         spec=tabs.newTabSpec("DETALLE");
-        spec.setContent(R.id.tab2);
+        spec.setContent(new TabHost.TabContentFactory() {
+            public View createTabContent(String tag) {
+                tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),2);
+                return tabManifiestoDetalle;
+            }
+        });
         spec.setIndicator("DETALLE");
         tabs.addTab(spec);
-
+/*
         spec=tabs.newTabSpec("ADICIONALES");
         spec.setContent(R.id.tab3);
         spec.setIndicator("ADICIONALES");
