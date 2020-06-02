@@ -63,10 +63,10 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada_planta, container, false));
-        setHideHeader();
-        init();
-        initItems();
+        setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada, container, false));
+        //setHideHeader();
+        //init();
+        //initItems();
         return getView();
     }
 

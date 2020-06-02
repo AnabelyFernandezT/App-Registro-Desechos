@@ -80,8 +80,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     private void validateInitFragment(){
         if(1==1){
-           //initFragment((HomeTransportistaFragment.create()));
-           initFragment(HomePlantaFragment.create());
+           initFragment((HomeTransportistaFragment.create()));
+           //initFragment(HomePlantaFragment.create());
         }
         /*
         switch (MySession.getIdPerfil()){
