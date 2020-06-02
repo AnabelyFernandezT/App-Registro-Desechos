@@ -40,7 +40,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
     private int flag =0;
     DialogFirma dialogFirma;
-    UserConsultarCedulaTask userConsultarCedulaTask;
+    ImagenUtils imagenUtils;
 
 
 
@@ -108,33 +108,19 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onClick(View v) {
 
-                if (txtGenTecIdentificacion.getText().toString().length() == 10) {
+                TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
+                if (tecnico!=null){
+                    txtGenTecNombre.setText(tecnico.getNombre());
+                    txtGenTecCorreo.setText(tecnico.getCorreo());
+                    txtGenTecTelefono.setText(tecnico.getTelefono());
+                }else {
 
-                    TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
-                    if (tecnico != null) {
-                        txtGenTecNombre.setText(tecnico.getNombre());
-                        txtGenTecCorreo.setText(tecnico.getCorreo());
-                        txtGenTecTelefono.setText(tecnico.getTelefono());
-                    } else {
-                        //consultar en el servicio web...
-                        userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(), txtGenTecIdentificacion.getText().toString());
-                        userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
-                            @Override
-                            public void onSuccessful(DtoIdentificacion identificacion) {
-                                txtGenTecNombre.setText(identificacion.getEcuatorianoNombre());
-                                txtGenTecCorreo.requestFocus();
-                            }
-
-                            @Override
-                            public void onFailure() {
-                                limpiarDatoGenerador();
-                            }
-                        });
-                        userConsultarCedulaTask.execute();
-
-                    }
+                    txtGenTecNombre.setText("");
+                    txtGenTecCorreo.setText("");
+                    txtGenTecTelefono.setText("");
 
                 }
+
             }
         });
 
@@ -211,13 +197,6 @@ public class TabManifiestoGeneral extends LinearLayout {
 
 
     }
-
-    private void limpiarDatoGenerador(){
-        txtGenTecNombre.setText("");
-        txtGenTecCorreo.setText("");
-        txtGenTecTelefono.setText("");
-    }
-
     private void loadDataManifiesto(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         if(manifiesto!=null){
