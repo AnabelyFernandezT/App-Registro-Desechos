@@ -15,7 +15,8 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
-import com.caircb.rcbtracegadere.utils.ImageFilePath;
+import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
+import com.caircb.rcbtracegadere.tasks.UserConsultarCedulaTask;
 import com.caircb.rcbtracegadere.utils.ImagenUtils;
 import com.caircb.rcbtracegadere.utils.Utils;
 
@@ -39,7 +40,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
     private int flag =0;
     DialogFirma dialogFirma;
-    ImagenUtils imagenUtils;
+    UserConsultarCedulaTask userConsultarCedulaTask;
 
 
 
@@ -107,19 +108,33 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onClick(View v) {
 
-                TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
-                if (tecnico!=null){
-                    txtGenTecNombre.setText(tecnico.getNombre());
-                    txtGenTecCorreo.setText(tecnico.getCorreo());
-                    txtGenTecTelefono.setText(tecnico.getTelefono());
-                }else {
+                if (txtGenTecIdentificacion.getText().toString().length() == 10) {
 
-                    txtGenTecNombre.setText("");
-                    txtGenTecCorreo.setText("");
-                    txtGenTecTelefono.setText("");
+                    TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
+                    if (tecnico != null) {
+                        txtGenTecNombre.setText(tecnico.getNombre());
+                        txtGenTecCorreo.setText(tecnico.getCorreo());
+                        txtGenTecTelefono.setText(tecnico.getTelefono());
+                    } else {
+                        //consultar en el servicio web...
+                        userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(), txtGenTecIdentificacion.getText().toString());
+                        userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
+                            @Override
+                            public void onSuccessful(DtoIdentificacion identificacion) {
+                                txtGenTecNombre.setText(identificacion.getEcuatorianoNombre());
+                                txtGenTecCorreo.requestFocus();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                limpiarDatoGenerador();
+                            }
+                        });
+                        userConsultarCedulaTask.execute();
+
+                    }
 
                 }
-
             }
         });
 
@@ -196,6 +211,13 @@ public class TabManifiestoGeneral extends LinearLayout {
 
 
     }
+
+    private void limpiarDatoGenerador(){
+        txtGenTecNombre.setText("");
+        txtGenTecCorreo.setText("");
+        txtGenTecTelefono.setText("");
+    }
+
     private void loadDataManifiesto(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         if(manifiesto!=null){
