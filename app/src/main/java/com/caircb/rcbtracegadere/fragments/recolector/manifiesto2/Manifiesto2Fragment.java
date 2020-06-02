@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -12,12 +13,13 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
 import java.util.List;
 
 
-public class Manifiesto2Fragment extends MyFragment implements View.OnClickListener {
+public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,View.OnClickListener {
 
     private static final String ARG_PARAM1 = "manifiestoID";
 
@@ -114,6 +116,13 @@ public class Manifiesto2Fragment extends MyFragment implements View.OnClickListe
                 //vista preliminar...
                 //setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto));
                 break;
+        }
+    }
+
+    @Override
+    public void onCameraResult(int requestCode, int resultCode, Intent data) {
+        if(tabManifiestoAdicional!=null && ((requestCode>=101 && requestCode<=104) ||(requestCode>=201 && requestCode<=204))){
+            tabManifiestoAdicional.setMakePhoto(requestCode);
         }
     }
 }

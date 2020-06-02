@@ -101,34 +101,39 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         /**Obvervaciones (Novedades)**/
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getActivity(), novedadfrecuentes, bloquear);
-        recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapter.OnClickOpenFotografias() {
+
+        /*recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
             @Override
-            public void onShow(Integer catalogoID, final Integer position) {
-                String nombre = "";
-                if(dialogAgregarFotografias==null){
-                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idAppManifiesto,catalogoID,1);
-                    dialogAgregarFotografias.setCancelable(false);
-                    dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
-                        @Override
-                        public void onSuccessful(Integer cantidad) {
-                            if(dialogAgregarFotografias!=null && dialogAgregarFotografias.isShowing()){
-                                dialogAgregarFotografias.dismiss();
-                                dialogAgregarFotografias=null;
+            public void onShow(Integer catalogoID, Integer position) {
+                @Override
+                public void onShow(Integer catalogoID, final Integer position) {
+                    String nombre = "";
+                    if(dialogAgregarFotografias==null){
+                        dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idAppManifiesto,catalogoID,1);
+                        dialogAgregarFotografias.setCancelable(false);
+                        dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                            @Override
+                            public void onSuccessful(Integer cantidad) {
+                                if(dialogAgregarFotografias!=null && dialogAgregarFotografias.isShowing()){
+                                    dialogAgregarFotografias.dismiss();
+                                    dialogAgregarFotografias=null;
 
-                                novedadfrecuentes.get(position).setNumFotos(cantidad);
-                                recyclerAdapterNovedades.notifyDataSetChanged();
+                                    novedadfrecuentes.get(position).setNumFotos(cantidad);
+                                    recyclerAdapterNovedades.notifyDataSetChanged();
 
+                                }
                             }
-                        }
-                    });
-                    dialogAgregarFotografias.show();
+                        });
+                        dialogAgregarFotografias.show();
 
-                    window = dialogAgregarFotografias.getWindow();
-                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                        window = dialogAgregarFotografias.getWindow();
+                        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 }
             }
         });
+        */
         recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
 
 

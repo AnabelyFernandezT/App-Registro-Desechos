@@ -27,7 +27,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer position);
     }
-    private ManifiestoNovedadBaseAdapter.OnClickOpenFotografias mOnClickOpenFotografias;
+    private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
 
     public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp){
         mContext = context;
@@ -108,7 +108,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         }
     }
 
-    public void setOnClickOpenFotografias(@Nullable ManifiestoNovedadBaseAdapter.OnClickOpenFotografias l){
+    public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
         mOnClickOpenFotografias = l;
     }
 
