@@ -12,12 +12,16 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBaseAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBaseAdapterR;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
+import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
@@ -46,6 +50,10 @@ public class TabManifiestoDetalleFragment extends Fragment {
     DialogBultos dialogBultos;
     //DialogPaquetes dialogPaquetes;
     Window window;
+
+    private OnRecyclerTouchListener touchListener;
+    RecyclerView recyclerView;
+    ManifiestoDetalleBaseAdapterR recyclerManifiestoDetalleBaseAdapterR;
 
     public static TabManifiestoDetalleFragment newInstance (Integer manifiestoID, Integer tipoPaquete,Boolean bloqueado){
         TabManifiestoDetalleFragment f = new TabManifiestoDetalleFragment();
@@ -81,7 +89,8 @@ public class TabManifiestoDetalleFragment extends Fragment {
     }
 
     private void init(){
-        LtsManifiestoDetalle = (ListView)view.findViewById(R.id.LtsManifiestoDetalle);
+        //LtsManifiestoDetalle = (ListView)view.findViewById(R.id.LtsManifiestoDetalle);
+        recyclerView = (RecyclerView)view.findViewById(R.id.LtsManifiestoDetalle);
     }
 
 
@@ -113,15 +122,34 @@ public class TabManifiestoDetalleFragment extends Fragment {
 
     private void  loadData(){
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+
+        recyclerManifiestoDetalleBaseAdapterR = new ManifiestoDetalleBaseAdapterR(getActivity(), detalles, bloquear);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(recyclerManifiestoDetalleBaseAdapterR);
+
+        touchListener = new OnRecyclerTouchListener(getActivity(),recyclerView);
+        touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
+            @Override
+            public void onRowClicked(int position) {
+                openOpcionesItems(position);
+            }
+            @Override
+            public void onIndependentViewClicked(int independentViewID, int position) { }
+        });
+        recyclerView.setAdapter(recyclerManifiestoDetalleBaseAdapterR);
+
+
+        /*
         adapterDetalleManifiesto = new ManifiestoDetalleBaseAdapter(this.getContext(), detalles, bloquear);
         LtsManifiestoDetalle.setAdapter(adapterDetalleManifiesto);
-
         LtsManifiestoDetalle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openOpcionesItems(position);
             }
         });
+        */
+
 
     }
 
@@ -169,6 +197,12 @@ public class TabManifiestoDetalleFragment extends Fragment {
     }
 
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(recyclerView!=null) {
+            recyclerView.addOnItemTouchListener(touchListener);
+        }
+    }
 
 }

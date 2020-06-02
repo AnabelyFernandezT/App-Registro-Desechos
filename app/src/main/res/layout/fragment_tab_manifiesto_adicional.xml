@@ -223,6 +223,15 @@
                         android:text="MOTIVOS NO RECOLECCION"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/LtsMotivoNoRecoleccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@android:color/darker_gray"
+                    android:dividerHeight="0.5dp"
+                    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+                <!--
                 <ListView
                     android:id="@+id/LtsMotivoNoRecoleccion"
                     android:layout_width="match_parent"
@@ -230,6 +239,7 @@
                     android:divider="@android:color/darker_gray"
                     android:dividerHeight="0.5dp"
                     android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+                -->
             </LinearLayout>
 
             <!-- NOVEDADES FRECUENTES-->
@@ -254,7 +264,7 @@
                         android:text="NOVEDADES FRECUENTES"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/LtsManifiestoObservaciones"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
