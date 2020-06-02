@@ -75,13 +75,21 @@ public class SearchView extends LinearLayout {
             public void afterTextChanged(Editable editable) {
                 if(mOnSearchListener!=null && !dataSearh.equals(txtBuscar.getText().toString())){
                     dataSearh = txtBuscar.getText().toString();
+                    mOnSearchListener.onSearch(dataSearh);
+
                     timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            mOnSearchListener.onSearch(dataSearh);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(mOnSearchListener!=null)mOnSearchListener.onSearch(dataSearh);
+                                }
+                            });
                         }
                     }, DELAY);
+
                 }
             }
         });

@@ -18,7 +18,7 @@ import java.util.List;
 public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.MyViewHolder>  {
 
     private Context mContext;
-    private List<ItemManifiesto> manifiestosList;
+    private List<ItemManifiesto> manifiestosList ;
 
     public ManifiestoAdapter(Context context){
         mContext = context;

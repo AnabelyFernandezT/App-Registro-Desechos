@@ -41,6 +41,11 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigando();
 
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos " +
+            "where estado=1 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManif(String search);
+
     @Query("update tb_manifiestos set numeroManifiesto=:numManifiesto, tecnicoFirmaImg=:img, tecnicoFirmaUrl=:url where idAppManifiesto=:idManifiesto")
     abstract void actualizarFirmaTecnicoGenerador(Integer idManifiesto, String numManifiesto, String img, String url);
 

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/fragment_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FFFF"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="-50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--LOGO-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ImgLogo"
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:adjustViewBounds="false"
+                    android:src="@drawable/logo_client_gadere" />
+            </LinearLayout>
+
+            <!--FIN LOGO-->
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <!--FOOTER-->
+    <LinearLayout
+        android:id="@+id/fragment_footer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:background="@color/app_header">
+
+        <!--MENU-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:onClick="ButtonOnClick"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="#00000000"
+                android:contentDescription="Hola"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="14dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/rcb_btn_menu" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/title_footer"
+                android:text="MENU"
+                android:layout_marginTop="-15dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!--BUSCAR-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/regionBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="14dp"
+                android:scaleType="fitCenter"
+                android:focusable="false"
+                android:clickable="false"
+                android:src="@drawable/rcb_btn_manifiesto_search" />
+            <TextView
+                style="@style/title_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BUSCAR"
+                android:layout_marginTop="-15dp"
+                android:gravity="center"
+                android:textIsSelectable="false" />
+
+        </LinearLayout>
+        <!--SINCRONIZAR-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btnSincManifiestos"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="#00000000"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="14dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/rcb_btn_sincronizar" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/title_footer"
+                android:text="SINCRONIZAR"
+                android:layout_marginTop="-15dp"
+                android:gravity="center"
+                android:textIsSelectable="false" />
+
+        </LinearLayout>
+        <!--MANIFIESTOS ASIGNADOS-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btnListaAsignadaTransportista"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="14dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/rcb_btn_manifiesto" />
+
+            <TextView
+                style="@style/title_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-15dp"
+                android:gravity="center"
+                android:text="MANIFIESTOS"
+                android:textIsSelectable="false" />
+
+            <TextView
+                android:id="@+id/lblListaManifiestoAsignado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="-56dp"
+                android:background="@drawable/badge_item_count"
+                android:padding="4dp"
+                android:text="0"
+                android:textColor="#fff"
+                android:textIsSelectable="false"
+                android:textSize="11dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!--Incio de ruta-->
+
+        <!--Fin de ruta-->
+        <LinearLayout
+            android:id="@+id/LnlFinRuta"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btnFinRuta"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="#00000000"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="14dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/rcb_button_fin_ruta" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-15dp"
+                android:gravity="center"
+                style="@style/title_footer"
+                android:text="FIN RUTA"
+                android:textIsSelectable="false"/>
+
+
+        </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+</LinearLayout>
