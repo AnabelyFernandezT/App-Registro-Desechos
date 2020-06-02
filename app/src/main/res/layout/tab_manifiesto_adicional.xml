@@ -7,6 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -223,22 +224,19 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/LtsMotivoNoRecoleccion"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@android:color/darker_gray"
-                    android:dividerHeight="0.5dp"
-                    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
-                <!--
-                <ListView
-                    android:id="@+id/LtsMotivoNoRecoleccion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@android:color/darker_gray"
-                    android:dividerHeight="0.5dp"
-                    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
-                -->
+                    android:layout_height="match_parent">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/LtsMotivoNoRecoleccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="0.5dp"
+                        android:overScrollMode="never"
+                        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+                </RelativeLayout>
+
             </LinearLayout>
 
             <!-- NOVEDADES FRECUENTES-->
@@ -249,7 +247,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
-
                     android:padding="5dp"
                     android:alpha="0.7"
                     android:background="#444"
@@ -273,5 +270,6 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>
