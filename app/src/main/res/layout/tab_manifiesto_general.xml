@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.recolector.manifiesto.TabManifiestoGeneralFragment">
-
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:layout_height="wrap_content">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
 
             <LinearLayout
 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:padding="5dp"
                 android:alpha="0.7"
                 android:background="#444"
                 android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="5dp">
+
                 <TextView
                     android:id="@+id/lblCliente"
                     android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="#fff"
+                    android:layout_height="wrap_content"
                     android:text="CLIENTE"
-                    android:layout_height="wrap_content" />
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="NÚMERO DE MANIFIESTO:"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtNumManifiesto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="NUMERO MANIFIESTO DETALLE:"
                 android:textStyle="bold" />
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <EditText
-                    android:layout_weight="1"
-                    android:maxLength="10"
                     android:id="@+id/txtNumManifiestoCliente"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLength="10" />
+
                 <ImageButton
                     android:id="@+id/btnNumManifiestoCliente"
-                    android:src="@mipmap/ic_buscar48"
                     android:layout_width="60dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_buscar48" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="NOMBRE:"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtClienteNombre"
@@ -78,9 +80,9 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="IDENTIFICACIÓN:"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtClienteIdentificacion"
@@ -89,9 +91,9 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="TELÉFONO:"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtClienteTelefono"
@@ -100,9 +102,9 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="DIRECCIÓN:"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtClienteDireccion"
@@ -111,19 +113,20 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="PROVINCIA:"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtClienteProvincia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 android:layout_width="wrap_content"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="CANTON:"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtClienteCanton"
@@ -143,27 +146,21 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-
-            </LinearLayout>
-            <LinearLayout
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:padding="5dp"
                 android:alpha="0.7"
                 android:background="#444"
                 android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="5dp">
+
                 <TextView
                     android:id="@+id/lblTrasporte"
                     android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="#fff"
+                    android:layout_height="wrap_content"
                     android:text="TRANSPORTE"
-                    android:layout_height="wrap_content" />
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -188,8 +185,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -201,51 +196,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FIRMA:"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/btnAgregarFirmaTransportista"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:background="@drawable/border_dotted"
                 android:layout_width="match_parent"
-                android:layout_height="140dp">
+                android:layout_height="140dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_dotted"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/txtFirmaMensajeTransportista"
-                    android:text="Presione aquí para firmar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Presione aquí para firmar" />
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/imgFirmaTecnicoTrasnsportista"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:layout_height="match_parent" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:padding="5dp"
                 android:alpha="0.7"
                 android:background="#444"
                 android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="5dp">
+
                 <TextView
                     android:id="@+id/lblDestinatario"
                     android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="#fff"
+                    android:layout_height="wrap_content"
                     android:text="DESTINATARIO"
-                    android:layout_height="wrap_content" />
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -255,28 +251,29 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_weight="1"
-                android:maxLength="10"
                 android:id="@+id/txtEmpresaDestinatario"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLength="10" />
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:padding="5dp"
                 android:alpha="0.7"
                 android:background="#444"
                 android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="5dp">
+
                 <TextView
                     android:id="@+id/lblGeneradorTecnico"
                     android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="#fff"
+                    android:layout_height="wrap_content"
                     android:text="GENERADOR TECNICO"
-                    android:layout_height="wrap_content" />
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -286,12 +283,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_weight="1"
-                android:maxLength="10"
                 android:id="@+id/txtIdentificacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLength="10" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -324,8 +320,9 @@
             <TextView
                 android:id="@+id/txtTelefono"
                 android:layout_width="match_parent"
-                android:inputType="number"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -333,22 +330,22 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:inputType="number"
-                android:maxLength="10"
                 android:id="@+id/txtGenTecCelular"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="10" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="IDENTIFICACIÓN:"
                 android:textStyle="bold" />
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/txtGenTecIdentificacion"
@@ -357,11 +354,12 @@
                     android:layout_weight="1"
                     android:inputType="number"
                     android:maxLength="10" />
+
                 <ImageButton
                     android:id="@+id/btnBuscarIdentificacion"
-                    android:src="@mipmap/ic_buscar48"
                     android:layout_width="60dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_buscar48" />
             </LinearLayout>
 
             <TextView
@@ -393,42 +391,41 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:inputType="number"
-                android:maxLength="10"
                 android:id="@+id/txtGenTecTelefono"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="10" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FIRMA:"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/btnAgregarFirma"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:background="@drawable/border_dotted"
                 android:layout_width="match_parent"
-                android:layout_height="140dp">
+                android:layout_height="140dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_dotted"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/txtFirmaMensaje"
-                    android:text="Presione aquí para firmar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Presione aquí para firmar" />
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/imgFirmaTecnico"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:layout_height="match_parent" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

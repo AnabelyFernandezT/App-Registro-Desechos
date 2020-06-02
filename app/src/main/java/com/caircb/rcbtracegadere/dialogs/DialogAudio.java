@@ -11,12 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.ManifiestoFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 
 import java.util.Timer;
 
 public class DialogAudio extends MyDialog implements View.OnClickListener {
- LinearLayout btnStar, btnStop;
+ LinearLayout btnStar, btnStop,btnCancel, btnPausa;
  TextView txtHora;
  Thread cont;
  boolean isOn=false;
@@ -42,8 +43,12 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
         btnStar = getView().findViewById(R.id.btn_iniciar);
         btnStop = getView().findViewById(R.id.btn_parar);
         txtHora = getView().findViewById(R.id.txtHora);
+        btnCancel = getView().findViewById(R.id.btnCancel);
+        btnPausa = getView().findViewById(R.id.btn_pausa);
         btnStar.setOnClickListener(this);
         btnStop.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
+        btnPausa.setOnClickListener(this);
     }
 
     private void cronometro(){
@@ -103,10 +108,27 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_iniciar:
                 isOn=true;
+                btnStar.setVisibility(View.GONE);
+                btnPausa.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_pausa:
+                isOn = false;
+                btnStar.setVisibility(View.VISIBLE);
+                btnPausa.setVisibility(View.GONE);
                 break;
             case R.id.btn_parar:
                 isOn = false;
+                mili = 0;
+                seg = 0;
+                minutos = 0;
+                txtHora.setText("00:00");
+                btnStar.setVisibility(View.VISIBLE);
+                btnPausa.setVisibility(View.GONE);
                 break;
+            case R.id.btnCancel:
+                DialogAudio.this.dismiss();
+                break;
+
         }
 
     }

@@ -39,7 +39,7 @@ public class ManifiestoFragment extends MyFragment implements OnCameraListener, 
     private LinearLayout btnManifiestoCancel,btnManifiestoNext;
     private FragmentActivity myContext;
 
-    TabManifiestoGeneralFragment tab1;
+    //TabManifiestoGeneralFragment tab1;
     TabManifiestoDetalleFragment tab2;
     TabManifiestoAdicionalFragment tab3;
 
@@ -86,7 +86,7 @@ public class ManifiestoFragment extends MyFragment implements OnCameraListener, 
         btnManifiestoNext.setOnClickListener(this);
 
         tabLayout = (TabLayout) getView().findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("GENERAL"));
+        //tabLayout.addTab(tabLayout.newTab().setText("GENERAL"));
         tabLayout.addTab(tabLayout.newTab().setText("DETALLE"));
         tabLayout.addTab(tabLayout.newTab().setText("ADICIONALES"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -101,7 +101,7 @@ public class ManifiestoFragment extends MyFragment implements OnCameraListener, 
         //Adding onTabSelectedListener to swipe views
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
     }
 
@@ -148,13 +148,11 @@ public class ManifiestoFragment extends MyFragment implements OnCameraListener, 
         public androidx.fragment.app.Fragment getItem(int position) {
             //Returning the current tabs
             switch (position) {
+
                 case 0:
-                    tab1 = TabManifiestoGeneralFragment.newInstance(manifiestoID,bloqueado);
-                    return  tab1;
-                case 1:
-                    tab2 = TabManifiestoDetalleFragment.newInstance(manifiestoID,tab1.getTipoPaquete(),bloqueado);
+                    tab2 = TabManifiestoDetalleFragment.newInstance(manifiestoID,0,bloqueado);
                     return tab2;
-                case 2:
+                case 1:
                     tab3 = TabManifiestoAdicionalFragment.newInstance(manifiestoID,bloqueado);
                     return tab3;
                 default:
