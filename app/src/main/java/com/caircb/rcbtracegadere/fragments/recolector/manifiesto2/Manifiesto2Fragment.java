@@ -12,6 +12,7 @@ import android.widget.TabHost;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
@@ -23,7 +24,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
     private static final String ARG_PARAM1 = "manifiestoID";
 
-    LinearLayout btnManifiestoCancel;
+    LinearLayout btnManifiestoCancel, btnManifiestoNext;
 
     TabManifiestoGeneral tabManifiestoGeneral;
     TabManifiestoDetalle tabManifiestoDetalle;
@@ -65,6 +66,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
         btnManifiestoCancel = getView().findViewById(R.id.btnManifiestoCancel);
         btnManifiestoCancel.setOnClickListener(this);
+        btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
+        btnManifiestoNext.setOnClickListener(this);
     }
 
 
@@ -123,7 +126,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
                 //vista preliminar...
-                //setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto));
+                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto));
                 break;
         }
     }

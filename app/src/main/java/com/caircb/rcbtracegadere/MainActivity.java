@@ -32,6 +32,7 @@ import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItem;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
+import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
@@ -65,6 +66,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     FragmentTransaction fragmentTransaction;
     FragmentManager fm;
 
+    UserUpdateAppTask userUpdateAppTask;
     UserConsultarCatalogosTask consultarCatalogosTask;
     PaquetesTask paquetesTask;
     PaquetesTask.TaskListener listener;
@@ -209,9 +211,6 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                             mdialog.dismiss();
                             openMenuOpcion();
                             openSincronizaCatalogos();
-                            ///
-                            //consultarCatalogosTask = new UserConsultarCatalogosTask(MainActivity.this,listenerCatalogos);
-                            //consultarCatalogosTask.execute();
                         }
                     }
                     else if(item.getNombre().equals("Impresora")){
@@ -224,8 +223,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     else if (item.getNombre().equals("Aplicacion")){
                         if(mdialog!=null){
                             mdialog.dismiss();
-                            //updateAppTask = new UserUpdateAppTask(MainActivity.this);
-                            //updateAppTask.execute();
+                            onUpdateApp();
                         }
                     }
                 }
@@ -236,6 +234,11 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         mdialog.setTitle("Actualizaciones");
         mdialog.setContentView(view);
         mdialog.show();
+    }
+
+    private void onUpdateApp(){
+        userUpdateAppTask = new UserUpdateAppTask(this);
+        userUpdateAppTask.execute();
     }
 
     private void existeCatalogos(){
@@ -287,14 +290,11 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 }).setPositiveButton("SINCRONIZAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 if(selectedItems.size()>0){
                     //String ids = TextUtils.join(",",selectedItems);
                     consultarCatalogosTask = new UserConsultarCatalogosTask(MainActivity.this,selectedItems);
                     consultarCatalogosTask.execute();
-
                 }
-
             }
         }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
             @Override
