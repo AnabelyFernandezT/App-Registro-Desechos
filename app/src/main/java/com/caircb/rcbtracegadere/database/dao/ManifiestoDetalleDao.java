@@ -8,6 +8,7 @@ import androidx.room.Query;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowItemManifiestoPrint;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 
 import java.util.List;
@@ -16,8 +17,9 @@ import java.util.List;
 public abstract class ManifiestoDetalleDao {
 
     @Query("select _id as id,'Unidad' as unidad, 1.7 as peso, 'Descriocion' as descripcion,'Tratamiento'" +
-            " as tratamiento,1.8 as cantidadBulto,tipoItem,tipoPaquete,estadoChek as estado  from  tb_manifiestos_detalle")
-    public abstract List<RowItemManifiesto> searhItemPrint();
+            " as tratamiento,1.8 as cantidadBulto,tipoItem,tipoPaquete,estadoChek as estado , 'SI' as devolucionRecp  " +
+            "from  tb_manifiestos_detalle where _id in(1)")
+    public abstract List<RowItemManifiestoPrint> searhItemPrint();
 
     @Query("update tb_manifiestos_detalle set estadoChek=:check where idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract void updateManifiestoDetallebyId(Integer idManifiestoDetalle, boolean check);
