@@ -294,9 +294,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     //String ids = TextUtils.join(",",selectedItems);
                     consultarCatalogosTask = new UserConsultarCatalogosTask(MainActivity.this,selectedItems);
                     consultarCatalogosTask.execute();
-
                 }
-
             }
         }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
             @Override
