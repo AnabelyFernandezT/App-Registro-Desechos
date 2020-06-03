@@ -48,6 +48,9 @@ public class DtoManifiesto {
     private List<DtoManifiestoDetalle> hojaRutaDetalle;
     private List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo;
     private String numManifiestoCliente;
+    private Double peso;
+    private String nombreFirma;
+    private String firmaImg;
 
     public DtoManifiesto() {
     }
@@ -402,5 +405,29 @@ public class DtoManifiesto {
 
     public void setTipoPaquete(Integer tipoPaquete) {
         this.tipoPaquete = tipoPaquete;
+    }
+
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
+
+    public String getNombreFirma() {
+        return nombreFirma;
+    }
+
+    public void setNombreFirma(String nombreFirma) {
+        this.nombreFirma = nombreFirma;
+    }
+
+    public String getFirmaImg() {
+        return firmaImg;
+    }
+
+    public void setFirmaImg(String firmaImg) {
+        this.firmaImg = firmaImg;
     }
 }
