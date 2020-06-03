@@ -29,8 +29,8 @@ public interface IServicio {
     @POST("Catalogo/ObtenerCatalogoPaquetes")
     Call<List<DtoPaquetes>> getPaquetes();
 
-    @GET ("Consultar/cedula?c={identificacion}")
-    Call<DtoIdentificacion> getIdentificacion(@Path("identificacion") String identificacion);
+    @GET ("Consultar/cedula")
+    Call<DtoIdentificacion> getIdentificacion(@Query("c") String identificacion);
 
 
 
