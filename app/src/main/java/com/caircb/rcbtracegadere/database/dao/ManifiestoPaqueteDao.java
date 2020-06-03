@@ -21,7 +21,7 @@ public abstract class ManifiestoPaqueteDao {
     public abstract ManifiestoPaquetesEntity fetchConsultarManifiestoPaquetebyId(Integer manifiestoID, Integer paqueteID);
 
     @Update
-    abstract void actualiarPaquete(ManifiestoPaquetesEntity entity);
+    public abstract void actualiarPaquete(ManifiestoPaquetesEntity entity);
 
     public void quitarPaquete(Integer idAppManifiesto, Integer idAppPaquete,String descripcion){
         ManifiestoPaquetesEntity pkg = fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppPaquete);
