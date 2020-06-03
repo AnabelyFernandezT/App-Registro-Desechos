@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
+
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.zebra.android.comm.BluetoothPrinterConnection;
@@ -59,7 +61,7 @@ public class MyPrint {
     }
 
     private void onCreatePrint(){
-
+        DEFAULT_PRINTER_MAC = MyApp.getDBO().impresoraEntity().searchMac();
         //dbHelper.open();
         //ParametroEntity p = MyApp.getDBO().parametroDao().fetchParametroEspecifico("MacPrinter");
         //DEFAULT_PRINTER_MAC = p.getValor();
@@ -130,8 +132,6 @@ public class MyPrint {
                        final String cliente,
                        final String fecha,
                        final List<RowItemManifiesto> detalle){
-
-
         dialog.show();
         new Thread(new Runnable() {
             public void run() {
@@ -179,14 +179,25 @@ public class MyPrint {
 
                     }
                 }
+                ///---------------PRUEBAS DE ETIQUETAS---------------------------////
+                /*else{
+                    for (int x = 0; x < row.getCantidadBulto(); x++) {
+
+                        configLabel = getConfigLabel(printer, manifiesto, manifiesto.trim() + "." + row.getId(), cliente, fecha, row);
+                        zebraPrinterConnection.write(configLabel);
+                        MyThread.sleep(50);
+
+                    }*/
+
+                }
                 /*
                 if (zebraPrinterConnection instanceof BluetoothPrinterConnection) {
                     String friendlyName = ((BluetoothPrinterConnection) zebraPrinterConnection).getFriendlyName();
                     //setStatus(friendlyName, Color.MAGENTA);
                     MyThread.sleep(100);
                 }
-                */
-            }
+
+            } */
 
                 //setStatus("Enviando información", Color.BLUE);
 
@@ -250,7 +261,7 @@ public class MyPrint {
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
         }else {
-            String descripcion = row.getDescripcion().substring(10, 33);
+            //String descripcion = row.getDescripcion().substring(10, 33);
 
             cpclConfigLabel = "^XA^LH30,30^FO120,260^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
                     "^FS^FO40,90^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
