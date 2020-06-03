@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.helpers.MySession;
-import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowItemManifiestoPrint;
 import com.zebra.android.comm.BluetoothPrinterConnection;
 import com.zebra.android.comm.ZebraPrinterConnection;
 import com.zebra.android.comm.ZebraPrinterConnectionException;
@@ -56,7 +56,6 @@ public class MyPrint {
         //this.statusField=statusField;
         //this.btnCancelarImpresion = btnCancelar;
         //this.dbHelper = new DBAdapter(mContext);
-
         onCreatePrint();
     }
 
@@ -65,32 +64,22 @@ public class MyPrint {
         //dbHelper.open();
         //ParametroEntity p = MyApp.getDBO().parametroDao().fetchParametroEspecifico("MacPrinter");
         //DEFAULT_PRINTER_MAC = p.getValor();
-
         //p = MyApp.getDBO().parametroDao().fetchParametroEspecifico("TamaEtiqueta");
         //DEFAULT_TAMA_ETIQ = p.getValor();
         //dbHelper.close();
     }
-
-
-
     /*private void onRefressPrint(){
         dbHelper.open();
-
         cursor = dbHelper.fetchParametroEspecifico("MacPrinter");
         DEFAULT_PRINTER_MAC = AndroidUtils.getValue(cursor, DataBaseHelper.KEY_VALOR);
-
         cursor = dbHelper.fetchParametroEspecifico("TamaEtiqueta");
         DEFAULT_TAMA_ETIQ = AndroidUtils.getValue(cursor, DataBaseHelper.KEY_VALOR);
-
         dbHelper.close();
     }*/
 
     public String getMacAddressFieldText() {
         return this.DEFAULT_PRINTER_MAC;
     }
-
-
-
 
     private void enableTestButton(final boolean enabled) {
         activity.runOnUiThread(new Runnable() {
@@ -100,7 +89,6 @@ public class MyPrint {
             }
         });
     }
-
     /*
     private void setStatus(final String statusMessage, final int color) {
         activity.runOnUiThread(new Runnable() {
@@ -119,7 +107,6 @@ public class MyPrint {
                 zebraPrinterConnection.close();
             }
             //setStatus("No Conectado", Color.RED);
-
         } catch (ZebraPrinterConnectionException e) {
             //setStatus("Error de conexión! Desconectando", Color.RED);
         } finally {
@@ -128,10 +115,7 @@ public class MyPrint {
         }
     }
 
-    public void pinter(final String manifiesto,
-                       final String cliente,
-                       final String fecha,
-                       final List<RowItemManifiesto> detalle){
+    public void pinter(final String manifiesto,final String cliente,final String fecha,final List<RowItemManifiestoPrint> detalle){
         dialog.show();
         new Thread(new Runnable() {
             public void run() {
@@ -144,10 +128,7 @@ public class MyPrint {
         }).start();
     }
 
-    private void doConnectionTest(String manifiesto,
-                                  String cliente,
-                                  String fecha,
-                                  List<RowItemManifiesto> detalle) {
+    private void doConnectionTest(String manifiesto,String cliente,String fecha,List<RowItemManifiestoPrint> detalle) {
         printer = connect();
         if (printer != null) {
             sendTestLabel(manifiesto,cliente,fecha, detalle);
@@ -156,40 +137,32 @@ public class MyPrint {
         }
     }
 
-    private void sendTestLabel(String manifiesto,
-                               String cliente,
-                               String fecha,
-                               List<RowItemManifiesto> detalle) {
-
-
+    private void sendTestLabel(String manifiesto,String cliente,String fecha,List<RowItemManifiestoPrint> detalle) {
         try {
-
             byte[] configLabel;
-
             //outerloop:
-            for(RowItemManifiesto row: detalle){
-
+            Integer contador = 0 ;
+            for(RowItemManifiestoPrint row: detalle){
                 if(row.isEstado()) {
-
                     for (int x = 0; x < row.getCantidadBulto(); x++) {
-
-                        configLabel = getConfigLabel(printer, manifiesto, manifiesto.trim() + "." + row.getId(), cliente, fecha, row);
+                        contador = contador + 1;
+                        configLabel = getConfigLabel(printer, manifiesto, manifiesto.trim() + "." + row.getId(), cliente, fecha, row,
+                                (String.valueOf(detalle.size())+"/"+ contador ));
                         zebraPrinterConnection.write(configLabel);
                         MyThread.sleep(50);
-
                     }
                 }
                 ///---------------PRUEBAS DE ETIQUETAS---------------------------////
-                /*else{
+                else {
                     for (int x = 0; x < row.getCantidadBulto(); x++) {
-
-                        configLabel = getConfigLabel(printer, manifiesto, manifiesto.trim() + "." + row.getId(), cliente, fecha, row);
+                        contador = contador + 1;
+                        configLabel = getConfigLabel(printer, manifiesto, manifiesto.trim() + "." + row.getId(), cliente, fecha, row,
+                                (String.valueOf(detalle.size())+"/"+ contador ));
                         zebraPrinterConnection.write(configLabel);
                         MyThread.sleep(50);
-
-                    }*/
-
+                    }
                 }
+            }
                 /*
                 if (zebraPrinterConnection instanceof BluetoothPrinterConnection) {
                     String friendlyName = ((BluetoothPrinterConnection) zebraPrinterConnection).getFriendlyName();
@@ -242,34 +215,29 @@ public class MyPrint {
 */
     }
 
-
-    private byte[] getConfigLabel(
-            ZebraPrinter printer,
-            String manifiesto,
-            String codigoQr,
-            String cliente,
-            String fecha,
-            RowItemManifiesto row
-        ) {
-
+    private byte[] getConfigLabel(ZebraPrinter printer,String manifiesto,String codigoQr,String cliente,String fecha,RowItemManifiestoPrint row,String numeroItems){
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
         byte[] configLabel = null;
-
         String ItemDescripcion = recorreString(row.getDescripcion());
 
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
-        }else {
+        }else{
             //String descripcion = row.getDescripcion().substring(10, 33);
-
-            cpclConfigLabel = "^XA^LH30,30^FO120,260^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
-                    "^FS^FO40,90^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
-                    "^FS^FO40,120^AD^FD #M.U.E: "+manifiesto.trim()+ "^FS^FO280,120^AD^FD PESO:"+row.getPeso()+
-                    "^FS^FO40,150^AD^FD FECHA: "+fecha+
-                    "^FS^FO40,180^AD^FD UNIDAD: "+row.getUnidad()+
-                    "^FS^FO40,210^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
-                    "^FS^FO35,530^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() + "^FS ^XZ";
+            cpclConfigLabel = "^XA^LH30,30^FO120,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
+                    "^FS^FO40,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
+                    "^FS^FO40,90^AD^FD #M.U.E: "+manifiesto.trim()+
+                    "^FS^FO40,120^AD^FD FECHA: "+fecha+
+                    "^FS^FO40,150^AD^FD PESO:"+row.getPeso()+
+                    //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                    //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                    "^FS^FO40,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
+                    "^FS^FO35,470^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() +
+                    "^FS^FO35,500^AD^FD NO. BULTOS:"+ numeroItems +
+                    "^FS^FO35,530^AD^FD TRATAMIENTO:"+ row.getTratamiento() +
+                    "^FS^FO35,560^AD^FD DESTINATARIO:"+ ItemDescripcion.toUpperCase() +
+                    "^FS^FO35,590^AD^FD DEVOLUCION RECIPIENTE:"+ row.getDevolucionRecp() + "^FS ^XZ";
 
             //cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+manifiesto.trim()+"^FS^FO50,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,150^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
         }
