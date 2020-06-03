@@ -104,6 +104,15 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         tabs.addTab(spec);
 
         tabs.setCurrentTab(0);
+
+        tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String s) {
+                if(s.equals("ADICIONALES")){
+                    tabManifiestoAdicional.reloadDataPaquetes();
+                }
+            }
+        });
     }
 
     @Override

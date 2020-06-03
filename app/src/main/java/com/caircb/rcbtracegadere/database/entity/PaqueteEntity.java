@@ -12,7 +12,7 @@ public class PaqueteEntity {
     private Integer _id;
 
     @NonNull
-    private Integer idSistema;
+    private Integer idPAquete;
 
     @NonNull
     private Integer index;
@@ -46,12 +46,12 @@ public class PaqueteEntity {
     }
 
     @NonNull
-    public Integer getIdSistema() {
-        return idSistema;
+    public Integer getIdPAquete() {
+        return idPAquete;
     }
 
-    public void setIdSistema(@NonNull Integer idSistema) {
-        this.idSistema = idSistema;
+    public void setIdPAquete(@NonNull Integer idPAquete) {
+        this.idPAquete = idPAquete;
     }
 
     @NonNull

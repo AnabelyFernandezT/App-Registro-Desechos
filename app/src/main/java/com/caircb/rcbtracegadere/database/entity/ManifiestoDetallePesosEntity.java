@@ -23,12 +23,14 @@ public class ManifiestoDetallePesosEntity {
 
     private String descripcion;
 
+    private Integer tipoPaquete;
 
-    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion) {
+    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion,Integer tipoPaquete) {
         this.valor = valor;
         this.idAppManifiesto = idAppManifiesto;
         this.idAppManifiestoDetalle = idAppManifiestoDetalle;
         this.descripcion = descripcion;
+        this.tipoPaquete=tipoPaquete;
     }
 
     public Integer get_id() {
@@ -71,5 +73,13 @@ public class ManifiestoDetallePesosEntity {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Integer getTipoPaquete() {
+        return tipoPaquete;
+    }
+
+    public void setTipoPaquete(Integer tipoPaquete) {
+        this.tipoPaquete = tipoPaquete;
     }
 }

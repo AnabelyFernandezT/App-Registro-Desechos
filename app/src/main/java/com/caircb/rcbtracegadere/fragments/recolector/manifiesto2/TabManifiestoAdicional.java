@@ -16,6 +16,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoPaqueteAdapter;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogAudio;
@@ -39,7 +40,9 @@ public class TabManifiestoAdicional extends LinearLayout {
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     List<RowItemNoRecoleccion> motivoNoRecoleccion;
+    List<RowItemPaquete> listaPaquetes;
     PaqueteEntity pkg;
+    ManifiestoPaquetesEntity manifiestoPkg;
 
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogAudio dialogAudio;
@@ -83,17 +86,28 @@ public class TabManifiestoAdicional extends LinearLayout {
     private void loadDataPaquetes(){
         if(idAppTipoPaquete!=null) {
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-            List<RowItemPaquete> pkgs = new ArrayList<>();
-            pkgs.add(new RowItemPaquete(pkg.getFunda(), 0, 0));
-            pkgs.add(new RowItemPaquete(pkg.getGuardian(), 0, 0));
+            manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
+            listaPaquetes = new ArrayList<>();
+            listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null?manifiestoPkg.getDatosFundas():0, 0));
+            listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null?manifiestoPkg.getDatosGuardianes():0, 0));
 
             recyclerLtsPaquetes.setLayoutManager(new LinearLayoutManager(getContext()));
             manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext());
-            manifiestoPaqueteAdapter.setTaskList(pkgs);
+            manifiestoPaqueteAdapter.setTaskList(listaPaquetes);
             recyclerLtsPaquetes.setAdapter(manifiestoPaqueteAdapter);
 
             //region de adicionales...
             lnlAdicionales.setVisibility(pkg.getFlagAdicionales()?View.VISIBLE:View.GONE);
+        }
+    }
+
+    public void reloadDataPaquetes(){
+        if(listaPaquetes!=null && listaPaquetes.size()>0) {
+            manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, idAppTipoPaquete);
+            listaPaquetes.get(0).setCantidad(manifiestoPkg!=null?manifiestoPkg.getDatosFundas():0);
+            listaPaquetes.get(1).setCantidad(manifiestoPkg!=null?manifiestoPkg.getDatosGuardianes():0);
+
+            manifiestoPaqueteAdapter.setTaskList(listaPaquetes);
         }
     }
 

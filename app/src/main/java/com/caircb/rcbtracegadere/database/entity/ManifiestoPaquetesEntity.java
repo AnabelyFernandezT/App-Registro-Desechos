@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.database.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -10,20 +11,29 @@ public class ManifiestoPaquetesEntity {
     @PrimaryKey(autoGenerate = true)
     private Integer _id;
 
-    private Integer idPAquetes;
+    @NonNull
+    private Integer idPaquete;
 
-    private Integer IdManifiesto;
+    @NonNull
+    private Integer idAppManifiesto;
 
-    private Integer dtosFdas;
+    @NonNull
+    private Integer datosFundas;
 
-    private Integer dtosGuard;
+    @NonNull
+    private Integer datosGuardianes;
 
-    private Integer qpqh;
+    @NonNull
+    private Integer pqh;
 
-    private Integer adGuardiane;
+    @NonNull
+    private Integer adGuardianes;
 
-    private Integer adFunda;
+    @NonNull
+    private Integer adFundas;
 
+    public ManifiestoPaquetesEntity() {
+    }
 
     public Integer get_id() {
         return _id;
@@ -33,59 +43,66 @@ public class ManifiestoPaquetesEntity {
         this._id = _id;
     }
 
-    public Integer getIdPAquetes() {
-        return idPAquetes;
+    @NonNull
+    public Integer getIdPaquete() {
+        return idPaquete;
     }
 
-    public void setIdPAquetes(Integer idPAquetes) {
-        this.idPAquetes = idPAquetes;
+    public void setIdPaquete(@NonNull Integer idPaquete) {
+        this.idPaquete = idPaquete;
     }
 
-    public Integer getIdManifiesto() {
-        return IdManifiesto;
+    @NonNull
+    public Integer getIdAppManifiesto() {
+        return idAppManifiesto;
     }
 
-    public void setIdManifiesto(Integer idManifiesto) {
-        IdManifiesto = idManifiesto;
+    public void setIdAppManifiesto(@NonNull Integer idAppManifiesto) {
+        this.idAppManifiesto = idAppManifiesto;
     }
 
-    public Integer getDtosFdas() {
-        return dtosFdas;
+    @NonNull
+    public Integer getDatosFundas() {
+        return datosFundas;
     }
 
-    public void setDtosFdas(Integer dtosFdas) {
-        this.dtosFdas = dtosFdas;
+    public void setDatosFundas(@NonNull Integer datosFundas) {
+        this.datosFundas = datosFundas;
     }
 
-    public Integer getDtosGuard() {
-        return dtosGuard;
+    @NonNull
+    public Integer getDatosGuardianes() {
+        return datosGuardianes;
     }
 
-    public void setDtosGuard(Integer dtosGuard) {
-        this.dtosGuard = dtosGuard;
+    public void setDatosGuardianes(@NonNull Integer datosGuardianes) {
+        this.datosGuardianes = datosGuardianes;
     }
 
-    public Integer getQpqh() {
-        return qpqh;
+    @NonNull
+    public Integer getPqh() {
+        return pqh;
     }
 
-    public void setQpqh(Integer qpqh) {
-        this.qpqh = qpqh;
+    public void setPqh(@NonNull Integer pqh) {
+        this.pqh = pqh;
     }
 
-    public Integer getAdGuardiane() {
-        return adGuardiane;
+    @NonNull
+    public Integer getAdGuardianes() {
+        return adGuardianes;
     }
 
-    public void setAdGuardiane(Integer adGuardiane) {
-        this.adGuardiane = adGuardiane;
+    public void setAdGuardianes(@NonNull Integer adGuardianes) {
+        this.adGuardianes = adGuardianes;
     }
 
-    public Integer getAdFunda() {
-        return adFunda;
+    @NonNull
+    public Integer getAdFundas() {
+        return adFundas;
     }
 
-    public void setAdFunda(Integer adFunda) {
-        this.adFunda = adFunda;
+    public void setAdFundas(@NonNull Integer adFundas) {
+        this.adFundas = adFundas;
     }
 }

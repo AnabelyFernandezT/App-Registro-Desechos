@@ -20,8 +20,11 @@ public abstract class PaqueteDao {
     @Query("select count(*) from tb_paquetes  LIMIT 1")
     public abstract boolean existePaquetes();
 
-    @Query("select * from tb_paquetes where idSistema=:id limit 1")
-    public abstract PaqueteEntity fechConsultaPaqueteEspecifico(Integer id);
+    @Query("select * from tb_paquetes where idPAquete=:idPaquete limit 1")
+    public abstract PaqueteEntity fechConsultaPaqueteEspecifico(Integer idPaquete);
+
+    @Query("select paquetePorRecolccion from tb_paquetes where idPAquete=:idPaquete limit 1")
+    public abstract Integer fechConsultaPaqueteRecoleccionPaqueteEspecifico(Integer idPaquete);
 
     @Query("select * from tb_paquetes")
     public abstract PaqueteEntity fechConsultaPaquete();
@@ -34,7 +37,7 @@ public abstract class PaqueteDao {
             PaqueteEntity paquete = fechConsultaPaquete();
             if(paquete==null){
                 paquete = new PaqueteEntity();
-                paquete.setIdSistema(model.getIdPaquete());
+                paquete.setIdPAquete(model.getIdPaquete());
                 paquete.setIndex(model.getI());
                 paquete.setDescripcion(model.getNombrePaquete());
                 paquete.setFunda(model.getTamanoFunda());
