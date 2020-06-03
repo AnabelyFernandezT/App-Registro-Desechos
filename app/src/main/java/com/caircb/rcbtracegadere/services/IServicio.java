@@ -26,7 +26,7 @@ public interface IServicio {
     @POST("HojaRuta/obtenerHojaRuta")
     Call<List<DtoManifiesto>> getHojaRuta(@Body RequestHojaRuta model);
 
-    @POST("Catalogo/ObtenerCatalogoPaquetes")
+    @GET("Catalogo/ObtenerCatalogoPaquetes")
     Call<List<DtoPaquetes>> getPaquetes();
 
     @GET ("Consultar/cedula")

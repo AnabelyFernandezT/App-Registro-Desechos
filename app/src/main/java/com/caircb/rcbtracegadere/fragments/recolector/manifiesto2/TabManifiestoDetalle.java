@@ -118,7 +118,7 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                         if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
                         else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
-                        else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso());
+                        else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
 
                         row.setEstado(true);
 

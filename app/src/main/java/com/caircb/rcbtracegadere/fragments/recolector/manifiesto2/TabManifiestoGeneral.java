@@ -22,7 +22,7 @@ import com.caircb.rcbtracegadere.utils.Utils;
 
 public class TabManifiestoGeneral extends LinearLayout {
 
-    private Integer manifiestoID,idAppManifiesto;
+    private Integer idAppManifiesto;
 
     private Boolean bloquear;
     private  Integer tipoPaquete=null;
@@ -44,11 +44,10 @@ public class TabManifiestoGeneral extends LinearLayout {
 
 
 
-    public TabManifiestoGeneral(Context context,Integer manifiestoID,Integer tipoManifiestoID) {
+    public TabManifiestoGeneral(Context context,Integer idAppManifiesto) {
         super(context);
         View.inflate(context, R.layout.tab_manifiesto_general, this);
-        this.manifiestoID=manifiestoID;
-        this.idAppManifiesto=manifiestoID;
+        this.idAppManifiesto=idAppManifiesto;
         init();
         loadDataManifiesto();
     }
@@ -248,5 +247,8 @@ public class TabManifiestoGeneral extends LinearLayout {
     }
 
 
+    public Integer getTipoPaquete(){
+        return tipoPaquete!=null?(tipoPaquete>0?tipoPaquete:null):null;
+    }
 
 }

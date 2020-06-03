@@ -76,7 +76,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         TabHost.TabSpec spec=tabs.newTabSpec("GENERAL");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto, 2);
+                tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto);
                 return tabManifiestoGeneral;
             }
         });
@@ -86,7 +86,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         spec=tabs.newTabSpec("DETALLE");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),idAppManifiesto,1);
+                tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
                 return tabManifiestoDetalle;
             }
         });
@@ -96,7 +96,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         spec=tabs.newTabSpec("ADICIONALES");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),idAppManifiesto);
+                tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
                 return tabManifiestoAdicional;
             }
         });

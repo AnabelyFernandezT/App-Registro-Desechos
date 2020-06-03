@@ -82,8 +82,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     private void validateInitFragment(){
         if(1==1){
-           //initFragment((HomeTransportistaFragment.create()));
-           initFragment(HomePlantaFragment.create());
+           initFragment((HomeTransportistaFragment.create()));
+           //initFragment(HomePlantaFragment.create());
         }
         /*
         switch (MySession.getIdPerfil()){
@@ -257,11 +257,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private void existePaquetes(){
 
        if(!MyApp.getDBO().paqueteDao().existePaquetes()){
-           // MyApp.getDBO().paqueteDao().saveOrUpdate(1,1,"PQH1","55x50","PC 1");
                 paquetesTask = new PaquetesTask(this, listener);
                 paquetesTask.execute();
-
-
         }
     }
     /*

@@ -36,13 +36,9 @@ public class PaquetesTask extends MyRetrofitApi implements RetrofitCallbacks {
             @Override
             public void onResponse(Call<List<DtoPaquetes>> call, Response<List<DtoPaquetes>> response) {
                 if(response.isSuccessful()){
-                    final List<DtoPaquetes> respuesta = response.body();
-                    //final Integer cont =respuesta.size();
 
-                    for (DtoPaquetes reg:respuesta){
+                    for (DtoPaquetes reg:response.body()){
                         MyApp.getDBO().paqueteDao().saveOrUpdate(reg);
-                        message("actualizado");
-
                     }
                 }
             }

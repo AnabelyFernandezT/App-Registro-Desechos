@@ -2,57 +2,58 @@ package com.caircb.rcbtracegadere.models.response;
 
 public class DtoPaquetes {
 
-    private Integer idSistema;
-    private Integer index;
-    private String descripcion;
-    private String funda;
-    private String guardian;
+    private Integer idPaquete;
+    private Integer i;
+    private String nombrePaquete;
+    private String tamanoFunda;
+    private String tamanoGuardian;
     private Boolean flagAdicionales;
-    private Boolean flagAdicionalFunda;
-    private Boolean flagAdicionalGuardian;
-    private Integer paquetePorRecolccion;
+    private Boolean flagAdicionalesFundas;
+    private Boolean flagAdicionalesGuardian;
+    private Integer paquetePorRecoleccion;
 
     public DtoPaquetes() {
     }
 
-    public Integer getIdSistema() {
-        return idSistema;
+
+    public Integer getIdPaquete() {
+        return idPaquete;
     }
 
-    public void setIdSistema(Integer idSistema) {
-        this.idSistema = idSistema;
+    public void setIdPaquete(Integer idPaquete) {
+        this.idPaquete = idPaquete;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getI() {
+        return i;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setI(Integer i) {
+        this.i = i;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getNombrePaquete() {
+        return nombrePaquete;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setNombrePaquete(String nombrePaquete) {
+        this.nombrePaquete = nombrePaquete;
     }
 
-    public String getFunda() {
-        return funda;
+    public String getTamanoFunda() {
+        return tamanoFunda;
     }
 
-    public void setFunda(String funda) {
-        this.funda = funda;
+    public void setTamanoFunda(String tamanoFunda) {
+        this.tamanoFunda = tamanoFunda;
     }
 
-    public String getGuardian() {
-        return guardian;
+    public String getTamanoGuardian() {
+        return tamanoGuardian;
     }
 
-    public void setGuardian(String guardian) {
-        this.guardian = guardian;
+    public void setTamanoGuardian(String tamanoGuardian) {
+        this.tamanoGuardian = tamanoGuardian;
     }
 
     public Boolean getFlagAdicionales() {
@@ -63,27 +64,27 @@ public class DtoPaquetes {
         this.flagAdicionales = flagAdicionales;
     }
 
-    public Boolean getFlagAdicionalFunda() {
-        return flagAdicionalFunda;
+    public Boolean getFlagAdicionalesFundas() {
+        return flagAdicionalesFundas;
     }
 
-    public void setFlagAdicionalFunda(Boolean flagAdicionalFunda) {
-        this.flagAdicionalFunda = flagAdicionalFunda;
+    public void setFlagAdicionalesFundas(Boolean flagAdicionalesFundas) {
+        this.flagAdicionalesFundas = flagAdicionalesFundas;
     }
 
-    public Boolean getFlagAdicionalGuardian() {
-        return flagAdicionalGuardian;
+    public Boolean getFlagAdicionalesGuardian() {
+        return flagAdicionalesGuardian;
     }
 
-    public void setFlagAdicionalGuardian(Boolean flagAdicionalGuardian) {
-        this.flagAdicionalGuardian = flagAdicionalGuardian;
+    public void setFlagAdicionalesGuardian(Boolean flagAdicionalesGuardian) {
+        this.flagAdicionalesGuardian = flagAdicionalesGuardian;
     }
 
-    public Integer getPaquetePorRecolccion() {
-        return paquetePorRecolccion;
+    public Integer getPaquetePorRecoleccion() {
+        return paquetePorRecoleccion;
     }
 
-    public void setPaquetePorRecolccion(Integer paquetePorRecolccion) {
-        this.paquetePorRecolccion = paquetePorRecolccion;
+    public void setPaquetePorRecoleccion(Integer paquetePorRecoleccion) {
+        this.paquetePorRecoleccion = paquetePorRecoleccion;
     }
 }

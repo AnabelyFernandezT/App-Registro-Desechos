@@ -15,44 +15,59 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
+import com.caircb.rcbtracegadere.adapters.ManifiestoPaqueteAdapter;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogAudio;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
+import com.caircb.rcbtracegadere.models.RowItemPaquete;
 import com.caircb.rcbtracegadere.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TabManifiestoAdicional extends LinearLayout {
-    Integer idAppManifiesto;
+
+    Integer idAppManifiesto,idAppTipoPaquete;
     Window window;
     boolean bloquear;
+
     EditText txtNovedadEncontrada;
     LinearLayout btnAudio;
+    LinearLayout lnlAdicionales;
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     List<RowItemNoRecoleccion> motivoNoRecoleccion;
+    PaqueteEntity pkg;
 
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogAudio dialogAudio;
 
-    RecyclerView recyclerViewLtsManifiestoObservaciones, recyclerViewLtsMotivoNoRecoleccion;
+    RecyclerView recyclerViewLtsManifiestoObservaciones, recyclerViewLtsMotivoNoRecoleccion, recyclerLtsPaquetes;
     ManifiestoNovedadBaseAdapterR recyclerAdapterNovedades;
     ManifiestoNoRecoleccionBaseAdapterR recyclerAdapterNoRecolecciones;
+    ManifiestoPaqueteAdapter manifiestoPaqueteAdapter;
 
-    public TabManifiestoAdicional(Context context,Integer idAppManifiesto) {
+    public TabManifiestoAdicional(Context context,Integer idAppManifiesto,Integer tipoPaquete) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
+        this.idAppTipoPaquete = tipoPaquete;
         View.inflate(context, R.layout.tab_manifiesto_adicional, this);
         init();
+        loadDataPaquetes();
         loadData();
     }
 
     private void init(){
         txtNovedadEncontrada = this.findViewById(R.id.txtNovedadEncontrada);
 
+        recyclerLtsPaquetes = this.findViewById(R.id.LtsPaquetes);
         recyclerViewLtsMotivoNoRecoleccion = this.findViewById(R.id.LtsMotivoNoRecoleccion);
         recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
+
+        lnlAdicionales = this.findViewById(R.id.lnlAdicionales);
+
         btnAudio = this.findViewById(R.id.btn_audio);
         btnAudio.setOnClickListener(new OnClickListener() {
             @Override
@@ -63,6 +78,23 @@ public class TabManifiestoAdicional extends LinearLayout {
                 dialogAudio.show();
             }
         });
+    }
+
+    private void loadDataPaquetes(){
+        if(idAppTipoPaquete!=null) {
+            pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
+            List<RowItemPaquete> pkgs = new ArrayList<>();
+            pkgs.add(new RowItemPaquete(pkg.getFunda(), 0, 0));
+            pkgs.add(new RowItemPaquete(pkg.getGuardian(), 0, 0));
+
+            recyclerLtsPaquetes.setLayoutManager(new LinearLayoutManager(getContext()));
+            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext());
+            manifiestoPaqueteAdapter.setTaskList(pkgs);
+            recyclerLtsPaquetes.setAdapter(manifiestoPaqueteAdapter);
+
+            //region de adicionales...
+            lnlAdicionales.setVisibility(pkg.getFlagAdicionales()?View.VISIBLE:View.GONE);
+        }
     }
 
     private void loadData(){
