@@ -91,9 +91,8 @@ public class MyManifiesto {
         Document doc = new Document(PageSize.A4,12.0f,12.0f,20.0f,20.0f);
 
         try {
-
-
             PdfWriter.getInstance(doc, createLocalFile("reporteGadere.pdf"));
+
             doc.open();
 
             Font f12 = new Font(Font.FontFamily.HELVETICA,12);

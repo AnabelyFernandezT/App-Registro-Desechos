@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.app.Fragment;
 
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.joanzapata.pdfview.PDFView;
@@ -82,9 +83,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
 
             @Override
             protected String doInBackground(Void... voids) {
-                myManifiesto = new MyManifiesto(
-                        getActivity(),
-                        idAppManifiesto);
+                myManifiesto = new MyManifiesto(getActivity(),idAppManifiesto);
                 myManifiesto.create();
                 return myManifiesto.getPathFile();
             }
@@ -113,7 +112,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnVistaPreviaCancelar:
-                setNavegate(ManifiestoFragment.newInstance(idAppManifiesto,false));
+                setNavegate(Manifiesto2Fragment.newInstance(idAppManifiesto));
                 break;
         }
     }

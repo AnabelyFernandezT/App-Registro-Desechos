@@ -6,6 +6,7 @@ public class CalculoPaquetes {
 
 public void calculoPaquetes (Integer n, Integer m ,boolean adicionales, boolean guardian, boolean fundas){
     int pqh, adGuardian,adFunda ;
+
     if (adicionales== true && guardian == true && fundas ==true ){
         pqh = calculoPQH(n,m,adicionales,guardian,fundas);
         adGuardian = calculoGuardia(n,m,adicionales,guardian,fundas,pqh);
