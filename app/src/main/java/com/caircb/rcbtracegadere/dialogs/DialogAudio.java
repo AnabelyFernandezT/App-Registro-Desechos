@@ -93,6 +93,10 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
                                mi=""+minutos;
                            }
                            txtHora.setText(mi+":"+s);
+                                if (minutos==2){
+                                    isOn=false;
+                                    messageBox("Tamaño de audio completo");
+                                }
                             }
                         });
                     }
@@ -100,6 +104,7 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
             }
         });
         cont.start();
+
     }
 
 
