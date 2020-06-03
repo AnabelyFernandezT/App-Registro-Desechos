@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoDetallePesosDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFotografiasDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoMotivosNoRecoleccionDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoObservacionFrecuenteDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.dao.PaqueteDao;
 import com.caircb.rcbtracegadere.database.dao.ImpresoraDao;
 import com.caircb.rcbtracegadere.database.dao.ParametroDao;
@@ -28,6 +29,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoFotografiaEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoMotivoNoRecoleccionEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoObservacionFrecuenteEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
@@ -53,7 +55,8 @@ import java.util.Locale;
         ManifiestoFotografiaEntity.class,
         ManifiestoMotivoNoRecoleccionEntity.class,
         ImpresoraEntity.class,
-        PaqueteEntity.class
+        PaqueteEntity.class,
+        ManifiestoPaquetesEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -126,4 +129,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoMotivosNoRecoleccionDao manifiestoMotivosNoRecoleccionDao();
     public  abstract ManifiestoDetallePesosDao manifiestoDetallePesosDao();
     public abstract ImpresoraDao impresoraEntity();
+    public abstract ManifiestoPaqueteDao manifiestoPaqueteDao();
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/txtItemPaqueteNombre"
+                    android:fontFamily="@font/quicksand_light"
+                    android:background="@drawable/ic_edittextbox_rounded"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/txtItemPaqueteCantidad"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:background="@drawable/ic_edittextbox_rounded"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:text=""
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/txtItemPaquetePendiente"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:background="@drawable/ic_edittextbox_rounded"
+                    android:text=""
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <!--
+        <LinearLayout
+            android:id="@+id/btnEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:padding="1dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="1dp"
+                android:src="@drawable/rcb_btn_elminar_valor"/>
+
+        </LinearLayout>
+        -->
+    </LinearLayout>
+
+</LinearLayout>

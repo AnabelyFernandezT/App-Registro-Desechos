@@ -3,10 +3,12 @@ package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -76,26 +78,32 @@ public class TabManifiestoDetalle extends LinearLayout {
 
     private void openOpcionesItems(final Integer positionItem){
         dialogOpcioneItem = new Dialog(this.getContext());
-        final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
+       /* final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
         myListOfItems.add(new MenuItem("BULTOS"));
-        myListOfItems.add(new MenuItem("PAQUETES"));
+        myListOfItems.add(new MenuItem("PAQUETES"));*/
 
-        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this.getContext(),myListOfItems);
-        View view = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.dialog_main, null);
-        mDialogMenuItems =(ListView) view.findViewById(R.id.custom_list);
-        mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
-        mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this.getContext(),myListOfItems);
+        View view = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.dialog_opciones_detalle, null);
+        LinearLayout txtBultos = view.findViewById(R.id.txtBultos);
+        LinearLayout txtPaquetes = view.findViewById(R.id.txtPaquetes);
+        LinearLayout btnCancelar = view.findViewById(R.id.btnCancel);
+        txtBultos.setOnClickListener(new OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MenuItem item= myListOfItems.get(position);
-                if(item.getNombre().equals("BULTOS")){
-                    openDialogBultos(positionItem);
-                }
-
+            public void onClick(View v) {
+                openDialogBultos(positionItem);
             }
         });
+
+        btnCancelar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogOpcioneItem.dismiss();
+            }
+        });
+
         dialogOpcioneItem.setTitle("OPCIONES");
         dialogOpcioneItem.setContentView(view);
+        dialogOpcioneItem.setCancelable(false);
         dialogOpcioneItem.show();
     }
 
@@ -108,23 +116,26 @@ public class TabManifiestoDetalle extends LinearLayout {
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {
                 @Override
                 public void onSuccessful(BigDecimal valor, int position, int cantidad, boolean isClose) {
-                    if(isClose){
-                        if(dialogBultos!=null){
+                    if(isClose && dialogBultos!=null){
                             dialogBultos.dismiss();
                             dialogBultos = null;
-                        }
-                        RowItemManifiesto row = detalles.get(position);
-                        row.setPeso(valor.doubleValue());
-
-                        if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
-                        else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
-                        else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso());
-
-                        row.setEstado(true);
-
-                        recyclerviewAdapter.notifyDataSetChanged();
-
                     }
+
+                    RowItemManifiesto row = detalles.get(position);
+                    row.setPeso(valor.doubleValue());
+
+                    if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
+                    else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
+                    else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
+
+                    row.setEstado(true);
+                    recyclerviewAdapter.notifyDataSetChanged();
+                    //actualizar datos en dbo local...
+                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),row.isEstado());
+
+                    //calculo de paquetes...
+
+
                 }
 
                 @Override

@@ -17,6 +17,9 @@ public abstract class ManifiestoDetallePesosDao {
     @Query("select _id as idCatalogo, valor,descripcion as tipo from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract List<CatalogoItemValor> fecthConsultarValores(Integer idManifiesto, Integer idManifiestoDetalle);
 
+    @Query("select count(*) from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle and descripcion=:categoria limit 1")
+    public abstract boolean existeBultoCategoriaPaquete(Integer idManifiesto, Integer idManifiestoDetalle,String categoria);
+
     //@Query("select sum(valor) as suma from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
     //public abstract Double fechConsultaSumaValores(Integer idManifiesto, Integer idManifiestoDetalle);
 
@@ -29,8 +32,8 @@ public abstract class ManifiestoDetallePesosDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long insertValores(ManifiestoDetallePesosEntity entity);
 
-    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion){
-        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion);
+    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete){
+        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete);
         return insertValores(r);
     }
 }

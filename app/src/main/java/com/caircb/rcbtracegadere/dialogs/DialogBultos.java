@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,10 +16,13 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DialogBultos extends MyDialog implements View.OnClickListener {
@@ -36,6 +40,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
     Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete;
+    PaqueteEntity pkg;
+    List<String> itemsCategoriaPaquete;
 
     public interface OnBultoListener {
         public void onSuccessful(BigDecimal valor, int position, int cantidad, boolean isClose);
@@ -64,6 +70,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         setContentView(getView());
 
         initBotones();
+        initCategoriaPaquetes();
         loadData();
     }
 
@@ -104,6 +111,23 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         btn_add.setOnClickListener(this);
     }
 
+    private void initCategoriaPaquetes(){
+
+        itemsCategoriaPaquete = new ArrayList<>();
+        itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
+        itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
+
+        if(tipoPaquete!=null){
+            pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(tipoPaquete);
+            if(pkg!=null && (
+                    pkg.getPaquetePorRecolccion().toString().equals("1")
+                    && !pkg.getFlagAdicionales()
+                    && !pkg.getFlagAdicionalFunda()
+                    && !pkg.getFlagAdicionalGuardian()
+            ))itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO_CORTOPUNZANTE);
+        }
+    }
+
     private void loadData(){
         //bultos = new ArrayList<>();
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
@@ -119,6 +143,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             public void onEliminar(Integer position) {
                 CatalogoItemValor item = bultos.get(position);
                 MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresById(item.getIdCatalogo());
+                if(item.getTipo().length()>0)MyApp.getDBO().manifiestoPaqueteDao().quitarPaquete(idManifiesto,tipoPaquete,item.getTipo());
                 subtotal = subtotal.subtract(new BigDecimal(item.getValor()));
                 bultos.remove(item);
                 listaValoresAdapter.notifyDataSetChanged();
@@ -148,7 +173,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         if(imput.doubleValue()>0) {
             //si es tipo paquete .. solicitar escoger un tipo...
             if(tipoPaquete!=null) {
-                showTipoPaquete(imput);
+
+                if (!pkg.getFlagAdicionales() && pkg.getPaquetePorRecolccion().toString().equals("1") && bultos.size()>0){
+                    messageBox("Usted no se puede aplicar mas de un paquete para esta recoleción");
+                    return;
+                }else {
+                    showTipoPaquete(imput);
+                }
             }else{
                 addBulto(imput,"");
             }
@@ -156,33 +187,57 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private void showTipoPaquete(final BigDecimal imput){
+
         alertDialog = new AlertDialog.Builder(getActivity());
-        final String[] items = {"INFECCIOSO","CORTOPUNZANTE"};
-        alertDialog.setTitle("TIPO");
-        alertDialog.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+        alertDialog.setTitle("TIPO  PAQUETE");
+        alertDialog.setSingleChoiceItems(itemsCategoriaPaquete.toArray(new String[itemsCategoriaPaquete.size()]), -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        addBulto(imput,items[which]);
+                        if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalFunda()){
+                            alert.dismiss();
+                            messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
+                            return;
+                        }
+
+                        addBulto(imput,itemsCategoriaPaquete.get(which));
                         alert.dismiss();
                         break;
                     case 1:
-                        addBulto(imput,items[which]);
+                        if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalGuardian()){
+                            alert.dismiss();
+                            messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
+                            return;
+                        }
+                        addBulto(imput, itemsCategoriaPaquete.get(which));
+                        alert.dismiss();
+                        break;
+                    case 2:
+                        addBulto(imput, itemsCategoriaPaquete.get(which));
                         alert.dismiss();
                         break;
                 }
             }
         });
         alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(false);
+        alert.setCanceledOnTouchOutside(true);
         //alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alert.show();
     }
 
+
+    private boolean existeBultoCategoria(String categoria){
+        return  MyApp.getDBO().manifiestoDetallePesosDao().existeBultoCategoriaPaquete(idManifiesto,idManifiestoDetalle,categoria);
+    }
+
     public void addBulto(BigDecimal imput, String tipo){
+
         subtotal = subtotal.add(imput);
-        Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo);
+        Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete);
+
+        if(tipo.length()>0){MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto,tipoPaquete,tipo);}
+
         bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo));
         listaValoresAdapter.notifyDataSetChanged();
         txtTotal.setText("KG "+subtotal);
