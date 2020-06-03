@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:id="@+id/txtContador"
-        android:layout_width="match_parent"
+        android:layout_width="411dp"
         android:layout_height="180dp"
         android:layout_marginTop="-50dp"
         android:gravity="center"
@@ -26,7 +26,6 @@
             android:textSize="50dp" />
 
 
-
     </LinearLayout>
     <LinearLayout
         android:id="@+id/linBotones"
@@ -38,25 +37,25 @@
 
         <LinearLayout
             android:id="@+id/btn_iniciar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:background="@drawable/ic_background_button_keyboard"
             android:gravity="center">
 
             <ImageButton
                 style="@style/Widget.AppCompat.ImageButton"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:clickable="false"
-                android:src="@mipmap/play" />
+                android:src="@mipmap/record" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/btn_pausa"
             android:visibility="gone"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:background="@drawable/ic_background_button_keyboard"
             android:gravity="center">
 
@@ -66,7 +65,7 @@
                 android:layout_height="fill_parent"
                 android:background="@android:color/transparent"
                 android:clickable="false"
-                android:src="@mipmap/pause" />
+                android:src="@mipmap/pause1" />
         </LinearLayout>
 
 
@@ -76,6 +75,8 @@
             android:id="@+id/btn_parar"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="-65dp"
+            android:layout_marginLeft="10dp"
             android:gravity="center">
 
             <ImageButton
@@ -83,7 +84,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:clickable="false"
-                android:src="@drawable/badge_item_count" />
+                android:src="@mipmap/stop2" />
         </LinearLayout>
 
 
@@ -135,6 +136,40 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+        </LinearLayout>
+        <LinearLayout
+            android:clickable="true"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btnAplicar"
+            android:orientation="horizontal"
+            android:background="@drawable/ic_button_skin_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="APLICAR"
+                    android:textColor="#fff"
+                    android:textSize="14dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:clickable="false"
+                    android:src="@mipmap/ic_button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
 
 </LinearLayout>
