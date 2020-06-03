@@ -90,6 +90,12 @@ public class ManifiestoEntity {
         return idTecnicoManifiesto;
     }
 
+    private Double peso;
+
+    private String nombreFirma;
+
+    private String firmaImg;
+
     public void setIdTecnicoManifiesto(Integer idTecnicoManifiesto) {
         this.idTecnicoManifiesto = idTecnicoManifiesto;
     }
@@ -382,6 +388,30 @@ public class ManifiestoEntity {
 
     public void setTipoPaquete(Integer tipoPaquete) {
         this.tipoPaquete = tipoPaquete;
+    }
+
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
+
+    public String getNombreFirma() {
+        return nombreFirma;
+    }
+
+    public void setNombreFirma(String nombreFirma) {
+        this.nombreFirma = nombreFirma;
+    }
+
+    public String getFirmaImg() {
+        return firmaImg;
+    }
+
+    public void setFirmaImg(String firmaImg) {
+        this.firmaImg = firmaImg;
     }
 }
 

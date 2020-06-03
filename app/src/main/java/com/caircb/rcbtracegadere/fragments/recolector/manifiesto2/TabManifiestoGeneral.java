@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,6 +15,8 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
+import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
+import com.caircb.rcbtracegadere.tasks.UserConsultarCedulaTask;
 import com.caircb.rcbtracegadere.utils.ImagenUtils;
 import com.caircb.rcbtracegadere.utils.Utils;
 

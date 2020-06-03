@@ -1,12 +1,16 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -16,11 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.dialogs.DialogOptionsManifiesto;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +43,13 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     LinearLayout btnRetornarListHojaRuta;
     RecyclerView recyclerView;
     ManifiestoAdapter recyclerviewAdapter;
+    DialogOptionsManifiesto dialogOptionsManifiesto;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
     private SearchView searchView;
 
+    Dialog dialogOpcioneItem;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -60,9 +69,9 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada, container, false));
-        //setHideHeader();
-        //init();
-        //initItems();
+        setHideHeader();
+        init();
+        initItems();
         return getView();
     }
 
@@ -114,8 +123,10 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                        openModal(rowItems.get(position).getIdAppManifiesto());
                         break;
                     case R.id.btn_manifiesto_more:
+                        String nombre = "";
                         break;
                 }
             }
@@ -140,6 +151,17 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
         if(recyclerView!=null) {
             recyclerView.addOnItemTouchListener(touchListener);
         }
+    }
+
+    private void  openModal(Integer idManifiesto){
+        Window window;
+        dialogOptionsManifiesto = new DialogOptionsManifiesto(getActivity(),idManifiesto);
+        dialogOptionsManifiesto.setCancelable(false);
+        dialogOptionsManifiesto.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogOptionsManifiesto.show();
+
+        window = dialogOptionsManifiesto.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
 }

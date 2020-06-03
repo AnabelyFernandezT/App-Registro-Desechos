@@ -52,12 +52,19 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set numeroManifiesto=:numManifiesto, transportistaFirmaImg=:img, transportistaFirmaUrl=:url where idAppManifiesto=:idManifiesto")
     abstract void actualizarFirmaTrasnportista(Integer idManifiesto, String numManifiesto, String img, String url);
 
+    @Query("update tb_manifiestos set peso=:peso, nombreFirma=:nombreFirma, firmaImg=:firmaImg where idAppManifiesto =:idAppManifiesto")
+    abstract void actualizarFirmaWithPesoTransportista(Integer idAppManifiesto, Double peso, String nombreFirma, String firmaImg);
+
     public void updateFirmaTecnicoGenerador(Integer idManifiesto, String numManifiesto, String img){
         actualizarFirmaTecnicoGenerador(idManifiesto,numManifiesto,img, AppDatabase.getFieldName(numManifiesto));
     }
 
     public void updateFirmaTransportsta(Integer idManifiesto, String numManifiesto, String img){
         actualizarFirmaTrasnportista(idManifiesto,numManifiesto,img, AppDatabase.getFieldName(numManifiesto));
+    }
+
+    public void updateFirmaWithPesoTransportista(Integer idManifiesto, Double peso, String nombreFimra, String firmaImg){
+        actualizarFirmaWithPesoTransportista(idManifiesto, peso, nombreFimra, firmaImg);
     }
 
     @Query("update tb_manifiestos set idTecnicoGenerador=:idTecnicoGenerador where idAppManifiesto=:idManifiesto")
@@ -126,6 +133,9 @@ public abstract class ManifiestoDao {
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
 
+            entity.setPeso(manifiesto.getPeso());
+            entity.setNombreFirma(manifiesto.getNombreFirma());
+            entity.setFirmaImg(manifiesto.getFirmaImg());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -170,6 +180,10 @@ public abstract class ManifiestoDao {
             entity.setEstado(manifiesto.getEstadoApp());
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
+
+            entity.setPeso(manifiesto.getPeso());
+            entity.setNombreFirma(manifiesto.getNombreFirma());
+            entity.setFirmaImg(manifiesto.getFirmaImg());
         }
 
         if (entity!=null) createManifiesto(entity);
