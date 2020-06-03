@@ -22,8 +22,8 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set estadoChek=:check where idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract void updateManifiestoDetallebyId(Integer idManifiestoDetalle, boolean check);
 
-    @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto where idAppManifiestoDetalle=:idManifiestoDetalle")
-    public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, int cantidadBulto);
+    @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto, pesoUnidad=:peso, estadoChek=:estadoChek where idAppManifiestoDetalle=:idManifiestoDetalle")
+    public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, double cantidadBulto, double peso,boolean estadoChek);
 
     @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,cu.nombre as unidad, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete" +
             " from tb_manifiestos_detalle d" +

@@ -116,23 +116,26 @@ public class TabManifiestoDetalle extends LinearLayout {
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {
                 @Override
                 public void onSuccessful(BigDecimal valor, int position, int cantidad, boolean isClose) {
-                    if(isClose){
-                        if(dialogBultos!=null){
+                    if(isClose && dialogBultos!=null){
                             dialogBultos.dismiss();
                             dialogBultos = null;
-                        }
-                        RowItemManifiesto row = detalles.get(position);
-                        row.setPeso(valor.doubleValue());
-
-                        if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
-                        else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
-                        else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
-
-                        row.setEstado(true);
-
-                        recyclerviewAdapter.notifyDataSetChanged();
-
                     }
+
+                    RowItemManifiesto row = detalles.get(position);
+                    row.setPeso(valor.doubleValue());
+
+                    if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
+                    else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
+                    else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
+
+                    row.setEstado(true);
+                    recyclerviewAdapter.notifyDataSetChanged();
+                    //actualizar datos en dbo local...
+                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),row.isEstado());
+
+                    //calculo de paquetes...
+
+
                 }
 
                 @Override
