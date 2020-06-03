@@ -1,29 +1,31 @@
 package com.caircb.rcbtracegadere.helpers;
 
+import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
+
 public class CalculoPaquetes {
 
 
+public CalculoPaqueteResul calculoPaquetes (Integer n, Integer m , boolean adicionales, boolean guardian, boolean fundas){
+    CalculoPaqueteResul resp = new CalculoPaqueteResul();
 
-public void calculoPaquetes (Integer n, Integer m ,boolean adicionales, boolean guardian, boolean fundas){
-    int pqh, adGuardian,adFunda ;
     if (adicionales== true && guardian == true && fundas ==true ){
-        pqh = calculoPQH(n,m,adicionales,guardian,fundas);
-        adGuardian = calculoGuardia(n,m,adicionales,guardian,fundas,pqh);
-        adFunda = calculoFunta(n,m,adicionales,guardian,fundas,pqh);
+        resp.setPqh(calculoPQH(n,m,adicionales,guardian,fundas));
+        resp.setAdicionalGuardian(calculoGuardia(n,m,adicionales,guardian,fundas,resp.getPqh()));
+        resp.setAdicionalFunda(calculoFunta(n,m,adicionales,guardian,fundas,resp.getAdicionalFunda()));
     }else{
         if(adicionales==true && guardian==true){
-            pqh = calculoPQH(n,m,adicionales,guardian,fundas);
-            adGuardian = calculoGuardia(n,m,adicionales,guardian,fundas,pqh);
+            resp.setPqh(calculoPQH(n,m,adicionales,guardian,fundas));
+            resp.setAdicionalGuardian(calculoGuardia(n,m,adicionales,guardian,fundas,resp.getPqh()));
         }else{
             if(adicionales == true && fundas ==true){
-                pqh = calculoPQH(n,m,adicionales,guardian,fundas);
-                adFunda = calculoFunta(n,m,adicionales,guardian,fundas,pqh);
+                resp.setPqh(calculoPQH(n,m,adicionales,guardian,fundas));
+                resp.setAdicionalFunda(calculoFunta(n,m,adicionales,guardian,fundas,resp.getPqh()));
             }
 
         }
-
     }
 
+    return resp;
 }
 
 

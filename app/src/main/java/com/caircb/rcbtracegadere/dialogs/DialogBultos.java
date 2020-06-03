@@ -119,12 +119,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         if(tipoPaquete!=null){
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(tipoPaquete);
-            if(pkg!=null && (
+            /*if(pkg!=null && (
                     pkg.getPaquetePorRecolccion().toString().equals("1")
                     && !pkg.getFlagAdicionales()
                     && !pkg.getFlagAdicionalFunda()
                     && !pkg.getFlagAdicionalGuardian()
-            ))itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO_CORTOPUNZANTE);
+            ))itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO_CORTOPUNZANTE);*/
         }
     }
 
