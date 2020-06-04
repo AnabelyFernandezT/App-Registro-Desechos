@@ -119,11 +119,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     private void initCategoriaPaquetes(){
 
         itemsCategoriaPaquete = new ArrayList<>();
-        itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
-        itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
+
 
         if(tipoPaquete!=null){
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(tipoPaquete);
+
+            if(pkg.getEntregaSoloFundas())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
+            if(pkg.getEntregaSoloGuardianes())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
             /*if(pkg!=null && (
                     pkg.getPaquetePorRecolccion().toString().equals("1")
                     && !pkg.getFlagAdicionales()
@@ -180,7 +182,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             if(tipoPaquete!=null) {
 
                 if (!pkg.getFlagAdicionales() && pkg.getPaquetePorRecolccion().toString().equals("1") && bultos.size()>0){
-                    messageBox("Usted no se puede aplicar mas de un paquete para esta recoleción");
+                    messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
                     return;
                 }else {
                     showTipoPaquete(imput);
