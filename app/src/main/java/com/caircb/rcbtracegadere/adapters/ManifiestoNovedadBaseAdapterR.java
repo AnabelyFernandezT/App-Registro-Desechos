@@ -23,16 +23,18 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     private Context mContext;
     private boolean desactivaComp;
     List<RowItemHojaRutaCatalogo> listItems;
+    Integer idManifiesto;
 
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer position);
     }
     private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
 
-    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp){
+    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp, Integer idManifiesto){
         mContext = context;
         listItems = items;
         this.desactivaComp = desactivarComp;
+        this.idManifiesto = idManifiesto;
     }
 
     @NonNull
@@ -61,11 +63,11 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                 if(((CheckBox)v).isChecked()){
                     v.setSelected(true);
                     item.setEstadoChek(true);
-                    registarCheckObservacion(item.getId(),true);
+                    registarCheckObservacion(idManifiesto, item.getId(),true);
                 }else{
                     v.setSelected(true);
                     item.setEstadoChek(false);
-                    registarCheckObservacion(item.getId(),false);
+                    registarCheckObservacion(idManifiesto, item.getId(),false);
                 }
             }
         });
@@ -85,9 +87,9 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         notifyDataSetChanged();
     }
 
-    private void registarCheckObservacion(Integer id, boolean check){
+    private void registarCheckObservacion(Integer idManifiesto,Integer id, boolean check){
         //dbHelper.open();
-        MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionbyId(id,check);
+        MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionbyId(idManifiesto, id, check);
         //dbHelper.close();
     }
 

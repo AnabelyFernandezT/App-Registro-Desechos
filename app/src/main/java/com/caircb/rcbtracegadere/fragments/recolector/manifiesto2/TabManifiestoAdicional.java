@@ -179,9 +179,7 @@ public class TabManifiestoAdicional extends LinearLayout {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    if(!txtNovedadEncontrada.getText().toString().equals("")){
-                        //MyApp.getDBO()
-                    }
+                    MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idAppManifiesto, txtNovedadEncontrada.getText().toString());
                 }
             }
         });
@@ -228,7 +226,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     private void loadData(){
         novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear);
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear, idAppManifiesto);
         recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
            @Override
            public void onShow(Integer catalogoID, final Integer position) {

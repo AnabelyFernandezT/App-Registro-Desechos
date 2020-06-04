@@ -8,11 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.Toast;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
+import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
+
+import java.util.List;
 
 
 public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,View.OnClickListener {
@@ -125,9 +131,39 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
                 //vista preliminar...
-                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
+                if(validaObservacioneswithFotos(idAppManifiesto)){
+                    setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
+                }else{
+                    Toast.makeText(getActivity(),"Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!", Toast.LENGTH_SHORT).show();
+                    //messageBox("Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!");
+                }
                 break;
         }
+    }
+
+    private boolean validaObservacioneswithFotos(Integer idManifiesto){
+        boolean faltaFotoNovedad = false, faltaFotoNoRec = false, valido = false;
+        List<RowItemHojaRutaCatalogo>  novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idManifiesto);
+        List<RowItemNoRecoleccion> motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idManifiesto);
+
+        for(RowItemHojaRutaCatalogo i : novedadfrecuentes){
+            if(i.isEstadoChek()){
+                if(i.getNumFotos()== 0){ faltaFotoNovedad = true;}
+            }
+        }
+        for(RowItemNoRecoleccion i : motivoNoRecoleccion){
+            if(i.isEstadoChek()){
+                if(i.getNumFotos() == 0){ faltaFotoNoRec = true;}
+            }
+        }
+
+        if(faltaFotoNovedad || faltaFotoNoRec){
+            valido= false;
+        }else {
+            valido = true;
+        }
+
+        return valido;
     }
 
     @Override
