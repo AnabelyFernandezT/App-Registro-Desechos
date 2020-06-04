@@ -139,6 +139,7 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
             //timeWhenStopped = 0;
             mediaRecorder.stop();
             mediaRecorder.release();
+
             btnAplicar.setEnabled(true);
 
 
@@ -160,11 +161,16 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
             if(mOnAgregarAudioListener!=null){
                 mOnAgregarAudioListener.onSuccessful(data,chronometer.getText().toString());
             }
-
+            //eliminar audio temporal...
+            if(file.exists()){
+                file.delete();
+            }
             //PlayAudio(data);
 
 
-        }catch (Exception e){}
+        }catch (Exception e){
+            int x=0;
+        }
     }
 
 

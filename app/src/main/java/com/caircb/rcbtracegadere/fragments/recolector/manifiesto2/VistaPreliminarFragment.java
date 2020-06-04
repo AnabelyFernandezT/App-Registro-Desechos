@@ -1,4 +1,4 @@
-package com.caircb.rcbtracegadere.fragments.recolector.manifiesto;
+package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.app.Fragment;
 
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     ProgressDialog dialog;
     PDFView pdfView;
     MyManifiesto myManifiesto;
-
+    UserRegistrarRecoleccion userRegistrarRecoleccion;
 
     public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete) {
         VistaPreliminarFragment fragment = new VistaPreliminarFragment();

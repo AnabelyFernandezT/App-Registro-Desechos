@@ -1,13 +1,19 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,8 +46,11 @@ public class TabManifiestoAdicional extends LinearLayout {
 
     EditText txtNovedadEncontrada;
     TextView btnAgregarAudio,btnEliminarAudio,txtTimeGrabacion;
+    Chronometer mChronometer;
     ImageButton btnReproducirAudio;
     LinearLayout lnlAdicionales;
+    ProgressBar progressAudio;
+    ValueAnimator animator;
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     List<RowItemNoRecoleccion> motivoNoRecoleccion;
@@ -83,6 +92,8 @@ public class TabManifiestoAdicional extends LinearLayout {
 
         lnlAdicionales = this.findViewById(R.id.lnlAdicionales);
 
+        progressAudio = this.findViewById(R.id.progressAudio);
+        mChronometer = this.findViewById(R.id.chronometer);
         btnReproducirAudio = this.findViewById(R.id.btnReproducirAudio);
         btnEliminarAudio = this.findViewById(R.id.btnEliminarAudio);
         txtTimeGrabacion = this.findViewById(R.id.txtTimeGrabacion);
@@ -104,6 +115,10 @@ public class TabManifiestoAdicional extends LinearLayout {
                         btnAgregarAudio.setVisibility(View.GONE);
                         btnEliminarAudio.setVisibility(View.VISIBLE);
                         btnReproducirAudio.setVisibility(View.VISIBLE);
+
+                        progressAudio.setProgress(0);
+                        progressAudio.setMax(timeToMilesecons(tiempo));
+                        progressAudio.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -119,7 +134,25 @@ public class TabManifiestoAdicional extends LinearLayout {
             @Override
             public void onClick(View view) {
                 if(mAudio!=null && mAudio.length()>0) {
+
                     PlayAudio(mAudio);
+                    startChronometer();
+                    animator = ValueAnimator.ofInt(0, progressAudio.getMax());
+                    animator.setDuration(progressAudio.getMax());
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation){
+                            progressAudio.setProgress((Integer)animation.getAnimatedValue());
+                        }
+                    });
+                    animator.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            stopChronometer();
+                        }
+                    });
+                    animator.start();
                 }
             }
         });
@@ -134,6 +167,8 @@ public class TabManifiestoAdicional extends LinearLayout {
                 btnAgregarAudio.setVisibility(View.VISIBLE);
                 btnEliminarAudio.setVisibility(View.GONE);
                 btnReproducirAudio.setVisibility(View.GONE);
+                progressAudio.setProgress(0);
+                progressAudio.setVisibility(View.GONE);
             }
         });
     }
@@ -238,8 +273,31 @@ public class TabManifiestoAdicional extends LinearLayout {
             btnAgregarAudio.setVisibility(View.GONE);
             btnEliminarAudio.setVisibility(View.VISIBLE);
             btnReproducirAudio.setVisibility(View.VISIBLE);
+            progressAudio.setMax(timeToMilesecons(tiempo));
+            progressAudio.setVisibility(View.VISIBLE);
+
         }
         if(tiempo!=null && tiempo.length()>0) txtTimeGrabacion.setText(tiempo);
+    }
+
+    private Integer timeToMilesecons(String tiempo){
+        String array[] = tiempo.split(":");
+        return (Integer.parseInt(array[0]) * 60 * 1000
+                + Integer.parseInt(array[1]) * 1000)+100;
+    }
+
+    private void stopChronometer(){
+        txtTimeGrabacion.setVisibility(View.VISIBLE);
+        mChronometer.setVisibility(View.GONE);
+        mChronometer.stop();
+        mChronometer.setBase(SystemClock.elapsedRealtime());
+    }
+
+    private void startChronometer(){
+        txtTimeGrabacion.setVisibility(View.GONE);
+        mChronometer.setVisibility(View.VISIBLE);
+        mChronometer.setBase(SystemClock.elapsedRealtime());
+        mChronometer.start();
     }
 
     private void PlayAudio(String base64EncodedString){
