@@ -30,6 +30,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogAudio;
+import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
@@ -67,6 +68,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     ManifiestoPaqueteAdapter manifiestoPaqueteAdapter;
 
     String mAudio="";
+    LinearLayout lnlmsgAdicionales;
 
     public TabManifiestoAdicional(Context context,
                                   Integer idAppManifiesto,
@@ -91,6 +93,7 @@ public class TabManifiestoAdicional extends LinearLayout {
         recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
 
         lnlAdicionales = this.findViewById(R.id.lnlAdicionales);
+        lnlmsgAdicionales = this.findViewById(R.id.lnlmsgAdicionales);
 
         progressAudio = this.findViewById(R.id.progressAudio);
         mChronometer = this.findViewById(R.id.chronometer);
@@ -171,6 +174,17 @@ public class TabManifiestoAdicional extends LinearLayout {
                 progressAudio.setVisibility(View.GONE);
             }
         });
+
+        txtNovedadEncontrada.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(!txtNovedadEncontrada.getText().toString().equals("")){
+                        //MyApp.getDBO()
+                    }
+                }
+            }
+        });
     }
 
     private void loadDataPaquetes(){
@@ -188,6 +202,11 @@ public class TabManifiestoAdicional extends LinearLayout {
 
             //region de adicionales...
             lnlAdicionales.setVisibility(pkg.getFlagAdicionales()?View.VISIBLE:View.GONE);
+            lnlmsgAdicionales.setVisibility(pkg.getFlagAdicionales()?View.GONE:View.VISIBLE);
+        }
+        if(idAppTipoPaquete == null){
+            lnlAdicionales.setVisibility(View.GONE);
+            lnlmsgAdicionales.setVisibility(View.VISIBLE);
         }
     }
 

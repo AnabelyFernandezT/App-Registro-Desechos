@@ -47,8 +47,11 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
         final RowItemPaquete it = paquetesList.get(position);
         holder.txtPkgNombre.setText(it.getNombre());
         holder.txtPkgCantidad.setText(""+it.getCantidad());
-        //holder.txtPkgPendiente.setText(it.getPendiente()== 0 ? "" : String.valueOf(it.getPendiente()));
         holder.txtPkgPendiente.setText(""+it.getPendiente());
+
+        if(holder.txtPkgCantidad.getText().toString().equals("0")){
+            holder.txtPkgPendiente.setEnabled(false);
+        }
 
 
         holder.txtPkgPendiente.setOnFocusChangeListener(new View.OnFocusChangeListener() {
