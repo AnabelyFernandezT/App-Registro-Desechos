@@ -131,7 +131,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
                 //vista preliminar...
-                if(tabManifiestoAdicional.validaObservacioneswithFotos(idAppManifiesto)){
+
+                if(tabManifiestoAdicional.validaObservacioneswithFotos(idAppManifiesto)&& tabManifiestoGeneral.validacionTabGeneral()!=false){
                     setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
                 }else{
                     Toast.makeText(getActivity(),"Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!", Toast.LENGTH_SHORT).show();
