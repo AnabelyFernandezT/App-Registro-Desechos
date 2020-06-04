@@ -46,8 +46,8 @@ public abstract class PaqueteDao {
                 paquete.setFlagAdicionalGuardian(model.getFlagAdicionalesGuardian());
                 paquete.setFlagAdicionalFunda(model.getFlagAdicionalesFundas());
                 paquete.setPaquetePorRecolccion(model.getPaquetePorRecoleccion());
-                paquete.setEntregaFundas(model.getEntregaFundas()==1);
-                paquete.setEntregaGuardianes(model.getEntregaGuardianes()==1);
+                paquete.setEntregaSoloFundas(model.getEntregaFundas()==1);
+                paquete.setEntregaSoloGuardianes(model.getEntregaGuardianes()==1);
 
             }else{
                 paquete.setIndex(model.getI());
@@ -58,8 +58,8 @@ public abstract class PaqueteDao {
                 paquete.setFlagAdicionalGuardian(model.getFlagAdicionalesGuardian());
                 paquete.setFlagAdicionalFunda(model.getFlagAdicionalesFundas());
                 paquete.setPaquetePorRecolccion(model.getPaquetePorRecoleccion());
-                paquete.setEntregaFundas(model.getEntregaFundas()==1);
-                paquete.setEntregaGuardianes(model.getEntregaGuardianes()==1);
+                paquete.setEntregaSoloFundas(model.getEntregaFundas()==1);
+                paquete.setEntregaSoloGuardianes(model.getEntregaGuardianes()==1);
             }
             createPaquete(paquete);
 

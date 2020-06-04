@@ -34,9 +34,9 @@ public class PaqueteEntity {
 
     private Integer paquetePorRecolccion;
 
-    private Boolean entregaFundas;
+    private Boolean entregaSoloFundas;
 
-    private Boolean entregaGuardianes;
+    private Boolean entregaSoloGuardianes;
 
     public PaqueteEntity() {
     }
@@ -126,19 +126,19 @@ public class PaqueteEntity {
         this.paquetePorRecolccion = paquetePorRecolccion;
     }
 
-    public Boolean getEntregaFundas() {
-        return entregaFundas;
+    public Boolean getEntregaSoloFundas() {
+        return entregaSoloFundas;
     }
 
-    public void setEntregaFundas(Boolean entregaFundas) {
-        this.entregaFundas = entregaFundas;
+    public void setEntregaSoloFundas(Boolean entregaSoloFundas) {
+        this.entregaSoloFundas = entregaSoloFundas;
     }
 
-    public Boolean getEntregaGuardianes() {
-        return entregaGuardianes;
+    public Boolean getEntregaSoloGuardianes() {
+        return entregaSoloGuardianes;
     }
 
-    public void setEntregaGuardianes(Boolean entregaGuardianes) {
-        this.entregaGuardianes = entregaGuardianes;
+    public void setEntregaSoloGuardianes(Boolean entregaSoloGuardianes) {
+        this.entregaSoloGuardianes = entregaSoloGuardianes;
     }
 }
