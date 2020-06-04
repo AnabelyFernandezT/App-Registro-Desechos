@@ -96,6 +96,12 @@ public class ManifiestoEntity {
 
     private String firmaImg;
 
+    private String nombreNovedadAudio;
+
+    private String novedadAudio;
+
+    private String tiempoAudio;
+
     public void setIdTecnicoManifiesto(Integer idTecnicoManifiesto) {
         this.idTecnicoManifiesto = idTecnicoManifiesto;
     }
@@ -412,6 +418,30 @@ public class ManifiestoEntity {
 
     public void setFirmaImg(String firmaImg) {
         this.firmaImg = firmaImg;
+    }
+
+    public String getNombreNovedadAudio() {
+        return nombreNovedadAudio;
+    }
+
+    public void setNombreNovedadAudio(String nombreNovedadAudio) {
+        this.nombreNovedadAudio = nombreNovedadAudio;
+    }
+
+    public String getNovedadAudio() {
+        return novedadAudio;
+    }
+
+    public void setNovedadAudio(String novedadAudio) {
+        this.novedadAudio = novedadAudio;
+    }
+
+    public String getTiempoAudio() {
+        return tiempoAudio;
+    }
+
+    public void setTiempoAudio(String tiempoAudio) {
+        this.tiempoAudio = tiempoAudio;
     }
 }
 

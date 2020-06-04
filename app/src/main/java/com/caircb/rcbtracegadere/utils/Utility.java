@@ -34,6 +34,8 @@ public class Utility {
                 Manifest.permission.READ_PHONE_STATE);
         int location = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION);
+        int RECORD_AUDIO = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.RECORD_AUDIO);
         //int READ_CONTACTS = ContextCompat.checkSelfPermission(context,
         //        Manifest.permission.READ_CONTACTS);
         //int RECORD_AUDIO = ContextCompat.checkSelfPermission(context,
@@ -63,9 +65,9 @@ public class Utility {
         //if (READ_CONTACTS != PackageManager.PERMISSION_GRANTED) {
         //    listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
         //}
-        //if (RECORD_AUDIO != PackageManager.PERMISSION_GRANTED) {
-        //    listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
-        //}
+        if (RECORD_AUDIO != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
+        }
         if (internet != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.INTERNET);
         }

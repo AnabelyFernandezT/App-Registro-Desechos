@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="5dp">
-
-
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/txtContador"
-        android:layout_width="411dp"
-        android:layout_height="180dp"
-        android:layout_marginTop="-50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
+
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtHora"
+        <Chronometer
+            android:id="@+id/chronometer"
             android:layout_width="match_parent"
-            android:layout_height="103dp"
-            android:layout_gravity="center"
-            android:text="00:00"
-            android:textAlignment="center"
-            android:textSize="50dp" />
-
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="@color/app_gadere"
+            android:textSize="32dp" />
 
     </LinearLayout>
     <LinearLayout
         android:id="@+id/linBotones"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="-50dp"
+        android:layout_height="match_parent"
         android:gravity="center"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -94,6 +91,7 @@
     <!--FOOTER-->
     <LinearLayout
         android:id="@+id/footer"
+        android:background="@drawable/rcb_border_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

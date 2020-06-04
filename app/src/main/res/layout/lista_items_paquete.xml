@@ -60,6 +60,7 @@
                     android:background="@drawable/ic_edittextbox_rounded"
                     android:text=""
                     android:gravity="center"
+                    android:inputType="numberSigned"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

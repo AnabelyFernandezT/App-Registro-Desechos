@@ -70,4 +70,9 @@ public final class Utils {
         return imageEncoded;
     }
 
+    public static String encodeTobase64(byte[] file) {
+        String imageEncoded = Base64.encodeToString(file, Base64.DEFAULT);
+        return imageEncoded;
+    }
+
 }

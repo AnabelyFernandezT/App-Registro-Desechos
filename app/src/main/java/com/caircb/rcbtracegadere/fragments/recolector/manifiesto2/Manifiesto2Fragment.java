@@ -99,8 +99,11 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         spec=tabs.newTabSpec("ADICIONALES");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-
-                tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
+                tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
+                        idAppManifiesto,
+                        tabManifiestoGeneral.getTipoPaquete(),
+                        tabManifiestoGeneral.getAudio(),
+                        tabManifiestoGeneral.getTiempoAudio());
                 return tabManifiestoAdicional;
             }
         });
@@ -127,7 +130,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
                 //vista preliminar...
-                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete()));
+                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto));
                 break;
         }
     }

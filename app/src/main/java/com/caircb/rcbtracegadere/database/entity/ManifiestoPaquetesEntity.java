@@ -32,6 +32,11 @@ public class ManifiestoPaquetesEntity {
     @NonNull
     private Integer adFundas;
 
+    private Integer datosFundasPendientes;
+    private Integer datosFundasDiferencia;
+    private Integer datosGuardianesPendientes;
+    private Integer datosGuardianesDiferencia;
+
     public ManifiestoPaquetesEntity() {
     }
 
@@ -104,5 +109,37 @@ public class ManifiestoPaquetesEntity {
 
     public void setAdFundas(@NonNull Integer adFundas) {
         this.adFundas = adFundas;
+    }
+
+    public Integer getDatosFundasPendientes() {
+        return datosFundasPendientes;
+    }
+
+    public void setDatosFundasPendientes(Integer datosFundasPendientes) {
+        this.datosFundasPendientes = datosFundasPendientes;
+    }
+
+    public Integer getDatosFundasDiferencia() {
+        return datosFundasDiferencia;
+    }
+
+    public void setDatosFundasDiferencia(Integer datosFundasDiferencia) {
+        this.datosFundasDiferencia = datosFundasDiferencia;
+    }
+
+    public Integer getDatosGuardianesPendientes() {
+        return datosGuardianesPendientes;
+    }
+
+    public void setDatosGuardianesPendientes(Integer datosGuardianesPendientes) {
+        this.datosGuardianesPendientes = datosGuardianesPendientes;
+    }
+
+    public Integer getDatosGuardianesDiferencia() {
+        return datosGuardianesDiferencia;
+    }
+
+    public void setDatosGuardianesDiferencia(Integer datosGuardianesDiferencia) {
+        this.datosGuardianesDiferencia = datosGuardianesDiferencia;
     }
 }
