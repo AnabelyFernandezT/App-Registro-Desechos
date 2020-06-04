@@ -349,10 +349,12 @@ public class TabManifiestoAdicional extends LinearLayout {
         }
     }
 
-    public boolean validaObservacioneswithFotos(Integer idManifiesto){
+    public boolean validaNovedadesFrecuentesPendienteFotos(){
+        return  MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFoto(idAppManifiesto)>0;
+        /*
         boolean faltaFotoNovedad = false, faltaFotoNoRec = false, valido = false;
-        List<RowItemHojaRutaCatalogo>  novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idManifiesto);
-        List<RowItemNoRecoleccion> motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idManifiesto);
+        List<RowItemHojaRutaCatalogo>  novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
+        List<RowItemNoRecoleccion> motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idAppManifiesto);
 
         for(RowItemHojaRutaCatalogo i : novedadfrecuentes){
             if(i.isEstadoChek()){
@@ -371,5 +373,6 @@ public class TabManifiestoAdicional extends LinearLayout {
             valido = true;
         }
         return valido;
+         */
     }
 }
