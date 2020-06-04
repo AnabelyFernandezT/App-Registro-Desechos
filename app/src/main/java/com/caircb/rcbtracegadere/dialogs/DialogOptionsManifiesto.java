@@ -92,13 +92,18 @@ public class DialogOptionsManifiesto extends MyDialog {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String unicodeImg = Utils.encodeTobase64(firmaConfirmada);
+
                 if(txtPeso.getText().toString().equals("")){
                     messageBox("Debe ingresar un peso!");
                 }else {
-                    MyApp.getDBO().manifiestoDao().updateFirmaWithPesoTransportista(idManifiesto, Double.valueOf(txtPeso.getText().toString()), "IMG_FIRMA" + System.currentTimeMillis() + ".jpg", unicodeImg);
-                    dismiss();
-                    messageBox("Registrado correctamente!!");
+                    if(firmaConfirmada!=null){
+                        String unicodeImg = Utils.encodeTobase64(firmaConfirmada);
+                        MyApp.getDBO().manifiestoDao().updateFirmaWithPesoTransportista(idManifiesto, Double.valueOf(txtPeso.getText().toString()), "IMG_FIRMA" + System.currentTimeMillis() + ".jpg", unicodeImg);
+                        dismiss();
+                        messageBox("Registrado correctamente!!");
+                    }else {
+                        messageBox("Debe ingresar una firma!");
+                    }
                 }
 
             }
