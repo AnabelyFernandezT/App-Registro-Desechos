@@ -1,10 +1,12 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoPaqueteAdapter;
+import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
@@ -36,7 +39,8 @@ public class TabManifiestoAdicional extends LinearLayout {
     boolean bloquear;
 
     EditText txtNovedadEncontrada;
-    TextView btnAgregarAudio;
+    TextView btnAgregarAudio,btnEliminarAudio,txtTimeGrabacion;
+    ImageButton btnReproducirAudio;
     LinearLayout lnlAdicionales;
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
@@ -53,7 +57,13 @@ public class TabManifiestoAdicional extends LinearLayout {
     ManifiestoNoRecoleccionBaseAdapterR recyclerAdapterNoRecolecciones;
     ManifiestoPaqueteAdapter manifiestoPaqueteAdapter;
 
-    public TabManifiestoAdicional(Context context,Integer idAppManifiesto,Integer tipoPaquete) {
+    String mAudio="";
+
+    public TabManifiestoAdicional(Context context,
+                                  Integer idAppManifiesto,
+                                  Integer tipoPaquete,
+                                  String audio,
+                                  String tiempoAudio) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.idAppTipoPaquete = tipoPaquete;
@@ -61,6 +71,7 @@ public class TabManifiestoAdicional extends LinearLayout {
         init();
         loadDataPaquetes();
         loadData();
+        preLoadAudio(audio,tiempoAudio);
     }
 
     private void init(){
@@ -72,6 +83,9 @@ public class TabManifiestoAdicional extends LinearLayout {
 
         lnlAdicionales = this.findViewById(R.id.lnlAdicionales);
 
+        btnReproducirAudio = this.findViewById(R.id.btnReproducirAudio);
+        btnEliminarAudio = this.findViewById(R.id.btnEliminarAudio);
+        txtTimeGrabacion = this.findViewById(R.id.txtTimeGrabacion);
         btnAgregarAudio = this.findViewById(R.id.btnAgregarAudio);
         btnAgregarAudio.setOnClickListener(new OnClickListener() {
             @Override
@@ -79,7 +93,47 @@ public class TabManifiestoAdicional extends LinearLayout {
                 dialogAudio = new DialogAudio(getContext());
                 dialogAudio.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogAudio.setCancelable(false);
+                dialogAudio.setOnAgregarAudioListener(new DialogAudio.OnAgregarAudioListener() {
+                    @Override
+                    public void onSuccessful(String audio,String tiempo) {
+                        MyApp.getDBO().manifiestoDao().updateManifiestoNovedadAudio(idAppManifiesto, AppDatabase.getFieldName("AUDIO"),audio,tiempo);
+                        dialogAudio.dismiss();
+                        dialogAudio=null;
+                        mAudio= audio;
+                        txtTimeGrabacion.setText(tiempo);
+                        btnAgregarAudio.setVisibility(View.GONE);
+                        btnEliminarAudio.setVisibility(View.VISIBLE);
+                        btnReproducirAudio.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onCanceled() {
+
+                    }
+                });
                 dialogAudio.show();
+            }
+        });
+
+        btnReproducirAudio.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mAudio!=null && mAudio.length()>0) {
+                    PlayAudio(mAudio);
+                }
+            }
+        });
+
+        btnEliminarAudio.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //funcionalidad para confirmar eliminacion...
+                MyApp.getDBO().manifiestoDao().updateManifiestoNovedadAudio(idAppManifiesto, "","","00:00");
+                mAudio="";
+                txtTimeGrabacion.setText("00:00");
+                btnAgregarAudio.setVisibility(View.VISIBLE);
+                btnEliminarAudio.setVisibility(View.GONE);
+                btnReproducirAudio.setVisibility(View.GONE);
             }
         });
     }
@@ -176,6 +230,30 @@ public class TabManifiestoAdicional extends LinearLayout {
             }
         });
         recyclerViewLtsMotivoNoRecoleccion.setAdapter(recyclerAdapterNoRecolecciones);
+    }
+
+    private void preLoadAudio(String audio,String tiempo){
+        if(audio!=null && audio.length()>0){
+            mAudio=audio;
+            btnAgregarAudio.setVisibility(View.GONE);
+            btnEliminarAudio.setVisibility(View.VISIBLE);
+            btnReproducirAudio.setVisibility(View.VISIBLE);
+        }
+        if(tiempo!=null && tiempo.length()>0) txtTimeGrabacion.setText(tiempo);
+    }
+
+    private void PlayAudio(String base64EncodedString){
+        try
+        {
+            String url = "data:audio/mp3;base64,"+base64EncodedString;
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(url);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        }
+        catch(Exception ex){
+            System.out.print(ex.getMessage());
+        }
     }
 
     public void setMakePhoto(Integer code) {

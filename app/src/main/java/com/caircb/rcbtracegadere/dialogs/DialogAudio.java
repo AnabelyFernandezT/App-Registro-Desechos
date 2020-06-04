@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.utils.Utils;
@@ -31,10 +32,14 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
      LinearLayout btnStar, btnStop,btnCancel, btnPausa,btnAplicar;
      Chronometer chronometer;
      MediaRecorder mediaRecorder;
-     MediaPlayer mediaPlayer;
      String outputFile;
-     String audioFile;
-    InputStream inputStream;
+
+    public interface OnAgregarAudioListener {
+        void onSuccessful(String audio,String tiempo);
+        void onCanceled();
+    }
+
+    private OnAgregarAudioListener mOnAgregarAudioListener;
 
     boolean grabando=false;
 
@@ -98,64 +103,6 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
         }
     }
 
-
-    /*private void cronometro(){
-        cont = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                    if(isOn){
-                        try {
-                            Thread.sleep(1);
-                        }catch (InterruptedException e){
-                            e.printStackTrace();
-                        }
-                        mili++;
-                        if (mili==999){
-                            seg++;
-                            mili=0;
-                        }
-                        if (seg==59){
-                            minutos++;
-                            seg=0;
-                        }
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                           String m = "", s="", mi="";
-                           if (mili<10){
-                               m="00"+mili;
-                           }else if (mili<100){
-                                m="00"+mili;
-                           }else{
-                               m=""+mili;
-                           }
-                           if (seg<10){
-                               s="0"+seg;
-                           }else {
-                               s=""+seg;
-                           }
-                           if (minutos<10){
-                               mi="0"+minutos;
-                           }else{
-                               mi=""+minutos;
-                           }
-                           txtHora.setText(mi+":"+s);
-                                if (minutos==2){
-                                    isOn=false;
-                                    messageBox("Tamaño de audio completo");
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        cont.start();
-
-    }*/
-
-
     private void start(){
         try {
         if(!grabando){
@@ -210,25 +157,17 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
             fis.close();
 
             String data = Utils.encodeTobase64(bytesArray);
-            PlayAudio(data);
+            if(mOnAgregarAudioListener!=null){
+                mOnAgregarAudioListener.onSuccessful(data,chronometer.getText().toString());
+            }
+
+            //PlayAudio(data);
 
 
         }catch (Exception e){}
     }
 
-    public void PlayAudio(String base64EncodedString){
-        try
-        {
-            String url = "data:audio/mp3;base64,"+base64EncodedString;
-            MediaPlayer mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        }
-        catch(Exception ex){
-            System.out.print(ex.getMessage());
-        }
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -257,6 +196,10 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
 
         }
 
+    }
+
+    public void setOnAgregarAudioListener(@NonNull OnAgregarAudioListener l){
+       mOnAgregarAudioListener = l;
     }
 
 
