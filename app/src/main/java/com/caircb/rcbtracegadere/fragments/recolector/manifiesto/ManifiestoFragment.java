@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.google.android.material.tabs.TabLayout;

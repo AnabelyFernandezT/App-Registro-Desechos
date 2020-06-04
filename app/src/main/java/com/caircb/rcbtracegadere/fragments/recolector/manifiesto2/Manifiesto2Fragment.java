@@ -9,15 +9,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
-import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
-import com.caircb.rcbtracegadere.models.RowItemManifiesto;
-
-import java.util.List;
 
 
 public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,View.OnClickListener {
