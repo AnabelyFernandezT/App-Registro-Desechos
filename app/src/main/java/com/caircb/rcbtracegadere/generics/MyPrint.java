@@ -153,7 +153,7 @@ public class MyPrint {
                     }
                 }
                 ///---------------PRUEBAS DE ETIQUETAS---------------------------////
-                else {
+                /*else {
                     for (int x = 0; x < row.getCantidadBulto(); x++) {
                         contador = contador + 1;
                         configLabel = getConfigLabel(printer, manifiesto, manifiesto.trim() + "." + row.getId(), cliente, fecha, row,
@@ -161,7 +161,7 @@ public class MyPrint {
                         zebraPrinterConnection.write(configLabel);
                         MyThread.sleep(50);
                     }
-                }
+                }*/
             }
                 /*
                 if (zebraPrinterConnection instanceof BluetoothPrinterConnection) {
