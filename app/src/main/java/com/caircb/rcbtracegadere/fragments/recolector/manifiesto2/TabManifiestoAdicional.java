@@ -348,4 +348,28 @@ public class TabManifiestoAdicional extends LinearLayout {
             dialogAgregarFotografias.setMakePhoto(code);
         }
     }
+
+    public boolean validaObservacioneswithFotos(Integer idManifiesto){
+        boolean faltaFotoNovedad = false, faltaFotoNoRec = false, valido = false;
+        List<RowItemHojaRutaCatalogo>  novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idManifiesto);
+        List<RowItemNoRecoleccion> motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idManifiesto);
+
+        for(RowItemHojaRutaCatalogo i : novedadfrecuentes){
+            if(i.isEstadoChek()){
+                if(i.getNumFotos()== 0){ faltaFotoNovedad = true;}
+            }
+        }
+        for(RowItemNoRecoleccion i : motivoNoRecoleccion){
+            if(i.isEstadoChek()){
+                if(i.getNumFotos() == 0){ faltaFotoNoRec = true;}
+            }
+        }
+
+        if(faltaFotoNovedad || faltaFotoNoRec){
+            valido= false;
+        }else {
+            valido = true;
+        }
+        return valido;
+    }
 }

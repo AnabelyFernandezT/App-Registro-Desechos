@@ -131,7 +131,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
                 //vista preliminar...
-                if(validaObservacioneswithFotos(idAppManifiesto)){
+                if(tabManifiestoAdicional.validaObservacioneswithFotos(idAppManifiesto)){
                     setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
                 }else{
                     Toast.makeText(getActivity(),"Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!", Toast.LENGTH_SHORT).show();
@@ -139,31 +139,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 }
                 break;
         }
-    }
-
-    private boolean validaObservacioneswithFotos(Integer idManifiesto){
-        boolean faltaFotoNovedad = false, faltaFotoNoRec = false, valido = false;
-        List<RowItemHojaRutaCatalogo>  novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idManifiesto);
-        List<RowItemNoRecoleccion> motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idManifiesto);
-
-        for(RowItemHojaRutaCatalogo i : novedadfrecuentes){
-            if(i.isEstadoChek()){
-                if(i.getNumFotos()== 0){ faltaFotoNovedad = true;}
-            }
-        }
-        for(RowItemNoRecoleccion i : motivoNoRecoleccion){
-            if(i.isEstadoChek()){
-                if(i.getNumFotos() == 0){ faltaFotoNoRec = true;}
-            }
-        }
-
-        if(faltaFotoNovedad || faltaFotoNoRec){
-            valido= false;
-        }else {
-            valido = true;
-        }
-
-        return valido;
     }
 
     @Override
