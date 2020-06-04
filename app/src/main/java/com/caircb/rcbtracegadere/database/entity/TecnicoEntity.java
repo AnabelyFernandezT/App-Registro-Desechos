@@ -11,6 +11,8 @@ public class TecnicoEntity {
     @PrimaryKey(autoGenerate = true)
     private Integer _id;
 
+    private Integer idManifiesto;
+
     @NonNull
     private String nombre;
 
@@ -23,12 +25,12 @@ public class TecnicoEntity {
 
     private String celular;
 
-    public TecnicoEntity(@NonNull String nombre, @NonNull String identificacion, String correo, String telefono ) {
+    public TecnicoEntity(Integer idManifiesto, @NonNull String nombre, @NonNull String identificacion, String correo, String telefono) {
+        this.idManifiesto = idManifiesto;
         this.nombre = nombre;
         this.identificacion = identificacion;
         this.correo = correo;
         this.telefono = telefono;
-
     }
 
     public Integer get_id() {
@@ -79,5 +81,13 @@ public class TecnicoEntity {
 
     public void setCelular(String celular) {
         this.celular = celular;
+    }
+
+    public Integer getIdManifiesto() {
+        return idManifiesto;
+    }
+
+    public void setIdManifiesto(Integer idManifiesto) {
+        this.idManifiesto = idManifiesto;
     }
 }
