@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.recolector.manifiesto.VistaPreliminarFragment">
+    tools:context=".fragments.recolector.manifiesto2.VistaPreliminarFragment">
 
     <LinearLayout
         android:layout_weight="1"
