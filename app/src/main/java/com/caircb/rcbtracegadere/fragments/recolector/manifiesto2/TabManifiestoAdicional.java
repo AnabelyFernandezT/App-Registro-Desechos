@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +36,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     boolean bloquear;
 
     EditText txtNovedadEncontrada;
-    LinearLayout btnAudio;
+    TextView btnAgregarAudio;
     LinearLayout lnlAdicionales;
 
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
@@ -71,8 +72,8 @@ public class TabManifiestoAdicional extends LinearLayout {
 
         lnlAdicionales = this.findViewById(R.id.lnlAdicionales);
 
-        btnAudio = this.findViewById(R.id.btn_audio);
-        btnAudio.setOnClickListener(new OnClickListener() {
+        btnAgregarAudio = this.findViewById(R.id.btnAgregarAudio);
+        btnAgregarAudio.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogAudio = new DialogAudio(getContext());
