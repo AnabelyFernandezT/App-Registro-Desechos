@@ -53,7 +53,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private List<RowItem> rowItems;
     final ArrayList selectedItems = new ArrayList();
-    final CharSequence[] optionsCatalog = {"OBSERVACIONES","TIPO DESECHOS","TIPO UNIDAD"};
+    final CharSequence[] optionsCatalog = {"OBSERVACIONES","TIPO DESECHOS","TIPO UNIDAD","VEHICULOS","PAQUETES","MOTIVOS NO RECOLECION"};
 
     //Parametros Globales
     private boolean inicioSesion;
@@ -259,10 +259,10 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     private void existePaquetes(){
 
-       if(!MyApp.getDBO().paqueteDao().existePaquetes()){
+       //if(!MyApp.getDBO().paqueteDao().existePaquetes()){
                 paquetesTask = new PaquetesTask(this, listener);
                 paquetesTask.execute();
-        }
+        //}
     }
     /*
 
@@ -292,8 +292,14 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             public void onClick(DialogInterface dialog, int which) {
                 if(selectedItems.size()>0){
                     //String ids = TextUtils.join(",",selectedItems);
-                    consultarCatalogosTask = new UserConsultarCatalogosTask(MainActivity.this,selectedItems);
-                    consultarCatalogosTask.execute();
+                    for (final Object catalogoID :selectedItems) {
+                        if (catalogoID.equals(5)){
+                            existePaquetes();
+                        }else{
+                            consultarCatalogosTask = new UserConsultarCatalogosTask(MainActivity.this,selectedItems);
+                            consultarCatalogosTask.execute();
+                        }
+                    }
                 }
             }
         }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
