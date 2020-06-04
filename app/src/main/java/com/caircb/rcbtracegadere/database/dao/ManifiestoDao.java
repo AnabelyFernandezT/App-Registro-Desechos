@@ -73,6 +73,9 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set estado=:estado where idAppManifiesto=:id")
     public abstract void updateManifiestoEstadobyId(Integer id, Integer estado);
 
+    @Query("update tb_manifiestos set nombreNovedadAudio=:nombreAudio, novedadAudio=:audio,tiempoAudio=:tiempo where idAppManifiesto=:idAppManifiesto")
+    public abstract void updateManifiestoNovedadAudio(Integer idAppManifiesto, String nombreAudio,String audio,String tiempo);
+
     @Query("delete from tb_manifiestos where idAppManifiesto=:idManifiesto")
     abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
 

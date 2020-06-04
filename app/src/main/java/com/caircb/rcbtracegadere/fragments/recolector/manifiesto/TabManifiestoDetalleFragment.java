@@ -154,7 +154,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
     }
 
     private void openDialogBultos(Integer position){
-        if(dialogBultos==null){
+        /*if(dialogBultos==null){
             dialogOpcioneItem.dismiss();
             dialogBultos = new DialogBultos(getActivity(),position,idAppManifiesto,detalles.get(position).getId(),tipoPaquete);
             dialogBultos.setCancelable(false);
@@ -193,7 +193,9 @@ public class TabManifiestoDetalleFragment extends Fragment {
 
             window = dialogBultos.getWindow();
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
+
+
+        }*/
     }
 
 
@@ -204,5 +206,6 @@ public class TabManifiestoDetalleFragment extends Fragment {
             recyclerView.addOnItemTouchListener(touchListener);
         }
     }
+
 
 }

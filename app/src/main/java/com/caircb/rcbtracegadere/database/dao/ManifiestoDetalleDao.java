@@ -27,10 +27,9 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto, pesoUnidad=:peso, estadoChek=:estadoChek where idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, double cantidadBulto, double peso,boolean estadoChek);
 
-    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,cu.nombre as unidad, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete" +
+    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
-            " inner join tb_catalogos cu on d.idTipoUnidad=cu.idSistema and cu.tipo=3" +
             " where idAppManifiesto=:idManifiesto")
     public abstract List<RowItemManifiesto> fetchHojaRutaDetallebyIdManifiesto(Integer idManifiesto);
 

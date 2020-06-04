@@ -1,31 +1,56 @@
 package com.caircb.rcbtracegadere.helpers;
 
-public class CalculoPaquetes {
+import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 
+public class MyCalculoPaquetes {
 
+    ManifiestoPaquetesEntity mpkg;
+    Integer idAppManifiesto;
+    Integer tipoPaquete;
 
-public void calculoPaquetes (Integer n, Integer m ,boolean adicionales, boolean guardian, boolean fundas){
-    int pqh, adGuardian,adFunda ;
-
-    if (adicionales== true && guardian == true && fundas ==true ){
-        pqh = calculoPQH(n,m,adicionales,guardian,fundas);
-        adGuardian = calculoGuardia(n,m,adicionales,guardian,fundas,pqh);
-        adFunda = calculoFunta(n,m,adicionales,guardian,fundas,pqh);
-    }else{
-        if(adicionales==true && guardian==true){
-            pqh = calculoPQH(n,m,adicionales,guardian,fundas);
-            adGuardian = calculoGuardia(n,m,adicionales,guardian,fundas,pqh);
-        }else{
-            if(adicionales == true && fundas ==true){
-                pqh = calculoPQH(n,m,adicionales,guardian,fundas);
-                adFunda = calculoFunta(n,m,adicionales,guardian,fundas,pqh);
-            }
-
-        }
-
+    public  MyCalculoPaquetes(Integer idAppManifiesto,Integer tipoPaquete){
+        this.idAppManifiesto=idAppManifiesto;
+        this.tipoPaquete=tipoPaquete;
     }
 
-}
+    public CalculoPaqueteResul algoritmo (PaqueteEntity pkg){
+        CalculoPaqueteResul resp=null;
+        if(pkg!=null) {
+
+            mpkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, tipoPaquete);
+            Integer n = mpkg.getDatosFundas();
+            Integer m = mpkg.getDatosGuardianes();
+            boolean adicionales = false, guardian = false, fundas = false;
+
+            resp = new CalculoPaqueteResul();
+
+            if (adicionales == true && guardian == true && fundas == true) {
+                resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                resp.setAdicionalFunda(calculoFunta(n, m, adicionales, guardian, fundas, resp.getAdicionalFunda()));
+            } else {
+                if (adicionales == true && guardian == true) {
+                    resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                    resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                } else {
+                    if (adicionales == true && fundas == true) {
+                        resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                        resp.setAdicionalFunda(calculoFunta(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                    }
+                }
+            }
+
+            //update datos en tabla de calculo de algoritmo...
+            mpkg.setPqh(resp.getPqh());
+            mpkg.setAdFundas(resp.getAdicionalFunda());
+            mpkg.setAdFundas(resp.getAdicionalGuardian());
+            MyApp.getDBO().manifiestoPaqueteDao().actualiarPaquete(mpkg);
+        }
+        return resp;
+    }
 
 
 

@@ -192,19 +192,61 @@
                     android:scrollbars="vertical"/>
 
                 <LinearLayout
-                    android:id="@+id/btn_audio"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/ic_background_button_keyboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:gravity="center">
-
                     <ImageButton
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         style="@style/Widget.AppCompat.ImageButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:background="@android:color/transparent"
                         android:clickable="false"
-                        android:src="@mipmap/next" />
+                        android:src="@mipmap/ic_microfono" />
+                    <TextView
+                        android:id="@+id/txtTimeGrabacion"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="00:00"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                    <ImageButton
+                        android:id="@+id/btnReproducirAudio"
+                        android:visibility="gone"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        style="@style/Widget.AppCompat.ImageButton"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:src="@mipmap/ic_play" />
+                    <TextView
+                        android:id="@+id/btnAgregarAudio"
+                        android:textColor="@color/app_gadere"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:layout_marginRight="10dp"
+                        android:text="AGREGAR"
+                        android:gravity="center"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:id="@+id/btnEliminarAudio"
+                        android:visibility="gone"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:textColor="@color/app_gadere"
+                        android:layout_marginRight="10dp"
+                        android:text="ELIMINAR"
+                        android:gravity="center"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"/>
+
                 </LinearLayout>
             </LinearLayout>
 

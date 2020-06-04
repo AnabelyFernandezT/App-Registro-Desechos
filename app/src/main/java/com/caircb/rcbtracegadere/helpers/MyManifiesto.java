@@ -11,8 +11,11 @@ import androidx.annotation.Nullable;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowItemPaquete;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -37,21 +40,23 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyManifiesto {
 
     private File pdfFile;
     Context context;
-    Integer idManifiesto;
+    Integer idManifiesto,idAppTipoPaquete;
     ManifiestoEntity manifiesto;
     Bitmap logoMAE;
     Bitmap imagenCheck;
     Bitmap imagenUnCheck;
 
-    public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto){
+    public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete){
         this.context = context;
         this.idManifiesto = idManifiesto;
+        this.idAppTipoPaquete = idAppTipoPaquete;
     }
 
     public void create(){
@@ -91,6 +96,7 @@ public class MyManifiesto {
         Document doc = new Document(PageSize.A4,12.0f,12.0f,20.0f,20.0f);
 
         try {
+
             PdfWriter.getInstance(doc, createLocalFile("reporteGadere.pdf"));
 
             doc.open();
@@ -650,8 +656,10 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 2
-        PdfPTable tb2 = new PdfPTable(new float[] { 40,10,40,10});
-        tb2.addCell(new PdfPCell(new Phrase("FUNDA 50 *",f3)));
+        PdfPTable tb2 = new PdfPTable(1);
+        PdfPCell cell = new PdfPCell(regionAdicionales(f3));
+        PdfPCell cell2 = new PdfPCell(regionAdicionales2(f3));
+        /*tb2.addCell(new PdfPCell(new Phrase("FUNDA 50 *",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.addCell(new PdfPCell(new Phrase("PC1",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
@@ -659,7 +667,11 @@ public class MyManifiesto {
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.addCell(new PdfPCell(new Phrase("PC2",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
+        tb2.completeRow();*/
+        tb2.addCell(cell);
+        tb2.addCell(cell2);
         tb2.completeRow();
+
 
         _cell = new PdfPCell(tb2);
         _cell.setBorder(Rectangle.NO_BORDER);
@@ -683,6 +695,20 @@ public class MyManifiesto {
 
         _cell = new PdfPCell(tb4);
         _cell.setBorder(Rectangle.NO_BORDER);
+        tb.addCell(_cell);
+
+        //tabla 5
+        PdfPTable tb5 = new PdfPTable(new float[] { 100});
+
+        tb5.addCell(new PdfPCell(new Phrase(" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+
+                " \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+"                                                                     __________________________\n"+"                 " +
+                "                                                                           FIRMA\n"+
+                "DECLARO CONFORMIDAD DE LA INFORMACION ADICIONAL",f3)));
+        tb5.completeRow();
+
+        _cell = new PdfPCell(tb5);
+        _cell.setBorder(Rectangle.NO_BORDER);
+
         tb.addCell(_cell);
 
 
@@ -765,6 +791,43 @@ public class MyManifiesto {
         _cell.setPadding(1f);
         return _cell;
     }
+    private PdfPTable regionAdicionales(Font f3)  {
+
+        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
+        ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
+
+        PdfPTable det = new PdfPTable(new float[]{10,10,40,10});
+        det.addCell(new PdfPCell(new Phrase("Fundas",f3)));
+        det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3,null));
+
+        if(manifiestoPkg.getDatosGuardianes()==null){
+         det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
+        }else {
+            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosFundas().toString(), f3, null));
+        }
+
+        det.addCell(createCell_VACIO());
+        det.addCell(createCell_VACIO());
+        det.completeRow();
+
+        return det;
+    }
+    private PdfPTable regionAdicionales2(Font f3)  {
+
+        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
+        ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
+
+        PdfPTable det = new PdfPTable(new float[]{10,10,40,10});
+        det.addCell(new PdfPCell(new Phrase("Guardianes",f3)));
+        det.addCell(createCell_NO_BORDER_SINGLE(pkg.getGuardian(), f3,null));
+        det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosGuardianes().toString(), f3,null));
+        det.addCell(createCell_VACIO());
+        det.addCell(createCell_VACIO());
+        det.completeRow();
+
+        return det;
+    }
+
 
     private PdfPTable createObservacionesFrecuentes(Font f3) throws Exception {
 
@@ -772,58 +835,38 @@ public class MyManifiesto {
         List<RowItemHojaRutaCatalogo> novedades = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idManifiesto);
         //dbHelper.close();
 
-        PdfPTable det = new PdfPTable(new float[]{10,90});
+        PdfPTable det = new PdfPTable(new float[]{10,80});
         det.setWidthPercentage(100);
 
         if(novedades.size()>0) {
-
-            String nombre;
-            int pos=-1;
-
-            //InputStream ims = context.getAssets().open("ic_check.png");
-            //Bitmap bmp = BitmapFactory.decodeStream(ims);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             imagenCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
             Image jpgCheck = Image.getInstance(stream.toByteArray());
             jpgCheck.scaleToFit(16,16);
             stream.close();
-            //ims.close();
 
-            //ims = context.getAssets().open("ic_uncheck.png");
-            //bmp = BitmapFactory.decodeStream(ims);
             stream = new ByteArrayOutputStream();
             imagenUnCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
             Image jpgUnCheck = Image.getInstance(stream.toByteArray());
             jpgUnCheck.scaleToFit(16,16);
             stream.close();
-            //ims.close();
+
 
             for(RowItemHojaRutaCatalogo ct:novedades){
-                //;
-                //pos = nombre.indexOf("-");
-
                 if(ct.isEstadoChek()){
                     det.addCell(createCell_Imagen_NO_BORDER(jpgCheck,f3,Element.ALIGN_CENTER));
                 }else{
                     det.addCell(createCell_Imagen_NO_BORDER(jpgUnCheck,f3,Element.ALIGN_CENTER));
                 }
-
-                //det.addCell(createCell_NO_BORDER(getString("estadoChekObservacion",_cursor), f3,Element.ALIGN_CENTER));
-                // det.addCell(createCell_Imagen_NO_BORDER(jpgUnCheck,f3,null));
                 det.addCell(createCell_NO_BORDER_SINGLE(ct.getCatalogo(), f3,null));
-                //android:background="@android:color/transparent" android:drawableTop="@drawable/[your background image here]"
-                //det.completeRow();
             }
 
             stream.close();
-            //ims.close();
         }
 
         det.addCell(createCell_VACIO());
         det.addCell(createCell_VACIO());
         det.completeRow();
-        //det.setLockedWidth(true);
-
 
         return det;
 

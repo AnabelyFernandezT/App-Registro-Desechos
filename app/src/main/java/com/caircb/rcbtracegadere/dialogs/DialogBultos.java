@@ -44,7 +44,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     List<String> itemsCategoriaPaquete;
 
     public interface OnBultoListener {
-        public void onSuccessful(BigDecimal valor, int position, int cantidad, boolean isClose);
+        public void onSuccessful(
+                BigDecimal valor,
+                int position,
+                int cantidad,
+                PaqueteEntity pkg,
+                boolean isClose);
 
         void onCanceled();
     }
@@ -119,12 +124,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         if(tipoPaquete!=null){
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(tipoPaquete);
-            if(pkg!=null && (
+            /*if(pkg!=null && (
                     pkg.getPaquetePorRecolccion().toString().equals("1")
                     && !pkg.getFlagAdicionales()
                     && !pkg.getFlagAdicionalFunda()
                     && !pkg.getFlagAdicionalGuardian()
-            ))itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO_CORTOPUNZANTE);
+            ))itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO_CORTOPUNZANTE);*/
         }
     }
 
@@ -250,13 +255,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         if(imput.doubleValue()>0 ){
             if(bultos.size()==0) {
                 createBulto(imput);
-                mOnBultoListener.onSuccessful(subtotal, position, 1, true);
+                mOnBultoListener.onSuccessful(subtotal, position, 1, pkg,true);
             }else if(bultos.size()>0){
                 //preguntar si agrega el valor a un bulto...
-                mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), true);
+                mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true);
             }
         }else if(imput.doubleValue()==0 && subtotal.doubleValue()>0){
-            mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), true);
+            mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true);
         }
     }
 

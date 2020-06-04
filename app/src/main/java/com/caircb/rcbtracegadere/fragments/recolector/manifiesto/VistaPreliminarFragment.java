@@ -26,18 +26,20 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
 
 
     private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    Integer idAppManifiesto;
+    Integer idAppManifiesto,idAppTipoPaquete;
     LinearLayout btnVistaPreviaCancelar,btnVistaPreviaGuardar;
     ProgressDialog dialog;
     PDFView pdfView;
     MyManifiesto myManifiesto;
 
 
-    public static VistaPreliminarFragment newInstance(Integer manifiestoID) {
+    public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete) {
         VistaPreliminarFragment fragment = new VistaPreliminarFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
+        args.putInt(ARG_PARAM2,idAppTipoPaquete);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +49,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             idAppManifiesto= getArguments().getInt(ARG_PARAM1);
+            idAppTipoPaquete = getArguments().getInt(ARG_PARAM2);
         }
     }
 
@@ -83,7 +86,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
 
             @Override
             protected String doInBackground(Void... voids) {
-                myManifiesto = new MyManifiesto(getActivity(),idAppManifiesto);
+                myManifiesto = new MyManifiesto(getActivity(),idAppManifiesto,idAppTipoPaquete);
                 myManifiesto.create();
                 return myManifiesto.getPathFile();
             }

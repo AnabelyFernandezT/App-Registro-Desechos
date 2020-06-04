@@ -21,7 +21,11 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBaseAdapter;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
+import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
+import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
@@ -43,6 +47,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     Dialog dialogOpcioneItem;
     DialogBultos dialogBultos;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
+    MyCalculoPaquetes calculoPaquetes;
 
     public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete) {
         super(context);
@@ -55,6 +60,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     }
 
     private void init(){
+        calculoPaquetes= new MyCalculoPaquetes(idAppManifiesto,tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
         recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext());
     }
@@ -115,7 +121,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {
                 @Override
-                public void onSuccessful(BigDecimal valor, int position, int cantidad, boolean isClose) {
+                public void onSuccessful(BigDecimal valor, int position, int cantidad, PaqueteEntity pkg, boolean isClose) {
                     if(isClose && dialogBultos!=null){
                             dialogBultos.dismiss();
                             dialogBultos = null;
@@ -134,8 +140,9 @@ public class TabManifiestoDetalle extends LinearLayout {
                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),row.isEstado());
 
                     //calculo de paquetes...
-
-
+                    if(pkg!=null){
+                        calculoPaquetes.algoritmo(pkg);
+                    }
                 }
 
                 @Override
