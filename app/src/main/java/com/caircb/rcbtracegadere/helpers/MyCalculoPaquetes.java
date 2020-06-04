@@ -23,7 +23,7 @@ public class MyCalculoPaquetes {
             mpkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, tipoPaquete);
             Integer n = mpkg.getDatosFundas();
             Integer m = mpkg.getDatosGuardianes();
-            boolean adicionales = false, guardian = false, fundas = false;
+            boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda();
 
             resp = new CalculoPaqueteResul();
 
@@ -46,7 +46,7 @@ public class MyCalculoPaquetes {
             //update datos en tabla de calculo de algoritmo...
             mpkg.setPqh(resp.getPqh());
             mpkg.setAdFundas(resp.getAdicionalFunda());
-            mpkg.setAdFundas(resp.getAdicionalGuardian());
+            mpkg.setAdGuardianes(resp.getAdicionalGuardian());
             MyApp.getDBO().manifiestoPaqueteDao().actualiarPaquete(mpkg);
         }
         return resp;

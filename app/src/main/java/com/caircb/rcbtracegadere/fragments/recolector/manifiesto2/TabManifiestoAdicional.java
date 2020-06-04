@@ -44,7 +44,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     Window window;
     boolean bloquear;
 
-    EditText txtNovedadEncontrada;
+    EditText txtNovedadEncontrada,txtItemPaqueteADFunda,txtItemPaqueteADGuardianes;
     TextView btnAgregarAudio,btnEliminarAudio,txtTimeGrabacion;
     Chronometer mChronometer;
     ImageButton btnReproducirAudio;
@@ -91,6 +91,8 @@ public class TabManifiestoAdicional extends LinearLayout {
         recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
 
         lnlAdicionales = this.findViewById(R.id.lnlAdicionales);
+        txtItemPaqueteADFunda = this.findViewById(R.id.txtItemPaqueteADFunda);
+        txtItemPaqueteADGuardianes = this.findViewById(R.id.txtItemPaqueteADGuardianes);
 
         progressAudio = this.findViewById(R.id.progressAudio);
         mChronometer = this.findViewById(R.id.chronometer);
@@ -200,6 +202,11 @@ public class TabManifiestoAdicional extends LinearLayout {
             }else if (listaPaquetes.size()==1){
                 if(pkg.getEntregaSoloFundas())listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0);
                 else if(pkg.getEntregaSoloGuardianes())listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0);
+            }
+
+            if(pkg.getFlagAdicionales() && manifiestoPkg !=null){
+                txtItemPaqueteADGuardianes.setText(manifiestoPkg!=null?manifiestoPkg.getAdGuardianes().toString():"0");
+                txtItemPaqueteADFunda.setText(manifiestoPkg!=null?manifiestoPkg.getAdFundas().toString():"0");
             }
 
             manifiestoPaqueteAdapter.setTaskList(listaPaquetes);
