@@ -259,10 +259,10 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     private void existePaquetes(){
 
-       if(!MyApp.getDBO().paqueteDao().existePaquetes()){
+       //if(!MyApp.getDBO().paqueteDao().existePaquetes()){
                 paquetesTask = new PaquetesTask(this, listener);
                 paquetesTask.execute();
-        }
+        //}
     }
     /*
 
