@@ -130,7 +130,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
                 //vista preliminar...
-                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto));
+                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
                 break;
         }
     }
