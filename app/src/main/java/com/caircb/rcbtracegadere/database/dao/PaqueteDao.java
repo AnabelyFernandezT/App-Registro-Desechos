@@ -46,6 +46,8 @@ public abstract class PaqueteDao {
                 paquete.setFlagAdicionalGuardian(model.getFlagAdicionalesGuardian());
                 paquete.setFlagAdicionalFunda(model.getFlagAdicionalesFundas());
                 paquete.setPaquetePorRecolccion(model.getPaquetePorRecoleccion());
+                paquete.setEntregaFundas(model.getEntregaFundas());
+                paquete.setEntregaGuardianes(model.getEntregaGuardianes());
 
             }else{
                 paquete.setIndex(model.getI());
@@ -56,6 +58,8 @@ public abstract class PaqueteDao {
                 paquete.setFlagAdicionalGuardian(model.getFlagAdicionalesGuardian());
                 paquete.setFlagAdicionalFunda(model.getFlagAdicionalesFundas());
                 paquete.setPaquetePorRecolccion(model.getPaquetePorRecoleccion());
+                paquete.setEntregaFundas(model.getEntregaFundas());
+                paquete.setEntregaGuardianes(model.getEntregaGuardianes());
             }
             createPaquete(paquete);
 
