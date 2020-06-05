@@ -29,6 +29,9 @@ public abstract class ManifiestoObservacionFrecuenteDao {
     @Query("select * from tb_manifiestos_novedad_frecuente where idAppManifiesto=:idManifiesto and idCatalogo=:idCatalogo")
     public abstract ManifiestoObservacionFrecuenteEntity fetchHojaRutaObservacionFrecuentebyCatalogo(Integer idManifiesto, Integer idCatalogo);
 
+    @Query("select * from tb_manifiestos_novedad_frecuente where idAppManifiesto=:idManifiesto and idCatalogo=:idCatalogo")
+    public abstract ManifiestoObservacionFrecuenteEntity fetchHojaRutaObservacionFrecuentebyCatalogoRecepcion(Integer idManifiesto, Integer idCatalogo);
+
    /* @Query("select c.idSistema as id, upper(c.codigo || '  ' || c.nombre) as catalogo,estadoChek," +
             "(select count(*) from tb_manifiestos_novedad_foto ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=1) as numFotos from tb_manifiestos_novedad_frecuente n " +
             "inner join tb_catalogos c on n.idCatalogo=c.idSistema and n.idAppManifiesto=:idManifiesto and c.tipo=1")
@@ -39,6 +42,12 @@ public abstract class ManifiestoObservacionFrecuenteDao {
             "( select count(*) from tb_manifiestos_novedad_foto ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=1) as numFotos" +
             " from tb_catalogos c where tipo=1")
     public  abstract List<RowItemHojaRutaCatalogo> fetchHojaRutaCatalogoNovedaFrecuente(Integer idManifiesto);
+
+    @Query("select c.idSistema as id, upper(c.codigo || '  ' || c.nombre) as catalogo," +
+            "( select estadoChekRecepcion from tb_manifiestos_novedad_frecuente  nor where nor.idCatalogo=c.idsistema and nor.idAppManifiesto=:idManifiesto limit 1) as estadoChek, " +
+            "( select count(*) from tb_manifiestos_novedad_foto ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=1) as numFotos" +
+            " from tb_catalogos c where tipo=1")
+    public  abstract List<RowItemHojaRutaCatalogo> fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(Integer idManifiesto);
 
     @Query("select count(*) " +
             " from tb_catalogos c" +
@@ -92,6 +101,19 @@ public abstract class ManifiestoObservacionFrecuenteDao {
             entity.setEstadoChek(check);
         }else{
             entity.setEstadoChek(check);
+        }
+        createManifiestoObservacionFrecuente(entity);
+    }
+
+    public void saveOrUpdateManifiestoNovedadFrecuenteRecepcion(Integer idAppManifiesto, Integer idCatalogo, boolean check){
+        ManifiestoObservacionFrecuenteEntity entity =fetchHojaRutaObservacionFrecuentebyCatalogoRecepcion(idAppManifiesto,idCatalogo);
+        if(entity==null){
+            entity = new ManifiestoObservacionFrecuenteEntity();
+            entity.setIdAppManifiesto(idAppManifiesto);
+            entity.setIdCatalogo(idCatalogo);
+            entity.setEstadoChekRecepcion(check);
+        }else{
+            entity.setEstadoChekRecepcion(check);
         }
         createManifiestoObservacionFrecuente(entity);
     }

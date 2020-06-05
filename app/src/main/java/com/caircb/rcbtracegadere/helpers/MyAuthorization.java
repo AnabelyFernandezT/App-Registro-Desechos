@@ -2,9 +2,25 @@ package com.caircb.rcbtracegadere.helpers;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import androidx.annotation.NonNull;
+
+import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
+import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
+import com.caircb.rcbtracegadere.models.MenuItem;
+import com.caircb.rcbtracegadere.models.RowItem;
 import com.caircb.rcbtracegadere.models.request.RequestCredentials;
 import com.caircb.rcbtracegadere.models.request.RequestTokenFCM;
 import com.caircb.rcbtracegadere.models.response.DtoUserCredential;
@@ -19,17 +35,26 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyAuthorization {
+    JSONArray jsonLugares;
+    JSONObject json;
+
+
 
     Context mContext;
+    ListView mDialogMenuItems;
     ProgressDialog progressDialog;
     AlertDialog.Builder messageBox;
     String userStr;
     FirebaseAuth auth;
+    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
+
 
     public interface AuthorizationListener {
         public void onSuccessful();
@@ -87,6 +112,52 @@ public class MyAuthorization {
             });
         }
 
+    }
+
+
+    private void lugarTrabajo () throws JSONException {
+        final Dialog mdialog = new Dialog(getActivity());
+        final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
+        jsonLugares = new JSONArray(MySession.getLugares());
+
+        for (int i = 0; i < jsonLugares.length(); i++){
+            json = jsonLugares.getJSONObject(i);
+            myListOfItems.add(new MenuItem(
+                    json.getString("nombre")));
+        }
+
+        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(getActivity(),myListOfItems);
+        View view = progressDialog.getWindow().getLayoutInflater().inflate(R.layout.dialog_main, null);
+        mDialogMenuItems =(ListView) view.findViewById(R.id.custom_list);
+        mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
+        mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MenuItem item= myListOfItems.get(position);
+                if(!item.isEnabled()){
+                    if(item.getNombre().equals("Catalogos")){
+                        if(mdialog!=null){
+                            mdialog.dismiss();
+                        }
+                    }
+                    else if(item.getNombre().equals("Impresora")){
+                        if(mdialog!=null){
+                            mdialog.dismiss();
+                        }
+                    }
+                    else if (item.getNombre().equals("Aplicacion")){
+                        if(mdialog!=null){
+                            mdialog.dismiss();
+                        }
+                    }
+                }
+            }
+        });
+
+
+        mdialog.setTitle("MODULOS");
+        mdialog.setContentView(view);
+        mdialog.show();
     }
 
     private void obtnerTokenAutorizacionFCM(final DtoUserCredential user){
@@ -165,9 +236,18 @@ public class MyAuthorization {
                 @Override
                 public void onResponse(Call<DtoUserTokenCredentials> call, Response<DtoUserTokenCredentials> response) {
                     if(response.isSuccessful()) {
-                        MySession.setLogin(true);
-                        MySession.setMenus(user.getListaEmpresas().get(0).getLugares().get(0).getMenus());
-                        mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
+                       // MySession.setLogin(true);
+                        //MySession.setMenus(user.getListaEmpresas().get(0).getLugares().get(0).getMenus());
+                        //mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
+
+                        MySession.setLugares(user.getListaEmpresas().get(0).getLugares());
+
+                        try {
+                            lugarTrabajo();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
                     }else {
                         if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
                     }

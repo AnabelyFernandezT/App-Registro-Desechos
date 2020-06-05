@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.models.response.DtoListaLugar;
 import com.caircb.rcbtracegadere.models.response.DtoListaMenu;
 import com.google.gson.Gson;
 
@@ -106,6 +107,7 @@ public final class MySession {
     public static void setLugarNombre(String lugar){
         set(LUGAR_NOMBRE,lugar);
     }
+
     public static String getLugarNombre(){
         String str = get(LUGAR_NOMBRE);
         return str!=null?str:"";
@@ -165,6 +167,16 @@ public final class MySession {
     public static Integer getIdPerfil(){
         String str = get(PERFIL);
         return str!=null? Integer.parseInt(str):-1;
+    }
+
+    public static void setLugares(List<DtoListaLugar> lugares){
+        Gson gson = new Gson();
+        set(LUGAR,gson.toJson(lugares));
+    }
+
+    public static String getLugares(){
+        String str = get(LUGAR);
+        return str!=null?str:"";
     }
 
     public static void setMenus(List<DtoListaMenu> menus){
