@@ -11,8 +11,9 @@ public class DtoPaquetes {
     private Boolean flagAdicionalesFundas;
     private Boolean flagAdicionalesGuardian;
     private Integer paquetePorRecoleccion;
-    private Integer entregaFundas;
-    private Integer entregaGuardianes;
+
+    private Boolean entregaFundas;
+    private Boolean entregaGuardianes;
 
 
     public DtoPaquetes() {
@@ -91,19 +92,19 @@ public class DtoPaquetes {
         this.paquetePorRecoleccion = paquetePorRecoleccion;
     }
 
-    public Integer getEntregaFundas() {
+    public Boolean getEntregaFundas() {
         return entregaFundas;
     }
 
-    public void setEntregaFundas(Integer entregaFundas) {
+    public void setEntregaFundas(Boolean entregaFundas) {
         this.entregaFundas = entregaFundas;
     }
 
-    public Integer getEntregaGuardianes() {
+    public Boolean getEntregaGuardianes() {
         return entregaGuardianes;
     }
 
-    public void setEntregaGuardianes(Integer entregaGuardianes) {
+    public void setEntregaGuardianes(Boolean entregaGuardianes) {
         this.entregaGuardianes = entregaGuardianes;
     }
 }

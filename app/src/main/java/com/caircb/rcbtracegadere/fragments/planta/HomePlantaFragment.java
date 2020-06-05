@@ -18,7 +18,6 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
-import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -196,6 +195,26 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
             }
         });
 
+        btnInicioRuta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogInicioRuta = new DialogInicioRuta(getActivity());
+                dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogInicioRuta.setCancelable(false);
+                dialogInicioRuta.show();
+            }
+
+
+            // openDialog_InicioApp(getMain().getInicioSesion());
+                /*
+                btnInicioRuta.setVisibility(View.GONE);
+                txtinicioRuta.setVisibility(View.GONE);
+                btnFinRuta.setVisibility(View.VISIBLE);
+                txtFinRuta.setVisibility(View.VISIBLE);*/
+
+
+
+        });
 
         btnFinRuta.setOnClickListener(new View.OnClickListener() {
             @Override

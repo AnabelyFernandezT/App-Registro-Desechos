@@ -1,7 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,14 +86,14 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
-        lblListaManifiestoAsignado = (TextView) getView().findViewById(R.id.lblListaManifiestoAsignado);
-        btnSincManifiestos = (ImageButton) getView().findViewById(R.id.btnSincManifiestos);
-        btnListaAsignadaTransportista = (ImageButton) getView().findViewById(R.id.btnListaAsignadaTransportista);
-        btnMenu = (ImageButton) getView().findViewById(R.id.btnMenu);
-        btnPickUpTransportista = (ImageView) getView().findViewById(R.id.btnPickUpTransportista);
-        lblpickUpTransportista = (TextView) getView().findViewById(R.id.lblpickUpTransportista);
-        btnDropOffTransportista = (ImageView) getView().findViewById(R.id.btnDropOffTransportista);
-        lblDropOffTransportista = (TextView) getView().findViewById(R.id.lblDropOffTransportista);
+        lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
+        btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
+        btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
+        btnMenu = getView().findViewById(R.id.btnMenu);
+        btnPickUpTransportista = getView().findViewById(R.id.btnPickUpTransportista);
+        lblpickUpTransportista = getView().findViewById(R.id.lblpickUpTransportista);
+        btnDropOffTransportista = getView().findViewById(R.id.btnDropOffTransportista);
+        lblDropOffTransportista =  getView().findViewById(R.id.lblDropOffTransportista);
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lnlIniciaRuta = getView().findViewById(R.id.LnlIniciaRuta);

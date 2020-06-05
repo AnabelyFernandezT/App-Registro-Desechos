@@ -14,19 +14,22 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import io.reactivex.annotations.NonNull;
 
 public class DialogInicioRuta extends MyDialog {
     EditText txtKilometraje;
@@ -40,9 +43,9 @@ public class DialogInicioRuta extends MyDialog {
 
     Boolean exito;
 
-    //ListaValoresAdapter listaValoresAdapter;
+    ListaValoresAdapter listaValoresAdapter;
     //UserRegistroInicioFinTask registroInicio;
-    //UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
+    UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
 
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista, btnInicioRuta, btnFinRuta,regionBuscar;
@@ -58,7 +61,7 @@ public class DialogInicioRuta extends MyDialog {
 
     private final TaskListener taskListener;
 */
-/*
+
     UserConsultarPlacasInicioRutaDisponible.TaskListener listenerPlacasDisponibles= new UserConsultarPlacasInicioRutaDisponible.TaskListener() {
         @Override
         public void onFinished(List<DtoCatalogo> catalogos) {
@@ -67,7 +70,6 @@ public class DialogInicioRuta extends MyDialog {
             spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
         }
     };
-    */
 
     public DialogInicioRuta(@NonNull Context context ) {
         super(context, R.layout.dialog_inicio_ruta);
@@ -178,8 +180,8 @@ public class DialogInicioRuta extends MyDialog {
     }
 
     private void datosPlacasDisponibles(){
-        //consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity(),listenerPlacasDisponibles);
-        //consultarPlacasInicioRutaDisponible.execute();
+        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity(),listenerPlacasDisponibles);
+        consultarPlacasInicioRutaDisponible.execute();
     }
 
 
@@ -196,7 +198,7 @@ public class DialogInicioRuta extends MyDialog {
             }
         }
 
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, listaData);
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.textview_spinner, listaData);
         defaulSpiner.setAdapter(adapter);
         defaulSpiner.setEnabled(bhabilitar);
 
@@ -252,16 +254,14 @@ public class DialogInicioRuta extends MyDialog {
         registroInicio.execute();*/
     }
 
-    /*
-    UserRegistroInicioFinTask.TaskListener listener = new UserRegistroInicioFinTask.TaskListener() {
+   /* UserRegistroInicioFinTas.TaskListener listener = new UserRegistroInicioFinTask.TaskListener() {
         @Override
         public void onFinished() {
 
             inicioRuta();
             DialogInicioRuta.this.dismiss();
         }
-    };
-    */
+    };*/
 
     private void inicioRuta(){
 
