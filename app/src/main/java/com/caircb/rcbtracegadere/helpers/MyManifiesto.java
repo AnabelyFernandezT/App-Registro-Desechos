@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -640,7 +641,7 @@ public class MyManifiesto {
 
     }
 
-    private PdfPTable ObservacionesResiduos(Font f3){
+    private PdfPTable ObservacionesResiduos(Font f3) throws Exception{
         PdfPCell _cell;
         PdfPTable tb = new PdfPTable(1);
         //tabla 1
@@ -657,8 +658,8 @@ public class MyManifiesto {
 
         //tabla 2
         PdfPTable tb2 = new PdfPTable(1);
-       // PdfPCell cell = new PdfPCell(regionAdicionales(f3));
-        //PdfPCell cell2 = new PdfPCell(regionAdicionales2(f3));
+        PdfPCell cell = new PdfPCell(regionAdicionales(f3));
+        PdfPCell cell2 = new PdfPCell(regionAdicionales2(f3));
         /*tb2.addCell(new PdfPCell(new Phrase("FUNDA 50 *",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.addCell(new PdfPCell(new Phrase("PC1",f3)));
@@ -668,8 +669,8 @@ public class MyManifiesto {
         tb2.addCell(new PdfPCell(new Phrase("PC2",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.completeRow();*/
-       // tb2.addCell(cell);
-        //tb2.addCell(cell2);
+        tb2.addCell(cell);
+        tb2.addCell(cell2);
         tb2.completeRow();
 
 
@@ -696,6 +697,19 @@ public class MyManifiesto {
         _cell = new PdfPCell(tb4);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb.addCell(_cell);
+
+        //tabla n
+        PdfPTable tbn = new PdfPTable(1);
+        PdfPCell celln = new PdfPCell(createOtrasNovedades(f3));
+        //celln.setPadding(2.0f);
+        //celln.setMinimumHeight(60f);
+        tbn.addCell(celln);
+        tbn.completeRow();
+
+        _cell = new PdfPCell(tbn);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb.addCell(_cell);
+
 
         //tabla 5
         PdfPTable tb5 = new PdfPTable(new float[] { 100});
@@ -796,18 +810,26 @@ public class MyManifiesto {
         PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
         ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
 
-        PdfPTable det = new PdfPTable(new float[]{10,10,40,10});
+
+        PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
         det.addCell(new PdfPCell(new Phrase("Fundas",f3)));
         det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3,null));
 
-        if(manifiestoPkg.getDatosGuardianes()==null){
-         det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
-        }else {
+        if(manifiestoPkg!=null){
             det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosFundas().toString(), f3, null));
+        }else {
+            det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
         }
 
-        det.addCell(createCell_VACIO());
-        det.addCell(createCell_VACIO());
+        det.addCell(new PdfPCell(new Phrase("Adicionales",f3)));
+
+        if(manifiestoPkg!=null){
+            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdFundas().toString(), f3, null));
+        }else {
+            det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
+        }
+
+
         det.completeRow();
 
         return det;
@@ -817,12 +839,24 @@ public class MyManifiesto {
         PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
         ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
 
-        PdfPTable det = new PdfPTable(new float[]{10,10,40,10});
-        det.addCell(new PdfPCell(new Phrase("Guardianes",f3)));
+        PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
+        det.addCell(new PdfPCell(new Phrase("Guardian",f3)));
         det.addCell(createCell_NO_BORDER_SINGLE(pkg.getGuardian(), f3,null));
-        det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosGuardianes().toString(), f3,null));
-        det.addCell(createCell_VACIO());
-        det.addCell(createCell_VACIO());
+
+        if(manifiestoPkg!=null){
+            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosGuardianes().toString(), f3, null));
+        }else {
+
+            det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
+        }
+
+        det.addCell(new PdfPCell(new Phrase("Adicionales",f3)));
+
+        if(manifiestoPkg!=null){
+            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdGuardianes().toString(), f3, null));
+        }else {
+            det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
+        }
         det.completeRow();
 
         return det;
@@ -872,6 +906,48 @@ public class MyManifiesto {
 
     }
 
+    private PdfPTable createOtrasNovedades(Font f3) throws Exception {
+
+        //dbHelper.open();
+        List<RowItemNoRecoleccion> novedades = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idManifiesto);
+        //dbHelper.close();
+
+        PdfPTable det = new PdfPTable(new float[]{10,80});
+        det.setWidthPercentage(100);
+
+        if(novedades.size()>0) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imagenCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Image jpgCheck = Image.getInstance(stream.toByteArray());
+            jpgCheck.scaleToFit(16,16);
+            stream.close();
+
+            stream = new ByteArrayOutputStream();
+            imagenUnCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Image jpgUnCheck = Image.getInstance(stream.toByteArray());
+            jpgUnCheck.scaleToFit(16,16);
+            stream.close();
+
+
+            for(RowItemNoRecoleccion ct:novedades){
+                if(ct.isEstadoChek()){
+                    det.addCell(createCell_Imagen_NO_BORDER(jpgCheck,f3,Element.ALIGN_CENTER));
+                }else{
+                    det.addCell(createCell_Imagen_NO_BORDER(jpgUnCheck,f3,Element.ALIGN_CENTER));
+                }
+                det.addCell(createCell_NO_BORDER_SINGLE(ct.getCatalogo(), f3,null));
+            }
+
+            stream.close();
+        }
+
+        det.addCell(createCell_VACIO());
+        det.addCell(createCell_VACIO());
+        det.completeRow();
+
+        return det;
+
+    }
     private PdfPTable createVerificacion(Font f3) throws Exception {
 
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10,10,10,10,10,10});
