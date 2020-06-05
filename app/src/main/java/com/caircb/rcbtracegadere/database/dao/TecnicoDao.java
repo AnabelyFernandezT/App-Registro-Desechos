@@ -14,6 +14,9 @@ public abstract class TecnicoDao {
     @Query("select * from tb_tecnicos where identificacion=:identificacion")
     public abstract TecnicoEntity fechConsultaTecnicobyIdentidad(String identificacion);
 
+    @Query("select * from tb_tecnicos where idManifiesto=:idManifiesto")
+    public abstract TecnicoEntity fechConsultaTecnicobyManifiesto(Integer idManifiesto);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createTecnico(TecnicoEntity entity);
 

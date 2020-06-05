@@ -8,6 +8,9 @@ import androidx.room.Update;
 
 
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.models.request.RequestManifiestoPaquete;
+
+import java.util.List;
 
 
 @Dao
@@ -19,6 +22,9 @@ public abstract class ManifiestoPaqueteDao {
 
     @Query("select * from tb_manifiestos_paquete where idAppManifiesto =:manifiestoID and idPaquete=:paqueteID")
     public abstract ManifiestoPaquetesEntity fetchConsultarManifiestoPaquetebyId(Integer manifiestoID, Integer paqueteID);
+
+    @Query("select * from tb_manifiestos_paquete where idAppManifiesto =:manifiestoID and idPaquete=:paqueteID")
+    public abstract List<RequestManifiestoPaquete> fetchConsultarManifiestoPaquete(Integer manifiestoID, Integer paqueteID);
 
     @Update
     public abstract void actualiarPaquete(ManifiestoPaquetesEntity entity);
