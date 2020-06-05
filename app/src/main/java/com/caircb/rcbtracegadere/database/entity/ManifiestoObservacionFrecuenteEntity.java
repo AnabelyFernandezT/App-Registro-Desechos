@@ -20,6 +20,8 @@ public class ManifiestoObservacionFrecuenteEntity {
 
     private boolean estadoChek;
 
+    private boolean estadoChekRecepcion;
+
     public ManifiestoObservacionFrecuenteEntity() {
     }
 
@@ -55,5 +57,13 @@ public class ManifiestoObservacionFrecuenteEntity {
 
     public void setEstadoChek(boolean estadoChek) {
         this.estadoChek = estadoChek;
+    }
+
+    public boolean isEstadoChekRecepcion() {
+        return estadoChekRecepcion;
+    }
+
+    public void setEstadoChekRecepcion(boolean estadoChekRecepcion) {
+        this.estadoChekRecepcion = estadoChekRecepcion;
     }
 }

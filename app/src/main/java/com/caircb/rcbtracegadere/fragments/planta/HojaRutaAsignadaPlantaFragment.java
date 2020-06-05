@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.fragments.planta;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.dialogs.DialogOptionsManifiesto;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.MenuItem;
@@ -37,7 +39,7 @@ import java.util.List;
  * Use the {@link HojaRutaAsignadaPlantaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.OnClickListener {
+public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCameraListener,View.OnClickListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
@@ -162,6 +164,13 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
 
         window = dialogOptionsManifiesto.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
+    public void onCameraResult(int requestCode, int resultCode, Intent data) {
+        if(dialogOptionsManifiesto!=null && ((requestCode>=101 && requestCode<=104) ||(requestCode>=301 && requestCode<=304)||(requestCode>=201 && requestCode<=204))){
+            dialogOptionsManifiesto.setMakePhoto(requestCode);
+        }
     }
 
 }
