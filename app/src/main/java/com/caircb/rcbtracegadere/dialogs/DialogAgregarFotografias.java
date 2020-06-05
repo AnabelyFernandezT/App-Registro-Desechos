@@ -136,16 +136,24 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
 
     private void openCamera(Integer index) {
         try {
-
-            File dir = new File(getActivity().getFilesDir(), "evidencias");
-            if(!dir.exists()) {
-                dir.mkdir();
-            }
-            File file = new File(dir, "fotografia.jpg");
-            Uri photoUri = FileProvider.getUriForFile(getContext(), MyApp.MY_PROVIDER, file);
+            File dir=null;
             intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            mImageCaptureUri = Uri.fromFile(file);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                dir = new File(getActivity().getFilesDir(), "evidencias");
+                if (!dir.exists()) {
+                    dir.mkdir();
+                }
+                File file = new File(dir, "fotografia.jpg");
+                Uri photoUri = FileProvider.getUriForFile(getContext(), MyApp.MY_PROVIDER, file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                mImageCaptureUri = Uri.fromFile(file);
+            }else{
+
+                dir = new File(android.os.Environment.getExternalStorageDirectory(), "fotografia.jpg");
+                mImageCaptureUri = Uri.fromFile(dir);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+            }
+
             getActivity().startActivityForResult(intent, index);
 
         }catch (Exception ex){
