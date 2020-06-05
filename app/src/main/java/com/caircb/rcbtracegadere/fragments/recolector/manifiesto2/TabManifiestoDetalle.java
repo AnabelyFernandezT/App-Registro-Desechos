@@ -41,6 +41,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     ManifiestoDetalleAdapter recyclerviewAdapter;
 
     Integer idAppManifiesto,tipoPaquete;
+    String numeroManifiesto;
     Window window;
     ListView mDialogMenuItems;
 
@@ -49,11 +50,12 @@ public class TabManifiestoDetalle extends LinearLayout {
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     MyCalculoPaquetes calculoPaquetes;
 
-    public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete) {
+    public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto) {
         super(context);
         this.idAppManifiesto=manifiestoID;
         this.tipoPaquete=tipoPaquete;
-        this.detalles = detalles;
+        //this.detalles = detalles;
+        this.numeroManifiesto=numeroManifiesto;
         View.inflate(context, R.layout.tab_manifiesto_detalle, this);
         init();
         loadData();
@@ -116,7 +118,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     private void openDialogBultos(Integer position){
         if(dialogBultos==null){
             dialogOpcioneItem.dismiss();
-            dialogBultos = new DialogBultos(getContext(),position,idAppManifiesto,detalles.get(position).getId(),tipoPaquete);
+            dialogBultos = new DialogBultos(getContext(),position,idAppManifiesto,detalles.get(position).getId(),tipoPaquete,numeroManifiesto);
             dialogBultos.setCancelable(false);
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {

@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.caircb.rcbtracegadere.database.entity.ManifiestoObservacionFrecuenteEntity;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
+import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
 
@@ -49,6 +50,9 @@ public abstract class ManifiestoObservacionFrecuenteDao {
             "inner join tb_catalogos c on n.idCatalogo=c.idSistema and n.idAppManifiesto=:idManifiesto")
     public  abstract List<RowItemHojaRutaCatalogo> fetchReportHojaRutaCatalogo(Integer idManifiesto);
 
+
+    @Query("select idCatalogo from tb_manifiestos_novedad_frecuente where idAppManifiesto=:idAppManifiesto and estadoChek=1")
+    public abstract List<Integer> fetchConsultarNovedadFrecuente(Integer idAppManifiesto);
 
     /*
     public Cursor fetchHojaRutaCatalogo(Integer idAppManifiesto) throws SQLException {

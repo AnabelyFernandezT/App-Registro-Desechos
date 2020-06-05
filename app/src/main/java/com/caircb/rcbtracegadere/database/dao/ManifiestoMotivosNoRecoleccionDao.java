@@ -34,6 +34,9 @@ public abstract class ManifiestoMotivosNoRecoleccionDao {
     @Query("select * from tb_manifiestos_motivo_norecoleccion where idAppManifiesto=:idManifiesto and idCatalogo=:idCatalogo limit 1")
     abstract ManifiestoMotivoNoRecoleccionEntity obtenerMotivoRecoleccion(Integer idManifiesto, Integer idCatalogo);
 
+    @Query("select idCatalogo from tb_manifiestos_motivo_norecoleccion where idAppManifiesto=:idAppManifiesto and estadoChek=1")
+    public abstract List<Integer> fetchConsultarMotivoNoRecoleccion(Integer idAppManifiesto);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiestoMotivoNoRecoleccion(ManifiestoMotivoNoRecoleccionEntity entity);
 

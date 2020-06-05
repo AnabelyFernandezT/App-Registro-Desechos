@@ -25,12 +25,16 @@ public class ManifiestoDetallePesosEntity {
 
     private Integer tipoPaquete;
 
-    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion,Integer tipoPaquete) {
+    @NonNull
+    private String codeQr;
+
+    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion, Integer tipoPaquete, @NonNull String codeQr) {
         this.valor = valor;
         this.idAppManifiesto = idAppManifiesto;
         this.idAppManifiestoDetalle = idAppManifiestoDetalle;
         this.descripcion = descripcion;
-        this.tipoPaquete=tipoPaquete;
+        this.tipoPaquete = tipoPaquete;
+        this.codeQr = codeQr;
     }
 
     public Integer get_id() {
@@ -81,5 +85,14 @@ public class ManifiestoDetallePesosEntity {
 
     public void setTipoPaquete(Integer tipoPaquete) {
         this.tipoPaquete = tipoPaquete;
+    }
+
+    @NonNull
+    public String getCodeQr() {
+        return codeQr;
+    }
+
+    public void setCodeQr(@NonNull String codeQr) {
+        this.codeQr = codeQr;
     }
 }

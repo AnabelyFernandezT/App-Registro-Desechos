@@ -33,6 +33,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private  Integer tipoPaquete=null;
     String audio="";
     String tiempoAudio;
+    String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
             txtClienteCanton,txtClienteParroquia,txtTransReco,txtTransRecoAux,txtIdentificacion,txtNombre,txtCorreo,txtTelefono,
@@ -357,6 +358,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             tipoPaquete = manifiesto.getTipoPaquete();
             audio = manifiesto.getNovedadAudio();
             tiempoAudio = manifiesto.getTiempoAudio();
+            numeroManifiesto =manifiesto.getNumeroManifiesto();
         }
     }
 
@@ -371,6 +373,10 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     public String getTiempoAudio() {
         return tiempoAudio;
+    }
+
+    public String getNumeroManifiesto() {
+        return numeroManifiesto;
     }
 
     public Boolean validacionTabGeneral(){

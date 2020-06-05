@@ -9,6 +9,9 @@ import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoFotografiaEntity;
 import com.caircb.rcbtracegadere.models.ItemFoto;
+import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
+import com.caircb.rcbtracegadere.models.request.RequestNovedadFoto;
+import com.google.firebase.storage.network.ResumableUploadQueryRequest;
 
 import java.util.List;
 
@@ -28,6 +31,9 @@ public abstract class ManifiestoFotografiasDao {
 
     @Query("Select code, foto, tipo, fotoUrl from tb_manifiestos_novedad_foto where idAppManifiesto=:idAppManifiesto")
     public abstract List<ItemFoto> obtenerAllFotosByIdManifiesto(Integer idAppManifiesto);
+
+    @Query("select code as codigo ,fotoUrl as urlImagen from tb_manifiestos_novedad_foto where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo and tipo=:tipo")
+    public abstract List<RequestNovedadFoto> consultarFotografias(Integer idAppManifiesto,Integer idCatalogo,Integer tipo);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createFoto(ManifiestoFotografiaEntity entity);

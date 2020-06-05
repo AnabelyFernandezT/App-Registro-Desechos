@@ -9,4 +9,42 @@ public class RequestManifiestoDet {
     private BigDecimal cantidad;
     private List<RequestManifiestoDetBultos> bultos;
 
+    public RequestManifiestoDet(Integer idAppManifiestoDetalle, BigDecimal peso, BigDecimal cantidad, List<RequestManifiestoDetBultos> bultos) {
+        this.idAppManifiestoDetalle = idAppManifiestoDetalle;
+        this.peso = peso;
+        this.cantidad = cantidad;
+        this.bultos = bultos;
+    }
+
+    public Integer getIdAppManifiestoDetalle() {
+        return idAppManifiestoDetalle;
+    }
+
+    public void setIdAppManifiestoDetalle(Integer idAppManifiestoDetalle) {
+        this.idAppManifiestoDetalle = idAppManifiestoDetalle;
+    }
+
+    public BigDecimal getPeso() {
+        return peso;
+    }
+
+    public void setPeso(BigDecimal peso) {
+        this.peso = peso;
+    }
+
+    public BigDecimal getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(BigDecimal cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public List<RequestManifiestoDetBultos> getBultos() {
+        return bultos;
+    }
+
+    public void setBultos(List<RequestManifiestoDetBultos> bultos) {
+        this.bultos = bultos;
+    }
 }
