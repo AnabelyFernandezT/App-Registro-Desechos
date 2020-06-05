@@ -102,7 +102,7 @@ public class MyCalculoPaquetes {
             pqh =m;
         }else {
             // redondear a maxsup
-            pqh = Math.round((m+n)/2);
+            pqh = (int) Math.ceil((m + n)/ 2d);
 
         }
         return pqh;

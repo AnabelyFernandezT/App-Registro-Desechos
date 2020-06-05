@@ -41,8 +41,8 @@ public abstract class ManifiestoPaqueteDao {
     public void quitarPaquete(Integer idAppManifiesto, Integer idAppPaquete,String descripcion){
         ManifiestoPaquetesEntity pkg = fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppPaquete);
         if(pkg!=null){
-            if(descripcion.equals(ARG_INFECCIOSO))pkg.setDatosFundas(pkg.getDatosFundas()-1);
-            else if (descripcion.equals(ARG_CORTOPUNZANTE))pkg.setDatosGuardianes(pkg.getDatosGuardianes()-1);
+            if(descripcion.equals(ARG_INFECCIOSO) && pkg.getDatosFundas()>0)pkg.setDatosFundas(pkg.getDatosFundas()-1);
+            else if (descripcion.equals(ARG_CORTOPUNZANTE) && pkg.getDatosGuardianes()>0)pkg.setDatosGuardianes(pkg.getDatosGuardianes()-1);
             actualiarPaquete(pkg);
         }
         //return pkg;
@@ -60,7 +60,7 @@ public abstract class ManifiestoPaqueteDao {
             pkg.setIdPaquete(idAppPaquete);
             if(descripcion.equals(ARG_INFECCIOSO)){pkg.setDatosFundas(1);pkg.setDatosGuardianes(0);}
             else if (descripcion.equals(ARG_CORTOPUNZANTE)){pkg.setDatosGuardianes(1);pkg.setDatosFundas(0);}
-            else if (descripcion.equals(ARG_INFECCIOSO_CORTOPUNZANTE)){pkg.setDatosGuardianes(1);pkg.setDatosFundas(1);}
+            //else if (descripcion.equals(ARG_INFECCIOSO_CORTOPUNZANTE)){pkg.setDatosGuardianes(1);pkg.setDatosFundas(1);}
             pkg.setAdFundas(0);
             pkg.setAdGuardianes(0);
             pkg.setPqh(0);

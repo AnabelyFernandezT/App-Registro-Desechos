@@ -181,12 +181,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             //si es tipo paquete .. solicitar escoger un tipo...
             if(tipoPaquete!=null) {
 
-                if (!pkg.getFlagAdicionales() && pkg.getPaquetePorRecolccion().toString().equals("1") && bultos.size()>0){
-                    messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
-                    return;
-                }else {
+                //if (!pkg.getFlagAdicionales() && pkg.getPaquetePorRecolccion().toString().equals("1") && bultos.size()>0){
+                    //messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
+                    //return;
+                //}else {
                     showTipoPaquete(imput);
-                }
+                //}
             }else{
                 addBulto(imput,"");
             }
@@ -202,7 +202,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalFunda()){
+
+                        if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalFunda() && pkg.getPaquetePorRecolccion().toString().equals("1")){
                             alert.dismiss();
                             messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
                             return;
@@ -212,7 +213,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         alert.dismiss();
                         break;
                     case 1:
-                        if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalGuardian()){
+                        if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalGuardian() && pkg.getPaquetePorRecolccion().toString().equals("1")){
                             alert.dismiss();
                             messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
                             return;
@@ -243,7 +244,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         subtotal = subtotal.add(imput);
         Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete);
 
-        if(tipo.length()>0){MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto,tipoPaquete,tipo);}
+        if(tipo.length()>0){
+            MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto,tipoPaquete,tipo);
+        }
 
         bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo));
         listaValoresAdapter.notifyDataSetChanged();
