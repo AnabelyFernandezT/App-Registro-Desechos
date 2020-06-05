@@ -69,7 +69,6 @@ public class DialogFinRuta extends MyDialog {
         txt_placa = (TextView)getView().findViewById(R.id.Txt_placa);
         txt_kilometraje_inicio = (TextView)getView().findViewById(R.id.txt_kilometraje_inicio);
 
-
         btnFinApp = (LinearLayout)getView().findViewById(R.id.btnFinalizarRuta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnCancelarApp);
 
@@ -84,8 +83,8 @@ public class DialogFinRuta extends MyDialog {
         //txtinicioRuta = (TextView)getActivity().findViewById(R.id.txtIniciarRuta);
 
         //txtFinRuta = (TextView)getActivity().findViewById(R.id.txtFinRuta);
-        lnlIniciaRuta = getView().findViewById(R.id.LnlIniciaRuta);
-        lnlFinRuta = getView().findViewById(R.id.LnlFinRuta);
+        lnlIniciaRuta = getActivity().findViewById(R.id.LnlIniciaRuta);
+        lnlFinRuta = getActivity().findViewById(R.id.LnlFinRuta);
 
         kilometrajeFinal = (EditText)getView().findViewById(R.id.kilometrajeFinal) ;
         kilometrajeFinal.setRawInputType(InputType.TYPE_CLASS_NUMBER);
@@ -147,9 +146,7 @@ public class DialogFinRuta extends MyDialog {
 
         finRuta();
         DialogFinRuta.this.dismiss();
-        /*
-        registroFin = new UserRegistroInicioFinTask(getActivity(),listener,kilometrajeFinal.getText().toString(),2);
-        registroFin.execute();*/
+
 
     }
 
