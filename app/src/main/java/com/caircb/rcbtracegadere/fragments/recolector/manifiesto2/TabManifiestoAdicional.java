@@ -72,6 +72,8 @@ public class TabManifiestoAdicional extends LinearLayout {
     LinearLayout lnlmsgAdicionales;
     DialogBuilder builder;
 
+    View focusView;
+
     public TabManifiestoAdicional(Context context,
                                   Integer idAppManifiesto,
                                   Integer tipoPaquete,
@@ -188,7 +190,6 @@ public class TabManifiestoAdicional extends LinearLayout {
                 }
             }
         });
-
     }
 
     private void loadDataPaquetes(){
