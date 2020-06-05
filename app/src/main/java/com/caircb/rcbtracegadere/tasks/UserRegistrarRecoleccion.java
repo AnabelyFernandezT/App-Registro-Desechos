@@ -14,6 +14,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.DtoFile;
 import com.caircb.rcbtracegadere.models.ItemFirmasManifiesto;
 import com.caircb.rcbtracegadere.models.ItemFoto;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
@@ -39,13 +40,12 @@ import java.util.List;
 public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitCallbacks {
     Integer idAppManifiesto;
 
-    FirebaseStorage firebaseStorage;
-    StorageReference storageRef;
-    StorageReference uploadeRef;
-
-    String pathEvidencias = "evidencias";
+    ManifiestoEntity model;
+    String path ="recoleccion";
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
-    List<ItemFoto> listaEvidenciasFotos;
+    private List<DtoFile> listaFileDefauld;
+    UserUploadFileTask userUploadFileTask;
+
 
     public UserRegistrarRecoleccion(Context context,
                                     Integer idAppManifiesto) {
@@ -55,34 +55,37 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
     @Override
     public void execute() {
-        //obtener datos para realizar el registro...
+        //Subir Fotos
+        model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
-            //obtner detalles
+        //images por defecto
+        listaFileDefauld = new ArrayList<>();
+        listaFileDefauld.add(new DtoFile(model.getTransportistaFirmaUrl(),model.getTransportistaFirmaImg()));
+        listaFileDefauld.add(new DtoFile(model.getTecnicoFirmaUrl(),model.getTecnicoFirmaImg()));
+        if(model.getNovedadAudio()!=null && model.getNovedadAudio().length()>0)listaFileDefauld.add(new DtoFile(model.getNombreNovedadAudio(),model.getNovedadAudio()));
 
-            //Subir Fotos
-            //pathEvidencias = pathEvidencias + "/" + getPath() + "/" + m.getNumeroManifiesto();
-            //uploadImagen();
-
+        path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
+        userUploadFileTask= new UserUploadFileTask(getActivity(),path);
+        userUploadFileTask.uploadRecoleccion(listaFileDefauld);
 
     }
 
     private RequestManifiesto createRequestManifiesto(){
         RequestManifiesto rq = null;
-        ManifiestoEntity m = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
-        if(m!=null) {
+        if(model!=null) {
             rq = new RequestManifiesto();
             rq.setIdAppManifiesto(idAppManifiesto);
-            rq.setNumeroManifiesto(m.getNumeroManifiesto());
-            rq.setNumeroManifiestoCliente(m.getNumManifiestoCliente());
-            rq.setUrlFirmaTransportista(m.getTransportistaFirmaUrl());
+            rq.setNumeroManifiesto(model.getNumeroManifiesto());
+            rq.setNumeroManifiestoCliente(model.getNumManifiestoCliente());
+            rq.setUrlFirmaTransportista(path+"/"+model.getTransportistaFirmaUrl());
             //rq.setResponsableEntregaIdentificacion(m.getTecnicoIdentificacion());
-            rq.setUrlFirmaResponsableEntrega(m.getTecnicoFirmaUrl());
+            rq.setUrlFirmaResponsableEntrega(path+"/"+model.getTecnicoFirmaUrl());
             rq.setUsuarioResponsable(MySession.getIdUsuario());
-            rq.setNovedadReportadaCliente(m.getNovedadEncontrada());
-            rq.setUrlAudioNovedadCliente(m.getNovedadAudio());
-            rq.setFechaRecoleccion(m.getFechaManifiesto());
+            rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
+            rq.setUrlAudioNovedadCliente(path+"/"+model.getNovedadAudio());
+            rq.setFechaRecoleccion(model.getFechaManifiesto());
 
-            rq.setPaquete(createRequestPaquete(m.getTipoPaquete()!=null?(m.getTipoPaquete()>0?m.getTipoPaquete():null):null));
+            rq.setPaquete(createRequestPaquete(model.getTipoPaquete()!=null?(model.getTipoPaquete()>0?model.getTipoPaquete():null):null));
             rq.setDetalles(createRequestDet());
             rq.setNovedadFrecuente(createRequestNovedadFrecuente());
             rq.setNovedadNoRecoleccion(createRequestNoRecoleccion());
@@ -173,77 +176,6 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             }
         }
         return resp;
-    }
-
-
-
-    private void registrar(){
-        Toast.makeText(getActivity(),"IMAGENES EN FIREBASE!!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void sendToStorage(byte[] imagen, final Integer index){
-        if(uploadeRef != null){
-            uploadeRef.putBytes(imagen).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(Exception e) {
-                    ProgressHide();
-                    message(e.getMessage());
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    sendImagen(index + 1);
-                }
-            });
-        }
-    }
-
-    private List<ItemFoto> listaFotos (Integer idAppManifiesto){
-
-        List<ItemFoto>listaFoto = MyApp.getDBO().manifiestoFotografiasDao().obtenerAllFotosByIdManifiesto(idAppManifiesto);
-        List<ItemFoto> listaFirmaTecnico= MyApp.getDBO().manifiestoDao().obtenerFotoFirmaTecnicoByIdManifiesto(idAppManifiesto);
-        List<ItemFoto> listaFirmaTranspor = MyApp.getDBO().manifiestoDao().obtenerFotoFirmaTransportistaByIdManifiesto(idAppManifiesto);
-
-        listaFoto.addAll(listaFirmaTecnico);
-        listaFoto.addAll(listaFirmaTranspor);
-
-        return listaFoto == null ? new ArrayList<ItemFoto>() :  listaFoto;
-    }
-
-    private void uploadImagen(){
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageRef = firebaseStorage.getReference();
-
-        listaEvidenciasFotos = listaFotos(idAppManifiesto);
-
-        if(listaEvidenciasFotos != null && listaEvidenciasFotos.size() >0){
-            //enviamos evidencias
-            sendImagen(0);
-        }
-
-    }
-
-    private void sendImagen(Integer index){
-        /*Evidencias*/
-        if(index < listaEvidenciasFotos.size()){
-            if(listaEvidenciasFotos.get(index).getTipo() == 1 ){
-                uploadeRef = storageRef.child(pathEvidencias + "/noRecoleccion/" + listaEvidenciasFotos.get(index).getCode()+"_IMG");
-                sendToStorage(Utils.decodeBase64toByte(listaEvidenciasFotos.get(index).getFoto()), index);
-
-            }else if(listaEvidenciasFotos.get(index).getTipo() == 2 ){
-                uploadeRef = storageRef.child(pathEvidencias + "/novedades/" + listaEvidenciasFotos.get(index).getCode()+"_IMG");
-                sendToStorage(Utils.decodeBase64toByte(listaEvidenciasFotos.get(index).getFoto()), index);
-
-            }else if(listaEvidenciasFotos.get(index).getTipo() == 10 ){
-                uploadeRef = storageRef.child(pathEvidencias + "/" + listaEvidenciasFotos.get(index).getFotoUrl());
-                sendToStorage(Utils.decodeBase64toByte(listaEvidenciasFotos.get(index).getFoto()), index);
-            }
-        }
-
-        if(index == listaEvidenciasFotos.size()){ // registro todas las fotos al firebase
-            registrar();
-        }
-
     }
 
 

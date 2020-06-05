@@ -35,6 +35,11 @@ public abstract class ManifiestoFotografiasDao {
     @Query("select code as codigo ,fotoUrl as urlImagen from tb_manifiestos_novedad_foto where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo and tipo=:tipo")
     public abstract List<RequestNovedadFoto> consultarFotografias(Integer idAppManifiesto,Integer idCatalogo,Integer tipo);
 
+    @Query("select _id  from tb_manifiestos_novedad_foto" +
+            " where idAppManifiesto=:idAppManifiesto and tipo=:tipo")
+    public abstract List<Long> consultarFotografiasUpload(Integer idAppManifiesto,Integer tipo);
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createFoto(ManifiestoFotografiaEntity entity);
 

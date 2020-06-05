@@ -21,6 +21,8 @@ public class MyRetrofitApi {
         return (Activity)mContext;
     }
 
+    public Context getContext(){return mContext;}
+
     public void progressShow(String text){
         if(progressDialog!=null && progressDialog.isShowing()){progressDialog.dismiss();progressDialog=null;}
         if(progressDialog==null){
