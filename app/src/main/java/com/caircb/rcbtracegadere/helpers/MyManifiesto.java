@@ -657,8 +657,8 @@ public class MyManifiesto {
 
         //tabla 2
         PdfPTable tb2 = new PdfPTable(1);
-        PdfPCell cell = new PdfPCell(regionAdicionales(f3));
-        PdfPCell cell2 = new PdfPCell(regionAdicionales2(f3));
+       // PdfPCell cell = new PdfPCell(regionAdicionales(f3));
+        //PdfPCell cell2 = new PdfPCell(regionAdicionales2(f3));
         /*tb2.addCell(new PdfPCell(new Phrase("FUNDA 50 *",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.addCell(new PdfPCell(new Phrase("PC1",f3)));
@@ -668,8 +668,8 @@ public class MyManifiesto {
         tb2.addCell(new PdfPCell(new Phrase("PC2",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.completeRow();*/
-        tb2.addCell(cell);
-        tb2.addCell(cell2);
+       // tb2.addCell(cell);
+        //tb2.addCell(cell2);
         tb2.completeRow();
 
 

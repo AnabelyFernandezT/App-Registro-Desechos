@@ -70,6 +70,23 @@ public final class Utils {
         return imageEncoded;
     }
 
+    public byte[] encodeTobase64Byte(Bitmap image) {
+        Bitmap immagex = image;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        return b;
+    }
+
+    public static byte[] decodeBase64toByte(String input) {
+        try {
+            if(input!=null && input.length()>0) {
+                return Base64.decode(input, 0);
+            }else{return null;}
+        }catch (Exception e){return null;}
+    }
+
+
     public static String encodeTobase64(byte[] file) {
         String imageEncoded = Base64.encodeToString(file, Base64.DEFAULT);
         return imageEncoded;

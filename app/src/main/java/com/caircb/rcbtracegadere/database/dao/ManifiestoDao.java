@@ -8,6 +8,8 @@ import androidx.room.Transaction;
 
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.models.ItemFirmasManifiesto;
+import com.caircb.rcbtracegadere.models.ItemFoto;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
@@ -79,6 +81,12 @@ public abstract class ManifiestoDao {
     public void updateFirmaWithPesoTransportista(Integer idManifiesto, Double peso, String nombreFimra, String firmaImg){
         actualizarFirmaWithPesoTransportista(idManifiesto, peso, nombreFimra, firmaImg);
     }
+
+    @Query("Select 10 as code,tecnicoFirmaImg as foto, 10 as tipo, tecnicoFirmaUrl as fotoUrl from tb_manifiestos where idAppManifiesto =:idAppManifiesto")
+    public abstract List<ItemFoto> obtenerFotoFirmaTecnicoByIdManifiesto(Integer idAppManifiesto);
+
+    @Query("Select 10 as code, transportistaFirmaImg as foto, 10 as tipo, transportistaFirmaUrl as fotoUrl from tb_manifiestos where idAppManifiesto =:idAppManifiesto")
+    public abstract List<ItemFoto> obtenerFotoFirmaTransportistaByIdManifiesto(Integer idAppManifiesto);
 
     @Query("update tb_manifiestos set idTecnicoGenerador=:idTecnicoGenerador where idAppManifiesto=:idManifiesto")
     public abstract void updateManifiestobyIdManifiesto(Integer idManifiesto, String idTecnicoGenerador);
