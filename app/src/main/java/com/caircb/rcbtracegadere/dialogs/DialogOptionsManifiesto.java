@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
+import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
@@ -40,7 +41,7 @@ public class DialogOptionsManifiesto extends MyDialog {
     Bitmap firmaConfirmada;
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     RecyclerView recyclerViewLtsManifiestoObservaciones;
-    ManifiestoNovedadBaseAdapterR recyclerAdapterNovedades;
+    ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
 
     public DialogOptionsManifiesto(@NonNull Context context, Integer idManifiesto){
@@ -132,10 +133,10 @@ public class DialogOptionsManifiesto extends MyDialog {
     }
 
     private void load(){
-        novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idManifiesto);
+        novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(idManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idManifiesto);
-        recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterRecepcionR(getContext(), novedadfrecuentes, bloquear,idManifiesto);
+        recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterRecepcionR.OnClickOpenFotografias() {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {
                 if(dialogAgregarFotografias==null){
