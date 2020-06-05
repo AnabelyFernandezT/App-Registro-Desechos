@@ -54,4 +54,10 @@ public class MyRetrofitApi {
         messageBox.setNeutralButton("OK", null);
         messageBox.show();
     }
+    public void ProgressHide(){
+        if(progressDialog!=null){
+            progressDialog.dismiss();
+            progressDialog=null;
+        }
+    }
 }
