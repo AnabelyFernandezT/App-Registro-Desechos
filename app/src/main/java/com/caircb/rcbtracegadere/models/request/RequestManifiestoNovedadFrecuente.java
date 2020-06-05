@@ -6,6 +6,11 @@ public class RequestManifiestoNovedadFrecuente {
     private Integer idCatalogo;
     private List<RequestNovedadFoto> fotos;
 
+    public RequestManifiestoNovedadFrecuente(Integer idCatalogo, List<RequestNovedadFoto> fotos) {
+        this.idCatalogo = idCatalogo;
+        this.fotos = fotos;
+    }
+
     public Integer getIdCatalogo() {
         return idCatalogo;
     }

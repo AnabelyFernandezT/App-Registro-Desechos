@@ -98,6 +98,14 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
+    public static String getUUID(String prefix){
+        if(prefix!=null && prefix.length()>0){
+            return prefix+"$"+ System.currentTimeMillis();
+        }else{
+            return  ""+System.currentTimeMillis();
+        }
+    }
+
     private static AppDatabase sInstance;
 
     public static AppDatabase getInstance(Context context){

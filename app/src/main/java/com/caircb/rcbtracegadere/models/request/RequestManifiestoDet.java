@@ -9,6 +9,13 @@ public class RequestManifiestoDet {
     private BigDecimal cantidad;
     private List<RequestManifiestoDetBultos> bultos;
 
+    public RequestManifiestoDet(Integer idAppManifiestoDetalle, BigDecimal peso, BigDecimal cantidad, List<RequestManifiestoDetBultos> bultos) {
+        this.idAppManifiestoDetalle = idAppManifiestoDetalle;
+        this.peso = peso;
+        this.cantidad = cantidad;
+        this.bultos = bultos;
+    }
+
     public Integer getIdAppManifiestoDetalle() {
         return idAppManifiestoDetalle;
     }

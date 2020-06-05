@@ -36,6 +36,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     String dato = "0";
     String inputDefault = "0";
+    String numeroManifiesto="";
     BigDecimal subtotal= BigDecimal.ZERO;
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
@@ -61,13 +62,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             @NonNull Integer position,
             @NonNull Integer idManifiesto,
             @NonNull Integer idManifiestoDetalle,
-            @NonNull Integer tipoPaquete) {
+            @NonNull Integer tipoPaquete,
+            @NonNull String numeroManifiesto) {
         super(context, R.layout.dialog_bultos);
 
         this.position=position;
         this.idManifiesto=idManifiesto;
         this.idManifiestoDetalle=idManifiestoDetalle;
         this.tipoPaquete = tipoPaquete;
+        this.numeroManifiesto = numeroManifiesto;
     }
 
     @Override
@@ -242,7 +245,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     public void addBulto(BigDecimal imput, String tipo){
 
         subtotal = subtotal.add(imput);
-        Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete);
+        Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,numeroManifiesto);
 
         if(tipo.length()>0){
             MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto,tipoPaquete,tipo);

@@ -124,7 +124,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
         tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),
                 idAppManifiesto,
-                tabManifiestoGeneral.getTipoPaquete());
+                tabManifiestoGeneral.getTipoPaquete(),
+                tabManifiestoGeneral.getNumeroManifiesto());
 
         tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
                 idAppManifiesto,
