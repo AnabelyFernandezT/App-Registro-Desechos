@@ -30,6 +30,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogAudio;
+import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
@@ -67,6 +68,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     ManifiestoPaqueteAdapter manifiestoPaqueteAdapter;
 
     String mAudio="";
+    LinearLayout lnlmsgAdicionales;
 
     public TabManifiestoAdicional(Context context,
                                   Integer idAppManifiesto,
@@ -93,6 +95,7 @@ public class TabManifiestoAdicional extends LinearLayout {
         lnlAdicionales = this.findViewById(R.id.lnlAdicionales);
         txtItemPaqueteADFunda = this.findViewById(R.id.txtItemPaqueteADFunda);
         txtItemPaqueteADGuardianes = this.findViewById(R.id.txtItemPaqueteADGuardianes);
+        lnlmsgAdicionales = this.findViewById(R.id.lnlmsgAdicionales);
 
         progressAudio = this.findViewById(R.id.progressAudio);
         mChronometer = this.findViewById(R.id.chronometer);
@@ -173,6 +176,15 @@ public class TabManifiestoAdicional extends LinearLayout {
                 progressAudio.setVisibility(View.GONE);
             }
         });
+
+        txtNovedadEncontrada.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idAppManifiesto, txtNovedadEncontrada.getText().toString());
+                }
+            }
+        });
     }
 
     private void loadDataPaquetes(){
@@ -190,6 +202,11 @@ public class TabManifiestoAdicional extends LinearLayout {
 
             //region de adicionales...
             lnlAdicionales.setVisibility(pkg.getFlagAdicionales()?View.VISIBLE:View.GONE);
+            lnlmsgAdicionales.setVisibility(pkg.getFlagAdicionales()?View.GONE:View.VISIBLE);
+        }
+        if(idAppTipoPaquete == null){
+            lnlAdicionales.setVisibility(View.GONE);
+            lnlmsgAdicionales.setVisibility(View.VISIBLE);
         }
     }
 
@@ -216,7 +233,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     private void loadData(){
         novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,2);
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto,2);
         recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
            @Override
            public void onShow(Integer catalogoID, final Integer position) {
@@ -330,5 +347,32 @@ public class TabManifiestoAdicional extends LinearLayout {
         if(dialogAgregarFotografias!=null){
             dialogAgregarFotografias.setMakePhoto(code);
         }
+    }
+
+    public boolean validaNovedadesFrecuentesPendienteFotos(){
+        return  MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFoto(idAppManifiesto)>0;
+        /*
+        boolean faltaFotoNovedad = false, faltaFotoNoRec = false, valido = false;
+        List<RowItemHojaRutaCatalogo>  novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
+        List<RowItemNoRecoleccion> motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idAppManifiesto);
+
+        for(RowItemHojaRutaCatalogo i : novedadfrecuentes){
+            if(i.isEstadoChek()){
+                if(i.getNumFotos()== 0){ faltaFotoNovedad = true;}
+            }
+        }
+        for(RowItemNoRecoleccion i : motivoNoRecoleccion){
+            if(i.isEstadoChek()){
+                if(i.getNumFotos() == 0){ faltaFotoNoRec = true;}
+            }
+        }
+
+        if(faltaFotoNovedad || faltaFotoNoRec){
+            valido= false;
+        }else {
+            valido = true;
+        }
+        return valido;
+         */
     }
 }

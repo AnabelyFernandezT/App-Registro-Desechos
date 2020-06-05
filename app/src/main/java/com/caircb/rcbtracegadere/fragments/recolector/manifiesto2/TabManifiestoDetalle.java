@@ -159,4 +159,8 @@ public class TabManifiestoDetalle extends LinearLayout {
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
     }
+
+    public boolean validaExisteDetallesSeleccionados(){
+        return MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleSeleccionados(idAppManifiesto).size()>0;
+    }
 }

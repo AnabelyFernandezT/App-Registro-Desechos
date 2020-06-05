@@ -105,7 +105,7 @@ public class ManifiestoNovedadBaseAdapter extends ArrayAdapter<RowItemHojaRutaCa
 
     private void registarCheckObservacion(Integer id, boolean check){
         //dbHelper.open();
-        MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionbyId(id,check);
+        //MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionbyId(id,check);
         //dbHelper.close();
     }
 

@@ -23,6 +23,7 @@ public class MyCalculoPaquetes {
             mpkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, tipoPaquete);
             Integer n = mpkg.getDatosFundas();
             Integer m = mpkg.getDatosGuardianes();
+
             boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda();
 
             resp = new CalculoPaqueteResul();
@@ -30,7 +31,7 @@ public class MyCalculoPaquetes {
             if (adicionales == true && guardian == true && fundas == true) {
                 resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
                 resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
-                resp.setAdicionalFunda(calculoFunta(n, m, adicionales, guardian, fundas, resp.getAdicionalFunda()));
+                resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
             } else {
                 if (adicionales == true && guardian == true) {
                     resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
@@ -38,8 +39,19 @@ public class MyCalculoPaquetes {
                 } else {
                     if (adicionales == true && fundas == true) {
                         resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
-                        resp.setAdicionalFunda(calculoFunta(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                        resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
                     }
+                }
+            }
+
+            if (adicionales == false && guardian == false && fundas == false ){
+                if (pkg.getPaquetePorRecolccion() == 1){
+                    //caso especial 1
+                    resp.setPqh(1);
+                    resp.setAdicionalFunda(0);
+                    resp.setAdicionalGuardian(0);
+                }else {
+                    resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
                 }
             }
 
@@ -89,7 +101,9 @@ public class MyCalculoPaquetes {
         }else if (fundas==true){
             pqh =m;
         }else {
-            pqh = (m+n)/2;
+            // redondear a maxsup
+            pqh = Math.round((m+n)/2);
+
         }
         return pqh;
     }
@@ -112,7 +126,7 @@ public class MyCalculoPaquetes {
             }
         }else {
             if (adicionales==true && guardian==true){
-                if (n>m){
+                if (n<m){
                     adGuardian=m-n;
                 }else{
                     adGuardian=0;
@@ -124,7 +138,7 @@ public class MyCalculoPaquetes {
         return adGuardian;
     }
 
-    private Integer calculoFunta(Integer n, Integer m, boolean adicionales, boolean guardian, boolean fundas, Integer pqh){
+    private Integer calculoFunda(Integer n, Integer m, boolean adicionales, boolean guardian, boolean fundas, Integer pqh){
         int adFunda=0;
         if (adicionales== true && guardian == true && fundas ==true){
             if (m==0||n==0){
@@ -142,7 +156,7 @@ public class MyCalculoPaquetes {
             }
 
         }else{
-            if (adicionales == true && fundas == true){
+            if (guardian == false && adicionales == true && fundas == true){
                 if (n>m){
                     adFunda = n-m;
                 }else {

@@ -36,7 +36,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
 
-    public Context mContext;
+    //public Context mContext;
 
     Boolean inicioRuta = false;
 

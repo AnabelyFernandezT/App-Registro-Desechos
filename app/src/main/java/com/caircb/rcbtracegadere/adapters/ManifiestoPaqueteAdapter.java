@@ -47,8 +47,11 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
         final RowItemPaquete it = paquetesList.get(position);
         holder.txtPkgNombre.setText(it.getNombre());
         holder.txtPkgCantidad.setText(""+it.getCantidad());
-        //holder.txtPkgPendiente.setText(it.getPendiente()== 0 ? "" : String.valueOf(it.getPendiente()));
         holder.txtPkgPendiente.setText(""+it.getPendiente());
+
+        if(holder.txtPkgCantidad.getText().toString().equals("0")){
+            holder.txtPkgPendiente.setEnabled(false);
+        }
 
 
         holder.txtPkgPendiente.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -65,19 +68,28 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
                             Integer valor;
                             if(it.getCantidad() > 0){
                                 if(Integer.valueOf(pendiente)>0){
-                                    valor = Integer.valueOf(pendiente) - it.getCantidad();
+                                    valor = it.getCantidad() - Integer.valueOf(pendiente);
                                     if(position == 0){//fundas
-                                        //System.out.println(""+ position+ "");
                                         MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, Integer.valueOf(pendiente), valor);
                                     }else{// guardianes
-                                        //System.out.println(""+ position+ "");
                                         MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, Integer.valueOf(pendiente), valor);
                                     }
+                                }else if(Integer.valueOf(pendiente)<0) {
+                                    messageBox("Valor ingresado NO debe ser negativo!!");
+                                    holder.txtPkgPendiente.setText(String.valueOf(0));
+                                    if(position == 0){MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, 0, 0);}
+                                    if(position == 1){MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0);}
+                                }
+                                if(Integer.valueOf(pendiente)==0){
+                                    if(position == 0){MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, 0, 0);}
+                                    if(position == 1){MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0);}
                                 }
                             }
                         }
                     }else{
                         holder.txtPkgPendiente.setText(""+0);
+                        if(position==0) {MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, 0, 0);}
+                        if(position==1) {MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0);}
                     }
                 }else {
                     if(holder.txtPkgPendiente.getText().toString().equals("")){

@@ -41,7 +41,11 @@ public abstract class ManifiestoDetalleDao {
     }
 
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto")
-    public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetalleSeleccionadas(Integer idManifiesto);
+    public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetallebyID(Integer idManifiesto);
+
+    @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and estadoChek=1")
+    public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetalleSeleccionados(Integer idManifiesto);
+
 
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDt")
     public abstract ManifiestoDetalleEntity fetchHojaRutaDetbyIdManifiestoDet(Integer idManifiesto, Integer idManifiestoDt);

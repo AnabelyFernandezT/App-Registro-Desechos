@@ -100,7 +100,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
 
         /**Obvervaciones (Novedades)**/
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getActivity(), novedadfrecuentes, bloquear,2);
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getActivity(), novedadfrecuentes, bloquear,2,0);
 
         /*recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
             @Override

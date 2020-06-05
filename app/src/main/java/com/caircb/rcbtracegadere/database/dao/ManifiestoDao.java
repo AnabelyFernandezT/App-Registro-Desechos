@@ -55,6 +55,19 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set peso=:peso, nombreFirma=:nombreFirma, firmaImg=:firmaImg where idAppManifiesto =:idAppManifiesto")
     abstract void actualizarFirmaWithPesoTransportista(Integer idAppManifiesto, Double peso, String nombreFirma, String firmaImg);
 
+    @Query("update tb_manifiestos set IdTecnicoGenerador=:IdTecnicoGenerador where idAppManifiesto =:idAppManifiesto")
+    abstract void actualizarTecnicoGenerador(Integer idAppManifiesto, String IdTecnicoGenerador);
+
+    public void updateGenerador(Integer idManifiesto, String IdTecnicoGenerador){
+        actualizarTecnicoGenerador(idManifiesto, IdTecnicoGenerador);
+    }
+    @Query("update tb_manifiestos set novedadEncontrada=:novedadEncontrada where idAppManifiesto=:idAppManifiesto")
+    abstract void actualizarNovedadEncontrada (Integer idAppManifiesto , String novedadEncontrada);
+
+    public void updateNovedadEncontrada(Integer idManifiesto, String novedadEncontrada){
+        actualizarNovedadEncontrada(idManifiesto, novedadEncontrada);
+    }
+
     public void updateFirmaTecnicoGenerador(Integer idManifiesto, String numManifiesto, String img){
         actualizarFirmaTecnicoGenerador(idManifiesto,numManifiesto,img, AppDatabase.getFieldName(numManifiesto));
     }
