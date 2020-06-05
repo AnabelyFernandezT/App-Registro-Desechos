@@ -55,6 +55,17 @@ public class MyCalculoPaquetes {
                 }
             }
 
+            if (pkg.getEntregaSoloFundas()==true){
+                resp.setPqh(1);
+                resp.setAdicionalFunda(n-1);
+            }
+
+            if (pkg.getEntregaSoloGuardianes()==true){
+                resp.setPqh(1);
+                resp.setAdicionalGuardian(m-1);
+            }
+
+
             //update datos en tabla de calculo de algoritmo...
             mpkg.setPqh(resp.getPqh());
             mpkg.setAdFundas(resp.getAdicionalFunda());
