@@ -130,16 +130,29 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 setNavegate(HojaRutaAsignadaFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
-                //vista preliminar...
-                if(tabManifiestoAdicional.validaObservacioneswithFotos(idAppManifiesto)){
+                //tab genearl...
+                if(!tabManifiestoGeneral.validacionTabGeneral())return;
+                //tab detalle...
+                if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados()) {
+                    messageBox("Se requiere que registre al menos un item como recolectado");
+                    return;
+                }
+                //tab de adicionales...
+                if(tabManifiestoAdicional.validaNovedadesFrecuentesPendienteFotos()){
+                    messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
+                }
+                //if(tabManifiestoAdicional.validaObservacioneswithFotos())
+                /*
+                if(tabManifiestoAdicional.validaObservacioneswithFotos(idAppManifiesto)&& !=false){
                     setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
                 }else{
                     Toast.makeText(getActivity(),"Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!", Toast.LENGTH_SHORT).show();
                     //messageBox("Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!");
-                }
+                }*/
                 break;
         }
     }
+
 
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {

@@ -1,14 +1,19 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -40,10 +45,11 @@ public class TabManifiestoGeneral extends LinearLayout {
     ImageButton btnNumManifiestoCliente,btnBuscarIdentificacion;
 
     ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
-    private int flag =0;
+    private int flag =0, flagT=0;
     DialogFirma dialogFirma;
     ImagenUtils imagenUtils;
 
+    String identificacion, nombre, correo, telefono;
 
 
     public TabManifiestoGeneral(Context context,Integer idAppManifiesto) {
@@ -105,21 +111,35 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
+        txtGenTecNombre.setEnabled(false);
+        txtGenTecCorreo.setEnabled(false);
+        txtGenTecTelefono.setEnabled(false);
+
+
         btnBuscarIdentificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
-                if (tecnico!=null){
-                    txtGenTecNombre.setText(tecnico.getNombre());
-                    txtGenTecCorreo.setText(tecnico.getCorreo());
-                    txtGenTecTelefono.setText(tecnico.getTelefono());
+                if(flagT==0){
+                    if (tecnico!=null){
+                        txtGenTecNombre.setText(tecnico.getNombre());
+                        txtGenTecCorreo.setText(tecnico.getCorreo());
+                        txtGenTecTelefono.setText(tecnico.getTelefono());
+                        txtGenTecIdentificacion.setEnabled(false);
+                        //btnBuscarIdentificacion.setEnabled(false);
+                    }else {
+                        Toast.makeText(getContext(), "Usuario no registrado", Toast.LENGTH_SHORT).show();
+                        txtGenTecNombre.setEnabled(true);
+                        txtGenTecCorreo.setEnabled(true);
+                        txtGenTecTelefono.setEnabled(true);
+                        guardarDatosTecnico();
+                    }
+                    flagT=1;
                 }else {
-
-                    txtGenTecNombre.setText("");
-                    txtGenTecCorreo.setText("");
-                    txtGenTecTelefono.setText("");
-
+                    MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtGenTecIdentificacion.getText().toString(),nombre,correo,telefono);
+                    MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
+                    flagT=0;
                 }
 
             }
@@ -196,15 +216,90 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
+        validarTecnico();
 
     }
+
+    private void validarTecnico(){
+        ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
+
+        if (manifiesto.getTecnicoResponsable().length()<0){
+            btnBuscarIdentificacion.setEnabled(false);
+            txtGenTecIdentificacion.setEnabled(false);
+        }else {
+            btnBuscarIdentificacion.setEnabled(true);
+            txtGenTecIdentificacion.setEnabled(true);
+        }
+    }
+
+    private void guardarDatosTecnico(){
+
+        txtGenTecNombre.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                nombre = txtGenTecNombre.getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        txtGenTecCorreo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                correo = txtGenTecCorreo.getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        txtGenTecTelefono.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                telefono = txtGenTecTelefono.getText().toString();
+                flagT=1;
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
+       //MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,identificacion,nombre,correo,telefono);
+
+    }
+
     private void loadDataManifiesto(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
             txtNumManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
             txtNumManifiesto.setText(manifiesto.getNumeroManifiesto());
-            txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
+            //txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
             txtClienteDireccion.setText(manifiesto.getDireccionCliente());
             txtClienteProvincia.setText(manifiesto.getProvincia());
             txtClienteParroquia.setText(manifiesto.getParroquia());
@@ -212,10 +307,13 @@ public class TabManifiestoGeneral extends LinearLayout {
 
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
+
             txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
             txtNombre.setText(manifiesto.getTecnicoResponsable());
             txtCorreo.setText(manifiesto.getTecnicoCorreo());
-            txtTelefono.setText(manifiesto.getTecnicoCorreo());
+            txtTelefono.setText(manifiesto.getTecnicoTelefono());
+            txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
+
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText(manifiesto.getEmpresaTransportista());
 
@@ -261,5 +359,36 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     public String getTiempoAudio() {
         return tiempoAudio;
+    }
+
+    public Boolean validacionTabGeneral(){
+        Boolean validar = true;
+        if(txtNumManifiestoCliente.getText().length()>0){
+            txtNumManifiestoCliente.setEnabled(false);
+        }
+
+        if(txtGenTecNombre.getText().length()<=0 || txtNombre.getText().length()<=0){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("INFO");
+            dialog.setMessage("Necesita registrar al tecnico responsable");
+            dialog.setCancelable(false);
+            dialog.setNeutralButton("OK", null);
+            dialog.show();
+            validar = false;
+        }
+
+        if(imgFirmaTecnico!=null && imgFirmaTecnicoTrasnsportista!=null){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("INFO");
+            dialog.setMessage("Necesita registrar la firma");
+            dialog.setCancelable(false);
+            dialog.setNeutralButton("OK", null);
+            dialog.show();
+            validar = false;
+
+        }else{
+            validar = true;
+        }
+        return validar;
     }
 }

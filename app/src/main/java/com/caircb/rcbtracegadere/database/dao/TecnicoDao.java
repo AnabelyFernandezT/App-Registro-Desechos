@@ -17,11 +17,12 @@ public abstract class TecnicoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createTecnico(TecnicoEntity entity);
 
-    public void saveOrUpdate(String cedula, String nombre, String correo, String telefono ){
+    public void saveOrUpdate(Integer idManifiesto, String cedula, String nombre, String correo, String telefono ){
         TecnicoEntity tecnico = fechConsultaTecnicobyIdentidad(cedula);
         if(tecnico==null) {
-            tecnico = new TecnicoEntity(nombre,cedula,correo,telefono);
+            tecnico = new TecnicoEntity(idManifiesto,nombre,cedula,correo,telefono);
         }else{
+            tecnico.setIdManifiesto(idManifiesto);
             tecnico.setNombre(nombre);
             tecnico.setCorreo(correo);
             tecnico.setTelefono(telefono);

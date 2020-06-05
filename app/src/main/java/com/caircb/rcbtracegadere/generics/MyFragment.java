@@ -89,4 +89,14 @@ public class MyFragment extends Fragment {
         messageBox.show();
     }
 
+    public void messageBox2(String message, Context context)
+    {
+        messageBox = new AlertDialog.Builder(context);
+        messageBox.setTitle("INFO");
+        messageBox.setMessage(message);
+        messageBox.setCancelable(false);
+        messageBox.setNeutralButton("OK", null);
+        messageBox.show();
+    }
+
 }

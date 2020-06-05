@@ -272,6 +272,7 @@
                         android:background="@android:color/transparent"
                         android:clickable="false"
                         android:src="@mipmap/ic_play" />
+
                     <TextView
                         android:id="@+id/btnAgregarAudio"
                         android:textColor="@color/app_gadere"
