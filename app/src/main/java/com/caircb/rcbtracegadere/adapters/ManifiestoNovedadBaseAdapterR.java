@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 
 import java.util.List;
@@ -25,11 +27,18 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     List<RowItemHojaRutaCatalogo> listItems;
     //private Integer tipoUsuario ;
     Integer idManifiesto;
+    DialogBuilder builder;
+    boolean resp = false;
 
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer position);
     }
+    public interface OnReloadAdater{
+        public void onShowM(Integer catalogoID, Integer position);
+    }
+
     private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
+    private ManifiestoNovedadBaseAdapterR.OnReloadAdater mOnReloadAdaptador;
 
     public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp,Integer idManifiesto){
         mContext = context;
@@ -62,15 +71,20 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         holder.chkEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(((CheckBox)v).isChecked()){
-                    v.setSelected(true);
-                    item.setEstadoChek(true);
-                    registarCheckItemCatalogo(idManifiesto, item.getId(),true);
+                if(item.getNumFotos() >0){
+                    if(mOnReloadAdaptador!=null)mOnReloadAdaptador.onShowM(item.getId(),position);
                 }else{
-                    v.setSelected(true);
-                    item.setEstadoChek(false);
-                    registarCheckItemCatalogo(idManifiesto, item.getId(),false);
+                    if(((CheckBox)v).isChecked()){
+                        v.setSelected(true);
+                        item.setEstadoChek(true);
+                        registarCheckItemCatalogo(idManifiesto, item.getId(),true);
+                    }else{
+                        v.setSelected(false);
+                        item.setEstadoChek(false);
+                        registarCheckItemCatalogo(idManifiesto, item.getId(),false);
+                    }
                 }
+
             }
         });
 
@@ -119,6 +133,13 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
 
     public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
         mOnClickOpenFotografias = l;
+    }
+    public void setOnClickReaload(@Nullable OnReloadAdater l){
+        mOnReloadAdaptador = l;
+    }
+
+    public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
+        MyApp.getDBO().manifiestoFotografiasDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
     }
 
 }

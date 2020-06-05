@@ -29,7 +29,12 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer cantidad);
     }
+    public interface OnReloadAdater{
+        public void onShowM(Integer catalogoID, Integer position);
+    }
+
     private OnClickOpenFotografias mOnClickOpenFotografias;
+    private ManifiestoNovedadBaseAdapterR.OnReloadAdater mOnReloadAdaptador;
 
     public ManifiestoNoRecoleccionBaseAdapterR(Context context, List<RowItemNoRecoleccion> items, Integer idAppManifiesto, boolean desactivarComp){
         mContext = context;
@@ -61,6 +66,20 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
         holder.chkEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(item.getNumFotos() >0){
+                    if(mOnReloadAdaptador!=null)mOnReloadAdaptador.onShowM(item.getId(),position);
+                }else{
+                    if(((CheckBox)v).isChecked()){
+                        v.setSelected(true);
+                        item.setEstadoChek(true);
+                        registarCheckObservacion(idAppManifiseto, item.getId(),true);
+                    }else{
+                        v.setSelected(false);
+                        item.setEstadoChek(false);
+                        registarCheckObservacion(idAppManifiseto, item.getId(),false);
+                    }
+                }
+                /*
                 if(((CheckBox)v).isChecked()){
                     v.setSelected(true);
                     item.setEstadoChek(true);
@@ -70,6 +89,7 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
                     item.setEstadoChek(false);
                     registarCheckObservacion(item.getId(),false);
                 }
+                */
             }
         });
 
@@ -101,12 +121,18 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
     @Override
     public int getItemCount (){return  listItems.size();}
 
-    private void registarCheckObservacion(Integer id, boolean check){
+    public void registarCheckObservacion(Integer idAppManifiseto,Integer id, boolean check){
         //dbHelper.open();
         MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().saveOrUpdate(idAppManifiseto,id,check);
         //dbHelper.close();
     }
     public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
         mOnClickOpenFotografias = l;
+    }
+    public void setOnClickReaload(@Nullable ManifiestoNovedadBaseAdapterR.OnReloadAdater l){
+        mOnReloadAdaptador = l;
+    }
+    public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
+        MyApp.getDBO().manifiestoFotografiasDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
     }
 }

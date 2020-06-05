@@ -5,6 +5,7 @@ public class RowItemPaquete {
     private String nombre;
     private Integer cantidad;
     private Integer pendiente;
+    private Integer tipo;
 
     public RowItemPaquete(){
     }
@@ -13,6 +14,13 @@ public class RowItemPaquete {
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.pendiente = pendiente;
+    }
+
+    public RowItemPaquete(String nombre, Integer cantidad, Integer pendiente, Integer tipo) {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.pendiente = pendiente;
+        this.tipo = tipo;
     }
 
     public String getNombre() {
@@ -37,5 +45,13 @@ public class RowItemPaquete {
 
     public void setPendiente(Integer pendiente) {
         this.pendiente = pendiente;
+    }
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
     }
 }

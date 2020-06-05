@@ -11,7 +11,6 @@ public class DtoPaquetes {
     private Boolean flagAdicionalesFundas;
     private Boolean flagAdicionalesGuardian;
     private Integer paquetePorRecoleccion;
-
     private Boolean entregaFundas;
     private Boolean entregaGuardianes;
 
