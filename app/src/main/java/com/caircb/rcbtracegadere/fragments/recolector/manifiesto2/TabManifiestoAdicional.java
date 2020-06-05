@@ -135,6 +135,7 @@ public class TabManifiestoAdicional extends LinearLayout {
             }
         });
 
+
         btnReproducirAudio.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,11 +193,11 @@ public class TabManifiestoAdicional extends LinearLayout {
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
             listaPaquetes = new ArrayList<>();
-            if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null?manifiestoPkg.getDatosFundas():0, 0));
-            if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null?manifiestoPkg.getDatosGuardianes():0, 0));
+            if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null?manifiestoPkg.getDatosFundas():0, 0, 1));
+            if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null?manifiestoPkg.getDatosGuardianes():0, 0, 2));
 
             recyclerLtsPaquetes.setLayoutManager(new LinearLayoutManager(getContext()));
-            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete);
+            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete, idAppManifiesto);
             manifiestoPaqueteAdapter.setTaskList(listaPaquetes);
             recyclerLtsPaquetes.setAdapter(manifiestoPaqueteAdapter);
 
