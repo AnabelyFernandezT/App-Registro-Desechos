@@ -43,6 +43,7 @@ public class DialogOptionsManifiesto extends MyDialog {
     RecyclerView recyclerViewLtsManifiestoObservaciones;
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
+    DialogBuilder builder;
 
     public DialogOptionsManifiesto(@NonNull Context context, Integer idManifiesto){
         super(context, R.layout.dialog_options_manifiesto);
@@ -136,6 +137,40 @@ public class DialogOptionsManifiesto extends MyDialog {
         novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(idManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterRecepcionR(getContext(), novedadfrecuentes, bloquear,idManifiesto);
+
+        recyclerAdapterNovedades.setOnClickReaload(new ManifiestoNovedadBaseAdapterRecepcionR.OnReloadAdater() {
+            @Override
+            public void onShowM(final Integer catalogoID, final Integer position) {
+                builder = new DialogBuilder(getContext());
+                builder.setMessage("¿Seguro que desea desactivar el registro, automáticamente se borrarán las evidencias?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recyclerAdapterNovedades.registarCheckItemCatalogo(idManifiesto,catalogoID,false);
+                        recyclerAdapterNovedades.deleteFotosByItem(idManifiesto, catalogoID, position);
+
+                        novedadfrecuentes.get(position).setNumFotos(0);
+                        novedadfrecuentes.get(position).setEstadoChek(false);
+
+                        recyclerAdapterNovedades.notifyDataSetChanged();
+                        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+                        builder.dismiss();
+                    }
+                });
+                builder.setNegativeButton("NO", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        //novedadfrecuentes.get(position).setEstadoChek(true);
+                        //recyclerAdapterNovedades.registarCheckItemCatalogo(idManifiesto,novedadfrecuentes.get(position).getId(),true);
+                        recyclerAdapterNovedades.notifyDataSetChanged();
+                        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+                        builder.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
         recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterRecepcionR.OnClickOpenFotografias() {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {
@@ -151,6 +186,10 @@ public class DialogOptionsManifiesto extends MyDialog {
                                 dialogAgregarFotografias=null;
 
                                 novedadfrecuentes.get(position).setNumFotos(cantidad);
+                                novedadfrecuentes.get(position).setEstadoChek(true);
+                                //poner estado check en true...
+                                recyclerAdapterNovedades.registarCheckItemCatalogo(idManifiesto,novedadfrecuentes.get(position).getId(),true);
+                                //refress cambios...
                                 recyclerAdapterNovedades.notifyDataSetChanged();
                             }
                         }

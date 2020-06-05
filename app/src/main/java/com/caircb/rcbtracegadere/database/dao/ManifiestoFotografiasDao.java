@@ -42,6 +42,9 @@ public abstract class ManifiestoFotografiasDao {
     @Query("Delete from tb_manifiestos_novedad_foto where idAppManifiesto =:idAppManifiesto and idCatalogo=:idCatalogo")
     public abstract void deleteFotoByIdAppManifistoCatalogo( Integer idAppManifiesto, Integer idCatalogo);
 
+    @Query("Delete from tb_manifiestos_novedad_foto where idAppManifiesto =:idAppManifiesto and idCatalogo=:idCatalogo")
+    public abstract void deleteFotoByIdAppManifistoCatalogoRecepcion( Integer idAppManifiesto, Integer idCatalogo);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createFoto(ManifiestoFotografiaEntity entity);
 
