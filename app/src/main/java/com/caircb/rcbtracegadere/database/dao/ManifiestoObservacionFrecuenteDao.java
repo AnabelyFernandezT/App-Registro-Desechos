@@ -21,8 +21,8 @@ public abstract class ManifiestoObservacionFrecuenteDao {
     @Query("update tb_manifiestos_novedad_frecuente set estadoChek=:check where idAppManifiesto=:idManifiesto and _id=:id")
     public abstract void updateManifiestoObservacionbyId(Integer idManifiesto, Integer id, boolean check);
 
-    @Query("update tb_manifiestos_novedad_frecuente set estadoChekRecepcion=:check where _id=:id")
-    public abstract void updateManifiestoObservacionRecepcionbyId(Integer id, boolean check);
+    @Query("update tb_manifiestos_novedad_frecuente set estadoChekRecepcion=:check where idAppManifiesto=:idManifiesto and  _id=:id")
+    public abstract void updateManifiestoObservacionRecepcionbyId(Integer idManifiesto,Integer id, boolean check);
 
     @Query("select * from tb_manifiestos_novedad_frecuente where idAppManifiesto=:idManifiesto and idCatalogo=:idCatalogo")
     public abstract ManifiestoObservacionFrecuenteEntity fetchHojaRutaObservacionFrecuentebyCatalogo(Integer idManifiesto, Integer idCatalogo);
