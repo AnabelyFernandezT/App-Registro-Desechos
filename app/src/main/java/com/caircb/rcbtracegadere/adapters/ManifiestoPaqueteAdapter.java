@@ -30,11 +30,10 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
     Integer idPaquete, idAppmanifiesto;
     AlertDialog.Builder messageBox;
 
-    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete, Integer idAppmanifiesto){
+    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete){
         mContext = context;
         paquetesList = new ArrayList<>();
         this.idPaquete = idPaquete;
-        this.idAppmanifiesto = idAppmanifiesto;
     }
 
     @NonNull

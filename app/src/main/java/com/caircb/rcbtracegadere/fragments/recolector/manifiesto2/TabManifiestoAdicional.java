@@ -30,6 +30,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogAudio;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
@@ -69,6 +70,7 @@ public class TabManifiestoAdicional extends LinearLayout {
 
     String mAudio="";
     LinearLayout lnlmsgAdicionales;
+    DialogBuilder builder;
 
     public TabManifiestoAdicional(Context context,
                                   Integer idAppManifiesto,
@@ -186,6 +188,7 @@ public class TabManifiestoAdicional extends LinearLayout {
                 }
             }
         });
+
     }
 
     private void loadDataPaquetes(){
@@ -197,7 +200,7 @@ public class TabManifiestoAdicional extends LinearLayout {
             if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null?manifiestoPkg.getDatosGuardianes():0, 0, 2));
 
             recyclerLtsPaquetes.setLayoutManager(new LinearLayoutManager(getContext()));
-            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete, idAppManifiesto);
+            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete);
             manifiestoPaqueteAdapter.setTaskList(listaPaquetes);
             recyclerLtsPaquetes.setAdapter(manifiestoPaqueteAdapter);
 
@@ -235,6 +238,40 @@ public class TabManifiestoAdicional extends LinearLayout {
         novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto);
+
+        recyclerAdapterNovedades.setOnClickReaload(new ManifiestoNovedadBaseAdapterR.OnReloadAdater() {
+            @Override
+            public void onShowM(final Integer catalogoID, final Integer position) {
+                builder = new DialogBuilder(getContext());
+                builder.setMessage("¿Seguro que desea desactivar el registro, automáticamente se borrarán las evidencias?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recyclerAdapterNovedades.registarCheckItemCatalogo(idAppManifiesto,catalogoID,false);
+                        recyclerAdapterNovedades.deleteFotosByItem(idAppManifiesto, catalogoID, position);
+
+                        novedadfrecuentes.get(position).setNumFotos(0);
+                        novedadfrecuentes.get(position).setEstadoChek(false);
+
+                        recyclerAdapterNovedades.notifyDataSetChanged();
+                        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+                        builder.dismiss();
+                    }
+                });
+                builder.setNegativeButton("NO", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        //novedadfrecuentes.get(position).setEstadoChek(true);
+                        //recyclerAdapterNovedades.registarCheckItemCatalogo(idManifiesto,novedadfrecuentes.get(position).getId(),true);
+                        recyclerAdapterNovedades.notifyDataSetChanged();
+                        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+                        builder.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
         recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
            @Override
            public void onShow(Integer catalogoID, final Integer position) {
@@ -271,7 +308,37 @@ public class TabManifiestoAdicional extends LinearLayout {
         motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idAppManifiesto);
         recyclerViewLtsMotivoNoRecoleccion.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerAdapterNoRecolecciones = new ManifiestoNoRecoleccionBaseAdapterR(this.getContext(), motivoNoRecoleccion,idAppManifiesto, bloquear);
+        recyclerAdapterNoRecolecciones.setOnClickReaload(new ManifiestoNovedadBaseAdapterR.OnReloadAdater() {
+            @Override
+            public void onShowM(final Integer catalogoID, final Integer position) {
+                builder = new DialogBuilder(getContext());
+                builder.setMessage("¿Seguro que desea desactivar el registro, automáticamente se borrarán las evidencias?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recyclerAdapterNoRecolecciones.registarCheckObservacion(idAppManifiesto,catalogoID,false);
+                        recyclerAdapterNoRecolecciones.deleteFotosByItem(idAppManifiesto, catalogoID, position);
 
+                        motivoNoRecoleccion.get(position).setNumFotos(0);
+                        motivoNoRecoleccion.get(position).setEstadoChek(false);
+
+                        recyclerAdapterNoRecolecciones.notifyDataSetChanged();
+                        recyclerViewLtsMotivoNoRecoleccion.setAdapter(recyclerAdapterNoRecolecciones);
+                        builder.dismiss();
+                    }
+                });
+                builder.setNegativeButton("NO", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        recyclerAdapterNoRecolecciones.notifyDataSetChanged();
+                        recyclerViewLtsMotivoNoRecoleccion.setAdapter(recyclerAdapterNoRecolecciones);
+                        builder.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
         recyclerAdapterNoRecolecciones.setOnClickOpenFotografias(new ManifiestoNoRecoleccionBaseAdapterR.OnClickOpenFotografias() {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {

@@ -33,7 +33,12 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer position);
     }
+    public interface OnReloadAdater{
+        public void onShowM(Integer catalogoID, Integer position);
+    }
+
     private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
+    private ManifiestoNovedadBaseAdapterR.OnReloadAdater mOnReloadAdaptador;
 
     public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp,Integer idManifiesto){
         mContext = context;
@@ -66,17 +71,20 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         holder.chkEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(((CheckBox)v).isChecked()){
-                    v.setSelected(true);
-                    item.setEstadoChek(true);
-                    registarCheckItemCatalogo(idManifiesto, item.getId(),true);
+                if(item.getNumFotos() >0){
+                    if(mOnReloadAdaptador!=null)mOnReloadAdaptador.onShowM(item.getId(),position);
                 }else{
-                    openModalUnCheck(idManifiesto, item.getId(),position);
-                    v.setSelected(false);
-                    item.setEstadoChek(false);
-                    registarCheckItemCatalogo(idManifiesto, item.getId(),false);
+                    if(((CheckBox)v).isChecked()){
+                        v.setSelected(true);
+                        item.setEstadoChek(true);
+                        registarCheckItemCatalogo(idManifiesto, item.getId(),true);
+                    }else{
+                        v.setSelected(false);
+                        item.setEstadoChek(false);
+                        registarCheckItemCatalogo(idManifiesto, item.getId(),false);
+                    }
                 }
+
             }
         });
 
@@ -126,32 +134,12 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
         mOnClickOpenFotografias = l;
     }
+    public void setOnClickReaload(@Nullable OnReloadAdater l){
+        mOnReloadAdaptador = l;
+    }
 
-    private void openModalUnCheck (final Integer idManifiesto, final Integer idItem, final Integer position){
-
-        builder = new DialogBuilder(mContext);
-        builder.setMessage("¿Esta seguro que desea desactivar el item. Automáticamente se borrarán las evidencias?");
-        builder.setCancelable(true);
-        builder.setPositiveButton("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                listItems.get(position).setEstadoChek(false);
-                registarCheckItemCatalogo(idManifiesto, idItem,false);
-                MyApp.getDBO().manifiestoFotografiasDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
-                notifyDataSetChanged();
-
-                builder.dismiss();
-            }
-        });
-        builder.setNegativeButton("NO", new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                builder.dismiss();
-            }
-        });
-
-        builder.show();
+    public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
+        MyApp.getDBO().manifiestoFotografiasDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
     }
 
 }
