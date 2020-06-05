@@ -26,7 +26,7 @@ public class MyFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getActivity().getApplicationContext();
+        mContext = getActivity();
         //dbHelper = new DBAdapter(mContext);
     }
 

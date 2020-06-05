@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.caircb.rcbtracegadere.database.entity.ManifiestoObservacionFrecuenteEntity;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public abstract class ManifiestoObservacionFrecuenteDao {
     @Query("select * from tb_manifiestos_novedad_frecuente where idAppManifiesto=:idManifiesto")
     public  abstract List<ManifiestoObservacionFrecuenteEntity> fecthConsultarManifiestoObservacionesSeleccionadas(Integer idManifiesto);
 
-    @Query("update tb_manifiestos_novedad_frecuente set estadoChek=:check where idAppManifiesto=:idManifiesto and idCatalogo=:idCatalogo")
-    public abstract void updateManifiestoObservacionbyId(Integer idManifiesto, Integer idCatalogo, boolean check);
+    //@Query("update tb_manifiestos_novedad_frecuente set estadoChek=:check where idAppManifiesto=:idManifiesto and idCatalogo=:idCatalogo")
+    //public abstract void updateManifiestoObservacionbyId(Integer idManifiesto, Integer idCatalogo, boolean check);
 
     @Query("update tb_manifiestos_novedad_frecuente set estadoChekRecepcion=:check where idAppManifiesto=:idManifiesto and  _id=:id")
     public abstract void updateManifiestoObservacionRecepcionbyId(Integer idManifiesto,Integer id, boolean check);
@@ -40,7 +41,7 @@ public abstract class ManifiestoObservacionFrecuenteDao {
 
     @Query("select count(*) " +
             " from tb_catalogos c" +
-            " inner join tb_manifiestos_novedad_frecuente mnf on c.idSistema=mnf.idCatalogo and c.tipo=1 and estadoChek=1" +
+            " inner join tb_manifiestos_novedad_frecuente mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=1 and estadoChek=1" +
             " where (select count(*) from tb_manifiestos_novedad_foto ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=1)=0")
     public  abstract long existeNovedadFrecuentePendienteFoto(Integer idManifiesto);
 
@@ -75,6 +76,19 @@ public abstract class ManifiestoObservacionFrecuenteDao {
             entity.setEstadoChek(novedad.isEstadoChek());
         }
 
+        createManifiestoObservacionFrecuente(entity);
+    }
+
+    public void saveOrUpdateManifiestoNovedadFrecuente(Integer idAppManifiesto, Integer idCatalogo, boolean check){
+        ManifiestoObservacionFrecuenteEntity entity =fetchHojaRutaObservacionFrecuentebyCatalogo(idAppManifiesto,idCatalogo);
+        if(entity==null){
+            entity = new ManifiestoObservacionFrecuenteEntity();
+            entity.setIdAppManifiesto(idAppManifiesto);
+            entity.setIdCatalogo(idCatalogo);
+            entity.setEstadoChek(check);
+        }else{
+            entity.setEstadoChek(check);
+        }
         createManifiestoObservacionFrecuente(entity);
     }
 }

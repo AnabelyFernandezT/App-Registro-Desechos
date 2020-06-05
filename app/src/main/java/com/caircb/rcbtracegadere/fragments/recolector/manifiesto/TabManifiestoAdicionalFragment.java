@@ -99,8 +99,8 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
 
         /**Obvervaciones (Novedades)**/
-        recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getActivity(), novedadfrecuentes, bloquear,2,0);
+        //recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getActivity(), novedadfrecuentes, bloquear,2,0);
 
         /*recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
             @Override

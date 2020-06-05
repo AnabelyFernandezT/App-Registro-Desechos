@@ -23,7 +23,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     private Context mContext;
     private boolean desactivaComp;
     List<RowItemHojaRutaCatalogo> listItems;
-    private Integer tipoUsuario ;
+    //private Integer tipoUsuario ;
     Integer idManifiesto;
 
     public interface OnClickOpenFotografias {
@@ -31,11 +31,11 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     }
     private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
 
-    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp,Integer tipoUusario,Integer idManifiesto){
+    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp,Integer idManifiesto){
         mContext = context;
         listItems = items;
         this.desactivaComp = desactivarComp;
-        this.tipoUsuario = tipoUusario;
+        //this.tipoUsuario = tipoUusario;
         this.idManifiesto = idManifiesto;
     }
 
@@ -65,11 +65,11 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                 if(((CheckBox)v).isChecked()){
                     v.setSelected(true);
                     item.setEstadoChek(true);
-                    registarCheckObservacion(idManifiesto, item.getId(),true);
+                    registarCheckItemCatalogo(idManifiesto, item.getId(),true);
                 }else{
                     v.setSelected(true);
                     item.setEstadoChek(false);
-                    registarCheckObservacion(idManifiesto, item.getId(),false);
+                    registarCheckItemCatalogo(idManifiesto, item.getId(),false);
                 }
             }
         });
@@ -89,14 +89,14 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         notifyDataSetChanged();
     }
 
-    private void registarCheckObservacion(Integer idManifiesto,Integer id, boolean check){
+    public void registarCheckItemCatalogo(Integer idManifiesto,Integer idCatalogo, boolean check){
         //dbHelper.open();
         ///
-        if (tipoUsuario.equals(1)){
-            MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionRecepcionbyId(idManifiesto,id,check);
-        }else{
-            MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionbyId(idManifiesto,id,check);
-        }
+        //if (tipoUsuario.equals(1)){
+        //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionRecepcionbyId(idManifiesto,id,check);
+        //}else{
+            MyApp.getDBO().manifiestoObservacionFrecuenteDao().saveOrUpdateManifiestoNovedadFrecuente(idManifiesto,idCatalogo,check);
+        //}
         //dbHelper.close();
     }
 

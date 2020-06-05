@@ -7,6 +7,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
+import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
@@ -52,15 +53,16 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                         @Override
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
+                            List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
                             for (DtoManifiesto reg:respuesta){
                                 MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
-                                //MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
                                 for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
                                     MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
                                 }
-                                for(DtoManifiestoObservacionFrecuente c:reg.getHojaRutaCatalogo()){
-                                    MyApp.getDBO().manifiestoObservacionFrecuenteDao().saveOrUpdate(c);
-                                }
+                                //inicalizar los catalogos de recoleccion...
+                                //for (DtoCatalogo c:listaCatalogo){
+                                //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                //}
                                 pos++;
                                 if(cont>1)publishProgress(pos);
                             }

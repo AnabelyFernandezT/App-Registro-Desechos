@@ -20,6 +20,17 @@ public abstract class ManifiestoMotivosNoRecoleccionDao {
             " from tb_catalogos c where tipo=6")
     public  abstract List<RowItemNoRecoleccion> fetchHojaRutaMotivoNoRecoleccion(Integer idManifiesto);
 
+    @Query("select count(*) " +
+            " from tb_catalogos c" +
+            " inner join tb_manifiestos_motivo_norecoleccion mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=6 and estadoChek=1" +
+            " where (select count(*) from tb_manifiestos_novedad_foto ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=2)=0")
+    public  abstract long existeNovedadNoRecoleccionPendienteFoto(Integer idManifiesto);
+
+    @Query("select count(*) " +
+            " from tb_catalogos c" +
+            " inner join tb_manifiestos_motivo_norecoleccion mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=6 and estadoChek=1 limit 1")
+    public  abstract Boolean existeNovedadNoRecoleccion(Integer idManifiesto);
+
     @Query("select * from tb_manifiestos_motivo_norecoleccion where idAppManifiesto=:idManifiesto and idCatalogo=:idCatalogo limit 1")
     abstract ManifiestoMotivoNoRecoleccionEntity obtenerMotivoRecoleccion(Integer idManifiesto, Integer idCatalogo);
 

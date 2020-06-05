@@ -74,13 +74,15 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
 
     private void initTab(){
+
+        inicializeTab();
+
         TabHost tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
         tabs.setup();
 
         TabHost.TabSpec spec=tabs.newTabSpec("GENERAL");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto);
                 return tabManifiestoGeneral;
             }
         });
@@ -90,7 +92,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         spec=tabs.newTabSpec("DETALLE");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
                 return tabManifiestoDetalle;
             }
         });
@@ -100,17 +101,11 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         spec=tabs.newTabSpec("ADICIONALES");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
-                        idAppManifiesto,
-                        tabManifiestoGeneral.getTipoPaquete(),
-                        tabManifiestoGeneral.getAudio(),
-                        tabManifiestoGeneral.getTiempoAudio());
                 return tabManifiestoAdicional;
             }
         });
         spec.setIndicator("ADICIONALES");
         tabs.addTab(spec);
-
         tabs.setCurrentTab(0);
 
         tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
@@ -123,6 +118,21 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         });
     }
 
+    private void inicializeTab(){
+
+        tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto);
+
+        tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),
+                idAppManifiesto,
+                tabManifiestoGeneral.getTipoPaquete());
+
+        tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
+                idAppManifiesto,
+                tabManifiestoGeneral.getTipoPaquete(),
+                tabManifiestoGeneral.getAudio(),
+                tabManifiestoGeneral.getTiempoAudio());
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -130,25 +140,26 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 setNavegate(HojaRutaAsignadaFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
+
                 //tab genearl...
-                if(!tabManifiestoGeneral.validacionTabGeneral())return;
+                //if(!tabManifiestoGeneral.validacionTabGeneral())return;
                 //tab detalle...
-                if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados()) {
+                if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados() && !tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion()) {
                     messageBox("Se requiere que registre al menos un item como recolectado");
                     return;
                 }
                 //tab de adicionales...
                 if(tabManifiestoAdicional.validaNovedadesFrecuentesPendienteFotos()){
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
+                    return;
                 }
-                //if(tabManifiestoAdicional.validaObservacioneswithFotos())
-                /*
-                if(tabManifiestoAdicional.validaObservacioneswithFotos(idAppManifiesto)&& !=false){
-                    setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
-                }else{
-                    Toast.makeText(getActivity(),"Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!", Toast.LENGTH_SHORT).show();
-                    //messageBox("Las novedades o no recolleciones seleccionadas necesitan al menos una fotografía!!");
-                }*/
+                if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
+                    messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
+                    return;
+                }
+
+                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
+
                 break;
         }
     }

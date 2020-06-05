@@ -233,7 +233,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     private void loadData(){
         novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,2,idAppManifiesto);
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto);
         recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
            @Override
            public void onShow(Integer catalogoID, final Integer position) {
@@ -249,6 +249,10 @@ public class TabManifiestoAdicional extends LinearLayout {
                                dialogAgregarFotografias=null;
 
                                novedadfrecuentes.get(position).setNumFotos(cantidad);
+                               novedadfrecuentes.get(position).setEstadoChek(true);
+                               //poner estado check en true...
+                               recyclerAdapterNovedades.registarCheckItemCatalogo(idAppManifiesto,novedadfrecuentes.get(position).getId(),true);
+                               //refress cambios...
                                recyclerAdapterNovedades.notifyDataSetChanged();
                            }
                        }
@@ -349,30 +353,15 @@ public class TabManifiestoAdicional extends LinearLayout {
         }
     }
 
+    public  boolean validaNovedadNoRecoleccionPendicenteFotos(){
+        return  MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().existeNovedadNoRecoleccionPendienteFoto(idAppManifiesto)>0;
+    }
+
     public boolean validaNovedadesFrecuentesPendienteFotos(){
-        return  MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFoto(idAppManifiesto)>0;
-        /*
-        boolean faltaFotoNovedad = false, faltaFotoNoRec = false, valido = false;
-        List<RowItemHojaRutaCatalogo>  novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
-        List<RowItemNoRecoleccion> motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idAppManifiesto);
+        return MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFoto(idAppManifiesto)>0;
+    }
 
-        for(RowItemHojaRutaCatalogo i : novedadfrecuentes){
-            if(i.isEstadoChek()){
-                if(i.getNumFotos()== 0){ faltaFotoNovedad = true;}
-            }
-        }
-        for(RowItemNoRecoleccion i : motivoNoRecoleccion){
-            if(i.isEstadoChek()){
-                if(i.getNumFotos() == 0){ faltaFotoNoRec = true;}
-            }
-        }
-
-        if(faltaFotoNovedad || faltaFotoNoRec){
-            valido= false;
-        }else {
-            valido = true;
-        }
-        return valido;
-         */
+    public boolean validaExisteNovedadesNoRecoleccion(){
+        return MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().existeNovedadNoRecoleccion(idAppManifiesto);
     }
 }
