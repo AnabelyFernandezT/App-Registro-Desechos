@@ -295,6 +295,7 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     private void loadDataManifiesto(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
+        TecnicoEntity tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyManifiesto(idAppManifiesto);
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
             txtNumManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
@@ -319,12 +320,23 @@ public class TabManifiestoGeneral extends LinearLayout {
 
             //String tecnicoIdentificacion = cursor.getString(cursor.getColumnIndex("tecnicoIdentificacion"));
            if(manifiesto.getTecnicoIdentificacion() != null){
-                txtGenTecIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
-                txtGenTecNombre.setText(manifiesto.getTecnicoResponsable());
+                txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
+                txtNombre.setText(manifiesto.getTecnicoResponsable());
                 txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
-                txtGenTecTelefono.setText(manifiesto.getTecnicoTelefono());
-                txtGenTecCorreo.setText(manifiesto.getTecnicoCorreo());
+                txtTelefono.setText(manifiesto.getTecnicoTelefono());
+                txtCorreo.setText(manifiesto.getTecnicoCorreo());
             }
+
+           if(manifiesto.getIdTecnicoGenerador()!= null){
+
+               txtGenTecIdentificacion.setText(tecnicoEntity.getIdentificacion());
+               txtGenTecNombre.setText(tecnicoEntity.getNombre());
+               txtGenTecTelefono.setText(tecnicoEntity.getTelefono());
+               txtGenTecCorreo.setText(tecnicoEntity.getCorreo());
+               btnBuscarIdentificacion.setEnabled(false);
+               txtGenTecIdentificacion.setEnabled(false);
+
+           }
 
             //String img = cursor.getString(cursor.getColumnIndex("tecnicoFirmaImg"));
             if(manifiesto.getTecnicoFirmaImg() != null){
@@ -367,7 +379,9 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtNumManifiestoCliente.setEnabled(false);
         }
 
-        if(txtGenTecNombre.getText().length()<=0 || txtNombre.getText().length()<=0){
+        if(txtGenTecNombre.getText().toString()!="" || txtNombre.getText().toString()!=""){
+            validar = true;
+        }else {
             AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
             dialog.setTitle("INFO");
             dialog.setMessage("Necesita registrar al tecnico responsable");
@@ -375,9 +389,10 @@ public class TabManifiestoGeneral extends LinearLayout {
             dialog.setNeutralButton("OK", null);
             dialog.show();
             validar = false;
+
         }
 
-        if(imgFirmaTecnico!=null && imgFirmaTecnicoTrasnsportista!=null){
+        if(imgFirmaTecnico==null && imgFirmaTecnicoTrasnsportista==null){
             AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
             dialog.setTitle("INFO");
             dialog.setMessage("Necesita registrar la firma");
