@@ -162,7 +162,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 imgFirmaTecnico.setVisibility(View.VISIBLE);
                                 imgFirmaTecnico.setImageBitmap(bitmap);
                                 MyApp.getDBO().manifiestoDao().updateFirmaTecnicoGenerador(idAppManifiesto,txtNumManifiesto.getText().toString(),
-                                        bitmap.toString());
+                                        Utils.encodeTobase64(bitmap));
                             }else{
                                 txtFirmaMensaje.setVisibility(View.VISIBLE);
                                 imgFirmaTecnico.setVisibility(View.GONE);
@@ -197,7 +197,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setImageBitmap(bitmap);
                                 MyApp.getDBO().manifiestoDao().updateFirmaTransportsta(idAppManifiesto,txtNumManifiesto.getText().toString(),
-                                        bitmap.toString());
+                                        Utils.encodeTobase64(bitmap));
                             }else{
                                 txtFirmaMensajeTransportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.GONE);

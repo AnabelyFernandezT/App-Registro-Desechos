@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoFotografiaEntity;
 import com.caircb.rcbtracegadere.models.ItemFoto;
 
@@ -24,6 +25,9 @@ public abstract class ManifiestoFotografiasDao {
 
     @Query("select * from tb_manifiestos_novedad_foto where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo and code=:code and tipo=:tipo limit 1")
     abstract ManifiestoFotografiaEntity obtenerFotografiaEspecifica(Integer idAppManifiesto, Integer idCatalogo, Integer code, Integer tipo);
+
+    @Query("Select code, foto, tipo, fotoUrl from tb_manifiestos_novedad_foto where idAppManifiesto=:idAppManifiesto")
+    public abstract List<ItemFoto> obtenerAllFotosByIdManifiesto(Integer idAppManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createFoto(ManifiestoFotografiaEntity entity);

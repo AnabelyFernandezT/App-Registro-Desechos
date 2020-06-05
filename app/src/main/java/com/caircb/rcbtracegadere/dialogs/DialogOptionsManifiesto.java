@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,12 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.utils.Utils;
+
+import java.util.List;
 
 public class DialogOptionsManifiesto extends MyDialog {
 
@@ -28,7 +35,13 @@ public class DialogOptionsManifiesto extends MyDialog {
     TextView txtFirmaMensajeTransportista;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
+    boolean bloquear;
+    Window window;
     Bitmap firmaConfirmada;
+    List<RowItemHojaRutaCatalogo> novedadfrecuentes;
+    RecyclerView recyclerViewLtsManifiestoObservaciones;
+    ManifiestoNovedadBaseAdapterR recyclerAdapterNovedades;
+    DialogAgregarFotografias dialogAgregarFotografias;
 
     public DialogOptionsManifiesto(@NonNull Context context, Integer idManifiesto){
         super(context, R.layout.dialog_options_manifiesto);
@@ -40,11 +53,12 @@ public class DialogOptionsManifiesto extends MyDialog {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(getView());
         init();
+        load();
     }
 
     private void init(){
+        recyclerViewLtsManifiestoObservaciones = getView().findViewById(R.id.LtsManifiestoObservaciones);
         txtPeso = getView().findViewById(R.id.txtPeso);
-
         btnGuardar = getView().findViewById(R.id.btnGuardar);
         btnCancelar = getView().findViewById(R.id.btnCancelar);
 
@@ -115,5 +129,44 @@ public class DialogOptionsManifiesto extends MyDialog {
                 dismiss();
             }
         });
+    }
+
+    private void load(){
+        novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idManifiesto);
+        recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,1,idManifiesto);
+        recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias() {
+            @Override
+            public void onShow(Integer catalogoID, final Integer position) {
+                if(dialogAgregarFotografias==null){
+                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idManifiesto,catalogoID,3);
+                    dialogAgregarFotografias.setCancelable(false);
+                    dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                        @Override
+                        public void onSuccessful(Integer cantidad) {
+                            if(dialogAgregarFotografias!=null && dialogAgregarFotografias.isShowing()){
+                                dialogAgregarFotografias.dismiss();
+                                dialogAgregarFotografias=null;
+
+                                novedadfrecuentes.get(position).setNumFotos(cantidad);
+                                recyclerAdapterNovedades.notifyDataSetChanged();
+                            }
+                        }
+                    });
+                    dialogAgregarFotografias.show();
+
+                    window = dialogAgregarFotografias.getWindow();
+                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                }
+            }
+        });
+        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+    }
+
+    public void setMakePhoto(Integer code) {
+        if(dialogAgregarFotografias!=null){
+            dialogAgregarFotografias.setMakePhoto(code);
+        }
     }
 }

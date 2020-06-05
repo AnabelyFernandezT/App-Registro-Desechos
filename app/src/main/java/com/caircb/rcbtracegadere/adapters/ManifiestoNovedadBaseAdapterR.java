@@ -23,6 +23,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     private Context mContext;
     private boolean desactivaComp;
     List<RowItemHojaRutaCatalogo> listItems;
+    private Integer tipoUsuario ;
     Integer idManifiesto;
 
     public interface OnClickOpenFotografias {
@@ -30,10 +31,11 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     }
     private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
 
-    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp, Integer idManifiesto){
+    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp,Integer tipoUusario,Integer idManifiesto){
         mContext = context;
         listItems = items;
         this.desactivaComp = desactivarComp;
+        this.tipoUsuario = tipoUusario;
         this.idManifiesto = idManifiesto;
     }
 
@@ -89,7 +91,12 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
 
     private void registarCheckObservacion(Integer idManifiesto,Integer id, boolean check){
         //dbHelper.open();
-        MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionbyId(idManifiesto, id, check);
+        ///
+        if (tipoUsuario.equals(1)){
+            MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionRecepcionbyId(idManifiesto,id,check);
+        }else{
+            MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionbyId(idManifiesto,id,check);
+        }
         //dbHelper.close();
     }
 
