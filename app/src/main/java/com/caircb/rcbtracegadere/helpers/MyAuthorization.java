@@ -45,8 +45,6 @@ public class MyAuthorization {
     JSONArray jsonLugares;
     JSONObject json;
 
-
-
     Context mContext;
     ListView mDialogMenuItems;
     ProgressDialog progressDialog;
@@ -111,53 +109,75 @@ public class MyAuthorization {
                 }
             });
         }
+    }
 
+    private void guardarLugar(String nombreLugar){
+        try {
+            jsonLugares = new JSONArray(MySession.getLugares());
+            for (int i = 0; i < jsonLugares.length(); i++) {
+                json = jsonLugares.getJSONObject(i);
+                if (json.getString("nombre").equals(nombreLugar)) {
+                    MySession.setIdPerfil(json.getInt("idPerfil"));
+                    MySession.setLugarNombre(json.getString("nombre"));
+                    mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
+                    progressDialog.dismiss();
+                }
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
 
-    private void lugarTrabajo () throws JSONException {
+    private void lugarTrabajo (){
         final Dialog mdialog = new Dialog(getActivity());
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
+       try{
         jsonLugares = new JSONArray(MySession.getLugares());
-
         for (int i = 0; i < jsonLugares.length(); i++){
             json = jsonLugares.getJSONObject(i);
             myListOfItems.add(new MenuItem(
                     json.getString("nombre")));
         }
+       }catch (JSONException e){
+        e.printStackTrace();
+        }
 
-        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(getActivity(),myListOfItems);
-        View view = progressDialog.getWindow().getLayoutInflater().inflate(R.layout.dialog_main, null);
-        mDialogMenuItems =(ListView) view.findViewById(R.id.custom_list);
-        mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
-        mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MenuItem item= myListOfItems.get(position);
-                if(!item.isEnabled()){
-                    if(item.getNombre().equals("Catalogos")){
-                        if(mdialog!=null){
-                            mdialog.dismiss();
-                        }
-                    }
-                    else if(item.getNombre().equals("Impresora")){
-                        if(mdialog!=null){
-                            mdialog.dismiss();
-                        }
-                    }
-                    else if (item.getNombre().equals("Aplicacion")){
-                        if(mdialog!=null){
-                            mdialog.dismiss();
+        if(jsonLugares.length()>1) {
+            dialogMenuBaseAdapter = new DialogMenuBaseAdapter(getActivity(), myListOfItems);
+            View view = progressDialog.getWindow().getLayoutInflater().inflate(R.layout.dialog_main, null);
+            mDialogMenuItems = (ListView) view.findViewById(R.id.custom_list);
+            mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
+            mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    MenuItem item = myListOfItems.get(position);
+                    if (!item.isEnabled()) {
+                        if (item.getNombre().equals("TRANSPORTISTA")) {
+                            if (mdialog != null) {
+                                mdialog.dismiss();
+                                    guardarLugar("TRANSPORTISTA");
+                            }
+                        } else if (item.getNombre().equals("PLANTA")) {
+                            if (mdialog != null) {
+                                mdialog.dismiss();
+                                    guardarLugar("PLANTA");
+                            }
                         }
                     }
                 }
+            });
+            mdialog.setTitle("MODULOS");
+            mdialog.setContentView(view);
+            mdialog.show();
+        }
+        else{
+            try {
+                guardarLugar(json.getString("nombre"));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
-
-
-        mdialog.setTitle("MODULOS");
-        mdialog.setContentView(view);
-        mdialog.show();
+        }
     }
 
     private void obtnerTokenAutorizacionFCM(final DtoUserCredential user){
@@ -236,18 +256,11 @@ public class MyAuthorization {
                 @Override
                 public void onResponse(Call<DtoUserTokenCredentials> call, Response<DtoUserTokenCredentials> response) {
                     if(response.isSuccessful()) {
-                       // MySession.setLogin(true);
-                        //MySession.setMenus(user.getListaEmpresas().get(0).getLugares().get(0).getMenus());
+                        MySession.setLogin(true);
+                        MySession.setMenus(user.getListaEmpresas().get(0).getLugares().get(0).getMenus());
                         //mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
-
                         MySession.setLugares(user.getListaEmpresas().get(0).getLugares());
-
-                        try {
                             lugarTrabajo();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        progressDialog.dismiss();
                     }else {
                         if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
                     }

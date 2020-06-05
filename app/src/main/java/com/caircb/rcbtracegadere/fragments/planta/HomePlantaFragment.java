@@ -195,28 +195,23 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
             }
         });
 
-        btnInicioRuta.setOnClickListener(new View.OnClickListener() {
+      /*  btnInicioRuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogInicioRuta = new DialogInicioRuta(getActivity());
                 dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogInicioRuta.setCancelable(false);
                 dialogInicioRuta.show();
-            }
-
-
+            }*/
             // openDialog_InicioApp(getMain().getInicioSesion());
                 /*
                 btnInicioRuta.setVisibility(View.GONE);
                 txtinicioRuta.setVisibility(View.GONE);
                 btnFinRuta.setVisibility(View.VISIBLE);
                 txtFinRuta.setVisibility(View.VISIBLE);*/
+        /*});*/
 
-
-
-        });
-
-        btnFinRuta.setOnClickListener(new View.OnClickListener() {
+        /*btnFinRuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -235,7 +230,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                     openDialog_Fin_App();
                 }
             }
-        });
+        });*/
 
     }
 

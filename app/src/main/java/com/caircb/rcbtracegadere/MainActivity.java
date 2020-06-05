@@ -61,6 +61,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     JSONArray jsonMenus;
     JSONObject json;
+    JSONArray jsonLugares;
 
     //UserUpdateAppTask updateAppTask;
 
@@ -84,15 +85,18 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     private void validateInitFragment(){
-        if(1==1){
-           initFragment((HomeTransportistaFragment.create()));
+        //if(1==1){
+           //initFragment((HomeTransportistaFragment.create()));
            //initFragment(HomePlantaFragment.create());
-        }
-        /*
+        //}
         switch (MySession.getIdPerfil()){
-            case: :
+            case 3136 :
+                initFragment((HomeTransportistaFragment.create()));
                 break;
-        }*/
+            case 3137 :
+                initFragment((HomePlantaFragment.create()));
+                break;
+        }
     }
     private void initFragment(Fragment _fragmentinit) {
         fragment = _fragmentinit;
@@ -118,13 +122,23 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
         try{
             jsonMenus = new JSONArray(MySession.getMenus());
+            jsonLugares = new JSONArray(MySession.getLugares());
             if(jsonMenus.length()>0){
                 for (int i = 0; i < jsonMenus.length(); i++){
                     json = jsonMenus.getJSONObject(i);
-                    rowItems.add(new RowItem(
-                            json.getString("nombre"),
-                            getResources(json.getString("icono")),
-                            json.getBoolean("isHabilitado")));
+                    if(json.getString("nombre").equals("Modulos")){
+                        if(jsonLugares.length()>1){
+                            rowItems.add(new RowItem(
+                                    json.getString("nombre"),
+                                    getResources(json.getString("icono")),
+                                    json.getBoolean("isHabilitado")));
+                        }
+                    }else{
+                        rowItems.add(new RowItem(
+                                json.getString("nombre"),
+                                getResources(json.getString("icono")),
+                                json.getBoolean("isHabilitado")));
+                    }
                 }
             }
 
@@ -274,6 +288,28 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         return c.getCount()>0;
     }*/
 
+    private void guardarLugar(String nombreLugar){
+        try{
+            jsonLugares = new JSONArray(MySession.getLugares());
+            for (int i = 0; i < jsonLugares.length(); i++){
+                json = jsonLugares.getJSONObject(i);
+                if(json.getString("nombre").equals(nombreLugar)){
+                    MySession.setIdPerfil(json.getInt("idPerfil"));
+                    MySession.setLugarNombre(json.getString("nombre"));
+                    if(nombreLugar.equals("TRANSPORTISTA")){
+                        navegate((HomeTransportistaFragment.create()));
+                    }else{
+                        navegate((HomePlantaFragment.create()));
+                    }
+                    txtnombreLugarTrabajo.setText(MySession.getLugarNombre());
+                }
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+
     //////////////////////////////////////////
     private void openSincronizaCatalogos(){
         selectedItems.clear();
@@ -326,9 +362,60 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 case "Actualizar":
                     openActualizar();
                     break;
+                case "Modulos":
+                    openModulos();
+                    break;
             }
         }
     }
+
+    private void openModulos(){
+        final Dialog mdialog = new Dialog(MainActivity.this);
+        final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
+
+        try{
+            jsonLugares = new JSONArray(MySession.getLugares());
+            if(jsonLugares.length()>0){
+                for (int i = 0; i < jsonLugares.length(); i++){
+                    json = jsonLugares.getJSONObject(i);
+                    myListOfItems.add(new MenuItem(json.getString("nombre")));
+                }
+            }
+            jsonLugares=null;
+            json=null;
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(MainActivity.this, myListOfItems);
+        View view = getWindow().getLayoutInflater().inflate(R.layout.dialog_main, null);
+        mDialogMenuItems = (ListView) view.findViewById(R.id.custom_list);
+        mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
+        mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MenuItem item = myListOfItems.get(position);
+                if (!item.isEnabled()) {
+                    if (item.getNombre().equals("TRANSPORTISTA")) {
+                        if (mdialog != null) {
+                            mdialog.dismiss();
+                            openMenuOpcion();
+                            guardarLugar("TRANSPORTISTA");
+                        }
+                    } else if (item.getNombre().equals("PLANTA")) {
+                        if (mdialog != null) {
+                            mdialog.dismiss();
+                                openMenuOpcion();
+                                guardarLugar("PLANTA");
+                        }
+                    }
+                }
+            }
+        });
+        mdialog.setTitle("MODULOS");
+        mdialog.setContentView(view);
+        mdialog.show();
+    }
+
 
     @Override
     public void onBackPressed() {

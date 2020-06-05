@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.RowPrinters;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -226,6 +227,17 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
         }
     }
 
+    private void retroceder(){
+        switch (MySession.getIdPerfil()){
+            case 3136 :
+                setNavegate(HomeTransportistaFragment.create());
+                break;
+            case 3137 :
+                setNavegate(HomePlantaFragment.create());
+                break;
+        }
+    }
+
     @Override
     public void onClick(View v) {
       switch (v.getId()){
@@ -233,7 +245,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                 searchPrinters();
                 break;
             case R.id.btnPrinterBack:
-                setNavegate(HomeTransportistaFragment.create());
+                retroceder();
                 break;
         }
     }
