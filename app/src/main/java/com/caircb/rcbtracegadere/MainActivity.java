@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -259,10 +260,10 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     private void existePaquetes(){
 
-       //if(!MyApp.getDBO().paqueteDao().existePaquetes()){
+       if(!MyApp.getDBO().paqueteDao().existePaquetes()){
                 paquetesTask = new PaquetesTask(this, listener);
                 paquetesTask.execute();
-        //}
+        }
     }
     /*
 

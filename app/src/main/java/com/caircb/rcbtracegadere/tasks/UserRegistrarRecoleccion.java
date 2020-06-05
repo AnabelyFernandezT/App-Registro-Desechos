@@ -39,6 +39,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             //obtner detalles
 
 
+
         }
 
     }
