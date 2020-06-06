@@ -58,6 +58,7 @@ public class MyManifiesto {
     Bitmap imagenCheck;
     Bitmap imagenUnCheck;
     Bitmap firma;
+    Bitmap firmaTransportista;
 
     public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete){
         this.context = context;
@@ -77,6 +78,10 @@ public class MyManifiesto {
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
             ItemFile fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTecnico!=null) firma = Utils.StringToBitMap(fileFirmaTecnico.getFile());
+
+            ItemFile fileFirmaTransporte = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
+            if(fileFirmaTecnico!=null) firmaTransportista = Utils.StringToBitMap(fileFirmaTransporte.getFile());
+
 
             if(manifiesto!=null) createReport();
         }
@@ -146,7 +151,7 @@ public class MyManifiesto {
             cell.setBorder(Rectangle.NO_BORDER);
             header.addCell(cell);
 
-            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO",f6));
+            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO",f3));
             cell.setBorder(Rectangle.NO_BORDER);
 
             header.addCell(cell);
@@ -313,34 +318,45 @@ public class MyManifiesto {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
         Image jpg = Image.getInstance(stream.toByteArray());
-        jpg.scaleToFit(50,150);
+        jpg.scaleToFit(40,150);
 
-        PdfPTable tb9 = new PdfPTable(new float[] { 40,40,20});
-        tb9.addCell(new PdfPCell(new Phrase("NOMBRE, CARGO Y FIRMA DEL RESPONSABLE:",f6)));
-        tb9.addCell(new PdfPCell(new Phrase(manifiesto.getTecnicoResponsable(),f6)));
-        tb9.addCell(new PdfPCell(jpg));
-        tb9.addCell(new PdfPCell(new Phrase("TELÉFONO Y/O CORREO ELECTRÓNICO DE RESPONSABLE:",f6)));
-        tb9.addCell(new PdfPCell(new Phrase(manifiesto.getTecnicoTelefono(),f6)));
+        PdfPTable tb9 = new PdfPTable(3);
+        Paragraph para2 = new Paragraph();
+        para2.add(new Chunk("NOMBRE, CARGO Y FIRMA DEL RESPONSABLE:",f6));
+        para2.add(Chunk.NEWLINE);
+        para2.add(new Chunk("TELÉFONO Y/O CORREO ELECTRÓNICO DE RESPONSABLE:",f6));
+
+
+        cell =  new PdfPCell(para2);
+        cell.setBorder(Rectangle.NO_BORDER);
+        tb9.addCell(cell);
+
+        Paragraph para3 = new Paragraph();
+        para3.add(new Chunk(manifiesto.getTecnicoResponsable(),f6));
+        para3.add(Chunk.NEWLINE);
+        para3.add(new Chunk(manifiesto.getTecnicoTelefono(),f6));
+        para3.add(Chunk.NEWLINE);
+
+        //cell = new PdfPCell(new Phrase(manifiesto.getTecnicoResponsable(),f6));
+        cell =  new PdfPCell(para3);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.ALIGN_CENTER);
+        cell.setBorder(Rectangle.NO_BORDER);
+        tb9.addCell(cell);
+
+        //tb9.addCell(new PdfPCell(new Phrase(manifiesto.getTecnicoTelefono(),f6)));
+
+
+        cell = new PdfPCell(createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER));
+
+        tb9.addCell(cell);
 
         tb9.completeRow();
-
         _cell = new PdfPCell(tb9);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb.addCell(_cell);
 
-        /// firma
-     /*   PdfPTable f = new PdfPTable(1);
 
-
-        PdfPCell cell2 =  new PdfPCell(jpg);
-        cell2.setBorder(Rectangle.NO_BORDER);
-        f.addCell(cell2);
-        f.completeRow();
-
-
-        _cell = new PdfPCell(f);
-        _cell.setBorder(Rectangle.NO_BORDER);
-        tb.addCell(_cell);*/
 
 
         //tabla 10
@@ -360,7 +376,7 @@ public class MyManifiesto {
 
 
     //PDF MANIFIESTO TRANSPORTE
-    private PdfPTable createGeneradorTran(Font f6){
+    private PdfPTable createGeneradorTran(Font f6) throws Exception {
 
         PdfPCell _cell;
         PdfPTable tb = new PdfPTable(1);
@@ -422,23 +438,67 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 5
-        PdfPTable tb5 = new PdfPTable(new float[] { 100});
-        tb5.addCell(new PdfPCell(new Phrase("12. RECIBÍ LOS DESECHOS DESCRITOS EN EL MANIFIESTO PARA SU TRANSPORTE.                                                      FIRMA   ",f6)));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        firmaTransportista.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Image jpg = Image.getInstance(stream.toByteArray());
+        jpg.scaleToFit(70,150);
+
+        PdfPTable tb5 = new PdfPTable(1);
+        tb5.addCell(new PdfPCell(new Phrase("12. RECIBÍ LOS DESECHOS DESCRITOS EN EL MANIFIESTO PARA SU TRANSPORTE. ",f6)));
+
         _cell = new PdfPCell(tb5);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb.addCell(_cell);
 
 
         //tabla 6
-        PdfPTable tb6 = new PdfPTable(new float[] { 15,20,15,20,15,15});
-        tb6.addCell(new PdfPCell(new Phrase("Nombre:\n"+
-                "CONDUCTOR DE RECOLECIÓN",f6)));
-        tb6.addCell(new PdfPCell(new Phrase(manifiesto.getConductorNombre(),f6)));
-        tb6.addCell(new PdfPCell(new Phrase("Nombre:\n"+
-                "AUXILIAR DE RECOLECIÓN",f6)));
-        tb6.addCell(new PdfPCell(new Phrase(manifiesto.getAuxiliarNombre(),f6)));
-        tb6.addCell(new PdfPCell(new Phrase("FECHA EMBARQUE::",f6)));
-        tb6.addCell(createCell("",f6));
+        PdfPTable tb6 = new PdfPTable(6);
+
+        Paragraph para1 = new Paragraph();
+        para1.add(new Chunk("Nombre:",f6));
+        para1.add(Chunk.NEWLINE);
+        para1.add(new Chunk("CONDUCTOR DE RECOLECIÓN",f6));
+        para1.add(Chunk.NEWLINE);
+        _cell = new PdfPCell(para1);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb6.addCell(_cell);
+
+        Paragraph para2 = new Paragraph();
+        para2.add(new Chunk(manifiesto.getConductorNombre(),f6));
+        para2.add(Chunk.NEWLINE);
+        _cell = new PdfPCell(para2);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb6.addCell(_cell);
+
+        Paragraph para3 = new Paragraph();
+        para3.add(new Chunk("Nombre:",f6));
+        para3.add(Chunk.NEWLINE);
+        para3.add(new Chunk("AUXILIAR DE RECOLECIÓN",f6));
+        para3.add(Chunk.NEWLINE);
+        _cell = new PdfPCell(para3);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb6.addCell(_cell);
+
+        Paragraph para4 = new Paragraph();
+        para4.add(new Chunk(manifiesto.getAuxiliarNombre(),f6));
+        para4.add(Chunk.NEWLINE);
+        _cell = new PdfPCell(para4);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb6.addCell(_cell);
+
+        Paragraph para5 = new Paragraph();
+        para5.add(new Chunk("FECHA EMBARQUE:",f6));
+        para5.add(Chunk.NEWLINE);
+        para5.add(Chunk.NEWLINE);
+        para5.add(new Chunk("FIRMA:",f6));
+        _cell = new PdfPCell(para5);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb6.addCell(_cell);
+
+        tb6.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
+
+
         tb6.completeRow();
 
         _cell = new PdfPCell(tb6);
@@ -807,11 +867,29 @@ public class MyManifiesto {
         return _cell;
     }
 
+    private PdfPCell createCellD_NO_BORDER(Double texto, Font f6, Integer ALIGN){
+        PdfPCell _cell = new PdfPCell(new Phrase(texto.toString(),f6));
+        _cell.setBorder(Rectangle.NO_BORDER);
+        _cell.setFixedHeight(8f);
+        _cell.setPadding(1f);
+        if(ALIGN!=null)_cell.setHorizontalAlignment(ALIGN);
+        return _cell;
+    }
+
     private PdfPCell createCell_Imagen_NO_BORDER(Image jpg, Font f6, Integer ALIGN){
 
         PdfPCell _cell = new PdfPCell(jpg);
         _cell.setBorder(Rectangle.NO_BORDER);
         _cell.setFixedHeight(8f);
+        _cell.setPadding(1f);
+        if(ALIGN!=null)_cell.setHorizontalAlignment(ALIGN);
+        return _cell;
+    }
+    private PdfPCell createCell_ImagenFirma_NO_BORDER(Image jpg, Font f6, Integer ALIGN){
+
+        PdfPCell _cell = new PdfPCell(jpg);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        _cell.setFixedHeight(30f);
         _cell.setPadding(1f);
         if(ALIGN!=null)_cell.setHorizontalAlignment(ALIGN);
         return _cell;
@@ -842,26 +920,26 @@ public class MyManifiesto {
 
 
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
-        det.addCell(new PdfPCell(new Phrase("Fundas", f3)));
+        det.addCell(new PdfPCell(new Phrase("Funda", f3)));
 
             if(pkg!=null ) {
                 det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3, null));
             }else {
-                det.addCell(new PdfPCell(new Phrase("0", f3)));
+                det.addCell(new PdfPCell(new Phrase(" ", f3)));
             }
 
             if (manifiestoPkg != null ) {
                 det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosFundas().toString(), f3, null));
             } else {
-                det.addCell(createCell_NO_BORDER_SINGLE("0", f3, null));
+                det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
             }
 
-            det.addCell(new PdfPCell(new Phrase("Adicionales", f3)));
+            det.addCell(new PdfPCell(new Phrase("PC-1", f3)));
 
             if (manifiestoPkg != null) {
                 det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdFundas().toString(), f3, null));
             } else {
-                det.addCell(createCell_NO_BORDER_SINGLE("0", f3, null));
+                det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
             }
 
         det.completeRow();
@@ -874,26 +952,26 @@ public class MyManifiesto {
         ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
 
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
-        det.addCell(new PdfPCell(new Phrase("Guardianes", f3)));
+        det.addCell(new PdfPCell(new Phrase("Funda", f3)));
 
         if(pkg!=null ) {
-            det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3, null));
+            det.addCell(createCell_NO_BORDER_SINGLE(pkg.getGuardian(), f3, null));
         }else {
-            det.addCell(new PdfPCell(new Phrase("0", f3)));
+            det.addCell(new PdfPCell(new Phrase(" ", f3)));
         }
 
         if (manifiestoPkg != null ) {
             det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosGuardianes().toString(), f3, null));
         } else {
-            det.addCell(createCell_NO_BORDER_SINGLE("0", f3, null));
+            det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
         }
 
-        det.addCell(new PdfPCell(new Phrase("Adicionales", f3)));
+        det.addCell(new PdfPCell(new Phrase("PC-2", f3)));
 
         if (manifiestoPkg != null) {
             det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdGuardianes().toString(), f3, null));
         } else {
-            det.addCell(createCell_NO_BORDER_SINGLE("0", f3, null));
+            det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
         }
 
         return det;
@@ -943,58 +1021,21 @@ public class MyManifiesto {
 
     }
 
-    private PdfPTable createFirma(Font f3) throws Exception {
 
-        PdfPTable det = new PdfPTable(new float[]{50});
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        firma.compress(Bitmap.CompressFormat.PNG,100,stream);
-        Image firma = Image.getInstance(stream.toByteArray());
-       // firma.scaleToFit(16,16);
-        stream.close();
-
-        det.addCell(createCell_Imagen_NO_BORDER(firma,f3,Element.ALIGN_CENTER));
-
-        det.addCell(createCell_VACIO());
-        det.addCell(createCell_VACIO());
-        det.completeRow();
-
-
-        stream.close();
-        return det;
-
-    }
     private PdfPTable createOtrasNovedades(Font f3) throws Exception {
 
-        List<RowItemNoRecoleccion> novedades = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idManifiesto);
+        String novedadesEncontradas = manifiesto.getNovedadEncontrada();
 
         PdfPTable det = new PdfPTable(new float[]{10,80});
         det.setWidthPercentage(100);
 
-        if(novedades.size()>0) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imagenCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            Image jpgCheck = Image.getInstance(stream.toByteArray());
-            jpgCheck.scaleToFit(16,16);
-            stream.close();
-
-            stream = new ByteArrayOutputStream();
-            imagenUnCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            Image jpgUnCheck = Image.getInstance(stream.toByteArray());
-            jpgUnCheck.scaleToFit(16,16);
-            stream.close();
-
-
-            for(RowItemNoRecoleccion ct:novedades){
-                if(ct.isEstadoChek()){
-                    det.addCell(createCell_Imagen_NO_BORDER(jpgCheck,f3,Element.ALIGN_CENTER));
-                }else{
-                    det.addCell(createCell_Imagen_NO_BORDER(jpgUnCheck,f3,Element.ALIGN_CENTER));
-                }
-                det.addCell(createCell_NO_BORDER_SINGLE(ct.getCatalogo(), f3,null));
-            }
-
-            stream.close();
+        if(manifiesto.getNovedadEncontrada()!= null){
+            det.addCell(createCell_NO_BORDER_SINGLE(novedadesEncontradas,f3,Element.ALIGN_CENTER));
+        }else{
+            det.addCell(createCell_VACIO());
         }
+
+
 
         det.addCell(createCell_VACIO());
         det.addCell(createCell_VACIO());
@@ -1076,7 +1117,7 @@ public class MyManifiesto {
                 pos = nombre.indexOf("-");
                 det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos+1,nombre.length()), f6,null));
                 det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(0,pos), f6,Element.ALIGN_CENTER));
-                det.addCell(createCell_NO_BORDER("0.0", f6,Element.ALIGN_CENTER));
+                det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
                 det.addCell(createCell_NO_BORDER(reg.getUnidad(), f6,Element.ALIGN_CENTER));
                 det.completeRow();
             }
