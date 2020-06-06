@@ -53,8 +53,12 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
 
         if(it.getCantidad() == 0){
             holder.txtPkgPendiente.setEnabled(false);
+            holder.txtPkgPendiente.setFocusable(false);
+            holder.txtPkgPendiente.setFocusableInTouchMode(false);
         }else{
             holder.txtPkgPendiente.setEnabled(true);
+            holder.txtPkgPendiente.setFocusable(true);
+            holder.txtPkgPendiente.setFocusableInTouchMode(true);
         }
 
 
