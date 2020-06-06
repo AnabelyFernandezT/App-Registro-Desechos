@@ -5,11 +5,11 @@ import java.util.List;
 
 public class RequestManifiestoDet {
     private Integer idAppManifiestoDetalle;
-    private BigDecimal peso;
-    private BigDecimal cantidad;
+    private double peso;
+    private double cantidad;
     private List<RequestManifiestoDetBultos> bultos;
 
-    public RequestManifiestoDet(Integer idAppManifiestoDetalle, BigDecimal peso, BigDecimal cantidad, List<RequestManifiestoDetBultos> bultos) {
+    public RequestManifiestoDet(Integer idAppManifiestoDetalle, double peso, double cantidad, List<RequestManifiestoDetBultos> bultos) {
         this.idAppManifiestoDetalle = idAppManifiestoDetalle;
         this.peso = peso;
         this.cantidad = cantidad;
@@ -24,19 +24,19 @@ public class RequestManifiestoDet {
         this.idAppManifiestoDetalle = idAppManifiestoDetalle;
     }
 
-    public BigDecimal getPeso() {
+    public double getPeso() {
         return peso;
     }
 
-    public void setPeso(BigDecimal peso) {
+    public void setPeso(double peso) {
         this.peso = peso;
     }
 
-    public BigDecimal getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(BigDecimal cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 

@@ -52,7 +52,7 @@ public abstract class ManifiestoFileDao {
     public abstract List<RequestNovedadFoto> consultarFotografias(Integer idAppManifiesto,Integer idCatalogo,Integer tipo);
 
     @Query("select _id  from tb_manifiestos_file" +
-            " where idAppManifiesto=:idAppManifiesto and tipo=:tipo")
+            " where idAppManifiesto=:idAppManifiesto and tipo=:tipo and sincronizado=0")
     public abstract List<Long> consultarFotografiasUpload(Integer idAppManifiesto,Integer tipo);
 
     @Query("Delete from tb_manifiestos_file where idAppManifiesto =:idAppManifiesto and idCatalogo=:idCatalogo")
@@ -64,7 +64,7 @@ public abstract class ManifiestoFileDao {
     @Query("select file,fileUrl as url  from tb_manifiestos_file where idAppManifiesto=:idManifiesto and tipo=:tipo and status=:status limit 1")
     public abstract ItemFile consultarFile(Integer idManifiesto,Integer tipo,Integer status);
 
-    @Query("select _id as id ,file,fileUrl as url  from tb_manifiestos_file where idAppManifiesto=:idManifiesto and tipo=:tipo and status=:status limit 1")
+    @Query("select _id as id ,file,fileUrl as url  from tb_manifiestos_file where idAppManifiesto=:idManifiesto and tipo=:tipo and status=:status and sincronizado=0 limit 1")
     public abstract DtoFile consultarFiletoSend(Integer idManifiesto, Integer tipo, Integer status);
 
     @Query("update tb_manifiestos_file set sincronizado=:sincronizado where _id=:id")
