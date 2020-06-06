@@ -15,16 +15,19 @@ public abstract class TecnicoDao {
     @Query("select * from tb_tecnicos where identificacion=:identificacion")
     public abstract TecnicoEntity fechConsultaTecnicobyIdentidad(String identificacion);
 
+    @Query("select * from tb_tecnicos where _id=:idTecnico")
+    public abstract TecnicoEntity fechConsultaTecnicobyIdTecnico(Integer idTecnico);
+
     @Query("select * from tb_tecnicos where idManifiesto=:idManifiesto")
     public abstract TecnicoEntity fechConsultaTecnicobyManifiesto(Integer idManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void createTecnico(TecnicoEntity entity);
+    abstract long createTecnico(TecnicoEntity entity);
 
     @Query("delete from tb_tecnicos")
     public abstract void deleteTecnico();
 
-    public void saveOrUpdate(Integer idManifiesto, String cedula, String nombre, String correo, String telefono ){
+    public long saveOrUpdate(Integer idManifiesto, String cedula, String nombre, String correo, String telefono ){
         TecnicoEntity tecnico = fechConsultaTecnicobyIdentidad(cedula);
         if(tecnico==null) {
             tecnico = new TecnicoEntity(idManifiesto,nombre,cedula,correo,telefono);
@@ -36,7 +39,7 @@ public abstract class TecnicoDao {
 
         }
 
-        createTecnico(tecnico);
+        return  createTecnico(tecnico);
     }
 
 

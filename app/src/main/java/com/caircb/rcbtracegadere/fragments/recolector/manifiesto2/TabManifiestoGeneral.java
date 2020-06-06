@@ -36,10 +36,11 @@ public class TabManifiestoGeneral extends LinearLayout {
     private String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
-            txtClienteCanton,txtClienteParroquia,txtTransReco,txtTransRecoAux,txtIdentificacion,txtNombre,txtCorreo,txtTelefono,
-            txtGenTecCelular,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
+            txtClienteCanton,txtClienteParroquia,txtTransReco,txtTransRecoAux
+            ,txtGenTecIdentificacion,txtGenTecNombre,txtGenTecCorreo,txtGenTecTelefono,txtGenTecCelular,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
 
-    private EditText txtNumManifiestoCliente,txtGenTecIdentificacion,txtGenTecNombre,txtGenTecCorreo,txtGenTecTelefono;
+    private EditText txtNumManifiestoCliente,
+            txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
 
     private LinearLayout btnAgregarFirma,btnAgregarFirmaTransportista;
 
@@ -73,7 +74,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtClienteParroquia= this.findViewById(R.id.txtClienteParroquia);
         txtTransReco= this.findViewById(R.id.txtTransReco);
         txtTransRecoAux= this.findViewById(R.id.txtTransRecoAux);
-        txtIdentificacion= this.findViewById(R.id.txtIdentificacion);
+
         txtGenTecCelular= this.findViewById(R.id.txtGenTecCelular);
         txtFirmaMensaje= this.findViewById(R.id.txtFirmaMensaje);
         txtGenTecIdentificacion= this.findViewById(R.id.txtGenTecIdentificacion);
@@ -92,9 +93,10 @@ public class TabManifiestoGeneral extends LinearLayout {
         btnNumManifiestoCliente = this.findViewById(R.id.btnNumManifiestoCliente);
         txtNumManifiestoCliente.setEnabled(false);
 
-        txtNombre = this.findViewById(R.id.txtNombre);
-        txtCorreo = this.findViewById(R.id.txtCorreo);
-        txtTelefono=this.findViewById(R.id.txtTelefono);
+        txtRespEntregaIdentificacion = this.findViewById(R.id.txtRespEntregaIdentificacion);
+        txtRespEntregaNombre = this.findViewById(R.id.txtRespEntregaNombre);
+        txtRespEntregaCorreo = this.findViewById(R.id.txtRespEntregaCorreo);
+        txtRespEntregaTelefono = this.findViewById(R.id.txtRespEntregaTelefono);
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
 
@@ -108,49 +110,53 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
-        txtGenTecNombre.setEnabled(false);
-        txtGenTecCorreo.setEnabled(false);
-        txtGenTecTelefono.setEnabled(false);
+        txtRespEntregaNombre.setEnabled(false);
+        txtRespEntregaCorreo.setEnabled(false);
+        txtRespEntregaTelefono.setEnabled(false);
 
 
         btnBuscarIdentificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //MyApp.getDBO().tecnicoDao().deleteTecnico();
-                TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
+                TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtRespEntregaIdentificacion.getText().toString());
                 if(tecnico!=null){
-                    txtGenTecNombre.setText(tecnico.getNombre());
-                    txtGenTecCorreo.setText(tecnico.getCorreo());
-                    txtGenTecTelefono.setText(tecnico.getTelefono());
+                    txtRespEntregaNombre.setText(tecnico.getNombre());
+                    txtRespEntregaCorreo.setText(tecnico.getCorreo());
+                    txtRespEntregaTelefono.setText(tecnico.getTelefono());
 
-                    txtGenTecCorreo.setEnabled(tecnico.getCorreo()!=null && tecnico.getCorreo().length()==0);
-                    txtGenTecTelefono.setEnabled(tecnico.getTelefono()!=null && tecnico.getTelefono().length()==0);
+                    txtRespEntregaCorreo.setEnabled(tecnico.getCorreo()!=null && tecnico.getCorreo().length()==0);
+                    txtRespEntregaTelefono.setEnabled(tecnico.getTelefono()!=null && tecnico.getTelefono().length()==0);
+
+                    MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,tecnico.get_id());
                     //txtGenTecIdentificacion.setEnabled(false);
 
                 }else{
                     //consultar en servicio remoto...
-                    userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(),txtGenTecIdentificacion.getText().toString());
+                    userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(),txtRespEntregaIdentificacion.getText().toString());
                     userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
                         @Override
                         public void onSuccessful(DtoIdentificacion identificacion) {
-                            txtGenTecNombre.setText(identificacion.getEcuatorianoNombre());
-                            txtGenTecCorreo.requestFocus();
-                            txtGenTecCorreo.setEnabled(true);
-                            txtGenTecTelefono.setEnabled(true);
+                            txtRespEntregaNombre.setText(identificacion.getEcuatorianoNombre());
+                            txtRespEntregaCorreo.requestFocus();
+                            txtRespEntregaCorreo.setEnabled(true);
+                            txtRespEntregaTelefono.setEnabled(true);
 
                             //insert datos en dbo local...
-                            MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtGenTecIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),"","");
+                            Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),"","");
+
+                            MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,idTecnico.intValue());
                             //MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
 
                         }
 
                         @Override
                         public void onFailure() {
-                            txtGenTecNombre.requestFocus();
-                            txtGenTecNombre.setEnabled(true);
-                            txtGenTecCorreo.setEnabled(true);
-                            txtGenTecTelefono.setEnabled(true);
-                            Toast.makeText(getContext(), "El numero de cedula "+txtGenTecIdentificacion.getText().toString()+ "no gerero resultados", Toast.LENGTH_SHORT).show();
+                            txtRespEntregaNombre.requestFocus();
+                            txtRespEntregaNombre.setEnabled(true);
+                            txtRespEntregaCorreo.setEnabled(true);
+                            txtRespEntregaTelefono.setEnabled(true);
+                            Toast.makeText(getContext(), "El numero de cedula "+txtRespEntregaIdentificacion.getText().toString()+ " no genero resultados", Toast.LENGTH_SHORT).show();
                         }
                     });
                     userConsultarCedulaTask.execute();
@@ -257,11 +263,11 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
-        validarTecnico();
+        //validarTecnico();
 
     }
 
-    private void validarTecnico(){
+    /*private void validarTecnico(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         if (manifiesto.getTecnicoResponsable().length()<0){
@@ -271,7 +277,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             btnBuscarIdentificacion.setEnabled(true);
             txtGenTecIdentificacion.setEnabled(true);
         }
-    }
+    }*/
 
     private void guardarDatosTecnico(){
 
@@ -350,21 +356,26 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
 
-            txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
-            txtNombre.setText(manifiesto.getTecnicoResponsable());
-            txtCorreo.setText(manifiesto.getTecnicoCorreo());
-            txtTelefono.setText(manifiesto.getTecnicoTelefono());
+            txtGenTecIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
+            txtGenTecNombre.setText(manifiesto.getTecnicoResponsable());
+            txtGenTecCorreo.setText(manifiesto.getTecnicoCorreo());
+            txtGenTecTelefono.setText(manifiesto.getTecnicoTelefono());
             txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
 
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText(manifiesto.getEmpresaTransportista());
 
-            txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
-            txtNombre.setText(manifiesto.getTecnicoResponsable());
-            txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
-            txtTelefono.setText(manifiesto.getTecnicoTelefono());
-            txtCorreo.setText(manifiesto.getTecnicoCorreo());
 
+
+            if(manifiesto.getIdTecnicoGenerador()!=null && manifiesto.getIdTecnicoGenerador()>0){
+                TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(manifiesto.getIdTecnicoGenerador());
+                if(tec!=null) {
+                    txtRespEntregaIdentificacion.setText(tec.getIdentificacion());
+                    txtRespEntregaNombre.setText(tec.getNombre());
+                    txtRespEntregaCorreo.setText(tec.getCorreo());
+                    txtRespEntregaTelefono.setText(tec.getTelefono());
+                }
+            }
             //String tecnicoIdentificacion = cursor.getString(cursor.getColumnIndex("tecnicoIdentificacion"));
            /*if(manifiesto.getTecnicoIdentificacion() != null){
                 txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
@@ -436,8 +447,8 @@ public class TabManifiestoGeneral extends LinearLayout {
     }
 
     public boolean validaExisteDatosResponsableEntrega(){
-        return txtNombre.getText().toString().length()==0?
-                (txtGenTecIdentificacion.getText().length()>0 && txtGenTecNombre.getText().toString().length()>0)
+        return txtGenTecNombre.getText().toString().length()==0?
+                (txtRespEntregaIdentificacion.getText().length()>0 && txtRespEntregaNombre.getText().toString().length()>0)
                 :true;
     }
 

@@ -47,7 +47,7 @@ public class ManifiestoEntity {
 
     private String transportistaFirmaUrl;
 
-    private String idTecnicoGenerador;
+    private Integer idTecnicoGenerador;
 
     private String tecnicoIdentificacion;
 
@@ -348,11 +348,11 @@ public class ManifiestoEntity {
         this.numManifiestoCliente = numManifiestoCliente;
     }
 
-    public String getIdTecnicoGenerador() {
+    public Integer getIdTecnicoGenerador() {
         return idTecnicoGenerador;
     }
 
-    public void setIdTecnicoGenerador(String idTecnicoGenerador) {
+    public void setIdTecnicoGenerador(Integer idTecnicoGenerador) {
         this.idTecnicoGenerador = idTecnicoGenerador;
     }
 

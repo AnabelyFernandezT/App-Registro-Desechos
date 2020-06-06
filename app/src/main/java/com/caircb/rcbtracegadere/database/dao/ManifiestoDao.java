@@ -58,9 +58,9 @@ public abstract class ManifiestoDao {
     abstract void actualizarFirmaWithPesoTransportista(Integer idAppManifiesto, Double peso, String nombreFirma, String firmaImg);
 
     @Query("update tb_manifiestos set IdTecnicoGenerador=:IdTecnicoGenerador where idAppManifiesto =:idAppManifiesto")
-    abstract void actualizarTecnicoGenerador(Integer idAppManifiesto, String IdTecnicoGenerador);
+    abstract void actualizarTecnicoGenerador(Integer idAppManifiesto, Integer IdTecnicoGenerador);
 
-    public void updateGenerador(Integer idManifiesto, String IdTecnicoGenerador){
+    public void updateGenerador(Integer idManifiesto, Integer IdTecnicoGenerador){
         actualizarTecnicoGenerador(idManifiesto, IdTecnicoGenerador);
     }
     @Query("update tb_manifiestos set novedadEncontrada=:novedadEncontrada where idAppManifiesto=:idAppManifiesto")
@@ -117,7 +117,7 @@ public abstract class ManifiestoDao {
             entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
             entity.setNumManifiestoCliente(manifiesto.getNumManifiestoCliente());
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
-            entity.setIdTecnicoGenerador(manifiesto.getIdTecnicoGenerador());
+            //entity.setIdTecnicoGenerador(manifiesto.getIdTecnicoGenerador());
             entity.setTecnicoResponsable(manifiesto.getTecnicoResponsable());
             entity.setTecnicoTelefono(manifiesto.getTecnicoTelefono());
             entity.setTecnicoCelular(manifiesto.getTecnicoCelular());
@@ -165,7 +165,7 @@ public abstract class ManifiestoDao {
 
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNumManifiestoCliente(manifiesto.getNumManifiestoCliente());
-            entity.setIdTecnicoGenerador(manifiesto.getIdTecnicoGenerador());
+            //entity.setIdTecnicoGenerador(manifiesto.getIdTecnicoGenerador());
             entity.setTecnicoResponsable(manifiesto.getTecnicoResponsable());
             entity.setTecnicoTelefono(manifiesto.getTecnicoTelefono());
             entity.setTecnicoCelular(manifiesto.getTecnicoCelular());
