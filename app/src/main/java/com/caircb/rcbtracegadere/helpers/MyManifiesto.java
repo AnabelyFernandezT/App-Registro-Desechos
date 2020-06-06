@@ -836,29 +836,31 @@ public class MyManifiesto {
         return _cell;
     }
     private PdfPTable regionAdicionales(Font f3)  {
-
+        ManifiestoPaquetesEntity manifiestoPkg=null;
         PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-        ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
+        if(pkg!=null)manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
 
 
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
-        det.addCell(new PdfPCell(new Phrase("Fundas",f3)));
-        det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3,null));
+        if(pkg!=null && manifiestoPkg!=null) {
+            det.addCell(new PdfPCell(new Phrase("Fundas", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3, null));
 
-        if(manifiestoPkg!=null){
-            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosFundas().toString(), f3, null));
-        }else {
-            det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
+            if (manifiestoPkg != null) {
+                det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosFundas().toString(), f3, null));
+            } else {
+                det.addCell(createCell_NO_BORDER_SINGLE("0", f3, null));
+            }
+
+            det.addCell(new PdfPCell(new Phrase("Adicionales", f3)));
+
+            if (manifiestoPkg != null) {
+                det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdFundas().toString(), f3, null));
+            } else {
+                det.addCell(createCell_NO_BORDER_SINGLE("0", f3, null));
+            }
+
         }
-
-        det.addCell(new PdfPCell(new Phrase("Adicionales",f3)));
-
-        if(manifiestoPkg!=null){
-            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdFundas().toString(), f3, null));
-        }else {
-            det.addCell(createCell_NO_BORDER_SINGLE("0",f3,null));
-        }
-
 
         det.completeRow();
 

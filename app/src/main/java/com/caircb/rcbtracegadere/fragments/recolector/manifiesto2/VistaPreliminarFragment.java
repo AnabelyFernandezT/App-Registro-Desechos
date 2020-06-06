@@ -39,7 +39,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
         VistaPreliminarFragment fragment = new VistaPreliminarFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
-        args.putInt(ARG_PARAM2,idAppTipoPaquete);
+        args.putInt(ARG_PARAM2,idAppTipoPaquete!=null?idAppTipoPaquete:0);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +49,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             idAppManifiesto= getArguments().getInt(ARG_PARAM1);
-            idAppTipoPaquete = getArguments().getInt(ARG_PARAM2);
+            idAppTipoPaquete = getArguments().getInt(ARG_PARAM2)==0? null:getArguments().getInt(ARG_PARAM2);
         }
     }
 
