@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
+import android.location.Location;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
@@ -46,11 +47,14 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     DtoFile firmaTransportista;
     DtoFile firmaTecnicoGenerador;
     DtoFile audioNovedadCliente;
+    Location location;
 
     public UserRegistrarRecoleccion(Context context,
-                                    Integer idAppManifiesto) {
+                                    Integer idAppManifiesto,
+                                    Location location) {
         super(context);
         this.idAppManifiesto=idAppManifiesto;
+        this.location=location;
     }
 
     @Override
@@ -125,7 +129,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
             rq.setUrlAudioNovedadCliente(audioNovedadCliente!=null?( path+"/"+audioNovedadCliente.getUrl()):"");
             rq.setFechaRecoleccion(model.getFechaManifiesto());
-
+            rq.setLatitude(location!=null?location.getLatitude():null);
+            rq.setLongitude(location!=null?location.getLongitude():null);
             rq.setPaquete(createRequestPaquete(model.getTipoPaquete()!=null?(model.getTipoPaquete()>0?model.getTipoPaquete():null):null));
             rq.setDetalles(createRequestDet());
             rq.setNovedadFrecuente(createRequestNovedadFrecuente());
