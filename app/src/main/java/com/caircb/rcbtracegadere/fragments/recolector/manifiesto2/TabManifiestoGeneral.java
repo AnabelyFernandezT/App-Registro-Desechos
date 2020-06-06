@@ -31,27 +31,29 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     private Boolean bloquear;
     private  Integer tipoPaquete=null;
-    String audio="";
-    String tiempoAudio;
-    String numeroManifiesto="";
+    private String audio="";
+    private String tiempoAudio;
+    private String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
-            txtClienteCanton,txtClienteParroquia,txtTransReco,txtTransRecoAux,txtIdentificacion,txtNombre,txtCorreo,txtTelefono,
-            txtGenTecCelular,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
+            txtClienteCanton,txtClienteParroquia,txtTransReco,txtTransRecoAux
+            ,txtGenTecIdentificacion,txtGenTecNombre,txtGenTecCorreo,txtGenTecTelefono,txtGenTecCelular,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
 
-    EditText txtNumManifiestoCliente,txtGenTecIdentificacion,txtGenTecNombre,txtGenTecCorreo,txtGenTecTelefono;
+    private EditText txtNumManifiestoCliente,
+            txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
 
-    LinearLayout btnAgregarFirma,btnAgregarFirmaTransportista;
+    private LinearLayout btnAgregarFirma,btnAgregarFirmaTransportista;
 
-    ImageButton btnNumManifiestoCliente,btnBuscarIdentificacion;
+    private ImageButton btnNumManifiestoCliente,btnBuscarIdentificacion;
 
-    ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
-    private int flag =0, flagT=0;
-    DialogFirma dialogFirma;
-    ImagenUtils imagenUtils;
+    private ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
+    //private int flag =0, flagT=0;
+    private DialogFirma dialogFirma;
+    private ImagenUtils imagenUtils;
+    private boolean firmaTransportista=false, firmaTecnicoGenerador=false;
 
     String identificacion, nombre, correo, telefono;
-
+    UserConsultarCedulaTask userConsultarCedulaTask;
 
     public TabManifiestoGeneral(Context context,Integer idAppManifiesto) {
         super(context);
@@ -72,7 +74,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtClienteParroquia= this.findViewById(R.id.txtClienteParroquia);
         txtTransReco= this.findViewById(R.id.txtTransReco);
         txtTransRecoAux= this.findViewById(R.id.txtTransRecoAux);
-        txtIdentificacion= this.findViewById(R.id.txtIdentificacion);
+
         txtGenTecCelular= this.findViewById(R.id.txtGenTecCelular);
         txtFirmaMensaje= this.findViewById(R.id.txtFirmaMensaje);
         txtGenTecIdentificacion= this.findViewById(R.id.txtGenTecIdentificacion);
@@ -91,9 +93,10 @@ public class TabManifiestoGeneral extends LinearLayout {
         btnNumManifiestoCliente = this.findViewById(R.id.btnNumManifiestoCliente);
         txtNumManifiestoCliente.setEnabled(false);
 
-        txtNombre = this.findViewById(R.id.txtNombre);
-        txtCorreo = this.findViewById(R.id.txtCorreo);
-        txtTelefono=this.findViewById(R.id.txtTelefono);
+        txtRespEntregaIdentificacion = this.findViewById(R.id.txtRespEntregaIdentificacion);
+        txtRespEntregaNombre = this.findViewById(R.id.txtRespEntregaNombre);
+        txtRespEntregaCorreo = this.findViewById(R.id.txtRespEntregaCorreo);
+        txtRespEntregaTelefono = this.findViewById(R.id.txtRespEntregaTelefono);
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
 
@@ -101,28 +104,66 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onClick(View v) {
 
-                if (flag==0){
-                    flag = 1;
-                    txtNumManifiestoCliente.setEnabled(true);
-                }else{
-                    flag=0;
-                    txtNumManifiestoCliente.setEnabled(false);
-                }
+                txtNumManifiestoCliente.setEnabled(!txtNumManifiestoCliente.isEnabled());
+                if(txtNumManifiestoCliente.isEnabled()) txtNumManifiestoCliente.requestFocus();
 
             }
         });
 
-        txtGenTecNombre.setEnabled(false);
-        txtGenTecCorreo.setEnabled(false);
-        txtGenTecTelefono.setEnabled(false);
+        txtRespEntregaNombre.setEnabled(false);
+        txtRespEntregaCorreo.setEnabled(false);
+        txtRespEntregaTelefono.setEnabled(false);
 
 
         btnBuscarIdentificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //MyApp.getDBO().tecnicoDao().deleteTecnico();
+                TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtRespEntregaIdentificacion.getText().toString());
+                if(tecnico!=null){
+                    txtRespEntregaNombre.setText(tecnico.getNombre());
+                    txtRespEntregaCorreo.setText(tecnico.getCorreo());
+                    txtRespEntregaTelefono.setText(tecnico.getTelefono());
 
-                TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtGenTecIdentificacion.getText().toString());
-                if(flagT==0){
+                    txtRespEntregaCorreo.setEnabled(tecnico.getCorreo()!=null && tecnico.getCorreo().length()==0);
+                    txtRespEntregaTelefono.setEnabled(tecnico.getTelefono()!=null && tecnico.getTelefono().length()==0);
+
+                    MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,tecnico.get_id());
+                    //txtGenTecIdentificacion.setEnabled(false);
+
+                }else{
+                    //consultar en servicio remoto...
+                    userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(),txtRespEntregaIdentificacion.getText().toString());
+                    userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
+                        @Override
+                        public void onSuccessful(DtoIdentificacion identificacion) {
+                            txtRespEntregaNombre.setText(identificacion.getEcuatorianoNombre());
+                            txtRespEntregaCorreo.requestFocus();
+                            txtRespEntregaCorreo.setEnabled(true);
+                            txtRespEntregaTelefono.setEnabled(true);
+
+                            //insert datos en dbo local...
+                            Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),"","");
+
+                            MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,idTecnico.intValue());
+                            //MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
+
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            txtRespEntregaNombre.requestFocus();
+                            txtRespEntregaNombre.setEnabled(true);
+                            txtRespEntregaCorreo.setEnabled(true);
+                            txtRespEntregaTelefono.setEnabled(true);
+                            Toast.makeText(getContext(), "El numero de cedula "+txtRespEntregaIdentificacion.getText().toString()+ " no genero resultados", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userConsultarCedulaTask.execute();
+                }
+
+
+                /*if(flagT==0){
                     if (tecnico!=null){
                         txtGenTecNombre.setText(tecnico.getNombre());
                         txtGenTecCorreo.setText(tecnico.getCorreo());
@@ -138,10 +179,11 @@ public class TabManifiestoGeneral extends LinearLayout {
                     }
                     flagT=1;
                 }else {
-                    MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtGenTecIdentificacion.getText().toString(),nombre,correo,telefono);
+
                     MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
                     flagT=0;
                 }
+                */
 
             }
         });
@@ -164,9 +206,11 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 imgFirmaTecnico.setImageBitmap(bitmap);
                                 MyApp.getDBO().manifiestoDao().updateFirmaTecnicoGenerador(idAppManifiesto,txtNumManifiesto.getText().toString(),
                                         Utils.encodeTobase64(bitmap));
+                                firmaTecnicoGenerador=true;
                             }else{
                                 txtFirmaMensaje.setVisibility(View.VISIBLE);
                                 imgFirmaTecnico.setVisibility(View.GONE);
+                                firmaTecnicoGenerador=false;
                             }
                         }
 
@@ -199,9 +243,11 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 imgFirmaTecnicoTrasnsportista.setImageBitmap(bitmap);
                                 MyApp.getDBO().manifiestoDao().updateFirmaTransportsta(idAppManifiesto,txtNumManifiesto.getText().toString(),
                                         Utils.encodeTobase64(bitmap));
+                                firmaTransportista=true;
                             }else{
                                 txtFirmaMensajeTransportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.GONE);
+                                firmaTransportista=false;
                             }
                         }
 
@@ -217,11 +263,11 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
-        validarTecnico();
+        //validarTecnico();
 
     }
 
-    private void validarTecnico(){
+    /*private void validarTecnico(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         if (manifiesto.getTecnicoResponsable().length()<0){
@@ -231,7 +277,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             btnBuscarIdentificacion.setEnabled(true);
             txtGenTecIdentificacion.setEnabled(true);
         }
-    }
+    }*/
 
     private void guardarDatosTecnico(){
 
@@ -278,7 +324,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 telefono = txtGenTecTelefono.getText().toString();
-                flagT=1;
+                //flagT=1;
 
             }
 
@@ -310,17 +356,28 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
 
-            txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
-            txtNombre.setText(manifiesto.getTecnicoResponsable());
-            txtCorreo.setText(manifiesto.getTecnicoCorreo());
-            txtTelefono.setText(manifiesto.getTecnicoTelefono());
+            txtGenTecIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
+            txtGenTecNombre.setText(manifiesto.getTecnicoResponsable());
+            txtGenTecCorreo.setText(manifiesto.getTecnicoCorreo());
+            txtGenTecTelefono.setText(manifiesto.getTecnicoTelefono());
             txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
 
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText(manifiesto.getEmpresaTransportista());
 
+
+
+            if(manifiesto.getIdTecnicoGenerador()!=null && manifiesto.getIdTecnicoGenerador()>0){
+                TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(manifiesto.getIdTecnicoGenerador());
+                if(tec!=null) {
+                    txtRespEntregaIdentificacion.setText(tec.getIdentificacion());
+                    txtRespEntregaNombre.setText(tec.getNombre());
+                    txtRespEntregaCorreo.setText(tec.getCorreo());
+                    txtRespEntregaTelefono.setText(tec.getTelefono());
+                }
+            }
             //String tecnicoIdentificacion = cursor.getString(cursor.getColumnIndex("tecnicoIdentificacion"));
-           if(manifiesto.getTecnicoIdentificacion() != null){
+           /*if(manifiesto.getTecnicoIdentificacion() != null){
                 txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
                 txtNombre.setText(manifiesto.getTecnicoResponsable());
                 txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
@@ -337,7 +394,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                btnBuscarIdentificacion.setEnabled(false);
                txtGenTecIdentificacion.setEnabled(false);
 
-           }
+           }*/
 
             //String img = cursor.getString(cursor.getColumnIndex("tecnicoFirmaImg"));
             if(manifiesto.getTecnicoFirmaImg() != null){
@@ -345,6 +402,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                 txtFirmaMensaje.setVisibility(View.GONE);
                 imgFirmaTecnico.setVisibility(View.VISIBLE);
                 imgFirmaTecnico.setImageBitmap(imagen);
+                firmaTecnicoGenerador=true;
 
             }
 
@@ -353,6 +411,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                 txtFirmaMensajeTransportista.setVisibility(View.GONE);
                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                 imgFirmaTecnicoTrasnsportista.setImageBitmap(imagen);
+                firmaTransportista=true;
             }
 
             tipoPaquete = manifiesto.getTipoPaquete();
@@ -379,37 +438,22 @@ public class TabManifiestoGeneral extends LinearLayout {
         return numeroManifiesto;
     }
 
-    public Boolean validacionTabGeneral(){
-        Boolean validar = true;
-        if(txtNumManifiestoCliente.getText().length()>0){
-            txtNumManifiestoCliente.setEnabled(false);
-        }
-
-        if(txtGenTecNombre.getText().toString()!="" || txtNombre.getText().toString()!=""){
-            validar = true;
-        }else {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("INFO");
-            dialog.setMessage("Necesita registrar al tecnico responsable");
-            dialog.setCancelable(false);
-            dialog.setNeutralButton("OK", null);
-            dialog.show();
-            validar = false;
-
-        }
-
-        if(imgFirmaTecnico==null && imgFirmaTecnicoTrasnsportista==null){
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("INFO");
-            dialog.setMessage("Necesita registrar la firma");
-            dialog.setCancelable(false);
-            dialog.setNeutralButton("OK", null);
-            dialog.show();
-            validar = false;
-
-        }else{
-            validar = true;
-        }
-        return validar;
+    public boolean validaExisteFirmaTransportista(){
+        return !firmaTransportista;
     }
+
+    public boolean validaExisteFirmaTecnicoGenerador(){
+        return !firmaTecnicoGenerador;
+    }
+
+    public boolean validaExisteDatosResponsableEntrega(){
+        return txtGenTecNombre.getText().toString().length()==0?
+                (txtRespEntregaIdentificacion.getText().length()>0 && txtRespEntregaNombre.getText().toString().length()>0)
+                :true;
+    }
+
+    public boolean validaRequiereNumeroManifiestoCliente(){
+        return txtNumManifiestoCliente.isEnabled() && txtNumManifiestoCliente.getText().toString().trim().length()==0;
+    }
+
 }

@@ -17,6 +17,8 @@ import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
+import com.caircb.rcbtracegadere.utils.Utils;
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -53,6 +55,7 @@ public class MyManifiesto {
     Bitmap logoMAE;
     Bitmap imagenCheck;
     Bitmap imagenUnCheck;
+    Bitmap firma;
 
     public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete){
         this.context = context;
@@ -68,7 +71,9 @@ public class MyManifiesto {
             imagenCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_check);
             imagenUnCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_uncheck);
 
+
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
+            firma = Utils.StringToBitMap(manifiesto.getTecnicoFirmaImg());
 
             if(manifiesto!=null) createReport();
         }
@@ -201,7 +206,7 @@ public class MyManifiesto {
         return pdfFile.getAbsolutePath();
     }
 
-    private PdfPTable createGenerador(Font f6){
+    private PdfPTable createGenerador(Font f6) throws Exception {
 
         PdfPCell _cell;
         PdfPTable tb = new PdfPTable(1);
@@ -302,16 +307,38 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 9
-        PdfPTable tb9 = new PdfPTable(new float[] { 40,60});
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Image jpg = Image.getInstance(stream.toByteArray());
+        jpg.scaleToFit(50,150);
+
+        PdfPTable tb9 = new PdfPTable(new float[] { 40,40,20});
         tb9.addCell(new PdfPCell(new Phrase("NOMBRE, CARGO Y FIRMA DEL RESPONSABLE:",f6)));
         tb9.addCell(new PdfPCell(new Phrase(manifiesto.getTecnicoResponsable(),f6)));
+        tb9.addCell(new PdfPCell(jpg));
         tb9.addCell(new PdfPCell(new Phrase("TELÉFONO Y/O CORREO ELECTRÓNICO DE RESPONSABLE:",f6)));
         tb9.addCell(new PdfPCell(new Phrase(manifiesto.getTecnicoTelefono(),f6)));
+
         tb9.completeRow();
 
         _cell = new PdfPCell(tb9);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb.addCell(_cell);
+
+        /// firma
+     /*   PdfPTable f = new PdfPTable(1);
+
+
+        PdfPCell cell2 =  new PdfPCell(jpg);
+        cell2.setBorder(Rectangle.NO_BORDER);
+        f.addCell(cell2);
+        f.completeRow();
+
+
+        _cell = new PdfPCell(f);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb.addCell(_cell);*/
+
 
         //tabla 10
         PdfPTable tb10 = new PdfPTable(new float[] { 50,20,30});
@@ -906,11 +933,29 @@ public class MyManifiesto {
 
     }
 
+    private PdfPTable createFirma(Font f3) throws Exception {
+
+        PdfPTable det = new PdfPTable(new float[]{50});
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        firma.compress(Bitmap.CompressFormat.PNG,100,stream);
+        Image firma = Image.getInstance(stream.toByteArray());
+       // firma.scaleToFit(16,16);
+        stream.close();
+
+        det.addCell(createCell_Imagen_NO_BORDER(firma,f3,Element.ALIGN_CENTER));
+
+        det.addCell(createCell_VACIO());
+        det.addCell(createCell_VACIO());
+        det.completeRow();
+
+
+        stream.close();
+        return det;
+
+    }
     private PdfPTable createOtrasNovedades(Font f3) throws Exception {
 
-        //dbHelper.open();
         List<RowItemNoRecoleccion> novedades = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idManifiesto);
-        //dbHelper.close();
 
         PdfPTable det = new PdfPTable(new float[]{10,80});
         det.setWidthPercentage(100);

@@ -141,11 +141,28 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 setNavegate(HojaRutaAsignadaFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
-
                 //tab genearl...
-                //if(!tabManifiestoGeneral.validacionTabGeneral())return;
+                boolean aplicaNoRecoleccion= tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion();
+
+                if(tabManifiestoGeneral.validaRequiereNumeroManifiestoCliente()){
+                    messageBox("Se requiere que ingrese el numero de manifiesto del cliente");
+                    return;
+                }
+
+                if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
+                    messageBox("Se requiere de la firma del transportista");
+                    return;
+                }
+                if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
+                    messageBox("Se require que ingrese los datos del tecnico responsable de la entrega de los residuos recolectados");
+                    return;
+                }
+                if(tabManifiestoGeneral.validaExisteFirmaTecnicoGenerador() && !aplicaNoRecoleccion){
+                    messageBox("Se requiere de la firma del tecnico generador");
+                    return;
+                }
                 //tab detalle...
-                if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados() && !tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion()) {
+                if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados() && !aplicaNoRecoleccion) {
                     messageBox("Se requiere que registre al menos un item como recolectado");
                     return;
                 }
@@ -159,7 +176,10 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     return;
                 }
 
-                setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tabManifiestoGeneral.getTipoPaquete() ));
+                setNavegate(VistaPreliminarFragment.newInstance(
+                        idAppManifiesto,
+                        tabManifiestoGeneral.getTipoPaquete()
+                ));
 
                 break;
         }
