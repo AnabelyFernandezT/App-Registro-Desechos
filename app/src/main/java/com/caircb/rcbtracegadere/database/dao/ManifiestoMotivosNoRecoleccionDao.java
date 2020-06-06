@@ -16,14 +16,14 @@ public abstract class ManifiestoMotivosNoRecoleccionDao {
 
     @Query("select c.idSistema as id, c.nombre as catalogo," +
             "( select count(*) from tb_manifiestos_motivo_norecoleccion  nor where nor.idCatalogo=c.idsistema and nor.idAppManifiesto=:idManifiesto limit 1) as estadoChek, " +
-            "( select count(*) from tb_manifiestos_novedad_foto ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=2) as numFotos" +
+            "( select count(*) from tb_manifiestos_file ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=2) as numFotos" +
             " from tb_catalogos c where tipo=6")
     public  abstract List<RowItemNoRecoleccion> fetchHojaRutaMotivoNoRecoleccion(Integer idManifiesto);
 
     @Query("select count(*) " +
             " from tb_catalogos c" +
             " inner join tb_manifiestos_motivo_norecoleccion mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=6 and estadoChek=1" +
-            " where (select count(*) from tb_manifiestos_novedad_foto ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=2)=0")
+            " where (select count(*) from tb_manifiestos_file ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=2)=0")
     public  abstract long existeNovedadNoRecoleccionPendienteFoto(Integer idManifiesto);
 
     @Query("select count(*) " +

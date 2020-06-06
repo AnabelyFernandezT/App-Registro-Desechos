@@ -22,20 +22,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapterR;
-import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoPaqueteAdapter;
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogAudio;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
-import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
-import com.caircb.rcbtracegadere.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +43,7 @@ import java.util.List;
 public class TabManifiestoAdicional extends LinearLayout {
 
     Integer idAppManifiesto,idAppTipoPaquete;
+    String mAudio;
     Window window;
     boolean bloquear;
 
@@ -68,7 +69,6 @@ public class TabManifiestoAdicional extends LinearLayout {
     ManifiestoNoRecoleccionBaseAdapterR recyclerAdapterNoRecolecciones;
     ManifiestoPaqueteAdapter manifiestoPaqueteAdapter;
 
-    String mAudio="";
     LinearLayout lnlmsgAdicionales;
     DialogBuilder builder;
 
@@ -77,7 +77,6 @@ public class TabManifiestoAdicional extends LinearLayout {
     public TabManifiestoAdicional(Context context,
                                   Integer idAppManifiesto,
                                   Integer tipoPaquete,
-                                  String audio,
                                   String tiempoAudio) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
@@ -86,7 +85,7 @@ public class TabManifiestoAdicional extends LinearLayout {
         init();
         loadDataPaquetes();
         loadData();
-        preLoadAudio(audio,tiempoAudio);
+        preLoadAudio(tiempoAudio);
     }
 
     private void init(){
@@ -116,7 +115,9 @@ public class TabManifiestoAdicional extends LinearLayout {
                 dialogAudio.setOnAgregarAudioListener(new DialogAudio.OnAgregarAudioListener() {
                     @Override
                     public void onSuccessful(String audio,String tiempo) {
-                        MyApp.getDBO().manifiestoDao().updateManifiestoNovedadAudio(idAppManifiesto, AppDatabase.getFieldName("AUDIO"),audio,tiempo);
+
+                        MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION,AppDatabase.getFieldName("AUDIO")+".mp3",tiempo,audio,MyConstant.STATUS_RECOLECCION);
+
                         dialogAudio.dismiss();
                         dialogAudio=null;
                         mAudio= audio;
@@ -171,7 +172,7 @@ public class TabManifiestoAdicional extends LinearLayout {
             @Override
             public void onClick(View view) {
                 //funcionalidad para confirmar eliminacion...
-                MyApp.getDBO().manifiestoDao().updateManifiestoNovedadAudio(idAppManifiesto, "","","00:00");
+                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto,  ManifiestoFileDao.AUDIO_RECOLECCION,"",null,"00:00",MyConstant.STATUS_RECOLECCION);
                 mAudio="";
                 txtTimeGrabacion.setText("00:00");
                 btnAgregarAudio.setVisibility(View.VISIBLE);
@@ -277,7 +278,7 @@ public class TabManifiestoAdicional extends LinearLayout {
            @Override
            public void onShow(Integer catalogoID, final Integer position) {
                if(dialogAgregarFotografias==null){
-                   dialogAgregarFotografias = new DialogAgregarFotografias(getContext(),idAppManifiesto,catalogoID,1);
+                   dialogAgregarFotografias = new DialogAgregarFotografias(getContext(),idAppManifiesto,catalogoID, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE, MyConstant.STATUS_RECOLECCION);
                    dialogAgregarFotografias.setCancelable(false);
                    dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
                    dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
@@ -344,7 +345,7 @@ public class TabManifiestoAdicional extends LinearLayout {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {
                 if(dialogAgregarFotografias==null){
-                    dialogAgregarFotografias = new DialogAgregarFotografias(getContext(),idAppManifiesto,catalogoID,2);
+                    dialogAgregarFotografias = new DialogAgregarFotografias(getContext(),idAppManifiesto,catalogoID, ManifiestoFileDao.FOTO_NO_RECOLECCION,MyConstant.STATUS_RECOLECCION);
                     dialogAgregarFotografias.setCancelable(false);
                     dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
@@ -369,15 +370,17 @@ public class TabManifiestoAdicional extends LinearLayout {
         recyclerViewLtsMotivoNoRecoleccion.setAdapter(recyclerAdapterNoRecolecciones);
     }
 
-    private void preLoadAudio(String audio,String tiempo){
-        if(audio!=null && audio.length()>0){
-            mAudio=audio;
-            btnAgregarAudio.setVisibility(View.GONE);
-            btnEliminarAudio.setVisibility(View.VISIBLE);
-            btnReproducirAudio.setVisibility(View.VISIBLE);
-            progressAudio.setMax(timeToMilesecons(tiempo));
-            progressAudio.setVisibility(View.VISIBLE);
-
+    private void preLoadAudio(String tiempo){
+        if(tiempo!=null && (!tiempo.equals("00:00") && tiempo.length()>0)){
+            ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION,MyConstant.STATUS_RECOLECCION);
+            if(f!=null) {
+                mAudio = f.getFile();
+                btnAgregarAudio.setVisibility(View.GONE);
+                btnEliminarAudio.setVisibility(View.VISIBLE);
+                btnReproducirAudio.setVisibility(View.VISIBLE);
+                progressAudio.setMax(timeToMilesecons(tiempo));
+                progressAudio.setVisibility(View.VISIBLE);
+            }
         }
         if(tiempo!=null && tiempo.length()>0) txtTimeGrabacion.setText(tiempo);
     }

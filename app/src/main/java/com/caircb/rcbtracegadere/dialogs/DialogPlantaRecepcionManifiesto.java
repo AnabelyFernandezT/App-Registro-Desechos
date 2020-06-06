@@ -18,16 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.utils.Utils;
 
 import java.util.List;
 
-public class DialogOptionsManifiesto extends MyDialog {
+public class DialogPlantaRecepcionManifiesto extends MyDialog {
 
     Activity _activity;
     ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
@@ -44,7 +44,7 @@ public class DialogOptionsManifiesto extends MyDialog {
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
 
-    public DialogOptionsManifiesto(@NonNull Context context, Integer idManifiesto){
+    public DialogPlantaRecepcionManifiesto(@NonNull Context context, Integer idManifiesto){
         super(context, R.layout.dialog_options_manifiesto);
         this._activity = (Activity)context;
         this.idManifiesto = idManifiesto;
@@ -86,9 +86,13 @@ public class DialogOptionsManifiesto extends MyDialog {
                                 imgFirmaTecnicoTrasnsportista.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
 
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap),MyConstant.STATUS_RECEPCION_PLANTA);
+
                             }else{
                                 txtFirmaMensajeTransportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.GONE);
+
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
                             }
                         }
 
@@ -113,7 +117,7 @@ public class DialogOptionsManifiesto extends MyDialog {
                 }else {
                     if(firmaConfirmada!=null){
                         String unicodeImg = Utils.encodeTobase64(firmaConfirmada);
-                        MyApp.getDBO().manifiestoDao().updateFirmaWithPesoTransportista(idManifiesto, Double.valueOf(txtPeso.getText().toString()), "IMG_FIRMA" + System.currentTimeMillis() + ".jpg", unicodeImg);
+                        MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, unicodeImg, MyConstant.STATUS_RECEPCION_PLANTA);
                         dismiss();
                         messageBox("Registrado correctamente!!");
                     }else {
@@ -140,7 +144,7 @@ public class DialogOptionsManifiesto extends MyDialog {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {
                 if(dialogAgregarFotografias==null){
-                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idManifiesto,catalogoID,3);
+                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idManifiesto,catalogoID, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION, MyConstant.STATUS_RECEPCION_PLANTA);
                     dialogAgregarFotografias.setCancelable(false);
                     dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {

@@ -32,7 +32,7 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
     Uri mImageCaptureUri;
     ImageView imgPhoto1, imgPhoto2, imgPhoto3, imgPhoto4;
 
-    Integer manifiestoID,catalogoID,tipo;
+    Integer manifiestoID,catalogoID,tipo,status;
     Integer prefix=100;
 
     public interface OnAgregarFotosListener {
@@ -46,12 +46,14 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
     public DialogAgregarFotografias(@NonNull Context context,
                                     @NonNull Integer manifiestoID,
                                     @NonNull Integer catalogoID,
-                                    @NonNull Integer tipo) {
+                                    @NonNull Integer tipo,
+                                    @NonNull Integer status) {
         super(context, R.layout.dialog_agregar_fotos);
         this.context = context;
         this.manifiestoID=manifiestoID;
         this.catalogoID=catalogoID;
         this.tipo=tipo;
+        this.status=status;
         this.prefix = 100 * tipo;
         //this.position=position;
 
@@ -92,7 +94,7 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
     }
 
     private void loadData(){
-        List<ItemFoto> fotos =  MyApp.getDBO().manifiestoFotografiasDao().obtenerFotografiabyManifiestoCatalogo(manifiestoID,catalogoID,tipo);
+        List<ItemFoto> fotos =  MyApp.getDBO().manifiestoFileDao().obtenerFotografiabyManifiestoCatalogo(manifiestoID,catalogoID,tipo,status);
         if(fotos.size()>0){
             for (ItemFoto f :fotos){
                if( getPrefix(1).toString().equals(f.getCode().toString())) {
@@ -130,7 +132,7 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
         img.setImageBitmap(Bitmap.createScaledBitmap(Utils.StringToBitMap(str), 100, 100, true));
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if(code!=null) {
-            MyApp.getDBO().manifiestoFotografiasDao().saveOrUpdate(manifiestoID, catalogoID, code, tipo, str);
+            MyApp.getDBO().manifiestoFileDao().saveOrUpdate(manifiestoID, catalogoID, code, tipo, str,status);
         }
     }
 
@@ -176,7 +178,7 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
         switch (v.getId()){
             case R.id.btnPhotosBack:
                 if (mOnAgregarFotosListener != null) {
-                    mOnAgregarFotosListener.onSuccessful(MyApp.getDBO().manifiestoFotografiasDao().obtenerCantidadFotografiabyManifiestoCatalogo(manifiestoID,catalogoID,tipo));
+                    mOnAgregarFotosListener.onSuccessful(MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(manifiestoID,catalogoID,tipo));
                 }
                 dismiss();
                 break;

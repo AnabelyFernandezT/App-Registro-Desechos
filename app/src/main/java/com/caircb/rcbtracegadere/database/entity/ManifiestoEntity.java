@@ -43,9 +43,9 @@ public class ManifiestoEntity {
 
     private String empresaTransportista;
 
-    private String transportistaFirmaImg;
+    //private String transportistaFirmaImg;
 
-    private String transportistaFirmaUrl;
+    //private String transportistaFirmaUrl;
 
     private Integer idTecnicoGenerador;
 
@@ -59,9 +59,9 @@ public class ManifiestoEntity {
 
     private String tecnicoCorreo;
 
-    private String tecnicoFirmaImg;
+    //private String tecnicoFirmaImg;
 
-    private String tecnicoFirmaUrl;
+    //private String tecnicoFirmaUrl;
 
     private String conductorIdentificacion;
 
@@ -86,19 +86,17 @@ public class ManifiestoEntity {
 
     private Integer tipoPaquete;
 
-    public Integer getIdTecnicoManifiesto() {
-        return idTecnicoManifiesto;
-    }
+    private Integer idTecnicoManifiesto;
 
     private Double peso;
 
-    private String nombreFirma;
+    //private String nombreFirma;
 
-    private String firmaImg;
+    //private String firmaImg;
 
-    private String nombreNovedadAudio;
+    //private String nombreNovedadAudio;
 
-    private String novedadAudio;
+    //private String novedadAudio;
 
     private String tiempoAudio;
 
@@ -106,7 +104,11 @@ public class ManifiestoEntity {
         this.idTecnicoManifiesto = idTecnicoManifiesto;
     }
 
-    private Integer idTecnicoManifiesto;
+    public Integer getIdTecnicoManifiesto() {
+        return idTecnicoManifiesto;
+    }
+
+
 
     public ManifiestoEntity() {
     }
@@ -249,22 +251,6 @@ public class ManifiestoEntity {
         this.tecnicoCorreo = tecnicoCorreo;
     }
 
-    public String getTecnicoFirmaImg() {
-        return tecnicoFirmaImg;
-    }
-
-    public void setTecnicoFirmaImg(String tecnicoFirmaImg) {
-        this.tecnicoFirmaImg = tecnicoFirmaImg;
-    }
-
-    public String getTecnicoFirmaUrl() {
-        return tecnicoFirmaUrl;
-    }
-
-    public void setTecnicoFirmaUrl(String tecnicoFirmaUrl) {
-        this.tecnicoFirmaUrl = tecnicoFirmaUrl;
-    }
-
     public String getConductorIdentificacion() {
         return conductorIdentificacion;
     }
@@ -364,22 +350,6 @@ public class ManifiestoEntity {
         this.empresaDestinataria = empresaDestinataria;
     }
 
-    public String getTransportistaFirmaImg() {
-        return transportistaFirmaImg;
-    }
-
-    public void setTransportistaFirmaImg(String transportistaFirmaImg) {
-        this.transportistaFirmaImg = transportistaFirmaImg;
-    }
-
-    public String getTransportistaFirmaUrl() {
-        return transportistaFirmaUrl;
-    }
-
-    public void setTransportistaFirmaUrl(String transportistaFirmaUrl) {
-        this.transportistaFirmaUrl = transportistaFirmaUrl;
-    }
-
     public String getEmpresaTransportista() {
         return empresaTransportista;
     }
@@ -404,37 +374,6 @@ public class ManifiestoEntity {
         this.peso = peso;
     }
 
-    public String getNombreFirma() {
-        return nombreFirma;
-    }
-
-    public void setNombreFirma(String nombreFirma) {
-        this.nombreFirma = nombreFirma;
-    }
-
-    public String getFirmaImg() {
-        return firmaImg;
-    }
-
-    public void setFirmaImg(String firmaImg) {
-        this.firmaImg = firmaImg;
-    }
-
-    public String getNombreNovedadAudio() {
-        return nombreNovedadAudio;
-    }
-
-    public void setNombreNovedadAudio(String nombreNovedadAudio) {
-        this.nombreNovedadAudio = nombreNovedadAudio;
-    }
-
-    public String getNovedadAudio() {
-        return novedadAudio;
-    }
-
-    public void setNovedadAudio(String novedadAudio) {
-        this.novedadAudio = novedadAudio;
-    }
 
     public String getTiempoAudio() {
         return tiempoAudio;

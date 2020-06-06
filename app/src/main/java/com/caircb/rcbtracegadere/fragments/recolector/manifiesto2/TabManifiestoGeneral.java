@@ -1,10 +1,7 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,9 +14,13 @@ import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCedulaTask;
 import com.caircb.rcbtracegadere.utils.ImagenUtils;
@@ -31,7 +32,7 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     private Boolean bloquear;
     private  Integer tipoPaquete=null;
-    private String audio="";
+    //private String audio="";
     private String tiempoAudio;
     private String numeroManifiesto="";
     private View view;
@@ -204,13 +205,13 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 txtFirmaMensaje.setVisibility(View.GONE);
                                 imgFirmaTecnico.setVisibility(View.VISIBLE);
                                 imgFirmaTecnico.setImageBitmap(bitmap);
-                                MyApp.getDBO().manifiestoDao().updateFirmaTecnicoGenerador(idAppManifiesto,txtNumManifiesto.getText().toString(),
-                                        Utils.encodeTobase64(bitmap));
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
                                 firmaTecnicoGenerador=true;
                             }else{
                                 txtFirmaMensaje.setVisibility(View.VISIBLE);
                                 imgFirmaTecnico.setVisibility(View.GONE);
                                 firmaTecnicoGenerador=false;
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, null, MyConstant.STATUS_RECOLECCION);
                             }
                         }
 
@@ -241,12 +242,12 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 txtFirmaMensajeTransportista.setVisibility(View.GONE);
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setImageBitmap(bitmap);
-                                MyApp.getDBO().manifiestoDao().updateFirmaTransportsta(idAppManifiesto,txtNumManifiesto.getText().toString(),
-                                        Utils.encodeTobase64(bitmap));
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
                                 firmaTransportista=true;
                             }else{
                                 txtFirmaMensajeTransportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.GONE);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, null, MyConstant.STATUS_RECOLECCION);
                                 firmaTransportista=false;
                             }
                         }
@@ -397,8 +398,9 @@ public class TabManifiestoGeneral extends LinearLayout {
            }*/
 
             //String img = cursor.getString(cursor.getColumnIndex("tecnicoFirmaImg"));
-            if(manifiesto.getTecnicoFirmaImg() != null){
-                Bitmap imagen = Utils.StringToBitMap(manifiesto.getTecnicoFirmaImg());
+            ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
+            if(f != null){
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
                 txtFirmaMensaje.setVisibility(View.GONE);
                 imgFirmaTecnico.setVisibility(View.VISIBLE);
                 imgFirmaTecnico.setImageBitmap(imagen);
@@ -406,8 +408,9 @@ public class TabManifiestoGeneral extends LinearLayout {
 
             }
 
-            if(manifiesto.getTransportistaFirmaImg() != null){
-                Bitmap imagen = Utils.StringToBitMap(manifiesto.getTransportistaFirmaImg());
+            f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
+            if(f != null){
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
                 txtFirmaMensajeTransportista.setVisibility(View.GONE);
                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                 imgFirmaTecnicoTrasnsportista.setImageBitmap(imagen);
@@ -415,7 +418,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
 
             tipoPaquete = manifiesto.getTipoPaquete();
-            audio = manifiesto.getNovedadAudio();
+            //audio = manifiesto.getNovedadAudio();
             tiempoAudio = manifiesto.getTiempoAudio();
             numeroManifiesto =manifiesto.getNumeroManifiesto();
         }
@@ -426,9 +429,6 @@ public class TabManifiestoGeneral extends LinearLayout {
         return tipoPaquete!=null?(tipoPaquete>0?tipoPaquete:null):null;
     }
 
-    public String getAudio() {
-        return audio;
-    }
 
     public String getTiempoAudio() {
         return tiempoAudio;

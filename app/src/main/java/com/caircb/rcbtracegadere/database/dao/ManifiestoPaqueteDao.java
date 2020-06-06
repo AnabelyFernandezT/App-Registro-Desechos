@@ -23,9 +23,6 @@ public abstract class ManifiestoPaqueteDao {
     @Query("select * from tb_manifiestos_paquete where idAppManifiesto =:manifiestoID and idPaquete=:paqueteID")
     public abstract ManifiestoPaquetesEntity fetchConsultarManifiestoPaquetebyId(Integer manifiestoID, Integer paqueteID);
 
-    @Query("select * from tb_manifiestos_paquete where idAppManifiesto =:manifiestoID and idPaquete=:paqueteID")
-    public abstract List<RequestManifiestoPaquete> fetchConsultarManifiestoPaquete(Integer manifiestoID, Integer paqueteID);
-
     @Update
     public abstract void actualiarPaquete(ManifiestoPaquetesEntity entity);
 

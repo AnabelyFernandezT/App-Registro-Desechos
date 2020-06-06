@@ -250,7 +250,7 @@ public class TabManifiestoGeneralFragment extends Fragment {
             }*/
 
             //String img = cursor.getString(cursor.getColumnIndex("tecnicoFirmaImg"));
-            if(manifiesto.getTecnicoFirmaImg() != null){
+            /*if(manifiesto.getTecnicoFirmaImg() != null){
                 Bitmap imagen = Utils.StringToBitMap(manifiesto.getTecnicoFirmaImg());
                 txtFirmaMensaje.setVisibility(View.GONE);
                 imgFirmaTecnico.setVisibility(View.VISIBLE);
@@ -262,7 +262,7 @@ public class TabManifiestoGeneralFragment extends Fragment {
                 txtFirmaMensaje.setVisibility(View.GONE);
                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                 imgFirmaTecnicoTrasnsportista.setImageBitmap(imagen);
-            }
+            }*/
 
             tipoPaquete = manifiesto.getTipoPaquete();
         }

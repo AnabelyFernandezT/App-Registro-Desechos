@@ -12,7 +12,7 @@ import com.caircb.rcbtracegadere.database.dao.LogDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDetalleDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDetallePesosDao;
-import com.caircb.rcbtracegadere.database.dao.ManifiestoFotografiasDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoMotivosNoRecoleccionDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoObservacionFrecuenteDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
@@ -26,7 +26,7 @@ import com.caircb.rcbtracegadere.database.entity.LogEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoFotografiaEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoMotivoNoRecoleccionEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoObservacionFrecuenteEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
@@ -52,7 +52,7 @@ import java.util.Locale;
         ManifiestoEntity.class,
         ManifiestoDetalleEntity.class,
         ManifiestoObservacionFrecuenteEntity.class,
-        ManifiestoFotografiaEntity.class,
+        ManifiestoFileEntity.class,
         ManifiestoMotivoNoRecoleccionEntity.class,
         ImpresoraEntity.class,
         PaqueteEntity.class,
@@ -132,7 +132,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoDao manifiestoDao();
     public abstract ManifiestoDetalleDao manifiestoDetalleDao();
     public abstract ManifiestoObservacionFrecuenteDao manifiestoObservacionFrecuenteDao();
-    public abstract ManifiestoFotografiasDao manifiestoFotografiasDao();
+    public abstract ManifiestoFileDao manifiestoFileDao();
     public abstract PaqueteDao paqueteDao();
     public abstract ManifiestoMotivosNoRecoleccionDao manifiestoMotivosNoRecoleccionDao();
     public  abstract ManifiestoDetallePesosDao manifiestoDetallePesosDao();

@@ -48,15 +48,18 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManif(String search);
 
+    /*
     @Query("update tb_manifiestos set numeroManifiesto=:numManifiesto, tecnicoFirmaImg=:img, tecnicoFirmaUrl=:url where idAppManifiesto=:idManifiesto")
     abstract void actualizarFirmaTecnicoGenerador(Integer idManifiesto, String numManifiesto, String img, String url);
-
+    */
+    /*
     @Query("update tb_manifiestos set numeroManifiesto=:numManifiesto, transportistaFirmaImg=:img, transportistaFirmaUrl=:url where idAppManifiesto=:idManifiesto")
     abstract void actualizarFirmaTrasnportista(Integer idManifiesto, String numManifiesto, String img, String url);
-
+    */
+    /*
     @Query("update tb_manifiestos set peso=:peso, nombreFirma=:nombreFirma, firmaImg=:firmaImg where idAppManifiesto =:idAppManifiesto")
     abstract void actualizarFirmaWithPesoTransportista(Integer idAppManifiesto, Double peso, String nombreFirma, String firmaImg);
-
+    */
     @Query("update tb_manifiestos set IdTecnicoGenerador=:IdTecnicoGenerador where idAppManifiesto =:idAppManifiesto")
     abstract void actualizarTecnicoGenerador(Integer idAppManifiesto, Integer IdTecnicoGenerador);
 
@@ -70,7 +73,9 @@ public abstract class ManifiestoDao {
         actualizarNovedadEncontrada(idManifiesto, novedadEncontrada);
     }
 
+    /*
     public void updateFirmaTecnicoGenerador(Integer idManifiesto, String numManifiesto, String img){
+
         actualizarFirmaTecnicoGenerador(idManifiesto,numManifiesto,img, AppDatabase.getFieldName(numManifiesto));
     }
 
@@ -87,15 +92,17 @@ public abstract class ManifiestoDao {
 
     @Query("Select 10 as code, transportistaFirmaImg as foto, 10 as tipo, transportistaFirmaUrl as fotoUrl from tb_manifiestos where idAppManifiesto =:idAppManifiesto")
     public abstract List<ItemFoto> obtenerFotoFirmaTransportistaByIdManifiesto(Integer idAppManifiesto);
-
+    */
     @Query("update tb_manifiestos set idTecnicoGenerador=:idTecnicoGenerador where idAppManifiesto=:idManifiesto")
     public abstract void updateManifiestobyIdManifiesto(Integer idManifiesto, String idTecnicoGenerador);
 
     @Query("update tb_manifiestos set estado=:estado where idAppManifiesto=:id")
     public abstract void updateManifiestoEstadobyId(Integer id, Integer estado);
 
+    /*
     @Query("update tb_manifiestos set nombreNovedadAudio=:nombreAudio, novedadAudio=:audio,tiempoAudio=:tiempo where idAppManifiesto=:idAppManifiesto")
     public abstract void updateManifiestoNovedadAudio(Integer idAppManifiesto, String nombreAudio,String audio,String tiempo);
+    */
 
     @Query("delete from tb_manifiestos where idAppManifiesto=:idManifiesto")
     abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
@@ -158,8 +165,8 @@ public abstract class ManifiestoDao {
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
 
             entity.setPeso(manifiesto.getPeso());
-            entity.setNombreFirma(manifiesto.getNombreFirma());
-            entity.setFirmaImg(manifiesto.getFirmaImg());
+            //entity.setNombreFirma(manifiesto.getNombreFirma());
+            //entity.setFirmaImg(manifiesto.getFirmaImg());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -206,8 +213,8 @@ public abstract class ManifiestoDao {
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
 
             entity.setPeso(manifiesto.getPeso());
-            entity.setNombreFirma(manifiesto.getNombreFirma());
-            entity.setFirmaImg(manifiesto.getFirmaImg());
+            //entity.setNombreFirma(manifiesto.getNombreFirma());
+            //entity.setFirmaImg(manifiesto.getFirmaImg());
         }
 
         if (entity!=null) createManifiesto(entity);

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -18,6 +19,7 @@ public class DialogFirma extends MyDialog {
     LinearLayout btnCancelar,btnAplicar;
     SignaturePad signaturePad;
 
+
     public interface OnSignaturePadListener {
         public void onSuccessful(Bitmap bitmap);
         public void  onCanceled();
@@ -25,7 +27,9 @@ public class DialogFirma extends MyDialog {
 
     private OnSignaturePadListener mOnSignaturePadListener;
 
-    public DialogFirma(@NonNull Context context) {
+    public DialogFirma(
+            @NonNull Context context
+    ) {
         super(context, R.layout.dialog_firma);
     }
 
@@ -55,6 +59,7 @@ public class DialogFirma extends MyDialog {
         btnAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(mOnSignaturePadListener!=null){
                     mOnSignaturePadListener.onSuccessful(signaturePad.isEmpty()?null:signaturePad.getSignatureBitmap());
 

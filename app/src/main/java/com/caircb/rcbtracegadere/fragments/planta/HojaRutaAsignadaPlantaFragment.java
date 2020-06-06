@@ -1,6 +1,5 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
@@ -9,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -21,15 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
-import com.caircb.rcbtracegadere.dialogs.DialogOptionsManifiesto;
+import com.caircb.rcbtracegadere.dialogs.DialogPlantaRecepcionManifiesto;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
-import com.caircb.rcbtracegadere.models.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +40,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCame
     LinearLayout btnRetornarListHojaRuta;
     RecyclerView recyclerView;
     ManifiestoAdapter recyclerviewAdapter;
-    DialogOptionsManifiesto dialogOptionsManifiesto;
+    DialogPlantaRecepcionManifiesto dialogOptionsManifiesto;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
@@ -157,7 +152,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCame
 
     private void  openModal(Integer idManifiesto){
         Window window;
-        dialogOptionsManifiesto = new DialogOptionsManifiesto(getActivity(),idManifiesto);
+        dialogOptionsManifiesto = new DialogPlantaRecepcionManifiesto(getActivity(),idManifiesto);
         dialogOptionsManifiesto.setCancelable(false);
         dialogOptionsManifiesto.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogOptionsManifiesto.show();

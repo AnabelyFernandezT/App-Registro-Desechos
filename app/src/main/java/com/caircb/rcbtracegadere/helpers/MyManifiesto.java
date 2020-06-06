@@ -10,9 +10,11 @@ import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
@@ -73,7 +75,8 @@ public class MyManifiesto {
 
 
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-            firma = Utils.StringToBitMap(manifiesto.getTecnicoFirmaImg());
+            ItemFile fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
+            if(fileFirmaTecnico!=null) firma = Utils.StringToBitMap(fileFirmaTecnico.getFile());
 
             if(manifiesto!=null) createReport();
         }

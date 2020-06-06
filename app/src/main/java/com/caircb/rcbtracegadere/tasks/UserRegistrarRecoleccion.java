@@ -1,22 +1,19 @@
 package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
-import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoFotografiaEntity;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoObservacionFrecuenteEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoFile;
-import com.caircb.rcbtracegadere.models.ItemFirmasManifiesto;
-import com.caircb.rcbtracegadere.models.ItemFoto;
+import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoDet;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoDetBultos;
@@ -24,18 +21,19 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoNovedadFrecuent
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoNovedadNoRecoleccion;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPaquete;
 import com.caircb.rcbtracegadere.models.request.RequestNovedadFoto;
-import com.caircb.rcbtracegadere.utils.Utils;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.caircb.rcbtracegadere.models.response.DtoInfo;
+import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitCallbacks {
     Integer idAppManifiesto;
@@ -45,7 +43,9 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
     private List<DtoFile> listaFileDefauld;
     UserUploadFileTask userUploadFileTask;
-
+    DtoFile firmaTransportista;
+    DtoFile firmaTecnicoGenerador;
+    DtoFile audioNovedadCliente;
 
     public UserRegistrarRecoleccion(Context context,
                                     Integer idAppManifiesto) {
@@ -60,14 +60,50 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
         //images por defecto
         listaFileDefauld = new ArrayList<>();
-        listaFileDefauld.add(new DtoFile(model.getTransportistaFirmaUrl(),model.getTransportistaFirmaImg()));
-        listaFileDefauld.add(new DtoFile(model.getTecnicoFirmaUrl(),model.getTecnicoFirmaImg()));
-        if(model.getNovedadAudio()!=null && model.getNovedadAudio().length()>0)listaFileDefauld.add(new DtoFile(model.getNombreNovedadAudio(),model.getNovedadAudio()));
+
+        firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSend(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_RECOLECCION);
+        if(firmaTransportista!=null)listaFileDefauld.add(firmaTransportista);
+
+        firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSend(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_RECOLECCION);
+        if(firmaTecnicoGenerador!=null)listaFileDefauld.add(firmaTecnicoGenerador);
+
+        audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSend(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
+        if(audioNovedadCliente!=null)listaFileDefauld.add(audioNovedadCliente);
 
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
         userUploadFileTask= new UserUploadFileTask(getActivity(),path);
-        userUploadFileTask.uploadRecoleccion(listaFileDefauld,idAppManifiesto);
+        userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
+            @Override
+            public void onSuccessful() {
+                register();
+            }
 
+            @Override
+            public void onFailure() {
+
+            }
+        });
+        userUploadFileTask.uploadRecoleccion(listaFileDefauld,idAppManifiesto);
+    }
+
+    private void register(){
+        RequestManifiesto request = createRequestManifiesto();
+        if(request!=null){
+            //Gson g = new Gson();
+            WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
+                @Override
+                public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
+                    if(response.isSuccessful()){
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DtoInfo> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     private RequestManifiesto createRequestManifiesto(){
@@ -77,12 +113,12 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setIdAppManifiesto(idAppManifiesto);
             rq.setNumeroManifiesto(model.getNumeroManifiesto());
             rq.setNumeroManifiestoCliente(model.getNumManifiestoCliente());
-            rq.setUrlFirmaTransportista(path+"/"+model.getTransportistaFirmaUrl());
+            rq.setUrlFirmaTransportista(firmaTransportista!=null? (path+"/"+firmaTransportista.getUrl()):"");
             //rq.setResponsableEntregaIdentificacion(m.getTecnicoIdentificacion());
-            rq.setUrlFirmaResponsableEntrega(path+"/"+model.getTecnicoFirmaUrl());
+            rq.setUrlFirmaResponsableEntrega(firmaTecnicoGenerador!=null?(path+"/"+firmaTecnicoGenerador.getUrl()):"");
             rq.setUsuarioResponsable(MySession.getIdUsuario());
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
-            rq.setUrlAudioNovedadCliente(path+"/"+model.getNovedadAudio());
+            rq.setUrlAudioNovedadCliente(audioNovedadCliente!=null?( path+"/"+audioNovedadCliente.getUrl()):"");
             rq.setFechaRecoleccion(model.getFechaManifiesto());
 
             rq.setPaquete(createRequestPaquete(model.getTipoPaquete()!=null?(model.getTipoPaquete()>0?model.getTipoPaquete():null):null));
@@ -156,7 +192,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     }
 
     private List<RequestNovedadFoto> createFotografia(Integer idCatalogo,Integer tipo) {
-        return MyApp.getDBO().manifiestoFotografiasDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
+        return MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
     }
 
     private RequestManifiestoPaquete createRequestPaquete(Integer idPaquete){

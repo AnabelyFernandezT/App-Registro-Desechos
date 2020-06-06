@@ -20,11 +20,12 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNoRecoleccionBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
-import com.caircb.rcbtracegadere.utils.Utils;
 
 import java.util.List;
 
@@ -144,7 +145,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {
                 if(dialogAgregarFotografias==null){
-                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idAppManifiesto,catalogoID,2);
+                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idAppManifiesto,catalogoID, ManifiestoFileDao.FOTO_NO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
                     dialogAgregarFotografias.setCancelable(false);
                     dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
