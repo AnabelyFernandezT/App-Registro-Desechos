@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.database.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -19,6 +20,9 @@ public abstract class TecnicoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createTecnico(TecnicoEntity entity);
+
+    @Query("delete from tb_tecnicos")
+    public abstract void deleteTecnico();
 
     public void saveOrUpdate(Integer idManifiesto, String cedula, String nombre, String correo, String telefono ){
         TecnicoEntity tecnico = fechConsultaTecnicobyIdentidad(cedula);

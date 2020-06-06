@@ -66,7 +66,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
         userUploadFileTask= new UserUploadFileTask(getActivity(),path);
-        userUploadFileTask.uploadRecoleccion(listaFileDefauld);
+        userUploadFileTask.uploadRecoleccion(listaFileDefauld,idAppManifiesto);
 
     }
 
