@@ -139,7 +139,7 @@ public class ManifiestoNovedadBaseAdapterRecepcionR extends RecyclerView.Adapter
     }
 
     public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
-        MyApp.getDBO().manifiestoFotografiasDao().deleteFotoByIdAppManifistoCatalogoRecepcion(idManifiesto, idItem);
+        MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogoRecepcion(idManifiesto, idItem);
     }
 
 }

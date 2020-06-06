@@ -70,6 +70,9 @@ public abstract class ManifiestoFileDao {
     @Query("update tb_manifiestos_file set sincronizado=:sincronizado where _id=:id")
     public abstract void actualizarToSincronizado(Long id,Boolean sincronizado);
 
+    @Query("Delete from tb_manifiestos_file where idAppManifiesto =:idAppManifiesto and idCatalogo=:idCatalogo")
+    public abstract void deleteFotoByIdAppManifistoCatalogoRecepcion( Integer idAppManifiesto, Integer idCatalogo);
+
     @Delete
     abstract void deleteFile(ManifiestoFileEntity model);
 
