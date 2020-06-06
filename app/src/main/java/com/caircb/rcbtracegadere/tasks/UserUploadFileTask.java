@@ -33,7 +33,7 @@ public class UserUploadFileTask {
 
     public interface OnUploadFileListener {
         public void onSuccessful();
-        public void onFailure();
+        public void onFailure(String message);
     }
 
     private OnUploadFileListener mOnUploadFileListener;
@@ -51,37 +51,43 @@ public class UserUploadFileTask {
             List<DtoFile> listaFileDefauld,
             Integer idAppManifiesto
     ){
-        this.listaFileDefauld = listaFileDefauld;
-        //fotos novedades frecuente...
-        listaFotoNovedadFrecuente =  MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE);
-        //fotos motivos no recoleccion...
-        listaFotoMotivoNoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto,ManifiestoFileDao.FOTO_NO_RECOLECCION);
+        try {
+            this.listaFileDefauld = listaFileDefauld;
+            //fotos novedades frecuente...
+            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE);
+            //fotos motivos no recoleccion...
+            listaFotoMotivoNoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NO_RECOLECCION);
 
-        sendFileDefauld(0);
-    }
-
-    private void sendFileDefauld(Integer position){
-        if(position<listaFileDefauld.size()) {
-            uploadeRef = storageRef.child(this.path+"/"+listaFileDefauld.get(position).getUrl());
-            sendToStorage(Utils.decodeBase64toByte(listaFileDefauld.get(position).getFile()), position,1l,listaFileDefauld.get(position).getId());
-        }else{
-            sendFileNovedadFrecuente(0);
+            sendFileDefauld(0);
+        }catch (Exception e){
+            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
         }
     }
 
+    private void sendFileDefauld(Integer position){
+        try {
+            if (listaFileDefauld!=null && position < listaFileDefauld.size()) {
+                uploadeRef = storageRef.child(this.path + "/" + listaFileDefauld.get(position).getUrl());
+                sendToStorage(Utils.decodeBase64toByte(listaFileDefauld.get(position).getFile()), position, 1l, listaFileDefauld.get(position).getId());
+            } else {
+                sendFileNovedadFrecuente(0);
+            }
+        }catch (Exception e){if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());}
+    }
+
     private void sendFileNovedadFrecuente(Integer position){
-        if(position < listaFotoNovedadFrecuente.size()){
+        if(listaFotoNovedadFrecuente != null &&position < listaFotoNovedadFrecuente.size()){
             file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(listaFotoNovedadFrecuente.get(position));
             uploadeRef = storageRef.child(this.path+"/novedadfrecuente/"+file.getUrl());
             sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,2l,listaFotoNovedadFrecuente.get(position));
         }else{
             file = null;
-            sendFileNovedadFrecuente(0);
+            sendFileMotivoNoRecoleccion(0);
         }
     }
 
     private void sendFileMotivoNoRecoleccion(Integer position){
-        if(position < listaFotoMotivoNoRecoleccion.size()){
+        if(listaFotoMotivoNoRecoleccion!=null && position < listaFotoMotivoNoRecoleccion.size()){
             file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(listaFotoMotivoNoRecoleccion.get(position));
             uploadeRef = storageRef.child(this.path+"/notivonorecoleccion/"+file.getUrl());
             sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,3l,listaFotoMotivoNoRecoleccion.get(position));
@@ -96,12 +102,12 @@ public class UserUploadFileTask {
         }
     }
 
-    private void sendToStorage(byte[] imagen, final Integer index,final long tipo, final long id){
+    private void sendToStorage(byte[] imagen, final Integer index,final long tipo, final long id) {
         if(uploadeRef != null){
             uploadeRef.putBytes(imagen).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(Exception e) {
-                    String d="";
+                    if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public class RequestManifiestoDetBultos {
     private Integer index;
-    private BigDecimal peso;
+    private double peso;
     private String descripcion;
     private String codigoQr;
 
-    public RequestManifiestoDetBultos(Integer index, BigDecimal peso, String descripcion, String codigoQr) {
+    public RequestManifiestoDetBultos(Integer index, double peso, String descripcion, String codigoQr) {
         this.index = index;
         this.peso = peso;
         this.descripcion = descripcion;
@@ -23,11 +23,11 @@ public class RequestManifiestoDetBultos {
         this.index = index;
     }
 
-    public BigDecimal getPeso() {
+    public double getPeso() {
         return peso;
     }
 
-    public void setPeso(BigDecimal peso) {
+    public void setPeso(double peso) {
         this.peso = peso;
     }
 

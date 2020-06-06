@@ -56,6 +56,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     @Override
     public void execute() {
         //Subir Fotos
+        progressShow("registrando recoleccion...");
         model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         //images por defecto
@@ -79,8 +80,9 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             }
 
             @Override
-            public void onFailure() {
-
+            public void onFailure(String message) {
+                progressHide();
+                message(message);
             }
         });
         userUploadFileTask.uploadRecoleccion(listaFileDefauld,idAppManifiesto);
@@ -89,18 +91,21 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     private void register(){
         RequestManifiesto request = createRequestManifiesto();
         if(request!=null){
-            //Gson g = new Gson();
+            Gson g = new Gson();
+            String f = g.toJson(request);
             WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
 
+                    }else{
+                        progressHide();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }
@@ -136,8 +141,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             for (ManifiestoDetalleEntity d:det){
                 resp.add( new RequestManifiestoDet(
                         d.getIdAppManifiestoDetalle(),
-                        new BigDecimal(d.getPesoUnidad()),
-                        new BigDecimal(d.getCantidadBulto()),
+                        d.getPesoUnidad(),
+                        d.getCantidadBulto(),
                         createRequestBultos(d.getIdAppManifiestoDetalle())
                 ));
             }
@@ -153,7 +158,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             for (ManifiestoDetallePesosEntity p:bultos){
                 resp.add(new RequestManifiestoDetBultos(
                         i,
-                        new BigDecimal(p.getValor()),
+                        p.getValor(),
                         p.getDescripcion(),
                         p.getCodeQr()
                 ));
