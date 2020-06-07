@@ -64,8 +64,11 @@ public abstract class ManifiestoFileDao {
     @Query("select file,fileUrl as url  from tb_manifiestos_file where idAppManifiesto=:idManifiesto and tipo=:tipo and status=:status limit 1")
     public abstract ItemFile consultarFile(Integer idManifiesto,Integer tipo,Integer status);
 
-    @Query("select _id as id ,file,fileUrl as url  from tb_manifiestos_file where idAppManifiesto=:idManifiesto and tipo=:tipo and status=:status and sincronizado=0 limit 1")
+    @Query("select _id as id ,file,fileUrl as url,sincronizado  from tb_manifiestos_file where idAppManifiesto=:idManifiesto and tipo=:tipo and status=:status and sincronizado=0 limit 1")
     public abstract DtoFile consultarFiletoSend(Integer idManifiesto, Integer tipo, Integer status);
+
+    @Query("select _id as id ,file,fileUrl as url,sincronizado  from tb_manifiestos_file where idAppManifiesto=:idManifiesto and tipo=:tipo and status=:status limit 1")
+    public abstract DtoFile consultarFiletoSendDefauld(Integer idManifiesto, Integer tipo, Integer status);
 
     @Query("update tb_manifiestos_file set sincronizado=:sincronizado where _id=:id")
     public abstract void actualizarToSincronizado(Long id,Boolean sincronizado);
