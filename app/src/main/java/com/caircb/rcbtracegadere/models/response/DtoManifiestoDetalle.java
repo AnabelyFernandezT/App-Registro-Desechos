@@ -7,7 +7,7 @@ public class DtoManifiestoDetalle {
     private Integer idTipoDesecho;
     private double pesoUnidad;
     private Integer idTipoUnidad;
-    private Integer cantidadDesecho;
+    private double cantidadDesecho;
     private Integer estado;
     private Integer pesajeBultoFlag;
     private Integer tipoPaquete;
@@ -56,13 +56,9 @@ public class DtoManifiestoDetalle {
         this.idTipoUnidad = idTipoUnidad;
     }
 
-    public Integer getCantidadDesecho() {
-        return cantidadDesecho;
-    }
+    public double getCantidadDesecho() { return cantidadDesecho;}
 
-    public void setCantidadDesecho(Integer cantidadDesecho) {
-        this.cantidadDesecho = cantidadDesecho;
-    }
+    public void setCantidadDesecho(double cantidadDesecho) { this.cantidadDesecho = cantidadDesecho;}
 
     public Integer getEstado() {
         return estado;

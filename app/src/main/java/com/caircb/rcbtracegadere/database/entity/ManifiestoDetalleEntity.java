@@ -26,7 +26,7 @@ public class ManifiestoDetalleEntity {
 
     private double cantidadBulto;
 
-    private Integer cantidadDesecho;
+    private double cantidadDesecho;
 
     private String tratamiento;
 
@@ -94,11 +94,9 @@ public class ManifiestoDetalleEntity {
         this.cantidadBulto = cantidadBulto;
     }
 
-    public Integer getCantidadDesecho() {
-        return cantidadDesecho;
-    }
+    public double getCantidadDesecho() { return cantidadDesecho; }
 
-    public void setCantidadDesecho(Integer cantidadDesecho) { this.cantidadDesecho = cantidadDesecho; }
+    public void setCantidadDesecho(double cantidadDesecho) { this.cantidadDesecho = cantidadDesecho;}
 
     public boolean isEstadoChek() {
         return estadoChek;
