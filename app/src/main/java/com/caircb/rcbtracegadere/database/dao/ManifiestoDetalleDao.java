@@ -24,8 +24,8 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set estadoChek=:check, codeQr=:codigo where idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract void updateManifiestoDetallebyId(Integer idManifiestoDetalle, boolean check, String codigo);
 
-    @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto, pesoUnidad=:peso, estadoChek=:estadoChek where idAppManifiestoDetalle=:idManifiestoDetalle")
-    public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, double cantidadBulto, double peso,boolean estadoChek);
+    @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto, pesoUnidad=:peso, estadoChek=:estadoChek,cantidadTotalEtiqueta=:cantidad where idAppManifiestoDetalle=:idManifiestoDetalle")
+    public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, double cantidadBulto, double peso,Integer cantidad,boolean estadoChek);
 
     @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete" +
             " from tb_manifiestos_detalle d" +
@@ -70,6 +70,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setCantidadBulto(0);
             entity.setTipoItem(dt.getPesajeBultoFlag());
             entity.setTipoPaquete(dt.getTipoPaquete());
+            entity.setCantidadTotalEtiqueta(0);
 
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());

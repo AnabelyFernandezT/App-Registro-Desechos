@@ -28,6 +28,8 @@ public class ManifiestoDetalleEntity {
 
     private double cantidadDesecho;
 
+    private Integer cantidadTotalEtiqueta;
+
     private String tratamiento;
 
     private Integer tipoItem;
@@ -123,4 +125,8 @@ public class ManifiestoDetalleEntity {
     public String getCodeQr() { return codeQr;}
 
     public void setCodeQr(String codeQr) { this.codeQr = codeQr;}
+
+    public Integer getCantidadTotalEtiqueta() {return cantidadTotalEtiqueta;}
+
+    public void setCantidadTotalEtiqueta(Integer cantidadTotalEtiqueta) { this.cantidadTotalEtiqueta = cantidadTotalEtiqueta;}
 }

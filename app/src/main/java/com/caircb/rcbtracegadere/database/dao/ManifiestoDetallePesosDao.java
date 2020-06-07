@@ -8,6 +8,7 @@ import androidx.room.Query;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
+import com.caircb.rcbtracegadere.models.ItemEtiqueta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoDetBultos;
 
@@ -31,6 +32,14 @@ public abstract class ManifiestoDetallePesosDao {
 
     @Query("delete from tb_manifiesto_detalle_pesos where _id=:id")
     public abstract void deleteTableValoresById(Integer id);
+
+
+    @Query("select dt.idAppManifiestoDetalle,m.nombreCliente as cliente,m.numeroManifiesto,m.fechaRecoleccion,c.nombre as residuo,dt.tratamiento,valor as peso, codeQr as codigoQr,0 as indexEtiqueta, dt.cantidadTotalEtiqueta as totalEtiqueta " +
+            " from tb_manifiesto_detalle_pesos b" +
+            " inner join tb_manifiestos_detalle dt on b.idAppManifiestoDetalle=dt.idAppManifiesto and dt.estadoChek=1" +
+            " inner join tb_manifiestos m on dt.idAppManifiesto=m.idAppManifiesto and idAppManifiesto=:idAppManifiesto" +
+            " inner join tb_catalogos c on dt.idTipoDesecho = c.idSistema and c.tipo=2 order by m.idAppManifiesto,dt.idAppManifiestoDetalle,b._id")
+    public  abstract List<ItemEtiqueta> consultarBultosImpresion(Integer idAppManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long insertValores(ManifiestoDetallePesosEntity entity);

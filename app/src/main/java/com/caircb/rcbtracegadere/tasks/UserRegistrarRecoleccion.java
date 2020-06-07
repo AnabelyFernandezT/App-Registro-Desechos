@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.tasks;
 import android.content.Context;
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
@@ -50,6 +52,12 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     DtoFile audioNovedadCliente;
     Location location;
     MyPrint print;
+
+    public interface OnRegisterListener {
+        public void onSuccessful();
+    }
+
+    private OnRegisterListener mOnRegisterListener;
 
     public UserRegistrarRecoleccion(Context context,
                                     Integer idAppManifiesto,
@@ -108,7 +116,20 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             //ejecutar el proceso de imprecion..
                             print = new MyPrint(getActivity());
-                            //print.pinter();
+                            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                                @Override
+                                public void onSuccessful() {
+                                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                                }
+
+                                @Override
+                                public void onFailure(String message) {
+                                    message(message);
+                                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                                }
+                            });
+                            print.pinter(idAppManifiesto);
+
                         }else{
                             message(response.body().getMensaje());
                         }
@@ -235,8 +256,11 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         return resp;
     }
 
-
     private String getPath() {
         return simpleDate.format(new Date());
+    }
+
+    public void setOnRegisterListener(@NonNull OnRegisterListener l){
+        mOnRegisterListener =l;
     }
 }

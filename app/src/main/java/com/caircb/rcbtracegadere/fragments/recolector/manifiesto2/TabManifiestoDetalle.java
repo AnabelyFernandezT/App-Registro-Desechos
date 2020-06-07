@@ -139,7 +139,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                     row.setEstado(true);
                     recyclerviewAdapter.notifyDataSetChanged();
                     //actualizar datos en dbo local...
-                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),row.isEstado());
+                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),cantidad,row.isEstado());
 
                     //calculo de paquetes...
                     if(pkg!=null){
