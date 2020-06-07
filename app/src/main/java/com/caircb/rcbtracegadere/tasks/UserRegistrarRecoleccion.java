@@ -9,6 +9,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
@@ -48,6 +49,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     DtoFile firmaTecnicoGenerador;
     DtoFile audioNovedadCliente;
     Location location;
+    MyPrint print;
 
     public UserRegistrarRecoleccion(Context context,
                                     Integer idAppManifiesto,
@@ -95,8 +97,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     private void register(){
         RequestManifiesto request = createRequestManifiesto();
         if(request!=null){
-            Gson g = new Gson();
-            String f = g.toJson(request);
+            //Gson g = new Gson();
+            //String f = g.toJson(request);
             WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -104,6 +106,9 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                            //ejecutar el proceso de imprecion..
+                            print = new MyPrint(getActivity());
+                            //print.pinter();
                         }else{
                             message(response.body().getMensaje());
                         }
