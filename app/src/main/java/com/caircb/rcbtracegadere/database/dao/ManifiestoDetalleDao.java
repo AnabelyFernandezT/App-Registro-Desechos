@@ -21,13 +21,13 @@ public abstract class ManifiestoDetalleDao {
             "from  tb_manifiestos_detalle where _id in(1)")
     public abstract List<RowItemManifiestoPrint> searhItemPrint();
 
-    @Query("update tb_manifiestos_detalle set estadoChek=:check where idAppManifiestoDetalle=:idManifiestoDetalle ")
-    public abstract void updateManifiestoDetallebyId(Integer idManifiestoDetalle, boolean check);
+    @Query("update tb_manifiestos_detalle set estadoChek=:check, codeQr=:codigo where idAppManifiestoDetalle=:idManifiestoDetalle ")
+    public abstract void updateManifiestoDetallebyId(Integer idManifiestoDetalle, boolean check, String codigo);
 
     @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto, pesoUnidad=:peso, estadoChek=:estadoChek where idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, double cantidadBulto, double peso,boolean estadoChek);
 
-    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete" +
+    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto")

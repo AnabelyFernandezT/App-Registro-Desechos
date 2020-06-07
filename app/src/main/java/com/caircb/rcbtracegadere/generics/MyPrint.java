@@ -115,7 +115,8 @@ public class MyPrint {
         }
     }
 
-    public void pinter(final String manifiesto,final String cliente,final String fecha,final List<RowItemManifiestoPrint> detalle){
+    public void pinter(final String manifiesto,final String cliente,final String fecha,
+                       final List<RowItemManifiestoPrint> detalle){
         dialog.show();
         new Thread(new Runnable() {
             public void run() {

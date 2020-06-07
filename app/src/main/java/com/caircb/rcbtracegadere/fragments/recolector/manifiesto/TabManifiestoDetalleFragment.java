@@ -18,14 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
-import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBaseAdapter;
-import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBaseAdapterR;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +41,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
     Integer idAppManifiesto,tipoPaquete;
     boolean bloquear;
     private List<RowItemManifiesto> detalles;
-    ManifiestoDetalleBaseAdapter adapterDetalleManifiesto;
+    //ManifiestoDetalleBaseAdapter adapterDetalleManifiesto;
     Dialog dialogOpcioneItem;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     DialogBultos dialogBultos;
@@ -53,7 +50,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
 
     private OnRecyclerTouchListener touchListener;
     RecyclerView recyclerView;
-    ManifiestoDetalleBaseAdapterR recyclerManifiestoDetalleBaseAdapterR;
+    //ManifiestoDetalleBaseAdapterR recyclerManifiestoDetalleBaseAdapterR;
 
     public static TabManifiestoDetalleFragment newInstance (Integer manifiestoID, Integer tipoPaquete,Boolean bloqueado){
         TabManifiestoDetalleFragment f = new TabManifiestoDetalleFragment();
@@ -121,6 +118,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
 
 
     private void  loadData(){
+        /*
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
 
         recyclerManifiestoDetalleBaseAdapterR = new ManifiestoDetalleBaseAdapterR(getActivity(), detalles, bloquear);
@@ -137,7 +135,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
             public void onIndependentViewClicked(int independentViewID, int position) { }
         });
         recyclerView.setAdapter(recyclerManifiestoDetalleBaseAdapterR);
-
+        */
 
         /*
         adapterDetalleManifiesto = new ManifiestoDetalleBaseAdapter(this.getContext(), detalles, bloquear);

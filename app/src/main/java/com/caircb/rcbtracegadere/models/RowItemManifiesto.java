@@ -5,6 +5,7 @@ public class RowItemManifiesto {
     private int id;
     private String unidad;
     private double peso;
+    private String codigo;
     private String descripcion;
     private String tratamiento;
     private double cantidadBulto;
@@ -70,4 +71,8 @@ public class RowItemManifiesto {
     public Integer getTipoPaquete() {  return tipoPaquete; }
 
     public void setTipoPaquete(Integer tipoPaquete) { this.tipoPaquete = tipoPaquete;  }
+
+    public String getCodigo() { return codigo;}
+
+    public void setCodigo(String codigo) { this.codigo = codigo;}
 }

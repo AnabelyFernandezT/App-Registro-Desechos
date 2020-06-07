@@ -34,6 +34,8 @@ public class ManifiestoDetalleEntity {
 
     private Integer tipoPaquete;
 
+    private String codeQr;
+
     @NonNull
     private boolean estadoChek;
 
@@ -117,4 +119,8 @@ public class ManifiestoDetalleEntity {
     public Integer getTipoPaquete() { return tipoPaquete;  }
 
     public void setTipoPaquete(Integer tipoPaquete) {  this.tipoPaquete = tipoPaquete; }
+
+    public String getCodeQr() { return codeQr;}
+
+    public void setCodeQr(String codeQr) { this.codeQr = codeQr;}
 }

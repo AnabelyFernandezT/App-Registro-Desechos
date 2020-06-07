@@ -3,12 +3,9 @@ package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -20,17 +17,13 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
-import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBaseAdapter;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
 import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
-import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TabManifiestoDetalle extends LinearLayout {
@@ -64,7 +57,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     private void init(){
         calculoPaquetes= new MyCalculoPaquetes(idAppManifiesto,tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
-        recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext());
+        recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto);
     }
 
     private void loadData(){
@@ -118,7 +111,14 @@ public class TabManifiestoDetalle extends LinearLayout {
     private void openDialogBultos(Integer position){
         if(dialogBultos==null){
             dialogOpcioneItem.dismiss();
-            dialogBultos = new DialogBultos(getContext(),position,idAppManifiesto,detalles.get(position).getId(),tipoPaquete,numeroManifiesto);
+            dialogBultos = new DialogBultos(
+                    getContext(),
+                    position,
+                    idAppManifiesto,
+                    detalles.get(position).getId(),
+                    tipoPaquete,
+                    numeroManifiesto+"$"+detalles.get(position).getCodigo()
+            );
             dialogBultos.setCancelable(false);
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {

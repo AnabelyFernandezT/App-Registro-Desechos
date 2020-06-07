@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
@@ -24,11 +25,13 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
 
     private ClickListener mClickListener;
     private Context mContext;
-    private List<RowItemManifiesto> manifiestosDtList ;
+    private List<RowItemManifiesto> manifiestosDtList;
+    private String numeroManifiesto;
 
-    public ManifiestoDetalleAdapter(Context context){
-        mContext = context;
-        manifiestosDtList = new ArrayList<>();
+    public ManifiestoDetalleAdapter(Context context,String numeroManifiesto){
+        this.mContext = context;
+        this.manifiestosDtList = new ArrayList<>();
+        this.numeroManifiesto=numeroManifiesto;
     }
 
     @NonNull
@@ -58,7 +61,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
                     v.setSelected(false);
                     it.setEstado(false);
                 }
-                MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(),it.isEstado());
+                MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(),it.isEstado(), it.isEstado()? AppDatabase.getUUID(numeroManifiesto):"");
             }
         });
 

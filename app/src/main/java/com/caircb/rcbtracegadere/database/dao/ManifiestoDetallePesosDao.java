@@ -35,8 +35,10 @@ public abstract class ManifiestoDetallePesosDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long insertValores(ManifiestoDetallePesosEntity entity);
 
-    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String numeroManifiesto){
-        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(numeroManifiesto));
+    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo){
+        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo));
         return insertValores(r);
     }
+
+
 }
