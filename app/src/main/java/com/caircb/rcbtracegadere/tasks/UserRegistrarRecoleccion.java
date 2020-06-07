@@ -102,7 +102,11 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
                         //actualizar el estado a recibido del manifiesto...
-                        MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                        if(response.body().getExito()) {
+                            MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                        }else{
+                            message(response.body().getMensaje());
+                        }
                         progressHide();
                     }else{
                         progressHide();
