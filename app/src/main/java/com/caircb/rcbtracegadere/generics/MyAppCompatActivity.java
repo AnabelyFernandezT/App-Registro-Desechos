@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,6 +20,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.processes.GPSService;
 import com.caircb.rcbtracegadere.utils.Utils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -26,6 +28,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
     private AlertDialog.Builder messageBox;
     private Context mContext;
     public Fragment fragment;
+    GPSService gps;
 
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
@@ -35,12 +38,30 @@ public class MyAppCompatActivity extends AppCompatActivity {
 
     private void initConnectivity(){
         if(mContext instanceof MainActivity) {
+
+            initGPS();
+
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
             MySession.setConnecticity(estado);
             showMessage();
             }
         }
+    }
+
+    private void initGPS(){
+        // Check if GPS enabled
+        gps = new GPSService(this);
+        if(gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+        }else{
+            gps.showSettingsAlert();
+        }
+    }
+
+    public Location getLocation(){
+        return gps!=null? gps.getLocation():null;
     }
 
     private void showMessage(){

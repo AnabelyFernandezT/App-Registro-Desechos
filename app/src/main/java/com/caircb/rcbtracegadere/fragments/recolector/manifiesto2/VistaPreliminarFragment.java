@@ -123,7 +123,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                 setNavegate(Manifiesto2Fragment.newInstance(idAppManifiesto));
                 break;
             case R.id.btnVistaPreviaGuardar:
-                userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto);
+                userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation());
                 userRegistrarRecoleccion.execute();
                 break;
         }

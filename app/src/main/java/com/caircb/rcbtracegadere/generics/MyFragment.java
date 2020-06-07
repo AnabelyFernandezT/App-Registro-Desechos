@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.generics;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 
@@ -99,4 +100,7 @@ public class MyFragment extends Fragment {
         messageBox.show();
     }
 
+    public Location getLocation(){
+        return ((MainActivity)getActivity()).getLocation();
+    }
 }

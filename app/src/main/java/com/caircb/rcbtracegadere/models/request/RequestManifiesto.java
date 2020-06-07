@@ -17,6 +17,8 @@ public class RequestManifiesto {
     private String urlAudioNovedadCliente;
     private Integer usuarioResponsable;
     private Date fechaRecoleccion;
+    private Double latitude;
+    private Double longitude;
     private RequestManifiestoPaquete paquete;
     private List<RequestManifiestoDet> detalles;
     private List<RequestManifiestoNovedadFrecuente> novedadFrecuente;
@@ -156,5 +158,21 @@ public class RequestManifiesto {
 
     public void setNovedadNoRecoleccion(List<RequestManifiestoNovedadNoRecoleccion> novedadNoRecoleccion) {
         this.novedadNoRecoleccion = novedadNoRecoleccion;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }
