@@ -4,6 +4,7 @@ public class DtoFile {
     Long id;
     String url;
     String file;
+    boolean sincronizado;
 
     public DtoFile(String url, String file) {
         this.url = url;
@@ -32,5 +33,13 @@ public class DtoFile {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isSincronizado() {
+        return sincronizado;
+    }
+
+    public void setSincronizado(boolean sincronizado) {
+        this.sincronizado = sincronizado;
     }
 }

@@ -66,14 +66,14 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         //images por defecto
         listaFileDefauld = new ArrayList<>();
 
-        firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSend(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_RECOLECCION);
-        if(firmaTransportista!=null)listaFileDefauld.add(firmaTransportista);
+        firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_RECOLECCION);
+        if(firmaTransportista!=null && !firmaTransportista.isSincronizado())listaFileDefauld.add(firmaTransportista);
 
-        firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSend(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_RECOLECCION);
-        if(firmaTecnicoGenerador!=null)listaFileDefauld.add(firmaTecnicoGenerador);
+        firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_RECOLECCION);
+        if(firmaTecnicoGenerador!=null && !firmaTecnicoGenerador.isSincronizado())listaFileDefauld.add(firmaTecnicoGenerador);
 
-        audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSend(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
-        if(audioNovedadCliente!=null)listaFileDefauld.add(audioNovedadCliente);
+        audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
+        if(audioNovedadCliente!=null && !audioNovedadCliente.isSincronizado())listaFileDefauld.add(audioNovedadCliente);
 
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
         userUploadFileTask= new UserUploadFileTask(getActivity(),path);
@@ -101,7 +101,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
-
+                        progressHide();
                     }else{
                         progressHide();
                     }
@@ -128,7 +128,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setUsuarioResponsable(MySession.getIdUsuario());
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
             rq.setUrlAudioNovedadCliente(audioNovedadCliente!=null?( path+"/"+audioNovedadCliente.getUrl()):"");
-            rq.setFechaRecoleccion(model.getFechaManifiesto());
+            rq.setFechaRecoleccion(new Date());
             rq.setLatitude(location!=null?location.getLatitude():null);
             rq.setLongitude(location!=null?location.getLongitude():null);
             rq.setPaquete(createRequestPaquete(model.getTipoPaquete()!=null?(model.getTipoPaquete()>0?model.getTipoPaquete():null):null));
