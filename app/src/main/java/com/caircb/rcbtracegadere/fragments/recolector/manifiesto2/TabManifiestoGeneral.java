@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +26,8 @@ import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCedulaTask;
 import com.caircb.rcbtracegadere.utils.ImagenUtils;
 import com.caircb.rcbtracegadere.utils.Utils;
+
+import java.util.regex.Pattern;
 
 public class TabManifiestoGeneral extends LinearLayout {
 
@@ -144,7 +147,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                             txtRespEntregaTelefono.setEnabled(true);
 
                             //insert datos en dbo local...
-                            Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),"","");
+                            Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
 
                             MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,idTecnico.intValue());
                             //MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
@@ -158,6 +161,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                             txtRespEntregaCorreo.setEnabled(true);
                             txtRespEntregaTelefono.setEnabled(true);
                             Toast.makeText(getContext(), "El numero de cedula "+txtRespEntregaIdentificacion.getText().toString()+ " no genero resultados", Toast.LENGTH_SHORT).show();
+
                         }
                     });
                     userConsultarCedulaTask.execute();
@@ -265,6 +269,48 @@ public class TabManifiestoGeneral extends LinearLayout {
         });
 
         //validarTecnico();
+
+        txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                correo = txtRespEntregaCorreo.getText().toString();
+                if(correo.isEmpty()){
+                    if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                        txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        txtRespEntregaIdentificacion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                txtRespEntregaNombre.setText("");
+                txtRespEntregaCorreo.setText("");
+                txtRespEntregaTelefono.setText("");
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -454,6 +500,16 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     public boolean validaRequiereNumeroManifiestoCliente(){
         return txtNumManifiestoCliente.isEnabled() && txtNumManifiestoCliente.getText().toString().trim().length()==0;
+    }
+
+    private boolean validarCorreo(){
+        String email = txtGenTecCorreo.getText().toString().trim();
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            txtGenTecCorreo.setError("Ingrese un correo valido");
+            return false;
+        }
+        return true;
     }
 
 }
