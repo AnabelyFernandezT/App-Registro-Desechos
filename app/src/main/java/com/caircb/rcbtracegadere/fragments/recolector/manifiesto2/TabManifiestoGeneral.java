@@ -189,15 +189,21 @@ public class TabManifiestoGeneral extends LinearLayout {
                     flagT=0;
                 }
                 */
-                correo = txtRespEntregaCorreo.getText().toString();
 
-                if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
-                    txtRespEntregaCorreo.setError("Ingrese un correo valido");
-                    txtRespEntregaCorreo.setEnabled(true);
 
-                }
+
             }
         });
+
+        correo = txtRespEntregaCorreo.getText().toString();
+
+        if(!correo.isEmpty()){
+            if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                txtRespEntregaCorreo.setEnabled(true);
+
+            }
+        }
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
