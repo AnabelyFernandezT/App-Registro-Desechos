@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +26,8 @@ import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCedulaTask;
 import com.caircb.rcbtracegadere.utils.ImagenUtils;
 import com.caircb.rcbtracegadere.utils.Utils;
+
+import java.util.regex.Pattern;
 
 public class TabManifiestoGeneral extends LinearLayout {
 
@@ -131,6 +134,7 @@ public class TabManifiestoGeneral extends LinearLayout {
 
                     MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,tecnico.get_id());
                     //txtGenTecIdentificacion.setEnabled(false);
+                    correo = txtRespEntregaCorreo.getText().toString();
 
                 }else{
                     //consultar en servicio remoto...
@@ -186,8 +190,20 @@ public class TabManifiestoGeneral extends LinearLayout {
                 }
                 */
 
+
+
             }
         });
+
+        correo = txtRespEntregaCorreo.getText().toString();
+
+        if(!correo.isEmpty()){
+            if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                txtRespEntregaCorreo.setEnabled(true);
+
+            }
+        }
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,7 +280,81 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
+        if(!txtRespEntregaCorreo.getText().toString().isEmpty() && !txtRespEntregaTelefono.getText().toString().isEmpty()){
+            MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                    txtRespEntregaNombre.getText().toString(),correo,txtRespEntregaTelefono.getText().toString());
+            txtRespEntregaTelefono.setEnabled(false);
+            txtGenTecCorreo.setEnabled(false);
+
+        }
+
         //validarTecnico();
+/*
+        txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                correo = txtRespEntregaCorreo.getText().toString();
+
+                if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                    txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                }
+            }
+        });*/
+
+
+
+        txtRespEntregaCorreo.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                correo = txtRespEntregaCorreo.getText().toString();
+
+                if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                    txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                }
+                if(!hasFocus){
+                    MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                            txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+                }
+            }
+        });
+        txtRespEntregaTelefono.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                            txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+                }
+            }
+        });
+        txtRespEntregaIdentificacion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                txtRespEntregaNombre.setText("");
+                txtRespEntregaCorreo.setText("");
+                txtRespEntregaTelefono.setText("");
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -280,66 +370,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         }
     }*/
 
-    private void guardarDatosTecnico(){
 
-        txtGenTecNombre.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                nombre = txtGenTecNombre.getText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        txtGenTecCorreo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                correo = txtGenTecCorreo.getText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        txtGenTecTelefono.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                telefono = txtGenTecTelefono.getText().toString();
-                //flagT=1;
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-
-       //MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,identificacion,nombre,correo,telefono);
-
-    }
 
     private void loadDataManifiesto(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
@@ -422,6 +453,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             tiempoAudio = manifiesto.getTiempoAudio();
             numeroManifiesto =manifiesto.getNumeroManifiesto();
         }
+
     }
 
 
@@ -454,6 +486,16 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     public boolean validaRequiereNumeroManifiestoCliente(){
         return txtNumManifiestoCliente.isEnabled() && txtNumManifiestoCliente.getText().toString().trim().length()==0;
+    }
+
+    private boolean validarCorreo(){
+        String email = txtGenTecCorreo.getText().toString().trim();
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            txtGenTecCorreo.setError("Ingrese un correo valido");
+            return false;
+        }
+        return true;
     }
 
 }
