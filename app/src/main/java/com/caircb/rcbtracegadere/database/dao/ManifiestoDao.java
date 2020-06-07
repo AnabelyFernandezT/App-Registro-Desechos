@@ -14,6 +14,7 @@ import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -63,6 +64,7 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set IdTecnicoGenerador=:IdTecnicoGenerador where idAppManifiesto =:idAppManifiesto")
     abstract void actualizarTecnicoGenerador(Integer idAppManifiesto, Integer IdTecnicoGenerador);
 
+
     public void updateGenerador(Integer idManifiesto, Integer IdTecnicoGenerador){
         actualizarTecnicoGenerador(idManifiesto, IdTecnicoGenerador);
     }
@@ -110,6 +112,11 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set numManifiestoCliente=:idManifiestoCliente where idAppManifiesto=:id")
     public abstract void updateManifiestoCliente(Integer id, String idManifiestoCliente);
 
+    @Query("update tb_manifiestos set fechaRecoleccion=:fecha where idAppManifiesto=:idAppManifiesto")
+    public abstract void updateManifiestoFechaRecoleccion(Integer idAppManifiesto,Date fecha);
+
+    @Query("update tb_manifiestos set estado=2, sincronizado=1 where idAppManifiesto=:idAppManifiesto ")
+    public abstract void updateManifiestoToRecolectado(Integer idAppManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoEntity entity);
@@ -160,11 +167,12 @@ public abstract class ManifiestoDao {
             //identificacionDestinatario
             //razonSocialDestinatario
             //numeroLicenciaAmbientalDestinatario
-            entity.setEstado(manifiesto.getEstadoApp());
+            entity.setEstado(1);
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
 
             entity.setPeso(manifiesto.getPeso());
+            entity.setSincronizado(false);
             //entity.setNombreFirma(manifiesto.getNombreFirma());
             //entity.setFirmaImg(manifiesto.getFirmaImg());
 
@@ -213,6 +221,7 @@ public abstract class ManifiestoDao {
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
 
             entity.setPeso(manifiesto.getPeso());
+            entity.setSincronizado(false);
             //entity.setNombreFirma(manifiesto.getNombreFirma());
             //entity.setFirmaImg(manifiesto.getFirmaImg());
         }

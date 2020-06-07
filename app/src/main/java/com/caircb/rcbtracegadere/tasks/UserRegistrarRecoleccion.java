@@ -101,6 +101,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
+                        //actualizar el estado a recibido del manifiesto...
+                        MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                         progressHide();
                     }else{
                         progressHide();
@@ -128,7 +130,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setUsuarioResponsable(MySession.getIdUsuario());
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
             rq.setUrlAudioNovedadCliente(audioNovedadCliente!=null?( path+"/"+audioNovedadCliente.getUrl()):"");
-            rq.setFechaRecoleccion(new Date());
+            rq.setFechaRecoleccion(model.getFechaRecoleccion());
             rq.setLatitude(location!=null?location.getLatitude():null);
             rq.setLongitude(location!=null?location.getLongitude():null);
             rq.setPaquete(createRequestPaquete(model.getTipoPaquete()!=null?(model.getTipoPaquete()>0?model.getTipoPaquete():null):null));

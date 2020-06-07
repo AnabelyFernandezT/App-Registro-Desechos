@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.app.Fragment;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
@@ -16,6 +17,7 @@ import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,6 +70,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     }
 
     private void init(){
+
         btnVistaPreviaCancelar = getView().findViewById(R.id.btnVistaPreviaCancelar);
         btnVistaPreviaGuardar = getView().findViewById(R.id.btnVistaPreviaGuardar);
 
@@ -77,6 +80,9 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     }
 
     private void generarPDF(){
+
+        MyApp.getDBO().manifiestoDao().updateManifiestoFechaRecoleccion(idAppManifiesto,new Date());
+
         new AsyncTask<Void, Void, String>() {
 
             @Override

@@ -78,6 +78,8 @@ public class ManifiestoEntity {
     @NonNull
     private Date fechaManifiesto;
 
+    private Date fechaRecoleccion;
+
     @NonNull
     private Integer idLugar;
 
@@ -97,18 +99,9 @@ public class ManifiestoEntity {
     //private String nombreNovedadAudio;
 
     //private String novedadAudio;
+    private Boolean sincronizado;
 
     private String tiempoAudio;
-
-    public void setIdTecnicoManifiesto(Integer idTecnicoManifiesto) {
-        this.idTecnicoManifiesto = idTecnicoManifiesto;
-    }
-
-    public Integer getIdTecnicoManifiesto() {
-        return idTecnicoManifiesto;
-    }
-
-
 
     public ManifiestoEntity() {
     }
@@ -126,9 +119,7 @@ public class ManifiestoEntity {
         return idAppManifiesto;
     }
 
-    public void setIdAppManifiesto(@NonNull Integer idAppManifiesto) {
-        this.idAppManifiesto = idAppManifiesto;
-    }
+    public void setIdAppManifiesto(@NonNull Integer idAppManifiesto) { this.idAppManifiesto = idAppManifiesto; }
 
     public String getNombreCliente() {
         return nombreCliente;
@@ -142,50 +133,38 @@ public class ManifiestoEntity {
         return direccionCliente;
     }
 
-    public void setDireccionCliente(String direccionCliente) {
-        this.direccionCliente = direccionCliente;
-    }
+    public void setDireccionCliente(String direccionCliente) { this.direccionCliente = direccionCliente; }
 
     public String getIdentificacionCliente() {
         return identificacionCliente;
     }
 
-    public void setIdentificacionCliente(String identificacionCliente) {
-        this.identificacionCliente = identificacionCliente;
-    }
+    public void setIdentificacionCliente(String identificacionCliente) { this.identificacionCliente = identificacionCliente; }
 
     public String getDireccionRetiro() {
         return direccionRetiro;
     }
 
-    public void setDireccionRetiro(String direccionRetiro) {
-        this.direccionRetiro = direccionRetiro;
-    }
+    public void setDireccionRetiro(String direccionRetiro) { this.direccionRetiro = direccionRetiro; }
 
     @NonNull
     public String getNumeroManifiesto() {
         return numeroManifiesto;
     }
 
-    public void setNumeroManifiesto(@NonNull String numeroManifiesto) {
-        this.numeroManifiesto = numeroManifiesto;
-    }
+    public void setNumeroManifiesto(@NonNull String numeroManifiesto) { this.numeroManifiesto = numeroManifiesto; }
 
     public String getLicenciaAmbiental() {
         return licenciaAmbiental;
     }
 
-    public void setLicenciaAmbiental(String licenciaAmbiental) {
-        this.licenciaAmbiental = licenciaAmbiental;
-    }
+    public void setLicenciaAmbiental(String licenciaAmbiental) { this.licenciaAmbiental = licenciaAmbiental; }
 
     public String getNumeroGeneradorDesecho() {
         return numeroGeneradorDesecho;
     }
 
-    public void setNumeroGeneradorDesecho(String numeroGeneradorDesecho) {
-        this.numeroGeneradorDesecho = numeroGeneradorDesecho;
-    }
+    public void setNumeroGeneradorDesecho(String numeroGeneradorDesecho) { this.numeroGeneradorDesecho = numeroGeneradorDesecho; }
 
     public String getProvincia() {
         return provincia;
@@ -215,25 +194,19 @@ public class ManifiestoEntity {
         return tecnicoIdentificacion;
     }
 
-    public void setTecnicoIdentificacion(String tecnicoIdentificacion) {
-        this.tecnicoIdentificacion = tecnicoIdentificacion;
-    }
+    public void setTecnicoIdentificacion(String tecnicoIdentificacion) { this.tecnicoIdentificacion = tecnicoIdentificacion;}
 
     public String getTecnicoResponsable() {
         return tecnicoResponsable;
     }
 
-    public void setTecnicoResponsable(String tecnicoResponsable) {
-        this.tecnicoResponsable = tecnicoResponsable;
-    }
+    public void setTecnicoResponsable(String tecnicoResponsable) { this.tecnicoResponsable = tecnicoResponsable; }
 
     public String getTecnicoTelefono() {
         return tecnicoTelefono;
     }
 
-    public void setTecnicoTelefono(String tecnicoTelefono) {
-        this.tecnicoTelefono = tecnicoTelefono;
-    }
+    public void setTecnicoTelefono(String tecnicoTelefono) { this.tecnicoTelefono = tecnicoTelefono;}
 
     public String getTecnicoCelular() {
         return tecnicoCelular;
@@ -255,25 +228,19 @@ public class ManifiestoEntity {
         return conductorIdentificacion;
     }
 
-    public void setConductorIdentificacion(String conductorIdentificacion) {
-        this.conductorIdentificacion = conductorIdentificacion;
-    }
+    public void setConductorIdentificacion(String conductorIdentificacion) { this.conductorIdentificacion = conductorIdentificacion;}
 
     public String getConductorNombre() {
         return conductorNombre;
     }
 
-    public void setConductorNombre(String conductorNombre) {
-        this.conductorNombre = conductorNombre;
-    }
+    public void setConductorNombre(String conductorNombre) { this.conductorNombre = conductorNombre;}
 
     public String getAuxiliarIdentificacion() {
         return auxiliarIdentificacion;
     }
 
-    public void setAuxiliarIdentificacion(String auxiliarIdentificacion) {
-        this.auxiliarIdentificacion = auxiliarIdentificacion;
-    }
+    public void setAuxiliarIdentificacion(String auxiliarIdentificacion) { this.auxiliarIdentificacion = auxiliarIdentificacion; }
 
     public String getAuxiliarNombre() {
         return auxiliarNombre;
@@ -287,9 +254,7 @@ public class ManifiestoEntity {
         return novedadEncontrada;
     }
 
-    public void setNovedadEncontrada(String novedadEncontrada) {
-        this.novedadEncontrada = novedadEncontrada;
-    }
+    public void setNovedadEncontrada(String novedadEncontrada) { this.novedadEncontrada = novedadEncontrada; }
 
     public String getCodigo() {
         return codigo;
@@ -313,50 +278,38 @@ public class ManifiestoEntity {
         return estado;
     }
 
-    public void setEstado(@NonNull Integer estado) {
-        this.estado = estado;
-    }
+    public void setEstado(@NonNull Integer estado) { this.estado = estado;}
 
     @NonNull
     public Date getFechaManifiesto() {
         return fechaManifiesto;
     }
 
-    public void setFechaManifiesto(@NonNull Date fechaManifiesto) {
-        this.fechaManifiesto = fechaManifiesto;
-    }
+    public void setFechaManifiesto(@NonNull Date fechaManifiesto) { this.fechaManifiesto = fechaManifiesto; }
 
     public String getNumManifiestoCliente() {
         return numManifiestoCliente;
     }
 
-    public void setNumManifiestoCliente(String numManifiestoCliente) {
-        this.numManifiestoCliente = numManifiestoCliente;
-    }
+    public void setNumManifiestoCliente(String numManifiestoCliente) { this.numManifiestoCliente = numManifiestoCliente; }
 
     public Integer getIdTecnicoGenerador() {
         return idTecnicoGenerador;
     }
 
-    public void setIdTecnicoGenerador(Integer idTecnicoGenerador) {
-        this.idTecnicoGenerador = idTecnicoGenerador;
-    }
+    public void setIdTecnicoGenerador(Integer idTecnicoGenerador) { this.idTecnicoGenerador = idTecnicoGenerador; }
 
     public String getEmpresaDestinataria() {
         return empresaDestinataria;
     }
 
-    public void setEmpresaDestinataria(String empresaDestinataria) {
-        this.empresaDestinataria = empresaDestinataria;
-    }
+    public void setEmpresaDestinataria(String empresaDestinataria) { this.empresaDestinataria = empresaDestinataria; }
 
     public String getEmpresaTransportista() {
         return empresaTransportista;
     }
 
-    public void setEmpresaTransportista(String empresaTransportista) {
-        this.empresaTransportista = empresaTransportista;
-    }
+    public void setEmpresaTransportista(String empresaTransportista) { this.empresaTransportista = empresaTransportista;}
 
     public Integer getTipoPaquete() {
         return tipoPaquete;
@@ -374,7 +327,6 @@ public class ManifiestoEntity {
         this.peso = peso;
     }
 
-
     public String getTiempoAudio() {
         return tiempoAudio;
     }
@@ -382,6 +334,20 @@ public class ManifiestoEntity {
     public void setTiempoAudio(String tiempoAudio) {
         this.tiempoAudio = tiempoAudio;
     }
+
+    public void setIdTecnicoManifiesto(Integer idTecnicoManifiesto) { this.idTecnicoManifiesto = idTecnicoManifiesto; }
+
+    public Integer getIdTecnicoManifiesto() {
+        return idTecnicoManifiesto;
+    }
+
+    public Date getFechaRecoleccion() { return fechaRecoleccion; }
+
+    public void setFechaRecoleccion(Date fechaRecoleccion) { this.fechaRecoleccion = fechaRecoleccion; }
+
+    public Boolean getSincronizado() { return sincronizado;}
+
+    public void setSincronizado(Boolean sincronizado) { this.sincronizado = sincronizado;}
 }
 
 
