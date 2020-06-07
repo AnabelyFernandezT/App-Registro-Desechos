@@ -3,25 +3,19 @@ package com.caircb.rcbtracegadere.models.request;
 import java.util.Date;
 
 public class RequestRutaIniciFin {
-    private Integer idRutaInicioFin;
+    private String id;
     private Integer idTransporteRecolector;
     private Integer idTransporteVehiculo;
-    private Date fechaInicio;
-    private Date fechaFin;
-    private String kilometrajeInicio;
-    private String kilometrajeFin;
-    private Integer estado;
+    private Date fechaDispositivo;
+    private String kilometraje;
+    private Integer tipo;
 
-    public RequestRutaIniciFin(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer idTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, Integer estado) {
-
+    public String getId() {
+        return id;
     }
 
-    public Integer getIdRutaInicioFin() {
-        return idRutaInicioFin;
-    }
-
-    public void setIdRutaInicioFin(Integer idRutaInicioFin) {
-        this.idRutaInicioFin = idRutaInicioFin;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Integer getIdTransporteRecolector() {
@@ -40,43 +34,27 @@ public class RequestRutaIniciFin {
         this.idTransporteVehiculo = idTransporteVehiculo;
     }
 
-    public Date getFechaInicio() {
-        return fechaInicio;
+    public Date getFechaDispositivo() {
+        return fechaDispositivo;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    public void setFechaDispositivo(Date fechaDispositivo) {
+        this.fechaDispositivo = fechaDispositivo;
     }
 
-    public Date getFechaFin() {
-        return fechaFin;
+    public String getKilometraje() {
+        return kilometraje;
     }
 
-    public void setFechaFin(Date fechaFin) {
-        this.fechaFin = fechaFin;
+    public void setKilometraje(String kilometraje) {
+        this.kilometraje = kilometraje;
     }
 
-    public String getKilometrajeInicio() {
-        return kilometrajeInicio;
+    public Integer getTipo() {
+        return tipo;
     }
 
-    public void setKilometrajeInicio(String kilometrajeInicio) {
-        this.kilometrajeInicio = kilometrajeInicio;
-    }
-
-    public String getKilometrajeFin() {
-        return kilometrajeFin;
-    }
-
-    public void setKilometrajeFin(String kilometrajeFin) {
-        this.kilometrajeFin = kilometrajeFin;
-    }
-
-    public Integer getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Integer estado) {
-        this.estado = estado;
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
     }
 }
