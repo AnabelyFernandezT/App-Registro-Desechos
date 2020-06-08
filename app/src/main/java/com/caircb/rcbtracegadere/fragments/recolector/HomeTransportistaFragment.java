@@ -131,7 +131,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             }
 
         }else{
-            //bloqueo_botones();
+            bloqueo_botones();
         }
         
 
