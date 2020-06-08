@@ -235,7 +235,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
                 conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas();
                 if(conteoManifiestos>0){
-                    messageBox("Existen manifiestos pendientes por finalizar");
+                    messageBox("Existen manifiestos pendientes por recolectar");
                 }else{
 
                     openDialog_Fin_App();
