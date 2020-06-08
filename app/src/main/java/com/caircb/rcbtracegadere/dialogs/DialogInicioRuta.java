@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,27 +42,16 @@ public class DialogInicioRuta extends MyDialog {
 
     String placa;
 
-    Boolean exito;
-
-    ListaValoresAdapter listaValoresAdapter;
-    //UserRegistroInicioFinTask registroInicio;
+    UserRegistrarInicioRutaTask registroInicioRuta;
     UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
 
     //Botones Inicio
-    ImageButton btnSincManifiestos,btnListaAsignadaTransportista, btnInicioRuta, btnFinRuta,regionBuscar;
+    ImageButton btnSincManifiestos,btnListaAsignadaTransportista, btnFinRuta,regionBuscar;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
-    TextView txtinicioRuta, txtFinRuta;
-
 
     List<DtoCatalogo> listaPlacasDisponibles;
 
-    /*public interface TaskListener {
-        public void onBandera();
-    }
-
-    private final TaskListener taskListener;
-*/
-
+    /*
     UserConsultarPlacasInicioRutaDisponible.TaskListener listenerPlacasDisponibles= new UserConsultarPlacasInicioRutaDisponible.TaskListener() {
         @Override
         public void onFinished(List<DtoCatalogo> catalogos) {
@@ -70,6 +60,8 @@ public class DialogInicioRuta extends MyDialog {
             spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
         }
     };
+    */
+
 
     public DialogInicioRuta(@NonNull Context context ) {
         super(context, R.layout.dialog_inicio_ruta);
@@ -94,7 +86,7 @@ public class DialogInicioRuta extends MyDialog {
         listaPlacasDisponibles = new ArrayList<>();
 
         txtKilometraje = (EditText)getView().findViewById(R.id.txtKilometraje);
-        txtKilometraje.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        //txtKilometraje.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
@@ -137,6 +129,7 @@ public class DialogInicioRuta extends MyDialog {
                 DialogInicioRuta.this.dismiss();
             }
         });
+
         datosPlacasDisponibles();
     }
 
@@ -180,10 +173,16 @@ public class DialogInicioRuta extends MyDialog {
     }
 
     private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity(),listenerPlacasDisponibles);
+        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
+        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
+            @Override
+            public void onSuccessful(List<DtoCatalogo> catalogos) {
+                listaPlacasDisponibles = catalogos;
+                spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
+            }
+        });
         consultarPlacasInicioRutaDisponible.execute();
     }
-
 
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
@@ -205,63 +204,34 @@ public class DialogInicioRuta extends MyDialog {
         return defaulSpiner;
     }
 
-    /*
-    private void datosPlacas(){
-        combo = new ArrayList<String>();
-        combo.add("Seleccione");
-        //String placaC;
-
-        //CatalogoItemValor cat;
-
-        List<String> catalogos = MyApp.getDBO().catalogoDao().fetchConsultarNombresCatalogosbyTipo(4);
-        if(catalogos.size()>0)combo.addAll(catalogos);
-
-        ArrayAdapter<CharSequence>adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item,combo);
-        spinnerPlacas.setAdapter(adapter);
-
-        spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                placa = (String) spinnerPlacas.getSelectedItem();
-                //int placaFinal = Integer.parseInt(placa);
-                //Toast.makeText(getContext(),placa,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-    */
     private void guardarDatos(){
 
         String kilometrajeInicio = txtKilometraje.getText().toString();
 
 
         CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
-        int placaInicio = c!=null?c.getIdSistema():-1;
+        int idVehiculo = c!=null?c.getIdSistema():-1;
 
-        Date dia;
-        dia = AppDatabase.getDateTime();
-
-        MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),placaInicio,dia,null,kilometrajeInicio,null,1);
+        long idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,AppDatabase.getDateTime(),null,kilometrajeInicio,null,1);
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
 
         inicioRuta();
-        DialogInicioRuta.this.dismiss();
-        /*
-        registroInicio = new UserRegistroInicioFinTask(getActivity(),listener,kilometrajeInicio,placaInicio,1);
-        registroInicio.execute();*/
+
+        //notificar inicia ruta al servidor...
+        registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro);
+        registroInicioRuta.setOnIniciaRutaListener(new UserRegistrarInicioRutaTask.OnIniciaRutaListener() {
+            @Override
+            public void onSuccessful() {
+                DialogInicioRuta.this.dismiss();
+            }
+
+            @Override
+            public void onFailure() {
+                DialogInicioRuta.this.dismiss();
+            }
+        });
+        registroInicioRuta.execute();
     }
-
-   /* UserRegistroInicioFinTas.TaskListener listener = new UserRegistroInicioFinTask.TaskListener() {
-        @Override
-        public void onFinished() {
-
-            inicioRuta();
-            DialogInicioRuta.this.dismiss();
-        }
-    };*/
 
     private void inicioRuta(){
 

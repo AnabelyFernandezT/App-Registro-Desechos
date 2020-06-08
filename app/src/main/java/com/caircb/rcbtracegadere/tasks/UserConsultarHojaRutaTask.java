@@ -38,7 +38,9 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     @Override
     public void execute() {
 
-        WebService.api().getHojaRuta(new RequestHojaRuta("",12)).enqueue(new Callback<List<DtoManifiesto>>() {
+        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+
+        WebService.api().getHojaRuta(new RequestHojaRuta("",idVehiculo)).enqueue(new Callback<List<DtoManifiesto>>() {
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
                 if(response.isSuccessful()){

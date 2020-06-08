@@ -4,8 +4,7 @@ package com.caircb.rcbtracegadere.services;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
-import com.caircb.rcbtracegadere.models.request.RequestPaquetes;
-import com.caircb.rcbtracegadere.models.request.RequestRutaIniciFin;
+import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
@@ -19,7 +18,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface IServicio {
@@ -41,7 +39,7 @@ public interface IServicio {
 
 
    @PUT("Registro/saveInicioFinRuta")
-    Call<DtoInfo> putInicioFin(@Body RequestRutaIniciFin model);
+    Call<DtoInfo> putInicioFin(@Body RequestIniciaRuta model);
 /*
     @PATCH("Registro/saveInicioFinRuta")
     Call<List<DtoRutaInicioFin>> patch(@Path ("id") int id ,@Body RequestRutaIniciFin model);*/

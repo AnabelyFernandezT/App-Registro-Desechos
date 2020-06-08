@@ -2,21 +2,13 @@ package com.caircb.rcbtracegadere.models.request;
 
 import java.util.Date;
 
-public class RequestRutaIniciFin {
-    private String id;
+public class RequestIniciaRuta {
+    //private String id;
     private Integer idTransporteRecolector;
     private Integer idTransporteVehiculo;
     private Date fechaDispositivo;
     private String kilometraje;
     private Integer tipo;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Integer getIdTransporteRecolector() {
         return idTransporteRecolector;

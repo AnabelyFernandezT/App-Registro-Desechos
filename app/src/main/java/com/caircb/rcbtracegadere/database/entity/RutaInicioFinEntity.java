@@ -14,7 +14,6 @@ public class RutaInicioFinEntity {
     @PrimaryKey(autoGenerate = true)
     private Integer _id;
 
-    @NonNull
     private Integer idRutaInicioFin;
 
     @NonNull
@@ -36,6 +35,9 @@ public class RutaInicioFinEntity {
     @NonNull
     private Integer estado;
 
+    @NonNull
+    private Boolean sincronizado;
+
     public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idTransporteVehiculo, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado) {
         this.idRutaInicioFin = idRutaInicioFin;
         this.idTransporteRecolector = idTransporteRecolector;
@@ -45,6 +47,7 @@ public class RutaInicioFinEntity {
         this.kilometrajeInicio = kilometrajeInicio;
         this.kilometrajeFin = kilometrajeFin;
         this.estado = estado;
+        this.sincronizado=false;
     }
 
     public Integer get_id() {
@@ -55,12 +58,11 @@ public class RutaInicioFinEntity {
         this._id = _id;
     }
 
-    @NonNull
     public Integer getIdRutaInicioFin() {
         return idRutaInicioFin;
     }
 
-    public void setIdRutaInicioFin(@NonNull Integer idRutaInicioFin) {
+    public void setIdRutaInicioFin(Integer idRutaInicioFin) {
         this.idRutaInicioFin = idRutaInicioFin;
     }
 
@@ -124,4 +126,8 @@ public class RutaInicioFinEntity {
     public void setEstado(@NonNull Integer estado) {
         this.estado = estado;
     }
+
+    public Boolean getSincronizado() { return sincronizado;  }
+
+    public void setSincronizado(Boolean sincronizado) { this.sincronizado = sincronizado; }
 }

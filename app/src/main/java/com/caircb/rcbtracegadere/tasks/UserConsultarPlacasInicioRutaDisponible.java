@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.tasks;
 import android.content.Context;
 
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -18,33 +20,40 @@ import retrofit2.Response;
 
 public class UserConsultarPlacasInicioRutaDisponible extends MyRetrofitApi implements RetrofitCallbacks {
 
-    public interface TaskListener {
-        public void onFinished(List<DtoCatalogo> catalogos);
+    public interface OnVehiculoListener {
+        public void onSuccessful(List<DtoCatalogo> catalogos);
     }
 
-    private final TaskListener taskListener;
+    private OnVehiculoListener mOnVehiculoListener;
 
-    public UserConsultarPlacasInicioRutaDisponible(Context context, TaskListener listener) {
+    public UserConsultarPlacasInicioRutaDisponible(Context context) {
         super(context);
-        this.taskListener=listener;
     }
 
     @Override
     public void execute() {
+
+        progressShow("Consultando vihiculos disponibles...");
+
         WebService.api().getCatalogos(new RequestCatalogo(5, "")).enqueue(new Callback<List<DtoCatalogo>>() {
             @Override
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()) {
-                    if(taskListener!=null)taskListener.onFinished(response.body());
+                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                 }else{
-                    if(taskListener!=null)taskListener.onFinished(MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(4));
+                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(4));
                 }
             }
 
             @Override
             public void onFailure(Call<List<DtoCatalogo>> call, Throwable t) {
-                if(taskListener!=null)taskListener.onFinished(MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(4));
+                progressHide();
+                if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(4));
             }
         });
+    }
+
+    public void setOnVehiculoListener(@NonNull OnVehiculoListener l){
+        mOnVehiculoListener = l;
     }
 }

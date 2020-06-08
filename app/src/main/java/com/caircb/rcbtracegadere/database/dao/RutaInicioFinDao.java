@@ -13,13 +13,25 @@ import java.util.List;
 @Dao
 public abstract class RutaInicioFinDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void createRegistro(RutaInicioFinEntity entity);
 
-    public void saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado ){
+    @Query("update tb_rutaInicioFin set sincronizado=1,idRutaInicioFin=:idSistema where _id=:idRegistro")
+    public abstract void actualizarInicioFinRutaToSincronizado(Integer idRegistro,Integer idSistema);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract long createRegistro(RutaInicioFinEntity entity);
+
+    public long saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado ){
         RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutasE(idTransporteRecolector);
         if(registroInicio==null) {
-            registroInicio = new RutaInicioFinEntity(idRutaInicioFin,idTransporteRecolector,IdTransporteVehiculo,fechaInicio,fechaFin,kilometrajeInicio,kilometrajeFin,estado);
+            registroInicio = new RutaInicioFinEntity(
+                    idRutaInicioFin,
+                    idTransporteRecolector,
+                    IdTransporteVehiculo,
+                    fechaInicio,
+                    fechaFin,
+                    kilometrajeInicio,
+                    kilometrajeFin,
+                    estado);
         }else{
             registroInicio.setIdRutaInicioFin(idRutaInicioFin);
             registroInicio.setFechaFin(fechaFin);
@@ -28,7 +40,7 @@ public abstract class RutaInicioFinDao {
 
         }
 
-        createRegistro(registroInicio);
+        return createRegistro(registroInicio);
     }
 
 
@@ -37,6 +49,7 @@ public abstract class RutaInicioFinDao {
 
     @Query("select * from tb_rutaInicioFin where idTransporteRecolector=:idTransporteRecolector limit 1")
     public abstract RutaInicioFinEntity fechConsultaInicioFinRutasE(Integer idTransporteRecolector );
+
 
 
 }
