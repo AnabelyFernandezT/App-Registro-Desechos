@@ -32,9 +32,10 @@ public class MyPrint {
     private ZebraPrinterConnection zebraPrinterConnection;
     private ZebraPrinter printer;
     private String DEFAULT_PRINTER_MAC;
-    ProgressDialog dialog;
-    Context mContext;
-    Activity activity;
+    private ProgressDialog dialog;
+    private Context mContext;
+    private Activity activity;
+    private boolean connected=false;
 
     public interface OnPrinterListener {
         public void onSuccessful();
@@ -71,14 +72,24 @@ public class MyPrint {
                 index++;
             }
 
+            /*
             new Thread(new Runnable() {
                 public void run() {
                     Looper.prepare();
-                    doConnectionTest(printer,etiquetas);
+                    doConnectionTest(etiquetas);
                     Looper.loop();
                     Looper.myLooper().quit();
                 }
             }).start();
+            */
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Looper.prepare();
+                    doConnectionTest(etiquetas);
+                    Looper.loop();
+                    Looper.myLooper().quit();
+                }
+            });
 
         }else{
             //mensaje...
@@ -94,26 +105,19 @@ public class MyPrint {
         return this.DEFAULT_PRINTER_MAC;
     }
 
-    /*private void enableTestButton(final boolean enabled) {
-        activity.runOnUiThread(new Runnable() {
-            public void run() {
-                //btnImprimir.setEnabled(enabled);
-                //btnCancelarImpresion.setEnabled(enabled);
-            }
-        });
-    }*/
-
-
-    private void disconnect() {
+    private void disconnect(String message) {
+        String msg="";
         try {
-            //setStatus("Desconectando", Color.RED);
-            if (zebraPrinterConnection != null) {
+
+            if (zebraPrinterConnection != null && connected) {
                 zebraPrinterConnection.close();
+                connected=false;
             }
-            //setStatus("No Conectado", Color.RED);
+
         } catch (ZebraPrinterConnectionException e) {
-            //setStatus("Error de conexión! Desconectando", Color.RED);
+            msg = e.getMessage();
         } finally {
+            if(mOnPrinterListener!=null)mOnPrinterListener.onFailure(message!=null && message.length()>0?message:msg);
             dialog.dismiss();
         }
     }
@@ -135,20 +139,21 @@ public class MyPrint {
 
 
 
-    private void doConnectionTest(ZebraPrinter printer,List<ItemEtiqueta> etiquetas) {
+    private void doConnectionTest(List<ItemEtiqueta> etiquetas) {
         printer = connect();
         if (printer != null) {
-            sendTestLabel(printer,etiquetas);
+            sendTestLabel(etiquetas);
         } else {
-            disconnect();
+            disconnect("No existe conexion con la impresora");
         }
     }
 
-    private void sendTestLabel(ZebraPrinter printer,List<ItemEtiqueta> etiquetas) {
+    private void sendTestLabel(List<ItemEtiqueta> etiquetas) {
         boolean complete=false;
         try {
             byte[] configLabel;
             //outerloop:
+            Integer numEtiquetaImpresa=1;
             for(ItemEtiqueta row: etiquetas){
 
                 configLabel = getConfigLabel(
@@ -166,6 +171,13 @@ public class MyPrint {
                         );
                 zebraPrinterConnection.write(configLabel);
                 MyThread.sleep(50);
+
+                //pausa para imprimir etiquetas en lotes de 50 como maximo...
+                if(numEtiquetaImpresa==50){
+                    numEtiquetaImpresa=0;
+                    MyThread.sleep(500);
+                }
+                numEtiquetaImpresa++;
             }
 
            complete=true;
@@ -178,7 +190,7 @@ public class MyPrint {
         }
         finally {
             if(complete)finalized();
-            else disconnect();
+            else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
 
         }
 
@@ -249,17 +261,16 @@ public class MyPrint {
     }
 
     private ZebraPrinter connect() {
-        //setStatus("Conectando...", Color.YELLOW);
+
         zebraPrinterConnection = null;
         zebraPrinterConnection = new BluetoothPrinterConnection(DEFAULT_PRINTER_MAC);
 
         try {
             zebraPrinterConnection.open();
-            //setStatus("Conectado", Color.GREEN);
+            connected=true;
         } catch (ZebraPrinterConnectionException e) {
-            //setStatus("Error de conexión! Desconectando", Color.RED);
             MyThread.sleep(1000);
-            disconnect();
+            disconnect("No se puede abrir comunicacion con la impresora ");
         }
 
         ZebraPrinter printer = null;
@@ -282,12 +293,12 @@ public class MyPrint {
                 //setStatus("Lenguaje de impresora desconocido, por favor reinicie la impresora", Color.RED);
                 printer = null;
                 MyThread.sleep(1000);
-                disconnect();
+                disconnect("Lenguaje de impresora desconocido, por favor reinicie la impresora");
             }catch (ZebraPrinterConnectionException e) {
                 //setStatus("Falla de conexión, por favor reinicie la impresora", Color.RED);
                 printer = null;
                 MyThread.sleep(1000);
-                disconnect();
+                disconnect("Falla de conexión, por favor reinicie la impresora");
             }
         }
 
