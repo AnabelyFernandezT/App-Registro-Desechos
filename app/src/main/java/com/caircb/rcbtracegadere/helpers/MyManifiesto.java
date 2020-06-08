@@ -144,6 +144,8 @@ public class MyManifiesto {
             para2.add(new Chunk("SUBSECRETARIA DE GESTIÓN AMBIENTAL COSTERA",f10));
             para2.add(Chunk.NEWLINE);
             para2.add(new Chunk("MANIFIESTO ÚNICO DE ENTREGA, TRANSPORTE Y RECEPCIÓN",f10));
+            para2.add(Chunk.NEWLINE);
+            para2.add(new Chunk("DE DESECHOS",f10));
             para2.setLeading(15, 3);
 
             cell =  new PdfPCell(para2);
@@ -221,9 +223,9 @@ public class MyManifiesto {
 
         //tabla 1
         PdfPTable tb1 = new PdfPTable(3);
-        tb1.addCell(new PdfPCell(new Phrase("NÚM. DE REGISTRO COMO GENERADOR DE DESECHOS.",f6)));
-        tb1.addCell(new PdfPCell(new Phrase("NÚM.. DE LICENCIA AMBIENTAL.",f6)));
-        tb1.addCell(new PdfPCell(new Phrase("No. DE MANIFIESTO",f6)));
+        tb1.addCell(new PdfPCell(new Phrase("1. NÚM. DE REGISTRO COMO GENERADOR DE DESECHOS.",f6)));
+        tb1.addCell(new PdfPCell(new Phrase("2. NÚM.. DE LICENCIA AMBIENTAL.",f6)));
+        tb1.addCell(new PdfPCell(new Phrase("3. No. DE MANIFIESTO",f6)));
         tb1.addCell(createCell("NO TIENE",f6));
         tb1.addCell(createCell("",f6));
         tb1.addCell(createCell(manifiesto.getNumeroManifiesto(),f6));
@@ -235,11 +237,11 @@ public class MyManifiesto {
 
         //tabla 2
         PdfPTable tb2 = new PdfPTable(new float[] { 27, 73});
-        tb2.addCell(new PdfPCell(new Phrase("NOMBRE DE LA EMPRESA GENERADORA:",f6)));
+        tb2.addCell(new PdfPCell(new Phrase("5. NOMBRE DE LA EMPRESA GENERADORA:",f6)));
         tb2.addCell(new PdfPCell(new Phrase(manifiesto.getNombreCliente(),f6)));
-        tb2.addCell(new PdfPCell(new Phrase("REGISTRO ÚNICO DE CONTRIBUYENTES:",f6)));
+        tb2.addCell(new PdfPCell(new Phrase("6. REGISTRO ÚNICO DE CONTRIBUYENTES:",f6)));
         tb2.addCell(new PdfPCell(new Phrase(manifiesto.getIdentificacionCliente(),f6)));
-        tb2.addCell(new PdfPCell(new Phrase("NOMBRE DE LA INSTALACIÓN GENERADORA:",f6)));
+        tb2.addCell(new PdfPCell(new Phrase("7. NOMBRE DE LA INSTALACIÓN GENERADORA:",f6)));
         tb2.addCell(new PdfPCell(new Phrase(manifiesto.getNombreCliente(),f6))); // poner sucursal
         tb2.completeRow();
 
@@ -274,7 +276,7 @@ public class MyManifiesto {
 
         //tabla 5
         PdfPTable tb5 = new PdfPTable(new float[] { 50, 20, 15, 15});
-        tb5.addCell(new PdfPCell(new Phrase("DESCRIPCION:",f6)));
+        tb5.addCell(new PdfPCell(new Phrase("8. DESCRIPCION:",f6)));
         tb5.addCell(new PdfPCell(new Phrase("CÓDIGO:",f6)));
         tb5.addCell(new PdfPCell(new Phrase("CANTIDAD:",f6)));
         tb5.addCell(new PdfPCell(new Phrase("UNIDAD VOLUMEN/PESO:",f6)));
@@ -458,7 +460,7 @@ public class MyManifiesto {
         Paragraph para1 = new Paragraph();
         para1.add(new Chunk("Nombre:",f6));
         para1.add(Chunk.NEWLINE);
-        para1.add(new Chunk("CONDUCTOR DE RECOLECIÓN",f6));
+        para1.add(new Chunk("CONDUCTOR DE RECOLECCIÓN",f6));
         para1.add(Chunk.NEWLINE);
         _cell = new PdfPCell(para1);
         _cell.setBorder(Rectangle.NO_BORDER);
@@ -474,7 +476,7 @@ public class MyManifiesto {
         Paragraph para3 = new Paragraph();
         para3.add(new Chunk("Nombre:",f6));
         para3.add(Chunk.NEWLINE);
-        para3.add(new Chunk("AUXILIAR DE RECOLECIÓN",f6));
+        para3.add(new Chunk("AUXILIAR DE RECOLECCIÓN",f6));
         para3.add(Chunk.NEWLINE);
         _cell = new PdfPCell(para3);
         _cell.setBorder(Rectangle.NO_BORDER);
@@ -1055,7 +1057,7 @@ public class MyManifiesto {
         //InputStream ims = context.getAssets().open("ic_uncheck.png");
         //Bitmap bmp = BitmapFactory.decodeStream(ims);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        imagenCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        imagenUnCheck.compress(Bitmap.CompressFormat.PNG, 100, stream);
         Image jpgCheck = Image.getInstance(stream.toByteArray());
         jpgCheck.scaleToFit(16,16);
         stream.close();
@@ -1123,9 +1125,7 @@ public class MyManifiesto {
             }
         }
 
-        det.addCell(createCell_VACIO());
-        det.addCell(createCell_VACIO());
-        //det.addCell(createCell_VACIO());
+       //det.addCell(createCell_VACIO());
         //det.addCell(createCell_VACIO());
         det.completeRow();
         //det.setLockedWidth(true);

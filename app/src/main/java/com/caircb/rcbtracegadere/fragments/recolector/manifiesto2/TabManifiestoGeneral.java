@@ -128,13 +128,13 @@ public class TabManifiestoGeneral extends LinearLayout {
                     txtRespEntregaNombre.setText(tecnico.getNombre());
                     txtRespEntregaCorreo.setText(tecnico.getCorreo());
                     txtRespEntregaTelefono.setText(tecnico.getTelefono());
-
+                    txtRespEntregaCorreo.setError(null);
                     txtRespEntregaCorreo.setEnabled(tecnico.getCorreo()!=null && tecnico.getCorreo().length()==0);
                     txtRespEntregaTelefono.setEnabled(tecnico.getTelefono()!=null && tecnico.getTelefono().length()==0);
 
                     MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,tecnico.get_id());
                     //txtGenTecIdentificacion.setEnabled(false);
-                    correo = txtRespEntregaCorreo.getText().toString();
+
 
                 }else{
                     //consultar en servicio remoto...
@@ -146,6 +146,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                             txtRespEntregaCorreo.requestFocus();
                             txtRespEntregaCorreo.setEnabled(true);
                             txtRespEntregaTelefono.setEnabled(true);
+                            txtRespEntregaCorreo.setError(null);
 
                             //insert datos en dbo local...
                             Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),"","");
@@ -153,6 +154,9 @@ public class TabManifiestoGeneral extends LinearLayout {
                             MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,idTecnico.intValue());
                             //MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
 
+                            if(!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
+                                txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                            }
                         }
 
                         @Override
@@ -161,6 +165,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                             txtRespEntregaNombre.setEnabled(true);
                             txtRespEntregaCorreo.setEnabled(true);
                             txtRespEntregaTelefono.setEnabled(true);
+                            txtRespEntregaCorreo.setError(null);
                             Toast.makeText(getContext(), "El numero de cedula "+txtRespEntregaIdentificacion.getText().toString()+ " no genero resultados", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -195,15 +200,8 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
-        correo = txtRespEntregaCorreo.getText().toString();
 
-        if(!correo.isEmpty()){
-            if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
-                txtRespEntregaCorreo.setError("Ingrese un correo valido");
-                txtRespEntregaCorreo.setEnabled(true);
 
-            }
-        }
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,13 +278,6 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
-        if(!txtRespEntregaCorreo.getText().toString().isEmpty() && !txtRespEntregaTelefono.getText().toString().isEmpty()){
-            MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
-                    txtRespEntregaNombre.getText().toString(),correo,txtRespEntregaTelefono.getText().toString());
-            txtRespEntregaTelefono.setEnabled(false);
-            txtGenTecCorreo.setEnabled(false);
-
-        }
 
         //validarTecnico();
 /*
@@ -299,28 +290,32 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                if(txtRespEntregaCorreo.getText().toString().isEmpty()){
+                    if(!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
+                        txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                    }
+                }
+
+
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                correo = txtRespEntregaCorreo.getText().toString();
 
-                if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
-                    txtRespEntregaCorreo.setError("Ingrese un correo valido");
-                }
             }
-        });*/
+        });
 
 
-
+*/
         txtRespEntregaCorreo.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                correo = txtRespEntregaCorreo.getText().toString();
 
-                if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
-                    txtRespEntregaCorreo.setError("Ingrese un correo valido");
-                }
+                    if(!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
+                        txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                    }
+
                 if(!hasFocus){
                     MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
                             txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
@@ -406,6 +401,15 @@ public class TabManifiestoGeneral extends LinearLayout {
                     txtRespEntregaNombre.setText(tec.getNombre());
                     txtRespEntregaCorreo.setText(tec.getCorreo());
                     txtRespEntregaTelefono.setText(tec.getTelefono());
+                    correo = txtRespEntregaCorreo.getText().toString();
+                    txtRespEntregaCorreo.setError(null);
+                    if(!correo.isEmpty()){
+                        if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                            txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                            txtRespEntregaCorreo.setEnabled(true);
+
+                        }
+                    }
                 }
             }
             //String tecnicoIdentificacion = cursor.getString(cursor.getColumnIndex("tecnicoIdentificacion"));
