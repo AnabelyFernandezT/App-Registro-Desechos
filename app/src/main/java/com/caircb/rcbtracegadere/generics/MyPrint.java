@@ -219,19 +219,21 @@ public class MyPrint {
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
         }else{
             //String descripcion = row.getDescripcion().substring(10, 33);
-            cpclConfigLabel = "^XA^LH30,30^FO120,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
-                    "^FS^FO40,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
-                    "^FS^FO40,90^AD^FD #M.U.E: "+manifiesto.trim()+
-                    "^FS^FO40,120^AD^FD FECHA: "+fecha+
-                    "^FS^FO40,150^AD^FD PESO:"+peso+
+            cpclConfigLabel =
+                    "^XA^LH30,30^FO80,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
+                    "^FS^FO15,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
+                    "^FS^FO15,90^AD^FD #M.U.E: "+manifiesto.trim()+
+                    "^FS^FO15,120^AD^FD FECHA: "+fecha+
+                    "^FS^FO15,150^AD^FD PESO:"+peso+
                     //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                     //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
-                    "^FS^FO40,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
-                    "^FS^FO35,470^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() +
-                    "^FS^FO35,500^AD^FD NO. BULTOS:"+ numeroBulto +
-                    "^FS^FO35,530^AD^FD TRATAMIENTO:"+tratamiento +
-                    "^FS^FO35,560^AD^FD DESTINATARIO:"+ destinatario.toUpperCase() +
-                    "^FS^FO35,590^AD^FD DEVOLUCION RECIPIENTE:"+ (aplicaDevolucion?"SI":"NO") + "^FS ^XZ";
+                    "^FS^FO15,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
+                    "^FS^FO15,530^AD^FD NO. BULTOS:"+ numeroBulto +
+                    "^FS^FO15,560^AD^FD TRATAMIENTO:"+tratamiento +
+                    "^FS^FO15,590^AD^FD DESTINATARIO:"+ destinatario.toUpperCase() +
+                    "^FS^FO15,620^AD^FD DEVOLUCION RECIPIENTE:"+ (aplicaDevolucion?"SI":"NO") +
+                    "^FS^FO15,650^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() +
+                    "^FS ^XZ";
         }
 
         configLabel = cpclConfigLabel.getBytes();
