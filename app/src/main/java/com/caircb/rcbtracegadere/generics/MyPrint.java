@@ -220,19 +220,19 @@ public class MyPrint {
         }else{
             //String descripcion = row.getDescripcion().substring(10, 33);
             cpclConfigLabel =
-                    "^XA^LH30,30^FO80,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
-                    "^FS^FO15,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
-                    "^FS^FO15,90^AD^FD #M.U.E: "+manifiesto.trim()+
-                    "^FS^FO15,120^AD^FD FECHA: "+fecha+
-                    "^FS^FO15,150^AD^FD PESO:"+peso+
+                    "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
+                    "^FS^FO60,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
+                    "^FS^FO60,90^AD^FD #M.U.E: "+manifiesto.trim()+
+                    "^FS^FO60,120^AD^FD FECHA: "+fecha+
+                    "^FS^FO60,150^AD^FD PESO:"+peso+
                     //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                     //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
-                    "^FS^FO15,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
-                    "^FS^FO15,530^AD^FD NO. BULTOS:"+ numeroBulto +
-                    "^FS^FO15,560^AD^FD TRATAMIENTO:"+tratamiento +
-                    "^FS^FO15,590^AD^FD DESTINATARIO:"+ destinatario.toUpperCase() +
-                    "^FS^FO15,620^AD^FD DEVOLUCION RECIPIENTE:"+ (aplicaDevolucion?"SI":"NO") +
-                    "^FS^FO15,650^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() +
+                    "^FS^FO60,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
+                    "^FS^FO60,530^AD^FD NO. BULTOS:"+ numeroBulto +
+                    "^FS^FO60,560^AD^FD TRATAMIENTO:"+tratamiento +
+                    "^FS^FO60,590^AD^FD DESTINATARIO:"+ destinatario.toUpperCase() +
+                    "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:"+ (aplicaDevolucion?"SI":"NO") +
+                    "^FS^FO60,650^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() +
                     "^FS ^XZ";
         }
 
