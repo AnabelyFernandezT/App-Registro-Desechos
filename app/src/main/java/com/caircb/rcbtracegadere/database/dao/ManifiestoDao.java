@@ -177,7 +177,7 @@ public abstract class ManifiestoDao {
             //identificacionDestinatario
             //razonSocialDestinatario
             //numeroLicenciaAmbientalDestinatario
-            entity.setEstado(1);
+            entity.setEstado(manifiesto.getEstadoApp());
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
 

@@ -30,7 +30,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 public class HomePlantaFragment extends MyFragment implements OnHome {
     ImageButton btnSincManifiestosPlanta,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarRecolectadosTask consultarHojaRutaTask;
-    TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista, txtinicioRuta, txtFinRuta;
+    TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogInicioRuta dialogInicioRuta;
     DialogFinRuta dialogFinRuta;
@@ -82,18 +82,16 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
-        lblListaManifiestoAsignado = (TextView) getView().findViewById(R.id.lblListaManifiestoAsignado);
+        lblListaManifiestoAsignadoPlanta = (TextView) getView().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnSincManifiestosPlanta = (ImageButton) getView().findViewById(R.id.btnSincManifiestosPlanta);
-        btnListaAsignadaTransportista = (ImageButton) getView().findViewById(R.id.btnListaAsignadaTransportista);
+        btnListaAsignadaTransportista = (ImageButton) getView().findViewById(R.id.btnListaAsignadaTransportistaPlanta);
         btnMenu = (ImageButton) getView().findViewById(R.id.btnMenu);
         btnPickUpTransportista = (ImageView) getView().findViewById(R.id.btnPickUpTransportista);
-        lblpickUpTransportista = (TextView) getView().findViewById(R.id.lblpickUpTransportista);
         btnDropOffTransportista = (ImageView) getView().findViewById(R.id.btnDropOffTransportista);
-        lblDropOffTransportista = (TextView) getView().findViewById(R.id.lblDropOffTransportista);
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
 
-
+        loadCantidadManifiestoAsignado();
 
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +121,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
     private void loadCantidadManifiestoAsignado(){
 
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
+        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
 
     }
 
