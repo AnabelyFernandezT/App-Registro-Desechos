@@ -86,7 +86,7 @@ public class TabManifiestoDetalle extends LinearLayout {
         //dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this.getContext(),myListOfItems);
         View view = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.dialog_opciones_detalle, null);
         LinearLayout txtBultos = view.findViewById(R.id.txtBultos);
-        LinearLayout txtPaquetes = view.findViewById(R.id.txtPaquetes);
+
         LinearLayout btnCancelar = view.findViewById(R.id.btnCancel);
         txtBultos.setOnClickListener(new OnClickListener() {
             @Override
