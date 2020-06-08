@@ -114,6 +114,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                            progressHide();
                             //ejecutar el proceso de imprecion..
                             print = new MyPrint(getActivity());
                             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
@@ -131,9 +132,10 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                             print.pinter(idAppManifiesto);
 
                         }else{
+                            progressHide();
                             message(response.body().getMensaje());
                         }
-                        progressHide();
+
                     }else{
                         progressHide();
                     }

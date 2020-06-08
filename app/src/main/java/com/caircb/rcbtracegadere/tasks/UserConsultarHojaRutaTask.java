@@ -53,7 +53,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                         @Override
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
-                            List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
+                            //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
                             for (DtoManifiesto reg:respuesta){
                                 MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
                                 for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {

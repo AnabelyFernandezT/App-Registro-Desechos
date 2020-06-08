@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
      Chronometer chronometer;
      MediaRecorder mediaRecorder;
      String outputFile;
+     ImageView imgStop;
 
     public interface OnAgregarAudioListener {
         void onSuccessful(String audio,String tiempo);
@@ -64,12 +66,13 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
         btnStop = getView().findViewById(R.id.btn_parar);
         btnAplicar = getView().findViewById(R.id.btnAplicar);
         chronometer = getView().findViewById(R.id.chronometer);
-
+        imgStop = getView().findViewById(R.id.imgStop);
 
         btnCancel = getView().findViewById(R.id.btnCancel);
         btnPausa = getView().findViewById(R.id.btn_pausa);
 
         btnAplicar.setEnabled(false);
+        btnStop.setEnabled(false);
 
         btnStar.setOnClickListener(this);
         btnStop.setOnClickListener(this);
@@ -111,7 +114,8 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
         }
         chronometer.setBase(SystemClock.elapsedRealtime()+timeWhenStopped);
         chronometer.start();
-
+        imgStop.setImageResource(R.mipmap.ic_stop);
+        btnStop.setEnabled(true);
         mediaRecorder.prepare();
         mediaRecorder.start();
 
@@ -139,6 +143,7 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
             //timeWhenStopped = 0;
             mediaRecorder.stop();
             mediaRecorder.release();
+
 
             btnAplicar.setEnabled(true);
 
