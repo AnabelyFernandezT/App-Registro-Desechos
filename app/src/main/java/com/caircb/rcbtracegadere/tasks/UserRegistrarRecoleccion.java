@@ -116,21 +116,24 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
-                            print = new MyPrint(getActivity());
-                            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                                @Override
-                                public void onSuccessful() {
-                                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                                }
+                            try {
+                                print = new MyPrint(getActivity());
+                                print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                                    @Override
+                                    public void onSuccessful() {
+                                        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                                    }
 
-                                @Override
-                                public void onFailure(String message) {
-                                    message(message);
-                                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                                }
-                            });
-                            print.pinter(idAppManifiesto);
-
+                                    @Override
+                                    public void onFailure(String message) {
+                                        message(message);
+                                        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                                    }
+                                });
+                                print.pinter(idAppManifiesto);
+                            }catch (Exception e){
+                                if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                            }
                         }else{
                             progressHide();
                             message(response.body().getMensaje());

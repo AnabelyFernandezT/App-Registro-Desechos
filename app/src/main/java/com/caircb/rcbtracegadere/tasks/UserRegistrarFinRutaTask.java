@@ -49,9 +49,8 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
-                        MyApp.getDBO().rutaInicioFinDao().actualizarInicioFinRutaToSincronizado(
-                                idRegistro.intValue(),
-                                Integer.parseInt(response.body().getMensaje()));
+                        MyApp.getDBO().rutaInicioFinDao().actualizarFinRutaToSincronizado(
+                                idRegistro.intValue());
                         progressHide();
                         if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onSuccessful();
                     }else{

@@ -44,7 +44,9 @@ public interface IServicio {
 
     @PUT("Registro/saveInicioFinRuta")
     Call<DtoInfo> putFin(@Body RequestFinRuta model);
-/*
-    @PATCH("Registro/saveInicioFinRuta")
-    Call<List<DtoRutaInicioFin>> patch(@Path ("id") int id ,@Body RequestRutaIniciFin model);*/
+
+    @GET ("HojaRuta/obtenerListHojaRutaPlanta")
+    Call<List<DtoManifiesto>> getHojaRutaPlanta();
+
+
 }
