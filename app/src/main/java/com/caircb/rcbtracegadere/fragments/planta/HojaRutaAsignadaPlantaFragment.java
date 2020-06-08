@@ -98,7 +98,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCame
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta();
         recyclerviewAdapter.setTaskList(rowItems);
         recyclerView.setAdapter(recyclerviewAdapter);
 
