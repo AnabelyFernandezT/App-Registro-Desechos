@@ -45,6 +45,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete;
     PaqueteEntity pkg;
     List<String> itemsCategoriaPaquete;
+    Boolean closable=false;
 
     public interface OnBultoListener {
         public void onSuccessful(
@@ -248,7 +249,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             }
         });
         alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(true);
+        alert.setCanceledOnTouchOutside(false);
         //alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alert.show();
     }
@@ -272,11 +273,26 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         txtTotal.setText("KG "+subtotal);
         dato="0";
         txtpantalla.setText("0");
+
+        if(closable && mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), pkg,true);
     }
 
     private void aplicar(){
+        BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+        if(imput.doubleValue()==0 && subtotal.doubleValue()>0){
+            if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true);
+        }else if(imput.doubleValue()>0){
+            if(bultos.size()>=0 && pkg ==null){
+                createBulto(imput);
+                if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), null,true);
+            }else if(bultos.size()>=0 && pkg!=null){
+                //region para paquetes...
+                closable=true;
+                createBulto(imput);
+            }
+        }
 
-        /*BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+        /*
         if(imput.doubleValue()>0 ){
             if(bultos.size()==0) {
                 createBulto(imput);
