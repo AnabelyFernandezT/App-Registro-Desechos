@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
@@ -11,44 +11,46 @@
     <LinearLayout
         android:id="@+id/fragment_list"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="-50dp"
+        android:layout_height="wrap_content"
+
+        android:padding="15dp"
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtNombreUsuario"
-            android:layout_width="167dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:text="Nombre de Usuario" />
 
         <TextView
-            android:id="@+id/txtSelecionarPlaca"
-            android:layout_width="260dp"
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Placa:" />
 
         <Spinner
             android:id="@+id/lista_placas"
-            android:layout_width="fill_parent"
-            android:layout_height="35dp"
-            android:layout_margin="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
             android:spinnerMode="dialog"
             android:gravity="center_vertical" />
-
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kilometraje:" />
+        <EditText
+            android:id="@+id/txtKilometraje"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:hint="Ingrese el kilometraje"
+            android:maxLines="1"
+            android:paddingRight="10dp"
+            android:singleLine="true" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/txtKilometraje"
-        android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="Kilometraje"
-        android:maxLines="1"
-        android:paddingRight="10dp"
-        android:singleLine="true" />
+
 
 
     <!--FOOTER-->
