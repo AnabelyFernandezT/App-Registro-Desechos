@@ -47,13 +47,15 @@ public class LoginActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-        if(Utility.checkAndRequestPermissions(this)) {
-            if (Utility.checkGooglePlayServicesAvailable(this)) {
+        if (Utility.checkGooglePlayServicesAvailable(this)) {
+            if(Utility.checkAndRequestPermissions(this)) {
                 if (MySession.isLocalStorage() && MySession.isLogin()) {
                     initMain(true);
                 } else {
                     initLogin();
                 }
+            }else{
+                initLogin();
             }
         }
     }
