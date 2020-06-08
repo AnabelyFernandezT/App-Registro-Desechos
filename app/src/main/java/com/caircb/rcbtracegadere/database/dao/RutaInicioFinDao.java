@@ -17,6 +17,9 @@ public abstract class RutaInicioFinDao {
     @Query("update tb_rutaInicioFin set sincronizado=1,idRutaInicioFin=:idSistema where _id=:idRegistro")
     public abstract void actualizarInicioFinRutaToSincronizado(Integer idRegistro,Integer idSistema);
 
+    @Query("update tb_rutaInicioFin set sincronizadoFin=1,idRutaInicioFin=:idSistema where _id=:idRegistro")
+    public abstract void actualizarFinRutaToSincronizado(Integer idRegistro,Integer idSistema);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long createRegistro(RutaInicioFinEntity entity);
 
