@@ -28,7 +28,7 @@ public abstract class ManifiestoFileDao {
 
 
 
-    @Query("select code,file as foto from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo  and tipo=:tipo and status=:status")
+    @Query("select code,file as foto,0 as tipo, '' as fotoUrl from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo  and tipo=:tipo and status=:status")
     public abstract List<ItemFoto> obtenerFotografiabyManifiestoCatalogo(Integer idAppManifiesto, Integer idCatalogo, Integer tipo,Integer status);
 
     @Query("select count(*) from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo  and tipo=:tipo limit 1")

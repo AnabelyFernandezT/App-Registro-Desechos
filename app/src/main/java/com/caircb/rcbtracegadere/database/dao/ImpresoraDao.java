@@ -13,8 +13,11 @@ import java.util.List;
 @Dao
  public abstract class ImpresoraDao {
 
-    @Query("SELECT *  FROM tb_impresora")
+    @Query("SELECT name,address  FROM tb_impresora")
     public abstract List<RowPrinters> getListaImpresora();
+
+    @Query("select count(*) from tb_impresora limit 1")
+    public abstract Boolean existeImpresora();
 
     @Query("SELECT * FROM tb_impresora where address =:address  LIMIT 1")
     abstract ImpresoraEntity searchImpresora(String address );

@@ -58,19 +58,22 @@ public class MyPrint {
     }
 
     public void pinter(Integer idAppManifiesto){
-        final List<ItemEtiqueta> etiquetas = MyApp.getDBO().manifiestoDetallePesosDao().consultarBultosImpresion(idAppManifiesto);
+        //varificar si existe alguna impresora conectada...
+        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
 
-        if(etiquetas!= null && etiquetas.size()>0){
-            dialog.show();
-            //recorrer array para setear numero de bulto...
-            Integer manifiestoDetalleID=0,index=0;
-            for(ItemEtiqueta it:etiquetas){
-                if(it.getIdAppManifiestoDetalle()!=manifiestoDetalleID){
-                    index=1;
+            final List<ItemEtiqueta> etiquetas = MyApp.getDBO().manifiestoDetallePesosDao().consultarBultosImpresion(idAppManifiesto);
+
+            if (etiquetas != null && etiquetas.size() > 0) {
+                dialog.show();
+                //recorrer array para setear numero de bulto...
+                Integer manifiestoDetalleID = 0, index = 0;
+                for (ItemEtiqueta it : etiquetas) {
+                    if (it.getIdAppManifiestoDetalle() != manifiestoDetalleID) {
+                        index = 1;
+                    }
+                    it.setIndexEtiqueta(index);
+                    index++;
                 }
-                it.setIndexEtiqueta(index);
-                index++;
-            }
 
             /*
             new Thread(new Runnable() {
@@ -82,23 +85,24 @@ public class MyPrint {
                 }
             }).start();
             */
-            activity.runOnUiThread(new Runnable() {
-                public void run() {
-                    Looper.prepare();
-                    doConnectionTest(etiquetas);
-                    Looper.loop();
-                    Looper.myLooper().quit();
-                }
-            });
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Looper.prepare();
+                        doConnectionTest(etiquetas);
+                        Looper.loop();
+                        Looper.myLooper().quit();
+                    }
+                });
 
-        }else{
-            //mensaje...
+            } else {
+                //mensaje...
 
+            }
         }
     }
 
     private void onCreatePrint(){
-        DEFAULT_PRINTER_MAC = MyApp.getDBO().impresoraEntity().searchMac();
+        DEFAULT_PRINTER_MAC = MyApp.getDBO().impresoraDao().searchMac();
     }
 
     public String getMacAddressFieldText() {

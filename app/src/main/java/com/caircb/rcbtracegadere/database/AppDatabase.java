@@ -136,6 +136,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PaqueteDao paqueteDao();
     public abstract ManifiestoMotivosNoRecoleccionDao manifiestoMotivosNoRecoleccionDao();
     public  abstract ManifiestoDetallePesosDao manifiestoDetallePesosDao();
-    public abstract ImpresoraDao impresoraEntity();
+    public abstract ImpresoraDao impresoraDao();
     public abstract ManifiestoPaqueteDao manifiestoPaqueteDao();
 }

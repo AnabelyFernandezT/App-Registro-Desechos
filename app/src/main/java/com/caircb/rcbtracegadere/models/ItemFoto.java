@@ -7,8 +7,6 @@ public class ItemFoto {
     private Integer tipo;
     private String fotoUrl;
 
-    public ItemFoto() {
-    }
 
     public ItemFoto(Integer code, String foto, Integer tipo, String fotoUrl) {
         this.code = code;

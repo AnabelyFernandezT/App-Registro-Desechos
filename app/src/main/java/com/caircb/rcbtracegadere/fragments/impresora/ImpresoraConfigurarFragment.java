@@ -70,7 +70,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
     }
 
     private void initPairedPrinters(){
-        pairedPrinters = MyApp.getDBO().impresoraEntity().getListaImpresora();
+        pairedPrinters = MyApp.getDBO().impresoraDao().getListaImpresora();
         selectedPrinter="MacPrinter";
 
         rvPairedPrinters.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -92,7 +92,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                     @Override
                     public void onClick(View v) {
                         try{
-                            MyApp.getDBO().impresoraEntity().deleteImpresora();
+                            MyApp.getDBO().impresoraDao().deleteImpresora();
                             Toast.makeText(getActivity(),"The device has been unpaired", Toast.LENGTH_SHORT).show();
                             initPairedPrinters();
                         }catch (Exception ex){}
@@ -135,7 +135,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                     @Override
                     public void onRowClicked(int position) {
                         //Toast.makeText(getActivity(),discoveredPrinters.get(position).getName(),Toast.LENGTH_SHORT).show();
-                        MyApp.getDBO().impresoraEntity().deleteImpresora();
+                        MyApp.getDBO().impresoraDao().deleteImpresora();
                         final String pName = discoveredPrinters.get(position).getName();
                         final String pAddress = discoveredPrinters.get(position).getAddress();
 
@@ -148,7 +148,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                             @Override
                             public void onClick(View v) {
                                 try{
-                                    MyApp.getDBO().impresoraEntity().saveOrUpdateImpresora(pName,pAddress);
+                                    MyApp.getDBO().impresoraDao().saveOrUpdateImpresora(pName,pAddress);
                                     Toast.makeText(getActivity(),"The device has been paired", Toast.LENGTH_SHORT).show();
                                     initPairedPrinters();
                                 }catch (Exception ex){}

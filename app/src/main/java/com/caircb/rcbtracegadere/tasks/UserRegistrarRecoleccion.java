@@ -116,24 +116,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
-                            try {
-                                print = new MyPrint(getActivity());
-                                print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                                    @Override
-                                    public void onSuccessful() {
-                                        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                                    }
-
-                                    @Override
-                                    public void onFailure(String message) {
-                                        message(message);
-                                        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                                    }
-                                });
-                                print.pinter(idAppManifiesto);
-                            }catch (Exception e){
-                                if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                            }
+                            imprimirEtiquetas();
                         }else{
                             progressHide();
                             message(response.body().getMensaje());
@@ -261,8 +244,27 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         return resp;
     }
 
-    private String getPath() {
-        return simpleDate.format(new Date());
+    private String getPath() { return simpleDate.format(new Date());}
+
+    private void imprimirEtiquetas(){
+        try {
+            print = new MyPrint(getActivity());
+            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                @Override
+                public void onSuccessful() {
+                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    message(message);
+                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                }
+            });
+            print.pinter(idAppManifiesto);
+        }catch (Exception e){
+            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+        }
     }
 
     public void setOnRegisterListener(@NonNull OnRegisterListener l){

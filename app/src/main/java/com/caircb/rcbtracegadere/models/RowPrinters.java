@@ -9,8 +9,6 @@ public class RowPrinters {
         this.address = address;
     }
 
-    public RowPrinters(){
-    }
 
     public void setName(String name){
         this.name = name;
