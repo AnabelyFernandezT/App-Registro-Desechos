@@ -220,7 +220,7 @@ public class MyPrint {
         }else{
             //String descripcion = row.getDescripcion().substring(10, 33);
             cpclConfigLabel =
-                    "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
+                    "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
                     "^FS^FO60,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
                     "^FS^FO60,90^AD^FD #M.U.E: "+manifiesto.trim()+
                     "^FS^FO60,120^AD^FD FECHA: "+fecha+
