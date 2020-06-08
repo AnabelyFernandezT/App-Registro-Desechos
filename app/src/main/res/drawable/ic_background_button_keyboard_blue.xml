@@ -8,7 +8,7 @@
 
         <!-- Insert your shape here: -->
         <shape android:shape="rectangle">
-            <solid android:color="#004A87"/>
+            <solid android:color="#3DA84F"/>
             <corners
                 android:radius="20dp"   >
             </corners>
