@@ -39,8 +39,10 @@ public class UserConsultarPlacasInicioRutaDisponible extends MyRetrofitApi imple
             @Override
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()) {
+                    progressHide();
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                 }else{
+                    progressHide();
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(4));
                 }
             }
