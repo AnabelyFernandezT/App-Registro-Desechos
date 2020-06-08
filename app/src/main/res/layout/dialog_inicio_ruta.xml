@@ -28,7 +28,6 @@
 
         <Spinner
             android:id="@+id/lista_placas"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:spinnerMode="dialog"
@@ -46,6 +45,9 @@
             android:layout_height="57dp"
             android:hint="Ingrese el kilometraje"
             android:maxLines="1"
+            android:maxLength="7"
+            android:textSize="22dp"
+            android:inputType="number|numberSigned"
             android:paddingRight="10dp"
             android:singleLine="true" />
     </LinearLayout>
