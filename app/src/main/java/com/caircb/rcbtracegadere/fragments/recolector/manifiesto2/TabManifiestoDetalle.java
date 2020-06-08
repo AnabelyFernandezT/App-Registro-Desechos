@@ -143,7 +143,7 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                     //calculo de paquetes...
                     if(pkg!=null){
-                       CalculoPaqueteResul d =  calculoPaquetes.algoritmo(pkg);
+                       calculoPaquetes.algoritmo(pkg);
                     }
                 }
 

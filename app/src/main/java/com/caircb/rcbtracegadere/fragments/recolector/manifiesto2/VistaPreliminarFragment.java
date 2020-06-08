@@ -11,6 +11,7 @@ import android.app.Fragment;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
@@ -130,6 +131,12 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                 break;
             case R.id.btnVistaPreviaGuardar:
                 userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation());
+                userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
+                    @Override
+                    public void onSuccessful() {
+                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                    }
+                });
                 userRegistrarRecoleccion.execute();
                 break;
         }

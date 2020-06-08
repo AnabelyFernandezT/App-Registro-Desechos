@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -87,6 +88,7 @@ public class TabManifiestoAdicional extends LinearLayout {
         this.idAppTipoPaquete = tipoPaquete;
         View.inflate(context, R.layout.tab_manifiesto_adicional, this);
         init();
+        //initData();
         loadDataPaquetes();
         loadData();
         preLoadAudio(tiempoAudio);
@@ -204,7 +206,24 @@ public class TabManifiestoAdicional extends LinearLayout {
         }
     }
 
+    private void initData(){
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                loadDataPaquetes();
+            }
+        });
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                loadData();
+            }
+        });
+    }
+
     private void loadDataPaquetes(){
+
         if(idAppTipoPaquete!=null) {
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
