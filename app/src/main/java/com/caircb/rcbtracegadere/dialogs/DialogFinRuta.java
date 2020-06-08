@@ -20,6 +20,8 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarFinRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
 import java.util.Date;
 
@@ -35,25 +37,16 @@ public class DialogFinRuta extends MyDialog {
 
     String kilometrajeInicio;
     Integer placaInicio;
-    //UserRegistroInicioFinTask registroFin;
     Date diaAnterior;
 
-    //Botones Inicio
-    ImageButton btnSincManifiestos,btnListaAsignadaTransportista, btnInicioRuta, btnFinRuta,regionBuscar;
-    ImageView btnPickUpTransportista, btnDropOffTransportista;
-    TextView txtinicioRuta, txtFinRuta;
-/*
-    public interface TaskListener {
-        public void onBandera(Boolean bandera);
-    }
+    UserRegistrarFinRutaTask registroFinRuta;
 
-    private final DialogFinRuta.TaskListener taskListener;*/
+    //Botones Inicio
+    ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
+    ImageView btnPickUpTransportista, btnDropOffTransportista;
 
     public DialogFinRuta(@NonNull Context context) {
         super(context, R.layout.dialog_final_ruta);
-       // this.taskListener = listenerBanderaFin;
-        this.bandera = bandera;
-        //dbHelper = new DBAdapter(context);
         this._activity = (Activity)context;
     }
 
@@ -78,11 +71,7 @@ public class DialogFinRuta extends MyDialog {
         regionBuscar = (ImageButton) getActivity().findViewById(R.id.regionBuscar);
         btnSincManifiestos = (ImageButton) getActivity().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaTransportista = (ImageButton) getActivity().findViewById(R.id.btnListaAsignadaTransportista);
-        //btnInicioRuta = (ImageButton) getActivity().findViewById(R.id.btnInicioRuta);
-        //btnFinRuta = (ImageButton) getActivity().findViewById(R.id.btnFinRuta);
-        //txtinicioRuta = (TextView)getActivity().findViewById(R.id.txtIniciarRuta);
 
-        //txtFinRuta = (TextView)getActivity().findViewById(R.id.txtFinRuta);
         lnlIniciaRuta = getActivity().findViewById(R.id.LnlIniciaRuta);
         lnlFinRuta = getActivity().findViewById(R.id.LnlFinRuta);
 
@@ -116,38 +105,37 @@ public class DialogFinRuta extends MyDialog {
                     }
 
                 }
-
             }
         });
-
-
-
     }
-    /*
-    UserRegistroInicioFinTask.TaskListener listener = new UserRegistroInicioFinTask.TaskListener() {
-
-        @Override
-        public void onFinished() {
-            finRuta();
-            DialogFinRuta.this.dismiss();
-
-        }
-    };
-    */
 
 
     private void guardarDatos()
     {
 
-        Date dia;
-        dia = AppDatabase.getDateTime();
+        Date dia = AppDatabase.getDateTime();
 
-       MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
+
+        long idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
 
         finRuta();
-        DialogFinRuta.this.dismiss();
 
 
+        registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
+        registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
+            @Override
+            public void onSuccessful() {
+                DialogFinRuta.this.dismiss();
+            }
+
+            @Override
+            public void onFailure() {
+                DialogFinRuta.this.dismiss();
+            }
+        });
+
+        registroFinRuta.execute();
     }
 
     private void traerDatosAnteriores(){

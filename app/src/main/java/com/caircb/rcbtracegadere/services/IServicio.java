@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.services;
 
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
+import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
@@ -40,6 +41,9 @@ public interface IServicio {
 
    @PUT("Registro/saveInicioFinRuta")
     Call<DtoInfo> putInicioFin(@Body RequestIniciaRuta model);
+
+    @PUT("Registro/saveInicioFinRuta")
+    Call<DtoInfo> putFin(@Body RequestFinRuta model);
 /*
     @PATCH("Registro/saveInicioFinRuta")
     Call<List<DtoRutaInicioFin>> patch(@Path ("id") int id ,@Body RequestRutaIniciFin model);*/
