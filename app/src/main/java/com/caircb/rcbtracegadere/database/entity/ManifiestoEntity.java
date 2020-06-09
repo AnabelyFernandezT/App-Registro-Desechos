@@ -80,6 +80,8 @@ public class ManifiestoEntity {
 
     private Date fechaRecoleccion;
 
+    private Date fechaRecepcionPlanta;
+
     @NonNull
     private Integer idLugar;
 
@@ -348,6 +350,14 @@ public class ManifiestoEntity {
     public Boolean getSincronizado() { return sincronizado;}
 
     public void setSincronizado(Boolean sincronizado) { this.sincronizado = sincronizado;}
+
+    public Date getFechaRecepcionPlanta() {
+        return fechaRecepcionPlanta;
+    }
+
+    public void setFechaRecepcionPlanta(Date fechaRecepcionPlanta) {
+        this.fechaRecepcionPlanta = fechaRecepcionPlanta;
+    }
 }
 
 

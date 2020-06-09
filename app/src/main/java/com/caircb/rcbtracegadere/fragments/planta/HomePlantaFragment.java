@@ -6,22 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
-import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
-import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
-import com.caircb.rcbtracegadere.helpers.MySession;
-import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 
 /**
@@ -32,15 +25,10 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     UserConsultarRecolectadosTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
-    DialogInicioRuta dialogInicioRuta;
-    DialogFinRuta dialogFinRuta;
+
 
 
     public Context mContext;
-
-
-    int IdTransporteRecolector;
-    Integer inicioFinRuta;
 
     ImageButton regionBuscar;
     //ImageButton btnCalculadora;

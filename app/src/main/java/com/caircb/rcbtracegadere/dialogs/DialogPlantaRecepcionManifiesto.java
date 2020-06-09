@@ -22,18 +22,21 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.caircb.rcbtracegadere.utils.Utils;
 
+import java.util.Date;
 import java.util.List;
 
 public class DialogPlantaRecepcionManifiesto extends MyDialog {
 
     Activity _activity;
-    ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
-    LinearLayout btnAgregarFirmaTransportista, btnCancelar, btnGuardar;
+    ImageView imgFirmaPlanta;
+    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
     EditText txtPeso;
-    TextView txtFirmaMensajeTransportista;
+    TextView txtFirmaPlanta;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
     boolean bloquear;
@@ -44,6 +47,8 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogBuilder builder;
+
+    UserRegistrarPlanta userRegistrarPlanta;
 
     public DialogPlantaRecepcionManifiesto(@NonNull Context context, Integer idManifiesto){
         super(context, R.layout.dialog_options_manifiesto);
@@ -64,12 +69,11 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
         btnGuardar = getView().findViewById(R.id.btnGuardar);
         btnCancelar = getView().findViewById(R.id.btnCancelar);
 
-        btnAgregarFirmaTransportista = getView().findViewById(R.id.btnAgregarFirmaTransportista);
-        imgFirmaTecnico= getView().findViewById(R.id.imgFirmaTecnico);
-        imgFirmaTecnicoTrasnsportista = getView().findViewById(R.id.imgFirmaTecnicoTrasnsportista);
-        txtFirmaMensajeTransportista = getView().findViewById(R.id.txtFirmaMensajeTransportista);
+        btnAgregarFirma = getView().findViewById(R.id.btnAgregarFirma);
+        imgFirmaPlanta = getView().findViewById(R.id.imgFirmaPlanta);
+        txtFirmaPlanta = getView().findViewById(R.id.txtFirmaPlanta);
 
-        btnAgregarFirmaTransportista.setOnClickListener(new View.OnClickListener() {
+        btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(dialogFirma==null) {
@@ -82,16 +86,16 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
                             dialogFirma.dismiss();
                             dialogFirma=null;
                             if(bitmap!=null){
-                                txtFirmaMensajeTransportista.setVisibility(View.GONE);
-                                imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
-                                imgFirmaTecnicoTrasnsportista.setImageBitmap(bitmap);
+                                txtFirmaPlanta.setVisibility(View.GONE);
+                                imgFirmaPlanta.setVisibility(View.VISIBLE);
+                                imgFirmaPlanta.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
 
                                 MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap),MyConstant.STATUS_RECEPCION_PLANTA);
 
                             }else{
-                                txtFirmaMensajeTransportista.setVisibility(View.VISIBLE);
-                                imgFirmaTecnicoTrasnsportista.setVisibility(View.GONE);
+                                txtFirmaPlanta.setVisibility(View.VISIBLE);
+                                imgFirmaPlanta.setVisibility(View.GONE);
 
                                 MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
                             }
@@ -109,9 +113,15 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
             }
         });
 
+
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(validaNovedadesFrecuentesPendienteFotos()){
+                    messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
+                    return;
+                }
 
                 if(txtPeso.getText().toString().equals("")){
                     messageBox("Debe ingresar un peso!");
@@ -119,6 +129,9 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
                     if(firmaConfirmada!=null){
                         String unicodeImg = Utils.encodeTobase64(firmaConfirmada);
                         MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, unicodeImg, MyConstant.STATUS_RECEPCION_PLANTA);
+                        MyApp.getDBO().manifiestoDao().updateManifiestoFechaPlanta(idManifiesto,new Date());
+                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idManifiesto,Double.parseDouble(txtPeso.getText().toString()));
+                        userRegistrarPlanta.execute();
                         dismiss();
                         messageBox("Registrado correctamente!!");
                     }else {
@@ -206,6 +219,16 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
             }
         });
         recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+
+        ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
+        if(f != null){
+            Bitmap imagen = Utils.StringToBitMap(f.getFile());
+            txtFirmaPlanta.setVisibility(View.GONE);
+            imgFirmaPlanta.setVisibility(View.VISIBLE);
+            imgFirmaPlanta.setImageBitmap(imagen);
+            firmaConfirmada = imagen;
+
+        }
     }
 
     public void setMakePhoto(Integer code) {
@@ -213,4 +236,9 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
             dialogAgregarFotografias.setMakePhoto(code);
         }
     }
+    public boolean validaNovedadesFrecuentesPendienteFotos(){
+        return MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFoto(idManifiesto)>0;
+    }
+
+
 }

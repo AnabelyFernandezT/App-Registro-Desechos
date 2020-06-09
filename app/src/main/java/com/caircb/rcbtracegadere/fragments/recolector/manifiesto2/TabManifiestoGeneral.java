@@ -172,31 +172,6 @@ public class TabManifiestoGeneral extends LinearLayout {
                     userConsultarCedulaTask.execute();
                 }
 
-
-                /*if(flagT==0){
-                    if (tecnico!=null){
-                        txtGenTecNombre.setText(tecnico.getNombre());
-                        txtGenTecCorreo.setText(tecnico.getCorreo());
-                        txtGenTecTelefono.setText(tecnico.getTelefono());
-                        txtGenTecIdentificacion.setEnabled(false);
-                        //btnBuscarIdentificacion.setEnabled(false);
-                    }else {
-                        Toast.makeText(getContext(), "Usuario no registrado", Toast.LENGTH_SHORT).show();
-                        txtGenTecNombre.setEnabled(true);
-                        txtGenTecCorreo.setEnabled(true);
-                        txtGenTecTelefono.setEnabled(true);
-                        guardarDatosTecnico();
-                    }
-                    flagT=1;
-                }else {
-
-                    MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
-                    flagT=0;
-                }
-                */
-
-
-
             }
         });
 
@@ -279,35 +254,6 @@ public class TabManifiestoGeneral extends LinearLayout {
         });
 
 
-        //validarTecnico();
-/*
-        txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if(txtRespEntregaCorreo.getText().toString().isEmpty()){
-                    if(!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
-                        txtRespEntregaCorreo.setError("Ingrese un correo valido");
-                    }
-                }
-
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-*/
         txtRespEntregaCorreo.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -412,25 +358,6 @@ public class TabManifiestoGeneral extends LinearLayout {
                     }
                 }
             }
-            //String tecnicoIdentificacion = cursor.getString(cursor.getColumnIndex("tecnicoIdentificacion"));
-           /*if(manifiesto.getTecnicoIdentificacion() != null){
-                txtIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
-                txtNombre.setText(manifiesto.getTecnicoResponsable());
-                txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
-                txtTelefono.setText(manifiesto.getTecnicoTelefono());
-                txtCorreo.setText(manifiesto.getTecnicoCorreo());
-            }
-
-           if(manifiesto.getIdTecnicoGenerador()!= null){
-
-               txtGenTecIdentificacion.setText(tecnicoEntity.getIdentificacion());
-               txtGenTecNombre.setText(tecnicoEntity.getNombre());
-               txtGenTecTelefono.setText(tecnicoEntity.getTelefono());
-               txtGenTecCorreo.setText(tecnicoEntity.getCorreo());
-               btnBuscarIdentificacion.setEnabled(false);
-               txtGenTecIdentificacion.setEnabled(false);
-
-           }*/
 
             //String img = cursor.getString(cursor.getColumnIndex("tecnicoFirmaImg"));
             ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);

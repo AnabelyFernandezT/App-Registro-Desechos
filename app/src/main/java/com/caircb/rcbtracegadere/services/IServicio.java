@@ -6,6 +6,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
+import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
@@ -48,5 +49,7 @@ public interface IServicio {
     @GET ("HojaRuta/obtenerListHojaRutaPlanta")
     Call<List<DtoManifiesto>> getHojaRutaPlanta();
 
+    @PUT("Registro/registroManifiestoPlanta")
+    Call<DtoInfo> registrarPlanta(@Body RequestManifiestoPlanta model);
 
 }

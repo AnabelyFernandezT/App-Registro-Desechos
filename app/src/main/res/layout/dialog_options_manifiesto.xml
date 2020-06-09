@@ -29,7 +29,7 @@
                 android:maxLength="10" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/btnAgregarFirmaTransportista"
+            android:id="@+id/btnAgregarFirma"
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:layout_margin="10dp"
@@ -37,13 +37,13 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/txtFirmaMensajeTransportista"
+                android:id="@+id/txtFirmaPlanta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Presione aquí para firmar" />
 
             <ImageView
-                android:id="@+id/imgFirmaTecnicoTrasnsportista"
+                android:id="@+id/imgFirmaPlanta"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"

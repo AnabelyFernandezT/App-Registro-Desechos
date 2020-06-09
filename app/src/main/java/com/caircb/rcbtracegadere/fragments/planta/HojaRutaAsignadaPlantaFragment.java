@@ -45,8 +45,6 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCame
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
     private SearchView searchView;
-
-    Dialog dialogOpcioneItem;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

@@ -117,6 +117,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase.class,
                             MyConstant.DBO_NAME)
                             .allowMainThreadQueries()
+                            //.fallbackToDestructiveMigration()
                             .build();
                 }
             }

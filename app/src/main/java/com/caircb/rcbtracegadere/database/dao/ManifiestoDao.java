@@ -125,8 +125,14 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set fechaRecoleccion=:fecha where idAppManifiesto=:idAppManifiesto")
     public abstract void updateManifiestoFechaRecoleccion(Integer idAppManifiesto,Date fecha);
 
+    @Query("update tb_manifiestos set fechaRecepcionPlanta=:fecha where idAppManifiesto=:idAppManifiesto")
+    public abstract void updateManifiestoFechaPlanta(Integer idAppManifiesto,Date fecha);
+
     @Query("update tb_manifiestos set estado=2, sincronizado=1 where idAppManifiesto=:idAppManifiesto ")
     public abstract void updateManifiestoToRecolectado(Integer idAppManifiesto);
+
+    @Query("update tb_manifiestos set estado=4, sincronizado=1 where idAppManifiesto=:idAppManifiesto ")
+    public abstract void updateManifiestoToRecolectadoPlanta(Integer idAppManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoEntity entity);
