@@ -35,6 +35,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     String path ="planta";
     private List<DtoFile> listaFileDefauld;
 
+
     public interface OnRegisterListener {
         public void onSuccessful();
     }
@@ -141,6 +142,8 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     private void finalizar(){
         if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+
+
     }
 
 
