@@ -87,7 +87,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCame
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigPlanta(texto);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }

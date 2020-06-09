@@ -2,6 +2,8 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
@@ -81,15 +83,16 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if (response.isSuccessful()){
-                        if(response.body().getExito()) {
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectadoPlanta(idAppManifiesto);
+                            finalizar();
                             progressHide();
-                        }
+
 
                     }else{
-                        progressHide();
+
                         message(response.body().getMensaje());
                         progressHide();
+
                     }
 
                 }
@@ -135,4 +138,10 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     private List<RequestNovedadFoto> createFotografia(Integer idCatalogo, Integer tipo) {
         return MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
     }
+
+    private void finalizar(){
+        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+    }
+
+
 }
