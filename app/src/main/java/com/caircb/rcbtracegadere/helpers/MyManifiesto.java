@@ -752,8 +752,8 @@ public class MyManifiesto {
         PdfPTable tb2 = new PdfPTable(1);
         PdfPCell cell = new PdfPCell(regionAdicionales(f3));
         PdfPCell cell2 = new PdfPCell(regionAdicionales2(f3));
-        /*tb2.addCell(new PdfPCell(new Phrase("FUNDA 50 *",f3)));
-        tb2.addCell(new PdfPCell(new Phrase("0",f3)));
+        tb2.addCell(new PdfPCell(new Phrase("PC-4",f3)));
+       /* tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.addCell(new PdfPCell(new Phrase("PC1",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.addCell(new PdfPCell(new Phrase("FUNDA 63 * 76",f3)));
@@ -1117,9 +1117,18 @@ public class MyManifiesto {
             for (RowItemManifiesto reg:detalles){
                 nombre = reg.getDescripcion();
                 pos = nombre.indexOf("-");
-                det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos+1,nombre.length()), f6,null));
-                det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(0,pos), f6,Element.ALIGN_CENTER));
+                if(pos>9){
+                    det.addCell(createCell_NO_BORDER_SINGLE(reg.getDescripcion(), f6, null));
+                }else {
+                    det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos + 1, nombre.length()), f6, null));
+                }
+                if(pos==-1|| pos>9){
+                    det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
+                }else {
+                    det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(0, pos), f6, Element.ALIGN_CENTER));
+                }
                 det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
+
                 det.addCell(createCell_NO_BORDER(reg.getUnidad(), f6,Element.ALIGN_CENTER));
                 det.completeRow();
             }

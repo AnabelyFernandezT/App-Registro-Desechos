@@ -1,9 +1,13 @@
 package com.caircb.rcbtracegadere.dialogs;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -12,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import com.caircb.rcbtracegadere.MyApp;
@@ -128,6 +133,8 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
         }
     }
 
+
+
     private void setImagenToImagenView(Integer code, ImageView img, String str) {
         img.setImageBitmap(Bitmap.createScaledBitmap(Utils.StringToBitMap(str), 100, 100, true));
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -163,6 +170,7 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
         }
     }
 
+
     private void initPhotoError(){
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -172,6 +180,34 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
     public void setOnAgregarFotosListener(@NonNull OnAgregarFotosListener l){
         mOnAgregarFotosListener =l;
     }
+
+    private void selectImage(final Integer index) {
+        final CharSequence[] options = {"Abrir Camara", "Abrir Galeria", "Cancelar"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Agregar Fotografia");
+        builder.setItems(options, new OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Abrir Camara"))
+                {
+                   openCamera(getPrefix(index));
+                }
+                else if (options[item].equals("Abrir Galeria"))
+                {
+                    intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    getActivity().startActivityForResult(Intent.createChooser(intent,""),index);
+                }
+                else if (options[item].equals("Cancelar")) {
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        builder.show();
+
+    }
+
 
     @Override
     public void onClick(View v) {
