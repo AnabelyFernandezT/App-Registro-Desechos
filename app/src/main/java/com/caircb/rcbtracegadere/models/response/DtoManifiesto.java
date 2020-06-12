@@ -37,10 +37,10 @@ public class DtoManifiesto {
     private Integer idTransporteVehiculo;
     private String numeroPlacaVehiculo;
     private String modeloVehiculo;
-    private Integer idDestinatario;
-    private String identificacionDestinatario;
-    private String razonSocialDestinatario;
-    private String numeroLicenciaAmbientalDestinatario;
+    //private Integer idDestinatario;
+    //private String identificacionDestinatario;
+    //private String razonSocialDestinatario;
+    //private String numeroLicenciaAmbientalDestinatario;
     private Integer estadoApp;
     private Boolean eliminado;
     private Date fechaTemp;
@@ -319,37 +319,7 @@ public class DtoManifiesto {
         this.modeloVehiculo = modeloVehiculo;
     }
 
-    public Integer getIdDestinatario() {
-        return idDestinatario;
-    }
 
-    public void setIdDestinatario(Integer idDestinatario) {
-        this.idDestinatario = idDestinatario;
-    }
-
-    public String getIdentificacionDestinatario() {
-        return identificacionDestinatario;
-    }
-
-    public void setIdentificacionDestinatario(String identificacionDestinatario) {
-        this.identificacionDestinatario = identificacionDestinatario;
-    }
-
-    public String getRazonSocialDestinatario() {
-        return razonSocialDestinatario;
-    }
-
-    public void setRazonSocialDestinatario(String razonSocialDestinatario) {
-        this.razonSocialDestinatario = razonSocialDestinatario;
-    }
-
-    public String getNumeroLicenciaAmbientalDestinatario() {
-        return numeroLicenciaAmbientalDestinatario;
-    }
-
-    public void setNumeroLicenciaAmbientalDestinatario(String numeroLicenciaAmbientalDestinatario) {
-        this.numeroLicenciaAmbientalDestinatario = numeroLicenciaAmbientalDestinatario;
-    }
 
     public Integer getEstadoApp() {
         return estadoApp;

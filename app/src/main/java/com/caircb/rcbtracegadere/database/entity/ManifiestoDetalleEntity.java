@@ -36,6 +36,8 @@ public class ManifiestoDetalleEntity {
 
     private Integer tipoPaquete;
 
+    private Integer idDestinatario;
+
     private String codeQr;
 
     @NonNull
@@ -129,4 +131,12 @@ public class ManifiestoDetalleEntity {
     public Integer getCantidadTotalEtiqueta() {return cantidadTotalEtiqueta;}
 
     public void setCantidadTotalEtiqueta(Integer cantidadTotalEtiqueta) { this.cantidadTotalEtiqueta = cantidadTotalEtiqueta;}
+
+    public Integer getIdDestinatario() {
+        return idDestinatario;
+    }
+
+    public void setIdDestinatario(Integer idDestinatario) {
+        this.idDestinatario = idDestinatario;
+    }
 }

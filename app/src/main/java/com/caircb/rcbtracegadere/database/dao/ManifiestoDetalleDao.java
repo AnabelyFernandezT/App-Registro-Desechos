@@ -71,6 +71,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setTipoItem(dt.getPesajeBultoFlag());
             entity.setTipoPaquete(dt.getTipoPaquete());
             entity.setCantidadTotalEtiqueta(0);
+            entity.setIdDestinatario(dt.getIdDestinatario());
 
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
@@ -79,6 +80,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setCantidadDesecho(dt.getCantidadDesecho());
             entity.setTipoItem(dt.getPesajeBultoFlag());
             entity.setTipoPaquete(dt.getTipoPaquete());
+            entity.setIdDestinatario(dt.getIdDestinatario());
             //entity.setEstadoChek(false);
             //entity.setCantidadBulto(0);
         }
