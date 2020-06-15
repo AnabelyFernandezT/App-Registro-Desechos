@@ -50,6 +50,9 @@ public abstract class ManifiestoDetalleDao {
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDt")
     public abstract ManifiestoDetalleEntity fetchHojaRutaDetbyIdManifiestoDet(Integer idManifiesto, Integer idManifiestoDt);
 
+    @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and estadoChek = 1")
+    public abstract ManifiestoDetalleEntity fetchPesoManifiesto(Integer idManifiesto);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiestoDetalle(ManifiestoDetalleEntity entity);
 

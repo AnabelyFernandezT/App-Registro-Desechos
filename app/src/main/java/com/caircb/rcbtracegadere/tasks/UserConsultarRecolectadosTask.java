@@ -19,6 +19,7 @@ public class UserConsultarRecolectadosTask extends MyRetrofitApi implements Retr
 
     public interface TaskListener {
         public void onSuccessful();
+
     }
 
     private final TaskListener taskListener;
@@ -27,6 +28,7 @@ public class UserConsultarRecolectadosTask extends MyRetrofitApi implements Retr
     public UserConsultarRecolectadosTask(Context context, TaskListener taskListener){
         super(context);
         this.taskListener = taskListener;
+        progressShow("Consultando...");
     }
 
     @Override

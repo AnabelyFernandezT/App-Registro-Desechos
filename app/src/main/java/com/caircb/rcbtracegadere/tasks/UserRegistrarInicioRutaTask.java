@@ -46,6 +46,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
 
     private void  register(){
         progressShow("Sincronizando con el servidor el inicio de ruta");
+        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
         RequestIniciaRuta requestRutaIniciFin = createRequestInicio();
         if(requestRutaIniciFin!=null){
             WebService.api().putInicioFin(requestRutaIniciFin).enqueue(new Callback<DtoInfo>() {

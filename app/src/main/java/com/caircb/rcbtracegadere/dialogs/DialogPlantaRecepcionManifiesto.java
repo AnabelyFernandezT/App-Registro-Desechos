@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
@@ -36,7 +37,7 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
     ImageView imgFirmaPlanta;
     LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
     EditText txtPeso;
-    TextView txtFirmaPlanta;
+    TextView txtFirmaPlanta, txtPesoRecolectado;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
     boolean bloquear;
@@ -47,6 +48,7 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogBuilder builder;
+    
 
     UserRegistrarPlanta userRegistrarPlanta;
 
@@ -72,6 +74,7 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
         btnAgregarFirma = getView().findViewById(R.id.btnAgregarFirma);
         imgFirmaPlanta = getView().findViewById(R.id.imgFirmaPlanta);
         txtFirmaPlanta = getView().findViewById(R.id.txtFirmaPlanta);
+        txtPesoRecolectado = getView().findViewById(R.id.txtPesoRecolectado);
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,6 +232,9 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
             firmaConfirmada = imagen;
 
         }
+
+        ManifiestoDetalleEntity manifiestoDetalle = MyApp.getDBO().manifiestoDetalleDao().fetchPesoManifiesto(idManifiesto);
+        txtPesoRecolectado.setText(String.valueOf(manifiestoDetalle.getCantidadBulto()));
     }
 
     public void setMakePhoto(Integer code) {

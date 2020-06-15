@@ -12,7 +12,7 @@ public class DtoManifiestoDetalle {
     private Integer pesajeBultoFlag;
     private Integer tipoPaquete;
     private boolean eliminado;
-    private Integer idDestinatario;
+    private Integer IdDestinatario;
 
     public DtoManifiestoDetalle() {
     }
@@ -90,10 +90,10 @@ public class DtoManifiestoDetalle {
     }
 
     public Integer getIdDestinatario() {
-        return idDestinatario;
+        return IdDestinatario;
     }
 
     public void setIdDestinatario(Integer idDestinatario) {
-        this.idDestinatario = idDestinatario;
+        IdDestinatario = idDestinatario;
     }
 }

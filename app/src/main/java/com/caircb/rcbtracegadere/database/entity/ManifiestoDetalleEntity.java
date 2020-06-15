@@ -36,7 +36,7 @@ public class ManifiestoDetalleEntity {
 
     private Integer tipoPaquete;
 
-    private Integer idDestinatario;
+    private Integer IdDestinatario;
 
     private String codeQr;
 
@@ -133,10 +133,10 @@ public class ManifiestoDetalleEntity {
     public void setCantidadTotalEtiqueta(Integer cantidadTotalEtiqueta) { this.cantidadTotalEtiqueta = cantidadTotalEtiqueta;}
 
     public Integer getIdDestinatario() {
-        return idDestinatario;
+        return IdDestinatario;
     }
 
     public void setIdDestinatario(Integer idDestinatario) {
-        this.idDestinatario = idDestinatario;
+        IdDestinatario = idDestinatario;
     }
 }

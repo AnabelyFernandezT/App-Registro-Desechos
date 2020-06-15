@@ -146,5 +146,9 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     }
 
+    public void setOnRegisterListener(@NonNull UserRegistrarPlanta l){
+
+    }
+
 
 }

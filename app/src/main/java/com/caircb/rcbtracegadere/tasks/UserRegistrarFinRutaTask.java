@@ -43,6 +43,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
 
     private void  register(){
         progressShow("Sincronizando con servidor el final de ruta");
+        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
         RequestFinRuta requestFinRuta = createRequestFin();
         if(requestFinRuta!=null){
             WebService.api().putFin(requestFinRuta).enqueue(new Callback<DtoInfo>() {
