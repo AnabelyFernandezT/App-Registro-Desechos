@@ -96,8 +96,11 @@ public class MyPrint {
 
             } else {
                 //mensaje...
+                disconnect("Impresora no encontrada");
 
             }
+        }else {
+            disconnect("Impresora no encontrada");
         }
     }
 

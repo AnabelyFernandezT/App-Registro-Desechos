@@ -57,6 +57,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
     public interface OnRegisterListener {
         public void onSuccessful();
+        public void onFail();
     }
 
     private OnRegisterListener mOnRegisterListener;
@@ -107,8 +108,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     private void register(){
         RequestManifiesto request = createRequestManifiesto();
         if(request!=null){
-            Gson g = new Gson();
-            String f = g.toJson(request);
+           // Gson g = new Gson();
+           // String f = g.toJson(request);
 
             WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
                 @Override
@@ -116,10 +117,11 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                     if(response.isSuccessful()){
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
+                            imprimirEtiquetas();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
-                            imprimirEtiquetas();
+
                         }else{
                             progressHide();
                             message(response.body().getMensaje());
