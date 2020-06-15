@@ -32,6 +32,7 @@ public class DialogFinRuta extends MyDialog {
     Activity _activity;
     Boolean bandera;
     EditText kilometrajeFinal;
+    long idRegistro;
 
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
@@ -101,7 +102,22 @@ public class DialogFinRuta extends MyDialog {
                         messageBox("Kilometraje incorrecto");
                         return;
                     }else{
-                        guardarDatos();
+
+                        registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
+                        registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
+                            @Override
+                            public void onSuccessful() {
+                                guardarDatos();
+                                DialogFinRuta.this.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                DialogFinRuta.this.dismiss();
+                            }
+                        });
+
+                        registroFinRuta.execute();
                     }
 
                 }
@@ -116,26 +132,13 @@ public class DialogFinRuta extends MyDialog {
         Date dia = AppDatabase.getDateTime();
 
 
-        long idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
+        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
 
         finRuta();
 
 
-        registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
-        registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
-            @Override
-            public void onSuccessful() {
-                DialogFinRuta.this.dismiss();
-            }
 
-            @Override
-            public void onFailure() {
-                DialogFinRuta.this.dismiss();
-            }
-        });
-
-        registroFinRuta.execute();
     }
 
     private void traerDatosAnteriores(){

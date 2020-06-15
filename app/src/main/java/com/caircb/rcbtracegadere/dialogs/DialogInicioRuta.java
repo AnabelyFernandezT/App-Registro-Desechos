@@ -41,6 +41,7 @@ public class DialogInicioRuta extends MyDialog {
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
     String placa;
+    long idRegistro;
 
     UserRegistrarInicioRutaTask registroInicioRuta;
     UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
@@ -156,7 +157,22 @@ public class DialogInicioRuta extends MyDialog {
 
             if (validar ==0){
                 //
-                guardarDatos();
+                //guardarDatos();
+                registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro);
+                registroInicioRuta.setOnIniciaRutaListener(new UserRegistrarInicioRutaTask.OnIniciaRutaListener() {
+                    @Override
+                    public void onSuccessful() {
+                        guardarDatos();
+                        DialogInicioRuta.this.dismiss();
+                    }
+
+
+                    @Override
+                    public void onFailure() {
+                        DialogInicioRuta.this.dismiss();
+                    }
+                });
+                registroInicioRuta.execute();
 
             }
 
@@ -212,25 +228,14 @@ public class DialogInicioRuta extends MyDialog {
         CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
         int idVehiculo = c!=null?c.getIdSistema():-1;
 
-        long idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,AppDatabase.getDateTime(),null,kilometrajeInicio,null,1);
+        idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,AppDatabase.getDateTime(),null,kilometrajeInicio,null,1);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+
 
         inicioRuta();
 
         //notificar inicia ruta al servidor...
-        registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro);
-        registroInicioRuta.setOnIniciaRutaListener(new UserRegistrarInicioRutaTask.OnIniciaRutaListener() {
-            @Override
-            public void onSuccessful() {
-                DialogInicioRuta.this.dismiss();
-            }
 
-            @Override
-            public void onFailure() {
-                DialogInicioRuta.this.dismiss();
-            }
-        });
-        registroInicioRuta.execute();
     }
 
     private void inicioRuta(){

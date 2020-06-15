@@ -21,6 +21,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
@@ -233,8 +234,17 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
 
         }
 
-        ManifiestoDetalleEntity manifiestoDetalle = MyApp.getDBO().manifiestoDetalleDao().fetchPesoManifiesto(idManifiesto);
-        txtPesoRecolectado.setText(String.valueOf(manifiestoDetalle.getCantidadBulto()));
+double pesoT=0;
+        List<ManifiestoDetallePesosEntity> bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiesto(idManifiesto);
+        if(bultos.size()>0){
+            for (ManifiestoDetallePesosEntity p:bultos){
+               pesoT= p.getValor();
+
+            }
+
+        }
+
+        txtPesoRecolectado.setText(String.valueOf(pesoT));
     }
 
     public void setMakePhoto(Integer code) {

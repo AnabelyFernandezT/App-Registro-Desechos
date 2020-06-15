@@ -27,6 +27,9 @@ public abstract class ManifiestoDetallePesosDao {
     @Query("select * from tb_manifiesto_detalle_pesos where idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract List<ManifiestoDetallePesosEntity> fecthConsultarBultosManifiestoDet(Integer idManifiestoDetalle);
 
+    @Query("select * from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiestoDetalle")
+    public abstract List<ManifiestoDetallePesosEntity> fecthConsultarBultosManifiesto(Integer idManifiestoDetalle);
+
     @Query("delete from tb_manifiesto_detalle_pesos")
     public abstract void deleteTableValores();
 

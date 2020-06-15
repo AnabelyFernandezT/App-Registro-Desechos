@@ -56,6 +56,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
                         MyApp.getDBO().rutaInicioFinDao().actualizarInicioFinRutaToSincronizado(
                                 idRegistro.intValue(),
                                 Integer.parseInt(response.body().getMensaje()));
+
                         progressHide();
                         if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onSuccessful();
                     }else{
@@ -70,6 +71,9 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
                     if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onFailure();
                 }
             });
+        }else {
+            message("Usuario no asociado con Seguridad");
+            progressHide();
         }
     }
 

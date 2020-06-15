@@ -66,6 +66,9 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
                     if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onFailure();
                 }
             });
+        }else {
+            message("Usuario no asociado con Seguridad");
+            progressHide();
         }
     }
 
