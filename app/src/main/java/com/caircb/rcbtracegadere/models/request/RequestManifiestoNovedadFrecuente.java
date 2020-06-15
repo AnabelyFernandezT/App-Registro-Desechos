@@ -5,10 +5,12 @@ import java.util.List;
 public class RequestManifiestoNovedadFrecuente {
     private Integer idCatalogo;
     private List<RequestNovedadFoto> fotos;
+    private String url;
 
-    public RequestManifiestoNovedadFrecuente(Integer idCatalogo, List<RequestNovedadFoto> fotos) {
+    public RequestManifiestoNovedadFrecuente(Integer idCatalogo, List<RequestNovedadFoto> fotos, String url) {
         this.idCatalogo = idCatalogo;
         this.fotos = fotos;
+        this.url=url;
     }
 
     public Integer getIdCatalogo() {
@@ -25,5 +27,13 @@ public class RequestManifiestoNovedadFrecuente {
 
     public void setFotos(List<RequestNovedadFoto> fotos) {
         this.fotos = fotos;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

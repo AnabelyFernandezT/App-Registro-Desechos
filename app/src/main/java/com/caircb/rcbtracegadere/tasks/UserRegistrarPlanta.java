@@ -32,6 +32,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     ManifiestoEntity model;
     UserUploadFileTask userUploadFileTask;
     DtoFile firmaPlanta;
+    DtoFile novedadFrecuente;
     String path ="planta";
     private List<DtoFile> listaFileDefauld;
 
@@ -129,7 +130,8 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
             for (Integer id:novedad) {
                 resp.add(new RequestManifiestoNovedadFrecuente(
                         id,
-                        createFotografia(id,1)
+                        createFotografia(id,1),
+                        path+"/"+"notivonorecoleccion"
                 ));
             }
         }

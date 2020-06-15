@@ -50,6 +50,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     DtoFile firmaTransportista;
     DtoFile firmaTecnicoGenerador;
     DtoFile audioNovedadCliente;
+    DtoFile novedadFrecuente;
+    DtoFile motivoRecoleccion;
     Location location;
     MyPrint print;
 
@@ -201,7 +203,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             for (Integer id:novedad) {
                 resp.add(new RequestManifiestoNovedadFrecuente(
                         id,
-                        createFotografia(id,1)
+                        createFotografia(id,1),
+                        path+"/"+"novedadfrecuente"
                 ));
             }
         }
@@ -215,7 +218,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             for (Integer id:novedad) {
                 resp.add(new RequestManifiestoNovedadNoRecoleccion(
                         id,
-                        createFotografia(id,2)
+                        createFotografia(id,2),
+                        path+"/"+"notivonorecoleccion"
                 ));
             }
         }

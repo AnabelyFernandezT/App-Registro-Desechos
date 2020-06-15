@@ -4,6 +4,7 @@ public class RequestNovedadFoto {
     Integer codigo;
     String urlImagen;
 
+
     public Integer getCodigo() {
         return codigo;
     }
