@@ -23,6 +23,7 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
@@ -37,8 +38,9 @@ public class DialogInicioRuta extends MyDialog {
     LinearLayout btnIngresarApp, btnCancelarApp;
     Activity _activity;
     Spinner spinnerPlacas;
-
+    UserConsultarHojaRutaTask consultarHojaRutaTask;
     LinearLayout lnlIniciaRuta,lnlFinRuta;
+    TextView lblListaManifiestoAsignado, lblpickUpTransportista;
 
     String placa;
     long idRegistro;
@@ -85,7 +87,8 @@ public class DialogInicioRuta extends MyDialog {
     private void init(){
 
         listaPlacasDisponibles = new ArrayList<>();
-
+        lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignado);
+        lblpickUpTransportista = getActivity().findViewById(R.id.lblpickUpTransportista);
         txtKilometraje = (EditText)getView().findViewById(R.id.txtKilometraje);
         //txtKilometraje.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -230,7 +233,6 @@ public class DialogInicioRuta extends MyDialog {
                 DialogInicioRuta.this.dismiss();
             }
 
-
             @Override
             public void onFailure(int error) {
                 mensaje("error "+String.valueOf(error)+" al registrar inicio ruta en el servidor datos registrados en la base de datos local");
@@ -242,6 +244,24 @@ public class DialogInicioRuta extends MyDialog {
         inicioRuta();
 
     }
+    UserConsultarHojaRutaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaTask.TaskListener() {
+        @Override
+        public void onSuccessful() {
+            loadCantidadManifiestoAsignado();
+            loadCantidadManifiestoProcesado();
+        }
+    };
+    private void loadCantidadManifiestoAsignado(){
+        //dbHelper.open();
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas());
+        //dbHelper.close();
+    }
+
+    private void loadCantidadManifiestoProcesado(){
+        //dbHelper.open();
+        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
+        //dbHelper.close();
+    }
 
     private void inicioRuta(){
 
@@ -252,6 +272,8 @@ public class DialogInicioRuta extends MyDialog {
         btnDropOffTransportista.setEnabled(true);
         lnlIniciaRuta.setVisibility(View.GONE);
         lnlFinRuta.setVisibility(View.VISIBLE);
+        consultarHojaRutaTask = new UserConsultarHojaRutaTask(_activity,listenerHojaRuta);
+        consultarHojaRutaTask.execute();
 
     }
 

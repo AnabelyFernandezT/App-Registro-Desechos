@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Looper;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -96,11 +97,14 @@ public class MyPrint {
 
             } else {
                 //mensaje...
+                Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
                 disconnect("Impresora no encontrada");
 
             }
         }else {
+            Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
             disconnect("Impresora no encontrada");
+
         }
     }
 

@@ -80,6 +80,7 @@ public class MyAuthorization {
             cr.setUsImei(MySession.getIdDevice());
             cr.setUsChip(MySession.getIdChip());
             cr.setUsAppVersion(1);
+            MySession.setUsuarioNombre(user);
 
             progressDialog.show();
             WebService.seg().autentication(cr).enqueue(new Callback<DtoUserCredential>() {

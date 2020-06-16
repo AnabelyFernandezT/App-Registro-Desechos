@@ -31,6 +31,7 @@ import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItem;
+import com.caircb.rcbtracegadere.models.request.RequestCredentials;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
@@ -109,6 +110,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     public void initMenuLateral(){
+        RequestCredentials cr = new RequestCredentials();
+
         mDrawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerMenuItems = (ListView)findViewById(R.id.menu_items);
