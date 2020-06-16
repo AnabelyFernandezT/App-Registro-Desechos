@@ -275,39 +275,14 @@
                     android:layout_width="wrap_content"
                     android:textStyle="bold"
                     android:textColor="#fff"
-                    android:text="GENERADOR TECNICO"
+                    android:text="RESPONSABLE DE ENTREGA"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TECNICO IDENTIFICACION:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_weight="1"
-                android:maxLength="10"
-                android:id="@+id/txtIdentificacion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TECNICO RESPONSABLE:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TECNICO CORREO:"
+                android:text="CORREO PRINCIPAL:"
                 android:textStyle="bold" />
 
             <TextView
@@ -318,25 +293,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TECNICO TELEFONO:"
+                android:text="CORREO ALTERNO:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtCorreoAlterno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TELEFONO:"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtTelefono"
                 android:layout_width="match_parent"
                 android:inputType="number"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TECNICO CELULAR:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:inputType="number"
-                android:maxLength="10"
-                android:id="@+id/txtGenTecCelular"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
@@ -378,7 +352,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CORREO:"
+                android:text="CORREO ADICIONAL:"
                 android:textStyle="bold" />
 
             <EditText
@@ -389,7 +363,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TELEFONO:"
+                android:text="TELEFONO ADICIONAL:"
                 android:textStyle="bold" />
 
             <EditText

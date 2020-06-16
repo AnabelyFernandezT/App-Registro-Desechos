@@ -9,6 +9,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
@@ -26,7 +27,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
 
     public interface OnIniciaRutaListener {
         public void onSuccessful();
-        public void onFailure();
+        public void onFailure(int error);
     }
 
     private OnIniciaRutaListener mOnIniciaRutaListener;
@@ -46,7 +47,6 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
 
     private void  register(){
         progressShow("Sincronizando con el servidor el inicio de ruta");
-        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
         RequestIniciaRuta requestRutaIniciFin = createRequestInicio();
         if(requestRutaIniciFin!=null){
             WebService.api().putInicioFin(requestRutaIniciFin).enqueue(new Callback<DtoInfo>() {
@@ -61,14 +61,14 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
                         if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onSuccessful();
                     }else{
                         progressHide();
-                        if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onFailure();
+                        if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onFailure(response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
                     progressHide();
-                    if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onFailure();
+                    if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onFailure(1);
                 }
             });
         }else {
@@ -79,7 +79,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
 
     private RequestIniciaRuta createRequestInicio (){
         RequestIniciaRuta rq=null;
-        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
+        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         if (model!=null){
             rq =new RequestIniciaRuta();
             rq.setIdTransporteRecolector(model.getIdTransporteRecolector());

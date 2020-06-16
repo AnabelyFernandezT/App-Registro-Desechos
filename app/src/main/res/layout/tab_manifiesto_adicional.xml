@@ -119,6 +119,7 @@
                                     android:focusable="false"
                                     android:layout_weight="1"
                                     android:text="AD. FUNDA"
+                                    android:textColor="#000"
                                     android:layout_marginRight="5dp"
                                     android:gravity="center"
                                     android:layout_width="match_parent"
@@ -151,6 +152,7 @@
                                     android:layout_weight="1"
                                     android:layout_marginRight="5dp"
                                     android:text="AD. GUARDIAN"
+                                    android:textColor="#000"
                                     android:gravity="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"/>

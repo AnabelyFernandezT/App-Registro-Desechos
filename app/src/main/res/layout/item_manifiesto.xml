@@ -86,7 +86,7 @@
         android:background="@drawable/shape_card_border"
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="320dp"
         android:clickable="true"
         android:elevation="4dp"
         android:focusable="true"
@@ -192,13 +192,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="CANTON"
+                    android:text="CIUDAD"
                     style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
                     />
 
                 <TextView
-                    android:id="@+id/itm_Canton"
+                    android:id="@+id/itm_Ciudad"
                     android:layout_width="match_parent"
                     android:textColor="#737373"
                     android:layout_height="wrap_content"

@@ -59,6 +59,8 @@ public class ManifiestoEntity {
 
     private String tecnicoCorreo;
 
+    private String correoAlterno;
+
     //private String tecnicoFirmaImg;
 
     //private String tecnicoFirmaUrl;
@@ -357,6 +359,14 @@ public class ManifiestoEntity {
 
     public void setFechaRecepcionPlanta(Date fechaRecepcionPlanta) {
         this.fechaRecepcionPlanta = fechaRecepcionPlanta;
+    }
+
+    public String getCorreoAlterno() {
+        return correoAlterno;
+    }
+
+    public void setCorreoAlterno(String correoAlterno) {
+        this.correoAlterno = correoAlterno;
     }
 }
 

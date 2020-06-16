@@ -40,8 +40,8 @@ public class TabManifiestoGeneral extends LinearLayout {
     private String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
-            txtClienteCanton,txtClienteParroquia,txtTransReco,txtTransRecoAux
-            ,txtGenTecIdentificacion,txtGenTecNombre,txtGenTecCorreo,txtGenTecTelefono,txtGenTecCelular,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
+            txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno
+            ,txtGenTecCorreo,txtGenTecTelefono,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
 
     private EditText txtNumManifiestoCliente,
             txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
@@ -75,14 +75,11 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtClienteDireccion= this.findViewById(R.id.txtClienteDireccion);
         txtClienteProvincia= this.findViewById(R.id.txtClienteProvincia);
         txtClienteCanton= this.findViewById(R.id.txtClienteCanton);
-        txtClienteParroquia= this.findViewById(R.id.txtClienteParroquia);
         txtTransReco= this.findViewById(R.id.txtTransReco);
         txtTransRecoAux= this.findViewById(R.id.txtTransRecoAux);
+        txtCorreoAlterno = this.findViewById(R.id.txtCorreoAlterno);
 
-        txtGenTecCelular= this.findViewById(R.id.txtGenTecCelular);
         txtFirmaMensaje= this.findViewById(R.id.txtFirmaMensaje);
-        txtGenTecIdentificacion= this.findViewById(R.id.txtGenTecIdentificacion);
-        txtGenTecNombre= this.findViewById(R.id.txtGenTecNombre);
         txtGenTecCorreo= this.findViewById(R.id.txtGenTecCorreo);
         txtGenTecTelefono= this.findViewById(R.id.txtGenTecTelefono);
         btnAgregarFirma= this.findViewById(R.id.btnAgregarFirma);
@@ -323,20 +320,17 @@ public class TabManifiestoGeneral extends LinearLayout {
             //txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
             txtClienteDireccion.setText(manifiesto.getDireccionCliente());
             txtClienteProvincia.setText(manifiesto.getProvincia());
-            txtClienteParroquia.setText(manifiesto.getParroquia());
             txtClienteCanton.setText(manifiesto.getCanton());
+            txtCorreoAlterno.setText(manifiesto.getCorreoAlterno());
 
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
 
-            txtGenTecIdentificacion.setText(manifiesto.getTecnicoIdentificacion());
-            txtGenTecNombre.setText(manifiesto.getTecnicoResponsable());
             txtGenTecCorreo.setText(manifiesto.getTecnicoCorreo());
             txtGenTecTelefono.setText(manifiesto.getTecnicoTelefono());
-            txtGenTecCelular.setText(manifiesto.getTecnicoCelular());
 
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
-            txtempresaTransportista.setText(manifiesto.getEmpresaTransportista());
+            txtempresaTransportista.setText("Gadere");
 
 
 
@@ -410,7 +404,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     }
 
     public boolean validaExisteDatosResponsableEntrega(){
-        return txtGenTecNombre.getText().toString().length()==0?
+        return txtRespEntregaIdentificacion.getText().toString().length()==0?
                 (txtRespEntregaIdentificacion.getText().length()>0 && txtRespEntregaNombre.getText().toString().length()>0)
                 :true;
     }

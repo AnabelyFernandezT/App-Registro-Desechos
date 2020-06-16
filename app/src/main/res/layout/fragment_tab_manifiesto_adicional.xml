@@ -55,6 +55,7 @@
                                 android:layout_height="wrap_content">
                                 <TextView
                                     android:text="Funda 55 x 50"
+                                    android:textColor="#000"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -80,6 +81,7 @@
                                 android:layout_height="wrap_content">
                                 <TextView
                                     android:text="Funda PC-1"
+                                    android:textColor="#000"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -110,6 +112,7 @@
                                 android:layout_height="wrap_content">
                                 <TextView
                                     android:text="Funda 63 x 76"
+                                    android:textColor="#000"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -135,6 +138,7 @@
                                 android:layout_height="wrap_content">
                                 <TextView
                                     android:text="Funda PC-2"
+                                    android:textColor="#000"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>

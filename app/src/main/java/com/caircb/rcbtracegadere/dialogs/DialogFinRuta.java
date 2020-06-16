@@ -103,21 +103,7 @@ public class DialogFinRuta extends MyDialog {
                         return;
                     }else{
 
-                        registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
-                        registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
-                            @Override
-                            public void onSuccessful() {
-                                guardarDatos();
-                                DialogFinRuta.this.dismiss();
-                            }
-
-                            @Override
-                            public void onFailure() {
-                                DialogFinRuta.this.dismiss();
-                            }
-                        });
-
-                        registroFinRuta.execute();
+                        guardarDatos();
                     }
 
                 }
@@ -134,6 +120,21 @@ public class DialogFinRuta extends MyDialog {
 
         idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
+
+        registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
+        registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
+            @Override
+            public void onSuccessful() {
+                DialogFinRuta.this.dismiss();
+            }
+
+            @Override
+            public void onFailure() {
+                DialogFinRuta.this.dismiss();
+            }
+        });
+
+        registroFinRuta.execute();
 
         finRuta();
 

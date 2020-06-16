@@ -37,10 +37,10 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         final ItemManifiesto it = manifiestosList.get(position);
         holder.txtNumManifiesto.setText(it.getNumero());
         holder.txtCliente.setText(it.getCliente());
-        holder.txtSucursal.setText("");
+        holder.txtSucursal.setText(it.getProvincia());
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
-        holder.txtCanton.setText(it.getCanton());
+        holder.txtCiudad.setText(it.getCanton());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         TextView txtSucursal;
         TextView txtDireccion;
         TextView txtProvincia;
-        TextView txtCanton;
+        TextView txtCiudad;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -70,7 +70,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             txtSucursal = itemView.findViewById(R.id.itm_sucursal);
             txtDireccion = itemView.findViewById(R.id.itm_Direccion);
             txtProvincia = itemView.findViewById(R.id.itm_Provincia);
-            txtCanton = itemView.findViewById(R.id.itm_Canton);
+            txtCiudad = itemView.findViewById(R.id.itm_Ciudad);
         }
     }
 }

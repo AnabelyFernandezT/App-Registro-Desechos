@@ -152,6 +152,7 @@ public abstract class ManifiestoDao {
             entity.setTecnicoTelefono(manifiesto.getTecnicoTelefono());
             entity.setTecnicoCelular(manifiesto.getTecnicoCelular());
             entity.setTecnicoCorreo(manifiesto.getTecnicoCorreo());
+            entity.setCorreoAlterno(manifiesto.getCorreoAlterno());
             // resolutivoInstalacion
             entity.setNumeroGeneradorDesecho(manifiesto.getNumeroGeneradorDesecho());
             entity.setLicenciaAmbiental(manifiesto.getNumLicenciaAmbiental());
@@ -159,6 +160,7 @@ public abstract class ManifiestoDao {
             entity.setIdentificacionCliente(manifiesto.getIdentificacionCliente());
             entity.setNombreCliente(manifiesto.getRazonSocial());
             entity.setDireccionCliente(manifiesto.getDireccion());
+
             entity.setProvincia(manifiesto.getProvincia());
             entity.setCanton(manifiesto.getCanton());
             entity.setParroquia(manifiesto.getParroquia());
@@ -201,6 +203,7 @@ public abstract class ManifiestoDao {
             entity.setTecnicoTelefono(manifiesto.getTecnicoTelefono());
             entity.setTecnicoCelular(manifiesto.getTecnicoCelular());
             entity.setTecnicoCorreo(manifiesto.getTecnicoCorreo());
+            entity.setCorreoAlterno(manifiesto.getCorreoAlterno());
             // resolutivoInstalacion
             entity.setNumeroGeneradorDesecho(manifiesto.getNumeroGeneradorDesecho());
             entity.setLicenciaAmbiental(manifiesto.getNumLicenciaAmbiental());
@@ -235,6 +238,7 @@ public abstract class ManifiestoDao {
             entity.setEstado(manifiesto.getEstadoApp());
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
+            entity.setCorreoAlterno(manifiesto.getCorreoAlterno());
 
             entity.setPeso(manifiesto.getPeso());
             entity.setSincronizado(false);

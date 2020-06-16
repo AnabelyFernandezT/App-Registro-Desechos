@@ -11,15 +11,20 @@ public class DtoManifiesto {
     private String tecnicoTelefono;
     private String tecnicoCelular;
     private String tecnicoCorreo;
+    private String correoAlterno;
     private String resolutivoInstalacion;
     private String numeroGeneradorDesecho;
     private String numLicenciaAmbiental;
     private Integer idCliente;
     private String identificacionCliente;
     private String razonSocial;
+    //
     private String direccion;
+//proviencia = sucursal
     private String provincia;
+
     private String canton;
+
     private String parroquia;
     private String telefono;
     private Integer idLugar;
@@ -399,5 +404,13 @@ public class DtoManifiesto {
 
     public void setFirmaImg(String firmaImg) {
         this.firmaImg = firmaImg;
+    }
+
+    public String getCorreoAlterno() {
+        return correoAlterno;
+    }
+
+    public void setCorreoAlterno(String correoAlterno) {
+        this.correoAlterno = correoAlterno;
     }
 }

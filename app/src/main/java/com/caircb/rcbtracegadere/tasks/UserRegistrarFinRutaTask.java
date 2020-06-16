@@ -8,6 +8,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
@@ -74,7 +75,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
 
     private RequestFinRuta createRequestFin(){
         RequestFinRuta rq=null;
-        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
+        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         if (model!=null){
             rq =new RequestFinRuta();
             rq.setId(model.getIdRutaInicioFin());
