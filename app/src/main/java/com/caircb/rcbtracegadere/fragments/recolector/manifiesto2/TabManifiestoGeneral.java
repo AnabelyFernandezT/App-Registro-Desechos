@@ -330,7 +330,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtGenTecTelefono.setText(manifiesto.getTecnicoTelefono());
 
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
-            txtempresaTransportista.setText("Gadere");
+            txtempresaTransportista.setText("GADERE");
 
 
 

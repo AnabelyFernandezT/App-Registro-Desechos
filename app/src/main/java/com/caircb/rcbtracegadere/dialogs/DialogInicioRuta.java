@@ -111,7 +111,7 @@ public class DialogInicioRuta extends MyDialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
-                    listaPlacasDisponibles.get(position);
+                    listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
                 }
 

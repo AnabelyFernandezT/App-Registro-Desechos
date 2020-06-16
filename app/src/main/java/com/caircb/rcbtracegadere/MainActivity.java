@@ -205,13 +205,43 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         }
     }
 
+    private void openConfigurar(){
+        final Dialog mdialog = new Dialog(this);
+        final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
+        myListOfItems.add(new MenuItem("Impresora"));
+        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this,myListOfItems);
+        View view = getLayoutInflater().inflate(R.layout.dialog_main, null);
+        mDialogMenuItems =(ListView) view.findViewById(R.id.custom_list);
+        mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
+        mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MenuItem item= myListOfItems.get(position);
+                if(!item.isEnabled()){
+                     if(item.getNombre().equals("Impresora")){
+                        if(mdialog!=null){
+                            mdialog.dismiss();
+                            openMenuOpcion();
+                            NavegationFragment(ImpresoraConfigurarFragment.create());
+                        }
+                    }
+                }
+            }
+        });
+
+
+        mdialog.setTitle("Configuraciones");
+        mdialog.setContentView(view);
+        mdialog.show();
+    }
+
     private void openActualizar(){
 
         final Dialog mdialog = new Dialog(this);
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
         myListOfItems.add(new MenuItem("Aplicacion"));
-        myListOfItems.add(new MenuItem("Catalogos"));
-        myListOfItems.add(new MenuItem("Impresora"));
+        //myListOfItems.add(new MenuItem("Catalogos"));
+        //myListOfItems.add(new MenuItem("Impresora"));
 
         dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this,myListOfItems);
         View view = getLayoutInflater().inflate(R.layout.dialog_main, null);
@@ -222,21 +252,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MenuItem item= myListOfItems.get(position);
                 if(!item.isEnabled()){
-                    if(item.getNombre().equals("Catalogos")){
-                        if(mdialog!=null){
-                            mdialog.dismiss();
-                            openMenuOpcion();
-                            openSincronizaCatalogos();
-                        }
-                    }
-                    else if(item.getNombre().equals("Impresora")){
-                        if(mdialog!=null){
-                            mdialog.dismiss();
-                            openMenuOpcion();
-                            NavegationFragment(ImpresoraConfigurarFragment.create());
-                        }
-                    }
-                    else if (item.getNombre().equals("Aplicacion")){
+                    if (item.getNombre().equals("Aplicacion")){
                         if(mdialog!=null){
                             mdialog.dismiss();
                             onUpdateApp();
@@ -366,6 +382,9 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 case "Modulos":
                     openModulos();
                     break;
+                case "Configurar":
+                    openConfigurar();
+                    break;
             }
         }
     }
@@ -412,7 +431,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 }
             }
         });
-        mdialog.setTitle("MODULOS");
+        mdialog.setTitle("Modulos");
         mdialog.setContentView(view);
         mdialog.show();
     }
