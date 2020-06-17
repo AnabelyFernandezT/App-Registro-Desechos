@@ -374,9 +374,9 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
         return !firmaTransportista;
     }
 
-    public boolean validaExisteFirmaTecnicoGenerador(){
-        return !firmaTecnicoGenerador;
-    }
+    //public boolean validaExisteFirmaTecnicoGenerador(){
+       // return !firmaTecnicoGenerador;
+   // }
 /*
     public boolean validaExisteDatosResponsableEntrega(){
         return txtRespEntregaIdentificacion.getText().toString().length()==0?

@@ -59,6 +59,8 @@ public class MyManifiesto {
     Bitmap imagenUnCheck;
     Bitmap firma;
     Bitmap firmaTransportista;
+    ItemFile fileFirmaTecnico;
+
 
     public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete){
         this.context = context;
@@ -76,11 +78,11 @@ public class MyManifiesto {
 
 
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-            ItemFile fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
+            fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTecnico!=null) firma = Utils.StringToBitMap(fileFirmaTecnico.getFile());
 
             ItemFile fileFirmaTransporte = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
-            if(fileFirmaTecnico!=null) firmaTransportista = Utils.StringToBitMap(fileFirmaTransporte.getFile());
+            if(fileFirmaTransporte!=null) firmaTransportista = Utils.StringToBitMap(fileFirmaTransporte.getFile());
 
 
             if(manifiesto!=null) createReport();
@@ -317,10 +319,7 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 9
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        Image jpg = Image.getInstance(stream.toByteArray());
-        jpg.scaleToFit(40,150);
+
 
         PdfPTable tb9 = new PdfPTable(3);
         Paragraph para2 = new Paragraph();
@@ -347,9 +346,18 @@ public class MyManifiesto {
         tb9.addCell(cell);
 
         //tb9.addCell(new PdfPCell(new Phrase(manifiesto.getTecnicoTelefono(),f6)));
+        if(fileFirmaTecnico!=null){
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Image jpg = Image.getInstance(stream.toByteArray());
+            jpg.scaleToFit(40,150);
+            cell = new PdfPCell(createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER));
+        }else {
+            cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
+        }
 
 
-        cell = new PdfPCell(createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER));
+
 
         tb9.addCell(cell);
 
@@ -689,12 +697,13 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 13
-        PdfPTable tb13 = new PdfPTable(new float[] { 50,20,5,5,5});
+        PdfPTable tb13 = new PdfPTable(new float[] { 50,20,30});
         tb13.addCell (new PdfPCell(new Phrase("NOMBRE: \n\n"+"CARGO: " ,f6)));
-        tb13.addCell (new PdfPCell(new Phrase("FIRMA: \n\n"+"FECHA DE RECEPCIÓN: " ,f6)));
-        tb13.addCell(new PdfPCell(new Phrase("\n"+ "_______\n"+"Dia",f6)));
-        tb13.addCell(new PdfPCell(new Phrase("\n"+ "_______\n"+"Mes",f6)));
-        tb13.addCell(new PdfPCell(new Phrase("\n"+ "_______\n"+"Año",f6)));
+        tb13.addCell (new PdfPCell(new Phrase("FECHA DE RECEPCIÓN: \n"+ "\n"+ "_____________________\n"+"Dia"+
+                "      Mes"+
+                "           Año",f6)));
+
+        tb13.addCell(new PdfPCell(new Phrase("FIRMA",f6)));
         tb13.completeRow();
 
         _cell = new PdfPCell(tb13);

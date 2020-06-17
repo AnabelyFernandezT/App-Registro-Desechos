@@ -108,8 +108,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     private void register(){
         RequestManifiesto request = createRequestManifiesto();
         if(request!=null){
-           // Gson g = new Gson();
-           // String f = g.toJson(request);
+            Gson g = new Gson();
+            String f = g.toJson(request);
 
             WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
                 @Override
@@ -118,7 +118,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
                             imprimirEtiquetas();
-                            MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                            //MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
 
@@ -129,6 +129,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
                     }else{
                         progressHide();
+                        message("No existe acceso al servidor");
                     }
                 }
 
@@ -260,6 +261,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 @Override
                 public void onSuccessful() {
                     if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                    MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                 }
 
                 @Override
@@ -270,6 +272,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             });
             print.pinter(idAppManifiesto);
         }catch (Exception e){
+            message("No hay conexion con la impresora");
             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
     }

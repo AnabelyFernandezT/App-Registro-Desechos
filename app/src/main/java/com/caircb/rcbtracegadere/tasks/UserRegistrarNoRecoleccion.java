@@ -124,7 +124,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
                         }
 
                     }else{
-                        message(response.body().getMensaje());
+                        message("No existe acceso al servidor"+response.body().getMensaje());
                         progressHide();
                     }
                 }
@@ -273,5 +273,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
 
     public void setOnRegisterListener(@NonNull OnRegisterListener l){
         mOnRegisterListener =l;
+        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+
     }
 }

@@ -138,43 +138,29 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                     messageBox("Se requiere de la firma del transportista");
                     return;
                 }
-/*                if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
+ /*               if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
                     messageBox("Se require que ingrese los datos del tecnico responsable de la entrega de los residuos recolectados");
                     return;
                 }*/
-                if(tabManifiestoGeneral.validaExisteFirmaTecnicoGenerador() && !aplicaNoRecoleccion){
+               /* if(tabManifiestoGeneral.validaExisteFirmaTecnicoGenerador() && !aplicaNoRecoleccion){
                     messageBox("Se requiere de la firma del tecnico generador");
                     return;
                 }
-
+**/
                 if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
                     messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }
+                setNavegate(VistaPreliminarNoRecolectadoFragment.newInstance(
+                        idAppManifiesto,
+                        tabManifiestoGeneral.getTipoPaquete()
+                ));
 
-                save();
 
                 break;
         }
     }
 
-    private void save (){
-        MyApp.getDBO().manifiestoDao().updateManifiestoFechaRecoleccion(idAppManifiesto,new Date());
-        UserRegistrarNoRecoleccion noRecoleccion = new UserRegistrarNoRecoleccion(getActivity(),idAppManifiesto,getLocation());
-        noRecoleccion.setOnRegisterListener(new UserRegistrarNoRecoleccion.OnRegisterListener() {
-            @Override
-            public void onSuccessful() {
-                setNavegate(HojaRutaAsignadaFragment.newInstance());
-            }
-
-            @Override
-            public void onFail() {
-                messageBox("No se guardo en el servidor");
-
-            }
-        });
-        noRecoleccion.execute();
-    }
 
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
