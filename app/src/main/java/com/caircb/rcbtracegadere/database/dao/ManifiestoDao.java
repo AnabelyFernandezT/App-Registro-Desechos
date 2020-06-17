@@ -131,6 +131,9 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set estado=2, sincronizado=1 where idAppManifiesto=:idAppManifiesto ")
     public abstract void updateManifiestoToRecolectado(Integer idAppManifiesto);
 
+    @Query("update tb_manifiestos set estado=3, sincronizado=1 where idAppManifiesto=:idAppManifiesto ")
+    public abstract void updateManifiestoToNoRecolectado(Integer idAppManifiesto);
+
     @Query("update tb_manifiestos set estado=4, sincronizado=1 where idAppManifiesto=:idAppManifiesto ")
     public abstract void updateManifiestoToRecolectadoPlanta(Integer idAppManifiesto);
 

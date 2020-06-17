@@ -1,26 +1,37 @@
 package com.caircb.rcbtracegadere.fragments.recolector;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +53,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
     private SearchView searchView;
+    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
+    private ListView mDrawerMenuItems, mDialogMenuItems;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -121,7 +134,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        menu(position);
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -131,6 +145,31 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
         //recyclerView.addItemDecoration(divider);
+    }
+
+    private void  menu(final int position){
+        final CharSequence[] options = {"Iniciar Recoleccion", "Ingresar Motivo de no Recoleccion", "Cancelar"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Iniciar Recoleccion"))
+                {
+                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                }
+                else if (options[item].equals("Ingresar Motivo de no Recoleccion"))
+                {
+                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                }
+                else if (options[item].equals("Cancelar")) {
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        builder.show();
     }
 
     @Override

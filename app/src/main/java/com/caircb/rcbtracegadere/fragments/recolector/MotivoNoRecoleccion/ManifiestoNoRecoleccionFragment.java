@@ -1,44 +1,44 @@
-package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
+package com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
-import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoAdicional;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoGeneral;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
-import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
-import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarNoRecoleccion;
 
-import java.util.List;
+import java.util.Date;
 
 
-public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,View.OnClickListener {
+public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCameraListener,View.OnClickListener {
 
     private static final String ARG_PARAM1 = "manifiestoID";
 
     LinearLayout btnManifiestoCancel, btnManifiestoNext;
 
-    TabManifiestoGeneral tabManifiestoGeneral;
-    TabManifiestoDetalle tabManifiestoDetalle;
-    TabManifiestoAdicional tabManifiestoAdicional;
+    TabManifiestoGeneralNoRecoleccion tabManifiestoGeneral;
+    TabManifiestoAdicionalNoRecoleccion tabManifiestoAdicional;
 
     Integer idAppManifiesto;
 
 
-    public Manifiesto2Fragment() {
+    public ManifiestoNoRecoleccionFragment() {
     }
 
-    public static Manifiesto2Fragment newInstance(Integer manifiestoID) {
-        Manifiesto2Fragment f= new Manifiesto2Fragment();
+    public static ManifiestoNoRecoleccionFragment newInstance(Integer manifiestoID) {
+        ManifiestoNoRecoleccionFragment f= new ManifiestoNoRecoleccionFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_PARAM1,manifiestoID);
         f.setArguments(b);
@@ -89,15 +89,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         spec.setIndicator("GENERAL");
         tabs.addTab(spec);
 
-        spec=tabs.newTabSpec("DETALLE");
-        spec.setContent(new TabHost.TabContentFactory() {
-            public View createTabContent(String tag) {
-                return tabManifiestoDetalle;
-            }
-        });
-        spec.setIndicator("DETALLE");
-        tabs.addTab(spec);
-
         spec=tabs.newTabSpec("ADICIONALES");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
@@ -112,7 +103,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
             @Override
             public void onTabChanged(String s) {
                 if(s.equals("ADICIONALES")){
-                    tabManifiestoAdicional.reloadDataPaquetes();
+
                 }
             }
         });
@@ -120,14 +111,9 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
     private void inicializeTab(){
 
-        tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto);
+        tabManifiestoGeneral = new TabManifiestoGeneralNoRecoleccion(getActivity(),idAppManifiesto);
 
-        tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),
-                idAppManifiesto,
-                tabManifiestoGeneral.getTipoPaquete(),
-                tabManifiestoGeneral.getNumeroManifiesto());
-
-        tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
+        tabManifiestoAdicional = new TabManifiestoAdicionalNoRecoleccion(getActivity(),
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
                 tabManifiestoGeneral.getTiempoAudio());
@@ -152,38 +138,43 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     messageBox("Se requiere de la firma del transportista");
                     return;
                 }
-                if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
+/*                if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
                     messageBox("Se require que ingrese los datos del tecnico responsable de la entrega de los residuos recolectados");
                     return;
-                }
+                }*/
                 if(tabManifiestoGeneral.validaExisteFirmaTecnicoGenerador() && !aplicaNoRecoleccion){
                     messageBox("Se requiere de la firma del tecnico generador");
                     return;
                 }
-                //tab detalle...
-                if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados() && !aplicaNoRecoleccion) {
-                    messageBox("Se requiere que registre al menos un item como recolectado");
-                    return;
-                }
-                //tab de adicionales...
-                if(tabManifiestoAdicional.validaNovedadesFrecuentesPendienteFotos()){
-                    messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
-                    return;
-                }
-               /* if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
+
+                if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
                     messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
-                }*/
+                }
 
-                setNavegate(VistaPreliminarFragment.newInstance(
-                        idAppManifiesto,
-                        tabManifiestoGeneral.getTipoPaquete()
-                ));
+                save();
 
                 break;
         }
     }
 
+    private void save (){
+        MyApp.getDBO().manifiestoDao().updateManifiestoFechaRecoleccion(idAppManifiesto,new Date());
+        UserRegistrarNoRecoleccion noRecoleccion = new UserRegistrarNoRecoleccion(getActivity(),idAppManifiesto,getLocation());
+        noRecoleccion.setOnRegisterListener(new UserRegistrarNoRecoleccion.OnRegisterListener() {
+            @Override
+            public void onSuccessful() {
+                setNavegate(HojaRutaAsignadaFragment.newInstance());
+            }
+
+            @Override
+            public void onFail() {
+                messageBox("No se guardo en el servidor");
+
+            }
+        });
+        noRecoleccion.execute();
+    }
 
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {

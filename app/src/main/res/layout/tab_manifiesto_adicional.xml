@@ -300,7 +300,7 @@
             </LinearLayout>
 
             <!-- MOTIVOS NO RECOLECCION-->
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -334,7 +334,7 @@
                         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
                 </RelativeLayout>
 
-            </LinearLayout>
+            </LinearLayout>-->
 
             <!-- NOVEDADES FRECUENTES-->
             <LinearLayout
