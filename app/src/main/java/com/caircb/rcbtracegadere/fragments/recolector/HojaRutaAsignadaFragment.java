@@ -148,22 +148,22 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     }
 
     private void  menu(final int position){
-        final CharSequence[] options = {"Iniciar Recoleccion", "Ingresar Motivo de no Recoleccion", "Cancelar"};
+        final CharSequence[] options = {"INICIAR RECOLECCION", "INGRESAR MOTIVO NO RECOLECCION", "CANCELAR"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Iniciar Recoleccion"))
+                if (options[item].equals("INICIAR RECOLECCION"))
                 {
                     setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                 }
-                else if (options[item].equals("Ingresar Motivo de no Recoleccion"))
+                else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {
                     setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                 }
-                else if (options[item].equals("Cancelar")) {
+                else if (options[item].equals("CANCELAR")) {
                     dialog.dismiss();
                 }
 
