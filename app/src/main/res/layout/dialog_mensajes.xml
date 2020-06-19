@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:padding="5dp">
 
-
     <LinearLayout
         android:id="@+id/fragment_list"
         android:layout_width="match_parent"
@@ -17,45 +16,26 @@
         android:gravity="center"
         android:orientation="vertical">
 
-
         <TextView
             android:textSize="20dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Placa:" />
-
-        <Spinner
-            android:id="@+id/lista_placas"
-            android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:spinnerMode="dialog"
-            android:gravity="center_vertical" />
-        <TextView
-            android:textSize="20dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kilometraje:" />
+            android:text="Mensaje:" />
         <EditText
-            android:id="@+id/txtKilometraje"
+            android:id="@+id/txtMensaje"
             android:layout_width="match_parent"
             android:layout_height="57dp"
-            android:hint="Ingrese el kilometraje"
+            android:hint="Ingrese el mensaje"
             android:maxLines="1"
             android:maxLength="7"
             android:textSize="22dp"
-            android:inputType="number|numberSigned"
             android:paddingRight="10dp"
             android:singleLine="true" />
     </LinearLayout>
 
 
-
-
-    <!--FOOTER-->
     <LinearLayout
         android:id="@+id/footer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +118,6 @@
         </LinearLayout>
 
 
-</LinearLayout>
-
+    </LinearLayout>
 
 </LinearLayout>

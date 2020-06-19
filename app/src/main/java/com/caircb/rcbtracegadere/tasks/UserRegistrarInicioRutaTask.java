@@ -13,6 +13,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -48,11 +49,14 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     private void  register(){
         progressShow("Sincronizando con el servidor el inicio de ruta");
         RequestIniciaRuta requestRutaIniciFin = createRequestInicio();
+        Gson g = new Gson();
+        String f = g.toJson(requestRutaIniciFin);
         if(requestRutaIniciFin!=null){
             WebService.api().putInicioFin(requestRutaIniciFin).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
+
                         MyApp.getDBO().rutaInicioFinDao().actualizarInicioFinRutaToSincronizado(
                                 idRegistro.intValue(),
                                 Integer.parseInt(response.body().getMensaje()));

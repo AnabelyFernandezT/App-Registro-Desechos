@@ -64,9 +64,9 @@
 
                 <ImageButton
                     android:id="@+id/btnNumManifiestoCliente"
-                    android:layout_width="60dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@mipmap/ic_buscar48" />
+                    android:src="@mipmap/articulo" />
             </LinearLayout>
 
             <TextView

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
+import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
@@ -406,6 +408,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             }
             jsonLugares=null;
             json=null;
+            myListOfItems.add(new MenuItem("MENSAJES"));
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -430,6 +433,11 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                                 openMenuOpcion();
                                 guardarLugar("PLANTA");
                         }
+                    }else if (item.getNombre().equals("MENSAJES")){
+                        if(mdialog!=null){
+                            mdialog.dismiss();
+                            mensajes();
+                        }
                     }
                 }
             }
@@ -439,6 +447,11 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         mdialog.show();
     }
 
+    private void mensajes(){
+        DialogMensajes dialogMensajes = new DialogMensajes(MainActivity.this);
+        dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogMensajes.show();
+    }
 
     @Override
     public void onBackPressed() {
