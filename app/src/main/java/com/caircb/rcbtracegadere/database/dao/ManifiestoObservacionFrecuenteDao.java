@@ -45,7 +45,7 @@ public abstract class ManifiestoObservacionFrecuenteDao {
 
     @Query("select c.idSistema as id, upper(c.codigo || '  ' || c.nombre) as catalogo," +
             "( select estadoChekRecepcion from tb_manifiestos_novedad_frecuente  nor where nor.idCatalogo=c.idsistema and nor.idAppManifiesto=:idManifiesto limit 1) as estadoChek, " +
-            "( select count(*) from tb_manifiestos_file ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=1) as numFotos" +
+            "( select count(*) from tb_manifiestos_file ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=3) as numFotos" +
             " from tb_catalogos c where tipo=1")
     public  abstract List<RowItemHojaRutaCatalogo> fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(Integer idManifiesto);
 

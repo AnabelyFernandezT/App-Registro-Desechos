@@ -252,12 +252,14 @@ public class MyAuthorization {
             credentials.setEmpresa(MySession.getIdEmpresa());
             credentials.setImei(MySession.getIdDevice());
             credentials.setUsuario(MySession.getIdUsuario());
+            credentials.setPerfil(MySession.getIdPerfil());
 
             WebService.seg().registrarSession(credentials).enqueue(new Callback<DtoUserTokenCredentials>() {
                 @Override
                 public void onResponse(Call<DtoUserTokenCredentials> call, Response<DtoUserTokenCredentials> response) {
                     if(response.isSuccessful()) {
                         MySession.setLogin(true);
+                        MySession.setId(response.body().getId());
                         MySession.setMenus(user.getListaEmpresas().get(0).getLugares().get(0).getMenus());
                         //mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
                         MySession.setLugares(user.getListaEmpresas().get(0).getLugares());

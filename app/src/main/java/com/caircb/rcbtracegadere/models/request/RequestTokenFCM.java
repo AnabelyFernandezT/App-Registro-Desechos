@@ -6,6 +6,7 @@ public class RequestTokenFCM {
     private Integer empresa;
     private String imei;
     private String credencial;
+    private Integer perfil;
 
     public RequestTokenFCM() {
     }
@@ -48,5 +49,13 @@ public class RequestTokenFCM {
 
     public void setCredencial(String credencial) {
         this.credencial = credencial;
+    }
+
+    public Integer getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Integer perfil) {
+        this.perfil = perfil;
     }
 }

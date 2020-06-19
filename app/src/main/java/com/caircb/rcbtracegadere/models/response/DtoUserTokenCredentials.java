@@ -4,7 +4,8 @@ public class DtoUserTokenCredentials {
     private boolean exito;
     private int idRegistro;
     private String mensaje;
-    private int secuencial;
+    private String id;
+    //private int secuencial;
 
     public boolean isExito() {
         return exito;
@@ -29,12 +30,20 @@ public class DtoUserTokenCredentials {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-
+/*
     public int getSecuencial() {
         return secuencial;
     }
 
     public void setSecuencial(int secuencial) {
         this.secuencial = secuencial;
+    }*/
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
