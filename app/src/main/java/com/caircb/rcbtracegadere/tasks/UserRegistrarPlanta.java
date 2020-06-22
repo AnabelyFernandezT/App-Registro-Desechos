@@ -17,8 +17,11 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestNovedadFoto;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,6 +38,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     DtoFile novedadFrecuente;
     String path ="planta";
     private List<DtoFile> listaFileDefauld;
+    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
 
 
     public interface OnRegisterListener {
@@ -55,12 +59,13 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     public void execute() {
         listaFileDefauld = new ArrayList<>();
 
+
         progressShow("registrando recoleccion...");
         model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         firmaPlanta =MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
         if(firmaPlanta!=null && !firmaPlanta.isSincronizado())listaFileDefauld.add(firmaPlanta);
-
-       /* userUploadFileTask= new UserUploadFileTask(getActivity(),path);
+        path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
+        userUploadFileTask= new UserUploadFileTask(getActivity(),path);
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
             @Override
             public void onSuccessful() {
@@ -72,22 +77,28 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
                 progressHide();
                 message(message);
             }
-        });*/
-       register();
-
+        });
+        userUploadFileTask.uploadRecoleccionPlanta(listaFileDefauld,idAppManifiesto);
 
     }
 
     private void register(){
-       RequestManifiestoPlanta request = createRequestManifiestoPlanta();
+       final RequestManifiestoPlanta request = createRequestManifiestoPlanta();
         if(request!=null){
+            Gson g = new Gson();
+            String f = g.toJson(request);
             WebService.api().registrarPlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if (response.isSuccessful()){
+                        if(response.body().getExito()){
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectadoPlanta(idAppManifiesto);
                             finalizar();
                             progressHide();
+                        }else {
+                            message(response.body().getMensaje());
+                        }
+
 
 
                     }else{
@@ -106,6 +117,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
             });
         }
     }
+    private String getPath() { return simpleDate.format(new Date());}
 
     private RequestManifiestoPlanta createRequestManifiestoPlanta(){
         RequestManifiestoPlanta rq = null;
@@ -125,13 +137,13 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente(){
         List<RequestManifiestoNovedadFrecuente> resp = new ArrayList<>();
-        List<Integer> novedad = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchConsultarNovedadFrecuente(idAppManifiesto);
+        List<Integer> novedad = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchConsultarNovedadFrecuentePlanta(idAppManifiesto);
         if(novedad.size()>0){
             for (Integer id:novedad) {
                 resp.add(new RequestManifiestoNovedadFrecuente(
                         id,
-                        createFotografia(id,1),
-                        path+"/"+"notivonorecoleccion"
+                        createFotografia(id,3),
+                        path+"/"+"novedadfrecuente"
                 ));
             }
         }
@@ -144,11 +156,10 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     private void finalizar(){
         if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-
-
     }
 
-    public void setOnRegisterListener(@NonNull UserRegistrarPlanta l){
+    public void setOnRegisterListener(@NonNull OnRegisterListener l){
+        mOnRegisterListener =l;
 
     }
 

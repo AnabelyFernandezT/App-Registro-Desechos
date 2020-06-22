@@ -21,6 +21,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.dialogs.DialogPlantaRecepcionManifiesto;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
@@ -34,17 +35,19 @@ import java.util.List;
  * Use the {@link HojaRutaAsignadaPlantaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCameraListener,View.OnClickListener {
+public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.OnClickListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
     RecyclerView recyclerView;
     ManifiestoAdapter recyclerviewAdapter;
-    DialogPlantaRecepcionManifiesto dialogOptionsManifiesto;
+    //DialogPlantaRecepcionManifiesto dialogOptionsManifiesto;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
     private SearchView searchView;
+
+    RecepcionPlantaFragment manifiestoPlantaFragment;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -149,21 +152,16 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements OnCame
     }
 
     private void  openModal(Integer idManifiesto){
-        Window window;
+        /*Window window;
         dialogOptionsManifiesto = new DialogPlantaRecepcionManifiesto(getActivity(),idManifiesto);
         dialogOptionsManifiesto.setCancelable(false);
         dialogOptionsManifiesto.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogOptionsManifiesto.show();
 
         window = dialogOptionsManifiesto.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);*/
 
-    @Override
-    public void onCameraResult(int requestCode, int resultCode, Intent data) {
-        if(dialogOptionsManifiesto!=null && ((requestCode>=101 && requestCode<=104) ||(requestCode>=301 && requestCode<=304)||(requestCode>=201 && requestCode<=204))){
-            dialogOptionsManifiesto.setMakePhoto(requestCode);
-        }
+        setNavegate(ManifiestoPlantaFragment.newInstance(idManifiesto));
     }
 
 }

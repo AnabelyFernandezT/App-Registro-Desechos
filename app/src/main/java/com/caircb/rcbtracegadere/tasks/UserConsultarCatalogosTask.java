@@ -33,10 +33,14 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
                     if(response.isSuccessful()) {
                         MyApp.getDBO().catalogoDao().saveOrUpdate(response.body(), catalogoID);
                     }
+                    else {
+                        message("No hay catalogos" + response);
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<List<DtoCatalogo>> call, Throwable t) {
+                    message(t +" No hay catalogos");
 
                 }
             });

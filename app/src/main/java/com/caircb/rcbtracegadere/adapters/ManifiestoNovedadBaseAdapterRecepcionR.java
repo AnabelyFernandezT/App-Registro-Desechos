@@ -134,7 +134,7 @@ public class ManifiestoNovedadBaseAdapterRecepcionR extends RecyclerView.Adapter
     public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
         mOnClickOpenFotografias = l;
     }
-    public void setOnClickReaload(@Nullable ManifiestoNovedadBaseAdapterRecepcionR.OnReloadAdater l){
+    public void setOnClickReaload(@Nullable OnReloadAdater l){
         mOnReloadAdaptador = l;
     }
 

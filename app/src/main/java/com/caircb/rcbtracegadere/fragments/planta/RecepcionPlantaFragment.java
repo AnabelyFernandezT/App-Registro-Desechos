@@ -1,9 +1,8 @@
-package com.caircb.rcbtracegadere.dialogs;
+package com.caircb.rcbtracegadere.fragments.planta;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -11,8 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,9 +19,10 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
-import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
@@ -32,12 +32,13 @@ import com.caircb.rcbtracegadere.utils.Utils;
 import java.util.Date;
 import java.util.List;
 
-public class DialogPlantaRecepcionManifiesto extends MyDialog {
+public class RecepcionPlantaFragment extends LinearLayout  {
+
 
     Activity _activity;
     ImageView imgFirmaPlanta;
     LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
-    EditText txtPeso;
+    EditText txtPeso,txtNovedad;
     TextView txtFirmaPlanta, txtPesoRecolectado;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
@@ -49,39 +50,39 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogBuilder builder;
-    
+    double pesoT=0;
+    private boolean firma = false;
 
-    UserRegistrarPlanta userRegistrarPlanta;
 
-    public DialogPlantaRecepcionManifiesto(@NonNull Context context, Integer idManifiesto){
-        super(context, R.layout.dialog_options_manifiesto);
-        this._activity = (Activity)context;
-        this.idManifiesto = idManifiesto;
-    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(getView());
-        init();
-        load();
-    }
 
-    private void init(){
-        recyclerViewLtsManifiestoObservaciones = getView().findViewById(R.id.LtsManifiestoObservaciones);
-        txtPeso = getView().findViewById(R.id.txtPeso);
-        btnGuardar = getView().findViewById(R.id.btnGuardar);
-        btnCancelar = getView().findViewById(R.id.btnCancelar);
+public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
+    super(context);
+    this.idManifiesto = idAppManifiesto;
+    View.inflate(context, R.layout.fragment_recoleccion_planta, this);
+    init();
+    load();
 
-        btnAgregarFirma = getView().findViewById(R.id.btnAgregarFirma);
-        imgFirmaPlanta = getView().findViewById(R.id.imgFirmaPlanta);
-        txtFirmaPlanta = getView().findViewById(R.id.txtFirmaPlanta);
-        txtPesoRecolectado = getView().findViewById(R.id.txtPesoRecolectado);
+}
+
+    private void init() {
+        recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
+        txtPeso = this.findViewById(R.id.txtPeso);
+        btnGuardar = this.findViewById(R.id.btnGuardar);
+        btnCancelar = this.findViewById(R.id.btnCancelar);
+
+        btnAgregarFirma = this.findViewById(R.id.btnAgregarFirma);
+        imgFirmaPlanta = this.findViewById(R.id.imgFirmaPlanta);
+        txtFirmaPlanta = this.findViewById(R.id.txtFirmaPlanta);
+        txtPesoRecolectado = this.findViewById(R.id.txtPesoRecolectado);
+
+        txtNovedad = this.findViewById(R.id.txtNovedad);
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(dialogFirma==null) {
-                    dialogFirma = new DialogFirma(getActivity());
+                    dialogFirma = new DialogFirma(getContext());
                     dialogFirma.setTitle("SU FIRMA");
                     dialogFirma.setCancelable(false);
                     dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
@@ -94,13 +95,13 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
                                 imgFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
-
-                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap),MyConstant.STATUS_RECEPCION_PLANTA);
+                                firma=true;
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
 
                             }else{
                                 txtFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setVisibility(View.GONE);
-
+                                firma=false;
                                 MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
                             }
                         }
@@ -117,39 +118,12 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
             }
         });
 
-
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
+        txtPeso.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-
-                if(validaNovedadesFrecuentesPendienteFotos()){
-                    messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
-                    return;
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    validarPesos();
                 }
-
-                if(txtPeso.getText().toString().equals("")){
-                    messageBox("Debe ingresar un peso!");
-                }else {
-                    if(firmaConfirmada!=null){
-                        String unicodeImg = Utils.encodeTobase64(firmaConfirmada);
-                        MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, unicodeImg, MyConstant.STATUS_RECEPCION_PLANTA);
-                        MyApp.getDBO().manifiestoDao().updateManifiestoFechaPlanta(idManifiesto,new Date());
-                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idManifiesto,Double.parseDouble(txtPeso.getText().toString()));
-                        userRegistrarPlanta.execute();
-                        dismiss();
-                        messageBox("Registrado correctamente!!");
-                    }else {
-                        messageBox("Debe ingresar una firma!");
-                    }
-                }
-
-            }
-        });
-
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
             }
         });
     }
@@ -196,7 +170,7 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {
                 if(dialogAgregarFotografias==null){
-                    dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(),idManifiesto,catalogoID, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION, MyConstant.STATUS_RECEPCION_PLANTA);
+                    dialogAgregarFotografias = new DialogAgregarFotografias(getContext(),idManifiesto,catalogoID, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION, MyConstant.STATUS_RECEPCION_PLANTA);
                     dialogAgregarFotografias.setCancelable(false);
                     dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
@@ -231,14 +205,15 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
             imgFirmaPlanta.setVisibility(View.VISIBLE);
             imgFirmaPlanta.setImageBitmap(imagen);
             firmaConfirmada = imagen;
+            firma=true;
 
         }
 
-double pesoT=0;
+
         List<ManifiestoDetallePesosEntity> bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiesto(idManifiesto);
         if(bultos.size()>0){
             for (ManifiestoDetallePesosEntity p:bultos){
-               pesoT= pesoT+ p.getValor();
+                pesoT= pesoT+ p.getValor();
 
             }
 
@@ -253,9 +228,42 @@ double pesoT=0;
         }
     }
     public boolean validaNovedadesFrecuentesPendienteFotos(){
-        return MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFoto(idManifiesto)>0;
+        return MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFotoPlanta(idManifiesto)>0;
     }
 
+    private void validarPesos(){
+    double validacion=(Double.parseDouble(txtPesoRecolectado.getText().toString())*0.03)+Double.parseDouble(txtPesoRecolectado.getText().toString());
+    double valorIngresado = Double.parseDouble(txtPeso.getText().toString());
+
+        if(valorIngresado>validacion){
+        //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
+        txtNovedad.setText("Peso ingresador mayor al peso Total");
+    }else{
+        //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
+        txtNovedad.setText("Peso ingresador menor al peso Total");
+    }
+
+    }
+
+    public boolean validaExisteFirma(){
+        return !firma;
+    }
+
+    private boolean validarPeso = false;
+    public boolean validaPeso(){
+        if(txtPeso.getText().toString().equals("")){
+            return validarPeso = true;
+        }else{
+            validarPeso = false;
+        }
+        return  validarPeso;
+    }
+
+
+    public double guardar(){
+        MyApp.getDBO().manifiestoDao().updateManifiestoFechaPlanta(idManifiesto,new Date());
+        return Double.parseDouble(txtPeso.getText().toString());
+    }
 
 
 

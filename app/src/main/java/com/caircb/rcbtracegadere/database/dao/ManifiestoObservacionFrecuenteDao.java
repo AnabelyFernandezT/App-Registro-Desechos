@@ -55,6 +55,12 @@ public abstract class ManifiestoObservacionFrecuenteDao {
             " where (select count(*) from tb_manifiestos_file ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=1)=0")
     public  abstract long existeNovedadFrecuentePendienteFoto(Integer idManifiesto);
 
+    @Query("select count(*) " +
+            " from tb_catalogos c" +
+            " inner join tb_manifiestos_novedad_frecuente mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=1 and estadoChekRecepcion=1" +
+            " where (select count(*) from tb_manifiestos_file ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=3)=0")
+    public  abstract long existeNovedadFrecuentePendienteFotoPlanta(Integer idManifiesto);
+
     @Query("select n._id as id, upper(c.nombre) as catalogo,estadoChek, 0 as numFotos from tb_manifiestos_novedad_frecuente n " +
             "inner join tb_catalogos c on n.idCatalogo=c.idSistema and n.idAppManifiesto=:idManifiesto")
     public  abstract List<RowItemHojaRutaCatalogo> fetchReportHojaRutaCatalogo(Integer idManifiesto);
@@ -62,6 +68,9 @@ public abstract class ManifiestoObservacionFrecuenteDao {
 
     @Query("select idCatalogo from tb_manifiestos_novedad_frecuente where idAppManifiesto=:idAppManifiesto and estadoChek=1")
     public abstract List<Integer> fetchConsultarNovedadFrecuente(Integer idAppManifiesto);
+
+    @Query("select idCatalogo from tb_manifiestos_novedad_frecuente where idAppManifiesto=:idAppManifiesto and estadoChekRecepcion=1")
+    public abstract List<Integer> fetchConsultarNovedadFrecuentePlanta(Integer idAppManifiesto);
 
     /*
     public Cursor fetchHojaRutaCatalogo(Integer idAppManifiesto) throws SQLException {

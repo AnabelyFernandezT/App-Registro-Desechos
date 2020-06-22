@@ -64,6 +64,22 @@ public class UserUploadFileTask {
         }
     }
 
+    public void uploadRecoleccionPlanta(
+            List<DtoFile> listaFileDefauld,
+            Integer idAppManifiesto
+    ){
+        try {
+            this.listaFileDefauld = listaFileDefauld;
+            //fotos novedades frecuente...
+            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION);
+
+
+            sendFileDefauld(0);
+        }catch (Exception e){
+            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+        }
+    }
+
     private void sendFileDefauld(Integer position){
         try {
             if (listaFileDefauld!=null && position < listaFileDefauld.size()) {
@@ -89,7 +105,7 @@ public class UserUploadFileTask {
     private void sendFileMotivoNoRecoleccion(Integer position){
         if(listaFotoMotivoNoRecoleccion!=null && position < listaFotoMotivoNoRecoleccion.size()){
             file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(listaFotoMotivoNoRecoleccion.get(position));
-            uploadeRef = storageRef.child(this.path+"/notivonorecoleccion/"+file.getUrl());
+            uploadeRef = storageRef.child(this.path+"/motivonorecoleccion/"+file.getUrl());
             sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,3l,listaFotoMotivoNoRecoleccion.get(position));
         }else{
             finalizar();
