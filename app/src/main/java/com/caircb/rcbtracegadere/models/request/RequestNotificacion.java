@@ -8,7 +8,7 @@ public class RequestNotificacion {
     private String token;
     private Integer idManifiesto;
     private String idHojaRuta;
-    private Integer idCatNotificador;
+    private Integer idCatNotificacion;
 
     public Integer getIdReceptor() {
         return idReceptor;
@@ -58,11 +58,11 @@ public class RequestNotificacion {
         this.idHojaRuta = idHojaRuta;
     }
 
-    public Integer getIdCatNotificador() {
-        return idCatNotificador;
+    public Integer getIdCatNotificacion() {
+        return idCatNotificacion;
     }
 
-    public void setIdCatNotificador(Integer idCatNotificador) {
-        this.idCatNotificador = idCatNotificador;
+    public void setIdCatNotificacion(Integer idCatNotificacion) {
+        this.idCatNotificacion = idCatNotificacion;
     }
 }

@@ -28,7 +28,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 public class HomeTransportistaFragment extends MyFragment implements OnHome {
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
-    TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista, txtinicioRuta, txtFinRuta;
+    TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogInicioRuta dialogInicioRuta;
     DialogFinRuta dialogFinRuta;

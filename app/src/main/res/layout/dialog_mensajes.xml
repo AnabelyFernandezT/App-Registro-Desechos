@@ -29,7 +29,6 @@
             android:layout_height="57dp"
             android:hint="Ingrese el mensaje"
             android:maxLines="1"
-            android:maxLength="7"
             android:textSize="22dp"
             android:paddingRight="10dp"
             android:singleLine="true" />
