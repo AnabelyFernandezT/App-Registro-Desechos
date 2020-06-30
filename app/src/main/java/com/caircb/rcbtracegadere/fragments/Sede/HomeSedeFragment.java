@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
@@ -18,11 +21,12 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
 
-    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInicioRuta, btnFinRuta;
+    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
     LinearLayout lnlIniciaLote;
     ImageButton regionBuscar;
+    DialogPlacaSede dialogPlacas;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,12 +43,23 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnListaAsignadaSede = getView().findViewById(R.id.btnListaAsignadaSede);
         btnMenu = getView().findViewById(R.id.btnMenu);
         lnlIniciaLote = getView().findViewById(R.id.LnlIniciaLote);
+        btnInciaLote = getView().findViewById(R.id.btnInciaLote);
 
 
         btnListaAsignadaSede.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+            }
+        });
+
+        btnInciaLote.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                dialogPlacas = new DialogPlacaSede(getActivity());
+                dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogPlacas.setCancelable(false);
+                dialogPlacas.show();
             }
         });
 

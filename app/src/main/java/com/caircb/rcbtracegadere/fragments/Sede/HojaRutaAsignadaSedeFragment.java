@@ -173,7 +173,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRetornarListHojaRuta:
-                setNavegate(HomeTransportistaFragment.create());
+                setNavegate(HomeSedeFragment.create());
                 break;
         }
     }
