@@ -38,6 +38,10 @@ public class ManifiestoDetalleEntity {
 
     private Integer IdDestinatario;
 
+    private String codigoMAE;
+
+    private String nombreDesecho;
+
     private String codeQr;
 
     @NonNull
@@ -138,5 +142,21 @@ public class ManifiestoDetalleEntity {
 
     public void setIdDestinatario(Integer idDestinatario) {
         IdDestinatario = idDestinatario;
+    }
+
+    public String getCodigoMAE() {
+        return codigoMAE;
+    }
+
+    public void setCodigoMAE(String codigoMAE) {
+        this.codigoMAE = codigoMAE;
+    }
+
+    public String getNombreDesecho() {
+        return nombreDesecho;
+    }
+
+    public void setNombreDesecho(String nombreDesecho) {
+        this.nombreDesecho = nombreDesecho;
     }
 }

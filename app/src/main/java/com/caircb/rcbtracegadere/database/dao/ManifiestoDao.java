@@ -44,6 +44,11 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigando();
 
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=1 and idTransporteVehiculo =:idPlaca order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosAsigandoByPlaca(Integer idPlaca);
+
+
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=2 order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta();
@@ -182,6 +187,7 @@ public abstract class ManifiestoDao {
             //razonSocialTransportista
             //numeroLicenciaAmbientalTransportista
             //idTransporteVehiculo
+            entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
             //numeroPlacaVehiculo
             //modeloVehiculo
             //idDestinatario
@@ -196,6 +202,10 @@ public abstract class ManifiestoDao {
             entity.setSincronizado(false);
             //entity.setNombreFirma(manifiesto.getNombreFirma());
             //entity.setFirmaImg(manifiesto.getFirmaImg());
+            entity.setIdRuta(manifiesto.getIdRuta());
+            entity.setIdSubRuta(manifiesto.getIdSubRuta());
+            entity.setIdentificacionOperadorRecolector(manifiesto.getIdentificacionOperadorRecolector());
+            entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -247,6 +257,10 @@ public abstract class ManifiestoDao {
             entity.setSincronizado(false);
             //entity.setNombreFirma(manifiesto.getNombreFirma());
             //entity.setFirmaImg(manifiesto.getFirmaImg());
+            entity.setIdRuta(manifiesto.getIdRuta());
+            entity.setIdSubRuta(manifiesto.getIdSubRuta());
+            entity.setIdentificacionOperadorRecolector(manifiesto.getIdentificacionOperadorRecolector());
+            entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
         }
 
         if (entity!=null) createManifiesto(entity);

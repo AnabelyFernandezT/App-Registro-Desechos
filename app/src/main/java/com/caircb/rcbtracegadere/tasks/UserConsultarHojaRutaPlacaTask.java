@@ -7,10 +7,8 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
-import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
-import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
 import com.caircb.rcbtracegadere.services.WebService;
 
 import java.util.List;
@@ -20,7 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class UserConsultarHojaRutaTask extends MyRetrofitApi implements RetrofitCallbacks {
+public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements RetrofitCallbacks {
 
 
     public interface TaskListener {
@@ -29,7 +27,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     private final TaskListener taskListener;
 
 
-    public UserConsultarHojaRutaTask(Context context, TaskListener listener) {
+    public UserConsultarHojaRutaPlacaTask(Context context, TaskListener listener) {
         super(context);
         this.taskListener=listener;
         progressShow("Consultando...");
@@ -38,9 +36,9 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     @Override
     public void execute() {
 
-        Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
 
-        WebService.api().getHojaRuta(new RequestHojaRuta("2020-06-23",0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(new RequestHojaRuta("",idVehiculo,0)).enqueue(new Callback<List<DtoManifiesto>>() {
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
                 if(response.isSuccessful()){

@@ -75,6 +75,8 @@ public abstract class ManifiestoDetalleDao {
             entity.setTipoPaquete(dt.getTipoPaquete());
             entity.setCantidadTotalEtiqueta(0);
             entity.setIdDestinatario(dt.getIdDestinatario());
+            entity.setCodigoMAE(dt.getCodigoMAE());
+            entity.setNombreDesecho(dt.getNombreDesecho());
 
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
@@ -86,6 +88,8 @@ public abstract class ManifiestoDetalleDao {
             entity.setIdDestinatario(dt.getIdDestinatario());
             //entity.setEstadoChek(false);
             //entity.setCantidadBulto(0);
+            entity.setCodigoMAE(dt.getCodigoMAE());
+            entity.setNombreDesecho(dt.getNombreDesecho());
         }
 
         createManifiestoDetalle(entity);

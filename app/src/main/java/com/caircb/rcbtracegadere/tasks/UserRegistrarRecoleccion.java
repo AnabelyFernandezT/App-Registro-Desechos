@@ -135,6 +135,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
+                    message("error  " + t);
                     progressHide();
                 }
             });

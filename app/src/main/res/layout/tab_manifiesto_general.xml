@@ -169,7 +169,7 @@
 
             <TextView
                 android:id="@+id/txtempresaTransportista"
-                android:text="Gadere"
+                android:text="GADERE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -182,18 +182,6 @@
 
             <TextView
                 android:id="@+id/txtTransReco"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AUXILIAR DE RECOLECCIÓN:"
-                android:textColor="#000"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtTransRecoAux"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -226,6 +214,92 @@
                     android:visibility="gone" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AUXILIAR DE RECOLECCIÓN:"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTransRecoAux"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FIRMA:"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/btnAgregarFirmaOperador1"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_dotted"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txtFirmaMensajeOperador1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Presione aquí para firmar" />
+
+                <ImageView
+                    android:id="@+id/imgFirmaOperador1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AUXILIAR DE RECOLECCIÓN:"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtOperadorRecolector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FIRMA:"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/btnAgregarFirmaOperadorRecolector"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_dotted"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txtFirmaMensajeOperadorRecolector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Presione aquí para firmar" />
+
+                <ImageView
+                    android:id="@+id/imgFirmaOperadorRecolector"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

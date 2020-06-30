@@ -58,7 +58,7 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

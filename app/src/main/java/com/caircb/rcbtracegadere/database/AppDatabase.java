@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.database.dao.PaqueteDao;
 import com.caircb.rcbtracegadere.database.dao.ImpresoraDao;
 import com.caircb.rcbtracegadere.database.dao.ParametroDao;
 import com.caircb.rcbtracegadere.database.dao.RutaInicioFinDao;
+import com.caircb.rcbtracegadere.database.dao.RutasDao;
 import com.caircb.rcbtracegadere.database.dao.TecnicoDao;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.LogEntity;
@@ -33,6 +34,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
+import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.database.entity.ImpresoraEntity;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
@@ -56,7 +58,8 @@ import java.util.Locale;
         ManifiestoMotivoNoRecoleccionEntity.class,
         ImpresoraEntity.class,
         PaqueteEntity.class,
-        ManifiestoPaquetesEntity.class
+        ManifiestoPaquetesEntity.class,
+        RutasEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -139,4 +142,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public  abstract ManifiestoDetallePesosDao manifiestoDetallePesosDao();
     public abstract ImpresoraDao impresoraDao();
     public abstract ManifiestoPaqueteDao manifiestoPaqueteDao();
+    public abstract RutasDao rutasDao();
 }

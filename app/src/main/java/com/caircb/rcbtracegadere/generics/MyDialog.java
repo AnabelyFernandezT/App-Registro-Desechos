@@ -3,7 +3,10 @@ package com.caircb.rcbtracegadere.generics;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentHostCallback;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -17,6 +20,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.caircb.rcbtracegadere.MainActivity;
+import com.caircb.rcbtracegadere.R;
+
 import java.io.ByteArrayOutputStream;
 
 public class MyDialog extends Dialog {
@@ -29,6 +35,7 @@ public class MyDialog extends Dialog {
     LayoutInflater mInflater;
     public Context context;
 
+    FragmentHostCallback mHost;
 
     public MyDialog(@NonNull Context context, @NonNull Integer resource) {
         super(context);
@@ -187,7 +194,6 @@ public class MyDialog extends Dialog {
                 + (myListView.getDividerHeight() * (adapterCount)));
         myListView.setLayoutParams(params);
     }
-
 
 
 }

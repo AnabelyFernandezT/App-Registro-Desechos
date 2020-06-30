@@ -78,6 +78,7 @@ public class MyAuthorization {
             cr.setUsClave(password);
             cr.setUsAplicacion("AppGadere");
             cr.setUsImei(MySession.getIdDevice());
+            //cr.setUsImei("354885103654618");
             cr.setUsChip(MySession.getIdChip());
             cr.setUsAppVersion(1);
             MySession.setUsuarioNombre(user);
@@ -137,8 +138,8 @@ public class MyAuthorization {
         jsonLugares = new JSONArray(MySession.getLugares());
         for (int i = 0; i < jsonLugares.length(); i++){
             json = jsonLugares.getJSONObject(i);
-            myListOfItems.add(new MenuItem(
-                    json.getString("nombre")));
+            myListOfItems.add(new MenuItem(json.getString("nombre")));
+
         }
        }catch (JSONException e){
         e.printStackTrace();

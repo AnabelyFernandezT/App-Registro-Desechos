@@ -6,17 +6,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -31,6 +35,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     TabManifiestoDetalle tabManifiestoDetalle;
     TabManifiestoAdicional tabManifiestoAdicional;
 
+    FloatingActionButton mensajes;
     Integer idAppManifiesto;
 
 
@@ -69,6 +74,15 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
+        mensajes = getView().findViewById(R.id.fab);
+        mensajes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogMensajes dialogMensajes = new DialogMensajes(getActivity());
+                dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogMensajes.show();
+            }
+        });
     }
 
 

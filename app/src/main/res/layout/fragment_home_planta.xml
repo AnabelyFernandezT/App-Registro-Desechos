@@ -36,7 +36,122 @@
 
             <!--FIN LOGO-->
 
+            <LinearLayout
+                android:padding="10dp"
+                android:background="@drawable/shape_card_border"
+                android:id="@+id/rowFG"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/expandedListItem_detalle_Manifiesto">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:text="TRANSPORTISTA RECOLECTOR"
+                            style="@style/TextViewTitleItem"
+                            android:paddingBottom="3dp"
+                            />
+                        <TextView
+                            android:id="@+id/txtTransportistaRecolector"
+                            android:layout_width="match_parent"
+                            android:textColor="#737373"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="3dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:text="AUXILIAR RECOLECCION"
+                            style="@style/TextViewTitleItem"
+                            android:paddingBottom="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/txtTransportistaOperador"
+                            android:layout_width="match_parent"
+                            android:textColor="#737373"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="3dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:text="AUXILIAR RECOLECCION"
+                            style="@style/TextViewTitleItem"
+                            android:paddingBottom="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/txtAuxiliarRecoleccion"
+                            android:layout_width="match_parent"
+                            android:textColor="#737373"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="3dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:text="SUB RUTA"
+                            style="@style/TextViewTitleItem"
+                            android:paddingBottom="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/txtSubRuta"
+                            android:layout_width="match_parent"
+                            android:textColor="#737373"
+                            android:maxLines="2"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="3dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:text="PLACA"
+                            style="@style/TextViewTitleItem"
+                            android:paddingBottom="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/txtPlaca"
+                            android:layout_width="match_parent"
+                            android:textColor="#737373"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="3dp"
+                            />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
+
+
 
 
     </LinearLayout>

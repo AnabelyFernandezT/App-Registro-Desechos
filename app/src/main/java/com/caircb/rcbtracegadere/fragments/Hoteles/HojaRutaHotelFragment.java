@@ -1,4 +1,4 @@
-package com.caircb.rcbtracegadere.fragments.Sede;
+package com.caircb.rcbtracegadere.fragments.Hoteles;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -35,10 +35,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HojaRutaAsignadaFragment#newInstance} factory method to
+ * Use the {@link HojaRutaHotelFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClickListener {
+public class HojaRutaHotelFragment extends MyFragment implements View.OnClickListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
@@ -58,8 +58,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
      * @return A new instance of fragment HojaRutaAsignadaFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HojaRutaAsignadaFragment newInstance() {
-        return new HojaRutaAsignadaFragment();
+    public static HojaRutaHotelFragment newInstance() {
+        return new HojaRutaHotelFragment();
     }
 
     @Override

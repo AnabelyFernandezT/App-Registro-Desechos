@@ -41,16 +41,16 @@ public class TabManifiestoGeneral extends LinearLayout {
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
             txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno
-            ,txtGenTecCorreo,txtGenTecTelefono,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
+            ,txtGenTecCorreo,txtGenTecTelefono,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista, txtFirmaOperador1,txtFirmaOperador2;
 
     private EditText txtNumManifiestoCliente,
             txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
 
-    private LinearLayout btnAgregarFirma,btnAgregarFirmaTransportista;
+    private LinearLayout btnAgregarFirma,btnAgregarFirmaTransportista, btnAgregarFirmaOperador1,btmAgregarOperador2;
 
     private ImageButton btnNumManifiestoCliente,btnBuscarIdentificacion;
 
-    private ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista;
+    private ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista, imgFirmaOperador1, imgFirmaOperadorRecolector;
     //private int flag =0, flagT=0;
     private DialogFirma dialogFirma;
     private ImagenUtils imagenUtils;
@@ -84,11 +84,19 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtGenTecTelefono= this.findViewById(R.id.txtGenTecTelefono);
         btnAgregarFirma= this.findViewById(R.id.btnAgregarFirma);
         btnAgregarFirmaTransportista = this.findViewById(R.id.btnAgregarFirmaTransportista);
+        btnAgregarFirmaOperador1=this.findViewById(R.id.btnAgregarFirmaOperador1);
+        btmAgregarOperador2=this.findViewById(R.id.btnAgregarFirmaOperadorRecolector);
+        txtFirmaOperador1=this.findViewById(R.id.txtFirmaMensajeOperador1);
+        txtFirmaOperador2 = this.findViewById(R.id.txtFirmaMensajeOperadorRecolector);
+
+
 
         btnBuscarIdentificacion= this.findViewById(R.id.btnBuscarIdentificacion);
         imgFirmaTecnico= this.findViewById(R.id.imgFirmaTecnico);
         imgFirmaTecnicoTrasnsportista = this.findViewById(R.id.imgFirmaTecnicoTrasnsportista);
         txtFirmaMensajeTransportista = this.findViewById(R.id.txtFirmaMensajeTransportista);
+        imgFirmaOperadorRecolector = this.findViewById(R.id.imgFirmaOperadorRecolector);
+        imgFirmaOperador1 = this.findViewById(R.id.imgFirmaOperador1);
 
         txtNumManifiestoCliente =this. findViewById(R.id.txtNumManifiestoCliente);
         btnNumManifiestoCliente = this.findViewById(R.id.btnNumManifiestoCliente);
@@ -172,7 +180,79 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
+        btnAgregarFirmaOperador1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogFirma==null) {
+                    dialogFirma = new DialogFirma(getContext());
+                    dialogFirma.setTitle("SU FIRMA");
+                    dialogFirma.setCancelable(false);
+                    dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
+                        @Override
+                        public void onSuccessful(Bitmap bitmap) {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                            if(bitmap!=null){
+                                txtFirmaOperador1.setVisibility(View.GONE);
+                                imgFirmaOperador1.setVisibility(View.VISIBLE);
+                                imgFirmaOperador1.setImageBitmap(bitmap);
+                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
+                                //firmaTecnicoGenerador=true;
+                            }else{
+                                txtFirmaOperador1.setVisibility(View.VISIBLE);
+                                imgFirmaOperador1.setVisibility(View.GONE);
+                                //firmaTecnicoGenerador=false;
+                               // MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, null, MyConstant.STATUS_RECOLECCION);
+                            }
+                        }
 
+                        @Override
+                        public void onCanceled() {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                        }
+                    });
+                    dialogFirma.show();
+                }
+            }
+        });
+
+        btmAgregarOperador2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogFirma==null) {
+                    dialogFirma = new DialogFirma(getContext());
+                    dialogFirma.setTitle("SU FIRMA");
+                    dialogFirma.setCancelable(false);
+                    dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
+                        @Override
+                        public void onSuccessful(Bitmap bitmap) {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                            if(bitmap!=null){
+                                txtFirmaOperador2.setVisibility(View.GONE);
+                                imgFirmaOperadorRecolector.setVisibility(View.VISIBLE);
+                                imgFirmaOperadorRecolector.setImageBitmap(bitmap);
+                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
+                               // firmaTecnicoGenerador=true;
+                            }else{
+                                txtFirmaOperador2.setVisibility(View.VISIBLE);
+                                imgFirmaOperadorRecolector.setVisibility(View.GONE);
+                                //firmaTecnicoGenerador=false;
+                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, null, MyConstant.STATUS_RECOLECCION);
+                            }
+                        }
+
+                        @Override
+                        public void onCanceled() {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                        }
+                    });
+                    dialogFirma.show();
+                }
+            }
+        });
 
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {

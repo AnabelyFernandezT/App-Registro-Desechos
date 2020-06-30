@@ -20,7 +20,7 @@ public class RutaInicioFinEntity {
     private Integer idTransporteRecolector;
 
     @NonNull
-    private Integer idTransporteVehiculo;
+    private Integer idSubRuta;
 
     @NonNull
     private Date fechaInicio;
@@ -41,10 +41,10 @@ public class RutaInicioFinEntity {
     @NonNull
     private Boolean sincronizadoFin;
 
-    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idTransporteVehiculo, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado) {
+    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado) {
         this.idRutaInicioFin = idRutaInicioFin;
         this.idTransporteRecolector = idTransporteRecolector;
-        this.idTransporteVehiculo = idTransporteVehiculo;
+        this.idSubRuta = idSubRuta;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.kilometrajeInicio = kilometrajeInicio;
@@ -81,12 +81,12 @@ public class RutaInicioFinEntity {
     }
 
     @NonNull
-    public Integer getIdTransporteVehiculo() {
-        return idTransporteVehiculo;
+    public Integer getIdSubRuta() {
+        return idSubRuta;
     }
 
-    public void setIdTransporteVehiculo(@NonNull Integer idTransporteVehiculo) {
-        this.idTransporteVehiculo = idTransporteVehiculo;
+    public void setIdSubRuta(@NonNull Integer idSubRuta) {
+        this.idSubRuta = idSubRuta;
     }
 
     @NonNull

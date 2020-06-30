@@ -23,6 +23,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
+import com.caircb.rcbtracegadere.fragments.GestorAlterno.HomeGestorAlternoFragment;
+import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
+import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
 import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
@@ -36,6 +39,7 @@ import com.caircb.rcbtracegadere.models.RowItem;
 import com.caircb.rcbtracegadere.models.request.RequestCredentials;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -74,6 +78,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     UserUpdateAppTask userUpdateAppTask;
     UserConsultarCatalogosTask consultarCatalogosTask;
     PaquetesTask paquetesTask;
+    UserConsultarRutasTask rutasTask;
     PaquetesTask.TaskListener listener;
 
     @Override
@@ -84,6 +89,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         initMenuLateral();
         existeCatalogos();
         existePaquetes();
+        cargarRutas();
         validateInitFragment();
     }
 
@@ -100,6 +106,15 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             case 3137 :
                 initFragment((HomePlantaFragment.create()));
                 break;
+           /* case 3138 :
+                initFragment((HomeSedeFragment.create()));
+                break;
+            case 3139 :
+                initFragment((HomeHotelFragment.create()));
+                break;
+            case 3140 :
+                initFragment((HomeGestorAlternoFragment.create()));
+                break;*/
         }
     }
     private void initFragment(Fragment _fragmentinit) {
@@ -303,6 +318,13 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 paquetesTask.execute();
         }
     }
+
+    private void cargarRutas(){
+        if(!MyApp.getDBO().rutasDao().existeRutas()){
+            rutasTask = new UserConsultarRutasTask(this);
+            rutasTask.execute();
+        }
+    }
     /*
 
     private boolean existeImpresoraVinculada(){
@@ -322,9 +344,23 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     MySession.setLugarNombre(json.getString("nombre"));
                     if(nombreLugar.equals("TRANSPORTISTA")){
                         navegate((HomeTransportistaFragment.create()));
-                    }else{
-                        navegate((HomePlantaFragment.create()));
+                    }else {
+                        if(nombreLugar.equals("PLANTA")){
+                            navegate((HomePlantaFragment.create()));
+                        } else {
+                            if (nombreLugar.equals("SEDE")){
+                                navegate(HomeSedeFragment.create());
+                            }else {
+                                if (nombreLugar.equals("HOTEL")){
+                                    navegate(HomeHotelFragment.create());
+                                }else {
+                                    navegate(HomeGestorAlternoFragment.create());
+                                }
+                            }
+                        }
+
                     }
+
                     txtnombreLugarTrabajo.setText(MySession.getLugarNombre());
                 }
             }
@@ -434,6 +470,24 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                             mdialog.dismiss();
                                 openMenuOpcion();
                                 guardarLugar("PLANTA");
+                        }
+                    } else if (item.getNombre().equals("SEDE")) {
+                        if (mdialog != null) {
+                            mdialog.dismiss();
+                            openMenuOpcion();
+                            guardarLugar("SEDE");
+                        }
+                    } else if (item.getNombre().equals("HOTEL")) {
+                        if (mdialog != null) {
+                            mdialog.dismiss();
+                            openMenuOpcion();
+                            guardarLugar("HOTEL");
+                        }
+                    } else if (item.getNombre().equals("GESTOR")) {
+                        if (mdialog != null) {
+                            mdialog.dismiss();
+                            openMenuOpcion();
+                            guardarLugar("GESTOR");
                         }
                     }else if (item.getNombre().equals("MENSAJES")){
                         if(mdialog!=null){

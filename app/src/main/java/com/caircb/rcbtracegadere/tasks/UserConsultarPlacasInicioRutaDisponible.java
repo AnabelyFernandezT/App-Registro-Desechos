@@ -35,7 +35,7 @@ public class UserConsultarPlacasInicioRutaDisponible extends MyRetrofitApi imple
 
         progressShow("Consultando vihiculos disponibles...");
 
-        WebService.api().getCatalogos(new RequestCatalogo(5, "")).enqueue(new Callback<List<DtoCatalogo>>() {
+        WebService.api().getCatalogos(new RequestCatalogo(4, "")).enqueue(new Callback<List<DtoCatalogo>>() {
             @Override
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()) {

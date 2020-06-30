@@ -13,6 +13,9 @@ public class DtoManifiestoDetalle {
     private Integer tipoPaquete;
     private boolean eliminado;
     private Integer IdDestinatario;
+    private String codigoMAE;
+    private String nombreDesecho;
+
 
     public DtoManifiestoDetalle() {
     }
@@ -95,5 +98,21 @@ public class DtoManifiestoDetalle {
 
     public void setIdDestinatario(Integer idDestinatario) {
         IdDestinatario = idDestinatario;
+    }
+
+    public String getCodigoMAE() {
+        return codigoMAE;
+    }
+
+    public void setCodigoMAE(String codigoMAE) {
+        this.codigoMAE = codigoMAE;
+    }
+
+    public String getNombreDesecho() {
+        return nombreDesecho;
+    }
+
+    public void setNombreDesecho(String nombreDesecho) {
+        this.nombreDesecho = nombreDesecho;
     }
 }

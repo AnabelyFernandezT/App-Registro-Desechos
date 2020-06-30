@@ -20,9 +20,12 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.RowRutas;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
@@ -53,6 +56,7 @@ public class DialogInicioRuta extends MyDialog {
     ImageView btnPickUpTransportista, btnDropOffTransportista;
 
     List<DtoCatalogo> listaPlacasDisponibles;
+    List<RowRutas> listaRutas;
 
     /*
     UserConsultarPlacasInicioRutaDisponible.TaskListener listenerPlacasDisponibles= new UserConsultarPlacasInicioRutaDisponible.TaskListener() {
@@ -114,7 +118,7 @@ public class DialogInicioRuta extends MyDialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
-                    listaPlacasDisponibles.get(position-1);
+                    listaRutas.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
                 }
 
@@ -134,7 +138,8 @@ public class DialogInicioRuta extends MyDialog {
             }
         });
 
-        datosPlacasDisponibles();
+        spinnerPlacas = cargarSpinnerRuta(spinnerPlacas,true);
+       // datosPlacasDisponibles();
     }
 
 
@@ -177,7 +182,7 @@ public class DialogInicioRuta extends MyDialog {
         messageBox(mensaje);
     }
 
-    private void datosPlacasDisponibles(){
+   /*private void datosPlacasDisponibles(){
         consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
         consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
             @Override
@@ -187,9 +192,11 @@ public class DialogInicioRuta extends MyDialog {
             }
         });
         consultarPlacasInicioRutaDisponible.execute();
-    }
+    }*/
 
-    public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
+
+
+   /* public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
         ArrayAdapter<String> adapter;
         Spinner defaulSpiner = spinner;
@@ -207,6 +214,26 @@ public class DialogInicioRuta extends MyDialog {
         defaulSpiner.setEnabled(bhabilitar);
 
         return defaulSpiner;
+    }*/
+    public Spinner cargarSpinnerRuta(Spinner spinner, boolean bhabilitar){
+
+        ArrayAdapter<String> adapter;
+        Spinner defaulSpiner = spinner;
+        ArrayList<String> listaData = new ArrayList<String>();
+
+        listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
+        listaData.add("Seleccione...");
+        if(listaRutas.size() > 0){
+            for (RowRutas r : listaRutas){
+                listaData.add(r.getNombreRuta());
+            }
+        }
+
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.textview_spinner, listaData);
+        defaulSpiner.setAdapter(adapter);
+        defaulSpiner.setEnabled(bhabilitar);
+
+        return defaulSpiner;
     }
 
     private void guardarDatos(){
@@ -214,15 +241,14 @@ public class DialogInicioRuta extends MyDialog {
         String kilometrajeInicio = txtKilometraje.getText().toString();
 
 
-        CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
-        int idVehiculo = c!=null?c.getIdSistema():-1;
+        //CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+        RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarId(placa);
+        int idVehiculo = r!=null?r.getCodigo():-1;
 
         Integer idUsuario = MySession.getIdUsuario();
 
         idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,AppDatabase.getDateTime(),null,kilometrajeInicio,null,1);
-        MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-
-
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
 
 
         //notificar inicia ruta al servidor...

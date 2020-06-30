@@ -26,6 +26,10 @@ public class ManifiestoEntity {
 
     private String direccionRetiro;
 
+    private Integer idRuta;
+
+    private Integer idSubRuta;
+
     @NonNull
     private String numeroManifiesto;
 
@@ -73,6 +77,12 @@ public class ManifiestoEntity {
 
     private String auxiliarNombre;
 
+    private Integer idOperadorRecolector;
+
+    private String identificacionOperadorRecolector;
+
+    private String nombreOperadorRecolector;
+
     private String novedadEncontrada;
 
     private String codigo;
@@ -105,7 +115,10 @@ public class ManifiestoEntity {
     //private String novedadAudio;
     private Boolean sincronizado;
 
+    private Integer idTransporteVehiculo;
+
     private String tiempoAudio;
+
 
     public ManifiestoEntity() {
     }
@@ -367,6 +380,54 @@ public class ManifiestoEntity {
 
     public void setCorreoAlterno(String correoAlterno) {
         this.correoAlterno = correoAlterno;
+    }
+
+    public Integer getIdRuta() {
+        return idRuta;
+    }
+
+    public void setIdRuta(Integer idRuta) {
+        this.idRuta = idRuta;
+    }
+
+    public Integer getIdSubRuta() {
+        return idSubRuta;
+    }
+
+    public void setIdSubRuta(Integer idSubRuta) {
+        this.idSubRuta = idSubRuta;
+    }
+
+    public Integer getIdTransporteVehiculo() {
+        return idTransporteVehiculo;
+    }
+
+    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
+        this.idTransporteVehiculo = idTransporteVehiculo;
+    }
+
+    public Integer getIdOperadorRecolector() {
+        return idOperadorRecolector;
+    }
+
+    public void setIdOperadorRecolector(Integer idOperadorRecolector) {
+        this.idOperadorRecolector = idOperadorRecolector;
+    }
+
+    public String getIdentificacionOperadorRecolector() {
+        return identificacionOperadorRecolector;
+    }
+
+    public void setIdentificacionOperadorRecolector(String identificacionOperadorRecolector) {
+        this.identificacionOperadorRecolector = identificacionOperadorRecolector;
+    }
+
+    public String getNombreOperadorRecolector() {
+        return nombreOperadorRecolector;
+    }
+
+    public void setNombreOperadorRecolector(String nombreOperadorRecolector) {
+        this.nombreOperadorRecolector = nombreOperadorRecolector;
     }
 }
 

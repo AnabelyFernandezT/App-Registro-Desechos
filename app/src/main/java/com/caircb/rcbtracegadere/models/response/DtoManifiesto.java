@@ -30,22 +30,27 @@ public class DtoManifiesto {
     private Integer idLugar;
     private String nombreLugar;
     private Integer idChoferRecolector;
-    private Integer idAuxiliarRecolector;
-    private String identificacionChoferRecolector;
     private String nombreChoferRecolector;
+    private String identificacionChoferRecolector;
+    private Integer idAuxiliarRecolector;
     private String identificacionAuxiliarRecolector;
     private String nombreAuxiliarRecolector;
+    //agregadas
+    private Integer idOperadorRecolector;
+    private String identificacionOperadorRecolector;
+    private String nombreOperadorRecolector;
+
     private Integer idTransporte;
     private String identificacionTransportista;
-    private String razonSocialTransportista;
+        private String razonSocialTransportista;
     private String numeroLicenciaAmbientalTransportista;
-    private Integer idTransporteVehiculo;
     private String numeroPlacaVehiculo;
     private String modeloVehiculo;
     //private Integer idDestinatario;
     //private String identificacionDestinatario;
     //private String razonSocialDestinatario;
     //private String numeroLicenciaAmbientalDestinatario;
+    private Integer idTransporteVehiculo;
     private Integer estadoApp;
     private Boolean eliminado;
     private Date fechaTemp;
@@ -56,6 +61,8 @@ public class DtoManifiesto {
     private Double peso;
     private String nombreFirma;
     private String firmaImg;
+    private Integer idRuta;
+    private Integer idSubRuta;
 
     public DtoManifiesto() {
     }
@@ -412,5 +419,45 @@ public class DtoManifiesto {
 
     public void setCorreoAlterno(String correoAlterno) {
         this.correoAlterno = correoAlterno;
+    }
+
+    public Integer getIdRuta() {
+        return idRuta;
+    }
+
+    public void setIdRuta(Integer idRuta) {
+        this.idRuta = idRuta;
+    }
+
+    public Integer getIdSubRuta() {
+        return idSubRuta;
+    }
+
+    public void setIdSubRuta(Integer idSubRuta) {
+        this.idSubRuta = idSubRuta;
+    }
+
+    public Integer getIdOperadorRecolector() {
+        return idOperadorRecolector;
+    }
+
+    public void setIdOperadorRecolector(Integer idOperadorRecolector) {
+        this.idOperadorRecolector = idOperadorRecolector;
+    }
+
+    public String getIdentificacionOperadorRecolector() {
+        return identificacionOperadorRecolector;
+    }
+
+    public void setIdentificacionOperadorRecolector(String identificacionOperadorRecolector) {
+        this.identificacionOperadorRecolector = identificacionOperadorRecolector;
+    }
+
+    public String getNombreOperadorRecolector() {
+        return nombreOperadorRecolector;
+    }
+
+    public void setNombreOperadorRecolector(String nombreOperadorRecolector) {
+        this.nombreOperadorRecolector = nombreOperadorRecolector;
     }
 }

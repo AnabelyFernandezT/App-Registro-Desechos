@@ -5,7 +5,7 @@ import java.util.Date;
 public class RequestIniciaRuta {
     //private String id;
     private Integer idTransporteRecolector;
-    private Integer idTransporteVehiculo;
+    private Integer idSubRuta;
     private Date fechaDispositivo;
     private String kilometraje;
     private Integer tipo;
@@ -18,12 +18,12 @@ public class RequestIniciaRuta {
         this.idTransporteRecolector = idTransporteRecolector;
     }
 
-    public Integer getIdTransporteVehiculo() {
-        return idTransporteVehiculo;
+    public Integer getIdSubRuta() {
+        return idSubRuta;
     }
 
-    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
-        this.idTransporteVehiculo = idTransporteVehiculo;
+    public void setIdSubRuta(Integer idSubRuta) {
+        this.idSubRuta = idSubRuta;
     }
 
     public Date getFechaDispositivo() {

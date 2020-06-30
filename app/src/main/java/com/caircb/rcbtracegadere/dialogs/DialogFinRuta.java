@@ -146,7 +146,7 @@ public class DialogFinRuta extends MyDialog {
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         if(rut!=null){
             kilometrajeInicio = rut.getKilometrajeInicio();
-            placaInicio = rut.getIdTransporteVehiculo();
+            //placaInicio = rut.getIdTransporteVehiculo();
             diaAnterior = rut.getFechaInicio();
         }
 

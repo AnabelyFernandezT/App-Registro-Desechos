@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,8 +14,12 @@ import android.widget.TextView;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 
 /**
@@ -25,7 +30,9 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     UserConsultarRecolectadosTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
-
+    DialogPlacas dialogPlacas;
+    UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
+    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
 
 
     public Context mContext;
@@ -34,12 +41,19 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     //ImageButton btnCalculadora;
 
 
-    UserConsultarRecolectadosTask.TaskListener listenerHojaRuta = new UserConsultarRecolectadosTask.TaskListener() {
+    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
         public void onSuccessful() {
            loadCantidadManifiestoAsignado();
         }
     };
+
+    private void cargarManifiesto(){
+        consultarHojaRutaPlacaTaskTask = new UserConsultarHojaRutaPlacaTask(getActivity(),listenerHojaRuta);
+        consultarHojaRutaPlacaTaskTask.execute();
+    }
+
+
 
 
     public static HomePlantaFragment create() {
@@ -54,7 +68,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
         initBuscador();
         init();
-
+        cargarManifiesto();
         return getView();
 
     }
@@ -84,15 +98,23 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                consultarHojaRutaTask = new UserConsultarRecolectadosTask(getActivity(),listenerHojaRuta);
-                consultarHojaRutaTask.execute();
+                /*dialogPlacas = new DialogPlacas(getActivity());
+                dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogPlacas.setCancelable(false);
+                dialogPlacas.show();*/
+
+                consultarHojaRutaPlacaTaskTask = new UserConsultarHojaRutaPlacaTask(getActivity(),listenerHojaRuta);
+                consultarHojaRutaPlacaTaskTask.execute();
             }
         });
+
 
         btnListaAsignadaTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+
+
             }
         });
 
@@ -112,5 +134,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
 
     }
+
+
 
 }

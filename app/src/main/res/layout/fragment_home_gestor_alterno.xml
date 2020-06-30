@@ -122,7 +122,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/btnSincManifiestos"
+                android:id="@+id/btnSincManifiestosPlanta"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:background="#00000000"
@@ -152,7 +152,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/btnListaAsignadaSede"
+                android:id="@+id/btnListaAsignadaTransportista"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#00000000"
@@ -173,7 +173,7 @@
                 android:textIsSelectable="false" />
 
             <TextView
-                android:id="@+id/lblListaManifiestoAsignado"
+                android:id="@+id/lblListaManifiestoAsignadoPlanta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -187,79 +187,6 @@
                 android:textSize="11dp"
                 android:textStyle="bold" />
         </LinearLayout>
-
-        <!--Incio de ruta-->
-        <LinearLayout
-            android:id="@+id/LnlIniciaLote"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/btnInciaLote"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:background="#00000000"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="14dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/rcb_button_inicia_ruta" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-15dp"
-                android:gravity="center"
-                style="@style/title_footer"
-                android:text="INICIA LOTE"
-                android:textIsSelectable="false"/>
-
-
-        </LinearLayout>
-
-        <!--Fin de ruta
-        <LinearLayout
-            android:id="@+id/LnlFinRuta"
-            android:visibility="gone"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/btnFinRuta"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:background="#00000000"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="14dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/rcb_button_fin_ruta" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-15dp"
-                android:gravity="center"
-                style="@style/title_footer"
-                android:text="FIN RUTA"
-                android:textIsSelectable="false"/>
-
-
-        </LinearLayout>-->
-
-
 
         </LinearLayout>
 
