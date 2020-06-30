@@ -68,7 +68,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
         initBuscador();
         init();
-        cargarManifiesto();
+        //cargarManifiesto();
         return getView();
 
     }
