@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -27,6 +28,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     LinearLayout lnlIniciaLote;
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
+    DialogPlacaSedeRecolector dialogPlacasRecolector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +62,16 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacas.setCancelable(false);
                 dialogPlacas.show();
+            }
+        });
+
+        btnSincManifiestos.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
+                dialogPlacasRecolector.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogPlacasRecolector.setCancelable(false);
+                dialogPlacasRecolector.show();
             }
         });
 
