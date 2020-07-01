@@ -22,24 +22,26 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class Manifiesto2FragmentProcesada extends MyFragment implements OnCameraListener,View.OnClickListener {
 
     private static final String ARG_PARAM1 = "manifiestoID";
+    private static final String ARG_ESTADO = "estado";
 
     LinearLayout btnManifiestoCancel;
 
-    TabManifiestoGeneralProcesada tabManifiestoGeneral;
-    TabManifiestoDetallePrecesada tabManifiestoDetalle;
-    TabManifiestoAdicionalProcesada tabManifiestoAdicional;
+    TabManifiestoGeneral tabManifiestoGeneral;
+    TabManifiestoDetalle tabManifiestoDetalle;
+    TabManifiestoAdicional tabManifiestoAdicional;
 
     FloatingActionButton mensajes;
-    Integer idAppManifiesto;
+    Integer idAppManifiesto, estado;
 
 
     public Manifiesto2FragmentProcesada() {
     }
 
-    public static Manifiesto2FragmentProcesada newInstance(Integer manifiestoID) {
+    public static Manifiesto2FragmentProcesada newInstance(Integer manifiestoID,Integer estado) {
         Manifiesto2FragmentProcesada f= new Manifiesto2FragmentProcesada();
         Bundle b = new Bundle();
         b.putInt(ARG_PARAM1,manifiestoID);
+        b.putInt(ARG_ESTADO,estado);
         f.setArguments(b);
         return f;
     }
@@ -49,6 +51,8 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
         super.onCreate(savedInstanceState);
         if(getArguments()!=null){
             idAppManifiesto = getArguments().getInt(ARG_PARAM1);
+            estado = getArguments().getInt(ARG_ESTADO);
+
         }
     }
 
@@ -128,17 +132,19 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
 
     private void inicializeTab(){
 
-        tabManifiestoGeneral = new TabManifiestoGeneralProcesada(getActivity(),idAppManifiesto);
+        tabManifiestoGeneral = new TabManifiestoGeneral(getActivity(),idAppManifiesto,estado);
 
-        tabManifiestoDetalle = new TabManifiestoDetallePrecesada(getActivity(),
+        tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
-                tabManifiestoGeneral.getNumeroManifiesto());
+                tabManifiestoGeneral.getNumeroManifiesto(),
+                estado);
 
-        tabManifiestoAdicional = new TabManifiestoAdicionalProcesada(getActivity(),
+        tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
-                tabManifiestoGeneral.getTiempoAudio());
+                tabManifiestoGeneral.getTiempoAudio(),
+                estado);
     }
 
     @Override

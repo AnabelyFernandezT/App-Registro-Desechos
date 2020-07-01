@@ -133,7 +133,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         //menu(position);
-                        setNavegate(Manifiesto2FragmentProcesada.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        setNavegate(Manifiesto2FragmentProcesada.newInstance(rowItems.get(position).getIdAppManifiesto(),rowItems.get(position).getEstado()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;

@@ -26,7 +26,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     private boolean desactivaComp;
     List<RowItemHojaRutaCatalogo> listItems;
     //private Integer tipoUsuario ;
-    Integer idManifiesto;
+    Integer idManifiesto,estadoManifiesto;
     DialogBuilder builder;
     boolean resp = false;
 
@@ -40,11 +40,13 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
     private ManifiestoNovedadBaseAdapterR.OnReloadAdater mOnReloadAdaptador;
 
-    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items, boolean desactivarComp,Integer idManifiesto){
+    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items,
+                                         boolean desactivarComp,Integer idManifiesto, Integer estadoManifiesto){
         mContext = context;
         listItems = items;
         this.desactivaComp = desactivarComp;
         //this.tipoUsuario = tipoUusario;
+        this.estadoManifiesto= estadoManifiesto;
         this.idManifiesto = idManifiesto;
     }
 
@@ -67,33 +69,40 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         if(desactivaComp == true){
             holder.chkEstado.setEnabled(false);
         }
+        if(estadoManifiesto !=1) {
+        holder.chkEstado.setClickable(false);
+        }
 
-        holder.chkEstado.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(item.getNumFotos() >0){
-                    if(mOnReloadAdaptador!=null)mOnReloadAdaptador.onShowM(item.getId(),position);
-                }else{
-                    if(((CheckBox)v).isChecked()){
-                        v.setSelected(true);
-                        item.setEstadoChek(true);
-                        registarCheckItemCatalogo(idManifiesto, item.getId(),true);
-                    }else{
-                        v.setSelected(false);
-                        item.setEstadoChek(false);
-                        registarCheckItemCatalogo(idManifiesto, item.getId(),false);
+        if(estadoManifiesto == 1) {
+            holder.chkEstado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (item.getNumFotos() > 0) {
+                        if (mOnReloadAdaptador != null)
+                            mOnReloadAdaptador.onShowM(item.getId(), position);
+                    } else {
+                        if (((CheckBox) v).isChecked()) {
+                            v.setSelected(true);
+                            item.setEstadoChek(true);
+                            registarCheckItemCatalogo(idManifiesto, item.getId(), true);
+                        } else {
+                            v.setSelected(false);
+                            item.setEstadoChek(false);
+                            registarCheckItemCatalogo(idManifiesto, item.getId(), false);
+                        }
                     }
+
                 }
+            });
 
-            }
-        });
-
-        holder.btnEvidenciaNovedadFrecuente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mOnClickOpenFotografias!=null)mOnClickOpenFotografias.onShow(item.getId(),position);
-            }
-        });
+            holder.btnEvidenciaNovedadFrecuente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickOpenFotografias != null)
+                        mOnClickOpenFotografias.onShow(item.getId(), position);
+                }
+            });
+        }
     }
 
     @Override

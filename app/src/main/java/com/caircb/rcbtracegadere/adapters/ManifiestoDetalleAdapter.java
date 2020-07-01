@@ -27,11 +27,13 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
     private Context mContext;
     private List<RowItemManifiesto> manifiestosDtList;
     private String numeroManifiesto;
+    private Integer estadoManifiesto;
 
-    public ManifiestoDetalleAdapter(Context context,String numeroManifiesto){
+    public ManifiestoDetalleAdapter(Context context,String numeroManifiesto,Integer estadoManifiesto){
         this.mContext = context;
         this.manifiestosDtList = new ArrayList<>();
         this.numeroManifiesto=numeroManifiesto;
+        this.estadoManifiesto =estadoManifiesto;
     }
 
     @NonNull
@@ -51,20 +53,24 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         holder.txtTratamiento.setText(it.getTratamiento());
         holder.chkEstado.setChecked(it.isEstado());
 
-        holder.chkEstado.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-                    v.setSelected(true);
-                    it.setEstado(true);
-                } else {
-                    v.setSelected(false);
-                    it.setEstado(false);
+        if(estadoManifiesto !=1) {
+            holder.chkEstado.setClickable(false);
+        }
+        if(estadoManifiesto ==1) {
+            holder.chkEstado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (((CheckBox) v).isChecked()) {
+                        v.setSelected(true);
+                        it.setEstado(true);
+                    } else {
+                        v.setSelected(false);
+                        it.setEstado(false);
+                    }
+                    MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(), it.isEstado(), it.isEstado() ? AppDatabase.getUUID(numeroManifiesto) : "");
                 }
-                MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(),it.isEstado(), it.isEstado()? AppDatabase.getUUID(numeroManifiesto):"");
-            }
-        });
-
+            });
+        }
     }
 
     @Override

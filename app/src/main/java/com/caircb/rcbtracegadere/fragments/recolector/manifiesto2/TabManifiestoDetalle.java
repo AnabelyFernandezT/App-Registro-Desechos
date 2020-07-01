@@ -33,7 +33,7 @@ public class TabManifiestoDetalle extends LinearLayout {
 
     ManifiestoDetalleAdapter recyclerviewAdapter;
 
-    Integer idAppManifiesto,tipoPaquete;
+    Integer idAppManifiesto,tipoPaquete,estadoManifiesto;
     String numeroManifiesto;
     Window window;
     ListView mDialogMenuItems;
@@ -43,11 +43,12 @@ public class TabManifiestoDetalle extends LinearLayout {
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     MyCalculoPaquetes calculoPaquetes;
 
-    public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto) {
+    public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto,Integer estado) {
         super(context);
         this.idAppManifiesto=manifiestoID;
         this.tipoPaquete=tipoPaquete;
         //this.detalles = detalles;
+        this.estadoManifiesto = estado;
         this.numeroManifiesto=numeroManifiesto;
         View.inflate(context, R.layout.tab_manifiesto_detalle, this);
         init();
@@ -57,7 +58,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     private void init(){
         calculoPaquetes= new MyCalculoPaquetes(idAppManifiesto,tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
-        recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto);
+        recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto,estadoManifiesto);
     }
 
     private void loadData(){
@@ -72,7 +73,9 @@ public class TabManifiestoDetalle extends LinearLayout {
             @Override
             public void onItemClick(int position, View v) {
                 int x=0;
-                openOpcionesItems(position);
+                if(estadoManifiesto == 1){
+                    openOpcionesItems(position);
+                }
             }
         });
     }
