@@ -4,19 +4,11 @@ import java.util.Date;
 
 public class RequestFinRuta {
     private Integer id;
-    private Integer idTransporteRecolector;
     private Integer idSubRuta;
     private Date fechaDispositivo;
     private String kilometraje;
     private Integer tipo;
-
-    public Integer getIdTransporteRecolector() {
-        return idTransporteRecolector;
-    }
-
-    public void setIdTransporteRecolector(Integer idTransporteRecolector) {
-        this.idTransporteRecolector = idTransporteRecolector;
-    }
+    private Integer idDestinatarioFinRutaCatalogo;
 
     public Integer getIdSubRuta() {
         return idSubRuta;
@@ -56,5 +48,13 @@ public class RequestFinRuta {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getIdDestinatarioFinRutaCatalogo() {
+        return idDestinatarioFinRutaCatalogo;
+    }
+
+    public void setIdDestinatarioFinRutaCatalogo(Integer idDestinatarioFinRutaCatalogo) {
+        this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
     }
 }

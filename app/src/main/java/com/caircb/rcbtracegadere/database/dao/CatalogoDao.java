@@ -26,6 +26,9 @@ public abstract class CatalogoDao {
     @Query("select * from tb_catalogos where codigo=:codigo and tipo=:tipo")
     public  abstract CatalogoEntity fetchConsultarCatalogoId(String codigo, Integer tipo);
 
+    @Query("select * from tb_catalogos where nombre=:codigo and tipo=:tipo")
+    public  abstract CatalogoEntity fetchConsultarCatalogo(String codigo, Integer tipo);
+
     @Query("select * from tb_catalogos where tipo=:tipo and idSistema=:idSistema")
     public abstract CatalogoEntity fetchConsultarCatalogoEspecifico(Integer idSistema, Integer tipo);
 
