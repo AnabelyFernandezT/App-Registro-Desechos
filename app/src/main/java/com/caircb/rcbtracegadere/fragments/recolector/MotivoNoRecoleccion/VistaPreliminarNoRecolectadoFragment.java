@@ -129,7 +129,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnVistaPreviaCancelar:
-                setNavegate(ManifiestoNoRecoleccionFragment.newInstance(idAppManifiesto));
+                setNavegate(ManifiestoNoRecoleccionFragment.newInstance(idAppManifiesto,1));
                 break;
             case R.id.btnVistaPreviaGuardar:
                 noRecoleccion = new UserRegistrarNoRecoleccion(getActivity(),idAppManifiesto,getLocation());

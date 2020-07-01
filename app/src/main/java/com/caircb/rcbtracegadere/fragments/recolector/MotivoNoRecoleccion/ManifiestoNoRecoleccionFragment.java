@@ -11,6 +11,7 @@ import android.widget.TabHost;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoAdicional;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoGeneral;
@@ -33,16 +34,17 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
     TabManifiestoGeneralNoRecoleccion tabManifiestoGeneral;
     TabManifiestoAdicionalNoRecoleccion tabManifiestoAdicional;
 
-    Integer idAppManifiesto;
+    Integer idAppManifiesto,pantallaEstado;
 
 
     public ManifiestoNoRecoleccionFragment() {
     }
 
-    public static ManifiestoNoRecoleccionFragment newInstance(Integer manifiestoID) {
+    public static ManifiestoNoRecoleccionFragment newInstance(Integer manifiestoID,Integer pantallaEstado) {
         ManifiestoNoRecoleccionFragment f= new ManifiestoNoRecoleccionFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_PARAM1,manifiestoID);
+        b.putInt(ARG_ESTPATALLA,pantallaEstado);
         f.setArguments(b);
         return f;
     }
@@ -52,6 +54,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
         super.onCreate(savedInstanceState);
         if(getArguments()!=null){
             idAppManifiesto = getArguments().getInt(ARG_PARAM1);
+            pantallaEstado = getArguments().getInt(ARG_ESTPATALLA);
         }
     }
 
@@ -125,7 +128,15 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnManifiestoCancel:
-                setNavegate(HojaRutaAsignadaFragment.newInstance());
+                switch (pantallaEstado){
+                    case 1:
+                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                        break;
+                    case 2:
+                        setNavegate(HojaRutaBuscarFragment.newInstance());
+                        break;
+                }
+
                 break;
             case R.id.btnManifiestoNext:
                 //tab genearl...

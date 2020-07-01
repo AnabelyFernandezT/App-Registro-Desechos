@@ -158,7 +158,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
                 }
                 else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {
-                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
                 }
                 else if (options[item].equals("CANCELAR")) {
                     dialog.dismiss();

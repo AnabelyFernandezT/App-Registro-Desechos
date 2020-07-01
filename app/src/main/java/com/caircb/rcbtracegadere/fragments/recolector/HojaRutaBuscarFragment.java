@@ -153,9 +153,9 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                             case 2:
                                 setNavegate(Manifiesto2FragmentProcesada.newInstance(rowItems.get(position).getIdAppManifiesto(),rowItems.get(position).getEstado(),2));
                                 break;
-                            case 3:
+                            /*case 3:
                                 setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                                break;
+                                break;*/
                         }
                         break;
                     case R.id.btn_manifiesto_more:
@@ -182,7 +182,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                 }
                 else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {
-                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
                 }
                 else if (options[item].equals("CANCELAR")) {
                     dialog.dismiss();
