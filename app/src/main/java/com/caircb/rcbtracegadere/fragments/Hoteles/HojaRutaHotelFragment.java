@@ -154,7 +154,7 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("INICIAR RECOLECCION"))
                 {
-                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
                 }
                 else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {

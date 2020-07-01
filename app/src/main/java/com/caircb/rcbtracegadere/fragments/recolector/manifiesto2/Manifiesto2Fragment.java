@@ -16,6 +16,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
@@ -28,6 +29,7 @@ import java.util.List;
 public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,View.OnClickListener {
 
     private static final String ARG_PARAM1 = "manifiestoID";
+    private static final String ARG_PANTALLA = "pantallaID";
 
     LinearLayout btnManifiestoCancel, btnManifiestoNext;
 
@@ -36,16 +38,17 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     TabManifiestoAdicional tabManifiestoAdicional;
 
     FloatingActionButton mensajes;
-    Integer idAppManifiesto;
+    Integer idAppManifiesto,estadoPantalla;
 
 
     public Manifiesto2Fragment() {
     }
 
-    public static Manifiesto2Fragment newInstance(Integer manifiestoID) {
+    public static Manifiesto2Fragment newInstance(Integer manifiestoID,Integer estadoPantalla) {
         Manifiesto2Fragment f= new Manifiesto2Fragment();
         Bundle b = new Bundle();
         b.putInt(ARG_PARAM1,manifiestoID);
+        b.putInt(ARG_PANTALLA,estadoPantalla); /// llega uno de la pantalla de buscar y 2 desde la de manifiestos
         f.setArguments(b);
         return f;
     }
@@ -55,6 +58,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         super.onCreate(savedInstanceState);
         if(getArguments()!=null){
             idAppManifiesto = getArguments().getInt(ARG_PARAM1);
+            estadoPantalla = getArguments().getInt(ARG_PANTALLA);
         }
     }
 
@@ -152,7 +156,16 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnManifiestoCancel:
-                setNavegate(HojaRutaAsignadaFragment.newInstance());
+                //setNavegate(HojaRutaAsignadaFragment.newInstance());
+                switch (estadoPantalla){
+                    case 1:
+                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                        break;
+                    case 2:
+                        setNavegate(HojaRutaBuscarFragment.newInstance());
+                        break;
+                }
+
                 break;
             case R.id.btnManifiestoNext:
                 //tab genearl...

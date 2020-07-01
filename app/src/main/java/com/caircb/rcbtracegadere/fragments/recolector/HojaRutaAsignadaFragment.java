@@ -157,7 +157,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("INICIAR RECOLECCION"))
                 {
-                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
                 }
                 else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {

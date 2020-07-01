@@ -226,6 +226,7 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
                     });
                     dialogFirma.show();
                 }
+
             }
         });
 

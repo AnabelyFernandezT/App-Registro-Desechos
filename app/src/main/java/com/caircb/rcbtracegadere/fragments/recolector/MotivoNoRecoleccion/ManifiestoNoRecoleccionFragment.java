@@ -25,6 +25,8 @@ import java.util.Date;
 public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCameraListener,View.OnClickListener {
 
     private static final String ARG_PARAM1 = "manifiestoID";
+    private static final String ARG_ESTADO = "estado";
+    private static final String ARG_ESTPATALLA = "pantallEst";
 
     LinearLayout btnManifiestoCancel, btnManifiestoNext;
 

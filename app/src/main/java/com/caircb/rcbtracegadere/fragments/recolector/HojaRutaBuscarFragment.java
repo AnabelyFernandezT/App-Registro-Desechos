@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,7 +26,9 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto.ManifiestoFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2FragmentProcesada;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
@@ -51,6 +55,8 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
+    private ImageButton btnBuscarManifiesto;
+    private EditText txtManifiesto;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -81,20 +87,29 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
         recyclerviewAdapter = new ManifiestoAdapter(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
-        searchView = getView().findViewById(R.id.searchViewManifiestos);
+        txtManifiesto = getView().findViewById(R.id.txtManifiesto);
+        btnBuscarManifiesto = getView().findViewById(R.id.btnBuscarManifiesto);
+        btnBuscarManifiesto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filtro(txtManifiesto.getText().toString());
+            }
+        });
+
+        /*searchView = getView().findViewById(R.id.searchViewManifiestos);
 
         searchView.setOnSearchListener(new SearchView.OnSearchListener() {
             @Override
             public void onSearch(String data) {
                 filtro(data);
             }
-        });
+        });*/
     }
 
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManifSearch(texto);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -104,7 +119,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosBuscarData();
         adapterList();
 
     }
@@ -131,7 +146,17 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                        menu(position);
+                        switch (rowItems.get(position).getEstado()){
+                            case 1:
+                                menu(position);
+                                break;
+                            case 2:
+                                setNavegate(Manifiesto2FragmentProcesada.newInstance(rowItems.get(position).getIdAppManifiesto(),rowItems.get(position).getEstado(),2));
+                                break;
+                            case 3:
+                                setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                                break;
+                        }
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -153,7 +178,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("INICIAR RECOLECCION"))
                 {
-                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
                 }
                 else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {

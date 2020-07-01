@@ -12,6 +12,7 @@ import android.widget.TabHost;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaProcesadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
@@ -23,6 +24,7 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
 
     private static final String ARG_PARAM1 = "manifiestoID";
     private static final String ARG_ESTADO = "estado";
+    private static final String ARG_ESTPATALLA = "pantallEst";
 
     LinearLayout btnManifiestoCancel;
 
@@ -31,17 +33,18 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
     TabManifiestoAdicional tabManifiestoAdicional;
 
     FloatingActionButton mensajes;
-    Integer idAppManifiesto, estado;
+    Integer idAppManifiesto, estado, pantallaEstado;
 
 
     public Manifiesto2FragmentProcesada() {
     }
 
-    public static Manifiesto2FragmentProcesada newInstance(Integer manifiestoID,Integer estado) {
+    public static Manifiesto2FragmentProcesada newInstance(Integer manifiestoID,Integer estado, Integer pantallaEstado) {
         Manifiesto2FragmentProcesada f= new Manifiesto2FragmentProcesada();
         Bundle b = new Bundle();
         b.putInt(ARG_PARAM1,manifiestoID);
         b.putInt(ARG_ESTADO,estado);
+        b.putInt(ARG_ESTPATALLA,pantallaEstado);
         f.setArguments(b);
         return f;
     }
@@ -52,7 +55,7 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
         if(getArguments()!=null){
             idAppManifiesto = getArguments().getInt(ARG_PARAM1);
             estado = getArguments().getInt(ARG_ESTADO);
-
+            pantallaEstado =  getArguments().getInt(ARG_ESTPATALLA);
         }
     }
 
@@ -151,7 +154,15 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnManifiestoCancel:
-                setNavegate(HojaRutaProcesadaFragment.newInstance());
+                switch (pantallaEstado){
+                    case 1:
+                        setNavegate(HojaRutaProcesadaFragment.newInstance());
+                        break;
+                    case 2:
+                        setNavegate(HojaRutaBuscarFragment.newInstance());
+                        break;
+                }
+
                 break;
             /*case R.id.btnManifiestoNext:
                 //tab genearl...
