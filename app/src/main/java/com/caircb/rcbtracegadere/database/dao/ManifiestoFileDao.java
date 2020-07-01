@@ -23,6 +23,8 @@ public abstract class ManifiestoFileDao {
     public static final Integer FOTO_NOVEDAD_FRECUENTE_RECEPCION=3;
     public static final Integer FOTO_FIRMA_TRANSPORTISTA=10;
     public static final Integer FOTO_FIRMA_TECNICO_GENERADOR=11;
+    public static final Integer FOTO_FIRMA_OPERADOR1=12;
+    public static final Integer FOTO_FIRMA_OPERADOR2=13;
     public static final Integer FOTO_FIRMA_RECEPCION_PLATA=12;
     public static final Integer AUDIO_RECOLECCION=20;
 
@@ -105,7 +107,7 @@ public abstract class ManifiestoFileDao {
     public void saveOrUpdate(Integer idAppManifiesto, Integer tipo, String src,Integer status){
         ManifiestoFileEntity foto = obtenerFotografiaEspecifica(idAppManifiesto,tipo,status);
         if(src==null && foto!=null){
-               deleteFile(foto);
+               //deleteFile(foto);
         }else {
             if (foto == null) {
                 foto = new ManifiestoFileEntity();
@@ -128,7 +130,7 @@ public abstract class ManifiestoFileDao {
     public void saveOrUpdate(Integer idAppManifiesto, Integer tipo,String name, String src,String tiempo,Integer status){
         ManifiestoFileEntity file = obtenerFotografiaEspecifica(idAppManifiesto,tipo,status);
         if(src==null && file!=null){
-            deleteFile(file);
+           // deleteFile(file);
             updateTiempoFiletoManifiesto(idAppManifiesto,"");
         }else {
             if (file == null) {
