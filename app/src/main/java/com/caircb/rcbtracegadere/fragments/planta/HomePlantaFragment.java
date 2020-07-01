@@ -98,13 +98,13 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*dialogPlacas = new DialogPlacas(getActivity());
+                dialogPlacas = new DialogPlacas(getActivity());
                 dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacas.setCancelable(false);
-                dialogPlacas.show();*/
+                dialogPlacas.show();
 
-                consultarHojaRutaPlacaTaskTask = new UserConsultarHojaRutaPlacaTask(getActivity(),listenerHojaRuta);
-                consultarHojaRutaPlacaTaskTask.execute();
+                //consultarHojaRutaPlacaTaskTask = new UserConsultarHojaRutaPlacaTask(getActivity(),listenerHojaRuta);
+                //consultarHojaRutaPlacaTaskTask.execute();
             }
         });
 

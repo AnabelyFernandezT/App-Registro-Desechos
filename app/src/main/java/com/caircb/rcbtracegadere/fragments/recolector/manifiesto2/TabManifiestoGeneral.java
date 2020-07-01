@@ -40,7 +40,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
-            txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno
+            txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno, txtOperadorRecolector
             ,txtGenTecCorreo,txtGenTecTelefono,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista, txtFirmaOperador1,txtFirmaOperador2;
 
     private EditText txtNumManifiestoCliente,
@@ -78,6 +78,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtTransReco= this.findViewById(R.id.txtTransReco);
         txtTransRecoAux= this.findViewById(R.id.txtTransRecoAux);
         txtCorreoAlterno = this.findViewById(R.id.txtCorreoAlterno);
+        txtOperadorRecolector = this.findViewById(R.id.txtOperadorRecolector);
 
         txtFirmaMensaje= this.findViewById(R.id.txtFirmaMensaje);
         txtGenTecCorreo= this.findViewById(R.id.txtGenTecCorreo);
@@ -196,13 +197,13 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 txtFirmaOperador1.setVisibility(View.GONE);
                                 imgFirmaOperador1.setVisibility(View.VISIBLE);
                                 imgFirmaOperador1.setImageBitmap(bitmap);
-                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
                                 //firmaTecnicoGenerador=true;
                             }else{
                                 txtFirmaOperador1.setVisibility(View.VISIBLE);
                                 imgFirmaOperador1.setVisibility(View.GONE);
                                 //firmaTecnicoGenerador=false;
-                               // MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, null, MyConstant.STATUS_RECOLECCION);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1, null, MyConstant.STATUS_RECOLECCION);
                             }
                         }
 
@@ -233,13 +234,13 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 txtFirmaOperador2.setVisibility(View.GONE);
                                 imgFirmaOperadorRecolector.setVisibility(View.VISIBLE);
                                 imgFirmaOperadorRecolector.setImageBitmap(bitmap);
-                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
                                // firmaTecnicoGenerador=true;
                             }else{
                                 txtFirmaOperador2.setVisibility(View.VISIBLE);
                                 imgFirmaOperadorRecolector.setVisibility(View.GONE);
                                 //firmaTecnicoGenerador=false;
-                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, null, MyConstant.STATUS_RECOLECCION);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, null, MyConstant.STATUS_RECOLECCION);
                             }
                         }
 
@@ -411,6 +412,11 @@ public class TabManifiestoGeneral extends LinearLayout {
 
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText("GADERE");
+            txtOperadorRecolector.setText(manifiesto.getNombreOperadorRecolector());
+
+            if(txtOperadorRecolector.getText().equals("")){
+                btmAgregarOperador2.setEnabled(false);
+            }
 
 
 
@@ -451,6 +457,24 @@ public class TabManifiestoGeneral extends LinearLayout {
                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                 imgFirmaTecnicoTrasnsportista.setImageBitmap(imagen);
                 firmaTransportista=true;
+            }
+//operador1
+            f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1,MyConstant.STATUS_RECOLECCION);
+            if(f != null){
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
+                txtFirmaOperador1.setVisibility(View.GONE);
+                imgFirmaOperador1.setVisibility(View.VISIBLE);
+                imgFirmaOperador1.setImageBitmap(imagen);
+                //firmaTransportista=true;
+            }
+//operador2
+            f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2,MyConstant.STATUS_RECOLECCION);
+            if(f != null){
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
+                txtFirmaOperador2.setVisibility(View.GONE);
+                imgFirmaOperadorRecolector.setVisibility(View.VISIBLE);
+                imgFirmaOperadorRecolector.setImageBitmap(imagen);
+                //firmaTransportista=true;
             }
 
             tipoPaquete = manifiesto.getTipoPaquete();

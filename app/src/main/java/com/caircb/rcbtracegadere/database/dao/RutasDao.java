@@ -32,6 +32,9 @@ public abstract class RutasDao {
     @Query("select * from tb_rutas where nombre=:nombre")
     public  abstract RutasEntity fetchConsultarId(String nombre);
 
+    @Query("select * from tb_rutas where codigo=:id")
+    public  abstract RutasEntity fetchConsultarNombre(int id);
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createRuta(RutasEntity entity);

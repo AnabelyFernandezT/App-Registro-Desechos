@@ -13,6 +13,8 @@ public class RequestManifiesto {
     private String responsableEntregaCorreo;
     private String responsableEntregaTelefono;
     private String urlFirmaResponsableEntrega;
+    private String urlFirmaAuxiliarRecolector;//operador1
+    private String urlFirmaConductorRecolector; //operador2
     private String novedadReportadaCliente;
     private String urlAudioNovedadCliente;
     private Integer usuarioResponsable;
@@ -174,5 +176,21 @@ public class RequestManifiesto {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getUrlFirmaAuxiliarRecolector() {
+        return urlFirmaAuxiliarRecolector;
+    }
+
+    public void setUrlFirmaAuxiliarRecolector(String urlFirmaAuxiliarRecolector) {
+        this.urlFirmaAuxiliarRecolector = urlFirmaAuxiliarRecolector;
+    }
+
+    public String getUrlFirmaConductorRecolector() {
+        return urlFirmaConductorRecolector;
+    }
+
+    public void setUrlFirmaConductorRecolector(String urlFirmaConductorRecolector) {
+        this.urlFirmaConductorRecolector = urlFirmaConductorRecolector;
     }
 }

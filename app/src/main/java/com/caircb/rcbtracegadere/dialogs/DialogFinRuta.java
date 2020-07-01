@@ -5,10 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +21,18 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
+import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
+import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DialogFinRuta extends MyDialog {
 
@@ -39,8 +48,12 @@ public class DialogFinRuta extends MyDialog {
     String kilometrajeInicio;
     Integer placaInicio;
     Date diaAnterior;
+    Spinner listaDestino, listaDestinoParticular;
 
     UserRegistrarFinRutaTask registroFinRuta;
+    UserConsultarDestinosTask consultarDetino;
+
+    List<DtoCatalogo> listaDestinos;
 
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
@@ -60,11 +73,15 @@ public class DialogFinRuta extends MyDialog {
     }
 
     private void init(){
+        listaDestinos = new ArrayList<>();
         txt_placa = (TextView)getView().findViewById(R.id.Txt_placa);
         txt_kilometraje_inicio = (TextView)getView().findViewById(R.id.txt_kilometraje_inicio);
 
         btnFinApp = (LinearLayout)getView().findViewById(R.id.btnFinalizarRuta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnCancelarApp);
+
+        listaDestino = getView().findViewById(R.id.lista_destino);
+        listaDestinoParticular = getView().findViewById(R.id.lista_destino_particular);
 
         //botones home
         btnPickUpTransportista = (ImageView) getActivity().findViewById(R.id.btnPickUpTransportista);
@@ -85,7 +102,23 @@ public class DialogFinRuta extends MyDialog {
                 DialogFinRuta.this.dismiss();
             }
         });
+
+        listaDestino.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    listaDestinos.get(position-1);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         traerDatosAnteriores();
+        traerDestinos();
     }
 
     public void initButton(){
@@ -151,12 +184,45 @@ public class DialogFinRuta extends MyDialog {
         }
 
         //traer placa
-        CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoEspecifico(placaInicio,4);
-        String placa = c!=null?c.getCodigo():"";
+        Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarNombre(idRuta);
+        //CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoEspecifico(placaInicio,4);
+        String subRuta = r!=null?r.getNombre():"";
 
         txt_kilometraje_inicio.setText(kilometrajeInicio);
-        txt_placa.setText(placa);
+        txt_placa.setText(subRuta);
 
+    }
+
+    private void traerDestinos(){
+        consultarDetino = new UserConsultarDestinosTask(getActivity());
+        consultarDetino.setOnDestinoListener(new UserConsultarDestinosTask.OnDestinoListener() {
+            @Override
+            public void onSuccessful(List<DtoCatalogo> catalogos) {
+                listaDestinos = catalogos;
+                listaDestino = cargarSpinnerDestino(listaDestino,catalogos,true);
+            }
+        });
+        consultarDetino.execute();
+    }
+    public Spinner cargarSpinnerDestino(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
+        ArrayAdapter<String> adapter;
+        Spinner defaulSpiner = spinner;
+        ArrayList<String> listaData = new ArrayList<String>();
+
+        //listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
+        listaData.add("Seleccione...");
+        if(catalogos.size() > 0){
+            for (DtoCatalogo r : catalogos){
+                listaData.add(r.getNombre());
+            }
+        }
+
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.textview_spinner, listaData);
+        defaulSpiner.setAdapter(adapter);
+        defaulSpiner.setEnabled(bhabilitar);
+
+        return defaulSpiner;
     }
 
     private void finRuta(){
