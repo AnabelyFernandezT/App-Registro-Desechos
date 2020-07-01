@@ -116,12 +116,12 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
 
     private void inicializeTab(){
 
-        tabManifiestoGeneral = new TabManifiestoGeneralNoRecoleccion(getActivity(),idAppManifiesto);
+        tabManifiestoGeneral = new TabManifiestoGeneralNoRecoleccion(getActivity(),idAppManifiesto,pantallaEstado);
 
         tabManifiestoAdicional = new TabManifiestoAdicionalNoRecoleccion(getActivity(),
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
-                tabManifiestoGeneral.getTiempoAudio());
+                tabManifiestoGeneral.getTiempoAudio(),pantallaEstado);
     }
 
     @Override

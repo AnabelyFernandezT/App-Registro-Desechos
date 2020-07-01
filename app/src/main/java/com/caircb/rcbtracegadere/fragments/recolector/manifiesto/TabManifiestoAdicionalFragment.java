@@ -140,7 +140,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
 
         motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idAppManifiesto);
         recyclerViewLtsMotivoNoRecoleccion.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerAdapterNoRecolecciones = new ManifiestoNoRecoleccionBaseAdapterR(this.getContext(), motivoNoRecoleccion,idAppManifiesto, bloquear);
+        recyclerAdapterNoRecolecciones = new ManifiestoNoRecoleccionBaseAdapterR(this.getContext(), motivoNoRecoleccion,idAppManifiesto, bloquear,2);
         recyclerAdapterNoRecolecciones.setOnClickOpenFotografias(new ManifiestoNoRecoleccionBaseAdapterR.OnClickOpenFotografias() {
             @Override
             public void onShow(Integer catalogoID, final Integer position) {

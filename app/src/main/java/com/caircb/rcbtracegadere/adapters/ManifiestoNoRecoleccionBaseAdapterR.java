@@ -23,7 +23,7 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
 
     private Context mContext;
     List<RowItemNoRecoleccion> listItems;
-    Integer idAppManifiseto;
+    Integer idAppManifiseto,estadoManifiesto;
     boolean desactivarComp;
 
     public interface OnClickOpenFotografias {
@@ -36,10 +36,11 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
     private OnClickOpenFotografias mOnClickOpenFotografias;
     private ManifiestoNovedadBaseAdapterR.OnReloadAdater mOnReloadAdaptador;
 
-    public ManifiestoNoRecoleccionBaseAdapterR(Context context, List<RowItemNoRecoleccion> items, Integer idAppManifiesto, boolean desactivarComp){
+    public ManifiestoNoRecoleccionBaseAdapterR(Context context, List<RowItemNoRecoleccion> items, Integer idAppManifiesto, boolean desactivarComp, Integer estadoManifiesto){
         mContext = context;
         listItems = items;
         this.desactivarComp = desactivarComp;
+        this.estadoManifiesto = estadoManifiesto;
         this.idAppManifiseto = idAppManifiesto;
     }
 
@@ -57,28 +58,33 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
         holder.txtCatalogo.setText(item.getCatalogo());
         holder.lnlBadge.setVisibility(item.getNumFotos() > 0? View.VISIBLE : View.GONE);
         holder.txtCountPhoto.setText(""+item.getNumFotos());
-
         holder.chkEstado.setChecked(item.isEstadoChek());
+
+        if(estadoManifiesto !=1) {
+            holder.chkEstado.setClickable(false);
+        }
+
         if(desactivarComp == true){
             holder.chkEstado.setEnabled(false);
         }
-
-        holder.chkEstado.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(item.getNumFotos() >0){
-                    if(mOnReloadAdaptador!=null)mOnReloadAdaptador.onShowM(item.getId(),position);
-                }else{
-                    if(((CheckBox)v).isChecked()){
-                        v.setSelected(true);
-                        item.setEstadoChek(true);
-                        registarCheckObservacion(idAppManifiseto, item.getId(),true);
-                    }else{
-                        v.setSelected(false);
-                        item.setEstadoChek(false);
-                        registarCheckObservacion(idAppManifiseto, item.getId(),false);
+        if(estadoManifiesto ==1) {
+            holder.chkEstado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (item.getNumFotos() > 0) {
+                        if (mOnReloadAdaptador != null)
+                            mOnReloadAdaptador.onShowM(item.getId(), position);
+                    } else {
+                        if (((CheckBox) v).isChecked()) {
+                            v.setSelected(true);
+                            item.setEstadoChek(true);
+                            registarCheckObservacion(idAppManifiseto, item.getId(), true);
+                        } else {
+                            v.setSelected(false);
+                            item.setEstadoChek(false);
+                            registarCheckObservacion(idAppManifiseto, item.getId(), false);
+                        }
                     }
-                }
                 /*
                 if(((CheckBox)v).isChecked()){
                     v.setSelected(true);
@@ -90,15 +96,17 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
                     registarCheckObservacion(item.getId(),false);
                 }
                 */
-            }
-        });
+                }
+            });
 
-        holder.btnEvidenciaNovedadFrecuente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mOnClickOpenFotografias!=null)mOnClickOpenFotografias.onShow(item.getId(),position);
-            }
-        });
+            holder.btnEvidenciaNovedadFrecuente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickOpenFotografias != null)
+                        mOnClickOpenFotografias.onShow(item.getId(), position);
+                }
+            });
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

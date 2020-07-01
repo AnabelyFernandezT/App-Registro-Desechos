@@ -44,7 +44,7 @@ import java.util.List;
 
 public class TabManifiestoAdicionalNoRecoleccion extends LinearLayout {
 
-    Integer idAppManifiesto,idAppTipoPaquete;
+    Integer idAppManifiesto,idAppTipoPaquete,estadoManifiesto;
     String mAudio;
     Window window;
     boolean bloquear;
@@ -78,10 +78,12 @@ public class TabManifiestoAdicionalNoRecoleccion extends LinearLayout {
     public TabManifiestoAdicionalNoRecoleccion(Context context,
                                                Integer idAppManifiesto,
                                                Integer tipoPaquete,
-                                               String tiempoAudio) {
+                                               String tiempoAudio,
+                                               Integer estadoManifiesto) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.idAppTipoPaquete = tipoPaquete;
+        this.estadoManifiesto = estadoManifiesto;
         View.inflate(context, R.layout.tab_manifiesto_adicional_no_recoleccion, this);
         init();
         //initData();
@@ -197,6 +199,8 @@ public class TabManifiestoAdicionalNoRecoleccion extends LinearLayout {
         if (manifiesto!=null){
             txtNovedadEncontrada.setText(manifiesto.getNovedadEncontrada());
         }
+
+        visible();
     }
 
 
@@ -205,7 +209,7 @@ public class TabManifiestoAdicionalNoRecoleccion extends LinearLayout {
         /*****/
         motivoNoRecoleccion = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccion(idAppManifiesto);
         recyclerViewLtsMotivoNoRecoleccion.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNoRecolecciones = new ManifiestoNoRecoleccionBaseAdapterR(this.getContext(), motivoNoRecoleccion,idAppManifiesto, bloquear);
+        recyclerAdapterNoRecolecciones = new ManifiestoNoRecoleccionBaseAdapterR(this.getContext(), motivoNoRecoleccion,idAppManifiesto, bloquear,estadoManifiesto);
         recyclerAdapterNoRecolecciones.setOnClickReaload(new ManifiestoNovedadBaseAdapterR.OnReloadAdater() {
             @Override
             public void onShowM(final Integer catalogoID, final Integer position) {
@@ -264,6 +268,12 @@ public class TabManifiestoAdicionalNoRecoleccion extends LinearLayout {
             }
         });
         recyclerViewLtsMotivoNoRecoleccion.setAdapter(recyclerAdapterNoRecolecciones);
+    }
+    private void visible (){
+        if(estadoManifiesto !=1){
+            btnAgregarAudio.setEnabled(false);
+            txtNovedadEncontrada.setEnabled(false);
+        }
     }
 
     private void preLoadAudio(String tiempo){

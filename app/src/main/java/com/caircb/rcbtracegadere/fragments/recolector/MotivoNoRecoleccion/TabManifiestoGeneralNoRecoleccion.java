@@ -28,7 +28,7 @@ import com.caircb.rcbtracegadere.utils.Utils;
 
 public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
 
-    private Integer idAppManifiesto;
+    private Integer idAppManifiesto,estadoManifiesto;
 
     private Boolean bloquear;
     private  Integer tipoPaquete=null;
@@ -56,10 +56,11 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
     String identificacion, nombre, correo, telefono;
     UserConsultarCedulaTask userConsultarCedulaTask;
 
-    public TabManifiestoGeneralNoRecoleccion(Context context, Integer idAppManifiesto) {
+    public TabManifiestoGeneralNoRecoleccion(Context context, Integer idAppManifiesto,Integer estado) {
         super(context);
         View.inflate(context, R.layout.tab_manifiesto_general_no_recoleccion, this);
         this.idAppManifiesto=idAppManifiesto;
+        this.estadoManifiesto= estado;
         init();
         loadDataManifiesto();
     }
@@ -96,8 +97,7 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
             }
         });
 
-
-/*
+    /*
         btnBuscarIdentificacion.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,6 +274,8 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
             }
         });*/
 
+visible();
+
     }
 
     /*private void validarTecnico(){
@@ -288,7 +290,17 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
         }
     }*/
 
-
+    private void visible (){
+        if(estadoManifiesto != 1){
+            btnNumManifiestoCliente.setEnabled(false);
+            //btnAgregarFirma.setEnabled(false);
+            //btnAgregarFirmaOperador1.setEnabled(false);
+            //btmAgregarOperador2.setEnabled(false);
+            btnAgregarFirmaTransportista.setEnabled(false);
+            //btnBuscarIdentificacion.setEnabled(false);
+            //txtRespEntregaIdentificacion.setEnabled(false);
+        }
+    }
 
     private void loadDataManifiesto(){
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
