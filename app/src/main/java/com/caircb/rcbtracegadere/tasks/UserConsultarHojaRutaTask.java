@@ -12,7 +12,9 @@ import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,7 +42,8 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
 
         Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
 
-        WebService.api().getHojaRuta(new RequestHojaRuta("2020-06-23",0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
+
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
                 if(response.isSuccessful()){

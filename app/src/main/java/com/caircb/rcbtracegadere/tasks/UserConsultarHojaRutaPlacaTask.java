@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.services.WebService;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,7 +39,7 @@ public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements Ret
 
         Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
 
-        WebService.api().getHojaRuta(new RequestHojaRuta("",idVehiculo,0)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),idVehiculo,0)).enqueue(new Callback<List<DtoManifiesto>>() {
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
                 if(response.isSuccessful()){

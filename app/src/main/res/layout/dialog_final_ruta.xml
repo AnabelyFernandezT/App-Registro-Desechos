@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/fragment_body"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         android:background="#FFFF"
         android:padding="15dp"
         android:orientation="vertical"
@@ -29,7 +29,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Placa:" />
+                android:text="Sub ruta:" />
 
             <TextView
                 android:id="@+id/Txt_placa"
@@ -78,6 +78,36 @@
                 android:maxLength="7"
                 android:paddingRight="10dp"
                 android:singleLine="true" />
+
+            <TextView
+                android:textSize="20dp"
+                android:textColor="@color/app_gadere"
+                android:fontFamily="@font/quicksand_bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Destino:" />
+
+            <Spinner
+                android:id="@+id/lista_destino"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:spinnerMode="dialog"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:textSize="20dp"
+                android:textColor="@color/app_gadere"
+                android:fontFamily="@font/quicksand_bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ruta:" />
+
+            <Spinner
+                android:id="@+id/lista_destino_particular"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:spinnerMode="dialog"
+                android:gravity="center_vertical" />
 
         </LinearLayout>
 

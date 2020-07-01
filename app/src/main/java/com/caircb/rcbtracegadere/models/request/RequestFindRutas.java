@@ -27,4 +27,6 @@ public class RequestFindRutas {
     public void setFechaManifiestos(Date fechaManifiestos) {
         this.fechaManifiestos = fechaManifiestos;
     }
+
+
 }

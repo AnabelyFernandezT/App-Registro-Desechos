@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -50,8 +51,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     DtoFile firmaTransportista;
     DtoFile firmaTecnicoGenerador;
     DtoFile audioNovedadCliente;
-    DtoFile novedadFrecuente;
-    DtoFile motivoRecoleccion;
+    DtoFile firmaAuxiliarRecolector;
+    DtoFile firmaConductorRecolector;
     Location location;
     MyPrint print;
 
@@ -84,6 +85,12 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
         firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_RECOLECCION);
         if(firmaTecnicoGenerador!=null && !firmaTecnicoGenerador.isSincronizado())listaFileDefauld.add(firmaTecnicoGenerador);
+
+        firmaAuxiliarRecolector = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1, MyConstant.STATUS_RECOLECCION);
+        if(firmaAuxiliarRecolector!=null && !firmaAuxiliarRecolector.isSincronizado())listaFileDefauld.add(firmaAuxiliarRecolector);
+
+        firmaConductorRecolector = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, MyConstant.STATUS_RECOLECCION);
+        if(firmaConductorRecolector!=null && !firmaConductorRecolector.isSincronizado())listaFileDefauld.add(firmaConductorRecolector);
 
         audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
         if(audioNovedadCliente!=null && !audioNovedadCliente.isSincronizado())listaFileDefauld.add(audioNovedadCliente);
@@ -144,14 +151,20 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
     private RequestManifiesto createRequestManifiesto(){
         RequestManifiesto rq = null;
+        TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(model.getIdTecnicoGenerador());
         if(model!=null) {
             rq = new RequestManifiesto();
             rq.setIdAppManifiesto(idAppManifiesto);
             rq.setNumeroManifiesto(model.getNumeroManifiesto());
             rq.setNumeroManifiestoCliente(model.getNumManifiestoCliente());
             rq.setUrlFirmaTransportista(firmaTransportista!=null? (path+"/"+firmaTransportista.getUrl()):"");
-            //rq.setResponsableEntregaIdentificacion(m.getTecnicoIdentificacion());
+            rq.setResponsableEntregaIdentificacion(tec.getIdentificacion());
+            rq.setResponsableEntregaNombre(tec.getNombre());
+            rq.setResponsableEntregaCorreo(tec.getCorreo());
+            rq.setResponsableEntregaTelefono(tec.getTelefono());
             rq.setUrlFirmaResponsableEntrega(firmaTecnicoGenerador!=null?(path+"/"+firmaTecnicoGenerador.getUrl()):"");
+            rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector!=null?(path+"/"+firmaAuxiliarRecolector.getUrl()):"");
+            rq.setUrlFirmaConductorRecolector(firmaConductorRecolector!=null?(path+"/"+firmaConductorRecolector.getUrl()):"");
             rq.setUsuarioResponsable(MySession.getIdUsuario());
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
             rq.setUrlAudioNovedadCliente(audioNovedadCliente!=null?( path+"/"+audioNovedadCliente.getUrl()):"");

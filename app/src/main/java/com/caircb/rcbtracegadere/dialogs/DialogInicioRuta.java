@@ -28,6 +28,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
+import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
 import java.util.ArrayList;
@@ -49,13 +50,13 @@ public class DialogInicioRuta extends MyDialog {
     long idRegistro;
 
     UserRegistrarInicioRutaTask registroInicioRuta;
-    UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
+    UserConsultarRutasTask consultarPlacasInicioRutaDisponible;
 
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista, btnFinRuta,regionBuscar;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
 
-    List<DtoCatalogo> listaPlacasDisponibles;
+    List<DtoFindRutas> listaPlacasDisponibles;
     List<RowRutas> listaRutas;
 
     /*
@@ -118,7 +119,7 @@ public class DialogInicioRuta extends MyDialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
-                    listaRutas.get(position-1);
+                    listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
                 }
 
@@ -138,7 +139,7 @@ public class DialogInicioRuta extends MyDialog {
             }
         });
 
-        spinnerPlacas = cargarSpinnerRuta(spinnerPlacas,true);
+        datosRutasDisponibles();
        // datosPlacasDisponibles();
     }
 
@@ -182,17 +183,17 @@ public class DialogInicioRuta extends MyDialog {
         messageBox(mensaje);
     }
 
-   /*private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
+   private void datosRutasDisponibles(){
+        consultarPlacasInicioRutaDisponible = new UserConsultarRutasTask(getActivity());
+        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarRutasTask.OnPlacaListener() {
             @Override
-            public void onSuccessful(List<DtoCatalogo> catalogos) {
+            public void onSuccessful(List<DtoFindRutas> catalogos) {
                 listaPlacasDisponibles = catalogos;
-                spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
+                spinnerPlacas = cargarSpinnerRuta(spinnerPlacas,catalogos,true);
             }
         });
         consultarPlacasInicioRutaDisponible.execute();
-    }*/
+    }
 
 
 
@@ -215,16 +216,16 @@ public class DialogInicioRuta extends MyDialog {
 
         return defaulSpiner;
     }*/
-    public Spinner cargarSpinnerRuta(Spinner spinner, boolean bhabilitar){
+    public Spinner cargarSpinnerRuta(Spinner spinner, List<DtoFindRutas> catalogos, boolean bhabilitar){
 
         ArrayAdapter<String> adapter;
         Spinner defaulSpiner = spinner;
         ArrayList<String> listaData = new ArrayList<String>();
 
-        listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
+        //listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
         listaData.add("Seleccione...");
-        if(listaRutas.size() > 0){
-            for (RowRutas r : listaRutas){
+        if(catalogos.size() > 0){
+            for (DtoFindRutas r : catalogos){
                 listaData.add(r.getNombreRuta());
             }
         }

@@ -1,21 +1,23 @@
 package com.caircb.rcbtracegadere.models.request;
 
+import java.util.Date;
+
 public class RequestHojaRuta {
-    private String fecha;
+    private Date fecha;
     private Integer idVehiculo;
     private Integer idSubRuta;
 
-    public RequestHojaRuta(String fecha, Integer idVehiculo, Integer IdRuta) {
+    public  RequestHojaRuta(Date fecha, Integer idVehiculo, Integer IdRuta) {
         this.fecha = fecha;
         this.idVehiculo = idVehiculo;
         this.idSubRuta = IdRuta;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
