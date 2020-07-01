@@ -28,7 +28,7 @@ import com.caircb.rcbtracegadere.utils.Utils;
 
 public class TabManifiestoGeneralProcesada extends LinearLayout {
 
-    private Integer idAppManifiesto;
+    private Integer idAppManifiesto,estadoManifiesto;
 
     private Boolean bloquear;
     private  Integer tipoPaquete=null;
@@ -56,10 +56,11 @@ public class TabManifiestoGeneralProcesada extends LinearLayout {
     String identificacion, nombre, correo, telefono;
     UserConsultarCedulaTask userConsultarCedulaTask;
 
-    public TabManifiestoGeneralProcesada(Context context, Integer idAppManifiesto) {
+    public TabManifiestoGeneralProcesada(Context context, Integer idAppManifiesto,Integer estado) {
         super(context);
         View.inflate(context, R.layout.tab_manifiesto_general, this);
         this.idAppManifiesto=idAppManifiesto;
+        this.estadoManifiesto = estado;
         init();
         loadDataManifiesto();
     }

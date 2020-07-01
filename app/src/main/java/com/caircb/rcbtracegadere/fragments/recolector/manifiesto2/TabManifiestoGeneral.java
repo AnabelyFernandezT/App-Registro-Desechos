@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class TabManifiestoGeneral extends LinearLayout {
 
-    private Integer idAppManifiesto;
+    private Integer idAppManifiesto ,estadoManifiesto;
 
     private Boolean bloquear;
     private  Integer tipoPaquete=null;
@@ -59,10 +59,11 @@ public class TabManifiestoGeneral extends LinearLayout {
     String identificacion, nombre, correo, telefono;
     UserConsultarCedulaTask userConsultarCedulaTask;
 
-    public TabManifiestoGeneral(Context context,Integer idAppManifiesto) {
+    public TabManifiestoGeneral(Context context,Integer idAppManifiesto,Integer estado) {
         super(context);
         View.inflate(context, R.layout.tab_manifiesto_general, this);
         this.idAppManifiesto=idAppManifiesto;
+        this.estadoManifiesto= estado;
         init();
         loadDataManifiesto();
     }
@@ -375,6 +376,20 @@ public class TabManifiestoGeneral extends LinearLayout {
             }
         });
 
+        visible();
+
+    }
+
+    private void visible (){
+        if(estadoManifiesto != 1){
+            btnNumManifiestoCliente.setEnabled(false);
+            btnAgregarFirma.setEnabled(false);
+            btnAgregarFirmaOperador1.setEnabled(false);
+            btmAgregarOperador2.setEnabled(false);
+            btnAgregarFirmaTransportista.setEnabled(false);
+            btnBuscarIdentificacion.setEnabled(false);
+            txtRespEntregaIdentificacion.setEnabled(false);
+        }
     }
 
     /*private void validarTecnico(){

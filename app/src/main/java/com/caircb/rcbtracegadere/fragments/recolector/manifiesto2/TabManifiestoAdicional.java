@@ -47,7 +47,7 @@ import java.util.List;
 
 public class TabManifiestoAdicional extends LinearLayout {
 
-    Integer idAppManifiesto,idAppTipoPaquete;
+    Integer idAppManifiesto,idAppTipoPaquete,estadoManifiesto;
     String mAudio;
     Window window;
     boolean bloquear;
@@ -82,10 +82,12 @@ public class TabManifiestoAdicional extends LinearLayout {
     public TabManifiestoAdicional(Context context,
                                   Integer idAppManifiesto,
                                   Integer tipoPaquete,
-                                  String tiempoAudio) {
+                                  String tiempoAudio,
+                                  Integer estadoManifiesto) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.idAppTipoPaquete = tipoPaquete;
+        this.estadoManifiesto = estadoManifiesto;
         View.inflate(context, R.layout.tab_manifiesto_adicional, this);
         init();
         //initData();
@@ -204,6 +206,15 @@ public class TabManifiestoAdicional extends LinearLayout {
         if (manifiesto!=null){
             txtNovedadEncontrada.setText(manifiesto.getNovedadEncontrada());
         }
+
+        visible();
+    }
+
+    private void visible (){
+        if(estadoManifiesto !=1){
+            btnAgregarAudio.setEnabled(false);
+            txtNovedadEncontrada.setEnabled(false);
+        }
     }
 
     private void initData(){
@@ -269,7 +280,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     private void loadData(){
        novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto);
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto,estadoManifiesto);
 
         recyclerAdapterNovedades.setOnClickReaload(new ManifiestoNovedadBaseAdapterR.OnReloadAdater() {
             @Override
