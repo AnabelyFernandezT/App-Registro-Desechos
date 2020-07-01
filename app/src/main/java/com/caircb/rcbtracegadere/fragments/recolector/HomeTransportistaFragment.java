@@ -79,6 +79,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setNavegate(HojaRutaBuscarFragment.newInstance());
                 //setNavegate(BuscarFragment.create());
                 //setNavegate(HomeRecepcionFragment.create());
             }
@@ -172,6 +173,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         });
         */
 
+
         btnSincManifiestos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,12 +201,9 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnPickUpTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    //setNavegate(ListaManifiestoInicialFragment.create());
-
-
+                setNavegate(HojaRutaProcesadaFragment.newInstance());
             }
         });
-
 
         btnInicioRuta.setOnClickListener(new View.OnClickListener() {
             @Override
