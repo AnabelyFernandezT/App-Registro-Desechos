@@ -27,6 +27,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
+import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
@@ -46,14 +47,16 @@ public class DialogFinRuta extends MyDialog {
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
     String kilometrajeInicio;
-    Integer placaInicio;
+    Integer placaInicio, idInicioFin;
     Date diaAnterior;
     Spinner listaDestino, listaDestinoParticular;
+    String destino;
 
     UserRegistrarFinRutaTask registroFinRuta;
     UserConsultarDestinosTask consultarDetino;
+    UserDestinoEspecificoTask consultaDestinoEspecifico;
 
-    List<DtoCatalogo> listaDestinos;
+    List<DtoCatalogo> listaDestinos, destinosEspecificos;
 
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
@@ -74,6 +77,7 @@ public class DialogFinRuta extends MyDialog {
 
     private void init(){
         listaDestinos = new ArrayList<>();
+        destinosEspecificos = new ArrayList<>();
         txt_placa = (TextView)getView().findViewById(R.id.Txt_placa);
         txt_kilometraje_inicio = (TextView)getView().findViewById(R.id.txt_kilometraje_inicio);
 
@@ -108,6 +112,24 @@ public class DialogFinRuta extends MyDialog {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
                     listaDestinos.get(position-1);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+position);
+                    traerDestinoEspecifico();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        listaDestinoParticular.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    destinosEspecificos.get(position-1);
+                    destino = (String) listaDestinoParticular.getSelectedItem();
                 }
 
             }
@@ -118,6 +140,7 @@ public class DialogFinRuta extends MyDialog {
             }
         });
         traerDatosAnteriores();
+
         traerDestinos();
     }
 
@@ -149,9 +172,12 @@ public class DialogFinRuta extends MyDialog {
     {
 
         Date dia = AppDatabase.getDateTime();
+        CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
+        int idDestino = c!=null?c.getIdSistema():-1;
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
 
 
-        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
+        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(idInicioFin, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
 
         registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
@@ -181,6 +207,8 @@ public class DialogFinRuta extends MyDialog {
             kilometrajeInicio = rut.getKilometrajeInicio();
             //placaInicio = rut.getIdTransporteVehiculo();
             diaAnterior = rut.getFechaInicio();
+            idInicioFin = rut.getIdRutaInicioFin();
+
         }
 
         //traer placa
@@ -223,6 +251,18 @@ public class DialogFinRuta extends MyDialog {
         defaulSpiner.setEnabled(bhabilitar);
 
         return defaulSpiner;
+    }
+
+    private void traerDestinoEspecifico(){
+        consultaDestinoEspecifico = new UserDestinoEspecificoTask(getActivity());
+        consultaDestinoEspecifico.setOnDestinoListener(new UserDestinoEspecificoTask.OnDestinoListener() {
+            @Override
+            public void onSuccessful(List<DtoCatalogo> catalogos) {
+                destinosEspecificos = catalogos;
+                listaDestinoParticular = cargarSpinnerDestino(listaDestinoParticular,catalogos,true);
+            }
+        });
+        consultaDestinoEspecifico.execute();
     }
 
     private void finRuta(){

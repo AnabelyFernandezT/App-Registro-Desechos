@@ -17,12 +17,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserConsultarDestinosTask extends MyRetrofitApi implements RetrofitCallbacks {
-
-    public UserConsultarDestinosTask(Context context) {
+public class UserDestinoEspecificoTask extends MyRetrofitApi implements RetrofitCallbacks {
+    public UserDestinoEspecificoTask(Context context) {
         super(context);
     }
-
     public interface OnDestinoListener {
         public void onSuccessful(List<DtoCatalogo> catalogos);
     }
@@ -31,15 +29,17 @@ public class UserConsultarDestinosTask extends MyRetrofitApi implements Retrofit
 
     @Override
     public void execute() {
+        Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino").getValor());
+        //Integer idDestino = 1;
         progressShow("Consultando destino disponibles...");
 
-        WebService.api().getCatalogos(new RequestCatalogo(9,"")).enqueue(new Callback<List<DtoCatalogo>>() {
+        WebService.api().getCatalogos(new RequestCatalogo(11,String.valueOf(idDestino))).enqueue(new Callback<List<DtoCatalogo>>() {
             @Override
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()){
                     progressHide();
                     if(onDestinoListener!=null)onDestinoListener.onSuccessful(response.body());
-                    MyApp.getDBO().catalogoDao().saveOrUpdate(response.body(), 9);
+                    MyApp.getDBO().catalogoDao().saveOrUpdate(response.body(), 11);
                 }else {
                     progressHide();
                 }
@@ -49,9 +49,12 @@ public class UserConsultarDestinosTask extends MyRetrofitApi implements Retrofit
             public void onFailure(Call<List<DtoCatalogo>> call, Throwable t) {
                 progressHide();
             }
+
+
         });
 
     }
+
 
     public void setOnDestinoListener(@NonNull OnDestinoListener l){
         onDestinoListener = l;
