@@ -118,7 +118,6 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
         rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosBuscarData();
         adapterList();
 

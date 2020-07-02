@@ -48,7 +48,7 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosBuscarData();
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=2 order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado in(2,3) order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosProcesados();
 
