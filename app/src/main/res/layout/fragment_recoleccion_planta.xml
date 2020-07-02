@@ -97,7 +97,8 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-        <LinearLayout
+
+     <!--   <LinearLayout
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:orientation="vertical"
@@ -124,7 +125,7 @@
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="0.5dp"
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
-        </LinearLayout>
+        </LinearLayout> -->
 
 
     </LinearLayout>

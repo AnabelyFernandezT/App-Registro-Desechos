@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.services;
 
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
+import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
@@ -29,6 +30,9 @@ public interface IServicio {
 
     @POST("Catalogo/obtenerCatalogo")
     Call<List<DtoCatalogo>> getCatalogos(@Body RequestCatalogo model);
+
+    @POST("Catalogo/obtenerCatalogo")
+    Call<List<DtoCatalogo>> getCatalogoE(@Body RequestCatalogoDestino model);
 
     @POST("HojaRuta/obtenerHojaRuta")
     Call<List<DtoManifiesto>> getHojaRuta(@Body RequestHojaRuta model);

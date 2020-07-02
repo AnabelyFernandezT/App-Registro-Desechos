@@ -34,10 +34,10 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                 setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
-                if(manifiestoPlanta.validaNovedadesFrecuentesPendienteFotos()){
+              /*  if(manifiestoPlanta.validaNovedadesFrecuentesPendienteFotos()){
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
-                }
+                }*/
                 if(manifiestoPlanta.validaExisteFirma()){
                     messageBox("Se requiere firma  ");
                     return;

@@ -124,8 +124,9 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                     if(response.isSuccessful()){
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
+                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                             imprimirEtiquetas();
-                            //MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                            MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
 
@@ -175,6 +176,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setDetalles(createRequestDet());
             rq.setNovedadFrecuente(createRequestNovedadFrecuente());
             rq.setNovedadNoRecoleccion(createRequestNoRecoleccion());
+            rq.setEstado(2);
         }
         return  rq;
     }
@@ -275,7 +277,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 @Override
                 public void onSuccessful() {
                     if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                    MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                    //MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                 }
 
                 @Override

@@ -25,6 +25,7 @@ public class RequestManifiesto {
     private List<RequestManifiestoDet> detalles;
     private List<RequestManifiestoNovedadFrecuente> novedadFrecuente;
     private List<RequestManifiestoNovedadNoRecoleccion> novedadNoRecoleccion;
+    private Integer estado;
 
     public Integer getIdAppManifiesto() {
         return idAppManifiesto;
@@ -192,5 +193,13 @@ public class RequestManifiesto {
 
     public void setUrlFirmaConductorRecolector(String urlFirmaConductorRecolector) {
         this.urlFirmaConductorRecolector = urlFirmaConductorRecolector;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 }

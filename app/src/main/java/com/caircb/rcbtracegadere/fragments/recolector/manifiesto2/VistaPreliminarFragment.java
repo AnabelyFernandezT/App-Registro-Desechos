@@ -140,7 +140,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                     @Override
                     public void onFail() {
                         setNavegate(HojaRutaAsignadaFragment.newInstance());
-                        messageBox("No se encontro impresora");
+                        messageBox("No se encontro impresora, Datos Guardados");
                     }
                 });
                 userRegistrarRecoleccion.execute();
