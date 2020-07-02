@@ -23,6 +23,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.fragments.planta.ManifiestoPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
@@ -130,9 +131,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                        menu(position);
+                        setNavegate(ManifiestoGestorFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -142,31 +141,6 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
         //recyclerView.addItemDecoration(divider);
-    }
-
-    private void  menu(final int position){
-        final CharSequence[] options = {"INICIAR RECOLECCION", "INGRESAR MOTIVO NO RECOLECCION", "CANCELAR"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("INICIAR RECOLECCION"))
-                {
-                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
-                }
-                else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
-                {
-                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-                }
-                else if (options[item].equals("CANCELAR")) {
-                    dialog.dismiss();
-                }
-
-            }
-        });
-        builder.show();
     }
 
     @Override
