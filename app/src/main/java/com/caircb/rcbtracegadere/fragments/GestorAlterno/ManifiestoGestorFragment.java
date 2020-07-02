@@ -21,7 +21,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
 
     private static final String ARG_PARAM1 = "manifiestoID";
 
-    RecepcionPlantaFragment manifiestoPlanta;
+    RecepcionGestorFragment manifiestoGestor;
 
     Integer idAppManifiesto;
     UserRegistrarPlanta userRegistrarPlanta;
@@ -34,28 +34,28 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 setNavegate(HojaRutaAsignadaGestorFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
-                if(manifiestoPlanta.validaNovedadesFrecuentesPendienteFotos()){
+                if(manifiestoGestor.validaNovedadesFrecuentesPendienteFotos()){
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }
-                if(manifiestoPlanta.validaExisteFirma()){
+                if(manifiestoGestor.validaExisteFirma()){
                     messageBox("Se requiere firma  ");
                     return;
                 }
 
-                if(manifiestoPlanta.validaPeso()){
+                if(manifiestoGestor.validaPeso()){
                     messageBox("Se requiere que ingrese el peso");
                     return;
                 }
 
 
-                double peso = manifiestoPlanta.guardar();
+                double peso = manifiestoGestor.guardar();
                 userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso);
                 userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
                     @Override
                     public void onSuccessful() {
                        messageBox("Datos Guardados");
-                       setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                       setNavegate(HojaRutaAsignadaGestorFragment.newInstance());
                     }
                 });
                 userRegistrarPlanta.execute();
@@ -75,8 +75,8 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
 
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
-        if(manifiestoPlanta!=null && ((requestCode>=301 && requestCode<=304) ||(requestCode>=201 && requestCode<=204))) {
-            manifiestoPlanta.setMakePhoto(requestCode);
+        if(manifiestoGestor!=null && ((requestCode>=301 && requestCode<=304) ||(requestCode>=201 && requestCode<=204))) {
+            manifiestoGestor.setMakePhoto(requestCode);
         }
     }
 
@@ -96,13 +96,13 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
         TabHost tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
         tabs.setup();
 
-        TabHost.TabSpec spec=tabs.newTabSpec("PLANTA");
+        TabHost.TabSpec spec=tabs.newTabSpec("GESTOR ALTERNO");
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                return manifiestoPlanta;
+                return manifiestoGestor;
             }
         });
-        spec.setIndicator("PLANTA");
+        spec.setIndicator("GESTOR ALTERNO");
         tabs.addTab(spec);
     }
 
@@ -112,7 +112,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
 
-        manifiestoPlanta = new RecepcionPlantaFragment(getActivity(),idAppManifiesto);
+        manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
     }
 
 
