@@ -12,6 +12,7 @@ public final class MyConstant {
 
 
     public static final Integer STATUS_RECOLECCION=10;
+    public static final Integer STATUS_NO_RECOLECCION=11;
     public static final Integer STATUS_RECEPCION_PLANTA=99;
 
     //public static final String PATH_SAPI="https://servicios.raulcoka.net/ServicioSeguridadesDev/api/v1/";//desarrollo

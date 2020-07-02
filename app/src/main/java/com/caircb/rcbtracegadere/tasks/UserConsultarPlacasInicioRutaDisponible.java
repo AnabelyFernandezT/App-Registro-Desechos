@@ -35,7 +35,7 @@ public class UserConsultarPlacasInicioRutaDisponible extends MyRetrofitApi imple
 
         progressShow("Consultando vihiculos disponibles...");
 
-        WebService.api().getCatalogos(new RequestCatalogo(8, "2020-06-23 00:00:00.000")).enqueue(new Callback<List<DtoCatalogo>>() { //8 catalogos que ya finalizaron ruta
+        WebService.api().getCatalogos(new RequestCatalogo(8, "")).enqueue(new Callback<List<DtoCatalogo>>() { //8 catalogos que ya finalizaron ruta
             @Override
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()) {
