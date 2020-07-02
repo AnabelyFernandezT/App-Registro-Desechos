@@ -48,6 +48,8 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
     DtoFile firmaTransportista;
     DtoFile firmaTecnicoGenerador;
     DtoFile audioNovedadCliente;
+    DtoFile firmaAuxiliarRecolector;
+    DtoFile firmaConductorRecolector;
     Location location;
     MyPrint print;
 
@@ -78,8 +80,14 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
         firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_RECOLECCION);
         if(firmaTransportista!=null && !firmaTransportista.isSincronizado())listaFileDefauld.add(firmaTransportista);
 
-        firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_RECOLECCION);
+        firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_NO_RECOLECCION);
         if(firmaTecnicoGenerador!=null && !firmaTecnicoGenerador.isSincronizado())listaFileDefauld.add(firmaTecnicoGenerador);
+
+        firmaAuxiliarRecolector = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1, MyConstant.STATUS_NO_RECOLECCION);
+        if(firmaAuxiliarRecolector!=null && !firmaAuxiliarRecolector.isSincronizado())listaFileDefauld.add(firmaAuxiliarRecolector);
+
+        firmaConductorRecolector = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, MyConstant.STATUS_NO_RECOLECCION);
+        if(firmaConductorRecolector!=null && !firmaConductorRecolector.isSincronizado())listaFileDefauld.add(firmaConductorRecolector);
 
         audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
         if(audioNovedadCliente!=null && !audioNovedadCliente.isSincronizado())listaFileDefauld.add(audioNovedadCliente);
@@ -114,6 +122,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
                             //imprimirEtiquetas();
+                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToNoRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
@@ -146,6 +155,8 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
             rq.setUrlFirmaTransportista(firmaTransportista!=null? (path+"/"+firmaTransportista.getUrl()):"");
             //rq.setResponsableEntregaIdentificacion(m.getTecnicoIdentificacion());
             rq.setUrlFirmaResponsableEntrega(firmaTecnicoGenerador!=null?(path+"/"+firmaTecnicoGenerador.getUrl()):"");
+            rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector!=null?(path+"/"+firmaAuxiliarRecolector.getUrl()):"");
+            rq.setUrlFirmaConductorRecolector(firmaConductorRecolector!=null?(path+"/"+firmaConductorRecolector.getUrl()):"");
             rq.setUsuarioResponsable(MySession.getIdUsuario());
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
             rq.setUrlAudioNovedadCliente(audioNovedadCliente!=null?( path+"/"+audioNovedadCliente.getUrl()):"");

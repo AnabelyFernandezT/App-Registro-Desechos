@@ -37,17 +37,17 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
     private String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
-            txtClienteCanton,txtTransReco,txtTransRecoAux
+            txtClienteCanton,txtTransReco,txtTransRecoAux,txtFirmaOperador1,txtFirmaOperador2,txtOperadorRecolector
             ,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
 
     private EditText txtNumManifiestoCliente;
 
 
-    private LinearLayout btnAgregarFirmaTransportista;
+    private LinearLayout btnAgregarFirmaTransportista,btnAgregarFirmaOperador1,btmAgregarOperador2;
 
     private ImageButton btnNumManifiestoCliente;
 
-    private ImageView  imgFirmaTecnicoTrasnsportista;
+    private ImageView  imgFirmaTecnicoTrasnsportista, imgFirmaOperador1, imgFirmaOperadorRecolector;
     //private int flag =0, flagT=0;
     private DialogFirma dialogFirma;
     private ImagenUtils imagenUtils;
@@ -86,6 +86,14 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
 
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
+
+        btnAgregarFirmaOperador1=this.findViewById(R.id.btnAgregarFirmaOperador1);
+        btmAgregarOperador2=this.findViewById(R.id.btnAgregarFirmaOperadorRecolector);
+        txtFirmaOperador1=this.findViewById(R.id.txtFirmaMensajeOperador1);
+        txtFirmaOperador2 = this.findViewById(R.id.txtFirmaMensajeOperadorRecolector);
+        imgFirmaOperadorRecolector = this.findViewById(R.id.imgFirmaOperadorRecolector);
+        imgFirmaOperador1 = this.findViewById(R.id.imgFirmaOperador1);
+        txtOperadorRecolector = this.findViewById(R.id.txtOperadorRecolector);
 
         btnNumManifiestoCliente.setOnClickListener(new OnClickListener() {
             @Override
@@ -191,6 +199,81 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
             }
         });*/
 
+        btnAgregarFirmaOperador1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogFirma==null) {
+                    dialogFirma = new DialogFirma(getContext());
+                    dialogFirma.setTitle("SU FIRMA");
+                    dialogFirma.setCancelable(false);
+                    dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
+                        @Override
+                        public void onSuccessful(Bitmap bitmap) {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                            if(bitmap!=null){
+                                txtFirmaOperador1.setVisibility(View.GONE);
+                                imgFirmaOperador1.setVisibility(View.VISIBLE);
+                                imgFirmaOperador1.setImageBitmap(bitmap);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1, Utils.encodeTobase64(bitmap), MyConstant.STATUS_NO_RECOLECCION);
+                                //firmaTecnicoGenerador=true;
+                            }else{
+                                txtFirmaOperador1.setVisibility(View.VISIBLE);
+                                imgFirmaOperador1.setVisibility(View.GONE);
+                                //firmaTecnicoGenerador=false;
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1, null, MyConstant.STATUS_NO_RECOLECCION);
+                            }
+                        }
+
+                        @Override
+                        public void onCanceled() {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                        }
+                    });
+                    dialogFirma.show();
+                }
+            }
+        });
+
+        btmAgregarOperador2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogFirma==null) {
+                    dialogFirma = new DialogFirma(getContext());
+                    dialogFirma.setTitle("SU FIRMA");
+                    dialogFirma.setCancelable(false);
+                    dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
+                        @Override
+                        public void onSuccessful(Bitmap bitmap) {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                            if(bitmap!=null){
+                                txtFirmaOperador2.setVisibility(View.GONE);
+                                imgFirmaOperadorRecolector.setVisibility(View.VISIBLE);
+                                imgFirmaOperadorRecolector.setImageBitmap(bitmap);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, Utils.encodeTobase64(bitmap), MyConstant.STATUS_NO_RECOLECCION);
+                                // firmaTecnicoGenerador=true;
+                            }else{
+                                txtFirmaOperador2.setVisibility(View.VISIBLE);
+                                imgFirmaOperadorRecolector.setVisibility(View.GONE);
+                                //firmaTecnicoGenerador=false;
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, null, MyConstant.STATUS_NO_RECOLECCION);
+                            }
+                        }
+
+                        @Override
+                        public void onCanceled() {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                        }
+                    });
+                    dialogFirma.show();
+                }
+            }
+        });
+
+
         btnAgregarFirmaTransportista.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,12 +290,12 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
                                 txtFirmaMensajeTransportista.setVisibility(View.GONE);
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setImageBitmap(bitmap);
-                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECOLECCION);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_NO_RECOLECCION);
                                 firmaTransportista=true;
                             }else{
                                 txtFirmaMensajeTransportista.setVisibility(View.VISIBLE);
                                 imgFirmaTecnicoTrasnsportista.setVisibility(View.GONE);
-                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, null, MyConstant.STATUS_RECOLECCION);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, null, MyConstant.STATUS_NO_RECOLECCION);
                                 firmaTransportista=false;
                             }
                         }
@@ -320,8 +403,11 @@ visible();
 
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText("GADERE");
+            txtOperadorRecolector.setText(manifiesto.getNombreOperadorRecolector());
 
-
+            if(txtOperadorRecolector.getText().equals("")){
+                btmAgregarOperador2.setEnabled(false);
+            }
 /*
             if(manifiesto.getIdTecnicoGenerador()!=null && manifiesto.getIdTecnicoGenerador()>0){
                 TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(manifiesto.getIdTecnicoGenerador());
@@ -352,13 +438,31 @@ visible();
 
             }
 */
-            f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
+            f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_NO_RECOLECCION);
             if(f != null){
                 Bitmap imagen = Utils.StringToBitMap(f.getFile());
                 txtFirmaMensajeTransportista.setVisibility(View.GONE);
                 imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                 imgFirmaTecnicoTrasnsportista.setImageBitmap(imagen);
                 firmaTransportista=true;
+            }
+            //operador1
+            f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1,MyConstant.STATUS_NO_RECOLECCION);
+            if(f != null){
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
+                txtFirmaOperador1.setVisibility(View.GONE);
+                imgFirmaOperador1.setVisibility(View.VISIBLE);
+                imgFirmaOperador1.setImageBitmap(imagen);
+                //firmaTransportista=true;
+            }
+//operador2
+            f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2,MyConstant.STATUS_NO_RECOLECCION);
+            if(f != null){
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
+                txtFirmaOperador2.setVisibility(View.GONE);
+                imgFirmaOperadorRecolector.setVisibility(View.VISIBLE);
+                imgFirmaOperadorRecolector.setImageBitmap(imagen);
+                //firmaTransportista=true;
             }
 
             tipoPaquete = manifiesto.getTipoPaquete();

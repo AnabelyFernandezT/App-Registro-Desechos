@@ -136,6 +136,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
                 noRecoleccion.setOnRegisterListener(new UserRegistrarNoRecoleccion.OnRegisterListener() {
                     @Override
                     public void onSuccessful() {
+                        messageBox("Datos Guardados");
                         setNavegate(HojaRutaAsignadaFragment.newInstance());
                     }
 
