@@ -138,7 +138,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
                                 setNavegate(Manifiesto2FragmentProcesada.newInstance(rowItems.get(position).getIdAppManifiesto(),rowItems.get(position).getEstado(),1));
                                 break;
                             case 3:
-                                setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
+                                setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),3));
                                 break;
                         }
                         break;

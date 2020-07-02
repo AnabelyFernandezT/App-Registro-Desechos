@@ -12,6 +12,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaProcesadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoAdicional;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoGeneral;
@@ -134,6 +135,9 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                         break;
                     case 2:
                         setNavegate(HojaRutaBuscarFragment.newInstance());
+                        break;
+                    case 3:
+                        setNavegate(HojaRutaProcesadaFragment.newInstance());
                         break;
                 }
 
