@@ -9,6 +9,7 @@ import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.services.WebService;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,7 +28,7 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
     public void execute() {
 
         for (final Integer catalogoID:ids) {
-            WebService.api().getCatalogos(new RequestCatalogo(catalogoID, "")).enqueue(new Callback<List<DtoCatalogo>>() {
+            WebService.api().getCatalogos(new RequestCatalogo(catalogoID, new Date())).enqueue(new Callback<List<DtoCatalogo>>() {
                 @Override
                 public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                     if(response.isSuccessful()) {

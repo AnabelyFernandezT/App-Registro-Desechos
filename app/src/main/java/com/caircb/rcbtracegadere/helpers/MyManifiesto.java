@@ -60,6 +60,7 @@ public class MyManifiesto {
     Bitmap firma;
     Bitmap firmaTransportista;
     ItemFile fileFirmaTecnico;
+    ItemFile fileFirmaTecnicoNoRecoleccion;
 
 
     public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete){
@@ -80,6 +81,9 @@ public class MyManifiesto {
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
             fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTecnico!=null) firma = Utils.StringToBitMap(fileFirmaTecnico.getFile());
+
+            fileFirmaTecnicoNoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_NO_RECOLECCION);
+            if(fileFirmaTecnicoNoRecoleccion!=null) firma = Utils.StringToBitMap(fileFirmaTecnicoNoRecoleccion.getFile());
 
             ItemFile fileFirmaTransporte = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTransporte!=null) firmaTransportista = Utils.StringToBitMap(fileFirmaTransporte.getFile());
@@ -353,6 +357,7 @@ public class MyManifiesto {
             jpg.scaleToFit(40,150);
             cell = new PdfPCell(createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER));
         }else {
+
             cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
         }
 

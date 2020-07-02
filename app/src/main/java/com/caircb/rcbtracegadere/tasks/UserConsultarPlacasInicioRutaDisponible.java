@@ -12,6 +12,7 @@ import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.services.WebService;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,7 +36,7 @@ public class UserConsultarPlacasInicioRutaDisponible extends MyRetrofitApi imple
 
         progressShow("Consultando vihiculos disponibles...");
 
-        WebService.api().getCatalogos(new RequestCatalogo(8, "")).enqueue(new Callback<List<DtoCatalogo>>() { //8 catalogos que ya finalizaron ruta
+        WebService.api().getCatalogos(new RequestCatalogo(8, new Date())).enqueue(new Callback<List<DtoCatalogo>>() { //8 catalogos que ya finalizaron ruta
             @Override
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()) {

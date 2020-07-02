@@ -1,11 +1,13 @@
 package com.caircb.rcbtracegadere.models.request;
 
+import java.util.Date;
+
 public class RequestCatalogo {
     private Integer tipoCatalogo;
-    private String fecha;
+    private Date fecha;
 
 
-    public RequestCatalogo(Integer tipoCatalogo, String fecha) {
+    public RequestCatalogo(Integer tipoCatalogo, Date fecha) {
         this.tipoCatalogo = tipoCatalogo;
         this.fecha = fecha;
     }
@@ -18,11 +20,11 @@ public class RequestCatalogo {
         this.tipoCatalogo = tipoCatalogo;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 }

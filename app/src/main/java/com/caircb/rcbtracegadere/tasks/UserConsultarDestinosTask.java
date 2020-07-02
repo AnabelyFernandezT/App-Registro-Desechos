@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.services.WebService;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,7 +34,7 @@ public class UserConsultarDestinosTask extends MyRetrofitApi implements Retrofit
     public void execute() {
         progressShow("Consultando destino disponibles...");
 
-        WebService.api().getCatalogos(new RequestCatalogo(9,"")).enqueue(new Callback<List<DtoCatalogo>>() {
+        WebService.api().getCatalogos(new RequestCatalogo(9,new Date())).enqueue(new Callback<List<DtoCatalogo>>() {
             @Override
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()){
