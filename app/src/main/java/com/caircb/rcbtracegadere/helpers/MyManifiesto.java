@@ -58,6 +58,7 @@ public class MyManifiesto {
     Bitmap imagenCheck;
     Bitmap imagenUnCheck;
     Bitmap firma;
+    Bitmap firmaNoRecoleccion;
     Bitmap firmaTransportista;
     ItemFile fileFirmaTecnico;
     ItemFile fileFirmaTecnicoNoRecoleccion;
@@ -82,8 +83,8 @@ public class MyManifiesto {
             fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTecnico!=null) firma = Utils.StringToBitMap(fileFirmaTecnico.getFile());
 
-            fileFirmaTecnicoNoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_NO_RECOLECCION);
-            if(fileFirmaTecnicoNoRecoleccion!=null) firma = Utils.StringToBitMap(fileFirmaTecnicoNoRecoleccion.getFile());
+            fileFirmaTecnicoNoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_NO_RECOLECCION);
+            if(fileFirmaTecnicoNoRecoleccion!=null) firmaNoRecoleccion = Utils.StringToBitMap(fileFirmaTecnicoNoRecoleccion.getFile());
 
             ItemFile fileFirmaTransporte = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTransporte!=null) firmaTransportista = Utils.StringToBitMap(fileFirmaTransporte.getFile());
@@ -453,12 +454,6 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 5
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        firmaTransportista.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        Image jpg = Image.getInstance(stream.toByteArray());
-        jpg.scaleToFit(70,150);
-
         PdfPTable tb5 = new PdfPTable(1);
         tb5.addCell(new PdfPCell(new Phrase("12. RECIBÍ LOS DESECHOS DESCRITOS EN EL MANIFIESTO PARA SU TRANSPORTE. ",f6)));
 
@@ -511,8 +506,25 @@ public class MyManifiesto {
         _cell.setBorder(Rectangle.NO_BORDER);
         tb6.addCell(_cell);
 
-        tb6.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
+        Image jpg;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if(firmaTransportista!=null){
+            firmaTransportista.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            jpg = Image.getInstance(stream.toByteArray());
+            jpg.scaleToFit(70,150);
+            tb6.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
+        }else{
+            if (firmaNoRecoleccion!=null){
+                firmaNoRecoleccion.compress(Bitmap.CompressFormat.PNG,100,stream);
+                jpg = Image.getInstance(stream.toByteArray());
+                jpg.scaleToFit(70,150);
+                tb6.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
+            }else{
+                tb6.addCell(new PdfPCell(new Phrase("")));
+            }
 
+            //cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
+        }
 
         tb6.completeRow();
 
