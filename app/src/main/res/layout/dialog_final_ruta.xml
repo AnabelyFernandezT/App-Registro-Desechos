@@ -65,7 +65,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Kilometraje:" />
+                android:text="Kilometraje Final:" />
 
             <EditText
                 android:id="@+id/kilometrajeFinal"
@@ -100,12 +100,12 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ruta:" />
+                android:text="Destino Llegada:" />
 
             <Spinner
                 android:id="@+id/lista_destino_particular"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="65dp"
                 android:spinnerMode="dialog"
                 android:gravity="center_vertical" />
 

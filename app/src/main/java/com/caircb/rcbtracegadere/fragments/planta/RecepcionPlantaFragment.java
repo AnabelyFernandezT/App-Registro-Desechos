@@ -129,7 +129,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     private void load(){
-        novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(idManifiesto);
+       /* novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(idManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterRecepcionR(getContext(), novedadfrecuentes, bloquear,idManifiesto);
 
@@ -196,7 +196,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                 }
             }
         });
-        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
+        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);*/
 
         ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
         if(f != null){

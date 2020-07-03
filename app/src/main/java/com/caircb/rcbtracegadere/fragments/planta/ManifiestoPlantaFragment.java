@@ -1,10 +1,12 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
@@ -14,6 +16,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class ManifiestoPlantaFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
@@ -25,6 +28,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
 
     Integer idAppManifiesto;
     UserRegistrarPlanta userRegistrarPlanta;
+    FloatingActionButton mensajes;
 
 
     @Override
@@ -34,10 +38,10 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                 setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
-                if(manifiestoPlanta.validaNovedadesFrecuentesPendienteFotos()){
+              /*  if(manifiestoPlanta.validaNovedadesFrecuentesPendienteFotos()){
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
-                }
+                }*/
                 if(manifiestoPlanta.validaExisteFirma()){
                     messageBox("Se requiere firma  ");
                     return;
@@ -106,11 +110,14 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
         tabs.addTab(spec);
     }
 
+    @SuppressLint("RestrictedApi")
     public void init(){
         btnManifiestoCancel = getView().findViewById(R.id.btnManifiestoCancel);
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
+        mensajes = getView().findViewById(R.id.fab);
+        mensajes.setVisibility(View.INVISIBLE);
 
         manifiestoPlanta = new RecepcionPlantaFragment(getActivity(),idAppManifiesto);
     }

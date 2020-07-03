@@ -167,6 +167,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
             rq.setDetalles(createRequestDet());
             rq.setNovedadFrecuente(createRequestNovedadFrecuente());
             rq.setNovedadNoRecoleccion(createRequestNoRecoleccion());
+            rq.setEstado(3);
         }
         return  rq;
     }
