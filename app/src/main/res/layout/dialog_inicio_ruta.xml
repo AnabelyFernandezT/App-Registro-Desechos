@@ -24,8 +24,7 @@
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ruta:" />
-
+            android:text="Sub-Ruta:" />
         <Spinner
             android:id="@+id/lista_placas"
             android:layout_width="match_parent"
@@ -38,7 +37,63 @@
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Placa:"/>
+        <TextView
+            android:id="@+id/lblPlaca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chofer:"/>
+        <TextView
+            android:id="@+id/lblChofer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transportista recolector:"/>
+        <TextView
+            android:id="@+id/lblTransportistaRecolector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Auxiliar de recolección"/>
+        <TextView
+            android:id="@+id/lblAuxiliarRecoleccion1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Auxiliar de recolección"/>
+        <TextView
+            android:id="@+id/lblAuxiliarRecoleccion2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Kilometraje:" />
+
         <EditText
             android:id="@+id/txtKilometraje"
             android:layout_width="match_parent"
