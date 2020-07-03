@@ -37,9 +37,9 @@
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Placa:"/>
+            android:text="Ruta:"/>
         <TextView
-            android:id="@+id/lblPlaca"
+            android:id="@+id/lblRuta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
@@ -48,9 +48,9 @@
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chofer:"/>
+            android:text="Placa:"/>
         <TextView
-            android:id="@+id/lblChofer"
+            android:id="@+id/lblPlaca"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
@@ -76,6 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
+            android:id="@+id/lblTituloAuxiliarRecoleccion2"
+            android:visibility="invisible"
             android:textSize="20dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
@@ -83,6 +85,7 @@
             android:layout_height="wrap_content"
             android:text="Auxiliar de recolección"/>
         <TextView
+            android:visibility="invisible"
             android:id="@+id/lblAuxiliarRecoleccion2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

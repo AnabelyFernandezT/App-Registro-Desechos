@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/app_gadere"
     android:orientation="horizontal"
@@ -11,7 +13,8 @@
         android:layout_weight="1"
         android:background="@drawable/shape_rounded_searhtext"
         android:gravity="center"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        tools:ignore="MissingConstraints">
 
         <EditText
             android:visibility="visible"
@@ -33,12 +36,15 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:hint=" Buscar"
+            android:hint="Buscar"
             android:gravity="left"
             android:drawableLeft="@mipmap/ic_search_buscar24"
             />
 
     </LinearLayout>
+
+
+
     <TextView
         android:id="@+id/btnCancelSearch"
         android:fontFamily="@font/quicksand_bold"
@@ -48,6 +54,7 @@
         android:layout_width="wrap_content"
         android:text="Cancelar"
         android:gravity="center"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        tools:ignore="MissingConstraints" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

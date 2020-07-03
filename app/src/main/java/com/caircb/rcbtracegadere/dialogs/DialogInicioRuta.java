@@ -44,7 +44,7 @@ public class DialogInicioRuta extends MyDialog {
     Spinner spinnerPlacas;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     LinearLayout lnlIniciaRuta,lnlFinRuta;
-    TextView lblListaManifiestoAsignado, lblpickUpTransportista;
+    TextView lblListaManifiestoAsignado, lblpickUpTransportista,lblPlaca,lblTransportistaRecolector,lblAuxiliarRecoleccion1, lblTituloAuxiliarRecoleccion2,lblAuxiliarRecoleccion2,lblRuta;
 
     String placa;
     long idRegistro;
@@ -95,7 +95,15 @@ public class DialogInicioRuta extends MyDialog {
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignado);
         lblpickUpTransportista = getActivity().findViewById(R.id.lblpickUpTransportista);
         txtKilometraje = (EditText)getView().findViewById(R.id.txtKilometraje);
+
+        lblPlaca = (TextView) getView().findViewById(R.id.lblPlaca);
+        lblTransportistaRecolector = (TextView)getView().findViewById(R.id.lblTransportistaRecolector);
+        lblAuxiliarRecoleccion1 = (TextView)getView().findViewById(R.id.lblAuxiliarRecoleccion1);
+        lblTituloAuxiliarRecoleccion2 = (TextView)getView().findViewById(R.id.lblTituloAuxiliarRecoleccion2);
+        lblAuxiliarRecoleccion2 = (TextView)getView().findViewById(R.id.lblAuxiliarRecoleccion2);
+        lblRuta = (TextView)getView().findViewById(R.id.lblRuta);
         //txtKilometraje.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
 
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
@@ -121,8 +129,16 @@ public class DialogInicioRuta extends MyDialog {
                 if(position>0){
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
+                    lblPlaca.setText(listaPlacasDisponibles.get(position-1).getPlaca());
+                    lblTransportistaRecolector.setText(listaPlacasDisponibles.get(position-1).getNombreChofer());
+                    lblAuxiliarRecoleccion1.setText(listaPlacasDisponibles.get(position-1).getNombreAuxiliar());
+                    if (listaPlacasDisponibles.get(position-1).getNombreConductor()!=null){
+                        lblTituloAuxiliarRecoleccion2.setVisibility(View.VISIBLE);
+                        lblAuxiliarRecoleccion2.setVisibility(View.VISIBLE);
+                        lblAuxiliarRecoleccion2.setText(listaPlacasDisponibles.get(position-1).getNombreConductor());
+                        lblRuta.setText(listaPlacasDisponibles.get(position-1).getNombreRuta());
+                    }
                 }
-
             }
 
             @Override
@@ -236,6 +252,8 @@ public class DialogInicioRuta extends MyDialog {
 
         return defaulSpiner;
     }
+
+
 
     private void guardarDatos(){
 
