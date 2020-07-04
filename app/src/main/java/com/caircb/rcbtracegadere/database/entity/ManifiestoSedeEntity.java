@@ -14,9 +14,9 @@ public class ManifiestoSedeEntity {
     private Integer _id;
 
     @NonNull
-    private Integer idManifiestoPadre;
+    private Integer idAppManifiesto;
 
-    private String manifiestos;
+    private String numeroManifiesto;
 
     private String nombreCliente;
 
@@ -33,20 +33,20 @@ public class ManifiestoSedeEntity {
     }
 
     @NonNull
-    public Integer getIdManifiestoPadre() {
-        return idManifiestoPadre;
+    public Integer getIdAppManifiesto() {
+        return idAppManifiesto;
     }
 
-    public void setIdManifiestoPadre(@NonNull Integer idManifiestoPadre) {
-        this.idManifiestoPadre = idManifiestoPadre;
+    public void setIdAppManifiesto(@NonNull Integer idAppManifiesto) {
+        this.idAppManifiesto = idAppManifiesto;
     }
 
-    public String getManifiestos() {
-        return manifiestos;
+    public String getNumeroManifiesto() {
+        return numeroManifiesto;
     }
 
-    public void setManifiestos(String manifiestos) {
-        this.manifiestos = manifiestos;
+    public void setNumeroManifiesto(String numeroManifiesto) {
+        this.numeroManifiesto = numeroManifiesto;
     }
 
     public String getNombreCliente() {

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DtoManifiestoDetalleSede {
 
-    private Integer idManifiesto;
+    private Integer idAppManifiesto;
     private Integer idManifiestoDetalle;
     private String codigoMae;
     private String codigo;
@@ -16,12 +16,12 @@ public class DtoManifiestoDetalleSede {
     public DtoManifiestoDetalleSede() {
     }
 
-    public Integer getIdManifiesto() {
-        return idManifiesto;
+    public Integer getIdAppManifiesto() {
+        return idAppManifiesto;
     }
 
-    public void setIdManifiesto(Integer idManifiesto) {
-        this.idManifiesto = idManifiesto;
+    public void setIdAppManifiesto(Integer idAppManifiesto) {
+        this.idAppManifiesto = idAppManifiesto;
     }
 
     public Integer getIdManifiestoDetalle() {

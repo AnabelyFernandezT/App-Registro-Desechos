@@ -67,7 +67,7 @@ public interface IServicio {
     @POST("Catalogo/findRutas")
     Call<List<DtoFindRutas>> traerRutas(@Body RequestFindRutas model);
 
-    @POST("HojaRuta/obtenerListHojaRutaLote")
+    @POST("HojaRuta/obtenerListHojaRutaSede")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);
 
 }

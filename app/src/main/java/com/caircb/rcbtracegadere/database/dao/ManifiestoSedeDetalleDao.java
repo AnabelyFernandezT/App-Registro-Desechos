@@ -26,7 +26,7 @@ public abstract class ManifiestoSedeDetalleDao {
     @Transaction
     public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif();
 
-    @Query("select * from tb_manifiestos_sede_detalle where idManifiestoPadre=:idManifiesto limit 1")
+    @Query("select * from tb_manifiestos_sede_detalle where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
 
@@ -37,26 +37,24 @@ public abstract class ManifiestoSedeDetalleDao {
 
         ManifiestoSedeDetalleEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiesto());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdAppManifiesto());
         if(entity==null){
             entity = new ManifiestoSedeDetalleEntity();
-            entity.setCodigo(manifiesto.getCodigo());
-            entity.setCodigoMae(manifiesto.getCodigoMae());
+            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
-            entity.setIdManifiestoHijo(manifiesto.getIdManifiesto());
+            entity.setCodigoMae(manifiesto.getCodigoMae());
+            entity.setCodigo(manifiesto.getCodigo());
             entity.setNombreDesecho(manifiesto.getNombreDesecho());
-            entity.setIdManifiestoPadre(manifiesto.getIdManifiesto());
-
-
 
         }else if(entity!=null ){
 
             entity = new ManifiestoSedeDetalleEntity();entity.setCodigo(manifiesto.getCodigo());
-            entity.setCodigoMae(manifiesto.getCodigoMae());
+            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
-            entity.setIdManifiestoHijo(manifiesto.getIdManifiesto());
+            entity.setCodigoMae(manifiesto.getCodigoMae());
+            entity.setCodigo(manifiesto.getCodigo());
             entity.setNombreDesecho(manifiesto.getNombreDesecho());
-            entity.setIdManifiestoPadre(manifiesto.getIdManifiesto());
+
         }
 
         if (entity!=null) createManifiesto(entity);

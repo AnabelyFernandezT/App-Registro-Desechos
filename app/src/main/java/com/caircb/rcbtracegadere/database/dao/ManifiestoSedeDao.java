@@ -21,10 +21,10 @@ import java.util.List;
 @Dao
 public abstract class ManifiestoSedeDao {
 
-    @Query("select * from tb_manifiestos_sede where idManifiestoPadre=:idManifiesto limit 1")
+    @Query("select * from tb_manifiestos_sede where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    @Query("select idManifiestoPadre,manifiestos ,nombreCliente from tb_manifiestos_sede " )
+    @Query("select idAppManifiesto,numeroManifiesto ,nombreCliente from tb_manifiestos_sede " )
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
 
@@ -35,17 +35,17 @@ public abstract class ManifiestoSedeDao {
 
         ManifiestoSedeEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoPadre());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdAppManifiesto());
         if(entity==null ){
             entity = new ManifiestoSedeEntity();
-            entity.setIdManifiestoPadre(manifiesto.getIdManifiestoPadre());
-            entity.setManifiestos(manifiesto.getManifiestos());
+            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
+            entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
         }
         else if(entity!=null  ){
             entity = new ManifiestoSedeEntity();
-            entity.setIdManifiestoPadre(manifiesto.getIdManifiestoPadre());
-            entity.setManifiestos(manifiesto.getManifiestos());
+            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
+            entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
         }
 

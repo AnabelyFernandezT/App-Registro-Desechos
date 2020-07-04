@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.math.BigDecimal;
+
 @Entity(tableName = (ManifiestoSedeDetalleValorEntity.TABLE))
 public class ManifiestoSedeDetalleValorEntity {
     public static final String TABLE = "tb_manifiestos_sede_det_valor";
@@ -12,16 +14,15 @@ public class ManifiestoSedeDetalleValorEntity {
     private Integer _id;
 
     @NonNull
-    private Integer idManifiestoHijo;
+    private Integer idManifiestoDetalle;
 
-    private Integer idManifiestoDetalleValores;
-
-    private String peso;
+    private BigDecimal peso;
 
     private String codigoQR;
 
+    private Boolean estado;
 
-
+    private Integer idManifiestoDetalleValor;
 
     public ManifiestoSedeDetalleValorEntity() {
     }
@@ -35,27 +36,19 @@ public class ManifiestoSedeDetalleValorEntity {
     }
 
     @NonNull
-    public Integer getIdManifiestoHijo() {
-        return idManifiestoHijo;
+    public Integer getIdManifiestoDetalle() {
+        return idManifiestoDetalle;
     }
 
-    public void setIdManifiestoHijo(@NonNull Integer idManifiestoHijo) {
-        this.idManifiestoHijo = idManifiestoHijo;
+    public void setIdManifiestoDetalle(@NonNull Integer idManifiestoDetalle) {
+        this.idManifiestoDetalle = idManifiestoDetalle;
     }
 
-    public Integer getIdManifiestoDetalleValores() {
-        return idManifiestoDetalleValores;
-    }
-
-    public void setIdManifiestoDetalleValores(Integer idManifiestoDetalleValores) {
-        this.idManifiestoDetalleValores = idManifiestoDetalleValores;
-    }
-
-    public String getPeso() {
+    public BigDecimal getPeso() {
         return peso;
     }
 
-    public void setPeso(String peso) {
+    public void setPeso(BigDecimal peso) {
         this.peso = peso;
     }
 
@@ -67,6 +60,21 @@ public class ManifiestoSedeDetalleValorEntity {
         this.codigoQR = codigoQR;
     }
 
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public Integer getIdManifiestoDetalleValor() {
+        return idManifiestoDetalleValor;
+    }
+
+    public void setIdManifiestoDetalleValor(Integer idManifiestoDetalleValor) {
+        this.idManifiestoDetalleValor = idManifiestoDetalleValor;
+    }
 }
 
 
