@@ -51,7 +51,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     Dialog dialogOpcioneItem;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     ListView LtsManifiestoDetalle,mDialogMenuItems;
-    DialogBultosSede dialogPlacas;
+    DialogBultosSede dialogBultos;
 
     public  ManifiestoSedeFragment (){
     }
@@ -119,17 +119,17 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                    openOpcionesItems(position);
+                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle());
             }
         });
     }
 
 
-    private void openOpcionesItems(final Integer positionItem){
-                  dialogPlacas = new DialogBultosSede(getActivity());
-                dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialogPlacas.setCancelable(false);
-                dialogPlacas.show();
+    private void openOpcionesItems(final Integer idManifiestoDetalle){
+        dialogBultos = new DialogBultosSede(getActivity(),idManifiestoDetalle);
+        dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogBultos.setCancelable(false);
+        dialogBultos.show();
     }
 
 

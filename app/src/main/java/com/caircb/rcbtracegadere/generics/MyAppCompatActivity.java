@@ -7,7 +7,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.device.ScanManager;
+import android.device.scanner.configuration.PropertyID;
 import android.location.Location;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,6 +33,10 @@ public class MyAppCompatActivity extends AppCompatActivity {
     private Context mContext;
     public Fragment fragment;
     GPSService gps;
+    private SoundPool soundpool = null;
+    private int soundid;
+    private ScanManager mScanManager;
+    private final static String SCAN_ACTION = ScanManager.ACTION_DECODE;
 
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
@@ -40,7 +48,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         if(mContext instanceof MainActivity) {
 
             initGPS();
-
+            //initListenerScan();
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
             MySession.setConnecticity(estado);
@@ -127,12 +135,52 @@ public class MyAppCompatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initBroadcast();
-        initConnectivity();
+        //initConnectivity();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         initConnectivity();
+        /*IntentFilter filter = new IntentFilter();
+        int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
+        String[] value_buf = mScanManager.getParameterString(idbuf);
+        if (value_buf != null && value_buf[0] != null && !value_buf[0].equals("")) {
+            filter.addAction(value_buf[0]);
+        } else {
+            filter.addAction(SCAN_ACTION);
+        }
+
+        registerReceiver(mScanReceiver, filter);*/
     }
+
+    private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            soundpool.play(soundid, 1, 1, 0, 0, 1);
+
+            byte[] barcode = intent.getByteArrayExtra(ScanManager.DECODE_DATA_TAG);
+            int barcodelen = intent.getIntExtra(ScanManager.BARCODE_LENGTH_TAG, 0);
+            String barcodeStr = new String(barcode, 0, barcodelen);
+            if(barcodeStr!=null && fragment!=null && barcodeStr.length()>0){
+                barcodeStr =barcodeStr.replaceAll(System.getProperty("line.separator"), "");
+                if(fragment instanceof OnBarcodeListener){
+                    ((OnBarcodeListener)fragment).reciveData(barcodeStr);
+                }
+
+            }
+        }
+    };
+
+    private void initListenerScan() {
+        mScanManager = new ScanManager();
+        mScanManager.openScanner();
+
+        mScanManager.switchOutputMode( 0);
+        soundpool = new SoundPool(1, AudioManager.STREAM_NOTIFICATION, 100); // MODE_RINGTONE
+        soundid = soundpool.load("/etc/Scan_new.ogg", 1);
+    }
+
 }

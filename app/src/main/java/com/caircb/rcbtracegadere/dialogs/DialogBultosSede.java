@@ -11,11 +11,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterSede;
+import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBultosAdapterSede;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
@@ -28,26 +35,33 @@ public class DialogBultosSede extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
+    Integer idAppManifiestoDet;
     UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
+    ManifiestoDetalleBultosAdapterSede recyclerviewAdapter;
     TextView lblListaManifiestoAsignado;
+    private RecyclerView recyclerView;
+    private List<ItemManifiestoDetalleValorSede> detalles;
 
-
-    public DialogBultosSede(@NonNull Context context) {
+    public DialogBultosSede(@NonNull Context context,Integer idAppManifiestoDet) {
         super(context, R.layout.dialog_bultos_sede);
         this._activity = (Activity)context;
+        this.idAppManifiestoDet= idAppManifiestoDet;
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(getView());
-
         init();
+        loadData();
     }
 
     private void init() {
+        recyclerView = getView().findViewById(R.id.recyclerview);
+        recyclerviewAdapter = new ManifiestoDetalleBultosAdapterSede(getActivity(),idAppManifiestoDet,1);
+
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
@@ -65,36 +79,16 @@ public class DialogBultosSede extends MyDialog {
     }
 
 
-    private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
-            @Override
-            public void onSuccessful(List<DtoCatalogo> catalogos) {
-                listaPlacasDisponibles = catalogos;
-                spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
-            }
-        });
-        consultarPlacasInicioRutaDisponible.execute();
+    private void loadData(){
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        detalles = MyApp.getDBO().manifiestoDetalleValorSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
+
+        recyclerviewAdapter.setTaskList(detalles);
+        recyclerView.setAdapter(recyclerviewAdapter);
+
     }
-    public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
-        ArrayAdapter<String> adapter;
-        Spinner defaulSpiner = spinner;
-        ArrayList<String> listaData = new ArrayList<String>();
-
-        listaData.add("Seleccione...");
-        if(catalogos.size() > 0){
-            for (DtoCatalogo r : catalogos){
-                listaData.add(r.getCodigo());
-            }
-        }
-
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.textview_spinner, listaData);
-        defaulSpiner.setAdapter(adapter);
-        defaulSpiner.setEnabled(bhabilitar);
-
-        return defaulSpiner;
-    }
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override

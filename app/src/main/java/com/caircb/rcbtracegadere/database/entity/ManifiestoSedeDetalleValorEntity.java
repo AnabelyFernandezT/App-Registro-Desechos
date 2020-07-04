@@ -20,11 +20,24 @@ public class ManifiestoSedeDetalleValorEntity {
 
     private String codigoQR;
 
-    private Boolean estado;
-
     private Integer idManifiestoDetalleValor;
 
+    private String nombreBulto;
+
+    private Boolean estado;
+
+
+
+
     public ManifiestoSedeDetalleValorEntity() {
+    }
+
+    public String getNombreBulto() {
+        return nombreBulto;
+    }
+
+    public void setNombreBulto(String nombreBulto) {
+        this.nombreBulto = nombreBulto;
     }
 
     public Integer get_id() {

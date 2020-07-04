@@ -5,10 +5,18 @@ public class ItemManifiestoDetalleSede {
     private String codigoMae;
     private String codigo;
     private String nombreDesecho;
-
+    private Integer totalBultos;
 
 
     public ItemManifiestoDetalleSede() {
+    }
+
+    public Integer getTotalBultos() {
+        return totalBultos;
+    }
+
+    public void setTotalBultos(Integer totalBultos) {
+        this.totalBultos = totalBultos;
     }
 
     public int getIdManifiestoDetalle() {
