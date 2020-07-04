@@ -48,7 +48,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         if(mContext instanceof MainActivity) {
 
             initGPS();
-            initListenerScan();
+            //initListenerScan();
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
             MySession.setConnecticity(estado);
