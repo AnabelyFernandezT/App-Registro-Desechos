@@ -68,7 +68,7 @@
                         style="@style/TextViewTitleItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="CANTIDAD"
+                        android:text="No. Bultos"
                         android:textAlignment="center" />
                     <TextView
                         android:id="@+id/txtItemCantidadBulto"
