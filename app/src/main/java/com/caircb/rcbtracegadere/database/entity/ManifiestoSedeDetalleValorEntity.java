@@ -16,7 +16,7 @@ public class ManifiestoSedeDetalleValorEntity {
     @NonNull
     private Integer idManifiestoDetalle;
 
-    private String peso;
+    private Double peso;
 
     private String codigoQR;
 
@@ -44,11 +44,11 @@ public class ManifiestoSedeDetalleValorEntity {
         this.idManifiestoDetalle = idManifiestoDetalle;
     }
 
-    public String getPeso() {
+    public Double getPeso() {
         return peso;
     }
 
-    public void setPeso(String peso) {
+    public void setPeso(Double peso) {
         this.peso = peso;
     }
 

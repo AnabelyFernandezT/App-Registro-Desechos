@@ -108,12 +108,12 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     private void loadData(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        detalles = MyApp.getDBO().manifiestoDetalleSede().fetchManifiestosAsigByClienteOrNumManif();
+        detalles = MyApp.getDBO().manifiestoDetalleSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
 
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
 
-        recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
+        /*recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
                 int x=0;
@@ -121,7 +121,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                     openOpcionesItems(position);
                 }
             }
-        });
+        });*/
     }
 
 

@@ -46,9 +46,9 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
     @Override
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
         final ItemManifiestoDetalleSede it = manifiestosDtList.get(position);
-        holder.txtUnidad.setText(it.getCodigo());
-        holder.txtPeso.setText(""+it.getCodigoMae());
-        holder.txtCantidadBulto.setText(""+it.getNombreDesecho());
+        holder.txtCodigoMae.setText(it.getCodigo());
+        holder.txtCodigo.setText(""+it.getCodigoMae());
+        holder.txtDescripcion.setText(""+it.getNombreDesecho());
 
         /*if(estadoManifiesto !=1) {
             holder.chkEstado.setClickable(false);
@@ -82,22 +82,18 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtUnidad;
-        TextView txtPeso;
-        TextView txtCantidadBulto;
+        TextView txtCodigo;
+        TextView txtCodigoMae;
         TextView txtDescripcion;
-        TextView txtTratamiento;
         LinearLayout btnEleminarItem;
         CheckBox chkEstado;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            txtUnidad = itemView.findViewById(R.id.txtItemUnidad);
-            txtPeso = itemView.findViewById(R.id.txtItemPeso);
-            txtCantidadBulto = itemView.findViewById(R.id.txtItemCantidadBulto);
+            txtCodigo = itemView.findViewById(R.id.txtCodigo);
+            txtCodigoMae = itemView.findViewById(R.id.txtCodigoMae);
             txtDescripcion = itemView.findViewById(R.id.txtItemDescripcion);
-            txtTratamiento = itemView.findViewById(R.id.txtItemTratamiento);
             btnEleminarItem = itemView.findViewById(R.id.btnEleminarItem);
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
 

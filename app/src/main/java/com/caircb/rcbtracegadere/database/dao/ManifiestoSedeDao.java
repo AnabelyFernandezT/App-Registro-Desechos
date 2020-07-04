@@ -24,9 +24,15 @@ public abstract class ManifiestoSedeDao {
     @Query("select * from tb_manifiestos_sede where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    /*@Query("select idAppManifiesto,numeroManifiesto ,nombreCliente from tb_manifiestos_sede " )
+    @Query("select idAppManifiesto,numeroManifiesto ,nombreCliente from tb_manifiestos_sede " )
     @Transaction
-    public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();*/
+    public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
+
+    @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
+    abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
+
+    @Query("delete from tb_manifiestos_sede ")
+    public abstract void eliminarManifiestos();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoSedeEntity entity);

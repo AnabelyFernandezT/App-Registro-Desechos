@@ -108,7 +108,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        //rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+        rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
         adapterList();
 
     }
@@ -121,7 +121,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getManifiestos(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getNumeroManifiesto(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -136,7 +136,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         //menu(position);
-                        setNavegate(ManifiestoSedeFragment.newInstance(rowItems.get(position).getIdManifiestoPadre()));
+                        setNavegate(ManifiestoSedeFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;

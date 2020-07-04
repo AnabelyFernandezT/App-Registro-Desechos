@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DtoManifiestoSede {
-    private Integer idAppManifiesto;
+    private Integer idManifiesto;
     private String numeroManifiesto;
     private String nombreCliente;
     private List<DtoManifiestoDetalleSede> hojaRutaDetalle;
@@ -13,11 +13,11 @@ public class DtoManifiestoSede {
     }
 
     public Integer getIdAppManifiesto() {
-        return idAppManifiesto;
+        return idManifiesto;
     }
 
     public void setIdAppManifiesto(Integer idAppManifiesto) {
-        this.idAppManifiesto = idAppManifiesto;
+        this.idManifiesto = idAppManifiesto;
     }
 
     public String getNumeroManifiesto() {

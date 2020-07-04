@@ -29,12 +29,12 @@
                     android:layout_height="wrap_content">
                         <TextView
                             style="@style/TextViewTitleItem"
-                            android:text="UNIDAD"
+                            android:text="CODIGO MAE"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                         <TextView
-                            android:id="@+id/txtItemUnidad"
-                            android:text="KILOGRAMO"
+                            android:id="@+id/txtCodigoMae"
+                            android:text="codigoMae"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -47,16 +47,16 @@
 
                     <TextView
                         style="@style/TextViewTitleItem"
-                        android:text="PESO"
+                        android:text="CODIGO"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <TextView
-                        android:id="@+id/txtItemPeso"
-                        android:text="00.000"
+                        android:id="@+id/txtCodigo"
+                        android:text="codigo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
-                <LinearLayout
+                <!--<LinearLayout
                     android:layout_weight="1"
                     android:gravity="left"
                     android:layout_gravity="left"
@@ -76,18 +76,8 @@
                         android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-                </LinearLayout>
+                </LinearLayout>-->
             </LinearLayout>
-            <TextView
-                style="@style/TextViewTitleItem"
-                android:text="TRATAMIENTO"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/txtItemTratamiento"
-                android:text=""
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
             <TextView
                 style="@style/TextViewTitleItem"
                 android:text="DESCRIPCION"
