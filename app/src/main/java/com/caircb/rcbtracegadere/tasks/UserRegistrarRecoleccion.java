@@ -125,7 +125,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
                             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                            imprimirEtiquetas();
+                            //imprimirEtiquetas();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
@@ -270,6 +270,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
     private String getPath() { return simpleDate.format(new Date());}
 
+    /*+++*******************/
     private void imprimirEtiquetas(){
         try {
             print = new MyPrint(getActivity());
