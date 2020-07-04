@@ -48,7 +48,6 @@ public class DialogBultosSede extends MyDialog {
         super(context, R.layout.dialog_bultos_sede);
         this._activity = (Activity)context;
         this.idAppManifiestoDet= idAppManifiestoDet;
-
     }
 
     @Override
@@ -57,6 +56,12 @@ public class DialogBultosSede extends MyDialog {
         init();
         loadData();
     }
+
+    public interface onclickSedeListener {
+        public void onSucefull();
+    }
+
+    private onclickSedeListener mOnclickSedeListener;
 
     private void init() {
         recyclerView = getView().findViewById(R.id.recyclerview);
@@ -71,6 +76,9 @@ public class DialogBultosSede extends MyDialog {
             @Override
             public void onClick(View v) {
                 DialogBultosSede.this.dismiss();
+                if(mOnclickSedeListener!=null){
+                    mOnclickSedeListener.onSucefull();
+                }
             }
         });
 
@@ -106,5 +114,9 @@ public class DialogBultosSede extends MyDialog {
         consultarHojaRutaTask.execute();
     }
 
+
+    public void setmOnclickSedeListener(@NonNull onclickSedeListener l){
+        mOnclickSedeListener = l;
+    };
 
 }

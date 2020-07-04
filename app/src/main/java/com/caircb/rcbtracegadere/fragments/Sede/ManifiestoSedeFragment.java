@@ -120,16 +120,26 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle());
+                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
             }
         });
     }
 
 
-    private void openOpcionesItems(final Integer idManifiestoDetalle){
+    private void openOpcionesItems(final Integer idManifiestoDetalle,Integer position){
         dialogBultos = new DialogBultosSede(getActivity(),idManifiestoDetalle);
         dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogBultos.setCancelable(false);
+        dialogBultos.setmOnclickSedeListener(new DialogBultosSede.onclickSedeListener() {
+            @Override
+            public void onSucefull() {
+                List<ItemManifiestoDetalleSede> detalles;
+                detalles = MyApp.getDBO().manifiestoDetalleSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
+                //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
+                recyclerviewAdapter.setTaskList(detalles);
+
+            }
+        });
         dialogBultos.show();
     }
 

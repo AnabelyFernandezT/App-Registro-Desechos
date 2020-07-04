@@ -44,7 +44,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         setView(inflater.inflate(R.layout.fragment_home_sede, container, false));
         init();
         initBuscador();
-        //datosManifiestosAsignados();
+        datosManifiestosAsignados();
         return getView();
     }
 
