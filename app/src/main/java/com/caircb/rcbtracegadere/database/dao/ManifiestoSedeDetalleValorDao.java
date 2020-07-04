@@ -29,6 +29,13 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Transaction
     public abstract Integer fetchNumeroTotalAsigByManifiesto(Integer idManifiesto);
 
+    @Query("Select estado from tb_manifiestos_sede_det_valor where codigoQR=:codigoQR ")
+    @Transaction
+    public abstract Boolean verificarBultoEstado(String codigoQR);
+
+    @Query("UPDATE tb_manifiestos_sede_det_valor SET estado = 1 where codigoQR=:codigoQR ")
+    @Transaction
+    public abstract void actualizarBultoEstado(String codigoQR);
 
     @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto" )
     @Transaction

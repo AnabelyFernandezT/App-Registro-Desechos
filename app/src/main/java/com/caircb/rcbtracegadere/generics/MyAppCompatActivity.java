@@ -48,7 +48,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         if(mContext instanceof MainActivity) {
 
             initGPS();
-            //initListenerScan();
+            initListenerScan();
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
             MySession.setConnecticity(estado);
@@ -142,7 +142,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initConnectivity();
-        /*IntentFilter filter = new IntentFilter();
+        IntentFilter filter = new IntentFilter();
         int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
         String[] value_buf = mScanManager.getParameterString(idbuf);
         if (value_buf != null && value_buf[0] != null && !value_buf[0].equals("")) {
@@ -151,7 +151,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
             filter.addAction(SCAN_ACTION);
         }
 
-        registerReceiver(mScanReceiver, filter);*/
+        registerReceiver(mScanReceiver, filter);
     }
 
     private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {

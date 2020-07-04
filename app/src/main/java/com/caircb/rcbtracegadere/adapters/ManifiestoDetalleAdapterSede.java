@@ -53,6 +53,8 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
         holder.chkEstado.setClickable(false);
         if(it.getBultosSelecionado()== it.getTotalBultos()){
             holder.chkEstado.setChecked(true);
+        }else{
+            holder.chkEstado.setChecked(false);
         }
     }
 
