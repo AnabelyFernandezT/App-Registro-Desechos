@@ -25,10 +25,17 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Transaction
     public abstract void eliminarDetalle();
 
-    @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto" )
+    @Query("select count(idManifiestoDetalleValor) from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto and estado = 1 " )
+    @Transaction
+    public abstract Integer fetchNumeroTotalAsigByManifiesto(Integer idManifiesto);
+
+
+    @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto" )
     @Transaction
     public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
+    @Query("update tb_manifiestos_sede_det_valor set estado=:check where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
+    public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);
 
     @Query("select * from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleValorEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);

@@ -112,7 +112,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         detalles = MyApp.getDBO().manifiestoDetalleSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
-
+        //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
 

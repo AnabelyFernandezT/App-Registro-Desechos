@@ -25,7 +25,10 @@ public abstract class ManifiestoSedeDetalleDao {
     @Transaction
     public abstract void eliminarDetalle();
 
-    @Query("select idManifiestoDetalle,codigoMae,codigo,nombreDesecho,totalBultos from tb_manifiestos_sede_detalle where idAppManifiesto=:idManifiesto" )
+    @Query("select idManifiestoDetalle,codigoMae,codigo,nombreDesecho,totalBultos, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) FROM tb_manifiestos_sede_det_valor DTV WHERE DT.idManifiestoDetalle = DTV.idManifiestoDetalle and DTV.estado = 1 )as bultosSelecionado " +
+            "from tb_manifiestos_sede_detalle DT "+
+            "where idAppManifiesto=:idManifiesto" )
     @Transaction
     public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 

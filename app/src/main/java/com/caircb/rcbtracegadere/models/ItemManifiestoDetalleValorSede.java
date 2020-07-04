@@ -6,8 +6,17 @@ public class ItemManifiestoDetalleValorSede {
     private Double peso;
     private String codigoQR;
     private String nombreBulto;
+    private Boolean estado;
 
     public ItemManifiestoDetalleValorSede() {
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
     public String getNombreBulto() {

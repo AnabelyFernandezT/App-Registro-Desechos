@@ -49,27 +49,11 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
         holder.txtCodigoMae.setText(it.getCodigo());
         holder.txtCodigo.setText(""+it.getCodigoMae());
         holder.txtDescripcion.setText(""+it.getNombreDesecho());
-        holder.totalBultos.setText(""+it.getTotalBultos());
+        holder.totalBultos.setText(""+it.getBultosSelecionado()+" / "+it.getTotalBultos());
         holder.chkEstado.setClickable(false);
-
-        /*if(estadoManifiesto !=1) {
-            holder.chkEstado.setClickable(false);
+        if(it.getBultosSelecionado()== it.getTotalBultos()){
+            holder.chkEstado.setChecked(true);
         }
-        if(estadoManifiesto ==1) {
-            holder.chkEstado.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked()) {
-                        v.setSelected(true);
-                        it.setEstado(true);
-                    } else {
-                        v.setSelected(false);
-                        it.setEstado(false);
-                    }
-                    MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(), it.isEstado(), it.isEstado() ? AppDatabase.getUUID(numeroManifiesto) : "");
-                }
-            });
-        }*/
     }
 
     @Override

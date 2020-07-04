@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
@@ -44,11 +45,7 @@ public class ManifiestoDetalleBultosAdapterSede extends RecyclerView.Adapter<Man
         final ItemManifiestoDetalleValorSede it = manifiestosDtList.get(position);
         holder.txtPeso.setText(it.getPeso().toString());
         holder.txtNombre.setText(it.getNombreBulto());
-
-        /*if(estadoManifiesto !=1) {
-            holder.chkEstado.setClickable(false);
-        }
-        if(estadoManifiesto ==1) {
+        holder.chkEstado.setChecked(it.getEstado());
             holder.chkEstado.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,10 +56,10 @@ public class ManifiestoDetalleBultosAdapterSede extends RecyclerView.Adapter<Man
                         v.setSelected(false);
                         it.setEstado(false);
                     }
-                    MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(), it.isEstado(), it.isEstado() ? AppDatabase.getUUID(numeroManifiesto) : "");
+                    MyApp.getDBO().manifiestoDetalleValorSede().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(),it.getIdManifiestoDetalleValores());
                 }
             });
-        }*/
+
     }
 
     @Override

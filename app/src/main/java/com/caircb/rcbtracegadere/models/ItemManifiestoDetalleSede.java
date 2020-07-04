@@ -6,9 +6,17 @@ public class ItemManifiestoDetalleSede {
     private String codigo;
     private String nombreDesecho;
     private Integer totalBultos;
-
+    private Integer bultosSelecionado;
 
     public ItemManifiestoDetalleSede() {
+    }
+
+    public Integer getBultosSelecionado() {
+        return bultosSelecionado;
+    }
+
+    public void setBultosSelecionado(Integer bultosSelecionado) {
+        this.bultosSelecionado = bultosSelecionado;
     }
 
     public Integer getTotalBultos() {

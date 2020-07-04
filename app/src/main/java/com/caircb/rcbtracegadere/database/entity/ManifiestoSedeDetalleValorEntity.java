@@ -27,8 +27,6 @@ public class ManifiestoSedeDetalleValorEntity {
     private Boolean estado;
 
 
-
-
     public ManifiestoSedeDetalleValorEntity() {
     }
 
