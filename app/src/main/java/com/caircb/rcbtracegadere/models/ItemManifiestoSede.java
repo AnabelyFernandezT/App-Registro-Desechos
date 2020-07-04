@@ -1,28 +1,28 @@
 package com.caircb.rcbtracegadere.models;
 
 public class ItemManifiestoSede {
-    private int idManifiestoPadre;
-    private String manifiestos;
+    private int idAppManifiesto;
+    private String numeroManifiesto;
     private String nombreCliente;
 
 
     public ItemManifiestoSede() {
     }
 
-    public int getIdManifiestoPadre() {
-        return idManifiestoPadre;
+    public int getIdAppManifiesto() {
+        return idAppManifiesto;
     }
 
-    public void setIdManifiestoPadre(int idManifiestoPadre) {
-        this.idManifiestoPadre = idManifiestoPadre;
+    public void setIdAppManifiesto(int idAppManifiesto) {
+        this.idAppManifiesto = idAppManifiesto;
     }
 
-    public String getManifiestos() {
-        return manifiestos;
+    public String getNumeroManifiesto() {
+        return numeroManifiesto;
     }
 
-    public void setManifiestos(String manifiestos) {
-        this.manifiestos = manifiestos;
+    public void setNumeroManifiesto(String numeroManifiesto) {
+        this.numeroManifiesto = numeroManifiesto;
     }
 
     public String getNombreCliente() {

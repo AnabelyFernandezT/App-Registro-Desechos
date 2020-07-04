@@ -33,18 +33,18 @@ public abstract class ManifiestoSedeDetalleValorDao {
         if(entity==null){
             entity = new ManifiestoSedeDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
-            //entity.setPeso(manifiesto.getPeso());
+            entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
             entity.setEstado(true);
-            entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValor());
+            entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
 
         }else if(entity!=null  ){
             entity = new ManifiestoSedeDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
-            //entity.setPeso(manifiesto.getPeso());
+            entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
             entity.setEstado(true);
-            entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValor());
+            entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
         }
 
         if (entity!=null) createManifiesto(entity);

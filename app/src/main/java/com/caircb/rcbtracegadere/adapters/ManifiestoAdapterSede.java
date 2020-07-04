@@ -42,7 +42,7 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
     @Override
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
         final ItemManifiestoSede it = manifiestosList.get(position);
-        holder.txtNumManifiesto.setText(it.getManifiestos());
+        holder.txtNumManifiesto.setText(it.getNumeroManifiesto());
         holder.txtCliente.setText(it.getNombreCliente());
         holder.borderVerificacion.setBackgroundResource(cRojo);
     }

@@ -21,10 +21,13 @@ import java.util.List;
 
 @Dao
 public abstract class ManifiestoSedeDetalleDao {
-
-    @Query("select idManifiestoDetalle,codigoMae,codigo,nombreDesecho from tb_manifiestos_sede_detalle " )
+    @Query("delete from tb_manifiestos_sede_detalle")
     @Transaction
-    public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif();
+    public abstract void eliminarDetalle();
+
+    @Query("select idManifiestoDetalle,codigoMae,codigo,nombreDesecho from tb_manifiestos_sede_detalle where idAppManifiesto=:idManifiesto" )
+    @Transaction
+    public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
     @Query("select * from tb_manifiestos_sede_detalle where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
@@ -37,10 +40,10 @@ public abstract class ManifiestoSedeDetalleDao {
 
         ManifiestoSedeDetalleEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdAppManifiesto());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiesto());
         if(entity==null){
             entity = new ManifiestoSedeDetalleEntity();
-            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
+            entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setCodigoMae(manifiesto.getCodigoMae());
             entity.setCodigo(manifiesto.getCodigo());
@@ -49,7 +52,7 @@ public abstract class ManifiestoSedeDetalleDao {
         }else if(entity!=null ){
 
             entity = new ManifiestoSedeDetalleEntity();entity.setCodigo(manifiesto.getCodigo());
-            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
+            entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setCodigoMae(manifiesto.getCodigoMae());
             entity.setCodigo(manifiesto.getCodigo());
