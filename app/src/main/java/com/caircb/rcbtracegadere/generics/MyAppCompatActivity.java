@@ -174,6 +174,15 @@ public class MyAppCompatActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mScanManager != null) {
+            mScanManager.stopDecode();
+        }
+        unregisterReceiver(mScanReceiver);
+    }
+
     private void initListenerScan() {
         mScanManager = new ScanManager();
         mScanManager.openScanner();
@@ -182,5 +191,6 @@ public class MyAppCompatActivity extends AppCompatActivity {
         soundpool = new SoundPool(1, AudioManager.STREAM_NOTIFICATION, 100); // MODE_RINGTONE
         soundid = soundpool.load("/etc/Scan_new.ogg", 1);
     }
+
 
 }
