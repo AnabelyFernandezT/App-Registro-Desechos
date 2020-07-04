@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -47,6 +48,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +93,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         existePaquetes();
         cargarRutas();
         validateInitFragment();
+        initBorrarCache();
     }
 
     private void validateInitFragment(){
@@ -508,6 +511,32 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         DialogMensajes dialogMensajes = new DialogMensajes(MainActivity.this);
         dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogMensajes.show();
+    }
+
+    private void initBorrarCache(){
+        File dir = this.getCacheDir();
+        if(deleteDir(dir)){
+            System.out.println("CACHE BORRADA");
+        }else{
+            System.out.println("FALLO BORRADO");
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
     }
 
     @Override

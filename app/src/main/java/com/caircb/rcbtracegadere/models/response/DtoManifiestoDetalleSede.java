@@ -4,24 +4,33 @@ import java.util.List;
 
 public class DtoManifiestoDetalleSede {
 
-    private Integer idAppManifiesto;
+    private Integer idManifiesto;
     private Integer idManifiestoDetalle;
     private String codigoMae;
     private String codigo;
     private String nombreDesecho;
     private Integer idManifiestoPadre;
     private List<DtoManifiestoDetalleValorSede> hojaRutaDetalleValor;
+    private Integer totalBultos;
 
 
     public DtoManifiestoDetalleSede() {
     }
 
-    public Integer getIdAppManifiesto() {
-        return idAppManifiesto;
+    public Integer getTotalBultos() {
+        return totalBultos;
     }
 
-    public void setIdAppManifiesto(Integer idAppManifiesto) {
-        this.idAppManifiesto = idAppManifiesto;
+    public void setTotalBultos(Integer totalBultos) {
+        this.totalBultos = totalBultos;
+    }
+
+    public Integer getIdManifiesto() {
+        return idManifiesto;
+    }
+
+    public void setIdManifiesto(Integer idManifiesto) {
+        this.idManifiesto = idManifiesto;
     }
 
     public Integer getIdManifiestoDetalle() {

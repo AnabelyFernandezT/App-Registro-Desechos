@@ -24,9 +24,24 @@ public abstract class ManifiestoSedeDao {
     @Query("select * from tb_manifiestos_sede where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    /*@Query("select idAppManifiesto,numeroManifiesto ,nombreCliente from tb_manifiestos_sede " )
+    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
+            "from tb_manifiestos_sede MC " )
     @Transaction
-    public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();*/
+    public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
+
+    @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
+    abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
+
+    @Query("delete from tb_manifiestos_sede ")
+    public abstract void eliminarManifiestos();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoSedeEntity entity);

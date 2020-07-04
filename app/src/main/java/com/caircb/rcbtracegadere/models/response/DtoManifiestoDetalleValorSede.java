@@ -5,9 +5,10 @@ import java.math.BigDecimal;
 public class DtoManifiestoDetalleValorSede {
 
     private Integer idManifiestoDetalle;
-    private BigDecimal peso;
+    private Double peso;
     private String codigoQR;
-    private Integer idManifiestoDetalleValor;
+    private Integer idManifiestoDetalleValores;
+    private String nombreBulto;
 
 
     public DtoManifiestoDetalleValorSede() {
@@ -21,11 +22,19 @@ public class DtoManifiestoDetalleValorSede {
         this.idManifiestoDetalle = idManifiestoDetalle;
     }
 
-    public BigDecimal getPeso() {
+    public String getNombreBulto() {
+        return nombreBulto;
+    }
+
+    public void setNombreBulto(String nombreBulto) {
+        this.nombreBulto = nombreBulto;
+    }
+
+    public Double getPeso() {
         return peso;
     }
 
-    public void setPeso(BigDecimal peso) {
+    public void setPeso(Double peso) {
         this.peso = peso;
     }
 
@@ -37,11 +46,11 @@ public class DtoManifiestoDetalleValorSede {
         this.codigoQR = codigoQR;
     }
 
-    public Integer getIdManifiestoDetalleValor() {
-        return idManifiestoDetalleValor;
+    public Integer getIdManifiestoDetalleValores() {
+        return idManifiestoDetalleValores;
     }
 
-    public void setIdManifiestoDetalleValor(Integer idManifiestoDetalleValor) {
-        this.idManifiestoDetalleValor = idManifiestoDetalleValor;
+    public void setIdManifiestoDetalleValores(Integer idManifiestoDetalleValores) {
+        this.idManifiestoDetalleValores = idManifiestoDetalleValores;
     }
 }

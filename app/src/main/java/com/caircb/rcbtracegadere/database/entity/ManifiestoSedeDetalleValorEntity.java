@@ -16,15 +16,26 @@ public class ManifiestoSedeDetalleValorEntity {
     @NonNull
     private Integer idManifiestoDetalle;
 
-    private String peso;
+    private Double peso;
 
     private String codigoQR;
 
-    private Boolean estado;
-
     private Integer idManifiestoDetalleValor;
 
+    private String nombreBulto;
+
+    private Boolean estado;
+
+
     public ManifiestoSedeDetalleValorEntity() {
+    }
+
+    public String getNombreBulto() {
+        return nombreBulto;
+    }
+
+    public void setNombreBulto(String nombreBulto) {
+        this.nombreBulto = nombreBulto;
     }
 
     public Integer get_id() {
@@ -44,11 +55,11 @@ public class ManifiestoSedeDetalleValorEntity {
         this.idManifiestoDetalle = idManifiestoDetalle;
     }
 
-    public String getPeso() {
+    public Double getPeso() {
         return peso;
     }
 
-    public void setPeso(String peso) {
+    public void setPeso(Double peso) {
         this.peso = peso;
     }
 

@@ -22,9 +22,17 @@ public class ManifiestoSedeDetalleEntity {
 
     private String nombreDesecho;
 
-
+    private Integer totalBultos;
 
     public ManifiestoSedeDetalleEntity() {
+    }
+
+    public Integer getTotalBultos() {
+        return totalBultos;
+    }
+
+    public void setTotalBultos(Integer totalBultos) {
+        this.totalBultos = totalBultos;
     }
 
     public Integer get_id() {

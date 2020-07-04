@@ -28,13 +28,16 @@ public class ManifiestoDetallePesosEntity {
     @NonNull
     private String codeQr;
 
-    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion, Integer tipoPaquete, @NonNull String codeQr) {
+    private boolean impresion;
+
+    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion, Integer tipoPaquete, @NonNull String codeQr, boolean impresion) {
         this.valor = valor;
         this.idAppManifiesto = idAppManifiesto;
         this.idAppManifiestoDetalle = idAppManifiestoDetalle;
         this.descripcion = descripcion;
         this.tipoPaquete = tipoPaquete;
         this.codeQr = codeQr;
+        this.impresion = impresion;
     }
 
     public Integer get_id() {
@@ -94,5 +97,13 @@ public class ManifiestoDetallePesosEntity {
 
     public void setCodeQr(@NonNull String codeQr) {
         this.codeQr = codeQr;
+    }
+
+    public boolean isImpresion() {
+        return impresion;
+    }
+
+    public void setImpresion(boolean impresion) {
+        this.impresion = impresion;
     }
 }
