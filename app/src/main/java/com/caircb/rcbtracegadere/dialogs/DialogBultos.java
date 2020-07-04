@@ -49,6 +49,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     List<String> itemsCategoriaPaquete;
     Boolean closable=false;
     MyPrint print;
+    Integer tipoGestion;
 
     public interface OnBultoListener {
         public void onSuccessful(
@@ -69,7 +70,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             @NonNull Integer idManifiesto,
             @NonNull Integer idManifiestoDetalle,
             @NonNull Integer tipoPaquete,
-            @NonNull String codigoDetalle) {
+            @NonNull String codigoDetalle,
+            Integer tipoGestion) {
         super(context, R.layout.dialog_bultos);
 
         this.position=position;
@@ -77,6 +79,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         this.idManifiestoDetalle=idManifiestoDetalle;
         this.tipoPaquete = tipoPaquete;
         this.codigoDetalle = codigoDetalle;
+        this.tipoGestion = tipoGestion;
     }
 
     @Override
@@ -135,6 +138,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
             if(pkg.getEntregaSoloFundas())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
             if(pkg.getEntregaSoloGuardianes())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
+
+            System.out.println("nombre");
+
+            //showTipoPaquete();
             /*if(pkg!=null && (
                     pkg.getPaquetePorRecolccion().toString().equals("1")
                     && !pkg.getFlagAdicionales()
@@ -246,7 +253,30 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     //messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
                     //return;
                 //}else {
-                    showTipoPaquete(imput);
+
+                // showTipoPaquete(imput);  //ANTES
+
+                if(tipoGestion == 100){
+                    Integer which = 0;
+                    if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalFunda() && pkg.getPaquetePorRecolccion().toString().equals("1")){
+                        //alert.dismiss();
+                        messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
+                        return;
+                    }
+                    addBulto(imput,itemsCategoriaPaquete.get(which));
+                }else if (tipoGestion == 101){
+                    Integer which = 1;
+                    if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalGuardian() && pkg.getPaquetePorRecolccion().toString().equals("1")){
+                        //alert.dismiss();
+                        messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
+                        return;
+                    }
+                    addBulto(imput, itemsCategoriaPaquete.get(which));
+                }else if (tipoGestion == 102){
+                    Integer which = 2;
+                    addBulto(imput, itemsCategoriaPaquete.get(which));
+                }
+
                 //}
             }else{
                 addBulto(imput,"");
@@ -254,6 +284,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         }
     }
 
+
+
+/*
     private void showTipoPaquete(final BigDecimal imput){
 
         alertDialog = new AlertDialog.Builder(getActivity());
@@ -294,7 +327,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         //alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alert.show();
     }
-
+*/
 
     private boolean existeBultoCategoria(String categoria){
         return  MyApp.getDBO().manifiestoDetallePesosDao().existeBultoCategoriaPaquete(idManifiesto,idManifiestoDetalle,categoria);

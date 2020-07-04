@@ -8,6 +8,7 @@ public class DtoManifiestoDetalleValorSede {
     private Double peso;
     private String codigoQR;
     private Integer idManifiestoDetalleValores;
+    private String nombreBulto;
 
 
     public DtoManifiestoDetalleValorSede() {
@@ -19,6 +20,14 @@ public class DtoManifiestoDetalleValorSede {
 
     public void setIdManifiestoDetalle(Integer idManifiestoDetalle) {
         this.idManifiestoDetalle = idManifiestoDetalle;
+    }
+
+    public String getNombreBulto() {
+        return nombreBulto;
+    }
+
+    public void setNombreBulto(String nombreBulto) {
+        this.nombreBulto = nombreBulto;
     }
 
     public Double getPeso() {

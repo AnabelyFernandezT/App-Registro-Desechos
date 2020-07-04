@@ -13,6 +13,7 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.services.WebService;
 
@@ -45,10 +46,15 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                     MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
                     MyApp.getDBO().manifiestoDetalleSede().eliminarDetalle();
+                    MyApp.getDBO().manifiestoDetalleValorSede().eliminarDetalle();
+
                     for(DtoManifiestoSede reg:response.body()){
                         MyApp.getDBO().manifiestoSedeDao().saveOrUpdate(reg);
                         for (DtoManifiestoDetalleSede mdet:reg.getHojaRutaDetalle()){
                             MyApp.getDBO().manifiestoDetalleSede().saveOrUpdate(mdet);
+                            for(DtoManifiestoDetalleValorSede sedeVa : mdet.getHojaRutaDetalleValor()){
+                                MyApp.getDBO().manifiestoDetalleValorSede().saveOrUpdate(sedeVa);
+                            }
                         }
                     }
                     progressHide();

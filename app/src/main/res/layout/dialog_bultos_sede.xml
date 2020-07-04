@@ -22,14 +22,22 @@
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BULTOs"
+            android:text="BULTOS"
             android:textAlignment="center"/>
 
-        <ListView
-            android:id="@+id/listViewBultos"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
-        </ListView>
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/footer"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchViewManifiestos">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
 
     </LinearLayout>
 
