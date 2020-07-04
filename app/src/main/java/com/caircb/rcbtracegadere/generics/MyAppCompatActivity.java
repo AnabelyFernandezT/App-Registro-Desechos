@@ -50,6 +50,8 @@ public class MyAppCompatActivity extends AppCompatActivity {
             initGPS();
             /***Cometado para dispositivos emulador***/
             initListenerScan();
+            /***********/
+
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
             MySession.setConnecticity(estado);
@@ -152,6 +154,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
             filter.addAction(SCAN_ACTION);
         }
         registerReceiver(mScanReceiver, filter);
+        /**********/
     }
 
     private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
