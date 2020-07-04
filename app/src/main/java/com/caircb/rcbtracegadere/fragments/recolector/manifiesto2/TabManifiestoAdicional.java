@@ -248,11 +248,11 @@ public class TabManifiestoAdicional extends LinearLayout {
             recyclerLtsPaquetes.setAdapter(manifiestoPaqueteAdapter);
 
             //region de adicionales...
-            lnlAdicionales.setVisibility(pkg.getFlagAdicionales()?View.VISIBLE:View.GONE);
+            //lnlAdicionales.setVisibility(pkg.getFlagAdicionales()?View.VISIBLE:View.GONE);
             lnlmsgAdicionales.setVisibility(pkg.getFlagAdicionales()?View.GONE:View.VISIBLE);
         }
         if(idAppTipoPaquete == null){
-            lnlAdicionales.setVisibility(View.GONE);
+           // lnlAdicionales.setVisibility(View.GONE);
             lnlmsgAdicionales.setVisibility(View.VISIBLE);
         }
     }

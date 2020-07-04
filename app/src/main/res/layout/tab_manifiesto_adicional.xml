@@ -32,7 +32,7 @@
                         android:layout_width="wrap_content"
                         android:textStyle="bold"
                         android:textColor="#fff"
-                        android:text="EXCLUSIVO PARA BIOLOGICOS-INFECCIOSOS"
+                        android:text="EXCLUSIVO PARA RECOLECCION POR PAQUETES"
                         android:layout_height="wrap_content" />
 
                     <View
@@ -103,6 +103,7 @@
                         <LinearLayout
                             android:id="@+id/lnlAdicionales"
                             android:orientation="vertical"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -169,6 +170,8 @@
                                     android:layout_height="wrap_content"/>
                             </LinearLayout>
                         </LinearLayout>
+
+                        <!-- adicionales-->
                         <LinearLayout
                             android:id="@+id/lnlmsgAdicionales"
                             android:orientation="vertical"

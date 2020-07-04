@@ -173,8 +173,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                 imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), pos+1);
 
-                listaValoresAdapter.filterList(bultos);
-                listaValoresAdapter.notifyDataSetChanged();
+                //listaValoresAdapter.filterList(bultos);
+                //listaValoresAdapter.notifyDataSetChanged();
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -211,7 +211,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
                 @Override
                 public void onSuccessful() {
-                    //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                    //Impresion finalizada
+                    loadData();
                 }
 
                 @Override
