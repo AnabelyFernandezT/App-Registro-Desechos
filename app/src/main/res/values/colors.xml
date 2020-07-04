@@ -9,4 +9,6 @@
     <color name="app_divider">#FFBF02</color>
     <color name="app_text_white">#fff</color>
     <color name="material_green_700">#388E3C</color>
+    <color name="coloRedRockwell">#BB1E32</color>
+    <color name="coloGreenRockwell">#BACD32</color>
 </resources>

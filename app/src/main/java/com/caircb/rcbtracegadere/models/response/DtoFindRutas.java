@@ -4,6 +4,11 @@ public class DtoFindRutas {
 
     private Integer idSubRuta;
     private String nombreSubRuta;
+    private String placa;
+    private String nombreChofer;
+    private String nombreAuxiliar;
+    private String nombreConductor;
+    private String nombreRuta;
 
     public DtoFindRutas() {
     }
@@ -23,4 +28,26 @@ public class DtoFindRutas {
     public void setNombreRuta(String nombreRuta) {
         this.nombreSubRuta = nombreRuta;
     }
+
+    public String getNombreSubRuta() { return nombreSubRuta; }
+
+    public void setNombreSubRuta(String nombreSubRuta) { this.nombreSubRuta = nombreSubRuta; }
+
+    public String getPlaca() { return placa; }
+
+    public void setPlaca(String placa) { this.placa = placa; }
+
+    public String getNombreChofer() { return nombreChofer; }
+
+    public void setNombreChofer(String nombreChofer) { this.nombreChofer = nombreChofer; }
+
+    public String getNombreAuxiliar() { return nombreAuxiliar; }
+
+    public void setNombreAuxiliar(String nombreAuxiliar) { this.nombreAuxiliar = nombreAuxiliar; }
+
+    public String getNombreConductor() { return nombreConductor; }
+
+    public void setNombreConductor(String nombreConductor) { this.nombreConductor = nombreConductor; }
+
+
 }

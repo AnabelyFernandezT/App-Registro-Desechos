@@ -50,7 +50,7 @@ public class DialogFinRuta extends MyDialog {
     Integer placaInicio, idInicioFin;
     Date diaAnterior;
     Spinner listaDestino, listaDestinoParticular;
-    String destino;
+    String destino = "", destinos="";
 
     UserRegistrarFinRutaTask registroFinRuta;
     UserConsultarDestinosTask consultarDetino;
@@ -113,6 +113,7 @@ public class DialogFinRuta extends MyDialog {
                 if(position>0){
                     listaDestinos.get(position-1);
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+position);
+                    destinos = (String) listaDestino.getSelectedItem();
                     traerDestinoEspecifico();
                 }
 
@@ -158,8 +159,14 @@ public class DialogFinRuta extends MyDialog {
                         messageBox("Kilometraje incorrecto");
                         return;
                     }else{
+                        if(destino.equals("") || destinos.equals("")){
+                            messageBox("Seleccione Destino");
+                            return;
+                        }else {
+                            guardarDatos();
+                        }
 
-                        guardarDatos();
+
                     }
 
                 }

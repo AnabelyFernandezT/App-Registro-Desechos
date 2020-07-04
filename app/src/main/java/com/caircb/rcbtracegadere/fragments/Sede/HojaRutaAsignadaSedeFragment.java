@@ -22,13 +22,16 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +41,17 @@ import java.util.List;
  * Use the {@link HojaRutaAsignadaSedeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnClickListener {
+public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnClickListener, OnBarcodeListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
 
     private Window window;
     private RecyclerView recyclerView;
-    private ManifiestoAdapter recyclerviewAdapter;
+    private ManifiestoAdapterSede recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiesto> rowItems;
+    private List<ItemManifiestoSede> rowItems;
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
@@ -79,7 +82,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoAdapterSede(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);
@@ -93,9 +96,9 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     }
 
     private void filtro(String texto){
-        List<ItemManifiesto> result = new ArrayList<>();
-        List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        List<ItemManifiestoSede> result = new ArrayList<>();
+        List<ItemManifiestoSede> listaItems = new ArrayList<>() ;
+        //listaItems =  MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -105,7 +108,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        //rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
         adapterList();
 
     }
@@ -118,7 +121,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getManifiestos(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -132,7 +135,8 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                        menu(position);
+                        //menu(position);
+                        setNavegate(ManifiestoSedeFragment.newInstance(rowItems.get(position).getIdManifiestoPadre()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -144,30 +148,27 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         //recyclerView.addItemDecoration(divider);
     }
 
-    private void  menu(final int position){
-        final CharSequence[] options = {"INICIAR RECOLECCION", "INGRESAR MOTIVO NO RECOLECCION", "CANCELAR"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("INICIAR RECOLECCION"))
-                {
-                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
-                }
-                else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
-                {
-                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-                }
-                else if (options[item].equals("CANCELAR")) {
-                    dialog.dismiss();
-                }
+    @Override
+    public void reciveData(String data) {
+        System.out.print(data);
+        /*List<DtoDespachoCodigoBarras> listaCodigoBarras = getListBultosByCodigoBarras(data);
+        String mensaje;
 
+        if(listaCodigoBarras.size() > 0){
+            if(listaCodigoBarras.size() > 1){
+                openSeleccionarListaEmpaque(listaCodigoBarras);
+            }else{
+                DtoDespachoCodigoBarras codigo = listaCodigoBarras.get(0);
+                Integer despachoDetalleId = codigo.getDespachoDetalleId();
+                Integer cantidad = codigo.getCantidad();
+                tratamientoProductoEncontrado(despachoDetalleId, cantidad);
             }
-        });
-        builder.show();
+        }else{
+            mensaje = "EL ITEM " + data + " NO EXISTE DENTRO DE NINGUN DESPACHO";
+            mostrarMensajeBarra(0, mensaje);
+        }*/
     }
+
 
     @Override
     public void onClick(View v) {
