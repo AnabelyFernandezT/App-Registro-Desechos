@@ -230,6 +230,9 @@ public class MyPrint {
             // TODO: handle exception
         }finally {
             if(complete)finalized();
+            if(complete){
+                if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+            }
             else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
         }
     }
