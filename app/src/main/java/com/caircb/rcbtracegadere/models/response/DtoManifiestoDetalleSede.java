@@ -11,9 +11,18 @@ public class DtoManifiestoDetalleSede {
     private String nombreDesecho;
     private Integer idManifiestoPadre;
     private List<DtoManifiestoDetalleValorSede> hojaRutaDetalleValor;
+    private Integer totalBultos;
 
 
     public DtoManifiestoDetalleSede() {
+    }
+
+    public Integer getTotalBultos() {
+        return totalBultos;
+    }
+
+    public void setTotalBultos(Integer totalBultos) {
+        this.totalBultos = totalBultos;
     }
 
     public Integer getIdManifiesto() {

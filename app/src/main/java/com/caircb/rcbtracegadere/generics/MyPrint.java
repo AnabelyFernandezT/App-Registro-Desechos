@@ -22,6 +22,8 @@ import com.zebra.android.printer.ZebraPrinterFactory;
 import com.zebra.android.printer.ZebraPrinterLanguageUnknownException;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,7 +71,10 @@ public class MyPrint {
 
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
-                        Looper.prepare();
+                        if (Looper.myLooper() == null)
+                        {
+                            Looper.prepare();
+                        }
                         doConnectionTestIndividual(printEtiqueta, numeroBulto);
                         Looper.loop();
                         Looper.myLooper().quit();
@@ -115,6 +120,7 @@ public class MyPrint {
                 }
             }).start();
             */
+            /*
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
                         Looper.prepare();
@@ -122,7 +128,7 @@ public class MyPrint {
                         Looper.loop();
                         Looper.myLooper().quit();
                     }
-                });
+                });*/
 
             } else {
                 //mensaje...

@@ -4,9 +4,26 @@ public class ItemManifiestoSede {
     private int idAppManifiesto;
     private String numeroManifiesto;
     private String nombreCliente;
-
+    private Integer totalBultos;
+    private Integer bultosSelecionado;
 
     public ItemManifiestoSede() {
+    }
+
+    public Integer getTotalBultos() {
+        return totalBultos;
+    }
+
+    public void setTotalBultos(Integer totalBultos) {
+        this.totalBultos = totalBultos;
+    }
+
+    public Integer getBultosSelecionado() {
+        return bultosSelecionado;
+    }
+
+    public void setBultosSelecionado(Integer bultosSelecionado) {
+        this.bultosSelecionado = bultosSelecionado;
     }
 
     public int getIdAppManifiesto() {
