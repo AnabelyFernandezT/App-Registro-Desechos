@@ -62,6 +62,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         b.putInt(ARG_PARAM1,manifiestoID);
         f.setArguments(b);
         return f;
+
     }
 
     @Override
@@ -132,6 +133,9 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         dialogBultos.show();
     }
 
+    public void actualizarData(){
+        recyclerviewAdapter.notifyDataSetChanged();
+    }
 
 
 

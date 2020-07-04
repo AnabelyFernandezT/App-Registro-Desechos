@@ -71,12 +71,12 @@ public class DialogBultosSede extends MyDialog {
             @Override
             public void onClick(View v) {
                 DialogBultosSede.this.dismiss();
-
             }
         });
 
         //datosPlacasDisponibles();
     }
+
 
 
     private void loadData(){
