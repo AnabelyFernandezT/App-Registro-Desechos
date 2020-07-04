@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPrelimina
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarNoRecoleccion;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Date;
 
@@ -36,6 +38,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
     TabManifiestoAdicionalNoRecoleccion tabManifiestoAdicional;
 
     Integer idAppManifiesto,pantallaEstado;
+    FloatingActionButton mensajes;
 
 
     public ManifiestoNoRecoleccionFragment() {
@@ -69,12 +72,15 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
         return getView();
     }
 
+    @SuppressLint("RestrictedApi")
     private void init(){
 
         btnManifiestoCancel = getView().findViewById(R.id.btnManifiestoCancel);
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
+        mensajes = getView().findViewById(R.id.fab);
+        mensajes.setVisibility(View.INVISIBLE);
     }
 
 
@@ -145,11 +151,6 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
             case R.id.btnManifiestoNext:
                 //tab genearl...
                 boolean aplicaNoRecoleccion= tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion();
-
-                if(tabManifiestoGeneral.validaRequiereNumeroManifiestoCliente()){
-                    messageBox("Se requiere que ingrese el numero de manifiesto del cliente");
-                    return;
-                }
 
                 if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
                     messageBox("Se requiere de la firma del transportista");
