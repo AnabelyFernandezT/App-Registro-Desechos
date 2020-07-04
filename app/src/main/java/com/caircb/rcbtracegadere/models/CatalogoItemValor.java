@@ -4,11 +4,13 @@ public class CatalogoItemValor {
     private int idCatalogo;
     private String valor;
     private String tipo;
+    private boolean impresion;
 
-    public CatalogoItemValor(int idCatalogo, String valor, String tipo) {
+    public CatalogoItemValor(int idCatalogo, String valor, String tipo, boolean impresion) {
         this.idCatalogo = idCatalogo;
         this.valor = valor;
         this.tipo = tipo;
+        this.impresion = impresion;
     }
 
     public int getIdCatalogo() {
@@ -30,4 +32,12 @@ public class CatalogoItemValor {
     public String getTipo() {  return tipo; }
 
     public void setTipo(String tipo) { this.tipo = tipo; }
+
+    public boolean isImpresion() {
+        return impresion;
+    }
+
+    public void setImpresion(boolean impresion) {
+        this.impresion = impresion;
+    }
 }

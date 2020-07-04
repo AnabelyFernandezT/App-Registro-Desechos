@@ -16,6 +16,7 @@ public class ItemEtiqueta {
     private Integer totalEtiqueta;
 
 
+
     public Integer getIdAppManifiestoDetalle() {
         return idAppManifiestoDetalle;
     }

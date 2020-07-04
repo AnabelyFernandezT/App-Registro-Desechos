@@ -38,6 +38,7 @@ public class MyPrint {
     private Activity activity;
     private boolean connected=false;
 
+
     public interface OnPrinterListener {
         public void onSuccessful();
         public void onFailure(String message);
@@ -56,6 +57,34 @@ public class MyPrint {
         dialog.setCancelable(false);
 
         onCreatePrint();
+    }
+
+    /***************/
+    public void printerIndividual(Integer idManifiesto, Integer idManifiestoDetalle, Integer idCatalogo, final Integer numeroBulto){
+        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+            final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividual(idManifiesto, idManifiestoDetalle, idCatalogo);
+            if(printEtiqueta != null){
+                System.out.println(printEtiqueta);
+                dialog.show();
+
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Looper.prepare();
+                        doConnectionTestIndividual(printEtiqueta, numeroBulto);
+                        Looper.loop();
+                        Looper.myLooper().quit();
+                    }
+                });
+
+            } else {
+                //mensaje...
+                Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+                disconnect("Impresora no encontrada");
+            }
+        }else {
+            Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+            disconnect("Impresora no encontrada");
+        }
     }
 
     public void pinter(Integer idAppManifiesto){
@@ -158,6 +187,46 @@ public class MyPrint {
             disconnect("No existe conexion con la impresora");
         }
     }
+    private void doConnectionTestIndividual(ItemEtiqueta etiqueta, Integer numeroBulto) {
+        printer = connect();
+        if (printer != null) {
+            sendTestLabelIndividual(etiqueta, numeroBulto);
+        } else {
+            disconnect("No existe conexion con la impresora");
+        }
+    }
+
+    private void sendTestLabelIndividual(ItemEtiqueta etiquetas, Integer numeroBulto) {
+        boolean complete=false;
+        ItemEtiqueta row = etiquetas;
+        try {
+            byte[] configLabel;
+            configLabel = getTramaBultoIndividual(
+                    printer,
+                    row.getNumeroManifiesto(),
+                    row.getCodigoQr(),
+                    row.getCliente(),
+                    (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecoleccion()),
+                    row.getPeso(),
+                    row.getResiduo(),
+                    String.valueOf(numeroBulto),
+                    row.getTratamiento(),
+                    "",
+                    false
+            );
+            zebraPrinterConnection.write(configLabel);
+            MyThread.sleep(50);
+
+            complete=true;
+        }catch (ZebraPrinterConnectionException e) {
+            //setStatus(e.getMessage(), Color.RED);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }finally {
+            if(complete)finalized();
+            else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
+        }
+    }
 
     private void sendTestLabel(List<ItemEtiqueta> etiquetas) {
         boolean complete=false;
@@ -176,7 +245,7 @@ public class MyPrint {
                         row.getPeso(),
                         row.getResiduo(),
                         row.getIndexEtiqueta()+" / "+row.getTotalEtiqueta(),
-                        row.getTratamiento(),
+                        row.getTratamiento() == null ? "": row.getTratamiento(),
                         "",
                         false
                         );
@@ -206,6 +275,53 @@ public class MyPrint {
         }
 
     }
+
+
+    private byte[] getTramaBultoIndividual(
+            ZebraPrinter printer,
+            String manifiesto,
+            String codigoQr,
+            String cliente,
+            String fecha,
+            double peso,
+            String residuo,
+            String numeroBulto,
+            String tratamiento,
+            String destinatario,
+            boolean aplicaDevolucion) {
+
+        PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
+        String cpclConfigLabel="";
+        byte[] configLabel = null;
+        String ItemDescripcion = recorreString(residuo);
+
+        if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
+            cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
+        }else{
+            //String descripcion = row.getDescripcion().substring(10, 33);
+            cpclConfigLabel =
+                    "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
+                    "^FS^FO60,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
+                    "^FS^FO60,90^AD^FD #M.U.E: "+manifiesto.trim()+
+                    "^FS^FO60,120^AD^FD FECHA: "+fecha+
+                    "^FS^FO60,150^AD^FD PESO:"+peso+
+                    //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                    //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                    "^FS^FO60,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
+                    "^FS^FO60,530^AD^FD NO. BULTOS:"+ numeroBulto +
+                    "^FS^FO60,560^AD^FD TRATAMIENTO:"+ tratamiento +
+                    "^FS^FO60,590^AD^FD DESTINATARIO:"+ destinatario.toUpperCase() +
+                    "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:"+ (aplicaDevolucion?"SI":"NO") +
+                    "^FS^FO60,650^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() +
+                    "^FS ^XZ";
+        }
+
+        configLabel = cpclConfigLabel.getBytes();
+        return configLabel;
+
+    }
+
+
 
     private byte[] getConfigLabel(
             ZebraPrinter printer,

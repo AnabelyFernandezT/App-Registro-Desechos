@@ -135,9 +135,11 @@ public class TabManifiestoDetalle extends LinearLayout {
                     RowItemManifiesto row = detalles.get(position);
                     row.setPeso(valor.doubleValue());
 
+
                     if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
                     else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
-                    else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
+                    else if(row.getTipoItem()==3) row.setCantidadBulto(Double.valueOf(cantidad)); //otros cantida = peso...
+                    //else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
 
                     row.setEstado(true);
                     recyclerviewAdapter.notifyDataSetChanged();
