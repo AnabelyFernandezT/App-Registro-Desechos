@@ -150,7 +150,21 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
 
     @Override
     public void reciveData(String data) {
-        System.out.print(data);
+
+        Boolean estadoBulto = MyApp.getDBO().manifiestoDetalleValorSede().verificarBultoEstado(data);
+
+        if(estadoBulto==null){
+            messageBox("CODIGO QR NO EXISTE..!");
+        }else{
+            if (estadoBulto){
+                messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
+            }else if (!estadoBulto){
+                MyApp.getDBO().manifiestoDetalleValorSede().actualizarBultoEstado(data);
+                rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+                adapterList();
+            }
+        }
+
         /*List<DtoDespachoCodigoBarras> listaCodigoBarras = getListBultosByCodigoBarras(data);
         String mensaje;
 

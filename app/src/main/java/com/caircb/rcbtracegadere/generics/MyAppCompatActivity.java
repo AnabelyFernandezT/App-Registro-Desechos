@@ -48,6 +48,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         if(mContext instanceof MainActivity) {
 
             initGPS();
+            /***Cometado para dispositivos emulador***/
             //initListenerScan();
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
@@ -135,14 +136,14 @@ public class MyAppCompatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initBroadcast();
-        //initConnectivity();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         initConnectivity();
-        /*IntentFilter filter = new IntentFilter();
+       /***Cometado para dispositivos emulador***/
+       /* IntentFilter filter = new IntentFilter();
         int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
         String[] value_buf = mScanManager.getParameterString(idbuf);
         if (value_buf != null && value_buf[0] != null && !value_buf[0].equals("")) {
@@ -174,6 +175,15 @@ public class MyAppCompatActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mScanManager != null) {
+            mScanManager.stopDecode();
+        }
+        unregisterReceiver(mScanReceiver);
+    }
+
     private void initListenerScan() {
         mScanManager = new ScanManager();
         mScanManager.openScanner();
@@ -182,5 +192,6 @@ public class MyAppCompatActivity extends AppCompatActivity {
         soundpool = new SoundPool(1, AudioManager.STREAM_NOTIFICATION, 100); // MODE_RINGTONE
         soundid = soundpool.load("/etc/Scan_new.ogg", 1);
     }
+
 
 }
