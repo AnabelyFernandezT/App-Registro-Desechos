@@ -16,9 +16,16 @@ import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
+
+import java.util.List;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
 
@@ -29,6 +36,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
+    UserConsultarManifiestosSedeTask consultarPlacasInicioRutaDisponible;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +44,13 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         setView(inflater.inflate(R.layout.fragment_home_sede, container, false));
         init();
         initBuscador();
+        datosManifiestosAsignados();
         return getView();
+    }
+
+    private void datosManifiestosAsignados(){
+        consultarPlacasInicioRutaDisponible = new UserConsultarManifiestosSedeTask(getActivity());
+        consultarPlacasInicioRutaDisponible.execute();
     }
 
     private void init() {
@@ -85,6 +99,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         });
     }
 
+
+
     private void initBuscador(){
         regionBuscar = (ImageButton)getView().findViewById(R.id.regionBuscar);
         regionBuscar.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +111,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             }
         });
     }
+
+
 
     public static HomeSedeFragment create(){
         return new HomeSedeFragment();

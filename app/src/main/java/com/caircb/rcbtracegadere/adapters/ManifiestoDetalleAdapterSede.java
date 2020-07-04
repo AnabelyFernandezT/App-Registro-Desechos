@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
 
     private ClickListener mClickListener;
     private Context mContext;
-    private List<RowItemManifiesto> manifiestosDtList;
+    private List<ItemManifiestoDetalleSede> manifiestosDtList;
     private String numeroManifiesto;
     private Integer estadoManifiesto;
 
@@ -43,15 +45,12 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
 
     @Override
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
-        final RowItemManifiesto it = manifiestosDtList.get(position);
-        holder.txtUnidad.setText(it.getUnidad());
-        holder.txtPeso.setText(""+it.getPeso());
-        holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
-        holder.txtDescripcion.setText(it.getDescripcion());
-        holder.txtTratamiento.setText(it.getTratamiento());
-        holder.chkEstado.setChecked(it.isEstado());
+        final ItemManifiestoDetalleSede it = manifiestosDtList.get(position);
+        holder.txtUnidad.setText(it.getCodigo());
+        holder.txtPeso.setText(""+it.getCodigoMae());
+        holder.txtCantidadBulto.setText(""+it.getNombreDesecho());
 
-        if(estadoManifiesto !=1) {
+        /*if(estadoManifiesto !=1) {
             holder.chkEstado.setClickable(false);
         }
         if(estadoManifiesto ==1) {
@@ -68,7 +67,7 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
                     MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(), it.isEstado(), it.isEstado() ? AppDatabase.getUUID(numeroManifiesto) : "");
                 }
             });
-        }
+        }*/
     }
 
     @Override
@@ -76,7 +75,7 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
         return manifiestosDtList.size();
     }
 
-    public void setTaskList(List<RowItemManifiesto> taskList) {
+    public void setTaskList(List<ItemManifiestoDetalleSede> taskList) {
         this.manifiestosDtList = taskList;
         notifyDataSetChanged();
     }
