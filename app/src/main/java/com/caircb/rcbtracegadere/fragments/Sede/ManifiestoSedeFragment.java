@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,6 +23,8 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterSede;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosSede;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HojaRutaAsignadaGestorFragment;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.RecepcionGestorFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
@@ -48,7 +51,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     Dialog dialogOpcioneItem;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     ListView LtsManifiestoDetalle,mDialogMenuItems;
-
+    DialogBultosSede dialogPlacas;
 
     public  ManifiestoSedeFragment (){
     }
@@ -113,20 +116,20 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
 
-        /*recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
+        recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                int x=0;
-                if(estadoManifiesto == 1){
                     openOpcionesItems(position);
-                }
             }
-        });*/
+        });
     }
 
 
     private void openOpcionesItems(final Integer positionItem){
-
+                  dialogPlacas = new DialogBultosSede(getActivity());
+                dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogPlacas.setCancelable(false);
+                dialogPlacas.show();
     }
 
 
