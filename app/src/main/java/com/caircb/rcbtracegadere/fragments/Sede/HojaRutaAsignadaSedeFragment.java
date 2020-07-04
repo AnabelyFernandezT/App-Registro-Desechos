@@ -98,7 +98,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     private void filtro(String texto){
         List<ItemManifiestoSede> result = new ArrayList<>();
         List<ItemManifiestoSede> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+        //listaItems =  MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -108,7 +108,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+        //rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
         adapterList();
 
     }
