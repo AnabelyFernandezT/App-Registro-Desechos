@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/rowBG"
         android:layout_width="wrap_content"
-        android:layout_height="280dp"
+        android:layout_height="110dp"
         android:layout_alignParentRight="true"
         android:gravity="right|center"
         android:orientation="vertical">
@@ -16,9 +16,9 @@
         <!--VER MANIFIESTO-->
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:background="@color/app_gadere"
-            android:padding="10dp">
+            android:padding="8dp">
 
             <RelativeLayout
 
@@ -49,9 +49,9 @@
         <!--MORE OPTION-->
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:background="@android:color/darker_gray"
-            android:padding="10dp">
+            android:padding="8dp">
 
             <RelativeLayout
 
@@ -94,11 +94,11 @@
 
     <LinearLayout
         android:padding="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/shape_card_border_red"
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="110dp"
         android:clickable="true"
         android:elevation="4dp"
         android:focusable="true"
@@ -141,80 +141,11 @@
                     style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
                     />
-
                 <TextView
                     android:id="@+id/itm_cliente"
                     android:layout_width="match_parent"
                     android:textColor="#737373"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="3dp"
-                    android:text="SUCURSAL"
-                    style="@style/TextViewTitleItem"
-                    android:paddingBottom="3dp"
-                    />
-
-                <TextView
-                    android:id="@+id/itm_sucursal"
-                    android:layout_width="match_parent"
-                    android:textColor="#737373"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
-                    />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="3dp"
-                    android:text="DIRECCIÓN"
-                    style="@style/TextViewTitleItem"
-                    android:paddingBottom="3dp"
-                    />
-
-                <TextView
-                    android:id="@+id/itm_Direccion"
-                    android:layout_width="match_parent"
-                    android:textColor="#737373"
-                    android:maxLines="2"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="3dp"
-                    android:text="PROVINCIA"
-                    style="@style/TextViewTitleItem"
-                    android:paddingBottom="3dp"
-                    />
-
-                <TextView
-                    android:id="@+id/itm_Provincia"
-                    android:layout_width="match_parent"
-                    android:textColor="#737373"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
-                    />
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="3dp"
-                    android:text="CIUDAD"
-                    style="@style/TextViewTitleItem"
-                    android:paddingBottom="3dp"
-                    />
-
-                <TextView
-                    android:id="@+id/itm_Ciudad"
-                    android:layout_width="match_parent"
-                    android:textColor="#737373"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
                     />
             </LinearLayout>
 

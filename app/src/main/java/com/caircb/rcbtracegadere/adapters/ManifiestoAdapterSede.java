@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
     private Context mContext;
     int cRojo;
     int cVerde;
-    private List<ItemManifiesto> manifiestosList ;
+    private List<ItemManifiestoSede> manifiestosList ;
     private LinearLayout borderVerificacion;
 
     public ManifiestoAdapterSede(Context context){
@@ -40,13 +41,9 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
 
     @Override
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
-        final ItemManifiesto it = manifiestosList.get(position);
-        holder.txtNumManifiesto.setText(it.getNumero());
-        holder.txtCliente.setText(it.getCliente());
-        holder.txtSucursal.setText(it.getProvincia());
-        holder.txtDireccion.setText(it.getDireccion());
-        holder.txtProvincia.setText(it.getProvincia());
-        holder.txtCiudad.setText(it.getCanton());
+        final ItemManifiestoSede it = manifiestosList.get(position);
+        holder.txtNumManifiesto.setText(it.getManifiestos());
+        holder.txtCliente.setText(it.getNombreCliente());
         holder.borderVerificacion.setBackgroundResource(cRojo);
     }
 
@@ -55,7 +52,7 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
         return manifiestosList.size();
     }
 
-    public void setTaskList(List<ItemManifiesto> taskList) {
+    public void setTaskList(List<ItemManifiestoSede> taskList) {
         this.manifiestosList = taskList;
         notifyDataSetChanged();
     }
@@ -64,21 +61,12 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
 
         TextView txtNumManifiesto;
         TextView txtCliente;
-        TextView txtSucursal;
-        TextView txtDireccion;
-        TextView txtProvincia;
-        TextView txtCiudad;
         LinearLayout borderVerificacion;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
             txtNumManifiesto = itemView.findViewById(R.id.itm_num_manifiesto);
             txtCliente = itemView.findViewById(R.id.itm_cliente);
-            txtSucursal = itemView.findViewById(R.id.itm_sucursal);
-            txtDireccion = itemView.findViewById(R.id.itm_Direccion);
-            txtProvincia = itemView.findViewById(R.id.itm_Provincia);
-            txtCiudad = itemView.findViewById(R.id.itm_Ciudad);
             borderVerificacion= (LinearLayout) itemView.findViewById(R.id.rowFG);
         }
     }
