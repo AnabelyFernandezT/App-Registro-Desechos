@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,7 +55,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private DialogFirma dialogFirma;
     private ImagenUtils imagenUtils;
     private boolean firmaTransportista=false, firmaTecnicoGenerador=false;
-
+    private CheckBox chkCorreoPrincipal,chkCorreoAlterno;
     String identificacion, nombre, correo, telefono;
     UserConsultarCedulaTask userConsultarCedulaTask;
 
@@ -112,6 +113,8 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtRespEntregaCorreo.setEnabled(false);
         txtRespEntregaTelefono.setEnabled(false);
 
+        chkCorreoPrincipal = this.findViewById(R.id.chkCorreoPrincipal);
+        chkCorreoAlterno = this.findViewById(R.id.chkCorreoAlterno);
 
         btnBuscarIdentificacion.setOnClickListener(new View.OnClickListener() {
             @Override

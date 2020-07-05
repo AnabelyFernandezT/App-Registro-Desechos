@@ -327,26 +327,56 @@
                     android:textColor="#fff"
                     android:textStyle="bold" />
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="CORREO PRINCIPAL:"
                 android:textColor="#000"
+                android:layout_weight="1"
                 android:textStyle="bold" />
-
+            <CheckBox
+                android:scaleY="1.6"
+                android:scaleX="1.6"
+                android:id="@+id/chkCorreoPrincipal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:layout_marginRight="10dp"
+                android:focusableInTouchMode="false"/>
+        </LinearLayout>
             <TextView
                 android:id="@+id/txtGenTecCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CORREO ALTERNO:"
+                android:layout_weight="1"
                 android:textColor="#000"
                 android:textStyle="bold" />
+            <CheckBox
+                android:scaleY="1.6"
+                android:scaleX="1.6"
+                android:id="@+id/chkCorreoAlterno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:layout_marginRight="10dp"
+                android:focusableInTouchMode="false"/>
 
+        </LinearLayout>
             <TextView
                 android:id="@+id/txtCorreoAlterno"
                 android:layout_width="match_parent"
