@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.models.ItemLote; //Entity de la Base de Datos LOTE
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +23,27 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.MyViewHolder> 
     private List<ItemLote> lotesList;
 
     public LoteAdapter(Context context){
-        mContext = context;
-        lotesList = new ArrayList<>();
+        this.mContext = context;
+        this.lotesList = new ArrayList<>();
+        UserConsultaLotes consultarLotes;
     }
 
     @NonNull
     @Override
-    public LoteAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_lote,parent,false);
-        return new LoteAdapter.MyViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final @NonNull LoteAdapter.MyViewHolder holder, int position) {
         final ItemLote it = lotesList.get(position);
-        holder.txtNumLote.setText(it.getNumeroLote());
-        holder.txtRutasRecolectadas.setText(it.getRutasRecolectadas());
+        holder.txtNumLote.setText(it.getCodigoLote());
+        holder.txtRutasRecolectadas.setText(it.getNombreDestinatarioFinRutaCatalogo());
         holder.txtSubruta.setText(it.getSubRuta());
-        holder.txtPlaca.setText(it.getPlaca());
-        holder.txtChofer.setText(it.getChofer());
-        holder.txtOperadores.setText(it.getOperadores());
+        holder.txtPlaca.setText(it.getPlacaVehiculo());
+        holder.txtManifiestos.setText(it.getNumeroManifiesto());
+        holder.txtRuta.setText(it.getRuta());
     }
 
     @Override
@@ -62,8 +64,8 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.MyViewHolder> 
         TextView txtRutasRecolectadas;
         TextView txtSubruta;
         TextView txtPlaca;
-        TextView txtChofer;
-        TextView txtOperadores;
+        TextView txtManifiestos;
+        TextView txtRuta;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -72,8 +74,9 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.MyViewHolder> 
             txtRutasRecolectadas = itemView.findViewById(R.id.itm_rutasRecolectadas);
             txtSubruta = itemView.findViewById(R.id.itm_subruta);
             txtPlaca = itemView.findViewById(R.id.itm_Placa);
-            txtChofer = itemView.findViewById(R.id.itm_Chofer);
-            txtOperadores = itemView.findViewById(R.id.itm_Operadores);
+            txtManifiestos = itemView.findViewById(R.id.itm_manifiestos);
+            txtRuta = itemView.findViewById(R.id.itm_ruta);
         }
     }
+
 }

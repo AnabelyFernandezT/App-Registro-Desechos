@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:hint="Buscar"
+            android:hint=""
             android:gravity="left"
             android:drawableLeft="@mipmap/ic_search_buscar24"
             />
