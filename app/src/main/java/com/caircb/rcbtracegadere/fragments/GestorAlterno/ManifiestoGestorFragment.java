@@ -1,31 +1,42 @@
 package com.caircb.rcbtracegadere.fragments.GestorAlterno;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TextView;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.RecepcionPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
+import com.caircb.rcbtracegadere.utils.Utils;
 
 
 public class ManifiestoGestorFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
     LinearLayout btnManifiestoCancel, btnManifiestoNext;
 
     private static final String ARG_PARAM1 = "manifiestoID";
-
+    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
     RecepcionGestorFragment manifiestoGestor;
-
     Integer idAppManifiesto;
     UserRegistrarPlanta userRegistrarPlanta;
-
+    ImageView imgFirmaPlanta;
+    TextView txtFirmaPlanta;
+    DialogFirma dialogFirma;
+    Bitmap firmaConfirmada;
+    private boolean firma = false;
 
     @Override
     public void onClick(View v) {
@@ -87,32 +98,60 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_hoja_ruta_gestor, container, false));
         init();
-        iniTab();
 
         return getView();
     }
 
-    private void iniTab() {
-        TabHost tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
-        tabs.setup();
-
-        TabHost.TabSpec spec=tabs.newTabSpec("GESTOR ALTERNO");
-        spec.setContent(new TabHost.TabContentFactory() {
-            public View createTabContent(String tag) {
-                return manifiestoGestor;
-            }
-        });
-        spec.setIndicator("GESTOR ALTERNO");
-        tabs.addTab(spec);
-    }
-
     public void init(){
+
+        btnAgregarFirma = getView().findViewById(R.id.btnAgregarFirma);
+        imgFirmaPlanta = getView().findViewById(R.id.imgFirmaPlanta);
+        txtFirmaPlanta = getView().findViewById(R.id.txtFirmaPlanta);
         btnManifiestoCancel = getView().findViewById(R.id.btnManifiestoCancel);
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
-
         manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
+
+        btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogFirma==null) {
+                    dialogFirma = new DialogFirma(getActivity());
+                    dialogFirma.setTitle("SU FIRMA");
+                    dialogFirma.setCancelable(false);
+                    dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
+                        @Override
+                        public void onSuccessful(Bitmap bitmap) {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+                            if(bitmap!=null){
+                                txtFirmaPlanta.setVisibility(View.GONE);
+                                imgFirmaPlanta.setVisibility(View.VISIBLE);
+                                imgFirmaPlanta.setImageBitmap(bitmap);
+                                firmaConfirmada = bitmap;
+                                firma=true;
+                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
+
+                            }else{
+                                txtFirmaPlanta.setVisibility(View.VISIBLE);
+                                imgFirmaPlanta.setVisibility(View.GONE);
+                                firma=false;
+                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
+                            }
+                        }
+
+                        @Override
+                        public void onCanceled() {
+                            dialogFirma.dismiss();
+                            dialogFirma=null;
+
+                        }
+                    });
+                    dialogFirma.show();
+                }
+            }
+        });
     }
 
 
