@@ -21,56 +21,58 @@ public class MyCalculoPaquetes {
         if(pkg!=null) {
 
             mpkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, tipoPaquete);
-            Integer n = mpkg.getDatosFundas();
-            Integer m = mpkg.getDatosGuardianes();
+            if(mpkg != null){
+                Integer n = mpkg.getDatosFundas();
+                Integer m = mpkg.getDatosGuardianes();
 
-            boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda();
+                boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda();
 
-            resp = new CalculoPaqueteResul();
+                resp = new CalculoPaqueteResul();
 
-            if (adicionales == true && guardian == true && fundas == true) {
-                resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
-                resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
-                resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
-            } else {
-                if (adicionales == true && guardian == true) {
+                if (adicionales == true && guardian == true && fundas == true) {
                     resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
                     resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                    resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
                 } else {
-                    if (adicionales == true && fundas == true) {
+                    if (adicionales == true && guardian == true) {
                         resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
-                        resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                        resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                    } else {
+                        if (adicionales == true && fundas == true) {
+                            resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                            resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                        }
                     }
                 }
-            }
 
-            if (adicionales == false && guardian == false && fundas == false ){
-                if (pkg.getPaquetePorRecolccion() == 1){
-                    //caso especial 1
-                    resp.setPqh(1);
-                    resp.setAdicionalFunda(0);
-                    resp.setAdicionalGuardian(0);
-                }else {
-                    resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                if (adicionales == false && guardian == false && fundas == false ){
+                    if (pkg.getPaquetePorRecolccion() == 1){
+                        //caso especial 1
+                        resp.setPqh(1);
+                        resp.setAdicionalFunda(0);
+                        resp.setAdicionalGuardian(0);
+                    }else {
+                        resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                    }
                 }
+
+                if (pkg.getEntregaSoloFundas()==true){
+                    resp.setPqh(1);
+                    resp.setAdicionalFunda(n-1);
+                }
+
+                if (pkg.getEntregaSoloGuardianes()==true){
+                    resp.setPqh(1);
+                    resp.setAdicionalGuardian(m-1);
+                }
+
+
+                //update datos en tabla de calculo de algoritmo...
+                mpkg.setPqh(resp.getPqh());
+                mpkg.setAdFundas(resp.getAdicionalFunda());
+                mpkg.setAdGuardianes(resp.getAdicionalGuardian());
+                MyApp.getDBO().manifiestoPaqueteDao().actualiarPaquete(mpkg);
             }
-
-            if (pkg.getEntregaSoloFundas()==true){
-                resp.setPqh(1);
-                resp.setAdicionalFunda(n-1);
-            }
-
-            if (pkg.getEntregaSoloGuardianes()==true){
-                resp.setPqh(1);
-                resp.setAdicionalGuardian(m-1);
-            }
-
-
-            //update datos en tabla de calculo de algoritmo...
-            mpkg.setPqh(resp.getPqh());
-            mpkg.setAdFundas(resp.getAdicionalFunda());
-            mpkg.setAdGuardianes(resp.getAdicionalGuardian());
-            MyApp.getDBO().manifiestoPaqueteDao().actualiarPaquete(mpkg);
         }
         return resp;
     }
