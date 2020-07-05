@@ -10,6 +10,7 @@ import com.caircb.rcbtracegadere.models.request.RequestLote;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
+import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
@@ -17,6 +18,7 @@ import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoLote;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
 
 import java.util.List;
@@ -69,5 +71,8 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerListLoteContenedor")
     Call<List<DtoLote>> traerLotes(@Body RequestLote model);
+
+    @POST("HojaRuta/obtenerListHojaRutaSede")
+    Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);
 
 }

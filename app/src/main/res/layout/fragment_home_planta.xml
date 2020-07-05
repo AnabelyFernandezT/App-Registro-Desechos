@@ -36,6 +36,8 @@
 
             <!--FIN LOGO-->
 
+            <!--Info-->
+
             <LinearLayout
                 android:padding="10dp"
                 android:background="@drawable/shape_card_border"

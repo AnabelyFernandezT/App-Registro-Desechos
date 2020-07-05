@@ -119,6 +119,8 @@ public class ManifiestoEntity {
 
     private String tiempoAudio;
 
+    private Integer estadoFinRuta;
+
 
     public ManifiestoEntity() {
     }
@@ -428,6 +430,14 @@ public class ManifiestoEntity {
 
     public void setNombreOperadorRecolector(String nombreOperadorRecolector) {
         this.nombreOperadorRecolector = nombreOperadorRecolector;
+    }
+
+    public Integer getEstadoFinRuta() {
+        return estadoFinRuta;
+    }
+
+    public void setEstadoFinRuta(Integer estadoFinRuta) {
+        this.estadoFinRuta = estadoFinRuta;
     }
 }
 

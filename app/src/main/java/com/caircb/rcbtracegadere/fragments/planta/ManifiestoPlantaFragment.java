@@ -1,11 +1,14 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -13,6 +16,8 @@ import android.widget.TabHost;
 import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogManifiestoCliente;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -29,6 +34,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     Integer idAppManifiesto;
     UserRegistrarPlanta userRegistrarPlanta;
     FloatingActionButton mensajes;
+    double peso;
 
 
     @Override
@@ -53,16 +59,35 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                 }
 
 
-                double peso = manifiestoPlanta.guardar();
-                userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso);
-                userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
+                peso = manifiestoPlanta.guardar();
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("");
+                builder.setMessage("Esta seguro de continuar");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onSuccessful() {
-                       messageBox("Datos Guardados");
-                       setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                    public void onClick(DialogInterface dialog, int which) {
+                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso);
+                        userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
+                            @Override
+                            public void onSuccessful() {
+                                messageBox("Datos Guardados");
+                                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                            }
+                        });
+                        userRegistrarPlanta.execute();
+
                     }
                 });
-                userRegistrarPlanta.execute();
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
+
 
                 break;
         }

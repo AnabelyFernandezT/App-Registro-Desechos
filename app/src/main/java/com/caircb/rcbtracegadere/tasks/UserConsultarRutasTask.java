@@ -28,6 +28,7 @@ public class UserConsultarRutasTask extends MyRetrofitApi implements RetrofitCal
 
     public interface OnPlacaListener {
         public void onSuccessful(List<DtoFindRutas> catalogos);
+
     }
 
     private OnPlacaListener mOnVehiculoListener;

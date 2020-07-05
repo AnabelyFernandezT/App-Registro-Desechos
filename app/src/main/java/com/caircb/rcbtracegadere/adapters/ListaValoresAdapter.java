@@ -1,35 +1,49 @@
 package com.caircb.rcbtracegadere.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
-    //private List<CatalogoItemValor> listaItems;
+    private List<CatalogoItemValor> listaItems;
     private LayoutInflater mInflater;
     Context context;
+    AlertDialog.Builder builder;
 
     public interface OnItemBultoListener {
         public void onEliminar(Integer position);
     }
+    public interface OnItemBultoImpresionListener{
+        public void onSendImpresion(Integer position);
+    }
+
     private OnItemBultoListener mOnItemBultoListener;
+    private OnItemBultoImpresionListener mOnImtemBultoImpresionListener;
 
     public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo){
         super(context, R.layout.lista_items_calculadora, listaCatalogo);
         mInflater= LayoutInflater.from(context);
+        this.listaItems = listaCatalogo;
         this.context = context;
     }
 
@@ -37,12 +51,16 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         TextView txtItem;
         LinearLayout btnEliminar;
         TextView txtItemTipo;
+        RelativeLayout btnImpresion;
+        RelativeLayout btnImpresionOk;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ListaValoresAdapter.ViewHolder holder =null;
-        final CatalogoItemValor row = getItem(position);
+        //final CatalogoItemValor row = getItem(position);
+        final CatalogoItemValor row = listaItems.get(position);
+
         int cont = position+1;
         LayoutInflater minflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -53,6 +71,8 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             holder.txtItem = (TextView) convertView.findViewById(R.id.txtItem);
             holder.txtItemTipo = (TextView)convertView.findViewById(R.id.txtItemTipo);
             holder.btnEliminar = (LinearLayout) convertView.findViewById(R.id.btnEliminar);
+            holder.btnImpresion = (RelativeLayout)convertView.findViewById(R.id.btnImpresion);
+            holder.btnImpresionOk = (RelativeLayout)convertView.findViewById(R.id.btnImpresionOk);
 
             convertView.setTag(holder);
         }else {
@@ -64,9 +84,79 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mOnItemBultoListener!= null){
-                    mOnItemBultoListener.onEliminar(position);
+                if(row.isImpresion()){
+                    builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("BULTO IMPRESO: Seguro que desea elimarlo ?");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            if(mOnItemBultoListener!= null){
+                                mOnItemBultoListener.onEliminar(position);
+                            }
+                        }
+                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }else{
+                    builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Seguro que desea elimarlo ?");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            if(mOnItemBultoListener!= null){
+                                mOnItemBultoListener.onEliminar(position);
+                            }
+                        }
+                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
+
+            }
+        });
+
+        if(row.isImpresion()){
+            holder.btnImpresionOk.setVisibility(View.VISIBLE);
+            holder.btnImpresion.setVisibility(View.GONE);
+        }else {
+            holder.btnImpresion.setVisibility(View.VISIBLE);
+            holder.btnImpresionOk.setVisibility(View.GONE);
+        }
+
+        holder.btnImpresion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //System.out.println("iniciando impresion");
+                builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Desea imprimir etiqueta para este bulto?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(mOnImtemBultoImpresionListener != null){
+                            mOnImtemBultoImpresionListener.onSendImpresion(position);
+                        }
+                    }
+                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+        holder.btnImpresionOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("no hace nada");
             }
         });
 
@@ -75,6 +165,13 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
     public void setOnItemBultoListener(@Nullable OnItemBultoListener l){
         mOnItemBultoListener =l;
+    }
+    public void setOnItemBultoImpresion (@Nullable OnItemBultoImpresionListener l){
+        mOnImtemBultoImpresionListener = l;
+    }
+    public void filterList(List<CatalogoItemValor> updateList) {
+        this.listaItems = updateList;
+        notifyDataSetChanged();
     }
 
 }

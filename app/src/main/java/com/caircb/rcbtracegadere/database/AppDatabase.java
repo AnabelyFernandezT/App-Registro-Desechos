@@ -17,6 +17,9 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoMotivosNoRecoleccionDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoObservacionFrecuenteDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDetalleDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDetalleValorDao;
 import com.caircb.rcbtracegadere.database.dao.PaqueteDao;
 import com.caircb.rcbtracegadere.database.dao.ImpresoraDao;
 import com.caircb.rcbtracegadere.database.dao.ParametroDao;
@@ -34,6 +37,9 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoMotivoNoRecoleccionEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoObservacionFrecuenteEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleValorEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
@@ -65,6 +71,10 @@ import java.util.Locale;
         ManifiestoPaquetesEntity.class,
         RutasEntity.class,
         LoteEntity.class
+        RutasEntity.class,
+        ManifiestoSedeEntity.class,
+        ManifiestoSedeDetalleValorEntity.class,
+        ManifiestoSedeDetalleEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -149,4 +159,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoPaqueteDao manifiestoPaqueteDao();
     public abstract RutasDao rutasDao();
     public abstract LoteDao loteDao();
+    public abstract ManifiestoSedeDao manifiestoSedeDao();
+    public abstract ManifiestoSedeDetalleDao manifiestoDetalleSede();
+    public abstract ManifiestoSedeDetalleValorDao manifiestoDetalleValorSede();
+
 }

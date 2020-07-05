@@ -32,6 +32,9 @@ public final class MySession {
     final static String MENUS = "lstMenus";
     final static String CONNECTICITY = "connecticity";
 
+    final static String DESTROY="isDestroy";
+    final static String STOP="isStop";
+
 
     public static boolean isLocalStorage(){
         return pSharedPref!=null;
@@ -202,6 +205,19 @@ public final class MySession {
     public static String getId(){
         String str = get(ID);
         return str!=null?str:"";
+    }
+
+    public static boolean isDestroy(){
+        String str = get(DESTROY);
+        return str!=null? Boolean.parseBoolean(str):false;
+    }
+
+    public static void setDestroy(boolean destroy){
+        set(DESTROY,""+destroy);
+    }
+
+    public static void setStop(boolean stop){
+        set(STOP,""+stop);
     }
 
 }

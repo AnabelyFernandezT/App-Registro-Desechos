@@ -28,8 +28,10 @@ import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ import java.util.List;
  * Use the {@link HojaRutaAsignadaSedeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnClickListener {
+public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnClickListener, OnBarcodeListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
@@ -49,7 +51,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     private ManifiestoAdapterSede recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiesto> rowItems;
+    private List<ItemManifiestoSede> rowItems;
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
@@ -94,9 +96,9 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     }
 
     private void filtro(String texto){
-        List<ItemManifiesto> result = new ArrayList<>();
-        List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        List<ItemManifiestoSede> result = new ArrayList<>();
+        List<ItemManifiestoSede> listaItems = new ArrayList<>() ;
+        listaItems =  MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif(texto);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -106,7 +108,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
         adapterList();
 
     }
@@ -119,7 +121,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getNumeroManifiesto(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -145,6 +147,42 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
         //recyclerView.addItemDecoration(divider);
     }
+
+    @Override
+    public void reciveData(String data) {
+
+        Boolean estadoBulto = MyApp.getDBO().manifiestoDetalleValorSede().verificarBultoEstado(data);
+
+        if(estadoBulto==null){
+            messageBox("CODIGO QR NO EXISTE..!");
+        }else{
+            if (estadoBulto){
+                messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
+            }else if (!estadoBulto){
+                MyApp.getDBO().manifiestoDetalleValorSede().actualizarBultoEstado(data);
+                rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+                adapterList();
+            }
+        }
+
+        /*List<DtoDespachoCodigoBarras> listaCodigoBarras = getListBultosByCodigoBarras(data);
+        String mensaje;
+
+        if(listaCodigoBarras.size() > 0){
+            if(listaCodigoBarras.size() > 1){
+                openSeleccionarListaEmpaque(listaCodigoBarras);
+            }else{
+                DtoDespachoCodigoBarras codigo = listaCodigoBarras.get(0);
+                Integer despachoDetalleId = codigo.getDespachoDetalleId();
+                Integer cantidad = codigo.getCantidad();
+                tratamientoProductoEncontrado(despachoDetalleId, cantidad);
+            }
+        }else{
+            mensaje = "EL ITEM " + data + " NO EXISTE DENTRO DE NINGUN DESPACHO";
+            mostrarMensajeBarra(0, mensaje);
+        }*/
+    }
+
 
     @Override
     public void onClick(View v) {

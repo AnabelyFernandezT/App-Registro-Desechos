@@ -1,8 +1,10 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,6 +19,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
@@ -24,6 +27,7 @@ import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TabManifiestoDetalle extends LinearLayout {
@@ -42,6 +46,12 @@ public class TabManifiestoDetalle extends LinearLayout {
     DialogBultos dialogBultos;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     MyCalculoPaquetes calculoPaquetes;
+
+    AlertDialog alert;
+    AlertDialog.Builder alertDialog;
+    List<String> itemsCategoriaPaquete;
+    Integer tipoGestion;
+    PaqueteEntity pkg;
 
     public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto,Integer estado) {
         super(context);
@@ -94,7 +104,8 @@ public class TabManifiestoDetalle extends LinearLayout {
         txtBultos.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialogBultos(positionItem);
+                //openDialogBultos(positionItem,0);
+                showTipoPaquete(positionItem);
             }
         });
 
@@ -111,7 +122,51 @@ public class TabManifiestoDetalle extends LinearLayout {
         dialogOpcioneItem.show();
     }
 
-    private void openDialogBultos(Integer position){
+    private void showTipoPaquete(final Integer positionItem){
+
+        itemsCategoriaPaquete = new ArrayList<>();
+        if(tipoPaquete != null){
+            pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(tipoPaquete);
+
+            if(pkg.getEntregaSoloFundas())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
+            if(pkg.getEntregaSoloGuardianes())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
+
+            alertDialog = new AlertDialog.Builder(getContext());
+            alertDialog.setTitle("TIPO  PAQUETE");
+            alertDialog.setSingleChoiceItems(itemsCategoriaPaquete.toArray(new String[itemsCategoriaPaquete.size()]), -1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            tipoGestion = 100;
+                            openDialogBultos(positionItem, tipoGestion);
+                            alert.dismiss();
+                            break;
+                        case 1:
+                            tipoGestion = 101;
+                            openDialogBultos(positionItem, tipoGestion);
+                            alert.dismiss();
+                            break;
+                        case 2:
+                            tipoGestion = 102;
+                            openDialogBultos(positionItem, tipoGestion);
+                            alert.dismiss();
+                            break;
+                    }
+                }
+            });
+            alert = alertDialog.create();
+            alert.setCanceledOnTouchOutside(false);
+            //alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alert.show();
+
+        }else{
+            openDialogBultos(positionItem, 0);
+        }
+    }
+
+    private void openDialogBultos(Integer position, Integer tipoGestion){
+
         if(dialogBultos==null){
             dialogOpcioneItem.dismiss();
             dialogBultos = new DialogBultos(
@@ -120,7 +175,8 @@ public class TabManifiestoDetalle extends LinearLayout {
                     idAppManifiesto,
                     detalles.get(position).getId(),
                     tipoPaquete,
-                    numeroManifiesto+"$"+detalles.get(position).getCodigo()
+                    numeroManifiesto+"$"+detalles.get(position).getCodigo(),
+                    tipoGestion
             );
             dialogBultos.setCancelable(false);
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -135,9 +191,11 @@ public class TabManifiestoDetalle extends LinearLayout {
                     RowItemManifiesto row = detalles.get(position);
                     row.setPeso(valor.doubleValue());
 
+
                     if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
                     else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
-                    else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
+                    else if(row.getTipoItem()==3) row.setCantidadBulto(Double.valueOf(cantidad)); //otros cantida = peso...
+                    //else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
 
                     row.setEstado(true);
                     recyclerviewAdapter.notifyDataSetChanged();

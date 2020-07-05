@@ -38,7 +38,7 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     Activity _activity;
     ImageView imgFirmaPlanta;
     LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
-    EditText txtPeso,txtNovedad;
+    EditText txtPeso,txtNovedad,txtotraNovedad;
     TextView txtFirmaPlanta, txtPesoRecolectado;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
@@ -75,6 +75,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         imgFirmaPlanta = this.findViewById(R.id.imgFirmaPlanta);
         txtFirmaPlanta = this.findViewById(R.id.txtFirmaPlanta);
         txtPesoRecolectado = this.findViewById(R.id.txtPesoRecolectado);
+        txtotraNovedad = this.findViewById(R.id.txtotraNovedad);
 
         txtNovedad = this.findViewById(R.id.txtNovedad);
 
@@ -237,10 +238,10 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         if(valorIngresado>validacion){
         //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
-        txtNovedad.setText("Peso ingresador mayor al peso Total");
+        txtNovedad.setText("Peso ingresado es mayor al peso Total");
     }else{
         //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
-        txtNovedad.setText("Peso ingresador menor al peso Total");
+        txtNovedad.setText("Peso ingresado es menor al peso Total");
     }
 
     }

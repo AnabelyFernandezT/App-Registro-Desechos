@@ -79,7 +79,8 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
                             if(it.getCantidad() > 0){
                                 if(Integer.valueOf(pendiente)>0){
                                     valor = it.getCantidad() - Integer.valueOf(pendiente);
-
+                                    holder.txtPkgPendiente.setText(pendiente);
+                                    holder.txtPkgCantidad.setText(String.valueOf(valor));
                                     if(it.getTipo() == 1){ //fundas
                                         MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, Integer.valueOf(pendiente), valor);
                                     }else{ // guardianes

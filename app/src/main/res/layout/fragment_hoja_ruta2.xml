@@ -38,7 +38,6 @@
                     android:layout_gravity="end|bottom"
                     android:layout_margin="16dp"
                     android:visibility="visible"
-                    android:src="@drawable/ic_edittextbox"
                     tools:ignore="MissingConstraints" />
             </FrameLayout>
         </LinearLayout>

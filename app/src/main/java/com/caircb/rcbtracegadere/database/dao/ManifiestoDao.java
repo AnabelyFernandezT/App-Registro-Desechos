@@ -30,7 +30,7 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado=1")
     public abstract int contarHojaRutaAsignadas();
 
-    @Query("select count(*) from tb_manifiestos where estado=2")
+    @Query("select count(*) from tb_manifiestos where estado=2 and estadoFinRuta=0")
     public abstract int contarHojaRutaProcesada();
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero, estado from tb_manifiestos" +
@@ -57,7 +57,7 @@ public abstract class ManifiestoDao {
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoByPlaca(Integer idPlaca);
 
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=2 order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=2 and estadoFinRuta=0 order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta();
 
@@ -73,7 +73,7 @@ public abstract class ManifiestoDao {
 
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos " +
-            "where estado=2 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  order by nombreCliente")
+            "where estado=2 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and estadoFinRuta = 0 order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigPlanta(String search);
 
@@ -219,6 +219,7 @@ public abstract class ManifiestoDao {
             entity.setIdSubRuta(manifiesto.getIdSubRuta());
             entity.setIdentificacionOperadorRecolector(manifiesto.getIdentificacionOperadorRecolector());
             entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
+            entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -274,6 +275,7 @@ public abstract class ManifiestoDao {
             entity.setIdSubRuta(manifiesto.getIdSubRuta());
             entity.setIdentificacionOperadorRecolector(manifiesto.getIdentificacionOperadorRecolector());
             entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
+            entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
         }
 
         if (entity!=null) createManifiesto(entity);
