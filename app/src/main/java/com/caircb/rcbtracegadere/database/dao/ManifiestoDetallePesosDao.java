@@ -36,8 +36,8 @@ public abstract class ManifiestoDetallePesosDao {
     @Query("delete from tb_manifiesto_detalle_pesos where _id=:id")
     public abstract void deleteTableValoresById(Integer id);
 
-    @Query ("update tb_manifiesto_detalle_pesos set impresion =:impresion where _id=:id")
-    public abstract void updateBanderaImpresion( Integer id, boolean impresion);
+    @Query ("update tb_manifiesto_detalle_pesos set impresion =:impresion where _id=:id and idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
+    public abstract void updateBanderaImpresion(Integer idManifiesto, Integer idManifiestoDetalle ,Integer id, boolean impresion);
 
     @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle and impresion=0")
     public abstract void deleteTableValoresNoConfirmados(Integer idManifiesto, Integer idManifiestoDetalle);
