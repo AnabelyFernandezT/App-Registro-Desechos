@@ -87,7 +87,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
                 dialogPlacasRecolector.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacasRecolector.setCancelable(false);
-                dialogPlacasRecolector.setTitle("CAMINONES RECOLECCION");
+                dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
                 dialogPlacasRecolector.show();
             }
         });

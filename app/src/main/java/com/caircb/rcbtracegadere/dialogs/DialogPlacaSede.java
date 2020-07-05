@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class DialogPlacaSede extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
-    UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
+    UserConsultarPlacasInicioLoteTask placasInicioLoteTask;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
@@ -82,8 +83,7 @@ public class DialogPlacaSede extends MyDialog {
             public void onClick(View v) {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                cargarManifiesto();
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo_inicio_lote",""+idVehiculo);
                 dismiss();
             }
         });
@@ -93,15 +93,15 @@ public class DialogPlacaSede extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
+        placasInicioLoteTask = new UserConsultarPlacasInicioLoteTask(getActivity());
+        placasInicioLoteTask.setOnVehiculoListener(new UserConsultarPlacasInicioLoteTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
                 listaPlacasDisponibles = catalogos;
                 spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
             }
         });
-        consultarPlacasInicioRutaDisponible.execute();
+        placasInicioLoteTask.execute();
     }
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
@@ -137,6 +137,10 @@ public class DialogPlacaSede extends MyDialog {
     private void cargarManifiesto(){
         consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
+    }
+
+    private void registrarLote(){
+
     }
 
 
