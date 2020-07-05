@@ -1,36 +1,64 @@
 package com.caircb.rcbtracegadere.models;
 
+import java.util.Date;
+
 public class ItemLote {
-    private int idAppLote;
-    private int numeroLote;
-    private String rutasRecolectadas;
+    private int idLoteContenedor;
+    private String codigoLote;
+    private Date fechaRegistro;
+    private int idDestinatarioFinRutaCatalogo;
+    private String nombreDestinatarioFinRutaCatalogo;
+    private String numeroManifiesto;
     private String subRuta;
-    private String placa;
-    private String chofer;
-    private String operadores;
+    private String ruta;
+    private String placaVehiculo;
 
-    public int getIdAppLote() {
-        return idAppLote;
+    public int getIdLoteContenedor() {
+        return idLoteContenedor;
     }
 
-    public void setIdAppLote(int idAppLote) {
-        this.idAppLote = idAppLote;
+    public void setIdLoteContenedor(int idLoteContenedor) {
+        this.idLoteContenedor = idLoteContenedor;
     }
 
-    public int getNumeroLote() {
-        return numeroLote;
+    public String getCodigoLote() {
+        return codigoLote;
     }
 
-    public void setNumeroLote(int numeroLote) {
-        this.numeroLote = numeroLote;
+    public void setCodigoLote(String codigoLote) {
+        this.codigoLote = codigoLote;
     }
 
-    public String getRutasRecolectadas() {
-        return rutasRecolectadas;
+    public Date getFechaRegistro() {
+        return fechaRegistro;
     }
 
-    public void setRutasRecolectadas(String rutasRecolectadas) {
-        this.rutasRecolectadas = rutasRecolectadas;
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public int getIdDestinatarioFinRutaCatalogo() {
+        return idDestinatarioFinRutaCatalogo;
+    }
+
+    public void setIdDestinatarioFinRutaCatalogo(int idDestinatarioFinRutaCatalogo) {
+        this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
+    }
+
+    public String getNombreDestinatarioFinRutaCatalogo() {
+        return nombreDestinatarioFinRutaCatalogo;
+    }
+
+    public void setNombreDestinatarioFinRutaCatalogo(String nombreDestinatarioFinRutaCatalogo) {
+        this.nombreDestinatarioFinRutaCatalogo = nombreDestinatarioFinRutaCatalogo;
+    }
+
+    public String getNumeroManifiesto() {
+        return numeroManifiesto;
+    }
+
+    public void setNumeroManifiesto(String numeroManifiesto) {
+        this.numeroManifiesto = numeroManifiesto;
     }
 
     public String getSubRuta() {
@@ -41,27 +69,19 @@ public class ItemLote {
         this.subRuta = subRuta;
     }
 
-    public String getPlaca() {
-        return placa;
+    public String getRuta() {
+        return ruta;
     }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
 
-    public String getChofer() {
-        return chofer;
+    public String getPlacaVehiculo() {
+        return placaVehiculo;
     }
 
-    public void setChofer(String chofer) {
-        this.chofer = chofer;
-    }
-
-    public String getOperadores() {
-        return operadores;
-    }
-
-    public void setOperadores(String operadores) {
-        this.operadores = operadores;
+    public void setPlacaVehiculo(String placaVehiculo) {
+        this.placaVehiculo = placaVehiculo;
     }
 }

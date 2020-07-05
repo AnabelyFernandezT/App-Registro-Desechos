@@ -185,13 +185,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="CHOFER"
+                    android:text="MANIFIESTOS"
                     style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
                     />
 
                 <TextView
-                    android:id="@+id/itm_Chofer"
+                    android:id="@+id/itm_manifiestos"
                     android:layout_width="match_parent"
                     android:textColor="#737373"
                     android:layout_height="wrap_content"
@@ -202,13 +202,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="OPERADORES"
+                    android:text="RUTA"
                     style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
                     />
 
                 <TextView
-                    android:id="@+id/itm_Operadores"
+                    android:id="@+id/itm_ruta"
                     android:layout_width="match_parent"
                     android:textColor="#737373"
                     android:layout_height="wrap_content"

@@ -43,12 +43,11 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno, txtOperadorRecolector
             ,txtGenTecCorreo,txtGenTecTelefono,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista, txtFirmaOperador1,txtFirmaOperador2;
 
-    private EditText txtNumManifiestoCliente,
-            txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
+    private EditText txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
 
     private LinearLayout btnAgregarFirma,btnAgregarFirmaTransportista, btnAgregarFirmaOperador1,btmAgregarOperador2;
 
-    private ImageButton btnNumManifiestoCliente,btnBuscarIdentificacion;
+    private ImageButton btnBuscarIdentificacion;
 
     private ImageView imgFirmaTecnico, imgFirmaTecnicoTrasnsportista, imgFirmaOperador1, imgFirmaOperadorRecolector;
     //private int flag =0, flagT=0;
@@ -100,9 +99,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         imgFirmaOperadorRecolector = this.findViewById(R.id.imgFirmaOperadorRecolector);
         imgFirmaOperador1 = this.findViewById(R.id.imgFirmaOperador1);
 
-        txtNumManifiestoCliente =this. findViewById(R.id.txtNumManifiestoCliente);
-        btnNumManifiestoCliente = this.findViewById(R.id.btnNumManifiestoCliente);
-        txtNumManifiestoCliente.setEnabled(false);
+
 
         txtRespEntregaIdentificacion = this.findViewById(R.id.txtRespEntregaIdentificacion);
         txtRespEntregaNombre = this.findViewById(R.id.txtRespEntregaNombre);
@@ -110,16 +107,6 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtRespEntregaTelefono = this.findViewById(R.id.txtRespEntregaTelefono);
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
-
-        btnNumManifiestoCliente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                txtNumManifiestoCliente.setEnabled(!txtNumManifiestoCliente.isEnabled());
-                if(txtNumManifiestoCliente.isEnabled()) txtNumManifiestoCliente.requestFocus();
-
-            }
-        });
 
         txtRespEntregaNombre.setEnabled(false);
         txtRespEntregaCorreo.setEnabled(false);
@@ -382,7 +369,6 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     private void visible (){
         if(estadoManifiesto != 1){
-            btnNumManifiestoCliente.setEnabled(false);
             btnAgregarFirma.setEnabled(false);
             btnAgregarFirmaOperador1.setEnabled(false);
             btmAgregarOperador2.setEnabled(false);
@@ -411,7 +397,6 @@ public class TabManifiestoGeneral extends LinearLayout {
         TecnicoEntity tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyManifiesto(idAppManifiesto);
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
-            txtNumManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
             txtNumManifiesto.setText(manifiesto.getNumeroManifiesto());
             //txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
             txtClienteDireccion.setText(manifiesto.getDireccionCliente());
@@ -528,9 +513,6 @@ public class TabManifiestoGeneral extends LinearLayout {
                 :true;
     }
 
-    public boolean validaRequiereNumeroManifiestoCliente(){
-        return txtNumManifiestoCliente.isEnabled() && txtNumManifiestoCliente.getText().toString().trim().length()==0;
-    }
 
     private boolean validarCorreo(){
         String email = txtGenTecCorreo.getText().toString().trim();

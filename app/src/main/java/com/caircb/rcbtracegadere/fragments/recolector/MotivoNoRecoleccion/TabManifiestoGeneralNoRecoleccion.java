@@ -40,12 +40,12 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
             txtClienteCanton,txtTransReco,txtTransRecoAux,txtFirmaOperador1,txtFirmaOperador2,txtOperadorRecolector
             ,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista;
 
-    private EditText txtNumManifiestoCliente;
 
 
     private LinearLayout btnAgregarFirmaTransportista,btnAgregarFirmaOperador1,btmAgregarOperador2;
 
-    private ImageButton btnNumManifiestoCliente;
+
+
 
     private ImageView  imgFirmaTecnicoTrasnsportista, imgFirmaOperador1, imgFirmaOperadorRecolector;
     //private int flag =0, flagT=0;
@@ -80,9 +80,6 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
         imgFirmaTecnicoTrasnsportista = this.findViewById(R.id.imgFirmaTecnicoTrasnsportista);
         txtFirmaMensajeTransportista = this.findViewById(R.id.txtFirmaMensajeTransportista);
 
-        txtNumManifiestoCliente =this. findViewById(R.id.txtNumManifiestoCliente);
-        btnNumManifiestoCliente = this.findViewById(R.id.btnNumManifiestoCliente);
-        txtNumManifiestoCliente.setEnabled(false);
 
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
@@ -95,15 +92,6 @@ public class TabManifiestoGeneralNoRecoleccion extends LinearLayout {
         imgFirmaOperador1 = this.findViewById(R.id.imgFirmaOperador1);
         txtOperadorRecolector = this.findViewById(R.id.txtOperadorRecolector);
 
-        btnNumManifiestoCliente.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                txtNumManifiestoCliente.setEnabled(!txtNumManifiestoCliente.isEnabled());
-                if(txtNumManifiestoCliente.isEnabled()) txtNumManifiestoCliente.requestFocus();
-
-            }
-        });
 
     /*
         btnBuscarIdentificacion.setOnClickListener(new OnClickListener() {
@@ -375,7 +363,7 @@ visible();
 
     private void visible (){
         if(estadoManifiesto != 1){
-            btnNumManifiestoCliente.setEnabled(false);
+
             //btnAgregarFirma.setEnabled(false);
             //btnAgregarFirmaOperador1.setEnabled(false);
             //btmAgregarOperador2.setEnabled(false);
@@ -390,7 +378,7 @@ visible();
         TecnicoEntity tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyManifiesto(idAppManifiesto);
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
-            txtNumManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
+
             txtNumManifiesto.setText(manifiesto.getNumeroManifiesto());
             //txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
             txtClienteDireccion.setText(manifiesto.getDireccionCliente());
@@ -500,10 +488,6 @@ visible();
                 (txtRespEntregaIdentificacion.getText().length()>0 && txtRespEntregaNombre.getText().toString().length()>0)
                 :true;
     }*/
-
-    public boolean validaRequiereNumeroManifiestoCliente(){
-        return txtNumManifiestoCliente.isEnabled() && txtNumManifiestoCliente.getText().toString().trim().length()==0;
-    }
 
 
 }

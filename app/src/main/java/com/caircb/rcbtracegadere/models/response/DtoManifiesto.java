@@ -63,6 +63,7 @@ public class DtoManifiesto {
     private String firmaImg;
     private Integer idRuta;
     private Integer idSubRuta;
+    private Integer estadoFinRuta;
 
     public DtoManifiesto() {
     }
@@ -459,5 +460,13 @@ public class DtoManifiesto {
 
     public void setNombreOperadorRecolector(String nombreOperadorRecolector) {
         this.nombreOperadorRecolector = nombreOperadorRecolector;
+    }
+
+    public Integer getEstadoFinRuta() {
+        return estadoFinRuta;
+    }
+
+    public void setEstadoFinRuta(Integer estadoFinRuta) {
+        this.estadoFinRuta = estadoFinRuta;
     }
 }

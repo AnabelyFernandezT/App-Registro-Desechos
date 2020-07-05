@@ -1,6 +1,9 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -11,9 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogManifiestoCliente;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
@@ -40,6 +46,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     FloatingActionButton mensajes;
     Integer idAppManifiesto,estadoPantalla;
 
+    DialogManifiestoCliente manifiestoCliente;
 
     public Manifiesto2Fragment() {
     }
@@ -171,11 +178,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 //tab genearl...
                 boolean aplicaNoRecoleccion= tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion();
 
-                if(tabManifiestoGeneral.validaRequiereNumeroManifiestoCliente()){
-                    messageBox("Se requiere que ingrese el numero de manifiesto del cliente");
-                    return;
-                }
-
                 if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
                     messageBox("Se requiere de la firma del transportista");
                     return;
@@ -203,10 +205,33 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     return;
                 }*/
 
-                setNavegate(VistaPreliminarFragment.newInstance(
-                        idAppManifiesto,
-                        tabManifiestoGeneral.getTipoPaquete()
-                ));
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("");
+                builder.setMessage("El cliente es registro generado");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
+                    manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    manifiestoCliente.setCancelable(false);
+                    manifiestoCliente.show();
+
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setNavegate(VistaPreliminarFragment.newInstance(
+                                idAppManifiesto,
+                                tabManifiestoGeneral.getTipoPaquete()
+                        ));
+                    }
+                });
+                builder.show();
+
+
 
                 break;
         }
@@ -218,5 +243,17 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         if(tabManifiestoAdicional!=null && ((requestCode>=101 && requestCode<=104) ||(requestCode>=201 && requestCode<=204))){
             tabManifiestoAdicional.setMakePhoto(requestCode);
         }
+    }
+
+    private void selectImage(final Integer index) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Agregar Fotografia");
+
+        builder.show();
+
+    }
+    public void vistaPrevia(Integer idAppManifiesto, Integer tipoPaquete){
+        setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tipoPaquete));
     }
 }

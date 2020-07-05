@@ -14,6 +14,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
+import com.caircb.rcbtracegadere.fragments.planta.HojaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
@@ -75,6 +76,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacas = new DialogPlacaSede(getActivity());
                 dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacas.setCancelable(false);
+                dialogPlacas.setTitle("INICIAR LOTE");
                 dialogPlacas.show();
             }
         });
@@ -85,6 +87,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
                 dialogPlacasRecolector.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacasRecolector.setCancelable(false);
+                dialogPlacasRecolector.setTitle("CAMINONES RECOLECCION");
                 dialogPlacasRecolector.show();
             }
         });
@@ -97,17 +100,18 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 }
             }
         });
+
+
     }
 
 
 
     private void initBuscador(){
-        regionBuscar = (ImageButton)getView().findViewById(R.id.regionBuscar);
+        regionBuscar = getView().findViewById(R.id.regionBuscar);
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setNavegate(BuscarFragment.create());
-                //setNavegate(HomeRecepcionFragment.create());
+                setNavegate(HojaFragment.newInstance());
             }
         });
     }
