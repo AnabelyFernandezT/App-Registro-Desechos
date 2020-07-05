@@ -70,8 +70,7 @@ import java.util.Locale;
         PaqueteEntity.class,
         ManifiestoPaquetesEntity.class,
         RutasEntity.class,
-        LoteEntity.class
-        RutasEntity.class,
+        LoteEntity.class,
         ManifiestoSedeEntity.class,
         ManifiestoSedeDetalleValorEntity.class,
         ManifiestoSedeDetalleEntity.class
