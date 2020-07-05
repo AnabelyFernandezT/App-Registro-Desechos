@@ -67,7 +67,7 @@
     <!--FOOTER-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/recyclerviewLotes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="5dp"

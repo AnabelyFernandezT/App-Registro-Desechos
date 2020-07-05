@@ -9,6 +9,7 @@ import androidx.room.TypeConverters;
 
 import com.caircb.rcbtracegadere.database.dao.CatalogoDao;
 import com.caircb.rcbtracegadere.database.dao.LogDao;
+import com.caircb.rcbtracegadere.database.dao.LoteDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDetalleDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDetallePesosDao;
@@ -22,8 +23,10 @@ import com.caircb.rcbtracegadere.database.dao.ParametroDao;
 import com.caircb.rcbtracegadere.database.dao.RutaInicioFinDao;
 import com.caircb.rcbtracegadere.database.dao.RutasDao;
 import com.caircb.rcbtracegadere.database.dao.TecnicoDao;
+import com.caircb.rcbtracegadere.database.dao.LoteDao;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.LogEntity;
+import com.caircb.rcbtracegadere.database.entity.LoteEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
@@ -37,6 +40,7 @@ import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.database.entity.ImpresoraEntity;
+
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 
 import java.text.ParseException;
@@ -59,7 +63,8 @@ import java.util.Locale;
         ImpresoraEntity.class,
         PaqueteEntity.class,
         ManifiestoPaquetesEntity.class,
-        RutasEntity.class
+        RutasEntity.class,
+        LoteEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -143,4 +148,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ImpresoraDao impresoraDao();
     public abstract ManifiestoPaqueteDao manifiestoPaqueteDao();
     public abstract RutasDao rutasDao();
+    public abstract LoteDao loteDao();
 }

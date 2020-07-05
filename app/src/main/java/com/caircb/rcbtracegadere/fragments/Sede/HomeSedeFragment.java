@@ -14,6 +14,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
+import com.caircb.rcbtracegadere.fragments.planta.HojaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
@@ -83,15 +84,16 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 }
             }
         });
+
+
     }
 
     private void initBuscador(){
-        regionBuscar = (ImageButton)getView().findViewById(R.id.regionBuscar);
+        regionBuscar = getView().findViewById(R.id.regionBuscar);
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setNavegate(BuscarFragment.create());
-                //setNavegate(HomeRecepcionFragment.create());
+                setNavegate(HojaFragment.newInstance());
             }
         });
     }
