@@ -145,6 +145,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         super.onResume();
         initConnectivity();
        /***Cometado para dispositivos emulador***/
+       /*
         IntentFilter filter = new IntentFilter();
 
         int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
@@ -156,6 +157,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         }
 
         registerReceiver(mScanReceiver, filter);
+        */
         /**********/
     }
 
