@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HojaRutaAsignadaGestorFragment;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -27,7 +29,7 @@ public class HomeHotelFragment extends MyFragment implements OnHome {
                              Bundle savedInstanceState) {
         setView(inflater.inflate(R.layout.fragment_home_hotel, container, false));
         init();
-        initBuscador();
+        //initBuscador();
         return getView();
     }
 
