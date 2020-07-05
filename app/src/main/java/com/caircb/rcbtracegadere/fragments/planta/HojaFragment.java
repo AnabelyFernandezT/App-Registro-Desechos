@@ -29,6 +29,8 @@ import com.caircb.rcbtracegadere.adapters.LoteAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
 
+import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemLote;
@@ -64,7 +66,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        datosLotesDisponibles();
+        //datosLotesDisponibles();
         super.onCreate(savedInstanceState);
 
     }
@@ -103,7 +105,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getIdLoteContenedor(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),rowItems.get(position).getIdLoteContenedor(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -116,7 +118,8 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                 switch (viewID){
                     case R.id.btn_lote_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        Toast.makeText(getActivity(),rowItems.get(position).getIdLoteContenedor(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(),rowItems.get(position).getIdLoteContenedor(), Toast.LENGTH_SHORT).show();
+                        menu(position);
                         break;
                     case R.id.btn_lote_more:
                         String nombre = "";
@@ -129,13 +132,33 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         recyclerView.addItemDecoration(divider);
     }
 
+    private void  menu(final int position){
+        final CharSequence[] options = {"MOVILIZAR", "CANCELAR"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("MOVILIZAR"))
+                {
+                    //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
+                }
+                else if (options[item].equals("CANCELAR")) {
+                    dialog.dismiss();
+                }
 
-    private void datosLotesDisponibles(){
+            }
+        });
+        builder.show();
+    }
+
+    /*private void datosLotesDisponibles(){
 
         consultarLotes = new UserConsultaLotes(getActivity());
         consultarLotes.execute();
     }
-
+*/
 
 
     @Override

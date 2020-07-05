@@ -21,15 +21,17 @@ import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 
 import java.util.List;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
-
+    UserConsultaLotes consultarLotes;
     ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
@@ -61,7 +63,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnMenu = getView().findViewById(R.id.btnMenu);
         lnlIniciaLote = getView().findViewById(R.id.LnlIniciaLote);
         btnInciaLote = getView().findViewById(R.id.btnInciaLote);
-
+        datosLotesDisponibles();
 
         btnListaAsignadaSede.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +116,12 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 setNavegate(HojaFragment.newInstance());
             }
         });
+    }
+
+    private void datosLotesDisponibles(){
+
+        consultarLotes = new UserConsultaLotes(getActivity());
+        consultarLotes.execute();
     }
 
 
