@@ -145,12 +145,8 @@ public class MyAppCompatActivity extends AppCompatActivity {
         super.onResume();
         initConnectivity();
        /***Cometado para dispositivos emulador***/
-<<<<<<< HEAD
-       /*
         IntentFilter filter = new IntentFilter();
-=======
-        /*IntentFilter filter = new IntentFilter();
->>>>>>> 186826486faba1d7cf2ed3bafa5a345c3df49e21
+
         int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
         String[] value_buf = mScanManager.getParameterString(idbuf);
         if (value_buf != null && value_buf[0] != null && !value_buf[0].equals("")) {
@@ -158,12 +154,8 @@ public class MyAppCompatActivity extends AppCompatActivity {
         } else {
             filter.addAction(SCAN_ACTION);
         }
-<<<<<<< HEAD
+
         registerReceiver(mScanReceiver, filter);
-        */
-=======
-        registerReceiver(mScanReceiver, filter);*/
->>>>>>> 186826486faba1d7cf2ed3bafa5a345c3df49e21
         /**********/
     }
 
