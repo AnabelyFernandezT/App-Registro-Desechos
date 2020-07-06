@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
@@ -70,6 +72,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         datosLotesDisponibles();
         lnlFinLote = getView().findViewById(R.id.LnlFinLote);
         btnFinLote = getView().findViewById(R.id.btnFinLote);
+
+        verificarInicioLote();
 
         btnListaAsignadaSede.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +153,28 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
 
         consultarLotes = new UserConsultaLotes(getActivity());
         consultarLotes.execute();
+    }
+
+    private void verificarInicioLote(){
+
+        Integer inicioLote=0;
+        Integer finLote=0;
+
+        ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
+        ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
+
+       if (iniciLote!=null){
+           inicioLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
+       }
+       if (finLotes!=null){
+           finLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote").getValor());
+       }
+
+            if(inicioLote == finLote) {
+                lnlIniciaLote.setVisibility(View.VISIBLE);
+                lnlFinLote.setVisibility(View.GONE);
+            }
+
     }
 
 
