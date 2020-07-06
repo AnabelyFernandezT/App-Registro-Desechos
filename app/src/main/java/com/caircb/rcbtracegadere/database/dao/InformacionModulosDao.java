@@ -21,7 +21,7 @@ public abstract class InformacionModulosDao {
 
     @Query("select * from tb_informacionModulos")
     @Transaction
-    public abstract List<ItemInformacionModulos> fetchLote2();
+    public abstract List<ItemInformacionModulos> fetchInformacionModulos2();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createInformacionModulos(InformacionModulosEntity entity);
