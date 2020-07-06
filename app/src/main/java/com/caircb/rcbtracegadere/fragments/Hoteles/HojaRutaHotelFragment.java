@@ -31,6 +31,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.Manifi
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.models.ItemLoteHoteles;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
     private ManifiestoAdapterHoteles recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiesto> rowItems;
+    private List<ItemLoteHoteles> rowItems;
     DialogFinRutaHoteles dialogFinRuta;
     /**
      * Use this factory method to create a new instance of
@@ -94,8 +95,7 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        rowItems = MyApp.getDBO().loteHotelesDao().fetchLotesAsigando();
         adapterList();
 
     }
@@ -108,7 +108,7 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getCodigoLoteContenedorHotel(), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onIndependentViewClicked(int independentViewID, int position) {

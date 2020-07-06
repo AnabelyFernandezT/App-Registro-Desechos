@@ -6,6 +6,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.ItemLoteHoteles;
 import com.caircb.rcbtracegadere.models.request.RequestLotesHoteles;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
@@ -41,10 +42,10 @@ public class UserConsultarLotesHotelesTask extends MyRetrofitApi implements Retr
             public void onResponse(Call<List<DtoLotesHoteles>> call, Response<List<DtoLotesHoteles>> response) {
                 if (response.isSuccessful()){
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
-                    MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
-                    for(DtoLotesHoteles reg:response.body()){
-                        //MyApp.getDBO().manifiestoSedeDao().saveOrUpdate(reg);
-                    }
+                    MyApp.getDBO().loteHotelesDao().eliminarLotes();
+                    MyApp.getDBO().loteHotelesDao().saveOrUpdate(response.body());
+                   // for(DtoLotesHoteles reg:response.body()){
+                    //}
                     progressHide();
                 }
             }

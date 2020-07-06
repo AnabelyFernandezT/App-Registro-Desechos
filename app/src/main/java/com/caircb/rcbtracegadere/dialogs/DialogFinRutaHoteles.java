@@ -220,13 +220,10 @@ public class DialogFinRutaHoteles extends MyDialog {
         }
 
         //traer placa
-        Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        /*Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarNombre(idRuta);
-        //CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoEspecifico(placaInicio,4);
         String subRuta = r!=null?r.getNombre():"";
-
-        //txt_kilometraje_inicio.setText(kilometrajeInicio);
-        txt_placa.setText(subRuta);
+        txt_placa.setText(subRuta);*/
 
     }
 

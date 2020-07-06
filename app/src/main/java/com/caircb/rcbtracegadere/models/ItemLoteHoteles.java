@@ -1,8 +1,8 @@
-package com.caircb.rcbtracegadere.models.response;
+package com.caircb.rcbtracegadere.models;
 
-import java.util.List;
+import java.util.Date;
 
-public class DtoLotesHoteles {
+public class ItemLoteHoteles {
     private String codigoLoteContenedorHotel;
     private String codigoLoteContenedor;
     private Integer idLoteContenedor;
@@ -12,9 +12,6 @@ public class DtoLotesHoteles {
     private String operador;
     private String chofer;
     private String hoteles;
-
-    public DtoLotesHoteles() {
-    }
 
     public String getChofer() {
         return chofer;
@@ -32,6 +29,14 @@ public class DtoLotesHoteles {
         this.hoteles = hoteles;
     }
 
+    public Integer getIdLoteContenedor() {
+        return idLoteContenedor;
+    }
+
+    public void setIdLoteContenedor(Integer idLoteContenedor) {
+        this.idLoteContenedor = idLoteContenedor;
+    }
+
     public String getCodigoLoteContenedorHotel() {
         return codigoLoteContenedorHotel;
     }
@@ -46,14 +51,6 @@ public class DtoLotesHoteles {
 
     public void setCodigoLoteContenedor(String codigoLoteContenedor) {
         this.codigoLoteContenedor = codigoLoteContenedor;
-    }
-
-    public Integer getIdLoteContenedor() {
-        return idLoteContenedor;
-    }
-
-    public void setIdLoteContenedor(Integer idLoteContenedor) {
-        this.idLoteContenedor = idLoteContenedor;
     }
 
     public String getRuta() {
