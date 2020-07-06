@@ -22,8 +22,10 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterHoteles;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
+import com.caircb.rcbtracegadere.dialogs.DialogFinRutaHoteles;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
@@ -44,11 +46,11 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
 
     LinearLayout btnRetornarListHojaRuta;
     private RecyclerView recyclerView;
-    private ManifiestoAdapter recyclerviewAdapter;
+    private ManifiestoAdapterHoteles recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
-    DialogFinRuta dialogFinRuta;
+    DialogFinRutaHoteles dialogFinRuta;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -76,13 +78,13 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoAdapterHoteles(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
     }
 
     private void openDialog_Fin_App(){
-        dialogFinRuta = new DialogFinRuta(getActivity()) ;
+        dialogFinRuta = new DialogFinRutaHoteles(getActivity()) ;
         dialogFinRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogFinRuta.setCancelable(false);
         dialogFinRuta.show();
