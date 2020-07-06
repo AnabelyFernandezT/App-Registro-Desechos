@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:textSize="20dp"
+        android:textColor="@color/app_gadere"
+        android:fontFamily="@font/quicksand_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="INFORMACIÓN GENERAL"></TextView>
+
+    <LinearLayout
+        android:id="@+id/sectionGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ruta:"/>
+        <TextView
+            android:id="@+id/lblRutaInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SUB - RUTA:"/>
+        <TextView
+            android:id="@+id/lblSubrutaInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Placa:"/>
+        <TextView
+            android:id="@+id/lblPlacaInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chofer:"/>
+        <TextView
+            android:id="@+id/lblChoferInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Auxiliar de Recolección:"/>
+        <TextView
+            android:id="@+id/lblAuxiliarRecoleccion1Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Auxiliar de Recolección:"/>
+        <TextView
+            android:id="@+id/lblAuxiliarRecoleccion2Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kilometraje inicio:"/>
+        <TextView
+            android:id="@+id/lblKilometrajeInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sectionEspecifica"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Residuo sujeto a fiscalización?:"/>
+        <TextView
+            android:id="@+id/lblFiscalizacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Requiere devolución de recipientes?:"/>
+        <TextView
+            android:id="@+id/lblDevolucionRecipiente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiene disponibilidad de montacargas:"/>
+        <TextView
+            android:id="@+id/lblMontacargas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiene disponibilidad de balanza:"/>
+        <TextView
+            android:id="@+id/lblBalanza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Requiere que nuestro servicio de incineración sea presenciado:"/>
+        <TextView
+            android:id="@+id/lblPresenciado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>
