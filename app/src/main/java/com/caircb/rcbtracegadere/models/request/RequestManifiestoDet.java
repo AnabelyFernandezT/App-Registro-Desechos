@@ -8,12 +8,14 @@ public class RequestManifiestoDet {
     private double peso;
     private double cantidad;
     private List<RequestManifiestoDetBultos> bultos;
+    private Integer tipoBalanza;
 
-    public RequestManifiestoDet(Integer idAppManifiestoDetalle, double peso, double cantidad, List<RequestManifiestoDetBultos> bultos) {
+    public RequestManifiestoDet(Integer idAppManifiestoDetalle, double peso, double cantidad, List<RequestManifiestoDetBultos> bultos, Integer tipoBalanza) {
         this.idAppManifiestoDetalle = idAppManifiestoDetalle;
         this.peso = peso;
         this.cantidad = cantidad;
         this.bultos = bultos;
+        this.tipoBalanza = tipoBalanza;
     }
 
     public Integer getIdAppManifiestoDetalle() {
@@ -46,5 +48,13 @@ public class RequestManifiestoDet {
 
     public void setBultos(List<RequestManifiestoDetBultos> bultos) {
         this.bultos = bultos;
+    }
+
+    public Integer getTipoBalanza() {
+        return tipoBalanza;
+    }
+
+    public void setTipoBalanza(Integer tipoBalanza) {
+        this.tipoBalanza = tipoBalanza;
     }
 }

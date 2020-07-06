@@ -64,6 +64,7 @@ public class DtoManifiesto {
     private Integer idRuta;
     private Integer idSubRuta;
     private Integer estadoFinRuta;
+    private String nombreDestinatario;
 
     public DtoManifiesto() {
     }
@@ -468,5 +469,13 @@ public class DtoManifiesto {
 
     public void setEstadoFinRuta(Integer estadoFinRuta) {
         this.estadoFinRuta = estadoFinRuta;
+    }
+
+    public String getNombreDestinatario() {
+        return nombreDestinatario;
+    }
+
+    public void setNombreDestinatario(String nombreDestinatario) {
+        this.nombreDestinatario = nombreDestinatario;
     }
 }

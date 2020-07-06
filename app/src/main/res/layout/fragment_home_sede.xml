@@ -106,7 +106,7 @@
                 style="@style/title_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="BUSCAR"
+                android:text="MOVILIZAR"
                 android:layout_marginTop="-15dp"
                 android:gravity="center"
                 android:textIsSelectable="false" />
@@ -188,7 +188,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!--Incio de ruta-->
+        <!--Incio de Lote-->
         <LinearLayout
             android:id="@+id/LnlIniciaLote"
             android:layout_width="0dp"
@@ -223,9 +223,9 @@
 
         </LinearLayout>
 
-        <!--Fin de ruta
+        <!--Fin de lote-->
         <LinearLayout
-            android:id="@+id/LnlFinRuta"
+            android:id="@+id/LnlFinLote"
             android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="60dp"
@@ -235,7 +235,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/btnFinRuta"
+                android:id="@+id/btnFinLote"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:background="#00000000"
@@ -253,11 +253,11 @@
                 android:layout_marginTop="-15dp"
                 android:gravity="center"
                 style="@style/title_footer"
-                android:text="FIN RUTA"
+                android:text="FIN LOTE"
                 android:textIsSelectable="false"/>
 
 
-        </LinearLayout>-->
+        </LinearLayout>
 
 
 

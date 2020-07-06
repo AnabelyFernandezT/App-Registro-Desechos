@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
@@ -41,7 +42,6 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     public void execute() {
 
         Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-
         WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
 
             @Override

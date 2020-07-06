@@ -21,19 +21,25 @@ import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 
 import java.util.List;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
-
-    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta;
+    UserConsultaLotes consultarLotes;
+    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
+
+
+    UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
-    LinearLayout lnlIniciaLote;
+    LinearLayout lnlIniciaLote, lnlFinLote;
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
@@ -61,7 +67,9 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnMenu = getView().findViewById(R.id.btnMenu);
         lnlIniciaLote = getView().findViewById(R.id.LnlIniciaLote);
         btnInciaLote = getView().findViewById(R.id.btnInciaLote);
-
+        datosLotesDisponibles();
+        lnlFinLote = getView().findViewById(R.id.LnlFinLote);
+        btnFinLote = getView().findViewById(R.id.btnFinLote);
 
         btnListaAsignadaSede.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +95,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
                 dialogPlacasRecolector.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacasRecolector.setCancelable(false);
-                dialogPlacasRecolector.setTitle("CAMINONES RECOLECCION");
+                dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
                 dialogPlacasRecolector.show();
             }
         });
@@ -98,6 +106,27 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 if(getActivity() instanceof MainActivity){
                     ((MainActivity)getActivity()).openMenuOpcion();
                 }
+            }
+        });
+
+        btnFinLote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
+                registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
+                    @Override
+                    public void onSuccessful() {
+                        messageBox("Lote Cerrado Correctamente");
+                        lnlIniciaLote.setVisibility(View.VISIBLE);
+                        lnlFinLote.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onFail() {
+                        messageBox("Lote no finalizado");
+                    }
+                });
+                registarFinLoteTask.execute();
             }
         });
 
@@ -114,6 +143,12 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 setNavegate(HojaFragment.newInstance());
             }
         });
+    }
+
+    private void datosLotesDisponibles(){
+
+        consultarLotes = new UserConsultaLotes(getActivity());
+        consultarLotes.execute();
     }
 
 

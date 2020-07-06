@@ -41,7 +41,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
-            txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno, txtOperadorRecolector
+            txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno, txtOperadorRecolector,txtManifiestoCliente
             ,txtGenTecCorreo,txtGenTecTelefono,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista, txtFirmaOperador1,txtFirmaOperador2;
 
     private EditText txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
@@ -80,6 +80,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtTransRecoAux= this.findViewById(R.id.txtTransRecoAux);
         txtCorreoAlterno = this.findViewById(R.id.txtCorreoAlterno);
         txtOperadorRecolector = this.findViewById(R.id.txtOperadorRecolector);
+        txtManifiestoCliente = this.findViewById(R.id.txtManifiestoCliente);
 
         txtFirmaMensaje= this.findViewById(R.id.txtFirmaMensaje);
         txtGenTecCorreo= this.findViewById(R.id.txtGenTecCorreo);
@@ -109,9 +110,9 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
 
-        txtRespEntregaNombre.setEnabled(false);
-        txtRespEntregaCorreo.setEnabled(false);
-        txtRespEntregaTelefono.setEnabled(false);
+        txtRespEntregaNombre.setEnabled(true);
+        txtRespEntregaCorreo.setEnabled(true);
+        txtRespEntregaTelefono.setEnabled(true);
 
         chkCorreoPrincipal = this.findViewById(R.id.chkCorreoPrincipal);
         chkCorreoAlterno = this.findViewById(R.id.chkCorreoAlterno);
@@ -401,11 +402,13 @@ public class TabManifiestoGeneral extends LinearLayout {
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
             txtNumManifiesto.setText(manifiesto.getNumeroManifiesto());
-            //txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
+            txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
+            txtClienteTelefono.setText(manifiesto.getTecnicoTelefono());
             txtClienteDireccion.setText(manifiesto.getDireccionCliente());
             txtClienteProvincia.setText(manifiesto.getProvincia());
             txtClienteCanton.setText(manifiesto.getCanton());
             txtCorreoAlterno.setText(manifiesto.getCorreoAlterno());
+            txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
 
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
@@ -416,12 +419,11 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText("GADERE");
             txtOperadorRecolector.setText(manifiesto.getNombreOperadorRecolector());
+            txtEmpresaDestinatario.setText(manifiesto.getNombreDestinatario());
 
             if(txtOperadorRecolector.getText().equals("")){
                 btmAgregarOperador2.setEnabled(false);
             }
-
-
 
             if(manifiesto.getIdTecnicoGenerador()!=null && manifiesto.getIdTecnicoGenerador()>0){
                 TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(manifiesto.getIdTecnicoGenerador());

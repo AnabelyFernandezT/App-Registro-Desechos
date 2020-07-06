@@ -47,6 +47,8 @@ public class ManifiestoDetalleEntity {
     @NonNull
     private boolean estadoChek;
 
+    private Integer tipoBalanza;
+
     public ManifiestoDetalleEntity() {
     }
 
@@ -158,5 +160,13 @@ public class ManifiestoDetalleEntity {
 
     public void setNombreDesecho(String nombreDesecho) {
         this.nombreDesecho = nombreDesecho;
+    }
+
+    public Integer getTipoBalanza() {
+        return tipoBalanza;
+    }
+
+    public void setTipoBalanza(Integer tipoBalanza) {
+        this.tipoBalanza = tipoBalanza;
     }
 }

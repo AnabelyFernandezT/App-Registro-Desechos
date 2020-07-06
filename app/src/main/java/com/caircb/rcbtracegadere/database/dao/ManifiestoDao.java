@@ -220,6 +220,7 @@ public abstract class ManifiestoDao {
             entity.setIdentificacionOperadorRecolector(manifiesto.getIdentificacionOperadorRecolector());
             entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
+            entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -276,6 +277,7 @@ public abstract class ManifiestoDao {
             entity.setIdentificacionOperadorRecolector(manifiesto.getIdentificacionOperadorRecolector());
             entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
+            entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
         }
 
         if (entity!=null) createManifiesto(entity);
