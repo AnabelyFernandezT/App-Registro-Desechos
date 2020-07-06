@@ -33,10 +33,10 @@ import java.util.List;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;
-    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta;
+    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
 
-    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinLote;
+
     UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
     LinearLayout lnlIniciaLote, lnlFinLote;
