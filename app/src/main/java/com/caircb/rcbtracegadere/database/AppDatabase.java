@@ -77,7 +77,7 @@ import java.util.Locale;
         LoteEntity.class,
         ManifiestoSedeEntity.class,
         ManifiestoSedeDetalleValorEntity.class,
-        InformacionModulosEntity.class
+        InformacionModulosEntity.class,
         ManifiestoSedeDetalleEntity.class,
         LoteHotelesEntity.class
 },version = MyConstant.DBO_VERSION)
