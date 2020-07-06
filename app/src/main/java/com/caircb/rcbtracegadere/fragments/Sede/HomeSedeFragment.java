@@ -86,7 +86,6 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v){
                 dialogPlacas = new DialogPlacaSede(getActivity());
-                dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacas.setCancelable(false);
                 dialogPlacas.setTitle("INICIAR LOTE");
                 dialogPlacas.show();
@@ -97,7 +96,6 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v){
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
-                dialogPlacasRecolector.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacasRecolector.setCancelable(false);
                 dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
                 dialogPlacasRecolector.show();

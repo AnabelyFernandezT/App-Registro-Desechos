@@ -29,6 +29,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.LoteAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
 
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
@@ -54,6 +55,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
     private Window window;
     private RecyclerView recyclerView;
     private LoteAdapter recyclerviewAdapter;
+    DialogInicioMovilizacion movilizacion;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemLote> rowItems;
@@ -170,7 +172,10 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                 .setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        movilizacion = new DialogInicioMovilizacion(getActivity());
+                        movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        movilizacion.setCancelable(false);
+                        movilizacion.show();
 
                     }
                 })

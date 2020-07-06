@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
+import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
@@ -96,4 +97,6 @@ public interface IServicio {
 
     @POST("HojaRuta/informacionProceso")
     Call<List<DtoInformacionModulos>> traerInformacionModulos(@Body RequestInformacionModulos model);
+    @PUT("Registro/registroMovilizacionLoteContenedor")
+    Call<DtoInfo>registrarmovilizacionLoteSede(@Body RequestMovilizarLoteSede model);
 }
