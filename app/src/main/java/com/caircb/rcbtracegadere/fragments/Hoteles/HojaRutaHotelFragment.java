@@ -22,7 +22,10 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterHoteles;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
+import com.caircb.rcbtracegadere.dialogs.DialogFinRutaHoteles;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
@@ -42,16 +45,12 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
 
 
     LinearLayout btnRetornarListHojaRuta;
-
-    private Window window;
     private RecyclerView recyclerView;
-    private ManifiestoAdapter recyclerviewAdapter;
+    private ManifiestoAdapterHoteles recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
-    private SearchView searchView;
-    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
-    private ListView mDrawerMenuItems, mDialogMenuItems;
+    DialogFinRutaHoteles dialogFinRuta;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -70,7 +69,7 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada, container, false));
+        setView(inflater.inflate(R.layout.fragment_hoja_ruta_hoteles, container, false));
         setHideHeader();
         init();
         initItems();
@@ -79,25 +78,16 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoAdapterHoteles(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
-        searchView = getView().findViewById(R.id.searchViewManifiestos);
-
-        searchView.setOnSearchListener(new SearchView.OnSearchListener() {
-            @Override
-            public void onSearch(String data) {
-                filtro(data);
-            }
-        });
     }
 
-    private void filtro(String texto){
-        List<ItemManifiesto> result = new ArrayList<>();
-        List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
-        rowItems=listaItems;
-        recyclerviewAdapter.setTaskList(rowItems);
+    private void openDialog_Fin_App(){
+        dialogFinRuta = new DialogFinRutaHoteles(getActivity()) ;
+        dialogFinRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogFinRuta.setCancelable(false);
+        dialogFinRuta.show();
     }
 
 
@@ -120,60 +110,28 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
             public void onRowClicked(int position) {
                 Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onIndependentViewClicked(int independentViewID, int position) {
-
             }
         }).setSwipeOptionViews(R.id.btn_manifiesto_view, R.id.btn_manifiesto_more).setSwipeable(R.id.rowFG, R.id.rowBG, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
             @Override
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                        menu(position);
+                        openDialog_Fin_App();
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
                 }
             }
         });
-        //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
-        //recyclerView.addItemDecoration(divider);
-    }
-
-    private void  menu(final int position){
-        final CharSequence[] options = {"INICIAR RECOLECCION", "INGRESAR MOTIVO NO RECOLECCION", "CANCELAR"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("INICIAR RECOLECCION"))
-                {
-                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
-                }
-                else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
-                {
-                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-                }
-                else if (options[item].equals("CANCELAR")) {
-                    dialog.dismiss();
-                }
-
-            }
-        });
-        builder.show();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRetornarListHojaRuta:
-                setNavegate(HomeTransportistaFragment.create());
+                setNavegate(HomeHotelFragment.create());
                 break;
         }
     }
