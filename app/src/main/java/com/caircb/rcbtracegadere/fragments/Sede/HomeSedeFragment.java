@@ -26,6 +26,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 
 import java.util.List;
@@ -34,8 +35,11 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;
     ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
+
+    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinLote;
+    UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
-    LinearLayout lnlIniciaLote;
+    LinearLayout lnlIniciaLote, lnlFinLote;
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
@@ -64,6 +68,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         lnlIniciaLote = getView().findViewById(R.id.LnlIniciaLote);
         btnInciaLote = getView().findViewById(R.id.btnInciaLote);
         datosLotesDisponibles();
+        lnlFinLote = getView().findViewById(R.id.LnlFinLote);
+        btnFinLote = getView().findViewById(R.id.btnFinLote);
 
         btnListaAsignadaSede.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +95,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
                 dialogPlacasRecolector.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacasRecolector.setCancelable(false);
-                dialogPlacasRecolector.setTitle("CAMINONES RECOLECCION");
+                dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
                 dialogPlacasRecolector.show();
             }
         });
@@ -100,6 +106,27 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 if(getActivity() instanceof MainActivity){
                     ((MainActivity)getActivity()).openMenuOpcion();
                 }
+            }
+        });
+
+        btnFinLote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
+                registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
+                    @Override
+                    public void onSuccessful() {
+                        messageBox("Lote Cerrado Correctamente");
+                        lnlIniciaLote.setVisibility(View.VISIBLE);
+                        lnlFinLote.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onFail() {
+                        messageBox("Lote no finalizado");
+                    }
+                });
+                registarFinLoteTask.execute();
             }
         });
 

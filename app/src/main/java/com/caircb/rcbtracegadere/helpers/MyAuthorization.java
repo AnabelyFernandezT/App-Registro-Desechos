@@ -141,6 +141,7 @@ public class MyAuthorization {
             myListOfItems.add(new MenuItem(json.getString("nombre")));
 
         }
+        myListOfItems.add(new MenuItem("CANCELAR"));
        }catch (JSONException e){
         e.printStackTrace();
         }
@@ -165,12 +166,18 @@ public class MyAuthorization {
                                 mdialog.dismiss();
                                     guardarLugar("PLANTA");
                             }
+                        }else if (item.getNombre().equals("CANCELAR")){
+                            if(mdialog!= null){
+                                mdialog.dismiss();
+                                progressDialog.dismiss();
+                            }
                         }
                     }
                 }
             });
             mdialog.setTitle("MODULOS");
             mdialog.setContentView(view);
+            mdialog.setCancelable(false);
             mdialog.show();
         }
         else{

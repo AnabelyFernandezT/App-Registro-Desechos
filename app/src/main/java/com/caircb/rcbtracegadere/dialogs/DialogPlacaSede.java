@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,7 +19,9 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarLoteInicioTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +31,15 @@ public class DialogPlacaSede extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
-    UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
-    LinearLayout btnIngresarApp, btnCancelarApp;
+    UserConsultarPlacasInicioLoteTask placasInicioLoteTask;
+    LinearLayout btnIngresarApp, btnCancelarApp, lnlIniciaLote,lnlFinLote;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
+    UserRegistrarLoteInicioTask registrarLoteInicioTask;
+    ImageButton btnFinLote;
+
+
+
 
 
     public DialogPlacaSede(@NonNull Context context) {
@@ -52,6 +60,10 @@ public class DialogPlacaSede extends MyDialog {
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
+
+        lnlIniciaLote = getActivity().findViewById(R.id.LnlIniciaLote);
+        lnlFinLote = getActivity().findViewById(R.id.LnlFinLote);
+        btnFinLote = (ImageButton) getActivity().findViewById(R.id.btnFinLote);
 
         spinnerPlacas = (Spinner)getView().findViewById(R.id.lista_placas);
         spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -82,8 +94,8 @@ public class DialogPlacaSede extends MyDialog {
             public void onClick(View v) {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                cargarManifiesto();
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo_inicio_lote",""+idVehiculo);
+                registrarLote();
                 dismiss();
             }
         });
@@ -93,15 +105,15 @@ public class DialogPlacaSede extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
+        placasInicioLoteTask = new UserConsultarPlacasInicioLoteTask(getActivity());
+        placasInicioLoteTask.setOnVehiculoListener(new UserConsultarPlacasInicioLoteTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
                 listaPlacasDisponibles = catalogos;
                 spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
             }
         });
-        consultarPlacasInicioRutaDisponible.execute();
+        placasInicioLoteTask.execute();
     }
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
@@ -137,6 +149,30 @@ public class DialogPlacaSede extends MyDialog {
     private void cargarManifiesto(){
         consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
+    }
+
+    private void registrarLote(){
+
+        registrarLoteInicioTask = new UserRegistrarLoteInicioTask(_activity);
+        registrarLoteInicioTask.setOnRegisterListener(new UserRegistrarLoteInicioTask.OnRegisterListener() {
+            @Override
+            public void onSuccessful() {
+                messageBox("Lote Registrado");
+                activarFinLote();
+            }
+
+            @Override
+            public void onFail() {
+                messageBox("Lote no registrado");
+
+            }
+        });
+        registrarLoteInicioTask.execute();
+    }
+
+    private void activarFinLote(){
+        lnlIniciaLote.setVisibility(View.GONE);
+        lnlFinLote.setVisibility(View.VISIBLE);
     }
 
 

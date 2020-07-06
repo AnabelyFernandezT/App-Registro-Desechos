@@ -147,7 +147,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRetornarListHojaRuta:
-                setNavegate(HomeTransportistaFragment.create());
+                setNavegate(HomeGestorAlternoFragment.create());
                 break;
         }
     }

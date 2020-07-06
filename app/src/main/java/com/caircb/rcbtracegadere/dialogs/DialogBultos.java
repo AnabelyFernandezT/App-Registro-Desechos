@@ -165,16 +165,14 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             @Override
             public void onSendImpresion(Integer pos) {
                 CatalogoItemValor item = bultos.get(pos);
-                MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(item.getIdCatalogo(), true);
+                //linear para probar sin impresiora
                 bultos.get(pos).setImpresion(true);
+                MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
+                listaValoresAdapter.filterList(bultos);
+                listaValoresAdapter.notifyDataSetChanged();
 
                 ////IMPRIME ETIQUETA
-                //final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividual(idManifiesto, idManifiestoDetalle, item.getIdCatalogo());
-
-                imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), pos+1);
-
-                //listaValoresAdapter.filterList(bultos);
-                //listaValoresAdapter.notifyDataSetChanged();
+                //imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), pos+1);
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -205,13 +203,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         listViewBultos.setAdapter(listaValoresAdapter);
     }
 
-    private void imprimirEtiquetaIndividual(Integer idAppManifiesto, Integer idManifiestoDetalle, Integer idCatalogo, Integer numeroBulto){
+    private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer idCatalogo, Integer numeroBulto){
         try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
                 @Override
                 public void onSuccessful() {
                     //Impresion finalizada
+                    bultos.clear();
+                    MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, idCatalogo, true);
                     loadData();
                 }
 
@@ -437,7 +437,6 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             case R.id.btn_cancel:
                 limpiarBultosNoConfirmados();
                 if (mOnBultoListener != null) {
-                    Integer num = bultos.size();
                     mOnBultoListener.onCanceled();
                 }
                 break;

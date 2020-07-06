@@ -3,9 +3,11 @@ package com.caircb.rcbtracegadere.services;
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
+import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
+import com.caircb.rcbtracegadere.models.request.RequestInicioLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestLote;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
@@ -74,5 +76,11 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerListHojaRutaSede")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);
+
+    @PUT("Registro/registroLoteContenedor")
+    Call<DtoInfo>registrarLoteinicio (@Body RequestInicioLoteSede model);
+
+    @PUT("Registro/registroLoteContenedor")
+    Call<DtoInfo>registrarFinLote(@Body RequestFinLote model);
 
 }
