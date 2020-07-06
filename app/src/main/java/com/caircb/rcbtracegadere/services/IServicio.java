@@ -14,6 +14,7 @@ import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
+import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
@@ -82,5 +83,8 @@ public interface IServicio {
 
     @PUT("Registro/registroLoteContenedor")
     Call<DtoInfo>registrarFinLote(@Body RequestFinLote model);
+
+    @POST("Registro/registrarLoteContenedorDetalleValor")
+    Call<DtoInfo>registrarDetalleRecolectado(@Body RequestRegistrarDetalleSede model);
 
 }

@@ -164,9 +164,23 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
     }
 */
     public void openDialogInicioMovilizacion(){
-        DialogInicioMovilizacion dialogInicioMovilizacion = new DialogInicioMovilizacion();
-        final FragmentManager fm =getFragmentManager();
-        dialogInicioMovilizacion.show(fm,"Alert");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("CONFIRMACIÓN")
+                .setMessage("Esta seguro de movilizar el lote?")
+                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                })
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.show();
     }
 
 

@@ -33,6 +33,7 @@ import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserRegistarDetalleSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ import java.util.List;
 
 
 public class ManifiestoSedeFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
-    LinearLayout btnManifiestoCancel;
+    LinearLayout btnManifiestoCancel,btnRegistrar;
     private RecyclerView recyclerView;
     private static final String ARG_PARAM1 = "manifiestoID";
     RecepcionGestorFragment manifiestoGestor;
@@ -52,6 +53,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     ListView LtsManifiestoDetalle,mDialogMenuItems;
     DialogBultosSede dialogBultos;
+    UserRegistarDetalleSedeTask detalleSedeTask;
 
     public  ManifiestoSedeFragment (){
     }
@@ -107,6 +109,32 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerView = getView().findViewById(R.id.recyclerview);
         recyclerviewAdapter = new ManifiestoDetalleAdapterSede(getActivity(),idAppManifiesto.toString(),1);
         manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
+        btnRegistrar = getView().findViewById(R.id.btnRegistrar);
+        btnRegistrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
+                if(loteContenedor!=null){
+                    detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
+                    detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            messageBox("Bultos Guardados");
+                        }
+
+                        @Override
+                        public void onFail() {
+                            messageBox("Bultos No Guardados");
+                        }
+                    });
+                    detalleSedeTask.execute();
+
+                }else {
+                    messageBox("Debe Iniciar Lote");
+                }
+
+            }
+        });
     }
 
     private void loadData(){
