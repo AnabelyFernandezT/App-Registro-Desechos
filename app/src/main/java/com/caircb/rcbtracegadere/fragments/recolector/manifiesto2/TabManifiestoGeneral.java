@@ -41,7 +41,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private String numeroManifiesto="";
     private View view;
     private TextView txtNumManifiesto,txtClienteNombre,txtClienteIdentificacion,txtClienteTelefono,txtClienteDireccion,txtClienteProvincia,
-            txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno, txtOperadorRecolector
+            txtClienteCanton,txtTransReco,txtTransRecoAux,txtCorreoAlterno, txtOperadorRecolector,txtManifiestoCliente
             ,txtGenTecCorreo,txtGenTecTelefono,txtFirmaMensaje,txtEmpresaDestinatario,txtempresaTransportista,txtFirmaMensajeTransportista, txtFirmaOperador1,txtFirmaOperador2;
 
     private EditText txtRespEntregaIdentificacion,txtRespEntregaNombre,txtRespEntregaCorreo,txtRespEntregaTelefono;
@@ -80,6 +80,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtTransRecoAux= this.findViewById(R.id.txtTransRecoAux);
         txtCorreoAlterno = this.findViewById(R.id.txtCorreoAlterno);
         txtOperadorRecolector = this.findViewById(R.id.txtOperadorRecolector);
+        txtManifiestoCliente = this.findViewById(R.id.txtManifiestoCliente);
 
         txtFirmaMensaje= this.findViewById(R.id.txtFirmaMensaje);
         txtGenTecCorreo= this.findViewById(R.id.txtGenTecCorreo);
@@ -109,9 +110,9 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
 
-        txtRespEntregaNombre.setEnabled(false);
-        txtRespEntregaCorreo.setEnabled(false);
-        txtRespEntregaTelefono.setEnabled(false);
+        txtRespEntregaNombre.setEnabled(true);
+        txtRespEntregaCorreo.setEnabled(true);
+        txtRespEntregaTelefono.setEnabled(true);
 
         chkCorreoPrincipal = this.findViewById(R.id.chkCorreoPrincipal);
         chkCorreoAlterno = this.findViewById(R.id.chkCorreoAlterno);
@@ -407,6 +408,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtClienteProvincia.setText(manifiesto.getProvincia());
             txtClienteCanton.setText(manifiesto.getCanton());
             txtCorreoAlterno.setText(manifiesto.getCorreoAlterno());
+            txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
 
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
