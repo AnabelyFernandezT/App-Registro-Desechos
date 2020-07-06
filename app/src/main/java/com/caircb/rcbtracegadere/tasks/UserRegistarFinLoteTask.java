@@ -39,6 +39,7 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
                     if (response.isSuccessful()){
                         if (response.body().getExito()){
                             progressHide();
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_fin_lote",""+response.body().getMensaje());
                             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                         }
                     }else {

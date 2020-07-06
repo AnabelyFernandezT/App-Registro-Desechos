@@ -81,6 +81,7 @@
         </LinearLayout>
 
         <!--BUSCAR-->
+        <!--
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="60dp"
@@ -112,6 +113,7 @@
                 android:textIsSelectable="false" />
 
         </LinearLayout>
+        -->
         <!--SINCRONIZAR-->
         <LinearLayout
             android:layout_width="0dp"
@@ -169,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-15dp"
                 android:gravity="center"
-                android:text="MANIFIESTOS"
+                android:text="LOTES"
                 android:textIsSelectable="false" />
 
             <TextView

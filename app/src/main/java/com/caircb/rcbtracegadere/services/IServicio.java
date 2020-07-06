@@ -10,17 +10,20 @@ import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestInformacionModulos;
 import com.caircb.rcbtracegadere.models.request.RequestInicioLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestLote;
+import com.caircb.rcbtracegadere.models.request.RequestLotesHoteles;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
+import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
 import com.caircb.rcbtracegadere.models.response.DtoLote;
+import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
@@ -84,6 +87,12 @@ public interface IServicio {
 
     @PUT("Registro/registroLoteContenedor")
     Call<DtoInfo>registrarFinLote(@Body RequestFinLote model);
+
+    @POST("HojaRuta/obtenerListLoteContenedorHotel")
+    Call<List<DtoLotesHoteles>> traerLotesHoteles(@Body RequestLotesHoteles model);
+
+    @POST("Registro/registrarLoteContenedorDetalleValor")
+    Call<DtoInfo>registrarDetalleRecolectado(@Body RequestRegistrarDetalleSede model);
 
     @POST("HojaRuta/informacionProceso")
     Call<List<DtoInformacionModulos>> traerInformacionModulos(@Body RequestInformacionModulos model);
