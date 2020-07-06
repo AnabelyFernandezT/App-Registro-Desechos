@@ -7,6 +7,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestLote;
+import com.caircb.rcbtracegadere.models.request.RequestLotesHoteles;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
@@ -17,6 +18,7 @@ import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoLote;
+import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
@@ -74,5 +76,8 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerListHojaRutaSede")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);
+
+    @POST("HojaRuta/obtenerListLoteContenedorHotel")
+    Call<List<DtoLotesHoteles>> traerLotesHoteles(@Body RequestLotesHoteles model);
 
 }
