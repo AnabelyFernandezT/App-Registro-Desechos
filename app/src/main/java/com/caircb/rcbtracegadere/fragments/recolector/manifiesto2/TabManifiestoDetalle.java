@@ -5,11 +5,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.strictmode.UnbufferedIoViolation;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +23,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
@@ -53,6 +57,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     Integer tipoGestion;
     PaqueteEntity pkg;
 
+
     public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto,Integer estado) {
         super(context);
         this.idAppManifiesto=manifiestoID;
@@ -84,13 +89,14 @@ public class TabManifiestoDetalle extends LinearLayout {
             public void onItemClick(int position, View v) {
                 int x=0;
                 if(estadoManifiesto == 1){
-                    openOpcionesItems(position);
+                    openOpcionesItems(position, detalles.get(position).getId());
                 }
             }
         });
     }
 
-    private void openOpcionesItems(final Integer positionItem){
+    private void openOpcionesItems(final Integer positionItem, final Integer idDetManifiesto){
+
         dialogOpcioneItem = new Dialog(this.getContext());
        /* final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
         myListOfItems.add(new MenuItem("BULTOS"));
@@ -98,9 +104,12 @@ public class TabManifiestoDetalle extends LinearLayout {
 
         //dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this.getContext(),myListOfItems);
         View view = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.dialog_opciones_detalle, null);
-        LinearLayout txtBultos = view.findViewById(R.id.txtBultos);
+        //LinearLayout txtBultos = view.findViewById(R.id.txtBultos);
 
         LinearLayout btnCancelar = view.findViewById(R.id.btnCancel);
+        LinearLayout btnBalanzaGadere = (LinearLayout) view.findViewById(R.id.btnBalanzaGadere);
+        LinearLayout btnBalanzaCliente = (LinearLayout) view.findViewById(R.id.btnBalanzaCliente);
+        /*
         txtBultos.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +117,24 @@ public class TabManifiestoDetalle extends LinearLayout {
                 showTipoPaquete(positionItem);
             }
         });
+         */
+        btnBalanzaGadere.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
+                showTipoPaquete(positionItem);
+            }
+        });
+        btnBalanzaGadere.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
+                //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
+                showTipoPaquete(positionItem);
+            }
+        });
+
+
 
         btnCancelar.setOnClickListener(new OnClickListener() {
             @Override

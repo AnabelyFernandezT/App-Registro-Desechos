@@ -401,7 +401,8 @@ public class TabManifiestoGeneral extends LinearLayout {
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
             txtNumManifiesto.setText(manifiesto.getNumeroManifiesto());
-            //txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
+            txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
+            txtClienteTelefono.setText(manifiesto.getTecnicoTelefono());
             txtClienteDireccion.setText(manifiesto.getDireccionCliente());
             txtClienteProvincia.setText(manifiesto.getProvincia());
             txtClienteCanton.setText(manifiesto.getCanton());
@@ -416,12 +417,11 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText("GADERE");
             txtOperadorRecolector.setText(manifiesto.getNombreOperadorRecolector());
+            txtEmpresaDestinatario.setText(manifiesto.getNombreDestinatario());
 
             if(txtOperadorRecolector.getText().equals("")){
                 btmAgregarOperador2.setEnabled(false);
             }
-
-
 
             if(manifiesto.getIdTecnicoGenerador()!=null && manifiesto.getIdTecnicoGenerador()>0){
                 TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(manifiesto.getIdTecnicoGenerador());

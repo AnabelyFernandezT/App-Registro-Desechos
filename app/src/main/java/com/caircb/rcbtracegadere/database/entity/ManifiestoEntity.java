@@ -121,6 +121,8 @@ public class ManifiestoEntity {
 
     private Integer estadoFinRuta;
 
+    private String nombreDestinatario;
+
 
     public ManifiestoEntity() {
     }
@@ -438,6 +440,14 @@ public class ManifiestoEntity {
 
     public void setEstadoFinRuta(Integer estadoFinRuta) {
         this.estadoFinRuta = estadoFinRuta;
+    }
+
+    public String getNombreDestinatario() {
+        return nombreDestinatario;
+    }
+
+    public void setNombreDestinatario(String nombreDestinatario) {
+        this.nombreDestinatario = nombreDestinatario;
     }
 }
 

@@ -190,7 +190,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         d.getIdAppManifiestoDetalle(),
                         d.getPesoUnidad(),
                         d.getCantidadBulto(),
-                        createRequestBultos(d.getIdAppManifiestoDetalle())
+                        createRequestBultos(d.getIdAppManifiestoDetalle()),
+                        (d.getTipoBalanza() == null)? 0: d.getTipoBalanza()
                 ));
             }
         }

@@ -181,7 +181,8 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
                         d.getIdAppManifiestoDetalle(),
                         d.getPesoUnidad(),
                         d.getCantidadBulto(),
-                        createRequestBultos(d.getIdAppManifiestoDetalle())
+                        createRequestBultos(d.getIdAppManifiestoDetalle()),
+                        (d.getTipoBalanza() == null)? 0: d.getTipoBalanza()
                 ));
             }
         }
