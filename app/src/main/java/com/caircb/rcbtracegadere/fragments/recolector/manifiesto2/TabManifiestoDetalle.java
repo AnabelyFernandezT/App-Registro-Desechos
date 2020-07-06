@@ -125,7 +125,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                 showTipoPaquete(positionItem);
             }
         });
-        btnBalanzaGadere.setOnClickListener(new OnClickListener() {
+        btnBalanzaCliente.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
