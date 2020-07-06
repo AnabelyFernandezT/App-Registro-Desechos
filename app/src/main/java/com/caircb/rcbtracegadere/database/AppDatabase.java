@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.caircb.rcbtracegadere.database.dao.CatalogoDao;
+import com.caircb.rcbtracegadere.database.dao.InformacionModulosDao;
 import com.caircb.rcbtracegadere.database.dao.LogDao;
 import com.caircb.rcbtracegadere.database.dao.LoteDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDao;
@@ -28,6 +29,7 @@ import com.caircb.rcbtracegadere.database.dao.RutasDao;
 import com.caircb.rcbtracegadere.database.dao.TecnicoDao;
 import com.caircb.rcbtracegadere.database.dao.LoteDao;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 import com.caircb.rcbtracegadere.database.entity.LogEntity;
 import com.caircb.rcbtracegadere.database.entity.LoteEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
@@ -73,7 +75,7 @@ import java.util.Locale;
         LoteEntity.class,
         ManifiestoSedeEntity.class,
         ManifiestoSedeDetalleValorEntity.class,
-        ManifiestoSedeDetalleEntity.class
+        InformacionModulosEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -161,5 +163,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoSedeDao manifiestoSedeDao();
     public abstract ManifiestoSedeDetalleDao manifiestoDetalleSede();
     public abstract ManifiestoSedeDetalleValorDao manifiestoDetalleValorSede();
-
+    public abstract InformacionModulosDao informacionModulosDao();
 }
