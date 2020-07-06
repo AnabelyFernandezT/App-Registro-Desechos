@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.fragments.planta;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.app.Activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -36,6 +38,7 @@ import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemLote;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
+import com.caircb.rcbtracegadere.dialogs.DialogInicioMovilizacion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 
@@ -143,6 +146,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                 if (options[item].equals("MOVILIZAR"))
                 {
                     //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
+                    openDialogInicioMovilizacion();
                 }
                 else if (options[item].equals("CANCELAR")) {
                     dialog.dismiss();
@@ -159,6 +163,11 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         consultarLotes.execute();
     }
 */
+    public void openDialogInicioMovilizacion(){
+        DialogInicioMovilizacion dialogInicioMovilizacion = new DialogInicioMovilizacion();
+        final FragmentManager fm =getFragmentManager();
+        dialogInicioMovilizacion.show(fm,"Alert");
+    }
 
 
     @Override
