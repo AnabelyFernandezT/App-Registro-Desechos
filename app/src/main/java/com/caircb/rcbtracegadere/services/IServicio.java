@@ -7,6 +7,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
+import com.caircb.rcbtracegadere.models.request.RequestInformacionModulos;
 import com.caircb.rcbtracegadere.models.request.RequestInicioLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestLote;
 import com.caircb.rcbtracegadere.models.request.RequestLotesHoteles;
@@ -21,6 +22,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
+import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
 import com.caircb.rcbtracegadere.models.response.DtoLote;
 import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
@@ -93,6 +95,8 @@ public interface IServicio {
     @POST("Registro/registrarLoteContenedorDetalleValor")
     Call<DtoInfo>registrarDetalleRecolectado(@Body RequestRegistrarDetalleSede model);
 
+    @POST("HojaRuta/informacionProceso")
+    Call<List<DtoInformacionModulos>> traerInformacionModulos(@Body RequestInformacionModulos model);
     @PUT("Registro/registroMovilizacionLoteContenedor")
     Call<DtoInfo>registrarmovilizacionLoteSede(@Body RequestMovilizarLoteSede model);
 }

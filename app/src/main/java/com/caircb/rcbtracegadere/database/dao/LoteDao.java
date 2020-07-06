@@ -12,7 +12,7 @@ import com.caircb.rcbtracegadere.database.entity.LoteEntity;
 import com.caircb.rcbtracegadere.models.ItemLote;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoLote;
-import com.caircb.rcbtracegadere.models.response.DtoManifiesto; //OJO FALTA CREAR
+import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 
 import java.util.Date;
 import java.util.List;
