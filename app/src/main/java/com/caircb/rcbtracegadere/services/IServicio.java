@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.services;
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
+import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
@@ -106,4 +107,7 @@ public interface IServicio {
     @POST("HojaRuta/obtenerListManifiestoPadre")
     Call<List<DtoLotePadreGestor>> traerLotesPadre(@Body RequestLotePadre model);
 
+
+    @POST("Catalogo/obtenerCatalogoData")
+    Call<DtoCatalogo>obtenerCatalogoPlacasSede(@Body RequestDataCatalogo model);
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -22,7 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallbacks{
-
+    Integer loteContenedor;
     public interface TaskListener {
         public void onSuccessful();
 
@@ -34,10 +35,21 @@ public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallback
 
     }
 
+    //idDestinatarioFinRuta sede, hotel
 
     @Override
     public void execute() {
-        WebService.api().traerLotes(new RequestLote(1, new Date())).enqueue(new Callback<List<DtoLote>>() {
+
+        ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
+
+        if (finLotes!=null){
+            loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote").getValor());
+        }else{
+            loteContenedor=0;
+        }
+
+
+        WebService.api().traerLotes(new RequestLote(loteContenedor,new Date())).enqueue(new Callback<List<DtoLote>>() {
             @Override
             public void onResponse(Call<List<DtoLote>> call, Response<List<DtoLote>> response) {
                 if (response.isSuccessful()){

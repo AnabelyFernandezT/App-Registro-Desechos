@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarPlacaRutasSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
-    UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
+    UserConsultarPlacaRutasSedeTask consultarPlacasInicioRutaDisponible;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
@@ -80,10 +81,10 @@ public class DialogPlacaSedeRecolector extends MyDialog {
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+                CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,3);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                cargarManifiesto();
+                //cargarManifiesto();
                 dismiss();
             }
         });
@@ -93,8 +94,8 @@ public class DialogPlacaSedeRecolector extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
+        consultarPlacasInicioRutaDisponible = new UserConsultarPlacaRutasSedeTask(getActivity());
+        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacaRutasSedeTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
                 listaPlacasDisponibles = catalogos;

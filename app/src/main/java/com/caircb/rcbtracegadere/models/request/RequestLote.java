@@ -4,20 +4,20 @@ import java.util.Date;
 import java.util.List;
 
 public class RequestLote {
-    private Integer tipDestinatarioFinRuta;
+    private Integer idLoteCotenedor;
     private Date fecha;
 
-    public RequestLote(Integer tipDestinatarioFinRuta, Date fecha){
-        this.tipDestinatarioFinRuta = tipDestinatarioFinRuta;
+    public RequestLote(Integer idLoteCotenedor, Date fecha) {
+        this.idLoteCotenedor = idLoteCotenedor;
         this.fecha = fecha;
     }
 
-    public Integer getTipDestinatarioFinRuta() {
-        return tipDestinatarioFinRuta;
+    public Integer getIdLoteCotenedor() {
+        return idLoteCotenedor;
     }
 
-    public void setTipDestinatarioFinRuta(Integer tipDestinatarioFinRuta) {
-        this.tipDestinatarioFinRuta = tipDestinatarioFinRuta;
+    public void setIdLoteCotenedor(Integer idLoteCotenedor) {
+        this.idLoteCotenedor = idLoteCotenedor;
     }
 
     public Date getFecha() {
