@@ -273,7 +273,8 @@ public class DialogInicioRuta extends MyDialog {
 
         //EMPIEZA RUTEO RECOLECCION
         MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
-        MySession.setIdSubruta((int)(long)idRegistro);
+        Integer idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        MySession.setIdSubruta(idSubRuta);
         MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaInicio, 0, null, null, false));
         List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 

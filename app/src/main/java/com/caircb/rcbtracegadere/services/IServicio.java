@@ -106,6 +106,6 @@ public interface IServicio {
     @POST("Catalogo/obtenerCatalogoData")
     Call<DtoCatalogo>obtenerCatalogoPlacasSede(@Body RequestDataCatalogo model);
 
-    @POST("Registro/registroRutaTrasladoInicioFin")
+    @PUT("Registro/registroRutaTrasladoInicioFin")
     Call<DtoInfo>registrarRuteoRecollecion(@Body RequestRuteoRecoleccion model);
 }

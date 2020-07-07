@@ -174,7 +174,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                             MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(),fecha);
 
-                            List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                            //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
                             Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
                             if(!estado){
@@ -255,6 +255,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRetornarListHojaRuta:
+                List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
                 Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
                 if(!estado){
                     Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
@@ -264,6 +265,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                 }
                 Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
                 MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, null, null);
+
+                List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
                 setNavegate(HomeTransportistaFragment.create());
                 break;
         }

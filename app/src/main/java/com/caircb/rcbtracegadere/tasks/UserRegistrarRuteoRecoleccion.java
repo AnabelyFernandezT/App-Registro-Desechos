@@ -64,7 +64,7 @@ public class UserRegistrarRuteoRecoleccion extends MyRetrofitApi implements Retr
                         }
                     }else{
                         progressHide();
-                        message(response.body().getMensaje());
+                        //message(response.body().getMensaje());
                     }
                 }
 
