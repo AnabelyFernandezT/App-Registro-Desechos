@@ -83,7 +83,7 @@ public class ManifiestoNoRecoleccionBaseAdapter extends ArrayAdapter<RowItemNoRe
                         v.setSelected(true);
                         row.setEstadoChek(true);
                         registarCheckObservacion(row.getId(),true);
-                    } else {
+                    } if (((CheckBox) v).isChecked()==false) {
                         v.setSelected(false);
                         row.setEstadoChek(false);
                         registarCheckObservacion(row.getId(),false);

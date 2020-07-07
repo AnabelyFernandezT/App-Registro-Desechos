@@ -110,7 +110,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         txtEmpresaDestinatario = this.findViewById(R.id.txtEmpresaDestinatario);
         txtempresaTransportista = this.findViewById(R.id.txtempresaTransportista);
 
-        txtRespEntregaNombre.setEnabled(true);
+        //txtRespEntregaNombre.setEnabled(true);
         txtRespEntregaCorreo.setEnabled(true);
         txtRespEntregaTelefono.setEnabled(true);
 
@@ -121,7 +121,9 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onClick(View v) {
                 //MyApp.getDBO().tecnicoDao().deleteTecnico();
+                int estado=0;
                 TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtRespEntregaIdentificacion.getText().toString());
+                //txtRespEntregaNombre.setEnabled(true);
                 if(tecnico!=null){
                     txtRespEntregaNombre.setText(tecnico.getNombre());
                     txtRespEntregaCorreo.setText(tecnico.getCorreo());
@@ -129,10 +131,14 @@ public class TabManifiestoGeneral extends LinearLayout {
                     txtRespEntregaCorreo.setError(null);
                     txtRespEntregaCorreo.setEnabled(tecnico.getCorreo()!=null && tecnico.getCorreo().length()==0);
                     txtRespEntregaTelefono.setEnabled(tecnico.getTelefono()!=null && tecnico.getTelefono().length()==0);
-
                     MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,tecnico.get_id());
-                    //txtGenTecIdentificacion.setEnabled(false);
-
+                    //txtRespEntregaNombre.setEnabled(false);
+                    if (txtRespEntregaNombre.getText().length()<=0){
+                        txtRespEntregaNombre.setEnabled(true);
+                    }
+                    if (txtRespEntregaNombre.getText().length()>0){
+                        txtRespEntregaNombre.setEnabled(false);
+                    }
 
                 }else{
                     //consultar en servicio remoto...
@@ -146,6 +152,13 @@ public class TabManifiestoGeneral extends LinearLayout {
                             txtRespEntregaTelefono.setEnabled(true);
                             txtRespEntregaCorreo.setError(null);
 
+                            if (txtRespEntregaNombre.getText().length()<=0){
+                                txtRespEntregaNombre.setEnabled(true);
+                            }
+                            if (txtRespEntregaNombre.getText().length()>0){
+                                txtRespEntregaNombre.setEnabled(false);
+                            }
+                            //txtRespEntregaNombre.setEnabled(false);
                             //insert datos en dbo local...
                             Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),"","");
 
@@ -160,7 +173,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                         @Override
                         public void onFailure() {
                             txtRespEntregaNombre.requestFocus();
-                            txtRespEntregaNombre.setEnabled(true);
+                            //txtRespEntregaNombre.setEnabled(true);
                             txtRespEntregaCorreo.setEnabled(true);
                             txtRespEntregaTelefono.setEnabled(true);
                             txtRespEntregaCorreo.setError(null);
@@ -169,7 +182,12 @@ public class TabManifiestoGeneral extends LinearLayout {
                     });
                     userConsultarCedulaTask.execute();
                 }
-
+                if (txtRespEntregaNombre.getText().length()<=0){
+                    txtRespEntregaNombre.setEnabled(true);
+                }
+                if (txtRespEntregaNombre.getText().length()>0){
+                    txtRespEntregaNombre.setEnabled(false);
+                }
             }
         });
 

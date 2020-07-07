@@ -22,6 +22,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoGestorAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.fragments.planta.ManifiestoPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
@@ -29,6 +30,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.Manifi
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.models.ItemLotePadre;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 
 import java.util.ArrayList;
@@ -43,16 +45,12 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
 
 
     LinearLayout btnRetornarListHojaRuta;
-
-    private Window window;
     private RecyclerView recyclerView;
-    private ManifiestoAdapter recyclerviewAdapter;
+    private ManifiestoGestorAdapter recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiesto> rowItems;
+    private List<ItemLotePadre> rowItems;
     private SearchView searchView;
-    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
-    private ListView mDrawerMenuItems, mDialogMenuItems;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -80,7 +78,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoGestorAdapter(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);
@@ -96,9 +94,9 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
-        rowItems=listaItems;
-        recyclerviewAdapter.setTaskList(rowItems);
+        //listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        //rowItems=listaItems;
+        //recyclerviewAdapter.setTaskList(rowItems);
     }
 
 
@@ -106,7 +104,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigando();
+        rowItems = MyApp.getDBO().lotePadreDao().fetchLote();
         adapterList();
 
     }
@@ -119,7 +117,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getNumeroManifiestoPadre(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -131,16 +129,13 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        setNavegate(ManifiestoGestorFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        setNavegate(ManifiestoGestorFragment.newInstance(rowItems.get(position).getIdManifiestoPadre()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
                 }
             }
         });
-        //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
-        //recyclerView.addItemDecoration(divider);
     }
 
     @Override

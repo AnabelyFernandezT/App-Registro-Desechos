@@ -8,11 +8,8 @@ public class RequestDataCatalogo {
     private Date fecha;
     private String dataAuxi;
 
-    public RequestDataCatalogo(Integer tipo, String data, Date fecha, String dataAuxi) {
-        this.tipo = tipo;
-        this.data = data;
-        this.fecha = fecha;
-        this.dataAuxi = dataAuxi;
+
+    public RequestDataCatalogo() {
     }
 
     public Integer getTipo() {

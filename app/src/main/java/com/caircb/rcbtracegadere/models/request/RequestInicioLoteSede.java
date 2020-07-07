@@ -6,11 +6,11 @@ public class RequestInicioLoteSede {
     private Integer idDestinatarioFinRutaCat;
     private Integer tipo;
     private Date fecha;
+    private Integer idTransportistaRecolector;
+    private Integer idTransporteVehiculoLote;
 
-    public RequestInicioLoteSede(Integer idDestinatarioFinRutaCat, Integer tipo, Date fecha) {
-        this.idDestinatarioFinRutaCat = idDestinatarioFinRutaCat;
-        this.tipo = tipo;
-        this.fecha = fecha;
+
+    public RequestInicioLoteSede() {
     }
 
     public Integer getIdDestinatarioFinRutaCat() {
@@ -35,5 +35,21 @@ public class RequestInicioLoteSede {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Integer getIdTransportistaRecolector() {
+        return idTransportistaRecolector;
+    }
+
+    public void setIdTransportistaRecolector(Integer idTransportistaRecolector) {
+        this.idTransportistaRecolector = idTransportistaRecolector;
+    }
+
+    public Integer getIdTransporteVehiculoLote() {
+        return idTransporteVehiculoLote;
+    }
+
+    public void setIdTransporteVehiculoLote(Integer idTransporteVehiculoLote) {
+        this.idTransporteVehiculoLote = idTransporteVehiculoLote;
     }
 }

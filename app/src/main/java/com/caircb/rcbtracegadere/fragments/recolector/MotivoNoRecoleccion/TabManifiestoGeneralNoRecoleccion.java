@@ -378,18 +378,17 @@ visible();
         TecnicoEntity tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyManifiesto(idAppManifiesto);
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
-
+            txtEmpresaDestinatario.setText(manifiesto.getNombreDestinatario());
             txtNumManifiesto.setText(manifiesto.getNumeroManifiesto());
-            //txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
+            txtClienteIdentificacion.setText(manifiesto.getIdentificacionCliente());
             txtClienteDireccion.setText(manifiesto.getDireccionCliente());
             txtClienteProvincia.setText(manifiesto.getProvincia());
             txtClienteCanton.setText(manifiesto.getCanton());
-
+            txtClienteTelefono.setText(manifiesto.getTecnicoTelefono());
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
 
 
-            txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());
             txtempresaTransportista.setText("GADERE");
             txtOperadorRecolector.setText(manifiesto.getNombreOperadorRecolector());
 

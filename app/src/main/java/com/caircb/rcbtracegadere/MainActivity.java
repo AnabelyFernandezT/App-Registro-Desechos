@@ -19,10 +19,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
+import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HomeGestorAlternoFragment;
 import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
@@ -38,17 +40,22 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItem;
 import com.caircb.rcbtracegadere.models.request.RequestCredentials;
+import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
+import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
 import com.google.firebase.auth.FirebaseAuth;
+import com.itextpdf.text.pdf.PdfName;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +66,11 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private DrawerLayout mDrawer;
     AlertDialog.Builder builder;
     private TextView txtUserNombre, txtnombreLugarTrabajo;
+
+    List<DtoCatalogo> listaDestinos,destinosEspecificos;
+    UserConsultarDestinosTask consultarDetino;
+    UserDestinoEspecificoTask consultaDestinoEspecifico;
+
 
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private List<RowItem> rowItems;
@@ -351,14 +363,22 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                         navegate((HomeTransportistaFragment.create()));
                     }else {
                         if(nombreLugar.equals("PLANTA")){
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+2);
+                            traerDestinoEspecifico();
                             navegate((HomePlantaFragment.create()));
                         } else {
                             if (nombreLugar.equals("SEDE")){
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+1);
+                                traerDestinoEspecifico();
                                 navegate(HomeSedeFragment.create());
                             }else {
                                 if (nombreLugar.equals("HOTEL")){
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+4);
+                                    traerDestinoEspecifico();
                                     navegate(HomeHotelFragment.create());
                                 }else {
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+3);
+                                    traerDestinoEspecifico();
                                     navegate(HomeGestorAlternoFragment.create());
                                 }
                             }
@@ -372,6 +392,40 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         }catch (JSONException e){
             e.printStackTrace();
         }
+
+    }
+
+    private void traerDestinoEspecifico(){
+        consultaDestinoEspecifico = new UserDestinoEspecificoTask(this);
+        consultaDestinoEspecifico.setOnDestinoListener(new UserDestinoEspecificoTask.OnDestinoListener() {
+            @Override
+            public void onSuccessful(List<DtoCatalogo> catalogos) {
+                destinosEspecificos = catalogos;
+                selectDestinoEspecifico(catalogos);
+            }
+        });
+        consultaDestinoEspecifico.execute();
+
+    }
+
+    private void selectDestinoEspecifico(List<DtoCatalogo> catalogos) {
+        final String[] options=new String[catalogos.size()];
+        for (int i=0; i<destinosEspecificos.size();i++){
+            options[i]=destinosEspecificos.get(i).getNombre();
+
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Seleccione Destino");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+destinosEspecificos.get(item).getId());
+                //System.out.println("Acceso a la variable: "+MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
+            }
+        });
+        builder.show();
 
     }
 

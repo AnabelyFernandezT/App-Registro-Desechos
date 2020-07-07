@@ -12,6 +12,7 @@ import com.caircb.rcbtracegadere.database.dao.InformacionModulosDao;
 import com.caircb.rcbtracegadere.database.dao.LogDao;
 import com.caircb.rcbtracegadere.database.dao.LoteDao;
 import com.caircb.rcbtracegadere.database.dao.LoteHotelesDao;
+import com.caircb.rcbtracegadere.database.dao.LotePadreDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDetalleDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoDetallePesosDao;
@@ -35,6 +36,7 @@ import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 import com.caircb.rcbtracegadere.database.entity.LogEntity;
 import com.caircb.rcbtracegadere.database.entity.LoteEntity;
 import com.caircb.rcbtracegadere.database.entity.LoteHotelesEntity;
+import com.caircb.rcbtracegadere.database.entity.LotePadreEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
@@ -82,6 +84,7 @@ import java.util.Locale;
         InformacionModulosEntity.class,
         ManifiestoSedeDetalleEntity.class,
         LoteHotelesEntity.class,
+        LotePadreEntity.class,
         RuteoRecoleccionEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
@@ -173,5 +176,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract InformacionModulosDao informacionModulosDao();
     public abstract LoteHotelesDao loteHotelesDao();
     public abstract RuteoRecoleccionDao ruteoRecoleccion();
+    public abstract LotePadreDao lotePadreDao();
 
 }

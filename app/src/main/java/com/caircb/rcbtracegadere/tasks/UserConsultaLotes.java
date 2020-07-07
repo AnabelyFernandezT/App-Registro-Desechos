@@ -49,7 +49,7 @@ public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallback
         }
 
 
-        WebService.api().traerLotes(new RequestLote(loteContenedor,new Date())).enqueue(new Callback<List<DtoLote>>() {
+        WebService.api().traerLotes(new RequestLote(MySession.getIdUsuario(),new Date())).enqueue(new Callback<List<DtoLote>>() {
             @Override
             public void onResponse(Call<List<DtoLote>> call, Response<List<DtoLote>> response) {
                 if (response.isSuccessful()){
