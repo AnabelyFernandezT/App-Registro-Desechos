@@ -16,11 +16,13 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
@@ -44,6 +46,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     PDFView pdfView;
     MyManifiesto myManifiesto;
     UserRegistrarRecoleccion userRegistrarRecoleccion;
+    UserRegistrarRuteoRecoleccion userRegistrarRuteoRecoleccion;
 
     public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete) {
         VistaPreliminarFragment fragment = new VistaPreliminarFragment();
@@ -144,6 +147,63 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                         //setNavegate(HojaRutaAsignadaFragment.newInstance());
 
                         //Registro el ruteo en estado en 1
+/******************************/
+
+                        Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
+                        RuteoRecoleccionEntity dtoSendServicio = MyApp.getDBO().ruteoRecoleccion().dtoSendServicio(_id, idAppManifiesto);
+
+                        userRegistrarRuteoRecoleccion = new UserRegistrarRuteoRecoleccion(getActivity(), dtoSendServicio);
+                        userRegistrarRuteoRecoleccion.setOnRegisterRuteoRecollecionListenner(new UserRegistrarRuteoRecoleccion.OnRegisterRuteroRecoleecionListener() {
+                            @Override
+                            public void onSuccessful() {
+
+                                List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                                Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
+                                if(_id !=null && _id >=0){
+                                    MyApp.getDBO().ruteoRecoleccion().updateEstadoByPuntoLLegada(_id, idAppManifiesto);
+                                }
+                                List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); ///////////
+
+                                AlertDialog.Builder builderDialog= new AlertDialog.Builder(getActivity());
+                                builderDialog.setMessage("¿Desea iniciar trazlado al proximo punto de recoleccion ?");
+                                builderDialog.setCancelable(false);
+                                builderDialog.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        //Guardo la nueva fecha de inicio y puntoParitda;
+                                        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
+                                        List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+
+                                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+
+                                    }
+                                }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+                                        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
+                                        //setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                        //Se envia al home ya que el usuario No desea recolectar
+                                        setNavegate(HomeTransportistaFragment.create());
+                                        dialog.dismiss();
+
+                                    }
+                                });
+                                AlertDialog dialog = builderDialog.create();
+                                dialog.show();
+                            }
+
+                            @Override
+                            public void onFail() {
+                                setNavegate(HojaRutaAsignadaFragment.newInstance());
+                            }
+                        });
+                        userRegistrarRuteoRecoleccion.execute();
+
+/****************************************/
+
+/******************SIN LISTENER**********************/
+/*
                         List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
                         Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
                         if(_id !=null && _id >=0){
@@ -158,9 +218,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                             public void onClick(DialogInterface dialog, int id) {
 
                                 //Guardo la nueva fecha de inicio y puntoParitda;
-                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdUsuario(),
-                                        fechaRecol,idAppManifiesto,null,null,false));
-
+                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
                                 List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
 
                                 setNavegate(HojaRutaAsignadaFragment.newInstance());
@@ -170,9 +228,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                             public void onClick(DialogInterface dialog, int id) {
                                 //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
                                 MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdUsuario(),
-                                        fechaRecol,idAppManifiesto,null,null,false));
-
+                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
                                 setNavegate(HojaRutaAsignadaFragment.newInstance());
                                 dialog.dismiss();
 
@@ -180,6 +236,8 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                         });
                         AlertDialog dialog = builderDialog.create();
                         dialog.show();
+*/
+/****************************************/
                     }
 
                     @Override

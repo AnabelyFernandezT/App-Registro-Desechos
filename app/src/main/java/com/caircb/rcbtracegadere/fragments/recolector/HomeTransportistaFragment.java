@@ -17,6 +17,7 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -24,6 +25,8 @@ import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -189,30 +192,36 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v) {
                 //Valido si el parametro esta en NO si es verdadero presento el modal
-                if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
+                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() >0 ){
+                    List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                    if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
 
-                    AlertDialog.Builder builderDialog= new AlertDialog.Builder(getActivity());
-                    builderDialog.setMessage("¿Desea iniciar trazlado al proximo punto de recolección ?");
-                    builderDialog.setCancelable(false);
-                    builderDialog.setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
+                        AlertDialog.Builder builderDialog= new AlertDialog.Builder(getActivity());
+                        builderDialog.setMessage("¿Desea iniciar trazlado al proximo punto de recolección ?");
+                        builderDialog.setCancelable(false);
+                        builderDialog.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                                MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
 
-                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                setNavegate(HojaRutaAsignadaFragment.newInstance());
 
-                        }
-                    }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        }
-                    });
-                    AlertDialog dialog = builderDialog.create();
-                    dialog.show();
+                            }
+                        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = builderDialog.create();
+                        dialog.show();
 
+                    }else{
+                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                    }
                 }else{
-                    setNavegate(HojaRutaAsignadaFragment.newInstance());
+                    messageBox("No dispone de manifiestos para recolectar.!");
                 }
+
                 //setNavegate(HojaRutaAsignadaFragment.newInstance());
             }
         });
