@@ -15,6 +15,8 @@ import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarLotePadreTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 
 public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
@@ -23,6 +25,7 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
     ImageButton regionBuscar;
+    UserConsultarLotePadreTask consultarLotePadre;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,12 +33,13 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
         setView(inflater.inflate(R.layout.fragment_home_gestor_alterno, container, false));
         init();
         initBuscador();
+        //datosManifiestosAsignados();
         return getView();
     }
 
     private void init() {
         lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
-        btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
+        btnSincManifiestos = getView().findViewById(R.id.btnSincLotePadre);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
         btnMenu = getView().findViewById(R.id.btnMenu);
 
@@ -54,6 +58,25 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
                 }
             }
         });
+
+        btnSincManifiestos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datosManifiestosAsignados();
+            }
+        });
+
+       /* btnSincManifiestos.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                datosManifiestosAsignados();
+            }
+        });*/
+    }
+
+    private void datosManifiestosAsignados(){
+        consultarLotePadre = new UserConsultarLotePadreTask(getActivity());
+        consultarLotePadre.execute();
     }
 
     private void initBuscador(){
