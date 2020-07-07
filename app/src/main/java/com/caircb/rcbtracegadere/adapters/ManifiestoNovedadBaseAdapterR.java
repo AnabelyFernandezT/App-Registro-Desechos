@@ -102,6 +102,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                         mOnClickOpenFotografias.onShow(item.getId(), position);
                 }
             });
+            holder.chkEstado.setClickable(false);//Agregado par probar
         }
     }
 

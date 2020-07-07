@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
@@ -21,17 +23,22 @@ import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 
 import java.util.List;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
+    UserConsultaLotes consultarLotes;
+    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
+    UserConsultarHojaRutaTask consultarHojaRutaTask;
 
-    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinLote;
+
     UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
     LinearLayout lnlIniciaLote, lnlFinLote;
@@ -62,8 +69,11 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnMenu = getView().findViewById(R.id.btnMenu);
         lnlIniciaLote = getView().findViewById(R.id.LnlIniciaLote);
         btnInciaLote = getView().findViewById(R.id.btnInciaLote);
+        datosLotesDisponibles();
         lnlFinLote = getView().findViewById(R.id.LnlFinLote);
         btnFinLote = getView().findViewById(R.id.btnFinLote);
+
+        verificarInicioLote();
 
         btnListaAsignadaSede.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +86,6 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v){
                 dialogPlacas = new DialogPlacaSede(getActivity());
-                dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacas.setCancelable(false);
                 dialogPlacas.setTitle("INICIAR LOTE");
                 dialogPlacas.show();
@@ -87,7 +96,6 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v){
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
-                dialogPlacasRecolector.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacasRecolector.setCancelable(false);
                 dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
                 dialogPlacasRecolector.show();
@@ -137,6 +145,34 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 setNavegate(HojaFragment.newInstance());
             }
         });
+    }
+
+    private void datosLotesDisponibles(){
+
+        consultarLotes = new UserConsultaLotes(getActivity());
+        consultarLotes.execute();
+    }
+
+    private void verificarInicioLote(){
+
+        Integer inicioLote=0;
+        Integer finLote=0;
+
+        ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
+        ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
+
+       if (iniciLote!=null){
+           inicioLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
+       }
+       if (finLotes!=null){
+           finLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote").getValor());
+       }
+
+            if(inicioLote == finLote) {
+                lnlIniciaLote.setVisibility(View.VISIBLE);
+                lnlFinLote.setVisibility(View.GONE);
+            }
+
     }
 
 

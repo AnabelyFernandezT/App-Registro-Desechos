@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
-import com.caircb.rcbtracegadere.models.request.RequestFinLote;
+import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
 
@@ -17,10 +17,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCallbacks {
-    public UserRegistarFinLoteTask(Context context) {
+public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements RetrofitCallbacks {
+    private Integer destino,conductor,operador,operadorAuxiliar;
+
+    public UserRegistrarLoteSedeTask(Context context, Integer destino,Integer conductor,Integer operador,Integer operadorAuxiliar) {
         super(context);
+        this.destino = destino;
+        this.conductor = conductor;
+        this.operador = operador;
+        this.operadorAuxiliar = operadorAuxiliar;
     }
+
     public interface OnRegisterListener {
         public void onSuccessful();
         public void onFail();
@@ -30,22 +37,21 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
 
     @Override
     public void execute() {
-        final RequestFinLote requestFinLote = requestFinLote();
-
-        if (requestFinLote!=null){
-            WebService.api().registrarFinLote(requestFinLote).enqueue(new Callback<DtoInfo>() {
+        RequestMovilizarLoteSede request = requestMovilizarLoteSede();
+        if(request!=null){
+            WebService.api().registrarmovilizacionLoteSede(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
-                    if (response.isSuccessful()){
-                        if (response.body().getExito()){
-                            progressHide();
-                            MyApp.getDBO().parametroDao().saveOrUpdate("current_fin_lote",""+response.body().getMensaje());
-                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
-                        }
+
+                    if(response.isSuccessful()){
+                        progressHide();
+                        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                     }else {
                         progressHide();
                         if(mOnRegisterListener!=null)mOnRegisterListener.onFail();
                     }
+
+
                 }
 
                 @Override
@@ -56,18 +62,23 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
 
         }
 
-
     }
 
-    private RequestFinLote requestFinLote(){
+    private RequestMovilizarLoteSede requestMovilizarLoteSede(){
         Integer loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
-        RequestFinLote rq= new RequestFinLote();
+        Integer vehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
 
-        rq.setFecha(new Date());
-        rq.setIdDestinatarioFinRutaCat(3);
+        RequestMovilizarLoteSede rq = new RequestMovilizarLoteSede();
         rq.setIdLoteContenedor(loteContenedor);
-        rq.setTipo(1);
+        rq.setIdTransportistaVehiculo(vehiculo);
+        rq.setIdTransportistaRecolector(conductor);
+        rq.setIdOperador1(operador);
+        rq.setIdOperador2(operadorAuxiliar);
+        rq.setFecha(new Date());
+        rq.setIdDestinatarioFinRutaCatalogo(destino);
+
         return rq;
+
     }
 
     public void setOnRegisterListener(@NonNull OnRegisterListener l){
