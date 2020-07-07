@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.services.WebService;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserConsultarPlacaRutasSedeTask  extends MyRetrofitApi implements RetrofitCallbacks {
+    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
 
     public UserConsultarPlacaRutasSedeTask(Context context) {
         super(context);
@@ -34,23 +36,39 @@ public class UserConsultarPlacaRutasSedeTask  extends MyRetrofitApi implements R
     public void execute() {
         progressShow("Consultando vihiculos disponibles...");
 
-        WebService.api().obtenerCatalogoPlacasSede(new RequestDataCatalogo(3,"4",new Date(),"")).enqueue(new Callback<DtoCatalogo>() {
-            @Override
-            public void onResponse(Call<DtoCatalogo> call, Response<DtoCatalogo> response) {
-                if(response.isSuccessful()){
-                    MyApp.getDBO().catalogoDao().saveOrUpdate((List<DtoCatalogo>) response.body(),3);
-                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful((List<DtoCatalogo>) response.body());
+        RequestDataCatalogo requestDataCatalogo = requestDataCatalogo();
 
-                }else{
+        if(requestDataCatalogo!=null){
+            WebService.api().obtenerCatalogoPlacasSede(requestDataCatalogo).enqueue(new Callback<DtoCatalogo>() {
+                @Override
+                public void onResponse(Call<DtoCatalogo> call, Response<DtoCatalogo> response) {
+                    if(response.isSuccessful()){
+                        MyApp.getDBO().catalogoDao().saveOrUpdate((List<DtoCatalogo>) response.body(),3);
+                        if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful((List<DtoCatalogo>) response.body());
+
+                    }else{
+                        progressHide();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DtoCatalogo> call, Throwable t) {
                     progressHide();
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<DtoCatalogo> call, Throwable t) {
-                progressHide();
-            }
-        });
+
+    }
+
+    RequestDataCatalogo requestDataCatalogo(){
+        RequestDataCatalogo rq = new RequestDataCatalogo();
+        rq.setFecha(new Date());
+        rq.setData("4");
+        rq.setDataAuxi("");
+        rq.setTipo(3);
+
+        return rq;
     }
     public void setOnVehiculoListener(@NonNull OnVehiculoListener l){
         mOnVehiculoListener = l;
