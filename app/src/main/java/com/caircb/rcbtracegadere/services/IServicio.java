@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.services;
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
+import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
@@ -98,8 +99,12 @@ public interface IServicio {
 
     @POST("HojaRuta/informacionProceso")
     Call<List<DtoInformacionModulos>> traerInformacionModulos(@Body RequestInformacionModulos model);
+
     @PUT("Registro/registroMovilizacionLoteContenedor")
     Call<DtoInfo>registrarmovilizacionLoteSede(@Body RequestMovilizarLoteSede model);
+
+    @POST("Catalogo/obtenerCatalogoData")
+    Call<DtoCatalogo>obtenerCatalogoPlacasSede(@Body RequestDataCatalogo model);
 
     @POST("Registro/registroRutaTrasladoInicioFin")
     Call<DtoInfo>registrarRuteoRecollecion(@Body RequestRuteoRecoleccion model);

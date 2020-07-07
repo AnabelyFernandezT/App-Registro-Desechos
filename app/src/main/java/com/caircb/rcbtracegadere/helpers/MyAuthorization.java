@@ -166,7 +166,26 @@ public class MyAuthorization {
                                 mdialog.dismiss();
                                     guardarLugar("PLANTA");
                             }
-                        }else if (item.getNombre().equals("CANCELAR")){
+                        } else if (item.getNombre().equals("SEDE")) {
+                            if (mdialog != null) {
+                                mdialog.dismiss();
+                                guardarLugar("SEDE");
+                            }
+
+                        } else if (item.getNombre().equals("HOTEL")) {
+                            if (mdialog != null) {
+                                mdialog.dismiss();
+                                guardarLugar("HOTEL");
+                            }
+
+                        } else if (item.getNombre().equals("GESTOR")) {
+                            if (mdialog != null) {
+                                mdialog.dismiss();
+                                guardarLugar("GESTOR");
+                            }
+
+                        }
+                        else if (item.getNombre().equals("CANCELAR")){
                             if(mdialog!= null){
                                 mdialog.dismiss();
                                 progressDialog.dismiss();

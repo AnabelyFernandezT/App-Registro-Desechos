@@ -39,7 +39,7 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
     @Override
     public void execute() {
 
-        WebService.api().traerManifiestos(new RequestManifiestoSede(MySession.getIdUsuario())).enqueue(new Callback<List<DtoManifiestoSede>>() {
+        WebService.api().traerManifiestos(new RequestManifiestoSede(10,4)).enqueue(new Callback<List<DtoManifiestoSede>>() {
             @Override
             public void onResponse(Call<List<DtoManifiestoSede>> call, Response<List<DtoManifiestoSede>> response) {
                 if (response.isSuccessful()){

@@ -51,6 +51,7 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
         holder.txtDescripcion.setText(""+it.getNombreDesecho());
         holder.totalBultos.setText(""+it.getBultosSelecionado()+" / "+it.getTotalBultos());
         holder.chkEstado.setClickable(false);
+
         if(it.getBultosSelecionado()== it.getTotalBultos()){
             holder.chkEstado.setChecked(true);
         }else{
@@ -105,4 +106,5 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
     public interface ClickListener {
         void onItemClick(int position, View v);
     }
+
 }
