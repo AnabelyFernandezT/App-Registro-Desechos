@@ -31,6 +31,8 @@ public class UserRegistrarLoteInicioTask extends MyRetrofitApi implements Retrof
 
     @Override
     public void execute() {
+        //destinatarioFinrutaCat nombre de la sede
+        //tipo sede u hotel
 
         WebService.api().registrarLoteinicio(new RequestInicioLoteSede(3,0,new Date())).enqueue(new Callback<DtoInfo>() {
             @Override
