@@ -1,6 +1,8 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,14 +13,19 @@ import android.app.Fragment;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
+import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -133,8 +140,46 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                 userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation());
                 userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
                     @Override
-                    public void onSuccessful() {
-                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                    public void onSuccessful(final Date fechaRecol) {
+                        //setNavegate(HojaRutaAsignadaFragment.newInstance());
+
+                        //Registro el ruteo en estado en 1
+                        List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                        Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
+                        if(_id !=null && _id >=0){
+                            MyApp.getDBO().ruteoRecoleccion().updateEstadoByPuntoLLegada(_id, idAppManifiesto);
+                        }
+                        List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); ///////////
+
+                        AlertDialog.Builder builderDialog= new AlertDialog.Builder(getActivity());
+                        builderDialog.setMessage("¿Desea iniciar trazlado al proximo punto de recoleccion ?");
+                        builderDialog.setCancelable(false);
+                        builderDialog.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                //Guardo la nueva fecha de inicio y puntoParitda;
+                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdUsuario(),
+                                        fechaRecol,idAppManifiesto,null,null,false));
+
+                                List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+
+                                setNavegate(HojaRutaAsignadaFragment.newInstance());
+
+                            }
+                        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
+                                MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdUsuario(),
+                                        fechaRecol,idAppManifiesto,null,null,false));
+
+                                setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                dialog.dismiss();
+
+                            }
+                        });
+                        AlertDialog dialog = builderDialog.create();
+                        dialog.show();
                     }
 
                     @Override

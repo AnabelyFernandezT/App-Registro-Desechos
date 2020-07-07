@@ -57,7 +57,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     MyPrint print;
 
     public interface OnRegisterListener {
-        public void onSuccessful();
+        public void onSuccessful(Date fechaRecoleccion);
         public void onFail();
     }
 
@@ -113,7 +113,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     }
 
     private void register(){
-        RequestManifiesto request = createRequestManifiesto();
+        final RequestManifiesto request = createRequestManifiesto();
         if(request!=null){
             Gson g = new Gson();
             String f = g.toJson(request);
@@ -124,11 +124,13 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                     if(response.isSuccessful()){
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
-                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
                             //imprimirEtiquetas();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
+
+                            // se debe enviar el registro de la ruta al servicio
 
                         }else{
                             progressHide();
@@ -177,6 +179,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setNovedadFrecuente(createRequestNovedadFrecuente());
             rq.setNovedadNoRecoleccion(createRequestNoRecoleccion());
             rq.setEstado(2);
+            rq.setFechaInicioRecoleccion(model.getFechaInicioRecorrecion());
         }
         return  rq;
     }
@@ -272,6 +275,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     private String getPath() { return simpleDate.format(new Date());}
 
     /*+++*******************/
+    /*
     private void imprimirEtiquetas(){
         try {
             print = new MyPrint(getActivity());
@@ -294,6 +298,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
     }
+    */
 
     public void setOnRegisterListener(@NonNull OnRegisterListener l){
         mOnRegisterListener =l;
