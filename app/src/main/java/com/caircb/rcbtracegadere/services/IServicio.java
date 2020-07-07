@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.services;
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
+import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
@@ -10,6 +11,7 @@ import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestInformacionModulos;
 import com.caircb.rcbtracegadere.models.request.RequestInicioLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestLote;
+import com.caircb.rcbtracegadere.models.request.RequestLotePadre;
 import com.caircb.rcbtracegadere.models.request.RequestLotesHoteles;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
@@ -24,6 +26,7 @@ import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
 import com.caircb.rcbtracegadere.models.response.DtoLote;
+import com.caircb.rcbtracegadere.models.response.DtoLotePadreGestor;
 import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
@@ -97,6 +100,14 @@ public interface IServicio {
 
     @POST("HojaRuta/informacionProceso")
     Call<List<DtoInformacionModulos>> traerInformacionModulos(@Body RequestInformacionModulos model);
+
     @PUT("Registro/registroMovilizacionLoteContenedor")
     Call<DtoInfo>registrarmovilizacionLoteSede(@Body RequestMovilizarLoteSede model);
+
+    @POST("HojaRuta/obtenerListManifiestoPadre")
+    Call<List<DtoLotePadreGestor>> traerLotesPadre(@Body RequestLotePadre model);
+
+
+    @POST("Catalogo/obtenerCatalogoData")
+    Call<DtoCatalogo>obtenerCatalogoPlacasSede(@Body RequestDataCatalogo model);
 }

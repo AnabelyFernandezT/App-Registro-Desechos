@@ -30,7 +30,7 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado=1")
     public abstract int contarHojaRutaAsignadas();
 
-    @Query("select count(*) from tb_manifiestos where estado=2 and estadoFinRuta=0")
+    @Query("select count(*) from tb_manifiestos where estado<>1 ")
     public abstract int contarHojaRutaProcesada();
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero, estado from tb_manifiestos" +

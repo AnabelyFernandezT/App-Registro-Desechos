@@ -159,6 +159,9 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             if(inicioLote == finLote) {
                 lnlIniciaLote.setVisibility(View.VISIBLE);
                 lnlFinLote.setVisibility(View.GONE);
+            }else{
+                lnlIniciaLote.setVisibility(View.GONE);
+                lnlFinLote.setVisibility(View.VISIBLE);
             }
 
     }

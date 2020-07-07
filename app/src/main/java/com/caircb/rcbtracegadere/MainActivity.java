@@ -121,15 +121,15 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             case 3137 :
                 initFragment((HomePlantaFragment.create()));
                 break;
-            /*case 3138 :
+            case 4136 :
                 initFragment((HomeSedeFragment.create()));
-                break;*/
-           /* case 3139 :
+                break;
+            case 4137 :
                 initFragment((HomeHotelFragment.create()));
                 break;
-            case 3140 :
+            case 4138 :
                 initFragment((HomeGestorAlternoFragment.create()));
-                break;*/
+                break;
         }
     }
     private void initFragment(Fragment _fragmentinit) {
