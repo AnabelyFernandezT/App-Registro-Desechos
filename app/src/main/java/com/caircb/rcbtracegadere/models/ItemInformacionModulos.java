@@ -1,7 +1,7 @@
 package com.caircb.rcbtracegadere.models;
 
 public class ItemInformacionModulos {
-    private String Ruta;
+    private String ruta;
     private String subruta;
     private String placa;
     private String chofer;
@@ -16,11 +16,11 @@ public class ItemInformacionModulos {
     private String ObservacionResuduos;
 
     public String getRuta() {
-        return Ruta;
+        return ruta;
     }
 
     public void setRuta(String ruta) {
-        Ruta = ruta;
+        this.ruta = ruta;
     }
 
     public String getSubruta() {

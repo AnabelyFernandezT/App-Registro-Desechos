@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,23 +14,12 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
-import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
-import com.caircb.rcbtracegadere.fragments.planta.HojaFragment;
-import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
-import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
-import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
-import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
-
-import java.util.List;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;

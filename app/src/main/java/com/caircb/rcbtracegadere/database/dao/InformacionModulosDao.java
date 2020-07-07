@@ -19,7 +19,8 @@ public abstract class InformacionModulosDao {
     @Query("select * from tb_informacionModulos")
     public abstract InformacionModulosEntity fetchInformacionModulos();
 
-    @Query("select * from tb_informacionModulos")
+    @Query("select ruta, subruta, placa, chofer, auxiliarRecoleccion1,auxiliarRecoleccion2,kilometrajeInicio,residuoSujetoFiscalizacion,requiereDevolucioneRecipientes" +
+            ",tieneDisponibilidadMontacarga,tieneDisponibilidadBalanza,requiereIncineracionPresenciada,ObservacionResuduos from tb_informacionModulos")
     @Transaction
     public abstract List<ItemInformacionModulos> fetchInformacionModulos2();
 

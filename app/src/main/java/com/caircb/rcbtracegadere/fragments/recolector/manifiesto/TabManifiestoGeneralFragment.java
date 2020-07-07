@@ -68,6 +68,7 @@ public class TabManifiestoGeneralFragment extends Fragment {
             idAppManifiesto= getArguments().getInt(ARG_PARAM1);
             bloquear = getArguments().getBoolean(ARG_PARAM2);
         }
+
     }
 
     /*
