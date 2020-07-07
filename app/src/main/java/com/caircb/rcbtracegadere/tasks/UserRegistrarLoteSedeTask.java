@@ -66,7 +66,7 @@ public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements Retrofit
 
     private RequestMovilizarLoteSede requestMovilizarLoteSede(){
         Integer loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
-        Integer vehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        Integer vehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
 
         RequestMovilizarLoteSede rq = new RequestMovilizarLoteSede();
         rq.setIdLoteContenedor(loteContenedor);

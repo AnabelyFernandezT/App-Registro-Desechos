@@ -38,6 +38,7 @@
                     android:layout_gravity="end|bottom"
                     android:layout_margin="16dp"
                     android:visibility="visible"
+                    android:src="@mipmap/ic_notif"
                     tools:ignore="MissingConstraints" />
             </FrameLayout>
         </LinearLayout>
