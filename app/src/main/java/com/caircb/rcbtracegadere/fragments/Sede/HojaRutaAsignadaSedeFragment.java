@@ -46,15 +46,12 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
 
     LinearLayout btnRetornarListHojaRuta;
 
-    private Window window;
     private RecyclerView recyclerView;
     private ManifiestoAdapterSede recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiestoSede> rowItems;
     private SearchView searchView;
-    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
-    private ListView mDrawerMenuItems, mDialogMenuItems;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

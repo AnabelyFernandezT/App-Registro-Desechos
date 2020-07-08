@@ -15,14 +15,10 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
-import com.caircb.rcbtracegadere.database.entity.RutasEntity;
-import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
-import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarVehiculosSedeTask;
 
 import java.util.ArrayList;
@@ -39,6 +35,7 @@ public class DialogPlacas extends MyDialog {
     TextView lblListaManifiestoAsignado;
     DialogBuilder builder;
     UserConsultarVehiculosSedeTask consultarVehiculos;
+    UserConsultarManifiestosPlantaTask consultarManifiestosPlanta;
 
     public DialogPlacas(@NonNull Context context) {
         super(context, R.layout.dialog_spinner);
@@ -117,7 +114,9 @@ public class DialogPlacas extends MyDialog {
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+placa);
-                cargarManifiesto();
+                //cargarManifiesto();
+                consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                consultarManifiestosPlanta.execute();
                 builder.dismiss();
                 dismiss();
             }

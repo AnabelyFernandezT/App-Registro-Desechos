@@ -8,20 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
-import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
-import com.caircb.rcbtracegadere.fragments.planta.RecepcionPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
-import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
-import com.caircb.rcbtracegadere.utils.Utils;
 
 
 public class ManifiestoGestorFragment extends MyFragment implements OnCameraListener, View.OnClickListener {

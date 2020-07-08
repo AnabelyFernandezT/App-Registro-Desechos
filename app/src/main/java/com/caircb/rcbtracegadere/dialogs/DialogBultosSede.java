@@ -90,7 +90,7 @@ public class DialogBultosSede extends MyDialog {
     private void loadData(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        detalles = MyApp.getDBO().manifiestoDetalleValorSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
+        detalles = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
 
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);

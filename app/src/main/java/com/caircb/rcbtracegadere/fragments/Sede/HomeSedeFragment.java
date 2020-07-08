@@ -24,8 +24,6 @@ import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;
     ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
-    UserConsultarHojaRutaTask consultarHojaRutaTask;
-
 
     UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
@@ -33,8 +31,6 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
-    UserConsultarManifiestosSedeTask consultarPlacasInicioRutaDisponible;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

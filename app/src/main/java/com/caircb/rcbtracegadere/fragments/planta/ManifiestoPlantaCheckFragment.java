@@ -1,19 +1,15 @@
-package com.caircb.rcbtracegadere.fragments.Sede;
+package com.caircb.rcbtracegadere.fragments.planta;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TabHost;
 
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,33 +17,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
-import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterPlanta;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterSede;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosSede;
-import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
-import com.caircb.rcbtracegadere.fragments.GestorAlterno.HojaRutaAsignadaGestorFragment;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.RecepcionGestorFragment;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
+import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
-import com.caircb.rcbtracegadere.models.MenuItem;
-import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserRegistarDetalleSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class ManifiestoSedeFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
+public class ManifiestoPlantaCheckFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
     LinearLayout btnManifiestoCancel,btnRegistrar;
     private RecyclerView recyclerView;
     private static final String ARG_PARAM1 = "manifiestoID";
     RecepcionGestorFragment manifiestoGestor;
     Integer idAppManifiesto,estadoManifiesto;
     UserRegistrarPlanta userRegistrarPlanta;
-    ManifiestoDetalleAdapterSede recyclerviewAdapter;
+    ManifiestoDetalleAdapterPlanta recyclerviewAdapter;
     private List<ItemManifiestoDetalleSede> detalles;
     Dialog dialogOpcioneItem;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
@@ -55,11 +46,11 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     DialogBultosSede dialogBultos;
     UserRegistarDetalleSedeTask detalleSedeTask;
 
-    public  ManifiestoSedeFragment (){
+    public ManifiestoPlantaCheckFragment(){
     }
 
-    public static ManifiestoSedeFragment newInstance(Integer manifiestoID) {
-        ManifiestoSedeFragment f= new ManifiestoSedeFragment();
+    public static ManifiestoPlantaCheckFragment newInstance(Integer manifiestoID) {
+        ManifiestoPlantaCheckFragment f= new ManifiestoPlantaCheckFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_PARAM1,manifiestoID);
         f.setArguments(b);
@@ -71,7 +62,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnRetornarDetalleSede:
-                setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 break;
         }
 
@@ -107,7 +98,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         btnManifiestoCancel = getView().findViewById(R.id.btnRetornarDetalleSede);
         btnManifiestoCancel.setOnClickListener(this);
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoDetalleAdapterSede(getActivity(),idAppManifiesto.toString(),1);
+        recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getActivity(),idAppManifiesto.toString(),1);
         manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
         btnRegistrar = getView().findViewById(R.id.btnRegistrar);
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -140,12 +131,12 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     private void loadData(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        detalles = MyApp.getDBO().manifiestoDetalleSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
+        detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
         //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
 
-        recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
+        recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterPlanta.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
                     openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
@@ -162,7 +153,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
             @Override
             public void onSucefull() {
                 List<ItemManifiestoDetalleSede> detalles;
-                detalles = MyApp.getDBO().manifiestoDetalleSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
+                detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
                 //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
                 recyclerviewAdapter.setTaskList(detalles);
 
@@ -171,8 +162,8 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         dialogBultos.show();
     }
 
-    public static ManifiestoSedeFragment newInstance() {
-        return new ManifiestoSedeFragment();
+    public static ManifiestoPlantaCheckFragment newInstance() {
+        return new ManifiestoPlantaCheckFragment();
     }
 
 }
