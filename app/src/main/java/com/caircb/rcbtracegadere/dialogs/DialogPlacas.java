@@ -36,7 +36,7 @@ public class DialogPlacas extends MyDialog {
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
-
+    DialogBuilder builder;
 
     public DialogPlacas(@NonNull Context context) {
         super(context, R.layout.dialog_spinner);
@@ -80,14 +80,10 @@ public class DialogPlacas extends MyDialog {
 
             }
         });
-
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
-                int idVehiculo = c!=null?c.getIdSistema():-1;
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                cargarManifiesto();
+                dialogoConfirmacion();
                 dismiss();
             }
         });
@@ -107,6 +103,31 @@ public class DialogPlacas extends MyDialog {
         });
         consultarPlacasInicioRutaDisponible.execute();
     }
+
+    private void dialogoConfirmacion(){
+        builder = new DialogBuilder(getContext());
+        builder.setMessage("¿Realizara revisión de pesajes por desecho?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+                int idVehiculo = c!=null?c.getIdSistema():-1;
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                cargarManifiesto();
+                builder.dismiss();
+            }
+        });
+        builder.setNegativeButton("NO", new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
         ArrayAdapter<String> adapter;
