@@ -84,7 +84,7 @@ public class DialogPlacas extends MyDialog {
             @Override
             public void onClick(View v) {
                 dialogoConfirmacion();
-                dismiss();
+                //dismiss();
             }
         });
 
@@ -116,6 +116,7 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 cargarManifiesto();
                 builder.dismiss();
+                dismiss();
             }
         });
         builder.setNegativeButton("NO", new View.OnClickListener(){
