@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.LotePadreEntity;
@@ -19,6 +20,7 @@ import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
+import com.caircb.rcbtracegadere.utils.Utils;
 
 
 public class ManifiestoGestorFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
