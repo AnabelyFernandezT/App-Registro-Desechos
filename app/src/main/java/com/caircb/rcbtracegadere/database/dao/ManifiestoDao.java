@@ -71,7 +71,7 @@ public abstract class ManifiestoDao {
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoByPlaca(Integer idPlaca);
 
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=2 and estadoFinRuta=0 order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, numeroPlacaVehiculo from tb_manifiestos where estado=2 and estadoFinRuta=0 order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta();
 
@@ -219,7 +219,7 @@ public abstract class ManifiestoDao {
             //numeroLicenciaAmbientalTransportista
             //idTransporteVehiculo
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            //numeroPlacaVehiculo
+            entity.setNumeroPlacaVehiculo(manifiesto.getNumeroPlacaVehiculo());
             //modeloVehiculo
             //idDestinatario
             //identificacionDestinatario
@@ -275,7 +275,7 @@ public abstract class ManifiestoDao {
             //razonSocialTransportista
             //numeroLicenciaAmbientalTransportista
             //idTransporteVehiculo
-            //numeroPlacaVehiculo
+            entity.setNumeroPlacaVehiculo(manifiesto.getNumeroPlacaVehiculo());
             //modeloVehiculo
             //idDestinatario
             //identificacionDestinatario

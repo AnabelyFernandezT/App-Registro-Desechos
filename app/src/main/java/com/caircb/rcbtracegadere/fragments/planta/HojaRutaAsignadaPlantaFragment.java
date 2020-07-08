@@ -121,7 +121,8 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
-                        openModal(rowItems.get(position).getIdAppManifiesto());
+                        String valorPantalla = MyApp.getDBO().parametroDao().fecthParametroValorByValor(rowItems.get(position).getNumeroPlacaVehiculo());
+                        openModal(rowItems.get(position).getIdAppManifiesto(),valorPantalla);
                         break;
                     case R.id.btn_manifiesto_more:
                         String nombre = "";
@@ -151,17 +152,14 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
         }
     }
 
-    private void  openModal(Integer idManifiesto){
-        /*Window window;
-        dialogOptionsManifiesto = new DialogPlantaRecepcionManifiesto(getActivity(),idManifiesto);
-        dialogOptionsManifiesto.setCancelable(false);
-        dialogOptionsManifiesto.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogOptionsManifiesto.show();
-
-        window = dialogOptionsManifiesto.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);*/
-
-        setNavegate(ManifiestoPlantaFragment.newInstance(idManifiesto));
+    private void  openModal(Integer idManifiesto,String placa){
+        if(placa != null){
+            if(placa.length()>0){
+                setNavegate(ManifiestoPlantaFragment.newInstance(idManifiesto));
+            }
+        }else{
+            setNavegate(ManifiestoPlantaFragment.newInstance(idManifiesto));
+        }
     }
 
 }
