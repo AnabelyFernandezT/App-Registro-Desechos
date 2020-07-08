@@ -39,9 +39,9 @@ public class UserConsultarPlacaRutasSedeTask  extends MyRetrofitApi implements R
         RequestDataCatalogo requestDataCatalogo = requestDataCatalogo();
 
         if(requestDataCatalogo!=null){
-            WebService.api().obtenerCatalogoPlacasSede(requestDataCatalogo).enqueue(new Callback<DtoCatalogo>() {
+            WebService.api().obtenerCatalogoPlacasSede(requestDataCatalogo).enqueue(new Callback<List<DtoCatalogo>>() {
                 @Override
-                public void onResponse(Call<DtoCatalogo> call, Response<DtoCatalogo> response) {
+                public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                     if(response.isSuccessful()){
                         MyApp.getDBO().catalogoDao().saveOrUpdate((List<DtoCatalogo>) response.body(),3);
                         if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful((List<DtoCatalogo>) response.body());
@@ -52,10 +52,11 @@ public class UserConsultarPlacaRutasSedeTask  extends MyRetrofitApi implements R
                 }
 
                 @Override
-                public void onFailure(Call<DtoCatalogo> call, Throwable t) {
+                public void onFailure(Call<List<DtoCatalogo>> call, Throwable t) {
                     progressHide();
                 }
             });
+
         }
 
 

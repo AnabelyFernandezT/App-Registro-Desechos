@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacaRutasSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
+import com.caircb.rcbtracegadere.tasks.UserConsultarVehiculosSedeTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,8 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
-    UserConsultarPlacaRutasSedeTask consultarPlacasInicioRutaDisponible;
+    //UserConsultarPlacaRutasSedeTask consultarPlacasInicioRutaDisponible;
+    UserConsultarVehiculosSedeTask consultarPlacas;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
@@ -94,15 +96,15 @@ public class DialogPlacaSedeRecolector extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacaRutasSedeTask(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacaRutasSedeTask.OnVehiculoListener() {
+        consultarPlacas = new UserConsultarVehiculosSedeTask(getActivity());
+        consultarPlacas.setOnVehiculoListener(new UserConsultarVehiculosSedeTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
                 listaPlacasDisponibles = catalogos;
                 spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
             }
         });
-        consultarPlacasInicioRutaDisponible.execute();
+        consultarPlacas.execute();
     }
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 

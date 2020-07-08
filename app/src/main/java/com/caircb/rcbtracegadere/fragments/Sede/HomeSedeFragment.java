@@ -46,8 +46,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     }
 
     private void datosManifiestosAsignados(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarManifiestosSedeTask(getActivity());
-        consultarPlacasInicioRutaDisponible.execute();
+        //consultarPlacasInicioRutaDisponible = new UserConsultarManifiestosSedeTask(getActivity());
+        //consultarPlacasInicioRutaDisponible.execute();
     }
 
     private void init() {
