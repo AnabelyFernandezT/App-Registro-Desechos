@@ -12,7 +12,7 @@ import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 public abstract class ParametroDao {
 
     @Query("select valor from tb_parametros where valor=:placa")
-    public abstract String fecthParametroValorByValor(String placa);
+    public abstract String fecthParametroValor(String placa);
 
     @Query("select valor from tb_parametros where nombre=:parametro")
     public abstract String fecthParametroValorByNombre(String parametro);

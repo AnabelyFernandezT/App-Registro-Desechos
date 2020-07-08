@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaDetalleValorEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleValorEntity;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleValorSede;
@@ -39,21 +40,21 @@ public abstract class ManifiestoPlantaDetalleValorDao {
     public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);
 
     @Query("select * from tb_manifiestos_planta_det_valor where idManifiestoDetalle=:idManifiesto limit 1")
-    public abstract ManifiestoSedeDetalleValorEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
+    public abstract ManifiestoPlantaDetalleValorEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
     @Query("select idManifiestoDetalleValor from tb_manifiestos_planta_det_valor where estado = 1")
     public abstract List<Integer> fetchDetallesRecolectados();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void createManifiesto(ManifiestoSedeDetalleValorEntity entity);
+    abstract void createManifiesto(ManifiestoPlantaDetalleValorEntity entity);
 
     public void saveOrUpdate(DtoManifiestoDetalleValorSede manifiesto){
 
-        ManifiestoSedeDetalleValorEntity entity;
+        ManifiestoPlantaDetalleValorEntity entity;
 
         entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalle());
         if(entity==null){
-            entity = new ManifiestoSedeDetalleValorEntity();
+            entity = new ManifiestoPlantaDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
@@ -62,7 +63,7 @@ public abstract class ManifiestoPlantaDetalleValorDao {
             entity.setNombreBulto(manifiesto.getNombreBulto());
 
         }else if(entity!=null  ){
-            entity = new ManifiestoSedeDetalleValorEntity();
+            entity = new ManifiestoPlantaDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());

@@ -19,6 +19,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterPlanta;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterSede;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosSede;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.RecepcionGestorFragment;
 import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
@@ -43,7 +44,7 @@ public class ManifiestoPlantaCheckFragment extends MyFragment implements OnCamer
     Dialog dialogOpcioneItem;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     ListView LtsManifiestoDetalle,mDialogMenuItems;
-    DialogBultosSede dialogBultos;
+    DialogBultosPlanta dialogBultos;
     UserRegistarDetalleSedeTask detalleSedeTask;
 
     public ManifiestoPlantaCheckFragment(){
@@ -146,10 +147,10 @@ public class ManifiestoPlantaCheckFragment extends MyFragment implements OnCamer
 
 
     private void openOpcionesItems(final Integer idManifiestoDetalle,Integer position){
-        dialogBultos = new DialogBultosSede(getActivity(),idManifiestoDetalle);
+        dialogBultos = new DialogBultosPlanta(getActivity(),idManifiestoDetalle);
         dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogBultos.setCancelable(false);
-        dialogBultos.setmOnclickSedeListener(new DialogBultosSede.onclickSedeListener() {
+        dialogBultos.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
             @Override
             public void onSucefull() {
                 List<ItemManifiestoDetalleSede> detalles;

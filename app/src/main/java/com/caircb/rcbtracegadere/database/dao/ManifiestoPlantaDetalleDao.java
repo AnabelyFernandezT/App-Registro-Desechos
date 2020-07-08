@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaDetalleEntity;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
 
@@ -26,19 +26,19 @@ public abstract class ManifiestoPlantaDetalleDao {
     public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
     @Query("select * from tb_manifiestos_planta_detalle where idAppManifiesto=:idManifiesto limit 1")
-    public abstract ManifiestoSedeDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
+    public abstract ManifiestoPlantaDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void createManifiesto(ManifiestoSedeDetalleEntity entity);
+    abstract void createManifiesto(ManifiestoPlantaDetalleEntity entity);
 
     public void saveOrUpdate(DtoManifiestoDetalleSede manifiesto){
 
-        ManifiestoSedeDetalleEntity entity;
+        ManifiestoPlantaDetalleEntity entity;
 
         entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiesto());
         if(entity==null){
-            entity = new ManifiestoSedeDetalleEntity();
+            entity = new ManifiestoPlantaDetalleEntity();
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setCodigoMae(manifiesto.getCodigoMae());
@@ -48,7 +48,7 @@ public abstract class ManifiestoPlantaDetalleDao {
 
         }else if(entity!=null ){
 
-            entity = new ManifiestoSedeDetalleEntity();entity.setCodigo(manifiesto.getCodigo());
+            entity = new ManifiestoPlantaDetalleEntity();entity.setCodigo(manifiesto.getCodigo());
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setCodigoMae(manifiesto.getCodigoMae());

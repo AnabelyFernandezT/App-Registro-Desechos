@@ -18,8 +18,17 @@ public class ManifiestoPlantaEntity {
 
     private String nombreCliente;
 
+    private Integer idTransporteVehiculo;
 
     public ManifiestoPlantaEntity() {
+    }
+
+    public Integer getIdTransporteVehiculo() {
+        return idTransporteVehiculo;
+    }
+
+    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
+        this.idTransporteVehiculo = idTransporteVehiculo;
     }
 
     public Integer get_id() {

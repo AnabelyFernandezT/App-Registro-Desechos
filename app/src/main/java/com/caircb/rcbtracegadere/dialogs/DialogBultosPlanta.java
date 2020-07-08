@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,11 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterSede;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBultosAdapterSede;
-import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
-import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
@@ -30,7 +25,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DialogBultosSede extends MyDialog {
+public class DialogBultosPlanta extends MyDialog {
     Activity _activity;
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
@@ -44,7 +39,7 @@ public class DialogBultosSede extends MyDialog {
     private RecyclerView recyclerView;
     private List<ItemManifiestoDetalleValorSede> detalles;
 
-    public DialogBultosSede(@NonNull Context context,Integer idAppManifiestoDet) {
+    public DialogBultosPlanta(@NonNull Context context, Integer idAppManifiestoDet) {
         super(context, R.layout.dialog_bultos_sede);
         this._activity = (Activity)context;
         this.idAppManifiestoDet= idAppManifiestoDet;
@@ -75,7 +70,7 @@ public class DialogBultosSede extends MyDialog {
       btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogBultosSede.this.dismiss();
+                DialogBultosPlanta.this.dismiss();
                 if(mOnclickSedeListener!=null){
                     mOnclickSedeListener.onSucefull();
                 }
@@ -90,7 +85,7 @@ public class DialogBultosSede extends MyDialog {
     private void loadData(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        detalles = MyApp.getDBO().manifiestoDetalleValorSede().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
+        detalles = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
 
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);

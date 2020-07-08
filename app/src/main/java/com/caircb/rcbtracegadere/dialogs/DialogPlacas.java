@@ -29,6 +29,7 @@ public class DialogPlacas extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
+    Integer idPlaca;
     //UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
@@ -63,6 +64,7 @@ public class DialogPlacas extends MyDialog {
                 if(position>0){
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
+                    idPlaca = spinnerPlacas.getId();
                 }
 
             }
@@ -113,7 +115,7 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+placa);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
