@@ -125,7 +125,17 @@ public class ManifiestoEntity {
 
     private Date fechaInicioRecorrecion;
 
+    private Integer idChoferRecolector;
+
     public ManifiestoEntity() {
+    }
+
+    public Integer getIdChoferRecolector() {
+        return idChoferRecolector;
+    }
+
+    public void setIdChoferRecolector(Integer idChoferRecolector) {
+        this.idChoferRecolector = idChoferRecolector;
     }
 
     public Integer get_id() {

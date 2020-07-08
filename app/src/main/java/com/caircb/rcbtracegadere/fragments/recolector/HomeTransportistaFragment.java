@@ -39,7 +39,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     DialogInicioRuta dialogInicioRuta;
     DialogFinRuta dialogFinRuta;
     LinearLayout lnlIniciaRuta,lnlFinRuta;
-
+    RutaInicioFinEntity rut;
 
     //public Context mContext;
 
@@ -115,7 +115,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         //btnCalculadora = (ImageButton)getView().findViewById(R.id.btnCalculadora);
 
         int x= MySession.getIdUsuario();
-        RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+        rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         if(rut!=null){
             inicioFinRuta = rut.getEstado();
             IdTransporteRecolector = MySession.getIdUsuario();
@@ -192,7 +192,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v) {
                 //Valido si el parametro esta en NO si es verdadero presento el modal
-                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() >0 ){
+                rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(rut.getIdSubRuta(),MySession.getIdUsuario()) >0 ){
                     List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
                     if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
 
@@ -269,7 +270,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
                 int conteoManifiestos;
 
-                conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas();
+                conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(rut.getIdSubRuta(),MySession.getIdUsuario());
                 if(conteoManifiestos>0){
                     messageBox("Existen manifiestos pendientes por recolectar");
                 }else{
@@ -283,13 +284,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     private void loadCantidadManifiestoAsignado(){
         //dbHelper.open();
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas());
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(rut == null ? 0:rut.getIdSubRuta(),MySession.getIdUsuario()));
         //dbHelper.close();
     }
 
     private void loadCantidadManifiestoProcesado(){
         //dbHelper.open();
-        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
+        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPara(rut == null ? 0:rut.getIdSubRuta(),MySession.getIdUsuario()));
         //dbHelper.close();
     }
 
@@ -323,9 +324,5 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
 
     }
-
-
-
-
 
 }
