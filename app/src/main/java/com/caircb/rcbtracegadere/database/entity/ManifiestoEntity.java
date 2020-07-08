@@ -127,7 +127,17 @@ public class ManifiestoEntity {
 
     private Integer idChoferRecolector;
 
+    private String numeroPlacaVehiculo;
+
     public ManifiestoEntity() {
+    }
+
+    public String getNumeroPlacaVehiculo() {
+        return numeroPlacaVehiculo;
+    }
+
+    public void setNumeroPlacaVehiculo(String numeroPlacaVehiculo) {
+        this.numeroPlacaVehiculo = numeroPlacaVehiculo;
     }
 
     public Integer getIdChoferRecolector() {

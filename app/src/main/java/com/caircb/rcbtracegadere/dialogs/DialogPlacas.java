@@ -116,6 +116,7 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+placa);
                 cargarManifiesto();
                 builder.dismiss();
                 dismiss();
@@ -124,7 +125,13 @@ public class DialogPlacas extends MyDialog {
         builder.setNegativeButton("NO", new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+                int idVehiculo = c!=null?c.getIdSistema():-1;
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                cargarManifiesto();
                 builder.dismiss();
+                dismiss();
             }
         });
         builder.show();
