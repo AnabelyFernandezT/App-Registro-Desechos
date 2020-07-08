@@ -21,8 +21,10 @@ import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowRutas;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
@@ -265,10 +267,16 @@ public class DialogInicioRuta extends MyDialog {
         int idVehiculo = r!=null?r.getCodigo():-1;
 
         Integer idUsuario = MySession.getIdUsuario();
-
-        idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,AppDatabase.getDateTime(),null,kilometrajeInicio,null,1);
+        Date fechaInicio = AppDatabase.getDateTime();
+        idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
 
+        //EMPIEZA RUTEO RECOLECCION
+        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+        Integer idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        MySession.setIdSubruta(idSubRuta);
+        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaInicio, 0, null, null, false));
+        List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
         //notificar inicia ruta al servidor...
         registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro);

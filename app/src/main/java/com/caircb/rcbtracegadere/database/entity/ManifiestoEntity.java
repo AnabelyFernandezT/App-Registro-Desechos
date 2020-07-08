@@ -123,6 +123,7 @@ public class ManifiestoEntity {
 
     private String nombreDestinatario;
 
+    private Date fechaInicioRecorrecion;
 
     public ManifiestoEntity() {
     }
@@ -448,6 +449,14 @@ public class ManifiestoEntity {
 
     public void setNombreDestinatario(String nombreDestinatario) {
         this.nombreDestinatario = nombreDestinatario;
+    }
+
+    public Date getFechaInicioRecorrecion() {
+        return fechaInicioRecorrecion;
+    }
+
+    public void setFechaInicioRecorrecion(Date fechaInicioRecorrecion) {
+        this.fechaInicioRecorrecion = fechaInicioRecorrecion;
     }
 }
 

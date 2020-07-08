@@ -26,6 +26,7 @@ public class RequestManifiesto {
     private List<RequestManifiestoNovedadFrecuente> novedadFrecuente;
     private List<RequestManifiestoNovedadNoRecoleccion> novedadNoRecoleccion;
     private Integer estado;
+    private Date fechaInicioRecoleccion;
 
     public Integer getIdAppManifiesto() {
         return idAppManifiesto;
@@ -201,5 +202,13 @@ public class RequestManifiesto {
 
     public void setEstado(Integer estado) {
         this.estado = estado;
+    }
+
+    public Date getFechaInicioRecoleccion() {
+        return fechaInicioRecoleccion;
+    }
+
+    public void setFechaInicioRecoleccion(Date fechaInicioRecoleccion) {
+        this.fechaInicioRecoleccion = fechaInicioRecoleccion;
     }
 }

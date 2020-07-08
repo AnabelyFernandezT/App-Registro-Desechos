@@ -103,6 +103,7 @@ public abstract class ManifiestoDao {
         actualizarNovedadEncontrada(idManifiesto, novedadEncontrada);
     }
 
+
     /*
     public void updateFirmaTecnicoGenerador(Integer idManifiesto, String numManifiesto, String img){
 
@@ -154,6 +155,9 @@ public abstract class ManifiestoDao {
 
     @Query("update tb_manifiestos set estado=4, sincronizado=1 where idAppManifiesto=:idAppManifiesto ")
     public abstract void updateManifiestoToRecolectadoPlanta(Integer idAppManifiesto);
+
+    @Query("update tb_manifiestos set fechaInicioRecorrecion =:fechaInicioRecoleccion where idAppManifiesto =:idManifiesto")
+    public abstract void saveOrUpdateFechaInicioRecoleccion(Integer idManifiesto, Date fechaInicioRecoleccion);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoEntity entity);
