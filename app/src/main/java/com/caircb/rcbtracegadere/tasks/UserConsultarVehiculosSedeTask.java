@@ -41,6 +41,7 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
                 @Override
                 public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                     if(response.isSuccessful()){
+                        MyApp.getDBO().catalogoDao().saveOrUpdate((List<DtoCatalogo>) response.body(),3);
                         if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful((List<DtoCatalogo>) response.body());
                     }
                     progressHide();

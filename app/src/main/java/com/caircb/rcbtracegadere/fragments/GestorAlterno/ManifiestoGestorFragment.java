@@ -11,9 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.database.entity.LotePadreEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 
 
@@ -26,7 +30,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     Integer idAppManifiesto;
     UserRegistrarPlanta userRegistrarPlanta;
     ImageView imgFirmaPlanta;
-    TextView txtFirmaPlanta;
+    TextView txtFirmaPlanta, txtPesoTotal;
     DialogFirma dialogFirma;
     Bitmap firmaConfirmada;
     private boolean firma = false;
@@ -100,6 +104,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
         btnAgregarFirma = getView().findViewById(R.id.btnAgregarFirma);
         imgFirmaPlanta = getView().findViewById(R.id.imgFirmaPlanta);
         txtFirmaPlanta = getView().findViewById(R.id.txtFirmaPlanta);
+        txtPesoTotal= getView().findViewById(R.id.txtPesoTotal);
         btnManifiestoCancel = getView().findViewById(R.id.btnManifiestoCancel);
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
@@ -124,13 +129,13 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                                 imgFirmaPlanta.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
                                 firma=true;
-                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_GESTORES, Utils.encodeTobase64(bitmap), MyConstant.STATUS_GESTORES);
 
                             }else{
                                 txtFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setVisibility(View.GONE);
                                 firma=false;
-                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_GESTORES, null,MyConstant.STATUS_GESTORES);
                             }
                         }
 
@@ -145,8 +150,24 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 }
             }
         });
+        loadData();
     }
 
+    private void loadData(){
+        LotePadreEntity manifiestoPadre = MyApp.getDBO().lotePadreDao().fetchConsultarCatalogoEspecifico(idAppManifiesto);
+        if(manifiestoPadre!=null){
+            txtPesoTotal.setText(manifiestoPadre.getTotal().toString());
+            ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_GESTORES,MyConstant.STATUS_GESTORES);
+            if(f != null){
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
+                txtFirmaPlanta.setVisibility(View.GONE);
+                imgFirmaPlanta.setVisibility(View.VISIBLE);
+                imgFirmaPlanta.setImageBitmap(imagen);
+
+            }
+
+        }
+    }
 
 
     public static ManifiestoGestorFragment newInstance() {

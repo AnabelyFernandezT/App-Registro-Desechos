@@ -1,5 +1,7 @@
 package com.caircb.rcbtracegadere.fragments.Sede;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +16,14 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
+import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;
@@ -98,21 +102,39 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnFinLote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
-                registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("");
+                builder.setMessage("Esta seguro de continuar");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onSuccessful() {
-                        messageBox("Lote Cerrado Correctamente");
-                        lnlIniciaLote.setVisibility(View.VISIBLE);
-                        lnlFinLote.setVisibility(View.GONE);
-                    }
+                    public void onClick(DialogInterface dialog, int which) {
+                        registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
+                        registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
+                            @Override
+                            public void onSuccessful() {
+                                messageBox("Lote Cerrado Correctamente");
+                                lnlIniciaLote.setVisibility(View.VISIBLE);
+                                lnlFinLote.setVisibility(View.GONE);
+                            }
 
-                    @Override
-                    public void onFail() {
-                        messageBox("Lote no finalizado");
+                            @Override
+                            public void onFail() {
+                                messageBox("Lote no finalizado");
+                            }
+                        });
+                        registarFinLoteTask.execute();
+
                     }
                 });
-                registarFinLoteTask.execute();
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
+
             }
         });
 

@@ -25,8 +25,9 @@ public abstract class ManifiestoFileDao {
     public static final Integer FOTO_FIRMA_TECNICO_GENERADOR=11;
     public static final Integer FOTO_FIRMA_OPERADOR1=12;
     public static final Integer FOTO_FIRMA_OPERADOR2=13;
-    public static final Integer FOTO_FIRMA_RECEPCION_PLATA=12;
+    public static final Integer FOTO_FIRMA_RECEPCION_PLATA=14;
     public static final Integer AUDIO_RECOLECCION=20;
+    public static final Integer FOTO_FIRMA_GESTORES =15;
 
 
 
