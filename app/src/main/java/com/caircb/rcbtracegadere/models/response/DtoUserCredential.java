@@ -5,7 +5,7 @@ import java.util.List;
 public class DtoUserCredential {
     private String id;
     private boolean actualizarVersion;
-    private boolean excito;
+    private boolean exito;
     private String mensaje;
     private String correo;
     private Integer idUsuario;
@@ -22,12 +22,12 @@ public class DtoUserCredential {
         this.actualizarVersion = actualizarVersion;
     }
 
-    public boolean isExcito() {
-        return excito;
+    public boolean isExito() {
+        return exito;
     }
 
-    public void setExcito(boolean excito) {
-        this.excito = excito;
+    public void setExito(boolean exito) {
+        this.exito = exito;
     }
 
     public String getMensaje() {

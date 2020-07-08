@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.core.app.NotificationBuilderWithBuilderAccessor;
 import androidx.core.app.NotificationCompat;
@@ -26,7 +27,7 @@ import com.google.firebase.messaging.RemoteMessage;
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     private LocalBroadcastManager broadcaster;
-
+    public static final String TAG = "Noticias";
     @Override
     public void onCreate() {
 
@@ -37,17 +38,20 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+
         String from = remoteMessage.getFrom();
         //Log.d(TAG, "Mensaje recibido de: " + from);
+        Log.d(TAG,"mensaje de: " + from);
 
         if (remoteMessage.getNotification() != null) {
-          //  Log.d(TAG, "Notificación: " + remoteMessage.getNotification().getBody());
+
+            Log.d(TAG, "Notificación: " + remoteMessage.getNotification().getBody());
 
             showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
         }
 
         if (remoteMessage.getData().size() > 0) {
-           // Log.d(TAG, "Data: " + remoteMessage.getData());
+            Log.d(TAG, "Data: " + remoteMessage.getData());
         }
 
     }
