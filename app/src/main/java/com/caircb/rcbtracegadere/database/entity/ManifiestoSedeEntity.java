@@ -20,6 +20,8 @@ public class ManifiestoSedeEntity {
 
     private String nombreCliente;
 
+    private Integer idTransporteVehiculo;
+
 
     public ManifiestoSedeEntity() {
     }
@@ -55,6 +57,14 @@ public class ManifiestoSedeEntity {
 
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
+    }
+
+    public Integer getIdTransporteVehiculo() {
+        return idTransporteVehiculo;
+    }
+
+    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
+        this.idTransporteVehiculo = idTransporteVehiculo;
     }
 }
 

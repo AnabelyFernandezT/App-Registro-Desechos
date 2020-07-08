@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacaRutasSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import com.caircb.rcbtracegadere.tasks.UserConsultarVehiculosSedeTask;
@@ -33,7 +34,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     //UserConsultarPlacaRutasSedeTask consultarPlacasInicioRutaDisponible;
     UserConsultarVehiculosSedeTask consultarPlacas;
     LinearLayout btnIngresarApp, btnCancelarApp;
-    UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
+    UserConsultarManifiestosSedeTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
 
 
@@ -86,7 +87,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,3);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                //cargarManifiesto();
+                cargarManifiesto();
                 dismiss();
             }
         });
@@ -138,7 +139,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     }
 
     private void cargarManifiesto(){
-        consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
+        consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(_activity);
         consultarHojaRutaTask.execute();
     }
 

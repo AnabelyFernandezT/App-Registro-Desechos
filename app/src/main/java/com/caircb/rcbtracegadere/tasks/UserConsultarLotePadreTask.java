@@ -37,7 +37,7 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
     @Override
     public void execute() {
             /***CAMBIAR PARAMETRO TRES DEL REQUEST ESTA UN DATO QUEMADO ***/
-        WebService.api().traerLotesPadre(new RequestLotePadre(MySession.getIdUsuario(),new Date(),1)).enqueue(new Callback<List<DtoLotePadreGestor>>() {
+        WebService.api().traerLotesPadre(new RequestLotePadre(MySession.getIdUsuario(),new Date(),8)).enqueue(new Callback<List<DtoLotePadreGestor>>() {
             @Override
             public void onResponse(Call<List<DtoLotePadreGestor>> call, Response<List<DtoLotePadreGestor>> response) {
                 if (response.isSuccessful()){

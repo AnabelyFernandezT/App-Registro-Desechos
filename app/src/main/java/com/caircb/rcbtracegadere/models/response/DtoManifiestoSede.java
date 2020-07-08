@@ -7,6 +7,7 @@ public class DtoManifiestoSede {
     private Integer idManifiesto;
     private String numeroManifiesto;
     private String nombreCliente;
+    private Integer idTransporteVehiculo;
     private List<DtoManifiestoDetalleSede> hojaRutaDetalle;
 
     public DtoManifiestoSede() {
@@ -42,5 +43,13 @@ public class DtoManifiestoSede {
 
     public void setHojaRutaDetalle(List<DtoManifiestoDetalleSede> hojaRutaDetalle) {
         this.hojaRutaDetalle = hojaRutaDetalle;
+    }
+
+    public Integer getIdTransporteVehiculo() {
+        return idTransporteVehiculo;
+    }
+
+    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
+        this.idTransporteVehiculo = idTransporteVehiculo;
     }
 }
