@@ -89,7 +89,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_recoleccion_planta, container, false);
+        view = inflater.inflate(R.layout.fragment_recoleccion_planta_adicional, container, false);
         init();
         loadData();
         return  view;
@@ -127,13 +127,13 @@ public class TabManifiestoAdicionalFragment extends Fragment {
                                 imgFirmaPlanta.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
                                 firma=true;
-                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
+                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
 
                             }else{
                                 txtFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setVisibility(View.GONE);
                                 firma=false;
-                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
+                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
                             }
                         }
 
@@ -149,14 +149,6 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             }
         });
 
-        txtPeso.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    //validarPesos();
-                }
-            }
-        });
 
     }
 
@@ -181,9 +173,6 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             }
 
         }
-
-        txtPesoRecolectado.setText(String.valueOf(pesoT));
-
 
     }
 
