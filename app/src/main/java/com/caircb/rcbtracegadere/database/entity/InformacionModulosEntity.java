@@ -19,11 +19,11 @@ public class InformacionModulosEntity {
     private String auxiliarRecoleccion2;
     private Double kilometrajeInicio;
     private Integer residuoSujetoFiscalizacion;
-    private Integer requiereDevolucioneRecipientes;
+    private Integer requiereDevolucionRecipientes;
     private Integer tieneDisponibilidadMontacarga;
     private Integer tieneDisponibilidadBalanza;
     private Integer requiereIncineracionPresenciada;
-    private String ObservacionResuduos;
+    private String observacionResiduos;
 
     public InformacionModulosEntity(){
 
@@ -101,12 +101,12 @@ public class InformacionModulosEntity {
         this.residuoSujetoFiscalizacion = residuoSujetoFiscalizacion;
     }
 
-    public Integer getRequiereDevolucioneRecipientes() {
-        return requiereDevolucioneRecipientes;
+    public Integer getRequiereDevolucionRecipientes() {
+        return requiereDevolucionRecipientes;
     }
 
-    public void setRequiereDevolucioneRecipientes(Integer requiereDevolucioneRecipientes) {
-        this.requiereDevolucioneRecipientes = requiereDevolucioneRecipientes;
+    public void setRequiereDevolucionRecipientes(Integer requiereDevolucionRecipientes) {
+        this.requiereDevolucionRecipientes = requiereDevolucionRecipientes;
     }
 
     public Integer getTieneDisponibilidadMontacarga() {
@@ -133,11 +133,11 @@ public class InformacionModulosEntity {
         this.requiereIncineracionPresenciada = requiereIncineracionPresenciada;
     }
 
-    public String getObservacionResuduos() {
-        return ObservacionResuduos;
+    public String getObservacionResiduos() {
+        return observacionResiduos;
     }
 
-    public void setObservacionResuduos(String observacionResuduos) {
-        ObservacionResuduos = observacionResuduos;
+    public void setObservacionResiduos(String observacionResiduos) {
+        this.observacionResiduos = observacionResiduos;
     }
 }

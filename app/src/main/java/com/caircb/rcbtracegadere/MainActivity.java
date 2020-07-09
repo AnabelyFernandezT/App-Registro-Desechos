@@ -17,7 +17,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,7 +25,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogInformacionModulos;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HomeGestorAlternoFragment;
 import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
@@ -41,11 +43,13 @@ import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItem;
 import com.caircb.rcbtracegadere.models.request.RequestCredentials;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
+import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
 import com.google.firebase.auth.FirebaseAuth;
 import com.itextpdf.text.pdf.PdfName;
@@ -53,6 +57,7 @@ import com.itextpdf.text.pdf.PdfName;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.sql.SQLOutput;
@@ -65,12 +70,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private ListView mDrawerMenuItems, mDialogMenuItems;
     private DrawerLayout mDrawer;
     AlertDialog.Builder builder;
-    private TextView txtUserNombre, txtnombreLugarTrabajo;
-
+    private TextView txtUserNombre, txtnombreLugarTrabajo, nombreLugarTrabajo;
+    UserInformacionModulosTask informacionModulosTaskl;
     List<DtoCatalogo> listaDestinos,destinosEspecificos;
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
-
+    DialogInformacionModulos dialogInformacionModulos;
 
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private List<RowItem> rowItems;
@@ -89,6 +94,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     FragmentTransaction fragmentTransaction;
     FragmentManager fm;
 
+    UserInformacionModulosTask userInformacionModulosTask;
     UserUpdateAppTask userUpdateAppTask;
     UserConsultarCatalogosTask consultarCatalogosTask;
     PaquetesTask paquetesTask;
@@ -150,9 +156,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
         txtUserNombre = (TextView)findViewById(R.id.nombreUsuario);
         txtnombreLugarTrabajo = (TextView)findViewById(R.id.txtNombreLugarTrabajo);
+        nombreLugarTrabajo = (TextView) findViewById(R.id.nombreLugarTrabajo);
 
         txtUserNombre.setText(MySession.getUsuarioNombre());
         txtnombreLugarTrabajo.setText(MySession.getLugarNombre());
+        nombreLugarTrabajo.setText(MySession.getDestinoEspecifico());
+
 
         rowItems = new ArrayList<>();
 
@@ -360,26 +369,28 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     MySession.setIdPerfil(json.getInt("idPerfil"));
                     MySession.setLugarNombre(json.getString("nombre"));
                     if(nombreLugar.equals("TRANSPORTISTA")){
+                        MySession.setDestinoEspecifico("");
+                        initMenuLateral();
                         navegate((HomeTransportistaFragment.create()));
                     }else {
                         if(nombreLugar.equals("PLANTA")){
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+2);
                             traerDestinoEspecifico();
-                            navegate((HomePlantaFragment.create()));
+                            //navegate((HomePlantaFragment.create()));
                         } else {
                             if (nombreLugar.equals("SEDE")){
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+1);
                                 traerDestinoEspecifico();
-                                navegate(HomeSedeFragment.create());
+                                //navegate(HomeSedeFragment.create());
                             }else {
                                 if (nombreLugar.equals("HOTEL")){
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+4);
                                     traerDestinoEspecifico();
-                                    navegate(HomeHotelFragment.create());
+                                    //navegate(HomeHotelFragment.create());
                                 }else {
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+3);
                                     traerDestinoEspecifico();
-                                    navegate(HomeGestorAlternoFragment.create());
+                                    //navegate(HomeGestorAlternoFragment.create());
                                 }
                             }
                         }
@@ -387,6 +398,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     }
 
                     txtnombreLugarTrabajo.setText(MySession.getLugarNombre());
+                    nombreLugarTrabajo.setText(MySession.getDestinoEspecifico());
                 }
             }
         }catch (JSONException e){
@@ -399,9 +411,18 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         consultaDestinoEspecifico = new UserDestinoEspecificoTask(this);
         consultaDestinoEspecifico.setOnDestinoListener(new UserDestinoEspecificoTask.OnDestinoListener() {
             @Override
-            public void onSuccessful(List<DtoCatalogo> catalogos) {
+            public void onSuccessful(List<DtoCatalogo> catalogos, Integer idDestino) {
                 destinosEspecificos = catalogos;
                 selectDestinoEspecifico(catalogos);
+                if(idDestino == 1){
+                    navegate(HomeSedeFragment.create());
+                }else if(idDestino == 2){
+                    navegate((HomePlantaFragment.create()));
+                }else if (idDestino == 3){
+                    navegate(HomeGestorAlternoFragment.create());
+                }else if(idDestino ==4){
+                    navegate(HomeHotelFragment.create());
+                }
             }
         });
         consultaDestinoEspecifico.execute();
@@ -422,9 +443,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+destinosEspecificos.get(item).getId());
+                MySession.setDestinoEspecifico(destinosEspecificos.get(item).getNombre());
+                initMenuLateral();
                 //System.out.println("Acceso a la variable: "+MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
             }
         });
+        builder.setCancelable(false);
         builder.show();
 
     }
@@ -487,8 +511,18 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 case "Configurar":
                     openConfigurar();
                     break;
+                case "Información":
+                    openInformacion();
+                    break;
             }
         }
+    }
+
+    private void openInformacion(){
+
+        dialogInformacionModulos = new DialogInformacionModulos(this);
+        informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
+        informacionModulosTaskl.execute();
     }
 
     private void openModulos(){
@@ -503,6 +537,9 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     myListOfItems.add(new MenuItem(json.getString("nombre")));
                 }
             }
+            //MySession.getIdUsuario();
+
+
             jsonLugares=null;
             json=null;
             myListOfItems.add(new MenuItem("MENSAJES"));
@@ -559,6 +596,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         });
         mdialog.setTitle("Modulos");
         mdialog.setContentView(view);
+        mdialog.setCancelable(false);
         mdialog.show();
     }
 
