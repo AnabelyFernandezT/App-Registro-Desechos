@@ -109,7 +109,7 @@ public class DialogPlacas extends MyDialog {
         builder = new DialogBuilder(getContext());
         builder.setMessage("¿Realizara revisión de pesajes por desecho?");
         builder.setCancelable(true);
-        builder.setPositiveButton("OK", new View.OnClickListener() {
+        builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
