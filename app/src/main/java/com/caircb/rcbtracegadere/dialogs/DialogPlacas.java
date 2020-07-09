@@ -138,7 +138,7 @@ public class DialogPlacas extends MyDialog {
             }
         });
         builder.show();
-        loadCantidadManifiestoAsignado();
+        cargarLabelCantidad();
     }
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
@@ -173,8 +173,29 @@ public class DialogPlacas extends MyDialog {
         return defaulSpiner;
     }
 
+    /*private void loadCantidadManifiestoAsignado() {
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
+    }*/
+
+
+    private void cargarLabelCantidad(){
+        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
+
+        if(bandera!=null){
+            loadCantidadManifiestoAsignado();
+        }else{
+            loadCantidadManifiestoAsignadoNO();
+        }
+    }
+
     private void loadCantidadManifiestoAsignado() {
         lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
+    }
+
+
+    private void loadCantidadManifiestoAsignadoNO() {
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta());
     }
 
 
