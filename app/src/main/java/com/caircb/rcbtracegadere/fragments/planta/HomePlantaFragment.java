@@ -129,11 +129,10 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
     }
 
-    private void loadCantidadManifiestoAsignado(){
-
-        //lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
-
+    private void loadCantidadManifiestoAsignado() {
+        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
     }
+
 
 
 
