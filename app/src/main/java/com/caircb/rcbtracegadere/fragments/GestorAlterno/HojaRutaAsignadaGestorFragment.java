@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.fragments.GestorAlterno;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemLotePadre;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
@@ -160,4 +162,6 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         super.onDestroy();
         //recyclerView.destroyDrawingCache();
     }
+
+
 }

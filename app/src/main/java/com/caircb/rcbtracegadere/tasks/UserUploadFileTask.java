@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.DtoFile;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
@@ -17,6 +18,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.List;
+
+import okhttp3.internal.Util;
 
 public class UserUploadFileTask {
 
@@ -88,8 +91,8 @@ public class UserUploadFileTask {
         try {
             this.listaFileDefauld = listaFileDefauld;
             //fotos novedades frecuente...
-            novedadesGestores = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR);
-
+            //novedadesGestores = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR);
+            //fotosGestores = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauldAllFotos(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR, MyConstant.STATUS_GESTORES);
 
             sendFileDefauld(0);
         }catch (Exception e){
@@ -117,6 +120,14 @@ public class UserUploadFileTask {
             file = null;
             sendFileMotivoNoRecoleccion(0);
         }
+
+        /*
+        if(novedadesGestores != null && position < novedadesGestores.size()){
+            file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(novedadesGestores.get(position));
+            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position, 12, novedadesGestores.get(position));
+        }else {
+            finalizar();
+        }*/
     }
 
     private void sendFileMotivoNoRecoleccion(Integer position){
@@ -160,6 +171,10 @@ public class UserUploadFileTask {
                         MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
                         sendFileDefauld(index + 1);
                     }
+                    /*else if(tipo==12){
+                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
+                        sendFileNovedadFrecuente(index + 1);
+                    }*/
                     else if(tipo==2l){
                         MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
                         sendFileNovedadFrecuente(index + 1);
