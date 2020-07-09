@@ -109,13 +109,13 @@ public class DialogPlacas extends MyDialog {
         builder = new DialogBuilder(getContext());
         builder.setMessage("¿Realizara revisión de pesajes por desecho?");
         builder.setCancelable(true);
-        builder.setPositiveButton("OK", new View.OnClickListener() {
+        builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+idVehiculo);
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
@@ -129,15 +129,29 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,"");
                 cargarManifiesto();
+                //consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                //consultarManifiestosPlanta.execute();
                 builder.dismiss();
                 dismiss();
             }
         });
         builder.show();
+        cargarLabelCantidad();
     }
 
+    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
+        @Override
+        public void onSuccessful() {
+            loadCantidadManifiestoAsignado();
+        }
+    };
+
+    private void cargarManifiesto(){
+        consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
+        consultarHojaRutaTask.execute();
+    }
 
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
@@ -159,21 +173,32 @@ public class DialogPlacas extends MyDialog {
         return defaulSpiner;
     }
 
-    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
-        @Override
-        public void onSuccessful() {
+    /*private void loadCantidadManifiestoAsignado() {
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
+    }*/
+
+
+    private void cargarLabelCantidad(){
+        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
+
+        if(bandera!=null){
             loadCantidadManifiestoAsignado();
+        }else{
+            loadCantidadManifiestoAsignadoNO();
         }
-    };
+    }
 
     private void loadCantidadManifiestoAsignado() {
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
     }
 
-    private void cargarManifiesto(){
-        consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
-        consultarHojaRutaTask.execute();
+
+    private void loadCantidadManifiestoAsignadoNO() {
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta());
     }
+
+
 
 
 }
