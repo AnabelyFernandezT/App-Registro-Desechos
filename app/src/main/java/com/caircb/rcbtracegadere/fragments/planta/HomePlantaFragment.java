@@ -16,6 +16,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
+import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
@@ -112,7 +113,14 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnListaAsignadaTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+                //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
+                if(bandera!=null){
+                    setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                }else{
+                    setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
+                }
 
 
             }
@@ -129,11 +137,10 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
     }
 
-    private void loadCantidadManifiestoAsignado(){
-
-        //lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
-
+    private void loadCantidadManifiestoAsignado() {
+        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
     }
+
 
 
 
