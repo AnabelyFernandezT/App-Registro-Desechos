@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
-@Entity(tableName = (ManifiestoSedeEntity.TABLE))
-public class ManifiestoSedeEntity {
-    public static final String TABLE = "tb_manifiestos_sede";
+@Entity(tableName = (ManifiestoPlantaEntity.TABLE))
+public class ManifiestoPlantaEntity {
+    public static final String TABLE = "tb_manifiestos_planta";
 
     @PrimaryKey(autoGenerate = true)
     private Integer _id;
@@ -22,8 +20,15 @@ public class ManifiestoSedeEntity {
 
     private Integer idTransporteVehiculo;
 
+    public ManifiestoPlantaEntity() {
+    }
 
-    public ManifiestoSedeEntity() {
+    public Integer getIdTransporteVehiculo() {
+        return idTransporteVehiculo;
+    }
+
+    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
+        this.idTransporteVehiculo = idTransporteVehiculo;
     }
 
     public Integer get_id() {
@@ -57,14 +62,6 @@ public class ManifiestoSedeEntity {
 
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
-    }
-
-    public Integer getIdTransporteVehiculo() {
-        return idTransporteVehiculo;
-    }
-
-    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
-        this.idTransporteVehiculo = idTransporteVehiculo;
     }
 }
 

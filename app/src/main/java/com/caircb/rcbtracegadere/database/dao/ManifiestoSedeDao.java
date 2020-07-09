@@ -41,7 +41,7 @@ public abstract class ManifiestoSedeDao {
             "            (SELECT COUNT(idManifiestoDetalleValor) " +
             "            FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                                       INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
-            "            WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
+            "            WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 and M.idTransporteVehiculo=:vehiculo) as bultosSelecionado, " +
             "            (SELECT COUNT(idManifiestoDetalleValor) " +
             "            FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                                       INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
@@ -49,7 +49,7 @@ public abstract class ManifiestoSedeDao {
             "            from tb_manifiestos_sede MC  " +
             "where (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  order by nombreCliente")
     @Transaction
-    public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search);
+    public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search, Integer vehiculo);
 
 
     @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
@@ -71,12 +71,14 @@ public abstract class ManifiestoSedeDao {
             entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
+            entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
         }
         else if(entity!=null  ){
             entity = new ManifiestoSedeEntity();
             entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
+            entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
         }
 
 

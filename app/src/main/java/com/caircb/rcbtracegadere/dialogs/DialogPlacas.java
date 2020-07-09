@@ -15,14 +15,11 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
-import com.caircb.rcbtracegadere.database.entity.RutasEntity;
-import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
-import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarVehiculosSedeTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +29,14 @@ public class DialogPlacas extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
-    UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
+    Integer idPlaca;
+    //UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
     DialogBuilder builder;
+    UserConsultarVehiculosSedeTask consultarVehiculos;
+    UserConsultarManifiestosPlantaTask consultarManifiestosPlanta;
 
     public DialogPlacas(@NonNull Context context) {
         super(context, R.layout.dialog_spinner);
@@ -64,6 +64,7 @@ public class DialogPlacas extends MyDialog {
                 if(position>0){
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
+                    idPlaca = spinnerPlacas.getId();
                 }
 
             }
@@ -84,7 +85,7 @@ public class DialogPlacas extends MyDialog {
             @Override
             public void onClick(View v) {
                 dialogoConfirmacion();
-                dismiss();
+                //dismiss();
             }
         });
 
@@ -93,15 +94,15 @@ public class DialogPlacas extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacasInicioRutaDisponible(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacasInicioRutaDisponible.OnVehiculoListener() {
+        consultarVehiculos = new UserConsultarVehiculosSedeTask(getActivity());
+        consultarVehiculos.setOnVehiculoListener(new UserConsultarVehiculosSedeTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
                 listaPlacasDisponibles = catalogos;
                 spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
             }
         });
-        consultarPlacasInicioRutaDisponible.execute();
+        consultarVehiculos.execute();
     }
 
     private void dialogoConfirmacion(){
@@ -114,14 +115,24 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                cargarManifiesto();
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
+                //cargarManifiesto();
+                consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                consultarManifiestosPlanta.execute();
                 builder.dismiss();
+                dismiss();
             }
         });
         builder.setNegativeButton("NO", new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+                int idVehiculo = c!=null?c.getIdSistema():-1;
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                cargarManifiesto();
                 builder.dismiss();
+                dismiss();
             }
         });
         builder.show();

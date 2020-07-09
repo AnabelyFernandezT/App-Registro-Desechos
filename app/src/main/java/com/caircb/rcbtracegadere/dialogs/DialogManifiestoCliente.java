@@ -56,7 +56,7 @@ public class DialogManifiestoCliente extends MyDialog {
                 }else{
                     MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,txtManifiestoCliente.getText().toString());
                     DialogManifiestoCliente.this.dismiss();
-                    //principal.vistaPrevia(idManifiesto,tipoPaquete);
+                    principal.vistaPrevia(idManifiesto,tipoPaquete);
                 }
             }
         });

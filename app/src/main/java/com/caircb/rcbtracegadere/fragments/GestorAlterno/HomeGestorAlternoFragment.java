@@ -5,19 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
-import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarLotePadreTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 
 public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
 

@@ -86,6 +86,7 @@ public class WebService {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                         return chain.proceed(chain.request().newBuilder().addHeader("Authorization", "Bearer "+ MySession.getId()).build());
+
                 }
             });
 
