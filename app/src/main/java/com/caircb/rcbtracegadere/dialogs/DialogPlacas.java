@@ -115,7 +115,7 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+idVehiculo);
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
@@ -129,7 +129,7 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,"");
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
@@ -138,6 +138,7 @@ public class DialogPlacas extends MyDialog {
             }
         });
         builder.show();
+        loadCantidadManifiestoAsignado();
     }
 
 
@@ -161,21 +162,11 @@ public class DialogPlacas extends MyDialog {
         return defaulSpiner;
     }
 
-    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
-        @Override
-        public void onSuccessful() {
-            loadCantidadManifiestoAsignado();
-        }
-    };
-
     private void loadCantidadManifiestoAsignado() {
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
     }
 
-    private void cargarManifiesto(){
-        consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
-        consultarHojaRutaTask.execute();
-    }
+
 
 
 }
