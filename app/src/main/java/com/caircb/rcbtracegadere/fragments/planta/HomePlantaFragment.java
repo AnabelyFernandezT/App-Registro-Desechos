@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
@@ -138,7 +139,9 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     }
 
     private void cargarLabelCantidad(){
-        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idVehiculo = Integer.parseInt(valor);
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
 
         if(bandera!=null){
