@@ -112,7 +112,14 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnListaAsignadaTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+                //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
+                if(bandera!=null){
+                    setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                }else{
+                    setNavegate(ManifiestoPlantaFragment.newInstance());
+                }
 
 
             }

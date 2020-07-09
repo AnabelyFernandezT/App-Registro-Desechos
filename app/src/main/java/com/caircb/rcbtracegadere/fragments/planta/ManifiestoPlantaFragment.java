@@ -41,7 +41,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnManifiestoCancel:
-                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                setNavegate(HomePlantaFragment.create());
                 break;
             case R.id.btnManifiestoNext:
               /*  if(manifiestoPlanta.validaNovedadesFrecuentesPendienteFotos()){
