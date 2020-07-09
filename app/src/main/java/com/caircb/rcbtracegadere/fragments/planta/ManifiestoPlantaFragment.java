@@ -8,16 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
-import androidx.annotation.Nullable;
-
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.dialogs.DialogManifiestoCliente;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -41,7 +35,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnManifiestoCancel:
-                setNavegate(HomePlantaFragment.create());
+                setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                 break;
             case R.id.btnManifiestoNext:
               /*  if(manifiestoPlanta.validaNovedadesFrecuentesPendienteFotos()){
@@ -73,7 +67,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                             @Override
                             public void onSuccessful() {
                                 messageBox("Datos Guardados");
-                                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                                setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                             }
                         });
                         userRegistrarPlanta.execute();

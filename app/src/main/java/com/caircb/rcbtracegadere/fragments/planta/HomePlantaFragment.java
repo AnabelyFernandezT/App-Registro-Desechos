@@ -16,6 +16,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
+import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
@@ -118,7 +119,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 if(bandera!=null){
                     setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 }else{
-                    setNavegate(ManifiestoPlantaFragment.newInstance());
+                    setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                 }
 
 

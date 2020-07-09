@@ -130,9 +130,9 @@ public class DialogPlacas extends MyDialog {
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,"");
-                //cargarManifiesto();
-                consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
-                consultarManifiestosPlanta.execute();
+                cargarManifiesto();
+                //consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                //consultarManifiestosPlanta.execute();
                 builder.dismiss();
                 dismiss();
             }
@@ -141,6 +141,17 @@ public class DialogPlacas extends MyDialog {
         loadCantidadManifiestoAsignado();
     }
 
+    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
+        @Override
+        public void onSuccessful() {
+            loadCantidadManifiestoAsignado();
+        }
+    };
+
+    private void cargarManifiesto(){
+        consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
+        consultarHojaRutaTask.execute();
+    }
 
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
