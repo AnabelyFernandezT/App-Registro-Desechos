@@ -36,6 +36,9 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado<>1 ")
     public abstract int contarHojaRutaProcesada();
 
+    @Query("select count(*) from tb_manifiestos where estado=2 and estadoFinRuta=0")
+    public abstract int contarHojaRutaProcesadaPlanta();
+
     @Query("select count(*) from tb_manifiestos where estado<>1 and idSubRuta=:idSubruta and idChoferRecolector=:idChoferRecolector ")
     public abstract int contarHojaRutaProcesadaPara(Integer idSubruta, Integer idChoferRecolector);
 
