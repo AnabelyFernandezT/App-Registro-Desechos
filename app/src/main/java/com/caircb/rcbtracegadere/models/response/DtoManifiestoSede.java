@@ -10,18 +10,9 @@ public class DtoManifiestoSede {
     private Integer idTransporteVehiculo;
     private List<DtoManifiestoDetalleSede> hojaRutaDetalle;
 
-    private Integer idTransporteVehiculo;
-
     public DtoManifiestoSede() {
     }
 
-    public Integer getIdTransporteVehiculo() {
-        return idTransporteVehiculo;
-    }
-
-    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
-        this.idTransporteVehiculo = idTransporteVehiculo;
-    }
 
     public Integer getIdAppManifiesto() {
         return idManifiesto;

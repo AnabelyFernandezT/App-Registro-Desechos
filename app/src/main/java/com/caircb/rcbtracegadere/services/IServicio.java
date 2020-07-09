@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
+import com.caircb.rcbtracegadere.models.request.RequestRegistroGenerador;
 import com.caircb.rcbtracegadere.models.request.RequestRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
@@ -114,4 +115,7 @@ public interface IServicio {
 
     @PUT("Registro/registroRutaTrasladoInicioFin")
     Call<DtoInfo>registrarRuteoRecollecion(@Body RequestRuteoRecoleccion model);
+
+    @POST("Registro/registroFotoManifiestoPadre")
+    Call<DtoInfo> registrarRecoleccionGestores(@Body RequestRegistroGenerador model);
 }

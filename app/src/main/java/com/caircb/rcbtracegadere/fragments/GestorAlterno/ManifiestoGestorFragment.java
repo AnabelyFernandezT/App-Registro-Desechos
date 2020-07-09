@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarGestorAlternoTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.caircb.rcbtracegadere.utils.Utils;
 
@@ -36,6 +38,8 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     DialogFirma dialogFirma;
     Bitmap firmaConfirmada;
     private boolean firma = false;
+    EditText txtCorreo,txtNovedad;
+    UserRegistrarGestorAlternoTask registrarGestorAlterno;
 
     @Override
     public void onClick(View v) {
@@ -44,7 +48,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 setNavegate(HojaRutaAsignadaGestorFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
-                if(manifiestoGestor.validaNovedadesFrecuentesPendienteFotos()){
+               /* if(manifiestoGestor.validaNovedadesFrecuentesPendienteFotos()){
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }
@@ -56,19 +60,15 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 if(manifiestoGestor.validaPeso()){
                     messageBox("Se requiere que ingrese el peso");
                     return;
-                }
+                }*/
 
 
-                double peso = manifiestoGestor.guardar();
-                userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso);
-                userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
-                    @Override
-                    public void onSuccessful() {
-                       messageBox("Datos Guardados");
-                       setNavegate(HojaRutaAsignadaGestorFragment.newInstance());
-                    }
-                });
-                userRegistrarPlanta.execute();
+               // double peso = manifiestoGestor.guardar();
+                String novedad = txtNovedad.getText().toString();
+                Double peso = Double.parseDouble(txtPesoTotal.getText().toString());
+                String correo = txtCorreo.getText().toString();
+                registrarGestorAlterno = new UserRegistrarGestorAlternoTask(getActivity(),idAppManifiesto,novedad,peso,correo);
+                registrarGestorAlterno.execute();
 
                 break;
         }
@@ -112,6 +112,9 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
         manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
+        txtNovedad = getView().findViewById(R.id.txtNovedad);
+        txtCorreo = getView().findViewById(R.id.txtCorreo);
+
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override

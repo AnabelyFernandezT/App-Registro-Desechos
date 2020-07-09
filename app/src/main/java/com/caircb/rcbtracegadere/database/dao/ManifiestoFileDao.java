@@ -21,6 +21,7 @@ public abstract class ManifiestoFileDao {
     public static final Integer FOTO_NOVEDAD_FRECUENTE=1;
     public static final Integer FOTO_NO_RECOLECCION=2;
     public static final Integer FOTO_NOVEDAD_FRECUENTE_RECEPCION=3;
+    public static final Integer FOTO_NOVEDAD_GESTOR = 4;
     public static final Integer FOTO_FIRMA_TRANSPORTISTA=10;
     public static final Integer FOTO_FIRMA_TECNICO_GENERADOR=11;
     public static final Integer FOTO_FIRMA_OPERADOR1=12;
@@ -53,6 +54,9 @@ public abstract class ManifiestoFileDao {
 
     @Query("select code as codigo ,fileUrl as urlImagen from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo and tipo=:tipo")
     public abstract List<RequestNovedadFoto> consultarFotografias(Integer idAppManifiesto,Integer idCatalogo,Integer tipo);
+
+    @Query("select code as codigo ,fileUrl as urlImagen from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and tipo=:tipo")
+    public abstract List<RequestNovedadFoto> consultarFotografiasGestores(Integer idAppManifiesto,Integer tipo);
 
     @Query("select _id  from tb_manifiestos_file" +
             " where idAppManifiesto=:idAppManifiesto and tipo=:tipo and sincronizado=0")
