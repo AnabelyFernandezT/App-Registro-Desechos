@@ -35,6 +35,7 @@ public final class MySession {
     final static String DESTROY="isDestroy";
     final static String STOP="isStop";
     final static String ID_SUBRUTA = "idSubRuta";
+    final static String DESTINO_ESPECIFICO = "destinoEspecifico";
 
     public static boolean isLocalStorage(){
         return pSharedPref!=null;
@@ -227,5 +228,13 @@ public final class MySession {
     public static Integer getIdSubRuta(){
         String str = get(ID_SUBRUTA);
         return str!=null? Integer.parseInt(str):-1;
+    }
+
+    public static void setDestinoEspecifico(String destinoEspecifico){
+        set(DESTINO_ESPECIFICO,""+destinoEspecifico);
+    }
+    public static String getDestinoEspecifico(){
+        String str = get(DESTINO_ESPECIFICO);
+        return str!=null? str : "";
     }
 }

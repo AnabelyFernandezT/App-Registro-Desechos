@@ -262,7 +262,7 @@ public class DialogFinRutaHoteles extends MyDialog {
         consultaDestinoEspecifico = new UserDestinoEspecificoTask(getActivity());
         consultaDestinoEspecifico.setOnDestinoListener(new UserDestinoEspecificoTask.OnDestinoListener() {
             @Override
-            public void onSuccessful(List<DtoCatalogo> catalogos) {
+            public void onSuccessful(List<DtoCatalogo> catalogos, Integer idDestinoX) {
                 destinosEspecificos = catalogos;
                 listaDestinoParticular = cargarSpinnerDestino(listaDestinoParticular,catalogos,true);
             }

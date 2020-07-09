@@ -28,6 +28,7 @@ public class UserUploadFileTask {
     private StorageReference uploadeRef;
     private List<DtoFile> listaFileDefauld;
     private List<Long> listaFotoNovedadFrecuente;
+    private List<Long> novedadesGestores;
     private List<Long> listaFotoMotivoNoRecoleccion;
     private ItemFile file;
 
@@ -80,6 +81,22 @@ public class UserUploadFileTask {
         }
     }
 
+    public void uploadGestoresAlternos(
+            List<DtoFile> listaFileDefauld,
+            Integer idAppManifiesto
+    ){
+        try {
+            this.listaFileDefauld = listaFileDefauld;
+            //fotos novedades frecuente...
+            novedadesGestores = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR);
+
+
+            sendFileDefauld(0);
+        }catch (Exception e){
+            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+        }
+    }
+
     private void sendFileDefauld(Integer position){
         try {
             if (listaFileDefauld!=null && position < listaFileDefauld.size()) {
@@ -107,6 +124,16 @@ public class UserUploadFileTask {
             file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(listaFotoMotivoNoRecoleccion.get(position));
             uploadeRef = storageRef.child(this.path+"/motivonorecoleccion/"+file.getUrl());
             sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,3l,listaFotoMotivoNoRecoleccion.get(position));
+        }else{
+            finalizar();
+        }
+    }
+
+    private void sendFileNovedades(Integer position){
+        if(novedadesGestores!=null && position < novedadesGestores.size()){
+            file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(novedadesGestores.get(position));
+            uploadeRef = storageRef.child(this.path+"/NovedadesExtras/"+file.getUrl());
+            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,41,novedadesGestores.get(position));
         }else{
             finalizar();
         }
@@ -140,6 +167,10 @@ public class UserUploadFileTask {
                     else if (tipo==3l){
                         MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
                         sendFileMotivoNoRecoleccion(index + 1);
+                    }
+                    else if (tipo==41){
+                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
+                        sendFileNovedades(index + 1);
                     }
                 }
             });

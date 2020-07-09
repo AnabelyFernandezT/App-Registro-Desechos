@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.services.WebService;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -19,10 +19,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserConsultarPlacaRutasSedeTask  extends MyRetrofitApi implements RetrofitCallbacks {
-    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
-
-    public UserConsultarPlacaRutasSedeTask(Context context) {
+public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements RetrofitCallbacks {
+    public UserConsultarVehiculosSedeTask(Context context) {
         super(context);
     }
 
@@ -35,20 +33,19 @@ public class UserConsultarPlacaRutasSedeTask  extends MyRetrofitApi implements R
     @Override
     public void execute() {
         progressShow("Consultando vihiculos disponibles...");
-
         RequestDataCatalogo requestDataCatalogo = requestDataCatalogo();
 
-        if(requestDataCatalogo!=null){
+        if (requestDataCatalogo!= null){
+
             WebService.api().obtenerCatalogoPlacasSede(requestDataCatalogo).enqueue(new Callback<List<DtoCatalogo>>() {
                 @Override
                 public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                     if(response.isSuccessful()){
                         MyApp.getDBO().catalogoDao().saveOrUpdate((List<DtoCatalogo>) response.body(),3);
                         if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful((List<DtoCatalogo>) response.body());
-
-                    }else{
-                        progressHide();
                     }
+                    progressHide();
+
                 }
 
                 @Override
@@ -59,20 +56,20 @@ public class UserConsultarPlacaRutasSedeTask  extends MyRetrofitApi implements R
 
         }
 
-
     }
 
     RequestDataCatalogo requestDataCatalogo(){
+        Integer idDestinatario = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
         RequestDataCatalogo rq = new RequestDataCatalogo();
         rq.setFecha(new Date());
-        rq.setData("4");
+        rq.setData(String.valueOf(idDestinatario));//lugar logeado
         rq.setDataAuxi("");
         rq.setTipo(3);
 
         return rq;
     }
+
     public void setOnVehiculoListener(@NonNull OnVehiculoListener l){
         mOnVehiculoListener = l;
     }
-
 }

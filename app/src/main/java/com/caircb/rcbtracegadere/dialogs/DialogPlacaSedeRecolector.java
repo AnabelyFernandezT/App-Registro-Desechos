@@ -18,8 +18,10 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacaRutasSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
+import com.caircb.rcbtracegadere.tasks.UserConsultarVehiculosSedeTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,10 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
     String placa;
-    UserConsultarPlacaRutasSedeTask consultarPlacasInicioRutaDisponible;
+    //UserConsultarPlacaRutasSedeTask consultarPlacasInicioRutaDisponible;
+    UserConsultarVehiculosSedeTask consultarPlacas;
     LinearLayout btnIngresarApp, btnCancelarApp;
-    UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
+    UserConsultarManifiestosSedeTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
 
 
@@ -84,7 +87,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,3);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                //cargarManifiesto();
+                cargarManifiesto();
                 dismiss();
             }
         });
@@ -94,15 +97,15 @@ public class DialogPlacaSedeRecolector extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarPlacasInicioRutaDisponible = new UserConsultarPlacaRutasSedeTask(getActivity());
-        consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarPlacaRutasSedeTask.OnVehiculoListener() {
+        consultarPlacas = new UserConsultarVehiculosSedeTask(getActivity());
+        consultarPlacas.setOnVehiculoListener(new UserConsultarVehiculosSedeTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
                 listaPlacasDisponibles = catalogos;
                 spinnerPlacas = cargarSpinnerPalca(spinnerPlacas,catalogos,true);
             }
         });
-        consultarPlacasInicioRutaDisponible.execute();
+        consultarPlacas.execute();
     }
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
@@ -136,7 +139,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     }
 
     private void cargarManifiesto(){
-        consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
+        consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(_activity);
         consultarHojaRutaTask.execute();
     }
 

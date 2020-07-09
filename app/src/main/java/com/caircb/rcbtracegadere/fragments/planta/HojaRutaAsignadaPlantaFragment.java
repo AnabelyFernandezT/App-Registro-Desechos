@@ -1,31 +1,27 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
-import android.app.Dialog;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
+import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
-import com.caircb.rcbtracegadere.dialogs.DialogPlantaRecepcionManifiesto;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
+import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
+import com.caircb.rcbtracegadere.fragments.Sede.ManifiestoSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
-import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
-import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,19 +31,17 @@ import java.util.List;
  * Use the {@link HojaRutaAsignadaPlantaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.OnClickListener {
+public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.OnClickListener, OnBarcodeListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
-    RecyclerView recyclerView;
-    ManifiestoAdapter recyclerviewAdapter;
-    //DialogPlantaRecepcionManifiesto dialogOptionsManifiesto;
+
+    private RecyclerView recyclerView;
+    private ManifiestoAdapterSede recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiesto> rowItems;
+    private List<ItemManifiestoSede> rowItems;
     private SearchView searchView;
-
-    RecepcionPlantaFragment manifiestoPlantaFragment;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -75,10 +69,11 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoAdapterSede(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);
+
         searchView.setOnSearchListener(new SearchView.OnSearchListener() {
             @Override
             public void onSearch(String data) {
@@ -88,18 +83,24 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     }
 
     private void filtro(String texto){
-        List<ItemManifiesto> result = new ArrayList<>();
-        List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigPlanta(texto);
+        List<ItemManifiestoSede> result = new ArrayList<>();
+        List<ItemManifiestoSede> listaItems = new ArrayList<>() ;
+        listaItems =  MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif(texto);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
+
 
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta();
+        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif();
+        adapterList();
+
+    }
+
+    private void adapterList(){
         recyclerviewAdapter.setTaskList(rowItems);
         recyclerView.setAdapter(recyclerviewAdapter);
 
@@ -107,7 +108,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getNumeroManifiesto(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -120,19 +121,60 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
-                        openModal(rowItems.get(position).getIdAppManifiesto());
+                        //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        //menu(position);
+                        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(rowItems.get(position).getIdTransporteVehiculo().toString());
+                                if(bandera!=null){
+                                    setNavegate(ManifiestoPlantaCheckFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                                }else{
+                                    setNavegate(ManifiestoPlantaFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                                }
                         break;
                     case R.id.btn_manifiesto_more:
-                        String nombre = "";
                         break;
                 }
             }
         });
-        DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
-        recyclerView.addItemDecoration(divider);
+        //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
+        //recyclerView.addItemDecoration(divider);
     }
+
+    @Override
+    public void reciveData(String data) {
+
+        Boolean estadoBulto = MyApp.getDBO().manifiestoPlantaDetalleValorDao().verificarBultoEstado(data);
+
+        if(estadoBulto==null){
+            messageBox("CODIGO QR NO EXISTE..!");
+        }else{
+            if (estadoBulto){
+                messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
+            }else if (!estadoBulto){
+                MyApp.getDBO().manifiestoPlantaDetalleValorDao().actualizarBultoEstado(data);
+                rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif();
+                adapterList();
+            }
+        }
+
+        /*List<DtoDespachoCodigoBarras> listaCodigoBarras = getListBultosByCodigoBarras(data);
+        String mensaje;
+
+        if(listaCodigoBarras.size() > 0){
+            if(listaCodigoBarras.size() > 1){
+                openSeleccionarListaEmpaque(listaCodigoBarras);
+            }else{
+                DtoDespachoCodigoBarras codigo = listaCodigoBarras.get(0);
+                Integer despachoDetalleId = codigo.getDespachoDetalleId();
+                Integer cantidad = codigo.getCantidad();
+                tratamientoProductoEncontrado(despachoDetalleId, cantidad);
+            }
+        }else{
+            mensaje = "EL ITEM " + data + " NO EXISTE DENTRO DE NINGUN DESPACHO";
+            mostrarMensajeBarra(0, mensaje);
+        }*/
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -151,17 +193,9 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
         }
     }
 
-    private void  openModal(Integer idManifiesto){
-        /*Window window;
-        dialogOptionsManifiesto = new DialogPlantaRecepcionManifiesto(getActivity(),idManifiesto);
-        dialogOptionsManifiesto.setCancelable(false);
-        dialogOptionsManifiesto.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogOptionsManifiesto.show();
-
-        window = dialogOptionsManifiesto.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);*/
-
-        setNavegate(ManifiestoPlantaFragment.newInstance(idManifiesto));
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //recyclerView.destroyDrawingCache();
     }
-
 }

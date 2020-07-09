@@ -6,8 +6,17 @@ public class ItemManifiestoSede {
     private String nombreCliente;
     private Integer totalBultos;
     private Integer bultosSelecionado;
+    private Integer idTransporteVehiculo;
 
     public ItemManifiestoSede() {
+    }
+
+    public Integer getIdTransporteVehiculo() {
+        return idTransporteVehiculo;
+    }
+
+    public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
+        this.idTransporteVehiculo = idTransporteVehiculo;
     }
 
     public Integer getTotalBultos() {

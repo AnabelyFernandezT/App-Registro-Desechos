@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
@@ -208,7 +210,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("");
-                builder.setMessage("El cliente es registro generado");
+                builder.setMessage("¿El cliente es registro generador?");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
@@ -217,7 +219,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     manifiestoCliente.setCancelable(false);
                     manifiestoCliente.show();
-
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -236,7 +237,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
         }
     }
-
 
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
