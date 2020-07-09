@@ -4,20 +4,20 @@ import java.util.Date;
 import java.util.List;
 
 public class RequestLote {
-    private Integer idLoteCotenedor;
+    private Integer idLoteContenedor;
     private Date fecha;
 
-    public RequestLote(Integer idLoteCotenedor, Date fecha) {
-        this.idLoteCotenedor = idLoteCotenedor;
+    public RequestLote(Integer idLoteContenedor, Date fecha) {
+        this.idLoteContenedor = idLoteContenedor;
         this.fecha = fecha;
     }
 
-    public Integer getIdLoteCotenedor() {
-        return idLoteCotenedor;
+    public Integer getIdLoteContenedor() {
+        return idLoteContenedor;
     }
 
-    public void setIdLoteCotenedor(Integer idLoteCotenedor) {
-        this.idLoteCotenedor = idLoteCotenedor;
+    public void setIdLoteContenedor(Integer idLoteContenedor) {
+        this.idLoteContenedor = idLoteContenedor;
     }
 
     public Date getFecha() {

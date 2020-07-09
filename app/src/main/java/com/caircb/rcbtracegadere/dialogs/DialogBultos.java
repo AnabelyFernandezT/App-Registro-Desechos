@@ -165,13 +165,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             @Override
             public void onSendImpresion(Integer pos) {
                 CatalogoItemValor item = bultos.get(pos);
-                //linear para probar sin impresiora
+                //Probar sin impresiora
+                /*************************************/
                 bultos.get(pos).setImpresion(true);
                 MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
                 listaValoresAdapter.filterList(bultos);
                 listaValoresAdapter.notifyDataSetChanged();
+                /*************************************/
 
-                ////IMPRIME ETIQUETA
+                ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
                 //imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), pos+1);
             }
         });

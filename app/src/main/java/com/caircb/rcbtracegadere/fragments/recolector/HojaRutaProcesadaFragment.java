@@ -23,11 +23,13 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2FragmentProcesada;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
     private List<ItemManifiesto> rowItems;
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
-    private ListView mDrawerMenuItems, mDialogMenuItems;
+    RutaInicioFinEntity rut;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -90,12 +92,13 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
                 filtro(data);
             }
         });
+        rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
     }
 
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto,rut.getIdSubRuta(),MySession.getIdUsuario());
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -105,7 +108,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosProcesados();
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosProcesados(rut.getIdSubRuta(),MySession.getIdUsuario());
         adapterList();
 
     }

@@ -88,7 +88,7 @@ public class MyAuthorization {
                 @Override
                 public void onResponse(Call<DtoUserCredential> call, Response<DtoUserCredential> response) {
                     if (response.isSuccessful()) {
-                        if (response.body().isExcito()) {
+                        if (response.body().isExito()) {
                             obtnerTokenAutorizacionFCM(response.body());
                         } else {
                             if (progressDialog != null) {
@@ -113,24 +113,9 @@ public class MyAuthorization {
         }
     }
 
-    private void guardarLugar(String nombreLugar){
-        try {
-            jsonLugares = new JSONArray(MySession.getLugares());
-            for (int i = 0; i < jsonLugares.length(); i++) {
-                json = jsonLugares.getJSONObject(i);
-                if (json.getString("nombre").equals(nombreLugar)) {
-                    MySession.setIdPerfil(json.getInt("idPerfil"));
-                    MySession.setLugarNombre(json.getString("nombre"));
-                    mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
-                    progressDialog.dismiss();
-                }
-            }
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-    }
 
 
+    /*
     private void lugarTrabajo (){
         final Dialog mdialog = new Dialog(getActivity());
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
@@ -207,12 +192,12 @@ public class MyAuthorization {
             }
         }
     }
+    */
 
     private void obtnerTokenAutorizacionFCM(final DtoUserCredential user){
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
-
                 registarAutorizacionFirebase(user,instanceIdResult.getToken());
             }
         }).addOnFailureListener(getActivity(), new OnFailureListener() {
@@ -232,7 +217,8 @@ public class MyAuthorization {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            registarTokenOnServer(user,token);
+                            seleccionarPerfilTrabajo(user,token);
+                            //registarTokenOnServer(user,token);
                         }else{
                             createUserFirebase(user,token);
                         }
@@ -253,7 +239,8 @@ public class MyAuthorization {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        registarTokenOnServer(user,token);
+                        seleccionarPerfilTrabajo(user,token);
+                        //registarTokenOnServer(user,token);
                     } else {
                         if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
                         message("Hay problemas cuando sincroniza sus credenciales de acceso, verifique su conexión a Internet");
@@ -264,6 +251,80 @@ public class MyAuthorization {
             if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
             message(e.getMessage());
         }
+    }
+
+    private void seleccionarPerfilTrabajo(final DtoUserCredential user, final String token){
+
+
+        final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
+        try{
+            MySession.setLugares(user.getListaEmpresas().get(0).getLugares());
+            jsonLugares = new JSONArray(MySession.getLugares());
+            for (int i = 0; i < jsonLugares.length(); i++){
+                json = jsonLugares.getJSONObject(i);
+
+                myListOfItems.add(new MenuItem(json.getInt("idPerfil"),json.getString("nombre")));
+
+            }
+            myListOfItems.add(new MenuItem("CANCELAR"));
+        }catch (JSONException e){
+            if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
+            return;
+            //message("");
+        }
+
+        if(myListOfItems.size()>1) {
+            final Dialog mdialog = new Dialog(getActivity());
+            if(progressDialog!=null && progressDialog.isShowing()){progressDialog.dismiss();}
+
+            dialogMenuBaseAdapter = new DialogMenuBaseAdapter(getActivity(), myListOfItems);
+            View view = progressDialog.getWindow().getLayoutInflater().inflate(R.layout.dialog_main, null);
+            mDialogMenuItems = (ListView) view.findViewById(R.id.custom_list);
+            mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
+            mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   mdialog.dismiss();
+                   progressDialog.show();
+                   guardarLugar(myListOfItems.get(position).getId(),myListOfItems.get(position).getNombre(),user,token);
+                }
+            });
+            mdialog.setTitle("MODULOS");
+            mdialog.setContentView(view);
+            mdialog.setCancelable(false);
+            mdialog.show();
+
+        }else if (myListOfItems.size()==1){
+            guardarLugar(myListOfItems.get(0).getId(),myListOfItems.get(0).getNombre(),user,token);
+        }else{
+            if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
+            message("Usuario sin perfiles de acceso");
+        }
+    }
+
+    private void guardarLugar(Integer perfilID,String nombreLugar,DtoUserCredential user, String token){
+
+        MySession.setIdPerfil(perfilID);
+        MySession.setLugarNombre(nombreLugar);
+
+        registarTokenOnServer(user,token);
+
+        /*
+        try {
+            jsonLugares = new JSONArray(MySession.getLugares());
+            for (int i = 0; i < jsonLugares.length(); i++) {
+                json = jsonLugares.getJSONObject(i);
+                if (json.getString("nombre").equals(nombreLugar)) {
+                    MySession.setIdPerfil(json.getInt("idPerfil"));
+                    MySession.setLugarNombre(json.getString("nombre"));
+                    mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
+                    progressDialog.dismiss();
+                }
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        */
     }
 
     private void registarTokenOnServer(final DtoUserCredential user, String token){
@@ -280,18 +341,20 @@ public class MyAuthorization {
             credentials.setEmpresa(MySession.getIdEmpresa());
             credentials.setImei(MySession.getIdDevice());
             credentials.setUsuario(MySession.getIdUsuario());
-            //credentials.setPerfil(MySession.getIdPerfil());
+            credentials.setPerfil(MySession.getIdPerfil());
 
             WebService.seg().registrarSession(credentials).enqueue(new Callback<DtoUserTokenCredentials>() {
                 @Override
                 public void onResponse(Call<DtoUserTokenCredentials> call, Response<DtoUserTokenCredentials> response) {
                     if(response.isSuccessful()) {
                         MySession.setLogin(true);
-                        //MySession.setId(response.body().getId());
+                        MySession.setId(response.body().getId());
                         MySession.setMenus(user.getListaEmpresas().get(0).getLugares().get(0).getMenus());
-                        //mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
-                        MySession.setLugares(user.getListaEmpresas().get(0).getLugares());
-                            lugarTrabajo();
+
+
+                        //if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
+                        mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
+
                     }else {
                         if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
                     }

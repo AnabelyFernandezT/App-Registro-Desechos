@@ -4,11 +4,17 @@ public class MenuItem {
     private String nombre;
     private boolean visible;
     private boolean enabled;
+    private Integer id;
 
     public  MenuItem(){
     }
 
     public MenuItem(String nombre){
+        this.nombre=nombre;
+    }
+
+    public MenuItem(Integer id,String nombre){
+        this.id=id;
         this.nombre=nombre;
     }
 
@@ -39,5 +45,13 @@ public class MenuItem {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

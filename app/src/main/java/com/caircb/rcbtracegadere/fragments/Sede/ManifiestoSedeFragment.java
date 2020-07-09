@@ -27,6 +27,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogBultosSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HojaRutaAsignadaGestorFragment;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.RecepcionGestorFragment;
+import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
@@ -71,7 +72,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnRetornarDetalleSede:
-                setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 break;
         }
 
@@ -170,12 +171,6 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         });
         dialogBultos.show();
     }
-
-    public void actualizarData(){
-        recyclerviewAdapter.notifyDataSetChanged();
-    }
-
-
 
     public static ManifiestoSedeFragment newInstance() {
         return new ManifiestoSedeFragment();

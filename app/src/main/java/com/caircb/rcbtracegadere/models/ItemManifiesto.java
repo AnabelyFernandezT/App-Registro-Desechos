@@ -9,9 +9,18 @@ public class ItemManifiesto {
     private String direccion;
     private String provincia;
     private String canton;
+    private String numeroPlacaVehiculo;
 
 
     public ItemManifiesto() {
+    }
+
+    public String getNumeroPlacaVehiculo() {
+        return numeroPlacaVehiculo;
+    }
+
+    public void setNumeroPlacaVehiculo(String numeroPlacaVehiculo) {
+        this.numeroPlacaVehiculo = numeroPlacaVehiculo;
     }
 
     public int getIdAppManifiesto() {

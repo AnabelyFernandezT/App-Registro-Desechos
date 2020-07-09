@@ -123,8 +123,29 @@ public class ManifiestoEntity {
 
     private String nombreDestinatario;
 
+    private Date fechaInicioRecorrecion;
+
+    private Integer idChoferRecolector;
+
+    private String numeroPlacaVehiculo;
 
     public ManifiestoEntity() {
+    }
+
+    public String getNumeroPlacaVehiculo() {
+        return numeroPlacaVehiculo;
+    }
+
+    public void setNumeroPlacaVehiculo(String numeroPlacaVehiculo) {
+        this.numeroPlacaVehiculo = numeroPlacaVehiculo;
+    }
+
+    public Integer getIdChoferRecolector() {
+        return idChoferRecolector;
+    }
+
+    public void setIdChoferRecolector(Integer idChoferRecolector) {
+        this.idChoferRecolector = idChoferRecolector;
     }
 
     public Integer get_id() {
@@ -448,6 +469,14 @@ public class ManifiestoEntity {
 
     public void setNombreDestinatario(String nombreDestinatario) {
         this.nombreDestinatario = nombreDestinatario;
+    }
+
+    public Date getFechaInicioRecorrecion() {
+        return fechaInicioRecorrecion;
+    }
+
+    public void setFechaInicioRecorrecion(Date fechaInicioRecorrecion) {
+        this.fechaInicioRecorrecion = fechaInicioRecorrecion;
     }
 }
 

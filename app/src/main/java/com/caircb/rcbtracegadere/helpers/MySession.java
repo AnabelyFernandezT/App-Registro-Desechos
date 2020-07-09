@@ -34,7 +34,7 @@ public final class MySession {
 
     final static String DESTROY="isDestroy";
     final static String STOP="isStop";
-
+    final static String ID_SUBRUTA = "idSubRuta";
 
     public static boolean isLocalStorage(){
         return pSharedPref!=null;
@@ -220,4 +220,12 @@ public final class MySession {
         set(STOP,""+stop);
     }
 
+
+    public static void setIdSubruta(Integer id){
+        set(ID_SUBRUTA,""+id);
+    }
+    public static Integer getIdSubRuta(){
+        String str = get(ID_SUBRUTA);
+        return str!=null? Integer.parseInt(str):-1;
+    }
 }

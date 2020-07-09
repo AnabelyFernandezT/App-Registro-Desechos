@@ -54,7 +54,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
     MyPrint print;
 
     public interface OnRegisterListener {
-        public void onSuccessful();
+        public void onSuccessful(Date fechaRecol);
         public void onFail();
     }
 
@@ -110,7 +110,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
     }
 
     private void register(){
-        RequestManifiesto request = createRequestManifiesto();
+        final RequestManifiesto request = createRequestManifiesto();
         if(request!=null){
             Gson g = new Gson();
             String f = g.toJson(request);
@@ -122,7 +122,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
                             //imprimirEtiquetas();
-                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
                             MyApp.getDBO().manifiestoDao().updateManifiestoToNoRecolectado(idAppManifiesto);
                             progressHide();
                             //ejecutar el proceso de imprecion..
@@ -168,6 +168,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
             rq.setNovedadFrecuente(createRequestNovedadFrecuente());
             rq.setNovedadNoRecoleccion(createRequestNoRecoleccion());
             rq.setEstado(3);
+            rq.setFechaInicioRecoleccion(model.getFechaInicioRecorrecion());
         }
         return  rq;
     }
@@ -261,7 +262,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
     }
 
     private String getPath() { return simpleDate.format(new Date());}
-
+/*
     private void imprimirEtiquetas(){
         try {
             print = new MyPrint(getActivity());
@@ -282,7 +283,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
     }
-
+*/
     public void setOnRegisterListener(@NonNull OnRegisterListener l){
         mOnRegisterListener =l;
     }

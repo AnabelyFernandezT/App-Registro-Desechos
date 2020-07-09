@@ -20,6 +20,9 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoMotivosNoRecoleccionDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoObservacionFrecuenteDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoPlantaDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoPlantaDetalleDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoPlantaDetalleValorDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDetalleDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDetalleValorDao;
@@ -28,6 +31,7 @@ import com.caircb.rcbtracegadere.database.dao.ImpresoraDao;
 import com.caircb.rcbtracegadere.database.dao.ParametroDao;
 import com.caircb.rcbtracegadere.database.dao.RutaInicioFinDao;
 import com.caircb.rcbtracegadere.database.dao.RutasDao;
+import com.caircb.rcbtracegadere.database.dao.RuteoRecoleccionDao;
 import com.caircb.rcbtracegadere.database.dao.TecnicoDao;
 import com.caircb.rcbtracegadere.database.dao.LoteDao;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
@@ -43,6 +47,9 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoMotivoNoRecoleccionEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoObservacionFrecuenteEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaDetalleValorEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleValorEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeEntity;
@@ -50,6 +57,7 @@ import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.database.entity.ImpresoraEntity;
 
@@ -82,7 +90,11 @@ import java.util.Locale;
         InformacionModulosEntity.class,
         ManifiestoSedeDetalleEntity.class,
         LoteHotelesEntity.class,
-        LotePadreEntity.class
+        LotePadreEntity.class,
+        RuteoRecoleccionEntity.class,
+        ManifiestoPlantaEntity.class,
+        ManifiestoPlantaDetalleEntity.class,
+        ManifiestoPlantaDetalleValorEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -172,6 +184,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoSedeDetalleValorDao manifiestoDetalleValorSede();
     public abstract InformacionModulosDao informacionModulosDao();
     public abstract LoteHotelesDao loteHotelesDao();
+    public abstract RuteoRecoleccionDao ruteoRecoleccion();
     public abstract LotePadreDao lotePadreDao();
+    public abstract ManifiestoPlantaDao manifiestoPlantaDao();
+    public abstract ManifiestoPlantaDetalleDao manifiestoPlantaDetalleDao();
+    public abstract ManifiestoPlantaDetalleValorDao manifiestoPlantaDetalleValorDao();
 
 }
