@@ -29,6 +29,7 @@ import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -61,6 +62,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
+    DialogBuilder dialogBuilder;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -163,13 +165,14 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("INICIAR RECOLECCION"))
                 {
-
-                    AlertDialog.Builder builderConfgirmaRecol= new AlertDialog.Builder(getActivity());
-                    builderConfgirmaRecol.setMessage("¿Seguro que desea INICIAR RECOLECCIÓN ?");
-                    builderConfgirmaRecol.setCancelable(false);
-                    builderConfgirmaRecol.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //Guardo la fecha de inicio recoleccion
+                    dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setMessage("¿Seguro que desea INICIAR RECOLECCIÓN ?");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("CONFIRMACIÓN");
+                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
                             Date fecha = AppDatabase.getDateTime();
                             //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                             MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(),fecha);
@@ -195,6 +198,24 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                             setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
                         }
+                    });
+                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+
+                    /*
+                    AlertDialog.Builder builderConfgirmaRecol= new AlertDialog.Builder(getActivity());
+                    builderConfgirmaRecol.setMessage("¿Seguro que desea INICIAR RECOLECCIÓN ?");
+                    builderConfgirmaRecol.setCancelable(false);
+                    builderConfgirmaRecol.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //Guardo la fecha de inicio recoleccion
+
+                        }
                     }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
@@ -202,6 +223,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                     });
                     AlertDialog dialogConfirmacion = builderConfgirmaRecol.create();
                     dialogConfirmacion.show();
+                     */
                 }
                 else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {

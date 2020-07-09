@@ -53,6 +53,7 @@ import com.itextpdf.text.pdf.PdfName;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.sql.SQLOutput;
@@ -65,7 +66,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private ListView mDrawerMenuItems, mDialogMenuItems;
     private DrawerLayout mDrawer;
     AlertDialog.Builder builder;
-    private TextView txtUserNombre, txtnombreLugarTrabajo;
+    private TextView txtUserNombre, txtnombreLugarTrabajo, nombreLugarTrabajo;
 
     List<DtoCatalogo> listaDestinos,destinosEspecificos;
     UserConsultarDestinosTask consultarDetino;
@@ -150,9 +151,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
         txtUserNombre = (TextView)findViewById(R.id.nombreUsuario);
         txtnombreLugarTrabajo = (TextView)findViewById(R.id.txtNombreLugarTrabajo);
+        nombreLugarTrabajo = (TextView) findViewById(R.id.nombreLugarTrabajo);
 
         txtUserNombre.setText(MySession.getUsuarioNombre());
         txtnombreLugarTrabajo.setText(MySession.getLugarNombre());
+        nombreLugarTrabajo.setText(MySession.getDestinoEspecifico());
+
 
         rowItems = new ArrayList<>();
 
@@ -360,26 +364,28 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     MySession.setIdPerfil(json.getInt("idPerfil"));
                     MySession.setLugarNombre(json.getString("nombre"));
                     if(nombreLugar.equals("TRANSPORTISTA")){
+                        MySession.setDestinoEspecifico("");
+                        initMenuLateral();
                         navegate((HomeTransportistaFragment.create()));
                     }else {
                         if(nombreLugar.equals("PLANTA")){
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+2);
                             traerDestinoEspecifico();
-                            navegate((HomePlantaFragment.create()));
+                            //navegate((HomePlantaFragment.create()));
                         } else {
                             if (nombreLugar.equals("SEDE")){
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+1);
                                 traerDestinoEspecifico();
-                                navegate(HomeSedeFragment.create());
+                                //navegate(HomeSedeFragment.create());
                             }else {
                                 if (nombreLugar.equals("HOTEL")){
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+4);
                                     traerDestinoEspecifico();
-                                    navegate(HomeHotelFragment.create());
+                                    //navegate(HomeHotelFragment.create());
                                 }else {
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+3);
                                     traerDestinoEspecifico();
-                                    navegate(HomeGestorAlternoFragment.create());
+                                    //navegate(HomeGestorAlternoFragment.create());
                                 }
                             }
                         }
@@ -387,6 +393,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     }
 
                     txtnombreLugarTrabajo.setText(MySession.getLugarNombre());
+                    nombreLugarTrabajo.setText(MySession.getDestinoEspecifico());
                 }
             }
         }catch (JSONException e){
@@ -399,9 +406,18 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         consultaDestinoEspecifico = new UserDestinoEspecificoTask(this);
         consultaDestinoEspecifico.setOnDestinoListener(new UserDestinoEspecificoTask.OnDestinoListener() {
             @Override
-            public void onSuccessful(List<DtoCatalogo> catalogos) {
+            public void onSuccessful(List<DtoCatalogo> catalogos, Integer idDestino) {
                 destinosEspecificos = catalogos;
                 selectDestinoEspecifico(catalogos);
+                if(idDestino == 1){
+                    navegate(HomeSedeFragment.create());
+                }else if(idDestino == 2){
+                    navegate((HomePlantaFragment.create()));
+                }else if (idDestino == 3){
+                    navegate(HomeGestorAlternoFragment.create());
+                }else if(idDestino ==4){
+                    navegate(HomeHotelFragment.create());
+                }
             }
         });
         consultaDestinoEspecifico.execute();
@@ -422,9 +438,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+destinosEspecificos.get(item).getId());
+                MySession.setDestinoEspecifico(destinosEspecificos.get(item).getNombre());
+                initMenuLateral();
                 //System.out.println("Acceso a la variable: "+MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
             }
         });
+        builder.setCancelable(false);
         builder.show();
 
     }
@@ -559,6 +578,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         });
         mdialog.setTitle("Modulos");
         mdialog.setContentView(view);
+        mdialog.setCancelable(false);
         mdialog.show();
     }
 
