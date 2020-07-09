@@ -11,7 +11,7 @@ import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 @Dao
 public abstract class ParametroDao {
 
-    @Query("select valor from tb_parametros where valor=:placa")
+    @Query("select valor from tb_parametros where valor=:placa and nombre= 'vehiculo_planta'")
     public abstract String fecthParametroValor(String placa);
 
     @Query("select valor from tb_parametros where nombre=:parametro")

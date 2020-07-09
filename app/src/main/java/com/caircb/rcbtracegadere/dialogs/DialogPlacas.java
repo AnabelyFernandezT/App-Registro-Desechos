@@ -115,7 +115,7 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idVehiculo);
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
@@ -130,7 +130,9 @@ public class DialogPlacas extends MyDialog {
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
-                cargarManifiesto();
+                //cargarManifiesto();
+                consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                consultarManifiestosPlanta.execute();
                 builder.dismiss();
                 dismiss();
             }
