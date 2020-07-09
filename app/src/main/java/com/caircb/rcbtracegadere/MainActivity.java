@@ -17,7 +17,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,7 +25,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogInformacionModulos;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HomeGestorAlternoFragment;
 import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
@@ -41,11 +43,13 @@ import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItem;
 import com.caircb.rcbtracegadere.models.request.RequestCredentials;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
+import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
 import com.google.firebase.auth.FirebaseAuth;
 import com.itextpdf.text.pdf.PdfName;
@@ -66,11 +70,11 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private DrawerLayout mDrawer;
     AlertDialog.Builder builder;
     private TextView txtUserNombre, txtnombreLugarTrabajo;
-
+    UserInformacionModulosTask informacionModulosTaskl;
     List<DtoCatalogo> listaDestinos,destinosEspecificos;
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
-
+    DialogInformacionModulos dialogInformacionModulos;
 
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private List<RowItem> rowItems;
@@ -89,6 +93,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     FragmentTransaction fragmentTransaction;
     FragmentManager fm;
 
+    UserInformacionModulosTask userInformacionModulosTask;
     UserUpdateAppTask userUpdateAppTask;
     UserConsultarCatalogosTask consultarCatalogosTask;
     PaquetesTask paquetesTask;
@@ -487,8 +492,18 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 case "Configurar":
                     openConfigurar();
                     break;
+                case "Información":
+                    openInformacion();
+                    break;
             }
         }
+    }
+
+    private void openInformacion(){
+
+        dialogInformacionModulos = new DialogInformacionModulos(this);
+        informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
+        informacionModulosTaskl.execute();
     }
 
     private void openModulos(){
@@ -503,6 +518,9 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     myListOfItems.add(new MenuItem(json.getString("nombre")));
                 }
             }
+            //MySession.getIdUsuario();
+
+
             jsonLugares=null;
             json=null;
             myListOfItems.add(new MenuItem("MENSAJES"));

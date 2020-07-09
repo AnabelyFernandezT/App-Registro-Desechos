@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,16 +11,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="1dp">
+    android:scrollbars="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <TextView
+        android:id="@+id/lblTituloRuta"
+        android:visibility="gone"
         android:textSize="20dp"
         android:textColor="@color/app_gadere"
         android:fontFamily="@font/quicksand_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="INFORMACIÓN GENERAL"></TextView>
+        android:text="INFORMACIÓN DE RUTA"></TextView>
+
+    <TextView
+        android:id="@+id/lblTituloRecoleccion"
+        android:textSize="20dp"
+        android:textColor="@color/app_gadere"
+        android:fontFamily="@font/quicksand_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="INFORMACIÓN DE RECOLECCIÓN"></TextView>
+
 
     <LinearLayout
         android:id="@+id/sectionGeneral"
@@ -24,7 +42,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:textSize="20dp"
@@ -105,10 +123,8 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/sectionEspecifica"
@@ -117,6 +133,14 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="5dp">
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="RECOLECCIÓN INDUSTRIAL"></TextView>
 
         <TextView
             android:textSize="20dp"
@@ -131,10 +155,11 @@
             android:layout_height="wrap_content">
 
             <CheckBox
-                android:id="@+id/chkFiscalizacionSi"
+                android:id="@+id/chkFiscalizacionNo"
+                android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SI"
+                android:text="NO"
                 tools:ignore="Suspicious0dp" />
 
             <LinearLayout
@@ -142,21 +167,24 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
                 <CheckBox
-                    android:id="@+id/chkFiscalizacionNo"
+                    android:id="@+id/chkFiscalizacionSi"
+                    android:enabled="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="70dp"
+                    android:paddingRight="5dp"
                     android:text="SI"
                     tools:ignore="Suspicious0dp" />
                 <CheckBox
                     android:id="@+id/chkFiscalizacionArcsa"
+                    android:enabled="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="10dp"
+                    android:paddingRight="5dp"
                     android:text="ARCSA"
                     tools:ignore="Suspicious0dp" />
                 <CheckBox
                     android:id="@+id/chkFiscalizacionMi"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Ministerio del Interior"
@@ -179,6 +207,7 @@
 
             <CheckBox
                 android:id="@+id/chkDevolucionRecipienteSi"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -186,6 +215,7 @@
 
             <CheckBox
                 android:id="@+id/chkDevolucionRecipienteNo"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -208,6 +238,7 @@
 
             <CheckBox
                 android:id="@+id/chkMontacargasSi"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -215,6 +246,7 @@
 
             <CheckBox
                 android:id="@+id/chkMontacargasNo"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -237,6 +269,7 @@
 
             <CheckBox
                 android:id="@+id/chkBalanzaSi"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -244,6 +277,7 @@
 
             <CheckBox
                 android:id="@+id/chkBalanzaNo"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -264,6 +298,7 @@
 
             <CheckBox
                 android:id="@+id/chkPresenciadoSi"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -271,6 +306,7 @@
 
             <CheckBox
                 android:id="@+id/chkPresenciadoNo"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -331,6 +367,5 @@
     </LinearLayout>
 
 
-
-
 </LinearLayout>
+</ScrollView>
