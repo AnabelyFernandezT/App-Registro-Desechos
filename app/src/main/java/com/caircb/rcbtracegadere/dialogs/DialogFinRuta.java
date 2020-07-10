@@ -53,7 +53,7 @@ public class DialogFinRuta extends MyDialog {
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
     String kilometrajeInicio;
-    Integer placaInicio, idInicioFin;
+    Integer placaInicio, idInicioFin ,idRuta;
     Date diaAnterior;
     Spinner listaDestino, listaDestinoParticular;
     String destino = "", destinos="";
@@ -234,11 +234,13 @@ public class DialogFinRuta extends MyDialog {
             //placaInicio = rut.getIdTransporteVehiculo();
             diaAnterior = rut.getFechaInicio();
             idInicioFin = rut.getIdRutaInicioFin();
+            idRuta = rut.getIdSubRuta();
 
         }
 
         //traer placa
-        Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+
         RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarNombre(idRuta);
         //CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoEspecifico(placaInicio,4);
         String subRuta = r!=null?r.getNombre():"";
