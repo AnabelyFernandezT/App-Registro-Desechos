@@ -120,13 +120,13 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-
-                if(bandera.equals("1")){
-                    setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
-                }else if(bandera.equals("2")){
-                    setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
+                if(bandera!=null) {
+                    if (bandera.equals("1")) {
+                        setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                    } else if (bandera.equals("2")) {
+                        setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
+                    }
                 }
-
 
             }
         });
@@ -148,10 +148,12 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
 
-        if(bandera.equals("1")){
-            loadCantidadManifiestoAsignado();
-        }else if(bandera.equals("2")){
-            loadCantidadManifiestoAsignadoNO();
+        if(bandera!=null) {
+            if (bandera.equals("1")) {
+                loadCantidadManifiestoAsignado();
+            } else if (bandera.equals("2")) {
+                loadCantidadManifiestoAsignadoNO();
+            }
         }
     }
 
