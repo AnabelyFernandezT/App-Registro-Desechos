@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -60,6 +61,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
     private ListView mDrawerMenuItems, mDialogMenuItems;
     DialogBuilder dialogBuilder;
     RutaInicioFinEntity rut;
+    ManifiestoEntity entity;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -98,14 +100,16 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
                 filtro(data);
             }
         });
-
+        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+        entity = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdTransporte(idVehiculo);
+
     }
 
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto,rut.getIdSubRuta(),MySession.getIdUsuario());
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto,entity.getIdSubRuta(),MySession.getIdUsuario());
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -115,7 +119,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta(rut.getIdSubRuta(),MySession.getIdUsuario());
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta(entity.getIdSubRuta(),MySession.getIdUsuario());
         adapterList();
 
     }
