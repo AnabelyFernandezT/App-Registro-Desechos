@@ -69,6 +69,11 @@ public class DialogPlacas extends MyDialog {
                     placa = (String) spinnerPlacas.getSelectedItem();
                     System.out.println(placa+"placa");
                     idPlaca = spinnerPlacas.getId();
+                    CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+                    int idVehiculo = c!=null?c.getIdSistema():-1;
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
                 }
 
             }
@@ -95,8 +100,10 @@ public class DialogPlacas extends MyDialog {
                 if(bandera.equals("1")){
                     consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                     consultarManifiestosPlanta.execute();
+                    dismiss();
                 }else if(bandera.equals("2")){
                     cargarManifiesto();
+                    dismiss();
                 }else if(bandera.equals("0")){
                     dialogoConfirmacion();
                 }
@@ -127,13 +134,13 @@ public class DialogPlacas extends MyDialog {
         builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //cargarManifiesto();
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+1);
-                //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
                 builder.dismiss();
