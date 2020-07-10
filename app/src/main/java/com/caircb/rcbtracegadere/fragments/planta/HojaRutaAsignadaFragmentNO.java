@@ -62,6 +62,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
     DialogBuilder dialogBuilder;
     RutaInicioFinEntity rut;
     ManifiestoEntity entity;
+    Integer idFinRuta;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -101,6 +102,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
             }
         });
         Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        idFinRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         entity = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdTransporte(idVehiculo);
 
@@ -119,7 +121,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta(entity.getIdSubRuta(),MySession.getIdUsuario());
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta(entity.getIdSubRuta(),idFinRuta);
         adapterList();
 
     }
