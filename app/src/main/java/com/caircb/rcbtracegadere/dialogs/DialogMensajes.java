@@ -17,6 +17,7 @@ import com.caircb.rcbtracegadere.tasks.UserRegistrarNoRecoleccion;
 public class DialogMensajes extends MyDialog {
     Activity _activity;
     EditText txtMensaje;
+    Integer idAppManif;
     LinearLayout btnIngresarApp, btnCancelarApp;
 
     public DialogMensajes(@NonNull Context context) {
@@ -35,6 +36,7 @@ public class DialogMensajes extends MyDialog {
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
         txtMensaje = getView().findViewById(R.id.txtMensaje);
+
 
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
