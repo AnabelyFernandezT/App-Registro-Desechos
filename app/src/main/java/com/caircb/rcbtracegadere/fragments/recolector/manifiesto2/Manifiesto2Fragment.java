@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogManifiestoCliente;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
@@ -49,6 +50,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     Integer idAppManifiesto,estadoPantalla;
 
     DialogManifiestoCliente manifiestoCliente;
+    DialogBuilder dialogBuilder;
 
     public Manifiesto2Fragment() {
     }
@@ -208,32 +210,30 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 }*/
 
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("");
-                builder.setMessage("¿El cliente es registro generador?");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+               dialogBuilder = new DialogBuilder(getActivity());
+               dialogBuilder.setMessage("¿El cliente es registro generador?");
+               dialogBuilder.setCancelable(false);
+               dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       dialogBuilder.dismiss();
+                       manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
+                       manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                       manifiestoCliente.setCancelable(false);
+                       manifiestoCliente.show();
+                   }
+               });
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
-                    manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    manifiestoCliente.setCancelable(false);
-                    manifiestoCliente.show();
-
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                         setNavegate(VistaPreliminarFragment.newInstance(
                                 idAppManifiesto,
                                 tabManifiestoGeneral.getTipoPaquete()
                         ));
                     }
                 });
-                builder.show();
-
-
+                dialogBuilder.show();
 
                 break;
         }

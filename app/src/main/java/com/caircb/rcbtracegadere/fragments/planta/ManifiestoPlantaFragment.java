@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -29,6 +30,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     UserRegistrarPlanta userRegistrarPlanta;
     FloatingActionButton mensajes;
     double peso;
+    DialogBuilder dialogBuilder;
 
 
     @Override
@@ -54,34 +56,34 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
 
 
                 peso = manifiestoPlanta.guardar();
+                final String observacionPeso = manifiestoPlanta.obtenerNovedad();
+                final String observacionOtra = manifiestoPlanta.obtenerOtraNovedad();
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("");
-                builder.setMessage("Esta seguro de continuar");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setMessage("Esta seguro de continuar");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso);
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso,observacionPeso, observacionOtra);
                         userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
                             @Override
                             public void onSuccessful() {
-                                messageBox("Datos Guardados");
+
                                 setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                             }
                         });
                         userRegistrarPlanta.execute();
-
                     }
                 });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                     }
                 });
-                builder.show();
-
+                dialogBuilder.show();
 
                 break;
         }
@@ -99,6 +101,8 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
         if(manifiestoPlanta!=null && ((requestCode>=301 && requestCode<=304) ||(requestCode>=201 && requestCode<=204))) {
+            manifiestoPlanta.setMakePhoto(requestCode);
+        } else if(manifiestoPlanta != null && (requestCode>=1701 && requestCode<=1704) || (requestCode>=1701 && requestCode<=1701)){
             manifiestoPlanta.setMakePhoto(requestCode);
         }
     }
