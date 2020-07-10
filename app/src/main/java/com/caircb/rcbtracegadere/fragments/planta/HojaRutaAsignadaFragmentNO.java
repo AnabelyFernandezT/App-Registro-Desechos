@@ -1,9 +1,8 @@
-package com.caircb.rcbtracegadere.fragments.GestorAlterno;
+package com.caircb.rcbtracegadere.fragments.planta;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,44 +22,52 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
-import com.caircb.rcbtracegadere.adapters.ManifiestoGestorAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
-import com.caircb.rcbtracegadere.fragments.planta.ManifiestoPlantaFragment;
+import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
-import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
-import com.caircb.rcbtracegadere.models.ItemLotePadre;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HojaRutaAsignadaGestorFragment#newInstance} factory method to
+ * Use the {@link HojaRutaAsignadaFragmentNO#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.OnClickListener {
+public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnClickListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
+
+    private Window window;
     private RecyclerView recyclerView;
-    private ManifiestoGestorAdapter recyclerviewAdapter;
+    private ManifiestoAdapter recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemLotePadre> rowItems;
+    private List<ItemManifiesto> rowItems;
     private SearchView searchView;
+    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
+    private ListView mDrawerMenuItems, mDialogMenuItems;
+    DialogBuilder dialogBuilder;
+    RutaInicioFinEntity rut;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      * @return A new instance of fragment HojaRutaAsignadaFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HojaRutaAsignadaGestorFragment newInstance() {
-        return new HojaRutaAsignadaGestorFragment();
+    public static HojaRutaAsignadaFragmentNO newInstance() {
+        return new HojaRutaAsignadaFragmentNO();
     }
 
     @Override
@@ -80,7 +87,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoGestorAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);
@@ -91,14 +98,16 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
                 filtro(data);
             }
         });
+
+        rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
     }
 
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        //listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto);
-        //rowItems=listaItems;
-        //recyclerviewAdapter.setTaskList(rowItems);
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto,rut.getIdSubRuta(),MySession.getIdUsuario());
+        rowItems=listaItems;
+        recyclerviewAdapter.setTaskList(rowItems);
     }
 
 
@@ -106,7 +115,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().lotePadreDao().fetchLote();
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta(rut.getIdSubRuta(),MySession.getIdUsuario());
         adapterList();
 
     }
@@ -119,7 +128,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumeroManifiestoPadre(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -131,20 +140,38 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        setNavegate(ManifiestoGestorFragment.newInstance(rowItems.get(position).getIdManifiestoPadre()));
+                        //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
+                        setNavegate(ManifiestoPlantaFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
                 }
             }
         });
+        //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
+        //recyclerView.addItemDecoration(divider);
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRetornarListHojaRuta:
-                setNavegate(HomeGestorAlternoFragment.create());
+              /*  List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
+                if(!estado){
+                    Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
+                    if(_id!=null){
+                        MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, null, null);
+                    }
+                }
+                Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
+                MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, null, null);
+
+                List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////*/
+                setNavegate(HomePlantaFragment.create());
                 break;
         }
     }
@@ -162,6 +189,4 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         super.onDestroy();
         //recyclerView.destroyDrawingCache();
     }
-
-
 }

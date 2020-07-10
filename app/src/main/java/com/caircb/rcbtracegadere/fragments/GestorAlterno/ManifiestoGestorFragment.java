@@ -3,9 +3,13 @@ package com.caircb.rcbtracegadere.fragments.GestorAlterno;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +19,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.LotePadreEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
@@ -38,8 +43,13 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     DialogFirma dialogFirma;
     Bitmap firmaConfirmada;
     private boolean firma = false;
-    EditText txtCorreo,txtNovedad;
+    EditText txtCorreo,txtNovedad, txPesoRecolectado;
     UserRegistrarGestorAlternoTask registrarGestorAlterno;
+    LinearLayout btnEvidenciaNovedadEncontrada, lnlCountPhoto;
+    TextView txtCountPhoto;
+    DialogAgregarFotografias dialogAgregarFotografias;
+    boolean info = false;
+    Window window;
 
     @Override
     public void onClick(View v) {
@@ -64,15 +74,43 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
 
 
                // double peso = manifiestoGestor.guardar();
-                String novedad = txtNovedad.getText().toString();
-                Double peso = Double.parseDouble(txtPesoTotal.getText().toString());
-                String correo = txtCorreo.getText().toString();
-                registrarGestorAlterno = new UserRegistrarGestorAlternoTask(getActivity(),idAppManifiesto,novedad,peso,correo);
-                registrarGestorAlterno.execute();
+                validarInformacion();
 
                 break;
         }
 
+    }
+
+    private void validarInformacion(){
+        String nn = txPesoRecolectado.getText().toString();
+        if(txPesoRecolectado.getText().toString().equals("")){
+            messageBox("Debe ingresar un peso recolectado.!");
+            info = true;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(txtCorreo.getText().toString()).matches()){
+            txtCorreo.setError("Ingrese un correo valido.!");
+            info = true;
+        }
+        if(!firma){
+            messageBox("Debe registrar la firma.!");
+            info = true;
+        }
+
+        if(!info){
+            String novedad = txtNovedad.getText().toString();
+            Double peso = Double.parseDouble(txtPesoTotal.getText().toString());
+            String correo = txtCorreo.getText().toString();
+
+            registrarGestorAlterno = new UserRegistrarGestorAlternoTask(getActivity(),idAppManifiesto,novedad,peso,correo);
+            registrarGestorAlterno.setmOnRegisterAlternoListener(new UserRegistrarGestorAlternoTask.onRegisterAlternoListener() {
+                @Override
+                public void onSussfull() {
+                    messageBox("Registrado correctamente!!");
+                    setNavegate(HomeGestorAlternoFragment.create());
+                }
+            });
+            registrarGestorAlterno.execute();
+        }
     }
 
     @Override
@@ -87,6 +125,14 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
         if(manifiestoGestor!=null && ((requestCode>=301 && requestCode<=304) ||(requestCode>=201 && requestCode<=204))) {
             manifiestoGestor.setMakePhoto(requestCode);
+        }else if ((requestCode>=401 && requestCode<=404) || (requestCode>=401 && requestCode<=404) ){
+            setMakePhoto(requestCode);
+        }
+    }
+
+    public void setMakePhoto(Integer code) {
+        if(dialogAgregarFotografias!=null){
+            dialogAgregarFotografias.setMakePhoto(code);
         }
     }
 
@@ -114,7 +160,18 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
         manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
         txtNovedad = getView().findViewById(R.id.txtNovedad);
         txtCorreo = getView().findViewById(R.id.txtCorreo);
+        btnEvidenciaNovedadEncontrada = getView().findViewById(R.id.btnEvidenciaNovedadFrecuente);
+        lnlCountPhoto = getView().findViewById(R.id.lnlCountPhoto);
+        txtCountPhoto = getView().findViewById(R.id.txtCountPhoto);
+        btnEvidenciaNovedadEncontrada.setVisibility(View.GONE);
+        txPesoRecolectado = getView().findViewById(R.id.txPesoRecolectado);
 
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, -1, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR );
+        if(numeroFotos != null && numeroFotos > 0){
+            lnlCountPhoto.setVisibility(View.VISIBLE);
+            txtCountPhoto.setText(String.valueOf(numeroFotos));
+            btnEvidenciaNovedadEncontrada.setVisibility(View.VISIBLE);
+        }
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +212,48 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 }
             }
         });
+
+        btnEvidenciaNovedadEncontrada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(), idAppManifiesto, -1, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR, MyConstant.STATUS_GESTORES);
+                dialogAgregarFotografias.setCancelable(false);
+                dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                    @Override
+                    public void onSuccessful(Integer cantidad) {
+                        lnlCountPhoto.setVisibility(View.VISIBLE);
+                        txtCountPhoto.setText(String.valueOf(cantidad));
+
+                    }
+                });
+                dialogAgregarFotografias.show();
+                window = dialogAgregarFotografias.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        });
+
+        txtNovedad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!editable.toString().equals("")){
+                    btnEvidenciaNovedadEncontrada.setVisibility(View.VISIBLE);
+                }else{
+                    btnEvidenciaNovedadEncontrada.setVisibility(View.GONE);
+                }
+            }
+        });
+
         loadData();
     }
 
@@ -168,6 +267,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 txtFirmaPlanta.setVisibility(View.GONE);
                 imgFirmaPlanta.setVisibility(View.VISIBLE);
                 imgFirmaPlanta.setImageBitmap(imagen);
+                firma = true;
 
             }
 

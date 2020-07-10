@@ -24,6 +24,8 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
+import com.caircb.rcbtracegadere.fragments.planta.ManifiestoPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
@@ -135,7 +137,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         //menu(position);
-                        setNavegate(ManifiestoSedeFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        setNavegate(ManifiestoPlantaFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -187,7 +189,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRetornarListHojaRuta:
-                setNavegate(HomeSedeFragment.create());
+                setNavegate(HomePlantaFragment.create());
                 break;
         }
     }

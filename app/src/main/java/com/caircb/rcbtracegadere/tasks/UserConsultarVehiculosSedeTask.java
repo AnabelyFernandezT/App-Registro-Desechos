@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -59,7 +60,10 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
     }
 
     RequestDataCatalogo requestDataCatalogo(){
-        Integer idDestinatario = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+
+        Integer idDestinatario = Integer.parseInt(valor);
         RequestDataCatalogo rq = new RequestDataCatalogo();
         rq.setFecha(new Date());
         rq.setData(String.valueOf(idDestinatario));//lugar logeado

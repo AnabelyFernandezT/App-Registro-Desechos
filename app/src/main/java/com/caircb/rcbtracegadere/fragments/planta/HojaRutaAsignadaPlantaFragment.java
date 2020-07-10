@@ -123,12 +123,13 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         //menu(position);
-                        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(rowItems.get(position).getIdTransporteVehiculo().toString());
+                       /* String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(rowItems.get(position).getIdTransporteVehiculo().toString(),"vehiculo_planta"+rowItems.get(position).getIdTransporteVehiculo());
                                 if(bandera!=null){
-                                    setNavegate(ManifiestoPlantaCheckFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                                    setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto()));
                                 }else{
                                     setNavegate(ManifiestoPlantaFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                                }
+                                }*/
+                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
