@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
@@ -184,7 +185,10 @@ public class DialogPlacas extends MyDialog {
 
 
     private void cargarLabelCantidad(){
-        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
 
         if(bandera!=null){
