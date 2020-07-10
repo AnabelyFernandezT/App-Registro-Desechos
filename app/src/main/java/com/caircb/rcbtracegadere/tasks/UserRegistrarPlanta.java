@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
@@ -39,6 +40,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     String path ="planta";
     private List<DtoFile> listaFileDefauld;
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
+    String observacionPeso, observacionOtra;
 
 
     public interface OnRegisterListener {
@@ -49,10 +51,12 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     public UserRegistrarPlanta(Context context,
                                 Integer idAppManifiesto,
-                               Double pesoPlanta) {
+                               Double pesoPlanta, String observacionPeso, String observacionOtra) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.peso = pesoPlanta;
+        this.observacionPeso = observacionPeso;
+        this.observacionOtra = observacionOtra;
     }
 
     @Override
@@ -88,7 +92,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
         Gson g = new Gson();
         String f = g.toJson(request);
         System.out.println(f);
-
+        progressHide();
        /*
         if(request!=null){
             Gson g = new Gson();
@@ -129,7 +133,8 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
             rq.setUrlFirmaPlanta(firmaPlanta!=null?(path+"/"+firmaPlanta.getUrl()):"");
             rq.setFechaRecepcionPlanta(model.getFechaRecepcionPlanta());
             rq.setNovedadFrecuentePlanta(createRequestNovedadFrecuente());
-
+            rq.setObservacionPeso(observacionPeso);
+            rq.setObservacionOtra(observacionOtra);
         }
 
         return rq;
@@ -137,12 +142,15 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente(){
         List<RequestManifiestoNovedadFrecuente> resp = new ArrayList<>();
-        List<Integer> novedad = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchConsultarNovedadFrecuentePlanta(idAppManifiesto);
-        if(novedad.size()>0){
-            for (Integer id:novedad) {
+        List<Long> listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUploadSincronizadas(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION);
+
+        System.out.println("kldakld");
+
+        if(listaFotoNovedadFrecuente.size()>0){
+            for (Long id : listaFotoNovedadFrecuente) {
                 resp.add(new RequestManifiestoNovedadFrecuente(
-                        id,
-                        createFotografia(id,3),
+                        listaFotoNovedadFrecuente.indexOf(id),
+                        createFotografia(-2,ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA),
                         path+"/"+"novedadfrecuente"
                 ));
             }

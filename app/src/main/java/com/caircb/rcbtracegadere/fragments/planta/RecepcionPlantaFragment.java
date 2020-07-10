@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.fragments.planta;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -85,6 +87,13 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -1, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION );
+        if(numeroFotos != null && numeroFotos > 0){
+            lnlCountPhoto.setVisibility(View.VISIBLE);
+            txtCountPhoto.setText(String.valueOf(numeroFotos));
+            btnEvidenciaObservacion.setVisibility(View.VISIBLE);
+        }
+
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +137,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
+                dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idManifiesto, -2, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
                 dialogAgregarFotografias.setCancelable(false);
                 dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
@@ -144,11 +153,28 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
             }
         });
 
+        txtNovedad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!editable.toString().equals("")){
+                    btnEvidenciaObservacion.setVisibility(View.VISIBLE);
+                }else {
+                    btnEvidenciaObservacion.setVisibility(View.GONE);
+                }
+            }
+        });
+
         txtPeso.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    validarPesos();
+                    //validarPesos();
                 }
             }
         });
@@ -291,6 +317,13 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         return Double.parseDouble(txtPeso.getText().toString());
     }
 
+    public String obtenerNovedad(){
+        return (txtNovedad.getText().toString()==null?"":txtNovedad.getText().toString());
+    }
+
+    public String obtenerOtraNovedad(){
+        return (txtotraNovedad.getText().toString()==null? "": txtotraNovedad.getText().toString());
+    }
 
 
 }

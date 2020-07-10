@@ -10,6 +10,8 @@ public class RequestManifiestoPlanta {
     private Double peso;
     private String urlFirmaPlanta;
     private Date fechaRecepcionPlanta;
+    private String observacionPeso;
+    private String observacionOtra;
     private List<RequestManifiestoNovedadFrecuente> novedadFrecuentePlanta;
 
     public Integer getIdAppManifiesto() {
@@ -58,5 +60,21 @@ public class RequestManifiestoPlanta {
 
     public void setNovedadFrecuentePlanta(List<RequestManifiestoNovedadFrecuente> novedadFrecuentePlanta) {
         this.novedadFrecuentePlanta = novedadFrecuentePlanta;
+    }
+
+    public String getObservacionPeso() {
+        return observacionPeso;
+    }
+
+    public void setObservacionPeso(String observacionPeso) {
+        this.observacionPeso = observacionPeso;
+    }
+
+    public String getObservacionOtra() {
+        return observacionOtra;
+    }
+
+    public void setObservacionOtra(String observacionOtra) {
+        this.observacionOtra = observacionOtra;
     }
 }

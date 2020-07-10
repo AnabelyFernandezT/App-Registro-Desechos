@@ -75,7 +75,7 @@ public class UserUploadFileTask {
         try {
             this.listaFileDefauld = listaFileDefauld;
             //fotos novedades frecuente...
-            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION);
+            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA);
 
 
             sendFileDefauld(0);

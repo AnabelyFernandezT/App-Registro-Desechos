@@ -56,16 +56,17 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
 
 
                 peso = manifiestoPlanta.guardar();
+                final String observacionPeso = manifiestoPlanta.obtenerNovedad();
+                final String observacionOtra = manifiestoPlanta.obtenerOtraNovedad();
 
                 dialogBuilder = new DialogBuilder(getActivity());
-                dialogBuilder.setTitle("");
                 dialogBuilder.setMessage("Esta seguro de continuar");
                 dialogBuilder.setCancelable(false);
                 dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
-                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso);
+                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso,observacionPeso, observacionOtra);
                         userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
                             @Override
                             public void onSuccessful() {
@@ -76,6 +77,13 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                         userRegistrarPlanta.execute();
                     }
                 });
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+                dialogBuilder.show();
 
                 break;
         }
@@ -93,6 +101,8 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
         if(manifiestoPlanta!=null && ((requestCode>=301 && requestCode<=304) ||(requestCode>=201 && requestCode<=204))) {
+            manifiestoPlanta.setMakePhoto(requestCode);
+        } else if(manifiestoPlanta != null && (requestCode>=1701 && requestCode<=1704) || (requestCode>=1701 && requestCode<=1701)){
             manifiestoPlanta.setMakePhoto(requestCode);
         }
     }

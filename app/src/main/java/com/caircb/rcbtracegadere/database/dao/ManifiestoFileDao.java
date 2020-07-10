@@ -63,6 +63,10 @@ public abstract class ManifiestoFileDao {
             " where idAppManifiesto=:idAppManifiesto and tipo=:tipo and sincronizado=0")
     public abstract List<Long> consultarFotografiasUpload(Integer idAppManifiesto,Integer tipo);
 
+    @Query("select _id  from tb_manifiestos_file" +
+            " where idAppManifiesto=:idAppManifiesto and tipo=:tipo and sincronizado=1")
+    public abstract List<Long> consultarFotografiasUploadSincronizadas(Integer idAppManifiesto,Integer tipo);
+
     @Query("Delete from tb_manifiestos_file where idAppManifiesto =:idAppManifiesto and idCatalogo=:idCatalogo")
     public abstract void deleteFotoByIdAppManifistoCatalogo( Integer idAppManifiesto, Integer idCatalogo);
 
