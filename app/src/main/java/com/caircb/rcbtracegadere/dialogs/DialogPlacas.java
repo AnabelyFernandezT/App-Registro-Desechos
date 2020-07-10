@@ -95,19 +95,22 @@ public class DialogPlacas extends MyDialog {
             public void onClick(View v) {
                 ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
                 String valor = parametro == null ? "-1" : parametro.getValor();
-                Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
-                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-                if(bandera.equals("1")){
-                    consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
-                    consultarManifiestosPlanta.execute();
-                    dismiss();
-                }else if(bandera.equals("2")){
-                    cargarManifiesto();
-                    dismiss();
-                }else if(bandera.equals("0")){
-                    dialogoConfirmacion();
-                }
+                Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1" : valor);
+                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
+                if (bandera != null)
+                {
+                    if (bandera.equals("1")) {
+                        consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                        consultarManifiestosPlanta.execute();
+                        dismiss();
+                    } else if (bandera.equals("2")) {
+                        cargarManifiesto();
+                        dismiss();
+                    } else if (bandera.equals("0")) {
+                        dialogoConfirmacion();
+                    }
                 //dismiss();
+            }
             }
         });
 
