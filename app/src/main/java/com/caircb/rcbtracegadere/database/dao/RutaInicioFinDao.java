@@ -29,7 +29,7 @@ public abstract class RutaInicioFinDao {
             registroInicio = new RutaInicioFinEntity(
                     idRutaInicioFin,
                     idTransporteRecolector,
-                    IdTransporteVehiculo,
+                    IdTransporteVehiculo, //idSubruta
                     fechaInicio,
                     fechaFin,
                     kilometrajeInicio,

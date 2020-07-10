@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     DialogFinRuta dialogFinRuta;
     LinearLayout lnlIniciaRuta,lnlFinRuta;
     RutaInicioFinEntity rut;
+    UserConsultarInicioRutaTask verificarInicioRutaTask;
 
     //public Context mContext;
 
@@ -93,6 +95,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
+        consultarInicioFinRuta();
         lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
         btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
@@ -323,6 +326,11 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         //btnFinRuta.setEnabled(true);
 
 
+    }
+
+    private void consultarInicioFinRuta(){
+        verificarInicioRutaTask = new UserConsultarInicioRutaTask(getActivity());
+        verificarInicioRutaTask.execute();
     }
 
 }

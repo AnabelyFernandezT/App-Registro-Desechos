@@ -22,6 +22,8 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
+import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
+import com.caircb.rcbtracegadere.models.request.RequestRegistarLotePadreHotel;
 import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.request.RequestRegistroGenerador;
 import com.caircb.rcbtracegadere.models.request.RequestRuteoRecoleccion;
@@ -30,6 +32,7 @@ import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
+import com.caircb.rcbtracegadere.models.response.DtoInicioRuta;
 import com.caircb.rcbtracegadere.models.response.DtoLote;
 import com.caircb.rcbtracegadere.models.response.DtoLotePadreGestor;
 import com.caircb.rcbtracegadere.models.response.DtoLotePadreHotel;
@@ -131,4 +134,10 @@ public interface IServicio {
 
     @PUT("Registro/registroLoteContenedorHotel")
     Call<DtoInfo>registrarFinLotePadreHotel(@Body RequestFinLotePadreHotelTask model);
+
+    @POST("HoraRuta/obtenerRutaInicioFin")
+    Call<DtoInicioRuta>obtenerRutainicioFin(@Body RequestObtenerInicioFin model);
+
+    @POST("Registro/registrarMovilizacionLoteContenedorHotel")
+    Call<DtoInfo>registrarHotelLote(@Body RequestRegistarLotePadreHotel model);
 }

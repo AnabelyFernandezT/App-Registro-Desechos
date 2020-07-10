@@ -91,6 +91,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
             rq.setFechaDispositivo(model.getFechaInicio());
             rq.setKilometraje(model.getKilometrajeInicio());
             rq.setTipo(1);
+            rq.setIdTransportistaRecolector(model.getIdTransporteRecolector());
         }
         return rq;
     }

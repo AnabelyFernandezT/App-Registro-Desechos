@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class RequestIniciaRuta {
     //private String id;
+    private Integer idTransportistaRecolector;
     private Integer idTransporteRecolector;
     private Integer idSubRuta;
     private Date fechaDispositivo;
@@ -48,5 +49,13 @@ public class RequestIniciaRuta {
 
     public void setTipo(Integer tipo) {
         this.tipo = tipo;
+    }
+
+    public Integer getIdTransportistaRecolector() {
+        return idTransportistaRecolector;
+    }
+
+    public void setIdTransportistaRecolector(Integer idTransportistaRecolector) {
+        this.idTransportistaRecolector = idTransportistaRecolector;
     }
 }

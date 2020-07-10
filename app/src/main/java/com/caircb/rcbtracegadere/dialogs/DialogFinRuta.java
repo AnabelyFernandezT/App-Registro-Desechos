@@ -334,7 +334,6 @@ public class DialogFinRuta extends MyDialog {
                 public void onClick(View v) {
                     destino = "null";
                     listaDestinoParticular.setEnabled(false);
-
                     finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity(),lotePadre.getIdLoteContenedorHotel());
                     finLotePadreHotelTask.execute();
                     builder.dismiss();

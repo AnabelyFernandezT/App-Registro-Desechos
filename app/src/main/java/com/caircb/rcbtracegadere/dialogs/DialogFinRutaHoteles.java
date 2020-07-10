@@ -28,6 +28,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarLoteHotelTask;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,9 +51,9 @@ public class DialogFinRutaHoteles extends MyDialog {
     Spinner listaDestino, listaDestinoParticular;
     String destino = "", destinos="";
 
-    UserRegistrarFinRutaTask registroFinRuta;
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
+    UserRegistrarLoteHotelTask registrarLoteHotelTask;
 
     List<DtoCatalogo> listaDestinos, destinosEspecificos;
     DialogBuilder builder;
@@ -162,7 +163,7 @@ public class DialogFinRutaHoteles extends MyDialog {
         builder.setPositiveButton("OK", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //guardarDatos();
+                guardarDatos();
                 builder.dismiss();
             }
         });
@@ -179,33 +180,12 @@ public class DialogFinRutaHoteles extends MyDialog {
     private void guardarDatos()
     {
 
-        Date dia = AppDatabase.getDateTime();
         CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
         int idDestino = c!=null?c.getIdSistema():-1;
         MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
 
-
-        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(idInicioFin, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
-        MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
-
-        registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
-        registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
-            @Override
-            public void onSuccessful() {
-                DialogFinRutaHoteles.this.dismiss();
-            }
-
-            @Override
-            public void onFailure() {
-                DialogFinRutaHoteles.this.dismiss();
-            }
-        });
-
-        registroFinRuta.execute();
-
-        finRuta();
-
-
+        registrarLoteHotelTask = new UserRegistrarLoteHotelTask(getContext(),idDestino);
+        registrarLoteHotelTask.execute();
 
     }
 
@@ -270,18 +250,7 @@ public class DialogFinRutaHoteles extends MyDialog {
         consultaDestinoEspecifico.execute();
     }
 
-    private void finRuta(){
 
-        regionBuscar.setEnabled(false);
-        btnSincManifiestos.setEnabled(false);
-        btnListaAsignadaTransportista.setEnabled(false);
-        btnPickUpTransportista.setEnabled(false);
-        btnDropOffTransportista.setEnabled(false);
-        lnlIniciaRuta.setVisibility(View.VISIBLE);
-        lnlFinRuta.setVisibility(View.GONE);
-
-
-    }
 
 
 }
