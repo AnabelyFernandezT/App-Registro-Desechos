@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="350dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
-    android:orientation="vertical"
-    android:scrollbars="vertical"
-    android:scrollbarAlwaysDrawVerticalTrack="true">
+    android:orientation="vertical">
+
+<LinearLayout
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/lblTituloRuta"
@@ -27,6 +26,7 @@
 
     <TextView
         android:id="@+id/lblTituloRecoleccion"
+        android:visibility="gone"
         android:textSize="20dp"
         android:textColor="@color/app_gadere"
         android:fontFamily="@font/quicksand_bold"
@@ -38,14 +38,15 @@
 
     <LinearLayout
         android:id="@+id/sectionGeneral"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginBottom="10dp">
+        android:paddingLeft="5dp" >
 
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -53,10 +54,11 @@
             android:text="Ruta:"/>
         <TextView
             android:id="@+id/lblRutaInfo"
+            android:textSize="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -64,10 +66,11 @@
             android:text="SUB - RUTA:"/>
         <TextView
             android:id="@+id/lblSubrutaInfo"
+            android:textSize="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -75,10 +78,11 @@
             android:text="Placa:"/>
         <TextView
             android:id="@+id/lblPlacaInfo"
+            android:textSize="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -86,10 +90,11 @@
             android:text="Chofer:"/>
         <TextView
             android:id="@+id/lblChoferInfo"
+            android:textSize="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -97,10 +102,11 @@
             android:text="Auxiliar de Recolección:"/>
         <TextView
             android:id="@+id/lblAuxiliarRecoleccion1Info"
+            android:textSize="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -108,10 +114,11 @@
             android:text="Auxiliar de Recolección:"/>
         <TextView
             android:id="@+id/lblAuxiliarRecoleccion2Info"
+            android:textSize="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -119,6 +126,7 @@
             android:text="Kilometraje inicio:"/>
         <TextView
             android:id="@+id/lblKilometrajeInfo"
+            android:textSize="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -128,11 +136,12 @@
 
     <LinearLayout
         android:id="@+id/sectionEspecifica"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:paddingLeft="5dp">
         <TextView
             android:textSize="20dp"
             android:textColor="@color/app_gadere"
@@ -143,7 +152,7 @@
             android:text="RECOLECCIÓN INDUSTRIAL"></TextView>
 
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -159,8 +168,7 @@
                 android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NO"
-                tools:ignore="Suspicious0dp" />
+                android:text="NO" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -172,29 +180,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
-                    android:text="SI"
-                    tools:ignore="Suspicious0dp" />
+                    android:text="SI" />
                 <CheckBox
                     android:id="@+id/chkFiscalizacionArcsa"
                     android:enabled="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
-                    android:text="ARCSA"
-                    tools:ignore="Suspicious0dp" />
+                    android:text="ARCSA" />
                 <CheckBox
                     android:id="@+id/chkFiscalizacionMi"
                     android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Ministerio del Interior"
-                    tools:ignore="Suspicious0dp" />
+                    android:text="Ministerio del Interior" />
             </LinearLayout>
 
         </LinearLayout>
 
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -225,7 +230,7 @@
         </LinearLayout>
 
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -261,7 +266,7 @@
             android:fontFamily="@font/quicksand_bold"
             android:text="Tiene disponibilidad de balanza:"
             android:textColor="@color/app_gadere"
-            android:textSize="20dp" />
+            android:textSize="13dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
@@ -285,7 +290,7 @@
 
         </LinearLayout>
         <TextView
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
             android:layout_width="match_parent"
@@ -313,6 +318,18 @@
                 android:text="NO" />
 
         </LinearLayout>
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Observaciones:"/>
+        <TextView
+            android:id="@+id/lblObservaciones"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

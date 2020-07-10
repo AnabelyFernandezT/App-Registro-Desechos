@@ -64,6 +64,7 @@ public class DialogPlacas extends MyDialog {
                 if(position>0){
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
+                    System.out.println(placa+"placa");
                     idPlaca = spinnerPlacas.getId();
                 }
 
@@ -116,6 +117,7 @@ public class DialogPlacas extends MyDialog {
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
@@ -130,6 +132,7 @@ public class DialogPlacas extends MyDialog {
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 cargarManifiesto();
                 builder.dismiss();
                 dismiss();

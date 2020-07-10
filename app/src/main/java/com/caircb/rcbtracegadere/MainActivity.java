@@ -11,13 +11,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
+
+import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -52,6 +57,7 @@ import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
 import com.google.firebase.auth.FirebaseAuth;
+import com.itextpdf.awt.geom.Point;
 import com.itextpdf.text.pdf.PdfName;
 
 import org.json.JSONArray;
@@ -365,24 +371,34 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     MySession.setIdPerfil(json.getInt("idPerfil"));
                     MySession.setLugarNombre(json.getString("nombre"));
                     if(nombreLugar.equals("TRANSPORTISTA")){
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+0);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+1);
                         navegate((HomeTransportistaFragment.create()));
                     }else {
                         if(nombreLugar.equals("PLANTA")){
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+2);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+2);
                             traerDestinoEspecifico();
                             navegate((HomePlantaFragment.create()));
                         } else {
                             if (nombreLugar.equals("SEDE")){
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+1);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+6);
                                 traerDestinoEspecifico();
                                 navegate(HomeSedeFragment.create());
                             }else {
                                 if (nombreLugar.equals("HOTEL")){
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+4);
                                     traerDestinoEspecifico();
                                     navegate(HomeHotelFragment.create());
                                 }else {
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+3);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+5);
                                     traerDestinoEspecifico();
                                     navegate(HomeGestorAlternoFragment.create());
                                 }
@@ -501,9 +517,22 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     private void openInformacion(){
 
+
         dialogInformacionModulos = new DialogInformacionModulos(this);
         informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
         informacionModulosTaskl.execute();
+
+
+        /*DisplayMetrics displaymetrics = new DisplayMetrics(); getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        int width = displaymetrics.widthPixels;
+        dialogInformacionModulos.getWindow().setLayout(width,height);*/
+        /*int width = this.getResources().getDisplayMetrics().widthPixels;
+        int height = this.getResources().getDisplayMetrics().heightPixels;
+        final WindowManager.LayoutParams WMLP = dialogInformacionModulos.getWindow().getAttributes();
+        WMLP.y = height;
+        WMLP.x = width;
+        dialogInformacionModulos.getWindow().setAttributes(WMLP);*/
     }
 
     private void openModulos(){

@@ -87,6 +87,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,3);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 cargarManifiesto();
                 dismiss();
             }

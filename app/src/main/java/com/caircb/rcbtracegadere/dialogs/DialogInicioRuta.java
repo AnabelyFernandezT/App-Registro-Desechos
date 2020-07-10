@@ -49,6 +49,7 @@ public class DialogInicioRuta extends MyDialog {
     TextView lblListaManifiestoAsignado, lblpickUpTransportista,lblPlaca,lblTransportistaRecolector,lblAuxiliarRecoleccion1, lblTituloAuxiliarRecoleccion2,lblAuxiliarRecoleccion2,lblRuta;
 
     String placa;
+    String placaInfoModulos;
     long idRegistro;
 
     UserRegistrarInicioRutaTask registroInicioRuta;
@@ -132,6 +133,7 @@ public class DialogInicioRuta extends MyDialog {
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
                     lblPlaca.setText(listaPlacasDisponibles.get(position-1).getPlaca());
+                    placaInfoModulos=listaPlacasDisponibles.get(position-1).getPlaca();
                     lblTransportistaRecolector.setText(listaPlacasDisponibles.get(position-1).getNombreChofer());
                     lblAuxiliarRecoleccion1.setText(listaPlacasDisponibles.get(position-1).getNombreAuxiliar());
                     if (listaPlacasDisponibles.get(position-1).getNombreConductor()!=null){
@@ -270,6 +272,8 @@ public class DialogInicioRuta extends MyDialog {
         Date fechaInicio = AppDatabase.getDateTime();
         idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
+        //MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
 
         //EMPIEZA RUTEO RECOLECCION
         MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");

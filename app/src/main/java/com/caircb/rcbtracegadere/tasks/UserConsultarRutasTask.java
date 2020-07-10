@@ -35,7 +35,8 @@ public class UserConsultarRutasTask extends MyRetrofitApi implements RetrofitCal
 
     @Override
     public void execute() {
-
+        System.out.println(MySession.getIdUsuario());
+        System.out.println(new Date());
         WebService.api().traerRutas(new RequestFindRutas(MySession.getIdUsuario(), new Date())).enqueue(new Callback<List<DtoFindRutas>>() {
             @Override
             public void onResponse(Call<List<DtoFindRutas>> call, Response<List<DtoFindRutas>> response) {
