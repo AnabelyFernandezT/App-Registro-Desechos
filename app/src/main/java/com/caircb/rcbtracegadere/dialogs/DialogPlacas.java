@@ -108,7 +108,7 @@ public class DialogPlacas extends MyDialog {
                 }else if(bandera.equals("0")){
                     dialogoConfirmacion();
                 }
-                Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1" : valor);
+               /* Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1" : valor);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
                 if (bandera != null)
                 {
@@ -121,9 +121,9 @@ public class DialogPlacas extends MyDialog {
                         dismiss();
                     } else if (bandera.equals("0")) {
                         dialogoConfirmacion();
-                    }
+                    }*
                 //dismiss();
-            }
+            }*/
             }
         });
 
