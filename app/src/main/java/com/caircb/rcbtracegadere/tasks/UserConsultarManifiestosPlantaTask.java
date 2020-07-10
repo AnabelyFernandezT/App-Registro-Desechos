@@ -33,8 +33,9 @@ public class UserConsultarManifiestosPlantaTask extends MyRetrofitApi implements
     public void execute() {
 
         Integer idDestinatario = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
+        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
 
-        WebService.api().traerManifiestos(new RequestManifiestoSede(10,idDestinatario)).enqueue(new Callback<List<DtoManifiestoSede>>() {
+        WebService.api().traerManifiestos(new RequestManifiestoSede(idVehiculo,idDestinatario)).enqueue(new Callback<List<DtoManifiestoSede>>() {
             @Override
             public void onResponse(Call<List<DtoManifiestoSede>> call, Response<List<DtoManifiestoSede>> response) {
                 if (response.isSuccessful()){

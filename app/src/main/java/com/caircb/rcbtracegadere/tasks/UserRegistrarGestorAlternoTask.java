@@ -2,6 +2,9 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.LotePadreEntity;
@@ -9,6 +12,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoFile;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoNovedadNoRecoleccion;
 import com.caircb.rcbtracegadere.models.request.RequestNovedadFoto;
@@ -33,12 +37,18 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
     LotePadreEntity model;
     DtoFile firmaRecoleccion;
+    List<DtoFile> fotosGestores;
     private List<DtoFile> listaFileDefauld;
     UserUploadFileTask userUploadFileTask;
     String novedad;
     Double pesoGestor;
     String correG;
 
+    public interface onRegisterAlternoListener{
+        public void onSussfull();
+    }
+
+    private onRegisterAlternoListener mOnRegisterAlternoListener;
 
     public UserRegistrarGestorAlternoTask(Context context,
                                           Integer idAppManifiesto,
@@ -54,12 +64,23 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
 
     @Override
     public void execute() {
+        progressShow("Registrando...");
         listaFileDefauld = new ArrayList<>();
         model = MyApp.getDBO().lotePadreDao().fetchConsultarCatalogoEspecifico(idAppManifiesto);
 
         firmaRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_GESTORES, MyConstant.STATUS_GESTORES);
+        fotosGestores = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauldAllFotos(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR, MyConstant.STATUS_GESTORES);
+
         if(firmaRecoleccion!=null && !firmaRecoleccion.isSincronizado())listaFileDefauld.add(firmaRecoleccion);
+
+        if(fotosGestores.size()>0){
+            for(DtoFile reg : fotosGestores){
+                listaFileDefauld.add(reg);
+            }
+        }
+
         path = path + "/" + getPath() + "/" + model.getNumeroManifiestoPadre();
+        System.out.println(path);
 
         userUploadFileTask= new UserUploadFileTask(getActivity(),path);
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
@@ -78,6 +99,7 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
     }
 
     private void register(){
+
         final RequestRegistroGenerador request = requestRegistroGenerador();
         if(request!=null) {
             Gson g = new Gson();
@@ -86,14 +108,15 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
-                        message(response.body().getMensaje());
-
+                        //message(response.body().getMensaje());
+                        progressHide();
+                        if(mOnRegisterAlternoListener!=null){mOnRegisterAlternoListener.onSussfull();}
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }
@@ -135,6 +158,8 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
     private List<RequestNovedadFoto> createFotografia(Integer tipo) {
         return MyApp.getDBO().manifiestoFileDao().consultarFotografiasGestores(idAppManifiesto,tipo);
     }
+
+    public void setmOnRegisterAlternoListener(@Nullable onRegisterAlternoListener l){ mOnRegisterAlternoListener =l;}
 
     private String getPath() { return simpleDate.format(new Date());}
 }

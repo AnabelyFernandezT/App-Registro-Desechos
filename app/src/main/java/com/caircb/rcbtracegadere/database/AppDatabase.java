@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.caircb.rcbtracegadere.database.dao.CatalogoDao;
+import com.caircb.rcbtracegadere.database.dao.HotelLotePadreDao;
 import com.caircb.rcbtracegadere.database.dao.InformacionModulosDao;
 import com.caircb.rcbtracegadere.database.dao.LogDao;
 import com.caircb.rcbtracegadere.database.dao.LoteDao;
@@ -35,6 +36,7 @@ import com.caircb.rcbtracegadere.database.dao.RuteoRecoleccionDao;
 import com.caircb.rcbtracegadere.database.dao.TecnicoDao;
 import com.caircb.rcbtracegadere.database.dao.LoteDao;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 import com.caircb.rcbtracegadere.database.entity.LogEntity;
 import com.caircb.rcbtracegadere.database.entity.LoteEntity;
@@ -94,7 +96,8 @@ import java.util.Locale;
         RuteoRecoleccionEntity.class,
         ManifiestoPlantaEntity.class,
         ManifiestoPlantaDetalleEntity.class,
-        ManifiestoPlantaDetalleValorEntity.class
+        ManifiestoPlantaDetalleValorEntity.class,
+        HotelLotePadreEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -189,5 +192,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoPlantaDao manifiestoPlantaDao();
     public abstract ManifiestoPlantaDetalleDao manifiestoPlantaDetalleDao();
     public abstract ManifiestoPlantaDetalleValorDao manifiestoPlantaDetalleValorDao();
+    public abstract HotelLotePadreDao hotelLotePadreDao();
 
 }

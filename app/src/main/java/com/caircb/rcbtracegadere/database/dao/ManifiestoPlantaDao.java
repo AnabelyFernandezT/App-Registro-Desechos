@@ -15,6 +15,9 @@ import java.util.List;
 @Dao
 public abstract class ManifiestoPlantaDao {
 
+    @Query("select count(*) from tb_manifiestos_planta ")
+    public abstract int contarHojaRutaProcesada();
+
     @Query("select * from tb_manifiestos_planta where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoPlantaEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 

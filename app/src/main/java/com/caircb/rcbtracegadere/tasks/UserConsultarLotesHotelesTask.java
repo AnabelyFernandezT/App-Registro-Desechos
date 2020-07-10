@@ -42,7 +42,7 @@ public class UserConsultarLotesHotelesTask extends MyRetrofitApi implements Retr
             public void onResponse(Call<List<DtoLotesHoteles>> call, Response<List<DtoLotesHoteles>> response) {
                 if (response.isSuccessful()){
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
-                    MyApp.getDBO().loteHotelesDao().eliminarLotes();
+                    //MyApp.getDBO().loteHotelesDao().eliminarLotes();
                     MyApp.getDBO().loteHotelesDao().saveOrUpdate(response.body());
                    // for(DtoLotesHoteles reg:response.body()){
                     //}

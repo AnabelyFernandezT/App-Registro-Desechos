@@ -24,14 +24,14 @@ public class UserDestinoEspecificoTask extends MyRetrofitApi implements Retrofit
         super(context);
     }
     public interface OnDestinoListener {
-        public void onSuccessful(List<DtoCatalogo> catalogos);
+        public void onSuccessful(List<DtoCatalogo> catalogos, Integer idDestino);
     }
 
     private OnDestinoListener onDestinoListener;
 
     @Override
     public void execute() {
-        Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino").getValor());
+        final Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino").getValor());
         //Integer idDestino = 1;
         progressShow("Consultando destino disponibles...");
 
@@ -40,7 +40,7 @@ public class UserDestinoEspecificoTask extends MyRetrofitApi implements Retrofit
             public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                 if(response.isSuccessful()){
                     progressHide();
-                    if(onDestinoListener!=null)onDestinoListener.onSuccessful(response.body());
+                    if(onDestinoListener!=null)onDestinoListener.onSuccessful(response.body(), idDestino);
                     MyApp.getDBO().catalogoDao().saveOrUpdate(response.body(), 11);
                 }else {
                     progressHide();
