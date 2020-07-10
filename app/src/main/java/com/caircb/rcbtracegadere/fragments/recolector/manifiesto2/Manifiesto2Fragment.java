@@ -219,6 +219,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     manifiestoCliente.setCancelable(false);
                     manifiestoCliente.show();
+
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
