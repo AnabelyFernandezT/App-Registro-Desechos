@@ -400,7 +400,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+4);
                                     //traerDestinoEspecifico();
-                                    //navegate(HomeHotelFragment.create());
+                                    navegate(HomeHotelFragment.create());
                                 }else {
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+3);
