@@ -62,8 +62,8 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
     RequestDataCatalogo requestDataCatalogo(){
         ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico");
         String valor = parametro == null ? "-1" : parametro.getValor();
-
-        Integer idDestinatario = Integer.parseInt(valor);
+        Integer idDestinatario = Integer.parseInt(valor.equals("null") ? "-1":valor);
+        
         RequestDataCatalogo rq = new RequestDataCatalogo();
         rq.setFecha(new Date());
         rq.setData(String.valueOf(idDestinatario));//lugar logeado
