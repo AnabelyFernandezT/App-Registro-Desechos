@@ -4,6 +4,8 @@ package com.caircb.rcbtracegadere.fragments.planta;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
+import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
@@ -68,6 +71,9 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     DialogBuilder builder;
     double pesoT=0;
     private boolean firma = false;
+    LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
+    TextView txtCountPhoto;
+    boolean info = false;
 
     public static TabManifiestoAdicionalFragment newInstance (Integer manifiestoID){
         TabManifiestoAdicionalFragment f = new TabManifiestoAdicionalFragment();
@@ -108,12 +114,17 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         txtotraNovedad = view.findViewById(R.id.txtotraNovedad);
 
         txtNovedad = view.findViewById(R.id.txtNovedad);
+        btnEvidenciaObservacion = view.findViewById(R.id.btnEvidenciaObservacion);
+        lnlCountPhoto = view.findViewById(R.id.lnlCountPhoto);
+        txtCountPhoto = view.findViewById(R.id.txtCountPhoto);
+
+        btnEvidenciaObservacion.setVisibility(View.GONE);
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(dialogFirma==null) {
-                    dialogFirma = new DialogFirma(getContext());
+                    dialogFirma = new DialogFirma(getActivity());
                     dialogFirma.setTitle("SU FIRMA");
                     dialogFirma.setCancelable(false);
                     dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
@@ -149,9 +160,51 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             }
         });
 
+        btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(), idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
+                dialogAgregarFotografias.setCancelable(false);
+                dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                    @Override
+                    public void onSuccessful(Integer cantidad) {
+                        lnlCountPhoto.setVisibility(View.VISIBLE);
+                        txtCountPhoto.setText(String.valueOf(cantidad));
+                    }
+                });
+                dialogAgregarFotografias.show();
+                window = dialogAgregarFotografias.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        });
+
+
+        txtotraNovedad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!editable.toString().equals("")){
+                    btnEvidenciaObservacion.setVisibility(View.VISIBLE);
+                }else{
+                    btnEvidenciaObservacion.setVisibility(View.GONE);
+                }
+            }
+        });
 
     }
-
+    public boolean validarInformacion(){
+        if(!firma){
+            info = true;
+        }
+        return info;
+    }
     private void loadData(){
         ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
         if(f != null){
@@ -169,11 +222,8 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         if(bultos.size()>0){
             for (ManifiestoDetallePesosEntity p:bultos){
                 pesoT= pesoT+ p.getValor();
-
             }
-
         }
-
     }
 
     public void setMakePhoto(Integer code) {

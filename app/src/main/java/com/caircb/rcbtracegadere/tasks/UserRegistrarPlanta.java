@@ -59,11 +59,11 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     public void execute() {
         listaFileDefauld = new ArrayList<>();
 
-
-        progressShow("registrando recoleccion...");
+        progressShow("Registrando recoleccion...");
         model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         firmaPlanta =MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
         if(firmaPlanta!=null && !firmaPlanta.isSincronizado())listaFileDefauld.add(firmaPlanta);
+
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
         userUploadFileTask= new UserUploadFileTask(getActivity(),path);
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
@@ -83,7 +83,13 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     }
 
     private void register(){
+
        final RequestManifiestoPlanta request = createRequestManifiestoPlanta();
+        Gson g = new Gson();
+        String f = g.toJson(request);
+        System.out.println(f);
+
+       /*
         if(request!=null){
             Gson g = new Gson();
             String f = g.toJson(request);
@@ -98,24 +104,18 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
                         }else {
                             message(response.body().getMensaje());
                         }
-
-
-
                     }else{
-
                         message(response.body().getMensaje());
                         progressHide();
-
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
                 }
             });
         }
+        */
     }
     private String getPath() { return simpleDate.format(new Date());}
 

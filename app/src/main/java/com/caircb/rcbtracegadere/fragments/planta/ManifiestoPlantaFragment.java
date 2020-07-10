@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -29,6 +30,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     UserRegistrarPlanta userRegistrarPlanta;
     FloatingActionButton mensajes;
     double peso;
+    DialogBuilder dialogBuilder;
 
 
     @Override
@@ -55,33 +57,25 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
 
                 peso = manifiestoPlanta.guardar();
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("");
-                builder.setMessage("Esta seguro de continuar");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setTitle("");
+                dialogBuilder.setMessage("Esta seguro de continuar");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                         userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso);
                         userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
                             @Override
                             public void onSuccessful() {
-                                messageBox("Datos Guardados");
+
                                 setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                             }
                         });
                         userRegistrarPlanta.execute();
-
                     }
                 });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                builder.show();
-
 
                 break;
         }

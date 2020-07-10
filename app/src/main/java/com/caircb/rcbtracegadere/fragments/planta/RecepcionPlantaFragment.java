@@ -52,7 +52,8 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     DialogBuilder builder;
     double pesoT=0;
     private boolean firma = false;
-
+    LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
+    TextView txtCountPhoto;
 
 
 
@@ -78,6 +79,11 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         txtotraNovedad = this.findViewById(R.id.txtotraNovedad);
 
         txtNovedad = this.findViewById(R.id.txtNovedad);
+        btnEvidenciaObservacion = this.findViewById(R.id.btnEvidenciaObservacion);
+        lnlCountPhoto = this.findViewById(R.id.lnlCountPhoto);
+        txtCountPhoto = this.findViewById(R.id.txtCountPhoto);
+
+        btnEvidenciaObservacion.setVisibility(View.GONE);
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +122,25 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                     });
                     dialogFirma.show();
                 }
+            }
+        });
+
+        btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
+                dialogAgregarFotografias.setCancelable(false);
+                dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                    @Override
+                    public void onSuccessful(Integer cantidad) {
+                        lnlCountPhoto.setVisibility(View.VISIBLE);
+                        txtCountPhoto.setText(String.valueOf(cantidad));
+                    }
+                });
+                dialogAgregarFotografias.show();
+                window = dialogAgregarFotografias.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             }
         });
 

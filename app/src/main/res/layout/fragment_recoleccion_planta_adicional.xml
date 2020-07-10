@@ -32,9 +32,53 @@
                 android:layout_height="57dp"
                 android:textSize="22dp"
                 android:layout_width="match_parent"
+                android:background="@drawable/border_imput_text"
                 android:layout_weight="1"
                 />
+
+            <LinearLayout
+                android:id="@+id/btnEvidenciaObservacion"
+                android:layout_width="42dp"
+                android:layout_height="40dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:paddingRight="0dp"
+                android:layout_margin="1dp">
+
+                <RelativeLayout
+                    android:background="@mipmap/ic_camara"
+                    android:scaleType="center"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" >
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/lnlCountPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/shape_circle"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp">
+
+                        <TextView
+                            android:id="@+id/txtCountPhoto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:background="@null"
+                            android:padding="0dp"
+                            android:text="0"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/btnAgregarFirma"
             android:layout_width="match_parent"

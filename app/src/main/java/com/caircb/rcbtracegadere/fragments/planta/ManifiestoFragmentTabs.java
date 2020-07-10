@@ -113,9 +113,16 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             case R.id.btnManifiestoNext:
                 //vista preliminar...
                // setNavegate(VistaPreliminarFragment.newInstance(manifiestoID));
+                    boolean resp = tab3.validarInformacion();
+                    if(!resp){
+                        messageBox("Debe registrar la firma.!");
+                    }else{
+
+                    }
                 break;
         }
     }
+
 
     @Override
     public void onAttach(Activity activity) {
