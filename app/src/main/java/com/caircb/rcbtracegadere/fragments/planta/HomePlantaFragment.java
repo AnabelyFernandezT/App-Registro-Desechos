@@ -120,6 +120,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
+
                 if(bandera.equals("1")){
                     setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 }else if(bandera.equals("2")){

@@ -92,6 +92,7 @@ public class DialogPlacas extends MyDialog {
                 String valor = parametro == null ? "-1" : parametro.getValor();
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
+
                 if(bandera.equals("1")){
                     consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                     consultarManifiestosPlanta.execute();
@@ -203,7 +204,6 @@ public class DialogPlacas extends MyDialog {
         Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-
         if(bandera.equals("1")){
             loadCantidadManifiestoAsignado();
         }else if (bandera.equals("2")){
