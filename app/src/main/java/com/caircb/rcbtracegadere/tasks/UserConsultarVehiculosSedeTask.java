@@ -30,6 +30,7 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
     }
 
     private OnVehiculoListener mOnVehiculoListener;
+    private Integer tipoPlaca;
 
     @Override
     public void execute() {
@@ -43,6 +44,11 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
                 public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                     if(response.isSuccessful()){
                         MyApp.getDBO().catalogoDao().saveOrUpdate((List<DtoCatalogo>) response.body(),3);
+                        List<DtoCatalogo> data = response.body();
+                        for(DtoCatalogo c : response.body()){
+                            MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+c.getId(),""+c.getDatoAdicional());
+                        }
+
                         if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful((List<DtoCatalogo>) response.body());
                     }
                     progressHide();

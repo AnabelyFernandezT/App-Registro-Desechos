@@ -117,7 +117,7 @@ public interface IServicio {
     Call<List<DtoLotePadreGestor>> traerLotesPadre(@Body RequestLotePadre model);
 
 
-    @POST("Catalogo/obtenerCatalogoDataTest")
+    @POST("Catalogo/obtenerCatalogoData")
     Call<List<DtoCatalogo>>obtenerCatalogoPlacasSede(@Body RequestDataCatalogo model);
 
     @PUT("Registro/registroRutaTrasladoInicioFin")

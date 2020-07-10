@@ -1,12 +1,12 @@
 package com.caircb.rcbtracegadere.models.response;
 
-public class DtoCatalogo {
+public class DtoCatalogoPlaca {
     private Integer id;
     private String nombre;
     private String codigo;
-    private Integer datoAdicional;
+    private Integer dataAux;
 
-    public DtoCatalogo() {
+    public DtoCatalogoPlaca() {
     }
 
     /*public DtoCatalogo(Integer id, String nombre, String codigo) {
@@ -15,12 +15,12 @@ public class DtoCatalogo {
         this.codigo = codigo;
     }*/
 
-    public Integer getDatoAdicional() {
-        return datoAdicional;
+    public Integer getDataAux() {
+        return dataAux;
     }
 
-    public void setDatoAdicional(Integer datoAdicional) {
-        this.datoAdicional = datoAdicional;
+    public void setDataAux(Integer dataAux) {
+        this.dataAux = dataAux;
     }
 
     public Integer getId() {

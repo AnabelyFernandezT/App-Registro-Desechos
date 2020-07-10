@@ -16,6 +16,8 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaFragmentNO;
+import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
@@ -86,7 +88,18 @@ public class DialogPlacas extends MyDialog {
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogoConfirmacion();
+                ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+                String valor = parametro == null ? "-1" : parametro.getValor();
+                Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
+                if(bandera.equals("1")){
+                    consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                    consultarManifiestosPlanta.execute();
+                }else if(bandera.equals("2")){
+                    cargarManifiesto();
+                }else if(bandera.equals("0")){
+                    dialogoConfirmacion();
+                }
                 //dismiss();
             }
         });
@@ -119,7 +132,7 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+1);
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
@@ -135,7 +148,7 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,"");
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+2);
                 cargarManifiesto();
                 //consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 //consultarManifiestosPlanta.execute();
@@ -189,11 +202,11 @@ public class DialogPlacas extends MyDialog {
         String valor = parametro == null ? "-1" : parametro.getValor();
         Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
-        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
+        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
 
-        if(bandera!=null){
+        if(bandera.equals("1")){
             loadCantidadManifiestoAsignado();
-        }else{
+        }else if (bandera.equals("2")){
             loadCantidadManifiestoAsignadoNO();
         }
     }

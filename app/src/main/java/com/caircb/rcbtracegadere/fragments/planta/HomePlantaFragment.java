@@ -119,10 +119,10 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
-                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
-                if(bandera!=null){
+                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
+                if(bandera.equals("1")){
                     setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
-                }else{
+                }else if(bandera.equals("2")){
                     setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                 }
 
@@ -145,11 +145,11 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
         String valor = parametro == null ? "-1" : parametro.getValor();
         Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
-        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
+        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
 
-        if(bandera!=null){
+        if(bandera.equals("1")){
             loadCantidadManifiestoAsignado();
-        }else{
+        }else if(bandera.equals("2")){
             loadCantidadManifiestoAsignadoNO();
         }
     }
