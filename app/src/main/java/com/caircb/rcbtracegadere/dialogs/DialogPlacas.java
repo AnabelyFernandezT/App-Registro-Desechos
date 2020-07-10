@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
@@ -64,6 +65,7 @@ public class DialogPlacas extends MyDialog {
                 if(position>0){
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
+                    System.out.println(placa+"placa");
                     idPlaca = spinnerPlacas.getId();
                 }
 
@@ -115,6 +117,8 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+idVehiculo);
                 //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
@@ -129,6 +133,8 @@ public class DialogPlacas extends MyDialog {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,"");
                 cargarManifiesto();
                 //consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
@@ -179,7 +185,10 @@ public class DialogPlacas extends MyDialog {
 
 
     private void cargarLabelCantidad(){
-        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
 
         if(bandera!=null){

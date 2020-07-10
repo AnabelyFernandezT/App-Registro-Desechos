@@ -114,7 +114,10 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnListaAsignadaTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+                ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+                String valor = parametro == null ? "-1" : parametro.getValor();
+                Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
                 if(bandera!=null){
@@ -141,7 +144,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     private void cargarLabelCantidad(){
         ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
         String valor = parametro == null ? "-1" : parametro.getValor();
-        Integer idVehiculo = Integer.parseInt(valor);
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(idVehiculo.toString(),"vehiculo_planta"+idVehiculo);
 
         if(bandera!=null){

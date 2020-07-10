@@ -43,10 +43,10 @@ import java.util.List;
 public class DialogInformacionModulos extends MyDialog {
     Activity _activity;
     UserInformacionModulosTask informacionModulosTaskl;
-    TextView lblRutaInfo,lblSubrutaInfo,lblPlacaInfo,lblChoferInfo,lblAuxiliarRecoleccion1Info,lblAuxiliarRecoleccion2Info,lblKilometrajeInfo;
+    TextView lblRutaInfo,lblSubrutaInfo,lblPlacaInfo,lblChoferInfo,lblAuxiliarRecoleccion1Info,lblAuxiliarRecoleccion2Info,lblKilometrajeInfo,lblObservaciones,lblTituloRuta,lblTituloRecoleccion;
     CheckBox chkFiscalizacionNo,chkFiscalizacionSi,chkFiscalizacionArcsa,chkFiscalizacionMi,chkDevolucionRecipienteSi,chkDevolucionRecipienteNo,chkMontacargasSi,chkMontacargasNo
             ,chkBalanzaSi,chkBalanzaNo,chkPresenciadoSi,chkPresenciadoNo;
-    LinearLayout btnRetornarMenu;
+    LinearLayout btnRetornarMenu,sectionGeneral,sectionEspecifica;
     List<DtoInformacionModulos> listaInformacionModulos;
     private List<ItemInformacionModulos> rowItems;
 
@@ -72,7 +72,6 @@ public class DialogInformacionModulos extends MyDialog {
         lblAuxiliarRecoleccion1Info = getView().findViewById(R.id.lblAuxiliarRecoleccion1Info);
         lblAuxiliarRecoleccion2Info = getView().findViewById(R.id.lblAuxiliarRecoleccion2Info);
         lblKilometrajeInfo = getView().findViewById(R.id.lblKilometrajeInfo);
-
         chkFiscalizacionNo = getView().findViewById(R.id.chkFiscalizacionNo);
         chkFiscalizacionSi = getView().findViewById(R.id.chkFiscalizacionSi);
         chkFiscalizacionArcsa = getView().findViewById(R.id.chkFiscalizacionArcsa);
@@ -86,6 +85,12 @@ public class DialogInformacionModulos extends MyDialog {
         chkPresenciadoSi = getView().findViewById(R.id.chkPresenciadoSi);
         chkPresenciadoNo = getView().findViewById(R.id.chkPresenciadoNo);
         btnRetornarMenu = getView().findViewById(R.id.btnRetornarMenu);
+        lblObservaciones = getView().findViewById(R.id.lblObservaciones);
+
+        lblTituloRuta = getView().findViewById(R.id.lblTituloRuta);
+        lblTituloRecoleccion = getView().findViewById(R.id.lblTituloRecoleccion);
+        sectionGeneral = getView().findViewById(R.id.sectionGeneral);
+        sectionEspecifica = getView().findViewById(R.id.sectionEspecifica);
 
         btnRetornarMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,57 +105,78 @@ public class DialogInformacionModulos extends MyDialog {
 
     private void datosInformacionModulo(){
         InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
-            if (informacionModulos!=null){
-                lblRutaInfo.setText(informacionModulos.getRuta());
-                lblSubrutaInfo.setText(informacionModulos.getSubruta());
-                lblPlacaInfo.setText(informacionModulos.getPlaca());
-                lblChoferInfo.setText(informacionModulos.getChofer());
-                lblAuxiliarRecoleccion1Info.setText(informacionModulos.getAuxiliarRecoleccion1());
-                lblAuxiliarRecoleccion2Info.setText(informacionModulos.getAuxiliarRecoleccion2());
-                lblKilometrajeInfo.setText(informacionModulos.getKilometrajeInicio().toString());
+        int idTipoProceso=Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino"));
+        if (idTipoProceso==1){
+            lblTituloRecoleccion.setVisibility(View.VISIBLE);
+            lblTituloRuta.setVisibility(View.GONE);
+            sectionGeneral.setVisibility(View.VISIBLE);
+            sectionEspecifica.setVisibility(View.VISIBLE);
 
-                if (informacionModulos.getResiduoSujetoFiscalizacion()==0){
-                    chkFiscalizacionNo.setChecked(true);
-                    chkFiscalizacionSi.setSelected(false);
+            lblRutaInfo.setText(informacionModulos.getRuta());
+            lblSubrutaInfo.setText(informacionModulos.getSubruta());
+            lblPlacaInfo.setText(informacionModulos.getPlaca());
+            lblChoferInfo.setText(informacionModulos.getChofer());
+            lblAuxiliarRecoleccion1Info.setText(informacionModulos.getAuxiliarRecoleccion1());
+            lblAuxiliarRecoleccion2Info.setText(informacionModulos.getAuxiliarRecoleccion2());
+            lblKilometrajeInfo.setText(informacionModulos.getKilometrajeInicio().toString());
+        /*    if (informacionModulos.getObservacionResiduos().equals(null)){
+                lblObservaciones.setText("");
+            }else {
+                lblObservaciones.setText(informacionModulos.getObservacionResiduos());
+            }*/
+            if (informacionModulos.getResiduoSujetoFiscalizacion()==0){
+                chkFiscalizacionNo.setChecked(true);
+                chkFiscalizacionSi.setSelected(false);
               /*chkFiscalizacionArcsa.setText();
                 chkFiscalizacionMi.setText();*/
-                }else {
-                    chkFiscalizacionNo.setSelected(false);
-                    chkFiscalizacionSi.setSelected(true);
-                }
-                if (informacionModulos.getRequiereDevolucionRecipientes()==0){
-                    chkDevolucionRecipienteSi.setChecked(false);
-                    chkDevolucionRecipienteNo.setChecked(true);
-                }else {
-                    chkDevolucionRecipienteSi.setChecked(true);
-                    chkDevolucionRecipienteNo.setChecked(false);
-                }
-                if (informacionModulos.getTieneDisponibilidadMontacarga()==0){
-                    chkMontacargasSi.setChecked(false);
-                    chkMontacargasNo.setChecked(true);
-                }else {
-                    chkMontacargasSi.setChecked(true);
-                    chkMontacargasNo.setChecked(false);
-                }
-                if (informacionModulos.getTieneDisponibilidadBalanza()==0){
-                    chkBalanzaSi.setChecked(false);
-                    chkBalanzaNo.setChecked(true);
-                }else {
-                    chkBalanzaSi.setChecked(true);
-                    chkBalanzaNo.setChecked(false);
-                }
-                if (informacionModulos.getRequiereIncineracionPresenciada()==0){
-                    chkPresenciadoSi.setChecked(false);
-                    chkPresenciadoNo.setChecked(true);
-                }else {
-                    chkPresenciadoSi.setChecked(true);
-                    chkPresenciadoNo.setChecked(false);
-                }
-
-
-
             }else {
-
+                chkFiscalizacionNo.setSelected(false);
+                chkFiscalizacionSi.setSelected(true);
             }
+            if (informacionModulos.getRequiereDevolucionRecipientes()==0){
+                chkDevolucionRecipienteSi.setChecked(false);
+                chkDevolucionRecipienteNo.setChecked(true);
+            }else {
+                chkDevolucionRecipienteSi.setChecked(true);
+                chkDevolucionRecipienteNo.setChecked(false);
+            }
+            if (informacionModulos.getTieneDisponibilidadMontacarga()==0){
+                chkMontacargasSi.setChecked(false);
+                chkMontacargasNo.setChecked(true);
+            }else {
+                chkMontacargasSi.setChecked(true);
+                chkMontacargasNo.setChecked(false);
+            }
+            if (informacionModulos.getTieneDisponibilidadBalanza()==0){
+                chkBalanzaSi.setChecked(false);
+                chkBalanzaNo.setChecked(true);
+            }else {
+                chkBalanzaSi.setChecked(true);
+                chkBalanzaNo.setChecked(false);
+            }
+            if (informacionModulos.getRequiereIncineracionPresenciada()==0){
+                chkPresenciadoSi.setChecked(false);
+                chkPresenciadoNo.setChecked(true);
+            }else {
+                chkPresenciadoSi.setChecked(true);
+                chkPresenciadoNo.setChecked(false);
+            }
+
+        }else {
+            lblTituloRecoleccion.setVisibility(View.GONE);
+            lblTituloRuta.setVisibility(View.VISIBLE);
+            sectionGeneral.setVisibility(View.VISIBLE);
+            sectionEspecifica.setVisibility(View.GONE);
+
+            lblRutaInfo.setText(informacionModulos.getRuta());
+            lblSubrutaInfo.setText(informacionModulos.getSubruta());
+            lblPlacaInfo.setText(informacionModulos.getPlaca());
+            lblChoferInfo.setText(informacionModulos.getChofer());
+            lblAuxiliarRecoleccion1Info.setText(informacionModulos.getAuxiliarRecoleccion1());
+            lblAuxiliarRecoleccion2Info.setText(informacionModulos.getAuxiliarRecoleccion2());
+            lblKilometrajeInfo.setText(informacionModulos.getKilometrajeInicio().toString());
+        }
+
+
     }
 }

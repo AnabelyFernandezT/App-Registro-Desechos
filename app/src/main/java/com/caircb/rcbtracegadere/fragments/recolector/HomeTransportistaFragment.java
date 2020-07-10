@@ -129,7 +129,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                     desbloque_botones();
                     lnlIniciaRuta.setVisibility(View.GONE);
                     lnlFinRuta.setVisibility(View.VISIBLE);
-
                     break;
 
                 case 2:
