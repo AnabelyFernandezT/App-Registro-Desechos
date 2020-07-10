@@ -27,6 +27,9 @@ public abstract class ManifiestoDao {
     @Query("select * from tb_manifiestos where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
+    @Query("select * from tb_manifiestos where idTransporteVehiculo=:idVehiculo limit 1")
+    public abstract ManifiestoEntity fetchHojaRutabyIdTransporte(Integer idVehiculo);
+
     @Query("select count(*) from tb_manifiestos where estado=1 ")
     public abstract int contarHojaRutaAsignadas();
 
