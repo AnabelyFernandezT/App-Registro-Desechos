@@ -77,9 +77,9 @@ public abstract class ManifiestoDao {
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoByPlaca(Integer idPlaca);
 
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, numeroPlacaVehiculo from tb_manifiestos where estado=2 and estadoFinRuta=0 and idSubRuta=:Subruta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, numeroPlacaVehiculo from tb_manifiestos where estado=2 and estadoFinRuta=0 and idSubRuta=:Subruta and idDestinatarioFinRutaCatalogo=:idFinRuta  order by nombreCliente")
     @Transaction
-    public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta(Integer Subruta, Integer idChoferRecolector);
+    public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta(Integer Subruta, Integer idFinRuta);
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos " +
             "where estado=1 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idSubRuta=:SubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
@@ -245,6 +245,7 @@ public abstract class ManifiestoDao {
             entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
             entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
+            entity.setIdDestinatarioFinRutaCatalogo(manifiesto.getIdDestinatarioFinRutaCatalogo());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -302,6 +303,7 @@ public abstract class ManifiestoDao {
             entity.setNombreOperadorRecolector(manifiesto.getNombreOperadorRecolector());
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
             entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
+            entity.setIdDestinatarioFinRutaCatalogo(manifiesto.getIdDestinatarioFinRutaCatalogo());
         }
 
         if (entity!=null) createManifiesto(entity);

@@ -41,6 +41,8 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                 response.body().getKilometrajeInicio(),
                                 response.body().getKilometrajeFin(),
                                 1);
+                    }else {
+
                     }
                 }
             }
@@ -56,7 +58,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
     private Boolean verificarInicioRuta (){
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
 
-        if(model!=null){
+        if(model!=null && model.getIdRutaInicioFin()>0){
             return true;
         }else {
             return false;

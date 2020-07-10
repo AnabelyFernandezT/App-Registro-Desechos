@@ -388,9 +388,9 @@ public class MyPrint {
 
             if(resto.length() > 27){
                 parte2 = resto.substring(0,27);
-                impresion = part1 + "^FS^FO50,560^AD^FD " + parte2;
+                impresion = part1 + "^FS^FO60,680^AD^FD " + parte2;
             }else{
-                impresion = part1 + "^FS^FO50,560^AD^FD " + resto;
+                impresion = part1 + "^FS^FO60,680^AD^FD " + resto;
             }
         }else{
             impresion = residuo;

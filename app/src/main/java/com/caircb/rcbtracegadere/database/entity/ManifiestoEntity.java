@@ -129,6 +129,8 @@ public class ManifiestoEntity {
 
     private String numeroPlacaVehiculo;
 
+    private Integer idDestinatarioFinRutaCatalogo;
+
     public ManifiestoEntity() {
     }
 
@@ -477,6 +479,14 @@ public class ManifiestoEntity {
 
     public void setFechaInicioRecorrecion(Date fechaInicioRecorrecion) {
         this.fechaInicioRecorrecion = fechaInicioRecorrecion;
+    }
+
+    public Integer getIdDestinatarioFinRutaCatalogo() {
+        return idDestinatarioFinRutaCatalogo;
+    }
+
+    public void setIdDestinatarioFinRutaCatalogo(Integer idDestinatarioFinRutaCatalogo) {
+        this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
     }
 }
 

@@ -95,7 +95,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
-        consultarInicioFinRuta();
+        //consultarInicioFinRuta();
         lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
         btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
