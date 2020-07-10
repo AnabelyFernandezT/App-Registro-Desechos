@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
@@ -28,7 +29,10 @@ import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
+import com.caircb.rcbtracegadere.tasks.UserObtenerLotePadreHotelTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHotelTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioFinLoteHotelTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
 import java.util.ArrayList;
@@ -43,6 +47,8 @@ public class DialogFinRuta extends MyDialog {
     Boolean bandera;
     EditText kilometrajeFinal;
     long idRegistro;
+    HotelLotePadreEntity lotePadre;
+    DialogBuilder builder;
 
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
@@ -52,9 +58,13 @@ public class DialogFinRuta extends MyDialog {
     Spinner listaDestino, listaDestinoParticular;
     String destino = "", destinos="";
 
+    int idDestino;
     UserRegistrarFinRutaTask registroFinRuta;
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
+    UserObtenerLotePadreHotelTask lotePadreHotelTask;
+    UserRegistrarInicioFinLoteHotelTask inicioFinLoteHotelTask;
+    UserRegistrarFinLoteHotelTask finLotePadreHotelTask;
 
     List<DtoCatalogo> listaDestinos, destinosEspecificos;
 
@@ -76,6 +86,7 @@ public class DialogFinRuta extends MyDialog {
     }
 
     private void init(){
+        lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
         listaDestinos = new ArrayList<>();
         destinosEspecificos = new ArrayList<>();
         txt_placa = (TextView)getView().findViewById(R.id.Txt_placa);
@@ -115,6 +126,8 @@ public class DialogFinRuta extends MyDialog {
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+position);
                     destinos = (String) listaDestino.getSelectedItem();
                     traerDestinoEspecifico();
+                    validarHoteles();
+
                 }
 
             }
@@ -131,6 +144,11 @@ public class DialogFinRuta extends MyDialog {
                 if(position>0){
                     destinosEspecificos.get(position-1);
                     destino = (String) listaDestinoParticular.getSelectedItem();
+                    CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
+                    idDestino = c!=null?c.getIdSistema():-1;
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
+
+
                 }
 
             }
@@ -164,8 +182,9 @@ public class DialogFinRuta extends MyDialog {
                             return;
                         }else {
                             guardarDatos();
+                            //messageBox("guardado");
+                            loteHotelPadre();
                         }
-
 
                     }
 
@@ -285,5 +304,51 @@ public class DialogFinRuta extends MyDialog {
 
     }
 
+    private void loteHotelPadre(){
+        if(lotePadre!=null){
+            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+            inicioFinLoteHotelTask.execute();
+
+        }else {
+            lotePadreHotelTask = new UserObtenerLotePadreHotelTask(getActivity());
+            lotePadreHotelTask.setmOnLoteHotelPadreListener(new UserObtenerLotePadreHotelTask.OnLoteHotelPadreListener() {
+                @Override
+                public void onSuccessful() {
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+                    inicioFinLoteHotelTask.execute();
+
+                }
+            });
+            lotePadreHotelTask.execute();
+        }
+
+    }
+
+    private void validarHoteles (){
+        if (destinos.equals("HOTEL")){
+            builder = new DialogBuilder(getActivity());
+            builder.setMessage("¿Es su último día de recolección?");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Si", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    destino = "null";
+                    listaDestinoParticular.setEnabled(false);
+
+                    finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity(),lotePadre.getIdLoteContenedorHotel());
+                    finLotePadreHotelTask.execute();
+                    builder.dismiss();
+                }
+            });
+            builder.setNegativeButton("No", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    builder.dismiss();
+                }
+            });
+            builder.show();
+
+        }
+    }
 
 }
