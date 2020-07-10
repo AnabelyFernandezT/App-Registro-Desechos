@@ -92,11 +92,8 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
         Gson g = new Gson();
         String f = g.toJson(request);
         System.out.println(f);
-        progressHide();
-       /*
+
         if(request!=null){
-            Gson g = new Gson();
-            String f = g.toJson(request);
             WebService.api().registrarPlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -119,7 +116,6 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
                 }
             });
         }
-        */
     }
     private String getPath() { return simpleDate.format(new Date());}
 
@@ -142,24 +138,22 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente(){
         List<RequestManifiestoNovedadFrecuente> resp = new ArrayList<>();
-        List<Long> listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUploadSincronizadas(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION);
+        List<Long> listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUploadSincronizadas(idAppManifiesto, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA);
 
-        System.out.println("kldakld");
-
-        if(listaFotoNovedadFrecuente.size()>0){
-            for (Long id : listaFotoNovedadFrecuente) {
-                resp.add(new RequestManifiestoNovedadFrecuente(
-                        listaFotoNovedadFrecuente.indexOf(id),
-                        createFotografia(-2,ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA),
-                        path+"/"+"novedadfrecuente"
-                ));
-            }
+        if(listaFotoNovedadFrecuente != null && listaFotoNovedadFrecuente.size()>0){
+            resp.add(new RequestManifiestoNovedadFrecuente(
+                    -2,
+                    createFotografia(-2,ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA),
+                    path+"/"+"novedadfrecuente"
+            ));
         }
+
         return resp;
     }
 
     private List<RequestNovedadFoto> createFotografia(Integer idCatalogo, Integer tipo) {
-        return MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
+        List<RequestNovedadFoto> lista = MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
+        return lista;
     }
 
     private void finalizar(){

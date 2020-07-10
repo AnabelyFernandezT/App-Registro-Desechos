@@ -120,6 +120,13 @@ public class TabManifiestoAdicionalFragment extends Fragment {
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA );
+        if(numeroFotos != null && numeroFotos > 0){
+            lnlCountPhoto.setVisibility(View.VISIBLE);
+            txtCountPhoto.setText(String.valueOf(numeroFotos));
+            btnEvidenciaObservacion.setVisibility(View.VISIBLE);
+        }
+
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

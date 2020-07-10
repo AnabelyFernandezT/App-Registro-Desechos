@@ -69,15 +69,16 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
         model = MyApp.getDBO().lotePadreDao().fetchConsultarCatalogoEspecifico(idAppManifiesto);
 
         firmaRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_GESTORES, MyConstant.STATUS_GESTORES);
-        fotosGestores = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauldAllFotos(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR, MyConstant.STATUS_GESTORES);
-
+        //fotosGestores = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauldAllFotos(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR, MyConstant.STATUS_GESTORES);
         if(firmaRecoleccion!=null && !firmaRecoleccion.isSincronizado())listaFileDefauld.add(firmaRecoleccion);
 
+        /*
         if(fotosGestores.size()>0){
             for(DtoFile reg : fotosGestores){
                 listaFileDefauld.add(reg);
             }
         }
+        */
 
         path = path + "/" + getPath() + "/" + model.getNumeroManifiestoPadre();
         System.out.println(path);
@@ -120,7 +121,6 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                 }
             });
         }
-
     }
 
     RequestRegistroGenerador requestRegistroGenerador(){
@@ -146,11 +146,8 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
         if(novedad.size()>0){
             for(RequestNovedadFoto id:novedad){
                 resp.add(new RequestNovedadesGestores(novedad,path+"/"+"ObservacionesRecoleccion"));
-
             }
-
         }
-
         return resp;
 
     }

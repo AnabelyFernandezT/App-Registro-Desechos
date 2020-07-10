@@ -134,6 +134,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
         if(tab3!=null && ((requestCode>=101 && requestCode<=104) ||(requestCode>=201 && requestCode<=204))){
             tab3.setMakePhoto(requestCode);
+        }else if( tab3 !=null && (requestCode>=1601 && requestCode<=1604) || (requestCode>=1601 && (requestCode<=1604))){
+            tab3.setMakePhoto(requestCode);
         }
     }
 

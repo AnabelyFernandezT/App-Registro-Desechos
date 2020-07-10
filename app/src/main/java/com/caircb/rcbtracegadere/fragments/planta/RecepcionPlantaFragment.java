@@ -174,7 +174,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    //validarPesos();
+                    validarPesos();
                 }
             }
         });
