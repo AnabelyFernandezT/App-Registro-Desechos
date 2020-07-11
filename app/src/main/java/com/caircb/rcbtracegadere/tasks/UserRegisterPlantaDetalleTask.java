@@ -82,7 +82,6 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
         String f = g.toJson(request);
         System.out.println(f);
 
-        /*
         if(request !=null){
             WebService.api().registroPlantaDetalle(request).enqueue(new Callback<DtoInfo>() {
                 @Override
@@ -101,7 +100,6 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
                 }
             });
         }
-         */
     }
 
     private String getPath() { return simpleDate.format(new Date());}
