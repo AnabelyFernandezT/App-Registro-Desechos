@@ -180,7 +180,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             if(jsonMenus.length()>0){
                 for (int i = 0; i < jsonMenus.length(); i++){
                     json = jsonMenus.getJSONObject(i);
-                    if(json.getString("nombre").equals("Modulos")){
+                    if(json.getString("nombre").equals("MÓDULOS")){
                         if(jsonLugares.length()>1){
                             rowItems.add(new RowItem(
                                     json.getString("nombre"),
@@ -267,7 +267,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private void openConfigurar(){
         final Dialog mdialog = new Dialog(this);
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
-        myListOfItems.add(new MenuItem("Impresora"));
+        myListOfItems.add(new MenuItem("IMPRESORA"));
         dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this,myListOfItems);
         View view = getLayoutInflater().inflate(R.layout.dialog_main, null);
         mDialogMenuItems =(ListView) view.findViewById(R.id.custom_list);
@@ -277,7 +277,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MenuItem item= myListOfItems.get(position);
                 if(!item.isEnabled()){
-                     if(item.getNombre().equals("Impresora")){
+                     if(item.getNombre().equals("IMPRESORA")){
                         if(mdialog!=null){
                             mdialog.dismiss();
                             openMenuOpcion();
@@ -289,7 +289,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         });
 
 
-        mdialog.setTitle("Configuraciones");
+        mdialog.setTitle("CONFIGURACIONES");
         mdialog.setContentView(view);
         mdialog.show();
     }
@@ -311,7 +311,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MenuItem item= myListOfItems.get(position);
                 if(!item.isEnabled()){
-                    if (item.getNombre().equals("Aplicacion")){
+                    if (item.getNombre().equals("APLICACIÓN")){
                         if(mdialog!=null){
                             mdialog.dismiss();
                             onUpdateApp();
@@ -322,7 +322,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         });
 
 
-        mdialog.setTitle("Actualizaciones");
+        mdialog.setTitle("ACTUALIZACIONES");
         mdialog.setContentView(view);
         mdialog.show();
     }
@@ -521,22 +521,22 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(rowItems!=null) {
             switch (rowItems.get(position).getNombre()) {
-                case "Salir":
+                case "SALIR":
                     onCloseApp();
                     break;
-                case "Base de Datos":
+                case "BASE DE DATOS":
                     onCopyDatabase();
                     break;
-                case "Actualizar":
+                case "ACTUALIZAR":
                     openActualizar();
                     break;
-                case "Modulos":
+                case "MÓDULOS":
                     openModulos();
                     break;
-                case "Configurar":
+                case "CONFIGURAR":
                     openConfigurar();
                     break;
-                case "Información":
+                case "INFORMACIÓN":
                     openInformacion();
                     break;
             }
@@ -633,7 +633,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 }
             }
         });
-        mdialog.setTitle("Modulos");
+        mdialog.setTitle("MÓDULOS");
         mdialog.setContentView(view);
         mdialog.setCancelable(false);
         mdialog.show();
