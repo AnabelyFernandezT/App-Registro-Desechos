@@ -316,7 +316,7 @@ public class DialogInicioRuta extends MyDialog {
 
     private void loadCantidadManifiestoProcesado(){
         //dbHelper.open();
-        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
+        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasP(MySession.getIdUsuario()));
         //dbHelper.close();
     }
 

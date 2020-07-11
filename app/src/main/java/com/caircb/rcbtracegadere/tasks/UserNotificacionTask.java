@@ -2,6 +2,8 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -17,14 +19,26 @@ import retrofit2.Response;
 public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallbacks {
     Integer idAppManifiesto;
     String mensaje;
+    Integer idNotificacion;
+    String hojaRuta;
 
     public UserNotificacionTask(Context context,
                                 Integer idAppManifiesto,
-                                String mensaje) {
+                                String mensaje,
+                                Integer idNotificacion,
+                                String hojaRuta) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.mensaje = mensaje;
+        this.idNotificacion =idNotificacion;
+        this.hojaRuta = hojaRuta;
     }
+
+    public interface OnNotificacionListener {
+        public void onSuccessful();
+    }
+
+    private OnNotificacionListener mOnNotificacionListener;
 
     @Override
     public void execute() {
@@ -44,6 +58,7 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
                     if(response.isSuccessful()){
                         if(response.body().getExito()){
                             message("Enviado");
+                            if(mOnNotificacionListener!=null)mOnNotificacionListener.onSuccessful();
                             progressHide();
                         }else{
                             message(response.body().getMensaje());
@@ -74,12 +89,17 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
         rq.setIdEmisor(MySession.getIdUsuario());
         rq.setToken(MySession.getId());
         //rq.setToken(MySession.getId());
-        rq.setIdManifiesto(1);
-        rq.setIdHojaRuta("1");
-        rq.setIdCatNotificacion(1);
+        rq.setIdManifiesto(idAppManifiesto);
+        rq.setIdHojaRuta(hojaRuta);
+        rq.setIdCatNotificacion(idNotificacion);
 
 
         return rq;
+    }
+
+    public void setOnRegisterListener(@NonNull OnNotificacionListener l){
+        mOnNotificacionListener =l;
+
     }
 
 

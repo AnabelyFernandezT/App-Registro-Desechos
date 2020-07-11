@@ -122,13 +122,13 @@ public interface IServicio {
     Call<List<DtoLotePadreGestor>> traerLotesPadre(@Body RequestLotePadre model);
 
 
-    @POST("Catalogo/obtenerCatalogoData")
+    @POST("Catalogo/obtenerCatalogoDataTest")
     Call<List<DtoCatalogo>>obtenerCatalogoPlacasSede(@Body RequestDataCatalogo model);
 
     @PUT("Registro/registroRutaTrasladoInicioFin")
     Call<DtoInfo>registrarRuteoRecollecion(@Body RequestRuteoRecoleccion model);
 
-    @POST("Registro/registroFotoManifiestoPadre")
+    @POST("Registro/cierreManifiestoPadre")
     Call<DtoInfo> registrarRecoleccionGestores(@Body RequestRegistroGenerador model);
 
     @POST("Catalogo/obtenerLoteContenedorHotel")

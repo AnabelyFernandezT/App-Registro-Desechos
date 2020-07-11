@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -53,12 +54,15 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
        RequestInicioLoteHotel rq = new RequestInicioLoteHotel();
        HotelLotePadreEntity lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
        RutaInicioFinEntity inicioFinRuta = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+       ManifiestoEntity entity = MyApp.getDBO().manifiestoDao().fetchHojaRuta();
+
+       Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
 
        rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
        rq.setIdSubRuta(inicioFinRuta.getIdSubRuta());
        rq.setFecha(new Date());
-       rq.setIdDestinatarioFinRutaCatalogo(destinatarioInicioFinRutaCatalogo);
-       rq.setIdTransportistaVehiculo(inicioFinRuta.getIdTransporteRecolector());
+       rq.setIdDestinatarioFinRutaCatalogo(idDestino);
+       rq.setIdTransportistaVehiculo(entity.getIdTransporteVehiculo());
 
         return rq;
    }
