@@ -72,14 +72,6 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
         //fotosGestores = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauldAllFotos(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR, MyConstant.STATUS_GESTORES);
         if(firmaRecoleccion!=null && !firmaRecoleccion.isSincronizado())listaFileDefauld.add(firmaRecoleccion);
 
-        /*
-        if(fotosGestores.size()>0){
-            for(DtoFile reg : fotosGestores){
-                listaFileDefauld.add(reg);
-            }
-        }
-        */
-
         path = path + "/" + getPath() + "/" + model.getNumeroManifiestoPadre();
         System.out.println(path);
 
@@ -112,6 +104,8 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                         //message(response.body().getMensaje());
                         progressHide();
                         if(mOnRegisterAlternoListener!=null){mOnRegisterAlternoListener.onSussfull();}
+                    }else {
+                        progressHide();
                     }
                 }
 
@@ -119,6 +113,7 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
                     progressHide();
                 }
+
             });
         }
     }

@@ -45,6 +45,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Notificación: " + remoteMessage.getNotification().getBody());
+            Log.d(TAG, "TITULO " + remoteMessage.getNotification().getTitle());
             showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
         }
 

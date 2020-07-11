@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
 import com.caircb.rcbtracegadere.models.request.RequestRegistarLotePadreHotel;
+import com.caircb.rcbtracegadere.models.request.RequestRegisterPlantaDetalle;
 import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.request.RequestRegistroGenerador;
 import com.caircb.rcbtracegadere.models.request.RequestRuteoRecoleccion;
@@ -83,6 +84,10 @@ public interface IServicio {
     @PUT("Registro/registroManifiestoPlanta")
     Call<DtoInfo> registrarPlanta(@Body RequestManifiestoPlanta model);
 
+    @PUT("Registro/registroPlantaDetalle")
+    Call<DtoInfo> registroPlantaDetalle(@Body RequestRegisterPlantaDetalle model);
+
+
     @POST("Notificacion/registrarNotificacion")
     Call<DtoInfo> registrarNotificacion(@Body RequestNotificacion model);
 
@@ -117,13 +122,13 @@ public interface IServicio {
     Call<List<DtoLotePadreGestor>> traerLotesPadre(@Body RequestLotePadre model);
 
 
-    @POST("Catalogo/obtenerCatalogoData")
+    @POST("Catalogo/obtenerCatalogoDataTest")
     Call<List<DtoCatalogo>>obtenerCatalogoPlacasSede(@Body RequestDataCatalogo model);
 
     @PUT("Registro/registroRutaTrasladoInicioFin")
     Call<DtoInfo>registrarRuteoRecollecion(@Body RequestRuteoRecoleccion model);
 
-    @POST("Registro/registroFotoManifiestoPadre")
+    @POST("Registro/cierreManifiestoPadre")
     Call<DtoInfo> registrarRecoleccionGestores(@Body RequestRegistroGenerador model);
 
     @POST("Catalogo/obtenerLoteContenedorHotel")
