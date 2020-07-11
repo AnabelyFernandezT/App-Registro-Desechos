@@ -82,7 +82,6 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     }
 
     private void validarInformacion(){
-        String nn = txPesoRecolectado.getText().toString();
         if(txPesoRecolectado.getText().toString().equals("")){
             messageBox("Debe ingresar un peso recolectado.!");
             info = true;
@@ -248,7 +247,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().equals("")){
                     btnEvidenciaNovedadEncontrada.setVisibility(View.VISIBLE);
-                }else{
+                }else {
                     btnEvidenciaNovedadEncontrada.setVisibility(View.GONE);
                 }
             }

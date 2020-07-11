@@ -134,7 +134,7 @@ public class DialogPlantaRecepcionManifiesto extends MyDialog {
                         String unicodeImg = Utils.encodeTobase64(firmaConfirmada);
                         MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, unicodeImg, MyConstant.STATUS_RECEPCION_PLANTA);
                         MyApp.getDBO().manifiestoDao().updateManifiestoFechaPlanta(idManifiesto,new Date());
-                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idManifiesto,Double.parseDouble(txtPeso.getText().toString()));
+                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idManifiesto,Double.parseDouble(txtPeso.getText().toString()),"","");
                         userRegistrarPlanta.execute();
                         dismiss();
                         messageBox("Registrado correctamente!!");

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBultosAdapterPlanta;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBultosAdapterSede;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
@@ -34,7 +35,7 @@ public class DialogBultosPlanta extends MyDialog {
     UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
-    ManifiestoDetalleBultosAdapterSede recyclerviewAdapter;
+    ManifiestoDetalleBultosAdapterPlanta recyclerviewAdapter;
     TextView lblListaManifiestoAsignado;
     private RecyclerView recyclerView;
     private List<ItemManifiestoDetalleValorSede> detalles;
@@ -60,7 +61,7 @@ public class DialogBultosPlanta extends MyDialog {
 
     private void init() {
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoDetalleBultosAdapterSede(getActivity(),idAppManifiestoDet,1);
+        recyclerviewAdapter = new ManifiestoDetalleBultosAdapterPlanta(getActivity(),idAppManifiestoDet,1);
 
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);

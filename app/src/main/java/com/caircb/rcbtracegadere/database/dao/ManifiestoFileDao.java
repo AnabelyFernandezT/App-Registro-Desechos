@@ -29,7 +29,8 @@ public abstract class ManifiestoFileDao {
     public static final Integer FOTO_FIRMA_RECEPCION_PLATA=14;
     public static final Integer AUDIO_RECOLECCION=20;
     public static final Integer FOTO_FIRMA_GESTORES =15;
-
+    public static final Integer FOTO_FOTO_ADICIONAL_PLANTA=16;
+    public static final Integer FOTO_FOTO_RECOLECCION_PLANTA=17;
 
 
     @Query("select code,file as foto,0 as tipo, '' as fotoUrl from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo  and tipo=:tipo and status=:status")
@@ -61,6 +62,10 @@ public abstract class ManifiestoFileDao {
     @Query("select _id  from tb_manifiestos_file" +
             " where idAppManifiesto=:idAppManifiesto and tipo=:tipo and sincronizado=0")
     public abstract List<Long> consultarFotografiasUpload(Integer idAppManifiesto,Integer tipo);
+
+    @Query("select _id  from tb_manifiestos_file" +
+            " where idAppManifiesto=:idAppManifiesto and tipo=:tipo and sincronizado=1")
+    public abstract List<Long> consultarFotografiasUploadSincronizadas(Integer idAppManifiesto,Integer tipo);
 
     @Query("Delete from tb_manifiestos_file where idAppManifiesto =:idAppManifiesto and idCatalogo=:idCatalogo")
     public abstract void deleteFotoByIdAppManifistoCatalogo( Integer idAppManifiesto, Integer idCatalogo);

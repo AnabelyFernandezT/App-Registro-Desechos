@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     private LayoutInflater mInflater;
     Context context;
     AlertDialog.Builder builder;
+    DialogBuilder dialogBuilder;
 
     public interface OnItemBultoListener {
         public void onEliminar(Integer position);
@@ -85,39 +87,43 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             @Override
             public void onClick(View v) {
                 if(row.isImpresion()){
-                    builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("BULTO IMPRESO: Seguro que desea elimarlo ?");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            if(mOnItemBultoListener!= null){
-                                mOnItemBultoListener.onEliminar(position);
-                            }
-                        }
-                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
+
+                    dialogBuilder = new DialogBuilder(getContext());
+                    dialogBuilder.setMessage("BULTO IMPRESO: Seguro que desea elimarlo ?");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                            if(mOnItemBultoListener!= null){ mOnItemBultoListener.onEliminar(position); }
                         }
                     });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+
                 }else{
-                    builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("Seguro que desea elimarlo ?");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            if(mOnItemBultoListener!= null){
-                                mOnItemBultoListener.onEliminar(position);
-                            }
-                        }
-                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
+                    dialogBuilder = new DialogBuilder(getContext());
+                    dialogBuilder.setMessage("Seguro que desea elimarlo ?");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                            if(mOnItemBultoListener!= null){ mOnItemBultoListener.onEliminar(position); }
                         }
                     });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
                 }
 
             }
@@ -135,22 +141,23 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             @Override
             public void onClick(View v) {
                 //System.out.println("iniciando impresion");
-                builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Desea imprimir etiqueta para este bulto?");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if(mOnImtemBultoImpresionListener != null){
-                            mOnImtemBultoImpresionListener.onSendImpresion(position);
-                        }
-                    }
-                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
+                dialogBuilder = new DialogBuilder(getContext());
+                dialogBuilder.setMessage("Desea imprimir etiqueta para este bulto?");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        if(mOnImtemBultoImpresionListener != null){ mOnImtemBultoImpresionListener.onSendImpresion(position); }
                     }
                 });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+                dialogBuilder.show();
             }
         });
         holder.btnImpresionOk.setOnClickListener(new View.OnClickListener() {

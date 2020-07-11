@@ -113,9 +113,16 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             case R.id.btnManifiestoNext:
                 //vista preliminar...
                // setNavegate(VistaPreliminarFragment.newInstance(manifiestoID));
+                    boolean resp = tab3.validarInformacion();
+                    if(!resp){
+                        messageBox("Debe registrar la firma.!");
+                    }else{
+
+                    }
                 break;
         }
     }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -126,6 +133,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
         if(tab3!=null && ((requestCode>=101 && requestCode<=104) ||(requestCode>=201 && requestCode<=204))){
+            tab3.setMakePhoto(requestCode);
+        }else if( tab3 !=null && (requestCode>=1601 && requestCode<=1604) || (requestCode>=1601 && (requestCode<=1604))){
             tab3.setMakePhoto(requestCode);
         }
     }

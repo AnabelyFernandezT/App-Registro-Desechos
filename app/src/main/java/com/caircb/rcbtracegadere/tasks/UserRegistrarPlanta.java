@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
@@ -39,6 +40,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     String path ="planta";
     private List<DtoFile> listaFileDefauld;
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
+    String observacionPeso, observacionOtra;
 
 
     public interface OnRegisterListener {
@@ -49,21 +51,23 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     public UserRegistrarPlanta(Context context,
                                 Integer idAppManifiesto,
-                               Double pesoPlanta) {
+                               Double pesoPlanta, String observacionPeso, String observacionOtra) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.peso = pesoPlanta;
+        this.observacionPeso = observacionPeso;
+        this.observacionOtra = observacionOtra;
     }
 
     @Override
     public void execute() {
         listaFileDefauld = new ArrayList<>();
 
-
-        progressShow("registrando recoleccion...");
+        progressShow("Registrando recoleccion...");
         model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         firmaPlanta =MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
         if(firmaPlanta!=null && !firmaPlanta.isSincronizado())listaFileDefauld.add(firmaPlanta);
+
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
         userUploadFileTask= new UserUploadFileTask(getActivity(),path);
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
@@ -83,10 +87,13 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     }
 
     private void register(){
+
        final RequestManifiestoPlanta request = createRequestManifiestoPlanta();
+        Gson g = new Gson();
+        String f = g.toJson(request);
+        System.out.println(f);
+
         if(request!=null){
-            Gson g = new Gson();
-            String f = g.toJson(request);
             WebService.api().registrarPlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -98,21 +105,14 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
                         }else {
                             message(response.body().getMensaje());
                         }
-
-
-
                     }else{
-
                         message(response.body().getMensaje());
                         progressHide();
-
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
                 }
             });
         }
@@ -129,7 +129,8 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
             rq.setUrlFirmaPlanta(firmaPlanta!=null?(path+"/"+firmaPlanta.getUrl()):"");
             rq.setFechaRecepcionPlanta(model.getFechaRecepcionPlanta());
             rq.setNovedadFrecuentePlanta(createRequestNovedadFrecuente());
-
+            rq.setObservacionPeso(observacionPeso);
+            rq.setObservacionOtra(observacionOtra);
         }
 
         return rq;
@@ -137,21 +138,22 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
 
     private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente(){
         List<RequestManifiestoNovedadFrecuente> resp = new ArrayList<>();
-        List<Integer> novedad = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchConsultarNovedadFrecuentePlanta(idAppManifiesto);
-        if(novedad.size()>0){
-            for (Integer id:novedad) {
-                resp.add(new RequestManifiestoNovedadFrecuente(
-                        id,
-                        createFotografia(id,3),
-                        path+"/"+"novedadfrecuente"
-                ));
-            }
+        List<Long> listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUploadSincronizadas(idAppManifiesto, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA);
+
+        if(listaFotoNovedadFrecuente != null && listaFotoNovedadFrecuente.size()>0){
+            resp.add(new RequestManifiestoNovedadFrecuente(
+                    -2,
+                    createFotografia(-2,ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA),
+                    path+"/"+"novedadfrecuente"
+            ));
         }
+
         return resp;
     }
 
     private List<RequestNovedadFoto> createFotografia(Integer idCatalogo, Integer tipo) {
-        return MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
+        List<RequestNovedadFoto> lista = MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
+        return lista;
     }
 
     private void finalizar(){

@@ -69,6 +69,11 @@ public class DialogPlacas extends MyDialog {
                     placa = (String) spinnerPlacas.getSelectedItem();
                     System.out.println(placa+"placa");
                     idPlaca = spinnerPlacas.getId();
+                    CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+                    int idVehiculo = c!=null?c.getIdSistema():-1;
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
                 }
 
             }
@@ -92,15 +97,33 @@ public class DialogPlacas extends MyDialog {
                 String valor = parametro == null ? "-1" : parametro.getValor();
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
+
                 if(bandera.equals("1")){
                     consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                     consultarManifiestosPlanta.execute();
+                    dismiss();
                 }else if(bandera.equals("2")){
                     cargarManifiesto();
+                    dismiss();
                 }else if(bandera.equals("0")){
                     dialogoConfirmacion();
                 }
+               /* Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1" : valor);
+                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
+                if (bandera != null)
+                {
+                    if (bandera.equals("1")) {
+                        consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
+                        consultarManifiestosPlanta.execute();
+                        dismiss();
+                    } else if (bandera.equals("2")) {
+                        cargarManifiesto();
+                        dismiss();
+                    } else if (bandera.equals("0")) {
+                        dialogoConfirmacion();
+                    }*
                 //dismiss();
+            }*/
             }
         });
 
@@ -127,13 +150,13 @@ public class DialogPlacas extends MyDialog {
         builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //cargarManifiesto();
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
-                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
+                MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+1);
-                //cargarManifiesto();
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
                 builder.dismiss();
@@ -203,7 +226,6 @@ public class DialogPlacas extends MyDialog {
         Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-
         if(bandera.equals("1")){
             loadCantidadManifiestoAsignado();
         }else if (bandera.equals("2")){
