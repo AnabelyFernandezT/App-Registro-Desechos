@@ -15,6 +15,7 @@ public class DtoManifiestoDetalle {
     private Integer IdDestinatario;
     private String codigoMAE;
     private String nombreDesecho;
+    private String nombreDestinatario;
 
 
     public DtoManifiestoDetalle() {
@@ -114,5 +115,13 @@ public class DtoManifiestoDetalle {
 
     public void setNombreDesecho(String nombreDesecho) {
         this.nombreDesecho = nombreDesecho;
+    }
+
+    public String getNombreDestinatario() {
+        return nombreDestinatario;
+    }
+
+    public void setNombreDestinatario(String nombreDestinatario) {
+        this.nombreDestinatario = nombreDestinatario;
     }
 }
