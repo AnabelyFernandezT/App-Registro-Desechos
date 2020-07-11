@@ -8,6 +8,7 @@ import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleValorSede;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.services.WebService;
 
@@ -24,7 +25,7 @@ public class UserConsultarManifiestosPlantaTask extends MyRetrofitApi implements
     }
 
     public interface OnPlacaListener {
-        public void onSuccessful(List<DtoManifiestoSede> catalogos);
+        public void onSuccessful(List<DtoManifiestoPlanta> catalogos);
     }
 
     private OnPlacaListener mOnVehiculoListener;
@@ -35,18 +36,18 @@ public class UserConsultarManifiestosPlantaTask extends MyRetrofitApi implements
         Integer idDestinatario = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
         Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
 
-        WebService.api().traerManifiestos(new RequestManifiestoSede(idVehiculo,idDestinatario)).enqueue(new Callback<List<DtoManifiestoSede>>() {
+        WebService.api().traerManifiestosPlanta(new RequestManifiestoSede(idVehiculo,idDestinatario)).enqueue(new Callback<List<DtoManifiestoPlanta>>() {
             @Override
-            public void onResponse(Call<List<DtoManifiestoSede>> call, Response<List<DtoManifiestoSede>> response) {
+            public void onResponse(Call<List<DtoManifiestoPlanta>> call, Response<List<DtoManifiestoPlanta>> response) {
                 if (response.isSuccessful()){
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                     MyApp.getDBO().manifiestoPlantaDao().eliminarManifiestos();
                     MyApp.getDBO().manifiestoPlantaDetalleDao().eliminarDetalle();
                     MyApp.getDBO().manifiestoPlantaDetalleValorDao().eliminarDetalle();
 
-                    for(DtoManifiestoSede reg:response.body()){
+                    for(DtoManifiestoPlanta reg:response.body()){
                         MyApp.getDBO().manifiestoPlantaDao().saveOrUpdate(reg);
-                        for (DtoManifiestoDetalleSede mdet:reg.getHojaRutaDetalle()){
+                        for (DtoManifiestoDetalleSede mdet:reg.getHojaRutaDetallePlanta()){
                             MyApp.getDBO().manifiestoPlantaDetalleDao().saveOrUpdate(mdet);
                             for(DtoManifiestoDetalleValorSede sedeVa : mdet.getHojaRutaDetalleValor()){
                                 MyApp.getDBO().manifiestoPlantaDetalleValorDao().saveOrUpdate(sedeVa);
@@ -58,7 +59,7 @@ public class UserConsultarManifiestosPlantaTask extends MyRetrofitApi implements
             }
 
             @Override
-            public void onFailure(Call<List<DtoManifiestoSede>> call, Throwable t) {
+            public void onFailure(Call<List<DtoManifiestoPlanta>> call, Throwable t) {
                     progressHide();
 
             }
