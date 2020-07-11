@@ -119,11 +119,13 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                Integer banderaUno= MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta();
+                Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada();
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
                 if(bandera!=null) {
-                    if (bandera.equals("1")) {
+                    if (bandera.equals("1") && banderaUno!=0) {
                         setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
-                    } else if (bandera.equals("2")) {
+                    } else if (bandera.equals("2")&& banderaDos!=0) {
                         setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                     }
                 }
