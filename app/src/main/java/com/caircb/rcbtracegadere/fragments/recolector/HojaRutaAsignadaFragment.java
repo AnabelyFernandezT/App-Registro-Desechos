@@ -66,6 +66,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     private ListView mDrawerMenuItems, mDialogMenuItems;
     DialogBuilder dialogBuilder;
     RutaInicioFinEntity rut;
+    Integer idSubRuta;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -105,13 +106,14 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
             }
         });
 
+        idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
     }
 
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto,rut.getIdSubRuta(),MySession.getIdUsuario());
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto,idSubRuta,MySession.getIdUsuario());
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -121,7 +123,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(rut.getIdSubRuta(),MySession.getIdUsuario());
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(idSubRuta,MySession.getIdUsuario());
         adapterList();
 
     }
