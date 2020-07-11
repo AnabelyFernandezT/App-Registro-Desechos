@@ -83,6 +83,21 @@ public class UserUploadFileTask {
         }
     }
 
+    public void uploadPlantaAdicionales(
+            List<DtoFile> listaFileDefauld,
+            Integer idAppManifiesto
+    ){
+        try {
+            this.listaFileDefauld = listaFileDefauld;
+
+            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA);
+
+            sendFileDefauld(0);
+        }catch (Exception e){
+            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+        }
+    }
+
     public void uploadGestoresAlternos(
             List<DtoFile> listaFileDefauld,
             Integer idAppManifiesto

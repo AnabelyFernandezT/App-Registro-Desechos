@@ -115,6 +115,7 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
         }
     }
 
+
     public void setMakePhoto(Integer code) {
 
         if (mImageCaptureUri != null) {

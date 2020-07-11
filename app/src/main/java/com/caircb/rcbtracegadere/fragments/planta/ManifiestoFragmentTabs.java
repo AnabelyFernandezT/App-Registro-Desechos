@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoAdicionalFragment
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoDetalleFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.google.android.material.tabs.TabLayout;
 
 /**
@@ -33,6 +34,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "idAppManifiesto";
     private static final String ARG_PARAM2 = "Manifiestobloqueado";
+    private static final String ARG_PARAM3 = "numeroManifiesto";
 
     private Integer manifiestoID;
     private Boolean bloqueado;
@@ -40,11 +42,13 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     private ViewPager viewPager;
     private LinearLayout btnManifiestoCancel,btnManifiestoNext;
     private FragmentActivity myContext;
+    UserRegisterPlantaDetalleTask userRegisterPlantaDetalleTask;
 
     //TabManifiestoGeneralFragment tab1;
     TabManifiestoDetalleFragment tab2;
     TabManifiestoAdicionalFragment tab3;
-
+    boolean firma = false;
+    String numeroManifiesto;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -53,10 +57,11 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
      * @return A new instance of fragment ManifiestoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ManifiestoFragmentTabs newInstance(Integer manifiestoID) {
+    public static ManifiestoFragmentTabs newInstance(Integer manifiestoID, String numeroManifiesto) {
         ManifiestoFragmentTabs fragment = new ManifiestoFragmentTabs();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
+        args.putString(ARG_PARAM3, numeroManifiesto);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,6 +71,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             manifiestoID= getArguments().getInt(ARG_PARAM1);
+            numeroManifiesto = getArguments().getString(ARG_PARAM3);
         }
     }
 
@@ -113,16 +119,28 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             case R.id.btnManifiestoNext:
                 //vista preliminar...
                // setNavegate(VistaPreliminarFragment.newInstance(manifiestoID));
-                    boolean resp = tab3.validarInformacion();
-                    if(!resp){
+                    firma = tab3.validarInformacion();
+                    if(!firma){
                         messageBox("Debe registrar la firma.!");
                     }else{
-
+                        registroPlantaDetalle();
                     }
                 break;
         }
     }
 
+    private void  registroPlantaDetalle(){
+        String observacion = tab3.sendObservacion()==null ? "": tab3.sendObservacion();
+
+        userRegisterPlantaDetalleTask = new UserRegisterPlantaDetalleTask(getActivity(), manifiestoID, observacion, numeroManifiesto);
+        userRegisterPlantaDetalleTask.setmOnRegisterPlantaDetalleListener(new UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner() {
+            @Override
+            public void OnSucessfull() {
+                setNavegate(HojaRutaAsignadaPlantaFragment.create());
+            }
+        });
+        userRegisterPlantaDetalleTask.execute();
+    }
 
     @Override
     public void onAttach(Activity activity) {

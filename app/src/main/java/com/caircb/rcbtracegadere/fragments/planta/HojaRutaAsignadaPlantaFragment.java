@@ -129,7 +129,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                                 }else{
                                     setNavegate(ManifiestoPlantaFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                                 }*/
-                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -198,5 +198,8 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     public void onDestroy() {
         super.onDestroy();
         //recyclerView.destroyDrawingCache();
+    }
+    public static HojaRutaAsignadaPlantaFragment create(){
+        return new HojaRutaAsignadaPlantaFragment();
     }
 }
