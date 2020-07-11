@@ -30,8 +30,14 @@ public abstract class ManifiestoDao {
     @Query("select * from tb_manifiestos where idTransporteVehiculo=:idVehiculo limit 1")
     public abstract ManifiestoEntity fetchHojaRutabyIdTransporte(Integer idVehiculo);
 
+    @Query("select * from tb_manifiestos limit 1")
+    public abstract ManifiestoEntity fetchHojaRuta();
+
     @Query("select count(*) from tb_manifiestos where estado=1 ")
     public abstract int contarHojaRutaAsignadas();
+
+    @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idConductor ")
+    public abstract int contarHojaRutaAsignadasP(Integer idConductor);
 
     @Query("select count(*) from tb_manifiestos where estado=1 and idSubRuta=:idSubruta and idChoferRecolector=:idChoferRecolector ")
     public abstract int contarHojaRutaAsignadasPara(Integer idSubruta, Integer idChoferRecolector);

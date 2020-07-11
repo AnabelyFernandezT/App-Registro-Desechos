@@ -331,7 +331,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(3)) listaCatalogos.add(3);
         if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(4)) listaCatalogos.add(4);
         if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(6)) listaCatalogos.add(6);
-        //if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(7)) listaCatalogos.add(7);
+        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(7)) listaCatalogos.add(7);//notificaciones
         //if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(8)) listaCatalogos.add(8);//rutas
         if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(9)) listaCatalogos.add(9);//destino
         if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(12)) listaCatalogos.add(12);//

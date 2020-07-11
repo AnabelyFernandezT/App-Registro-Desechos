@@ -98,7 +98,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
 
         if(!info){
             String novedad = txtNovedad.getText().toString();
-            Double peso = Double.parseDouble(txtPesoTotal.getText().toString());
+            Double peso = Double.parseDouble(txPesoRecolectado.getText().toString());
             String correo = txtCorreo.getText().toString();
 
             registrarGestorAlterno = new UserRegistrarGestorAlternoTask(getActivity(),idAppManifiesto,novedad,peso,correo);
