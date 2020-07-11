@@ -112,6 +112,8 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                         //message(response.body().getMensaje());
                         progressHide();
                         if(mOnRegisterAlternoListener!=null){mOnRegisterAlternoListener.onSussfull();}
+                    }else {
+                        progressHide();
                     }
                 }
 
@@ -119,6 +121,7 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
                     progressHide();
                 }
+
             });
         }
     }

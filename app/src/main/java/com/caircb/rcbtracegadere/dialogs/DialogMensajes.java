@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,10 +25,11 @@ import java.util.List;
 public class DialogMensajes extends MyDialog {
     Activity _activity;
     EditText txtMensaje;
-    Integer idAppManif;
+    Integer idNotificacion;
     LinearLayout btnIngresarApp, btnCancelarApp;
     Spinner ltsNotificaciones;
     List<DtoCatalogo> catalogos;
+    String novedad;
 
     public DialogMensajes(@NonNull Context context) {
         super(context, R.layout.dialog_mensajes);
@@ -42,6 +44,7 @@ public class DialogMensajes extends MyDialog {
 
     private void init() {
 
+        catalogos = new ArrayList<>();
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
         txtMensaje = getView().findViewById(R.id.txtMensaje);
@@ -58,8 +61,34 @@ public class DialogMensajes extends MyDialog {
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),null,txtMensaje.getText().toString());
+                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),null,
+                                                            txtMensaje.getText().toString(),
+                                                            idNotificacion,
+                                                            "1");
+                notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
+                    @Override
+                    public void onSuccessful() {
+                        DialogMensajes.this.dismiss();
+                    }
+                });
                 notificacionTask.execute();
+            }
+        });
+
+        ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    catalogos.get(position-1);
+                    novedad = (String) ltsNotificaciones.getSelectedItem();
+                    idNotificacion=position;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
