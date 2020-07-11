@@ -42,6 +42,7 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
             public void onResponse(Call<List<DtoLotePadreGestor>> call, Response<List<DtoLotePadreGestor>> response) {
                 if (response.isSuccessful()){
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().get(0).getPlacaVehiculo());
                     MyApp.getDBO().lotePadreDao().eliminarLotes();
                     for(DtoLotePadreGestor reg:response.body()){
                         MyApp.getDBO().lotePadreDao().saveOrUpdate(reg);

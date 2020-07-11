@@ -22,6 +22,8 @@ public class LotePadreEntity {
 
     private String numeroManifiestoPadre;
 
+    private String placaVehiculo;
+
     public LotePadreEntity() {
     }
 
@@ -71,5 +73,13 @@ public class LotePadreEntity {
 
     public void setNumeroManifiestoPadre(String numeroManifiestoPadre) {
         this.numeroManifiestoPadre = numeroManifiestoPadre;
+    }
+
+    public String getPlacaVehiculo() {
+        return placaVehiculo;
+    }
+
+    public void setPlacaVehiculo(String placaVehiculo) {
+        this.placaVehiculo = placaVehiculo;
     }
 }
