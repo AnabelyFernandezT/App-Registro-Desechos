@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
 import com.caircb.rcbtracegadere.models.request.RequestRegistarLotePadreHotel;
+import com.caircb.rcbtracegadere.models.request.RequestRegisterPlantaDetalle;
 import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.request.RequestRegistroGenerador;
 import com.caircb.rcbtracegadere.models.request.RequestRuteoRecoleccion;
@@ -82,6 +83,10 @@ public interface IServicio {
 
     @PUT("Registro/registroManifiestoPlanta")
     Call<DtoInfo> registrarPlanta(@Body RequestManifiestoPlanta model);
+
+    @PUT("Registro/registroPlantaDetalle")
+    Call<DtoInfo> registroPlantaDetalle(@Body RequestRegisterPlantaDetalle model);
+
 
     @POST("Notificacion/registrarNotificacion")
     Call<DtoInfo> registrarNotificacion(@Body RequestNotificacion model);

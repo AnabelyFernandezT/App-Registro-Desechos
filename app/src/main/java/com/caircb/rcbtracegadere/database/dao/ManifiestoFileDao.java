@@ -31,6 +31,7 @@ public abstract class ManifiestoFileDao {
     public static final Integer FOTO_FIRMA_GESTORES =15;
     public static final Integer FOTO_FOTO_ADICIONAL_PLANTA=16;
     public static final Integer FOTO_FOTO_RECOLECCION_PLANTA=17;
+    public static final Integer FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA=18;
 
 
     @Query("select code,file as foto,0 as tipo, '' as fotoUrl from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and idCatalogo=:idCatalogo  and tipo=:tipo and status=:status")

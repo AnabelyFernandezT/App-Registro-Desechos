@@ -145,13 +145,13 @@ public class TabManifiestoAdicionalFragment extends Fragment {
                                 imgFirmaPlanta.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
                                 firma=true;
-                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
 
                             }else{
                                 txtFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setVisibility(View.GONE);
                                 firma=false;
-                                //MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, null,MyConstant.STATUS_RECEPCION_PLANTA);
                             }
                         }
 
@@ -206,14 +206,19 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         });
 
     }
+
+    public String sendObservacion(){
+        return txtotraNovedad.getText().toString();
+    }
+
     public boolean validarInformacion(){
-        if(!firma){
+        if(firma){
             info = true;
         }
         return info;
     }
     private void loadData(){
-        ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
+        ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA,MyConstant.STATUS_RECEPCION_PLANTA);
         if(f != null){
             Bitmap imagen = Utils.StringToBitMap(f.getFile());
             txtFirmaPlanta.setVisibility(View.GONE);
@@ -221,7 +226,6 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             imgFirmaPlanta.setImageBitmap(imagen);
             firmaConfirmada = imagen;
             firma=true;
-
         }
 
 
