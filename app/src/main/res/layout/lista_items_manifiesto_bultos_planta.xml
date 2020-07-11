@@ -52,10 +52,11 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <EditText
                         android:id="@+id/txtIgnBultos"
-                        android:text="peso nuevo"
                         android:textSize="20dp"
+                        android:hint="0.0"
+                        android:inputType="number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
