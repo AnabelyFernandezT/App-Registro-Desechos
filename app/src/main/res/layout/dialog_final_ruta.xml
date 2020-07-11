@@ -74,7 +74,7 @@
                 android:textSize="22dp"
                 android:hint="Ingrese el kilometraje"
                 android:maxLines="1"
-                android:inputType="number|numberSigned"
+                android:inputType="number|numberDecimal"
                 android:maxLength="7"
                 android:paddingRight="10dp"
                 android:singleLine="true" />

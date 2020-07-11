@@ -168,7 +168,8 @@ public class DialogFinRuta extends MyDialog {
             @Override
             public void onClick(View v) {
                 bandera = true;
-                if (kilometrajeFinal.getText().length()<0){
+                Integer kilo = kilometrajeFinal.getText().length();
+                if (kilometrajeFinal.getText().length()<=0){
                     messageBox("Se requiere que digite el kilometraje.");
                     return;
                 }else{
@@ -177,6 +178,7 @@ public class DialogFinRuta extends MyDialog {
                         messageBox("Kilometraje incorrecto");
                         return;
                     }else{
+
                         if(destino.equals("") || destinos.equals("")){
                             messageBox("Seleccione Destino");
                             return;
