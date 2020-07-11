@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextWatcher;
 import android.util.Patterns;
@@ -26,6 +27,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     private Context mContext;
     private List<ItemManifiestoDetalleValorSede> manifiestosDtList;
     private Integer estadoManifiesto,idManifiestoDetalle;
+    AlertDialog.Builder messageBox;
 
     public ManifiestoDetalleBultosAdapterPlanta(Context context, Integer idManifiestoDetalle, Integer estadoManifiesto){
         this.mContext = context;
@@ -75,7 +77,14 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
                   }
                   MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
                   MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(), it.getIdManifiestoDetalleValores());
-              }
+              }else{
+                      messageBox = new AlertDialog.Builder(mContext);
+                      messageBox.setTitle("INFO");
+                      messageBox.setMessage("Debe ingresar peso del bulto!");
+                      messageBox.setCancelable(false);
+                      messageBox.setNeutralButton("OK", null);
+                      messageBox.show();
+                  }
               }
           });
       }
