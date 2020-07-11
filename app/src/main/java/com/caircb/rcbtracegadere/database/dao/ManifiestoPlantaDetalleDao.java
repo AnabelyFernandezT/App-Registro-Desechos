@@ -7,6 +7,8 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaDetalleEntity;
+import com.caircb.rcbtracegadere.models.DtoDetallesBultoPlanta;
+import com.caircb.rcbtracegadere.models.DtoDetallesPlanta;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalleSede;
 
@@ -24,6 +26,14 @@ public abstract class ManifiestoPlantaDetalleDao {
             "where idAppManifiesto=:idManifiesto" )
     @Transaction
     public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
+
+    @Query("select idManifiestoDetalle as idDetalle from tb_manifiestos_planta_detalle where idAppManifiesto=:idManifiesto" )
+    @Transaction
+    public abstract List<Integer> fetchManifiestosAsigDetalle(Integer idManifiesto);
+
+    @Query("select idManifiestoDetalleValor as idDetalleValor, nuevoPeso as peso from tb_manifiestos_planta_det_valor where idManifiestoDetalle=:idManifiesto" )
+    @Transaction
+    public abstract List<DtoDetallesBultoPlanta> fetchManifiestosAsigDetalleBultos(Integer idManifiesto);
 
     @Query("select * from tb_manifiestos_planta_detalle where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoPlantaDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);

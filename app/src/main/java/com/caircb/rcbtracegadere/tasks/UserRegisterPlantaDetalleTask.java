@@ -6,13 +6,19 @@ import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.models.DtoDetallesBultoPlanta;
+import com.caircb.rcbtracegadere.models.DtoDetallesPlanta;
 import com.caircb.rcbtracegadere.models.DtoFile;
 import com.caircb.rcbtracegadere.models.DtoFotoPlanta;
 import com.caircb.rcbtracegadere.models.ItemFoto;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.request.RequestManifiestoDet;
+import com.caircb.rcbtracegadere.models.request.RequestManifiestoDetBultos;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestNovedadFoto;
 import com.caircb.rcbtracegadere.models.request.RequestRegisterPlantaDetalle;
@@ -133,16 +139,54 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
 
         return resp;
     }
-    private List<Integer> obtenerDetalles (){
-        List<ItemManifiestoDetalleSede> detalles;
-        detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idManifiesto);
-        List<Integer> listaDetalles = new ArrayList<>();
+    private List<DtoDetallesPlanta> obtenerDetalles (){
+        /*List<DtoDetallesPlanta> detalles;
+        DtoDetallesPlanta res = null;
+        detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigDetalle(idManifiesto);
+        List<DtoDetallesPlanta> listaDetalles = new ArrayList<>();
         if(detalles.size()>0){
-            for(ItemManifiestoDetalleSede reg: detalles){
-                listaDetalles.add(reg.getIdManifiestoDetalle());
+            for(DtoDetallesPlanta reg: detalles){
+                listaDetalles.add(new DtoDetallesPlanta(reg.getIdDetalle(), obtenerDetallesBultos(reg.getIdDetalle())));
+                //listaDetalles.add(obtenerDetallesBultos(reg.getIdDetalle()));:
             }
         }
-        return listaDetalles;
+        return listaDetalles;*/
+        List<DtoDetallesPlanta> resp= new ArrayList<>();
+        List<Integer> det = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigDetalle(idManifiesto);
+        if(det.size()>0){
+            for (Integer d:det){
+                resp.add( new DtoDetallesPlanta(
+                        d,
+                        obtenerDetallesBultos(d)
+                ));
+            }
+        }
+        return resp;
+    }
+
+    private List<DtoDetallesBultoPlanta> obtenerDetallesBultos (Integer idManifiestoDetalle){
+        /*List<DtoDetallesBultoPlanta> detalles;
+        detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigDetalleBultos(idManifiestoDetalle);
+        List<DtoDetallesBultoPlanta> listaDetalles = new ArrayList<>();
+        if(detalles.size()>0){
+            for(DtoDetallesBultoPlanta reg: detalles){
+                listaDetalles.add(new DtoDetallesBultoPlanta(reg.getIdDetalleValor(),
+                        reg.getIdDetalleValor()));
+                //listaDetalles.add(obtenerDetallesBultos(reg.getIdDetalle()));:
+            }
+        }
+        return detalles;*/
+        List<DtoDetallesBultoPlanta> resp = new ArrayList<>();
+        List<DtoDetallesBultoPlanta> bultos = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigDetalleBultos(idManifiestoDetalle);
+        if(bultos.size()>0){
+            for (DtoDetallesBultoPlanta p:bultos){
+                resp.add(new DtoDetallesBultoPlanta(
+                        p.getIdDetalleValor(),
+                        p.getPeso()
+                ));
+            }
+        }
+        return resp;
     }
 
     public void setmOnRegisterPlantaDetalleListener (@Nullable onRegisterPlantaDetalleListenner l){mOnRegisterPlantaDetalleListener = l;}
