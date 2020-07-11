@@ -34,7 +34,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_bultos_sede,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_bultos_planta,parent,false);
         return new MyViewHolder(view);
     }
 
