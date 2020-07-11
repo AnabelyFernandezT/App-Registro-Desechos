@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
@@ -42,6 +43,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     LinearLayout lnlIniciaRuta,lnlFinRuta;
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
+    Integer idSubRuta;
 
     //public Context mContext;
 
@@ -96,6 +98,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     private void init() {
         //consultarInicioFinRuta();
+        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
         lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
         btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
@@ -195,7 +198,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             public void onClick(View v) {
                 //Valido si el parametro esta en NO si es verdadero presento el modal
                 rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(rut.getIdSubRuta(),MySession.getIdUsuario()) >0 ){
+                idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idSubRuta,MySession.getIdUsuario()) >0 ){
                     List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
                     if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
 
@@ -286,13 +290,15 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     private void loadCantidadManifiestoAsignado(){
         //dbHelper.open();
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(rut == null ? 0:rut.getIdSubRuta(),MySession.getIdUsuario()));
+        //lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idSubRuta == null ? 0:idSubRuta,MySession.getIdUsuario()));
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas());
         //dbHelper.close();
     }
 
     private void loadCantidadManifiestoProcesado(){
         //dbHelper.open();
-        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPara(rut == null ? 0:rut.getIdSubRuta(),MySession.getIdUsuario()));
+        //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPara(idSubRuta == null ? 0:idSubRuta,MySession.getIdUsuario()));
+        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasP(MySession.getIdUsuario()));
         //dbHelper.close();
     }
 
