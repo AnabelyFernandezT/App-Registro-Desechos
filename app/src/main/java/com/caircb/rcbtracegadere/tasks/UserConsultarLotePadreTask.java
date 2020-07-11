@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.tasks;
 import android.content.Context;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -36,8 +37,12 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
 
     @Override
     public void execute() {
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idDestinatario = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
             /***CAMBIAR PARAMETRO TRES DEL REQUEST ESTA UN DATO QUEMADO ***/
-        WebService.api().traerLotesPadre(new RequestLotePadre(MySession.getIdUsuario(),new Date(),9)).enqueue(new Callback<List<DtoLotePadreGestor>>() {
+        WebService.api().traerLotesPadre(new RequestLotePadre(MySession.getIdUsuario(),new Date(),idDestinatario)).enqueue(new Callback<List<DtoLotePadreGestor>>() {
             @Override
             public void onResponse(Call<List<DtoLotePadreGestor>> call, Response<List<DtoLotePadreGestor>> response) {
                 if (response.isSuccessful()){
