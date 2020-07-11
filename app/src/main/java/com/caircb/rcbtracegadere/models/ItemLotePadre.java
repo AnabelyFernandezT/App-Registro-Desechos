@@ -8,6 +8,7 @@ public class ItemLotePadre {
     private Double total;
     private String nombreCliente;
     private String numeroManifiestoPadre;
+    private String placaVehiculo;
 
     public Integer getIdManifiestoPadre() {
         return idManifiestoPadre;
@@ -47,5 +48,13 @@ public class ItemLotePadre {
 
     public void setNumeroManifiestoPadre(String numeroManifiestoPadre) {
         this.numeroManifiestoPadre = numeroManifiestoPadre;
+    }
+
+    public String getPlacaVehiculo() {
+        return placaVehiculo;
+    }
+
+    public void setPlacaVehiculo(String placaVehiculo) {
+        this.placaVehiculo = placaVehiculo;
     }
 }

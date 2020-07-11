@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.fragments.planta;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -52,7 +54,8 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     DialogBuilder builder;
     double pesoT=0;
     private boolean firma = false;
-
+    LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
+    TextView txtCountPhoto;
 
 
 
@@ -78,6 +81,18 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         txtotraNovedad = this.findViewById(R.id.txtotraNovedad);
 
         txtNovedad = this.findViewById(R.id.txtNovedad);
+        btnEvidenciaObservacion = this.findViewById(R.id.btnEvidenciaObservacion);
+        lnlCountPhoto = this.findViewById(R.id.lnlCountPhoto);
+        txtCountPhoto = this.findViewById(R.id.txtCountPhoto);
+
+        btnEvidenciaObservacion.setVisibility(View.GONE);
+
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -1, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION );
+        if(numeroFotos != null && numeroFotos > 0){
+            lnlCountPhoto.setVisibility(View.VISIBLE);
+            txtCountPhoto.setText(String.valueOf(numeroFotos));
+            btnEvidenciaObservacion.setVisibility(View.VISIBLE);
+        }
 
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +130,42 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                         }
                     });
                     dialogFirma.show();
+                }
+            }
+        });
+
+        btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idManifiesto, -2, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
+                dialogAgregarFotografias.setCancelable(false);
+                dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                    @Override
+                    public void onSuccessful(Integer cantidad) {
+                        lnlCountPhoto.setVisibility(View.VISIBLE);
+                        txtCountPhoto.setText(String.valueOf(cantidad));
+                    }
+                });
+                dialogAgregarFotografias.show();
+                window = dialogAgregarFotografias.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        });
+
+        txtNovedad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!editable.toString().equals("")){
+                    btnEvidenciaObservacion.setVisibility(View.VISIBLE);
+                }else {
+                    btnEvidenciaObservacion.setVisibility(View.GONE);
                 }
             }
         });
@@ -266,6 +317,13 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         return Double.parseDouble(txtPeso.getText().toString());
     }
 
+    public String obtenerNovedad(){
+        return (txtNovedad.getText().toString()==null?"":txtNovedad.getText().toString());
+    }
+
+    public String obtenerOtraNovedad(){
+        return (txtotraNovedad.getText().toString()==null? "": txtotraNovedad.getText().toString());
+    }
 
 
 }

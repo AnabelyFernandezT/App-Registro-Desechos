@@ -49,6 +49,7 @@ public abstract  class LotePadreDao {
             catalogo.setTotal(c.getTotal());
             catalogo.setNombreCliente(c.getNombreCliente());
             catalogo.setNumeroManifiestoPadre(c.getNumeroManifiestoPadre());
+            catalogo.setPlacaVehiculo(c.getPlacaVehiculo());
 
         } if(catalogo!=null  ) {
             catalogo = new LotePadreEntity();
@@ -57,7 +58,7 @@ public abstract  class LotePadreDao {
             catalogo.setTotal(c.getTotal());
             catalogo.setNombreCliente(c.getNombreCliente());
             catalogo.setNumeroManifiestoPadre(c.getNumeroManifiestoPadre());
-
+            catalogo.setPlacaVehiculo(c.getPlacaVehiculo());
         }
         if (catalogo!=null) createLote(catalogo);
     }

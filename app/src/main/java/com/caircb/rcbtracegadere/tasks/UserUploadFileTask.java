@@ -74,9 +74,8 @@ public class UserUploadFileTask {
     ){
         try {
             this.listaFileDefauld = listaFileDefauld;
-            //fotos novedades frecuente...
-            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION);
 
+            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA);
 
             sendFileDefauld(0);
         }catch (Exception e){
@@ -90,9 +89,8 @@ public class UserUploadFileTask {
     ){
         try {
             this.listaFileDefauld = listaFileDefauld;
-            //fotos novedades frecuente...
-            //novedadesGestores = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR);
-            //fotosGestores = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauldAllFotos(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR, MyConstant.STATUS_GESTORES);
+
+            listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR);
 
             sendFileDefauld(0);
         }catch (Exception e){
@@ -171,10 +169,6 @@ public class UserUploadFileTask {
                         MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
                         sendFileDefauld(index + 1);
                     }
-                    /*else if(tipo==12){
-                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
-                        sendFileNovedadFrecuente(index + 1);
-                    }*/
                     else if(tipo==2l){
                         MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
                         sendFileNovedadFrecuente(index + 1);
