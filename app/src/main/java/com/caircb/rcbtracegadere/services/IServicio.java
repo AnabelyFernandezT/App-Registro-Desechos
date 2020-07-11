@@ -97,7 +97,7 @@ public interface IServicio {
     @POST("HojaRuta/obtenerListLoteContenedor")
     Call<List<DtoLote>> traerLotes(@Body RequestLote model);
 
-    @POST("HojaRuta/obtenerListHojaRutaSede")
+    @POST("HojaRuta/obtenerListHojaRutaPlanta")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);
 
     @PUT("Registro/registroLoteContenedor")
