@@ -64,10 +64,12 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                 AlertDialog.Builder builder2;
                 @Override
                 public void onResponse(Call<List<DtoInformacionModulos>> call,final Response<List<DtoInformacionModulos>> response) {
+                    progressShow("Cargando datos...");
                     if(response.isSuccessful()){
                         if (response.body().size()!=0){
                             MyApp.getDBO().informacionModulosDao().saveOrUpdate(response.body());
                             dialogInformacionModulos.show();
+                            progressHide();
                         }else {
                             builder2 = new AlertDialog.Builder(getContext());
                             builder2.setMessage("No hay datos para mostrar...");
@@ -79,6 +81,7 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                             });
                             AlertDialog dialog = builder2.create();
                             dialog.show();
+                            progressHide();
                         }
                     }else {
 
@@ -92,6 +95,7 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                 }
             });
         }else {
+            progressShow("Cargando datos...");
             builder = new AlertDialog.Builder(getContext());
             builder.setMessage("No hay datos para mostrar...");
             builder.setCancelable(false);
@@ -102,6 +106,7 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
             });
             AlertDialog dialog = builder.create();
             dialog.show();
+            progressHide();
         }
     }
 }

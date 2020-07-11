@@ -65,7 +65,6 @@ public class DialogManifiestoCliente extends MyDialog {
                 }else{
                     MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,txtManifiestoCliente.getText().toString());
                     ((MainActivity) getActivity()).NavegationFragment(VistaPreliminarFragment.newInstance(idManifiesto,tipoPaquete));
-                   // VistaPreliminarFragment fragmentVistaPreliminar2 = (VistaPreliminarFragment) getActivity().getFragmentManager().findFragmentByTag("VistaPreliminarFragment") ;
 
                     DialogManifiestoCliente.this.dismiss();
 

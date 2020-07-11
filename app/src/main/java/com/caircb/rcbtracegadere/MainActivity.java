@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 
@@ -533,6 +535,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             }
         }
     }
+    ProgressDialog dialog;
 
     private void openInformacion(){
 

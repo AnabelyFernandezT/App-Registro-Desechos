@@ -8,6 +8,7 @@ public class DtoLotePadreGestor {
     private Double total;
     private String nombreCliente;
     private String numeroManifiestoPadre;
+    private String placaVehiculo;
     private List<DtoLotePadreDetalleGestor> manifiestoPadreDetalle;
 
     public Integer getIdManifiestoPadre() {
@@ -48,6 +49,14 @@ public class DtoLotePadreGestor {
 
     public void setNumeroManifiestoPadre(String numeroManifiestoPadre) {
         this.numeroManifiestoPadre = numeroManifiestoPadre;
+    }
+
+    public String getPlacaVehiculo() {
+        return placaVehiculo;
+    }
+
+    public void setPlacaVehiculo(String placaVehiculo) {
+        this.placaVehiculo = placaVehiculo;
     }
 
     public List<DtoLotePadreDetalleGestor> getManifiestoPadreDetalle() {
