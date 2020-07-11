@@ -9,14 +9,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HojaRutaAsignadaGestorFragment;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.models.ItemLoteHoteles;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarLotesHotelesTask;
+
+import java.util.List;
 
 public class HomeHotelFragment extends MyFragment implements OnHome {
 
@@ -34,7 +38,7 @@ public class HomeHotelFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
-        lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
+        lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
         btnMenu = getView().findViewById(R.id.btnMenu);
@@ -52,6 +56,11 @@ public class HomeHotelFragment extends MyFragment implements OnHome {
                 }
             }
         });
+
+        List<ItemLoteHoteles>  rowItems = MyApp.getDBO().loteHotelesDao().fetchLotesAsigando();
+        if( rowItems !=null && rowItems.size()>0){
+            lblListaManifiestoAsignado.setText(String.valueOf(rowItems.size()));
+        }
     }
 
     private void buscarLotes(){

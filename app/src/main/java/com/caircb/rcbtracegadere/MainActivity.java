@@ -32,6 +32,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogInformacionModulos;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
@@ -212,19 +213,25 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
 
     private void onCloseApp(){
-        builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("Esta usted seguro de salir del sistema!");
-        builder.setCancelable(true);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
+        final DialogBuilder dialogBuilder = new DialogBuilder(MainActivity.this);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setMessage("¿Esta usted seguro de salir del sistema ?");
+        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
                 MainActivity.this.getSharedPreferences(MyConstant.SEG_SP, MainActivity.this.MODE_PRIVATE).edit().clear().apply();
                 FirebaseAuth.getInstance().signOut();
                 finish();
             }
         });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.show();
     }
 
     private void onCopyDatabase(){
@@ -291,7 +298,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
         final Dialog mdialog = new Dialog(this);
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
-        myListOfItems.add(new MenuItem("Aplicacion"));
+        myListOfItems.add(new MenuItem("APLICACIÓN"));
         //myListOfItems.add(new MenuItem("Catalogos"));
         //myListOfItems.add(new MenuItem("Impresora"));
 
@@ -574,7 +581,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
             jsonLugares=null;
             json=null;
-            myListOfItems.add(new MenuItem("MENSAJES"));
+            myListOfItems.add(new MenuItem("NOTIFICACIONES"));
         }catch (JSONException e){
             e.printStackTrace();
         }

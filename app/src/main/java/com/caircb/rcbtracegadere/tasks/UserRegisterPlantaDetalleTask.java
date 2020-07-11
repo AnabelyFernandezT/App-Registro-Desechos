@@ -89,7 +89,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
         System.out.println(f);
 
         if(request !=null){
-            WebService.api().registroPlantaDetalle(request).enqueue(new Callback<DtoInfo>() {
+            WebService.api().registroManifiestoDetallePlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){

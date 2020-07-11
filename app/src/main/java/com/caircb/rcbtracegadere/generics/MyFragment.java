@@ -86,7 +86,7 @@ public class MyFragment extends Fragment {
         messageBox.setTitle("INFO");
         messageBox.setMessage(message);
         messageBox.setCancelable(false);
-        messageBox.setNeutralButton("OK", null);
+        messageBox.setPositiveButton("OK", null);
         messageBox.show();
     }
 

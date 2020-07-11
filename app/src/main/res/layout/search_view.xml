@@ -18,12 +18,11 @@
 
         <EditText
             android:visibility="visible"
-            android:editable="false"
             android:id="@+id/lblsearch"
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint=" Buscar"
+            android:hint="Buscar"
             android:focusable="false"
             android:gravity="center"
             android:drawableLeft="@mipmap/ic_search_buscar24"
@@ -34,12 +33,14 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
+            android:paddingLeft="30dp"
             android:paddingRight="10dp"
             android:hint=""
-            android:gravity="left"
-            android:drawableLeft="@mipmap/ic_search_buscar24"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:inputType="textCapCharacters"
             />
+        <!--android:drawableLeft="@mipmap/ic_search_buscar24" -->
 
     </LinearLayout>
 

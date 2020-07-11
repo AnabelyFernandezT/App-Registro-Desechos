@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.dialogs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -185,15 +186,13 @@ public class DialogInicioRuta extends MyDialog {
             }
 
             if (validar ==0){
-                //
-                guardarDatos();
-
-
+                if(spinnerPlacas.getSelectedItem().toString().equals("Seleccione...")){
+                    messageBox("Debe seleccionar una subRuta");
+                }else{
+                    guardarDatos();
+                }
             }
-
         }
-
-
     });
 
 
@@ -327,6 +326,7 @@ public class DialogInicioRuta extends MyDialog {
         btnListaAsignadaTransportista.setEnabled(true);
         btnPickUpTransportista.setEnabled(true);
         btnDropOffTransportista.setEnabled(true);
+
         lnlIniciaRuta.setVisibility(View.GONE);
         lnlFinRuta.setVisibility(View.VISIBLE);
         consultarHojaRutaTask = new UserConsultarHojaRutaTask(_activity,listenerHojaRuta);
