@@ -49,6 +49,8 @@ public class ManifiestoDetalleEntity {
 
     private Integer tipoBalanza;
 
+    private String nombreDestinatario;
+
     public ManifiestoDetalleEntity() {
     }
 
@@ -168,5 +170,13 @@ public class ManifiestoDetalleEntity {
 
     public void setTipoBalanza(Integer tipoBalanza) {
         this.tipoBalanza = tipoBalanza;
+    }
+
+    public String getNombreDestinatario() {
+        return nombreDestinatario;
+    }
+
+    public void setNombreDestinatario(String nombreDestinatario) {
+        this.nombreDestinatario = nombreDestinatario;
     }
 }

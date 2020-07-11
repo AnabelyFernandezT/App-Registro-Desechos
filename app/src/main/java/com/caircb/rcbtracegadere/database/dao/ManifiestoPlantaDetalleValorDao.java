@@ -32,12 +32,15 @@ public abstract class ManifiestoPlantaDetalleValorDao {
     @Transaction
     public abstract void actualizarBultoEstado(String codigoQR);
 
-    @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado from tb_manifiestos_planta_det_valor where idManifiestoDetalle=:idManifiesto" )
+    @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado,nuevoPeso from tb_manifiestos_planta_det_valor where idManifiestoDetalle=:idManifiesto" )
     @Transaction
     public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
     @Query("update tb_manifiestos_planta_det_valor set estado=:check where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
     public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);
+
+    @Query("update tb_manifiestos_planta_det_valor set nuevoPeso=:pesoNuevo where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
+    public abstract void updateManifiestoDetalleValorPlantaPesoNuevo(Integer idManifiestoDetalle, String pesoNuevo, Integer idManifiestoDetalleValores);
 
     @Query("select * from tb_manifiestos_planta_det_valor where idManifiestoDetalle=:idManifiesto limit 1")
     public abstract ManifiestoPlantaDetalleValorEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
