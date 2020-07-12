@@ -14,14 +14,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoAdicionalFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoDetalleFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +47,6 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     private LinearLayout btnManifiestoCancel,btnManifiestoNext;
     private FragmentActivity myContext;
     UserRegisterPlantaDetalleTask userRegisterPlantaDetalleTask;
-
     //TabManifiestoGeneralFragment tab1;
     TabManifiestoDetalleFragment tab2;
     TabManifiestoAdicionalFragment tab3;
@@ -119,11 +122,20 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             case R.id.btnManifiestoNext:
                 //vista preliminar...
                // setNavegate(VistaPreliminarFragment.newInstance(manifiestoID));
+                ItemManifiestoDetalleSede detalles;
+                detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosValidaInformacion(manifiestoID);
+                Integer bultos = detalles.getTotalBultos();
+                Integer bultosSeleccionados = detalles.getBultosSelecionado();
                     firma = tab3.validarInformacion();
                     if(!firma){
                         messageBox("Debe registrar la firma.!");
                     }else{
-                        registroPlantaDetalle();
+                        if(bultos.equals(bultosSeleccionados)) {
+                            registroPlantaDetalle();
+                        }
+                        else {
+                            messageBox("Seleccione todos los bultos.!");
+                        }
                     }
                 break;
         }

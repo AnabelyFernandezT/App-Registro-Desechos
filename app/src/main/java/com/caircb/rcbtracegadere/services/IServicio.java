@@ -85,7 +85,7 @@ public interface IServicio {
     @PUT("Registro/registroManifiestoPlanta")
     Call<DtoInfo> registrarPlanta(@Body RequestManifiestoPlanta model);
 
-    @PUT("Registro/registroManifiestoDetallePlanta")
+    @POST("Registro/registroManifiestoDetallePlanta")
     Call<DtoInfo> registroManifiestoDetallePlanta(@Body RequestRegisterPlantaDetalle model);
 
 
