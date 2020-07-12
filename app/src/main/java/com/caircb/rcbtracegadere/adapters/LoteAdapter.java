@@ -38,12 +38,14 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final @NonNull LoteAdapter.MyViewHolder holder, int position) {
         final ItemLote it = lotesList.get(position);
+
         holder.txtNumLote.setText(it.getCodigoLote());
         holder.txtRutasRecolectadas.setText(it.getNombreDestinatarioFinRutaCatalogo());
         holder.txtSubruta.setText(it.getSubRuta());
         holder.txtPlaca.setText(it.getPlacaVehiculo());
         holder.txtManifiestos.setText(it.getNumeroManifiesto());
         holder.txtRuta.setText(it.getRuta());
+        holder.txtCodLote.setText(String.valueOf(it.getIdLoteContenedor()));
     }
 
     @Override
@@ -66,6 +68,7 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.MyViewHolder> 
         TextView txtPlaca;
         TextView txtManifiestos;
         TextView txtRuta;
+        TextView txtCodLote;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -76,6 +79,7 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.MyViewHolder> 
             txtPlaca = itemView.findViewById(R.id.itm_Placa);
             txtManifiestos = itemView.findViewById(R.id.itm_manifiestos);
             txtRuta = itemView.findViewById(R.id.itm_ruta);
+            txtCodLote = itemView.findViewById(R.id.itm_cod_lote);
         }
     }
 

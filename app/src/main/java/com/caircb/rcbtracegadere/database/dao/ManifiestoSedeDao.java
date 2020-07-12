@@ -51,6 +51,8 @@ public abstract class ManifiestoSedeDao {
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search, Integer vehiculo);
 
+    @Query("select count(*) from tb_manifiestos_sede")
+    public abstract int contarHojaRutaAsignadas();
 
     @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
     abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);

@@ -19,14 +19,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements RetrofitCallbacks {
-    private Integer destino,conductor,operador,operadorAuxiliar;
+    private Integer destino,conductor,operador,operadorAuxiliar,idLoteContenedor;
 
-    public UserRegistrarLoteSedeTask(Context context, Integer destino,Integer conductor,Integer operador,Integer operadorAuxiliar) {
+    public UserRegistrarLoteSedeTask(Context context,
+                                     Integer destino,
+                                     Integer conductor,
+                                     Integer operador,
+                                     Integer operadorAuxiliar,
+                                     Integer idLoteContenedor) {
         super(context);
         this.destino = destino;
         this.conductor = conductor;
         this.operador = operador;
         this.operadorAuxiliar = operadorAuxiliar;
+        this.idLoteContenedor = idLoteContenedor;
     }
 
     public interface OnRegisterListener {
@@ -66,9 +72,9 @@ public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements Retrofit
     }
 
     private RequestMovilizarLoteSede requestMovilizarLoteSede(){
-        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
+       /* ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
         String valor = parametro == null ? "-1" : parametro.getValor();
-        Integer idContenedor = Integer.parseInt(valor.equals("null") ? "-1":valor);
+        Integer idContenedor = Integer.parseInt(valor.equals("null") ? "-1":valor);*/
 
         ParametroEntity pa = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote");
         String val = pa == null ? "-1" : pa.getValor();
@@ -79,7 +85,7 @@ public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements Retrofit
       //  Integer vehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
 
         RequestMovilizarLoteSede rq = new RequestMovilizarLoteSede();
-        rq.setIdLoteContenedor(idContenedor);//
+        rq.setIdLoteContenedor(idLoteContenedor);//
         rq.setIdTransportistaVehiculo(vehiculo);
         rq.setIdTransportistaRecolector(conductor);
         rq.setIdOperador1(operador);
