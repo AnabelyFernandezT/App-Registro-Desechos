@@ -191,7 +191,11 @@ public class DialogFinRuta extends MyDialog {
                         }else {
                             guardarDatos();
                             //messageBox("guardado");
-                            loteHotelPadre();
+
+                            if(destinos=="HOTEL"){
+                                loteHotelPadre();
+                            }
+
                         }
 
                     }

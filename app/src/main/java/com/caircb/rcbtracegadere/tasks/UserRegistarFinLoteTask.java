@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.LoteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -20,6 +21,7 @@ import retrofit2.Response;
 
 public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCallbacks {
     Integer loteContenedor;
+    Integer idDestino;
     public UserRegistarFinLoteTask(Context context) {
         super(context);
     }
@@ -63,16 +65,25 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
 
     private RequestFinLote requestFinLote(){
         ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
+        ParametroEntity destino = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico");
+        LoteEntity  en = MyApp.getDBO().loteDao().fetchLotesCompletos();
         if(finLotes!=null){
             loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
         }else {
-            loteContenedor = 0;
+            loteContenedor = en.getIdLoteContenedor();
         }
+
+        if(destino!=null){
+            idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
+
+        }
+
+
 
         RequestFinLote rq= new RequestFinLote();
 
         rq.setFecha(new Date());
-        rq.setIdDestinatarioFinRutaCat(3);//
+        rq.setIdDestinatarioFinRutaCat(idDestino);//donde estoy
         rq.setIdLoteContenedor(loteContenedor);
         rq.setTipo(1);
         return rq;

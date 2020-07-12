@@ -10,6 +10,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleValorEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeEntity;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.ItemManifiestoPlantaCodigoQR;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.models.RowItemHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
@@ -24,7 +25,7 @@ public abstract class ManifiestoSedeDao {
     @Query("select * from tb_manifiestos_sede where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente, " +
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente, " +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
             "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
@@ -37,7 +38,7 @@ public abstract class ManifiestoSedeDao {
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
 
-    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente," +
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente," +
             "            (SELECT COUNT(idManifiestoDetalleValor) " +
             "            FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                                       INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
@@ -50,6 +51,21 @@ public abstract class ManifiestoSedeDao {
             "where (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search, Integer vehiculo);
+
+    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,DTVC.peso, DTC.nombreDesecho, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_sede_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
+            "from tb_manifiestos_sede MC INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DTC ON MC.idAppManifiesto=DTC.idAppManifiesto " +
+            "                              INNER JOIN  tb_manifiestos_sede_det_valor DTVC ON DTC.idManifiestoDetalle = DTVC.idManifiestoDetalle " +
+            "            WHERE DTVC.codigoQR=:codigoQR " )
+    @Transaction
+    public abstract ItemManifiestoPlantaCodigoQR fetchManifiestosBultos(String codigoQR);
 
 
     @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
@@ -72,6 +88,8 @@ public abstract class ManifiestoSedeDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
+            //entity.setEstado(manifiesto.get);
+            entity.setEstado(0);
         }
         else if(entity!=null  ){
             entity = new ManifiestoSedeEntity();
@@ -79,6 +97,8 @@ public abstract class ManifiestoSedeDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
+            //entity.setEstado(manifiesto.get);
+            entity.setEstado(0);
         }
 
 

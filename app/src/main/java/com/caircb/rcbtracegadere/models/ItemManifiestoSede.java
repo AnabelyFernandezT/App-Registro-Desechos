@@ -7,8 +7,17 @@ public class ItemManifiestoSede {
     private Integer totalBultos;
     private Integer bultosSelecionado;
     private Integer idTransporteVehiculo;
+    private Integer estado;
 
     public ItemManifiestoSede() {
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 
     public Integer getIdTransporteVehiculo() {
