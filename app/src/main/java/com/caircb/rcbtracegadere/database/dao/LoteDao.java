@@ -33,32 +33,34 @@ public abstract  class LoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createLote(LoteEntity entity);
 
-    public void saveOrUpdate(List<DtoLote> lotes){
-        for(DtoLote c:lotes) {
-            LoteEntity lote = fetchLotesCompletosE(c.getIdLoteContenedor());
-            if (lote!=null) {
+    public void saveOrUpdate(DtoLote lotes){
+        LoteEntity lote = fetchLotesCompletosE(lotes.getIdLoteContenedor());
+
+            if (lote==null) {
                 lote = new LoteEntity();
-                lote.setCodigoLote(c.getCodigoLote());
-                lote.setFechaRegistro(c.getFechaRegistro());
-                lote.setIdDestinatarioFinRutaCatalogo(c.getIdDestinatarioFinRutaCatalogo());
-                lote.setNombreDestinatarioFinRutaCatalogo(c.getNombreDestinatarioFinRutaCatalogo());
-                lote.setNumeroManifiesto(c.getNumeroManifiesto());
-                lote.setSubRuta(c.getSubRuta());
-                lote.setRuta(c.getRuta());
-                lote.setPlacaVehiculo(c.getPlacaVehiculo());
+                lote.setIdLoteContenedor(lotes.getIdLoteContenedor());
+                lote.setCodigoLote(lotes.getCodigoLote());
+                lote.setFechaRegistro(lotes.getFechaRegistro());
+                lote.setIdDestinatarioFinRutaCatalogo(lotes.getIdDestinatarioFinRutaCatalogo());
+                lote.setNombreDestinatarioFinRutaCatalogo(lotes.getNombreDestinatarioFinRutaCatalogo());
+                lote.setNumeroManifiesto(lotes.getNumeroManifiesto());
+                lote.setSubRuta(lotes.getSubRuta());
+                lote.setRuta(lotes.getRuta());
+                lote.setPlacaVehiculo(lotes.getPlacaVehiculo());
             } else {
-                lote.setCodigoLote(c.getCodigoLote());
-                lote.setFechaRegistro(c.getFechaRegistro());
-                lote.setIdDestinatarioFinRutaCatalogo(c.getIdDestinatarioFinRutaCatalogo());
-                lote.setNombreDestinatarioFinRutaCatalogo(c.getNombreDestinatarioFinRutaCatalogo());
-                lote.setNumeroManifiesto(c.getNumeroManifiesto());
-                lote.setSubRuta(c.getSubRuta());
-                lote.setRuta(c.getRuta());
-                lote.setPlacaVehiculo(c.getPlacaVehiculo());
+                lote.setCodigoLote(lotes.getCodigoLote());
+                lote.setIdLoteContenedor(lotes.getIdLoteContenedor());
+                lote.setFechaRegistro(lotes.getFechaRegistro());
+                lote.setIdDestinatarioFinRutaCatalogo(lotes.getIdDestinatarioFinRutaCatalogo());
+                lote.setNombreDestinatarioFinRutaCatalogo(lotes.getNombreDestinatarioFinRutaCatalogo());
+                lote.setNumeroManifiesto(lotes.getNumeroManifiesto());
+                lote.setSubRuta(lotes.getSubRuta());
+                lote.setRuta(lotes.getRuta());
+                lote.setPlacaVehiculo(lotes.getPlacaVehiculo());
             }
 
             createLote(lote);
         }
-    }
+
 
 }
