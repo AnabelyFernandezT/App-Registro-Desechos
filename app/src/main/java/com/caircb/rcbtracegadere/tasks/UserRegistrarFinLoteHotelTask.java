@@ -2,6 +2,8 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -17,8 +19,9 @@ import retrofit2.Response;
 
 public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements RetrofitCallbacks {
     Integer loteContenedorPadre;
+    HotelLotePadreEntity lotePadre;
 
-    public UserRegistrarFinLoteHotelTask(Context context, Integer loteContenedorPadre) {
+    public UserRegistrarFinLoteHotelTask(Context context) {
         super(context);
         this.loteContenedorPadre = loteContenedorPadre;
     }
@@ -47,11 +50,16 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
 
     RequestFinLotePadreHotelTask finLotePadreHotelTask(){
         RequestFinLotePadreHotelTask rq = new RequestFinLotePadreHotelTask();
+        lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
 
-        rq.setIdLoteContenedorHotel(loteContenedorPadre);
-        rq.setFechaRegistro(new Date());
-        rq.setIdTransportistaRecolector(MySession.getIdUsuario());
-        rq.setTipo(1);
+        if(loteContenedorPadre!=null){
+            rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
+            rq.setFechaRegistro(new Date());
+            rq.setIdTransportistaRecolector(MySession.getIdUsuario());
+            rq.setTipo(1);
+        }
+
+
         return rq;
     }
 

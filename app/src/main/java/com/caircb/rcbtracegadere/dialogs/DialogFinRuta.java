@@ -192,9 +192,9 @@ public class DialogFinRuta extends MyDialog {
                             guardarDatos();
                             //messageBox("guardado");
 
-                            if(destinos=="HOTEL"){
+                           /* if(destinos=="HOTEL"){
                                 loteHotelPadre();
-                            }
+                            }*/
 
                         }
 
@@ -358,7 +358,8 @@ public class DialogFinRuta extends MyDialog {
                 public void onClick(View v) {
                     destino = "null";
                     listaDestinoParticular.setEnabled(false);
-                    finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity(),lotePadre.getIdLoteContenedorHotel());
+                    loteHotelPadre();
+                    finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
                     finLotePadreHotelTask.execute();
                     builder.dismiss();
                 }
@@ -366,6 +367,7 @@ public class DialogFinRuta extends MyDialog {
             builder.setNegativeButton("No", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    loteHotelPadre();
                     builder.dismiss();
                 }
             });
