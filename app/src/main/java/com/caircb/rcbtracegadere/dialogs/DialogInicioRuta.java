@@ -23,6 +23,7 @@ import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
+import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
@@ -62,6 +63,7 @@ public class DialogInicioRuta extends MyDialog {
 
     List<DtoFindRutas> listaPlacasDisponibles;
     List<RowRutas> listaRutas;
+    TextView txtBuscar, txtSincronizar, txtManifiestos;
 
     /*
     UserConsultarPlacasInicioRutaDisponible.TaskListener listenerPlacasDisponibles= new UserConsultarPlacasInicioRutaDisponible.TaskListener() {
@@ -126,6 +128,10 @@ public class DialogInicioRuta extends MyDialog {
         lnlIniciaRuta = getActivity().findViewById(R.id.LnlIniciaRuta);
         lnlFinRuta = getActivity().findViewById(R.id.LnlFinRuta);
 
+        txtBuscar = (TextView) getActivity().findViewById(R.id.txtBuscar);
+        txtSincronizar = (TextView) getActivity().findViewById(R.id.txtSincronizar);
+        txtManifiestos = (TextView) getActivity().findViewById(R.id.txtManifiestos);
+
         spinnerPlacas = (Spinner)getView().findViewById(R.id.lista_placas);
         spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -179,14 +185,14 @@ public class DialogInicioRuta extends MyDialog {
                 validar--;
             }
 
-            if (placa=="seleccione"){
+            if (placa=="SELECCIONE"){
                 mensaje("Seleccione un placa valida");
             }else{
                 validar--;
             }
 
             if (validar ==0){
-                if(spinnerPlacas.getSelectedItem().toString().equals("Seleccione...")){
+                if(spinnerPlacas.getSelectedItem().toString().equals("SELECCIONE")){
                     messageBox("Debe seleccionar una subRuta");
                 }else{
                     guardarDatos();
@@ -222,7 +228,7 @@ public class DialogInicioRuta extends MyDialog {
         Spinner defaulSpiner = spinner;
         ArrayList<String> listaData = new ArrayList<String>();
 
-        listaData.add("Seleccione...");
+        listaData.add("SELECCIONE");
         if(catalogos.size() > 0){
             for (DtoCatalogo r : catalogos){
                 listaData.add(r.getCodigo());
@@ -242,7 +248,7 @@ public class DialogInicioRuta extends MyDialog {
         ArrayList<String> listaData = new ArrayList<String>();
 
         //listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
-        listaData.add("Seleccione...");
+        listaData.add("SELECCIONE");
         if(catalogos.size() > 0){
             for (DtoFindRutas r : catalogos){
                 listaData.add(r.getNombreRuta());
@@ -327,12 +333,18 @@ public class DialogInicioRuta extends MyDialog {
         btnPickUpTransportista.setEnabled(true);
         btnDropOffTransportista.setEnabled(true);
 
+        regionBuscar.setColorFilter(Color.TRANSPARENT);
+        btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
+        btnListaAsignadaTransportista.setColorFilter(Color.TRANSPARENT);
+
+        txtBuscar.setTextColor(Color.WHITE);
+        txtManifiestos.setTextColor(Color.WHITE);
+        txtSincronizar.setTextColor(Color.WHITE);
+
         lnlIniciaRuta.setVisibility(View.GONE);
         lnlFinRuta.setVisibility(View.VISIBLE);
         consultarHojaRutaTask = new UserConsultarHojaRutaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
 
     }
-
-
 }
