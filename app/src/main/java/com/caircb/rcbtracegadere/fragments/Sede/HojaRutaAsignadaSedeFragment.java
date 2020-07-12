@@ -24,6 +24,9 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
+import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQR;
+import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQRSede;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.ManifiestoPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
@@ -54,6 +57,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiestoSede> rowItems;
     private SearchView searchView;
+    DialogInfoCodigoQRSede dialogCodigoQR;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -160,9 +164,18 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
             if (estadoBulto){
                 messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
             }else if (!estadoBulto){
-                MyApp.getDBO().manifiestoDetalleValorSede().actualizarBultoEstado(data);
-                rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
-                adapterList();
+                //MyApp.getDBO().manifiestoDetalleValorSede().actualizarBultoEstado(data);
+                dialogCodigoQR = new DialogInfoCodigoQRSede(getActivity(),data);
+                dialogCodigoQR.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogCodigoQR.setCancelable(false);
+                dialogCodigoQR.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
+                    @Override
+                    public void onSucefull() {
+                        rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+                        adapterList();
+                    }
+                });
+                dialogCodigoQR.show();
             }
         }
 
