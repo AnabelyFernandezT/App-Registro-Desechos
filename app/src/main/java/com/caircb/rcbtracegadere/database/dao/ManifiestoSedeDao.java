@@ -34,7 +34,7 @@ public abstract class ManifiestoSedeDao {
             "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
             "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
-            "from tb_manifiestos_sede MC " )
+            "from tb_manifiestos_sede MC ")
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
 
@@ -54,18 +54,20 @@ public abstract class ManifiestoSedeDao {
 
     @Query("select count(*) from tb_manifiestos_sede")
     public abstract int contarHojaRutaAsignadas();
+
     @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,DTVC.peso, DTC.nombreDesecho, " +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
             "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_sede_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
             "WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
-            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
             "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
-            "from tb_manifiestos_sede MC INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DTC ON MC.idAppManifiesto=DTC.idAppManifiesto " +
+            "from tb_manifiestos_sede MC INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DTC ON MC.idAppManifiesto=DTC.idAppManifiesto " +
             "                              INNER JOIN  tb_manifiestos_sede_det_valor DTVC ON DTC.idManifiestoDetalle = DTVC.idManifiestoDetalle " +
-            "            WHERE DTVC.codigoQR=:codigoQR " )
+            "WHERE DTVC.codigoQR=:codigoQR " +
+            "Group by MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,DTVC.peso, DTC.nombreDesecho")
     @Transaction
     public abstract ItemManifiestoPlantaCodigoQR fetchManifiestosBultos(String codigoQR);
 
