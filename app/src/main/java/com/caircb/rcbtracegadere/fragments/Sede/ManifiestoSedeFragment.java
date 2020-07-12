@@ -131,6 +131,14 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                 public void onSuccessful() {
                                     messageBox("Bultos Guardados");
                                 }
+                    detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
+                    detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            messageBox("Bultos Guardados");
+                            setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                        }
+
 
                                 @Override
                                 public void onFail() {
