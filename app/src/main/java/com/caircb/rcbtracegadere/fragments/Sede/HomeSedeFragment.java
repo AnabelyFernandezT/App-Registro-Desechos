@@ -14,21 +14,26 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;
     ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
 
+    Integer inicioLote;
+    Integer finLote;
     UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
     LinearLayout lnlIniciaLote, lnlFinLote;
@@ -51,15 +56,19 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
+        regionBuscar = getView().findViewById(R.id.regionBuscar);
         lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
         btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaSede = getView().findViewById(R.id.btnListaAsignadaSede);
         btnMenu = getView().findViewById(R.id.btnMenu);
         lnlIniciaLote = getView().findViewById(R.id.LnlIniciaLote);
         btnInciaLote = getView().findViewById(R.id.btnInciaLote);
-        datosLotesDisponibles();
         lnlFinLote = getView().findViewById(R.id.LnlFinLote);
         btnFinLote = getView().findViewById(R.id.btnFinLote);
+
+        btnListaAsignadaSede.setEnabled(false);
+        btnSincManifiestos.setEnabled(false);
+        regionBuscar.setEnabled(false);
 
         verificarInicioLote();
 
@@ -102,13 +111,13 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnFinLote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("");
-                builder.setMessage("Esta seguro de continuar");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setMessage("¿Esta seguro de continuar ?");
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                         registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
                         registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
                             @Override
@@ -124,16 +133,15 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                             }
                         });
                         registarFinLoteTask.execute();
-
                     }
                 });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                     }
                 });
-                builder.show();
+                dialogBuilder.show();
 
             }
         });
@@ -144,11 +152,11 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
 
 
     private void initBuscador(){
-        regionBuscar = getView().findViewById(R.id.regionBuscar);
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNavegate(HojaFragment.newInstance());
+                datosLotesDisponibles();
+
             }
         });
     }
@@ -156,30 +164,42 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     private void datosLotesDisponibles(){
 
         consultarLotes = new UserConsultaLotes(getActivity());
+        consultarLotes.setOnRegisterListener(new UserConsultaLotes.TaskListener() {
+            @Override
+            public void onSuccessful() {
+                setNavegate(HojaFragment.newInstance());
+            }
+        });
         consultarLotes.execute();
     }
 
     private void verificarInicioLote(){
-
-        Integer inicioLote=0;
-        Integer finLote=0;
 
         ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
         ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
 
        if (iniciLote!=null){
            inicioLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
+       }else{
+           inicioLote=0;
        }
        if (finLotes!=null){
            finLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote").getValor());
+       }else {
+           finLote=0;
        }
 
             if(inicioLote == finLote) {
                 lnlIniciaLote.setVisibility(View.VISIBLE);
                 lnlFinLote.setVisibility(View.GONE);
+                btnListaAsignadaSede.setEnabled(false);
+                btnSincManifiestos.setEnabled(false);
+                regionBuscar.setEnabled(true);
             }else{
                 lnlIniciaLote.setVisibility(View.GONE);
                 lnlFinLote.setVisibility(View.VISIBLE);
+                btnListaAsignadaSede.setEnabled(true);
+                btnSincManifiestos.setEnabled(true);
             }
 
     }

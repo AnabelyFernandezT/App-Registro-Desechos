@@ -101,6 +101,7 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
+                        System.out.println("Success ----------");
                         //message(response.body().getMensaje());
                         progressHide();
                         if(mOnRegisterAlternoListener!=null){mOnRegisterAlternoListener.onSussfull();}

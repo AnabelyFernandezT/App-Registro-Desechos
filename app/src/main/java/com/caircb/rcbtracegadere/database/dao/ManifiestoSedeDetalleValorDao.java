@@ -63,7 +63,7 @@ public abstract class ManifiestoSedeDetalleValorDao {
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
-            entity.setEstado(false);
+            entity.setEstado(manifiesto.getEstado());
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
 
@@ -72,7 +72,7 @@ public abstract class ManifiestoSedeDetalleValorDao {
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
-            entity.setEstado(false);
+            entity.setEstado(manifiesto.getEstado());
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
         }

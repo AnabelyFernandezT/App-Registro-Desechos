@@ -23,6 +23,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterSede;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HojaRutaAsignadaGestorFragment;
@@ -35,6 +36,7 @@ import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserRegistarDetalleSedeTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnRetornarDetalleSede:
-                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
                 break;
         }
 
@@ -116,20 +118,35 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
             public void onClick(View v) {
                 Integer loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
                 if(loteContenedor!=null){
-                    detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
-                    detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
+                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setMessage("¿Esta seguro de continuar ?");
+                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override
-                        public void onSuccessful() {
-                            messageBox("Bultos Guardados");
-                        }
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                            detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
+                            detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
+                                @Override
+                                public void onSuccessful() {
+                                    messageBox("Bultos Guardados");
+                                }
 
-                        @Override
-                        public void onFail() {
-                            messageBox("Bultos No Guardados");
+                                @Override
+                                public void onFail() {
+                                    messageBox("Bultos No Guardados");
+                                }
+                            });
+                            detalleSedeTask.execute();
                         }
                     });
-                    detalleSedeTask.execute();
-
+                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
                 }else {
                     messageBox("Debe Iniciar Lote");
                 }

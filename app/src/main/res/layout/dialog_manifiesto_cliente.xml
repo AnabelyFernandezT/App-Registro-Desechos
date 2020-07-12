@@ -33,6 +33,7 @@
             android:maxLines="1"
             android:textSize="22dp"
             android:paddingRight="10dp"
+            android:inputType="number"
             android:singleLine="true" />
     </LinearLayout>
 

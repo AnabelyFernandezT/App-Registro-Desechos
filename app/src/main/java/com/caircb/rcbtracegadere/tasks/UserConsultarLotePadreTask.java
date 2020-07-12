@@ -1,6 +1,8 @@
 package com.caircb.rcbtracegadere.tasks;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
@@ -40,19 +42,37 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
         ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico");
         String valor = parametro == null ? "-1" : parametro.getValor();
         Integer idDestinatario = Integer.parseInt(valor.equals("null") ? "-1":valor);
+        System.out.println(MySession.getIdUsuario()+"--"+new Date()+"--"+idDestinatario);
+        MyApp.getDBO().lotePadreDao().eliminarLotes();
 
             /***CAMBIAR PARAMETRO TRES DEL REQUEST ESTA UN DATO QUEMADO ***/
         WebService.api().traerLotesPadre(new RequestLotePadre(MySession.getIdUsuario(),new Date(),idDestinatario)).enqueue(new Callback<List<DtoLotePadreGestor>>() {
+            AlertDialog.Builder builder;
             @Override
             public void onResponse(Call<List<DtoLotePadreGestor>> call, Response<List<DtoLotePadreGestor>> response) {
                 if (response.isSuccessful()){
-                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().get(0).getPlacaVehiculo());
-                    MyApp.getDBO().lotePadreDao().eliminarLotes();
-                    for(DtoLotePadreGestor reg:response.body()){
-                        MyApp.getDBO().lotePadreDao().saveOrUpdate(reg);
+
+                    if(response.body().size()!=0){
+                        // if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
+                        MyApp.getDBO().lotePadreDao().eliminarLotes();
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().get(0).getPlacaVehiculo());
+                        for(DtoLotePadreGestor reg:response.body()){
+                            MyApp.getDBO().lotePadreDao().saveOrUpdate(reg);
+                        }
+                        progressHide();
+                    }else {
+                        builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage("No hay datos para mostrar...");
+                        builder.setCancelable(false);
+                        builder.setNegativeButton("Regresar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        progressHide();
                     }
-                    progressHide();
                 }
             }
 
