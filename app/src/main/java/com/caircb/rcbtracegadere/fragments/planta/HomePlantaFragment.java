@@ -15,14 +15,18 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,14 +53,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
            loadCantidadManifiestoAsignadoNO();
         }
     };
-
-    private void cargarManifiesto(){
-        consultarHojaRutaPlacaTaskTask = new UserConsultarHojaRutaPlacaTask(getActivity(),listenerHojaRuta);
-        consultarHojaRutaPlacaTaskTask.execute();
-    }
-
-
-
 
     public static HomePlantaFragment create() {
         return new HomePlantaFragment();
@@ -103,10 +99,13 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 dialogPlacas = new DialogPlacas(getActivity());
                 dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacas.setCancelable(false);
+                dialogPlacas.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
+                    @Override
+                    public void onSucefull() {
+                        cargarLabelCantidad();
+                    }
+                });
                 dialogPlacas.show();
-
-                //consultarHojaRutaPlacaTaskTask = new UserConsultarHojaRutaPlacaTask(getActivity(),listenerHojaRuta);
-                //consultarHojaRutaPlacaTaskTask.execute();
             }
         });
 

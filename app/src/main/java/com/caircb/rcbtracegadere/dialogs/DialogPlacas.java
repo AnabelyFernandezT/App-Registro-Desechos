@@ -54,6 +54,12 @@ public class DialogPlacas extends MyDialog {
         init();
     }
 
+    public interface onclickSedeListener {
+        public void onSucefull();
+    }
+
+    private DialogBultosPlanta.onclickSedeListener mOnclickSedeListener;
+
     private void init() {
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
@@ -108,6 +114,7 @@ public class DialogPlacas extends MyDialog {
                 }else if(bandera.equals("0")){
                     dialogoConfirmacion();
                 }
+
                /* Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1" : valor);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
                 if (bandera != null)
@@ -159,6 +166,10 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+1);
                 consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
                 consultarManifiestosPlanta.execute();
+                if(mOnclickSedeListener!=null){
+                    mOnclickSedeListener.onSucefull();
+                }
+                cargarLabelCantidad();
                 builder.dismiss();
                 dismiss();
             }
@@ -173,14 +184,15 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+2);
                 cargarManifiesto();
-                //consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
-                //consultarManifiestosPlanta.execute();
+                cargarLabelCantidad();
+                if(mOnclickSedeListener!=null){
+                    mOnclickSedeListener.onSucefull();
+                }
                 builder.dismiss();
                 dismiss();
             }
         });
         builder.show();
-        cargarLabelCantidad();
     }
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
@@ -242,6 +254,9 @@ public class DialogPlacas extends MyDialog {
         lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta());
     }
 
+    public void setmOnclickSedeListener(@NonNull DialogBultosPlanta.onclickSedeListener l){
+        mOnclickSedeListener = l;
+    };
 
 
 
