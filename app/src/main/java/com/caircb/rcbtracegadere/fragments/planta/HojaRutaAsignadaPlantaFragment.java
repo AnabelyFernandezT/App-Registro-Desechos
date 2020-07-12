@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -16,6 +17,9 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
+import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQR;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
 import com.caircb.rcbtracegadere.fragments.Sede.ManifiestoSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -42,6 +46,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiestoSede> rowItems;
     private SearchView searchView;
+    DialogInfoCodigoQR dialogCodigoQR;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -120,15 +125,6 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
-                        //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                        //menu(position);
-                       /* String bandera = MyApp.getDBO().parametroDao().fecthParametroValor(rowItems.get(position).getIdTransporteVehiculo().toString(),"vehiculo_planta"+rowItems.get(position).getIdTransporteVehiculo());
-                                if(bandera!=null){
-                                    setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                                }else{
-                                    setNavegate(ManifiestoPlantaFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                                }*/
                         setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
@@ -136,9 +132,6 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                 }
             }
         });
-        //DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        //divider.setDrawable(ContextCompat.getDrawable(getActivity().getBaseContext(), R.drawable.shape_divider));
-        //recyclerView.addItemDecoration(divider);
     }
 
     @Override
@@ -152,6 +145,16 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
             if (estadoBulto){
                 messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
             }else if (!estadoBulto){
+                dialogCodigoQR = new DialogInfoCodigoQR(getActivity());
+                dialogCodigoQR.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogCodigoQR.setCancelable(false);
+                dialogCodigoQR.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
+                    @Override
+                    public void onSucefull() {
+                        //cargarLabelCantidad();
+                    }
+                });
+                dialogCodigoQR.show();
                 MyApp.getDBO().manifiestoPlantaDetalleValorDao().actualizarBultoEstado(data);
                 rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif();
                 adapterList();
