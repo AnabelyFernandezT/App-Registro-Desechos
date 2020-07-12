@@ -24,8 +24,17 @@ public class ManifiestoPlantaDetalleValorEntity {
 
     private Boolean estado;
 
+    private Double nuevoPeso;
 
     public ManifiestoPlantaDetalleValorEntity() {
+    }
+
+    public Double getNuevoPeso() {
+        return nuevoPeso;
+    }
+
+    public void setNuevoPeso(Double nuevoPeso) {
+        this.nuevoPeso = nuevoPeso;
     }
 
     public String getNombreBulto() {

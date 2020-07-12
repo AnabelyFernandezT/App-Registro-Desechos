@@ -160,7 +160,7 @@ public class DialogFinRutaHoteles extends MyDialog {
         builder = new DialogBuilder(getContext());
         builder.setMessage("¿Seguro que desea movilizar?");
         builder.setCancelable(true);
-        builder.setPositiveButton("OK", new View.OnClickListener() {
+        builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 guardarDatos();

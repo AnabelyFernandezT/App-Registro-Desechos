@@ -1,12 +1,13 @@
 package com.caircb.rcbtracegadere.models.request;
 
+import com.caircb.rcbtracegadere.models.DtoDetallesPlanta;
 import com.caircb.rcbtracegadere.models.DtoFotoPlanta;
 
 import java.util.List;
 
 public class RequestRegisterPlantaDetalle {
     private Integer idManifiesto;
-    private List<Integer> Detalles;
+    private List<DtoDetallesPlanta> Detalles;
     private List<DtoFotoPlanta> fotos;
     private String observacion;
     private String urlFima;
@@ -22,11 +23,11 @@ public class RequestRegisterPlantaDetalle {
         this.idManifiesto = idManifiesto;
     }
 
-    public List<Integer> getDetalles() {
+    public List<DtoDetallesPlanta> getDetalles() {
         return Detalles;
     }
 
-    public void setDetalles(List<Integer> detalles) {
+    public void setDetalles(List<DtoDetallesPlanta> detalles) {
         Detalles = detalles;
     }
 

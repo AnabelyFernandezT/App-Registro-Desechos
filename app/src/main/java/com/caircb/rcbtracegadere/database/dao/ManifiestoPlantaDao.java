@@ -8,6 +8,7 @@ import androidx.room.Transaction;
 
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaEntity;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 
 import java.util.List;
@@ -58,21 +59,21 @@ public abstract class ManifiestoPlantaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoPlantaEntity entity);
 
-    public void saveOrUpdate(DtoManifiestoSede manifiesto){
+    public void saveOrUpdate(DtoManifiestoPlanta manifiesto){
 
         ManifiestoPlantaEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdAppManifiesto());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiesto());
         if(entity==null ){
             entity = new ManifiestoPlantaEntity();
-            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
+            entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
         }
         else if(entity!=null  ){
             entity = new ManifiestoPlantaEntity();
-            entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
+            entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
