@@ -1,10 +1,14 @@
 package com.caircb.rcbtracegadere.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +27,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     private Context mContext;
     private List<ItemManifiestoDetalleValorSede> manifiestosDtList;
     private Integer estadoManifiesto,idManifiestoDetalle;
+    AlertDialog.Builder messageBox;
 
     public ManifiestoDetalleBultosAdapterPlanta(Context context, Integer idManifiestoDetalle, Integer estadoManifiesto){
         this.mContext = context;
@@ -34,7 +39,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_bultos_sede,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_bultos_planta,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -44,21 +49,46 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
         holder.txtPeso.setText(it.getPeso().toString());
         holder.txtNombre.setText(it.getNombreBulto());
         holder.chkEstado.setChecked(it.getEstado());
-            holder.chkEstado.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked()) {
-                        v.setSelected(true);
-                        it.setEstado(true);
-                    } else {
-                        v.setSelected(false);
-                        it.setEstado(false);
-                    }
-                    MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(),it.getIdManifiestoDetalleValores());
-                }
-            });
+        holder.txtNuevoPeso.setText(it.getNuevoPeso()==null ? "":it.getNuevoPeso().toString());
 
-    }
+        holder.txtNuevoPeso.setFocusable(true);
+        holder.txtNuevoPeso.setFocusableInTouchMode(true);
+        holder.txtNuevoPeso.requestFocus();
+
+          holder.chkEstado.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  String nuevoValor = holder.txtNuevoPeso.getText().toString() == "" ? "0": holder.txtNuevoPeso.getText().toString();
+                  Integer valida = 0;
+                  if(nuevoValor.equals("")){
+                      valida = 0;
+                      holder.chkEstado.setChecked(false);
+                  }else{
+                      valida=1;
+                  }
+
+                  if(valida.equals(1) ) {
+                  if (((CheckBox) v).isChecked()) {
+                      v.setSelected(true);
+                      it.setEstado(true);
+                  } else {
+                      v.setSelected(false);
+                      it.setEstado(false);
+                  }
+                  MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
+                  MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(), it.getIdManifiestoDetalleValores());
+              }else{
+                      messageBox = new AlertDialog.Builder(mContext);
+                      messageBox.setTitle("INFO");
+                      messageBox.setMessage("Debe ingresar peso del bulto!");
+                      messageBox.setCancelable(false);
+                      messageBox.setNeutralButton("OK", null);
+                      messageBox.show();
+                  }
+              }
+          });
+      }
+
 
     @Override
     public int getItemCount() {
@@ -75,13 +105,32 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
         TextView txtNombre;
         TextView txtPeso;
         CheckBox chkEstado;
-
+        EditText txtNuevoPeso;
         public MyViewHolder(View itemView) {
             super(itemView);
 
             txtNombre = itemView.findViewById(R.id.txtNombre);
             txtPeso = itemView.findViewById(R.id.txtBultos);
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
+            txtNuevoPeso = (EditText)itemView.findViewById(R.id.txtIgnBultos);
+            txtNuevoPeso.requestFocus();
+            txtNuevoPeso.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+
+                    }
+                }
+            });
+
+            itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+
+                    }
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,6 +142,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
         }
 
     }
+
 
     public void setOnItemClickListener(@NonNull ClickListener l) {
         mClickListener= l;

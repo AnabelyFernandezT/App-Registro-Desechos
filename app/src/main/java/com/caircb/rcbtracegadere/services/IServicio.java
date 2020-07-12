@@ -39,6 +39,7 @@ import com.caircb.rcbtracegadere.models.response.DtoLotePadreGestor;
 import com.caircb.rcbtracegadere.models.response.DtoLotePadreHotel;
 import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
 
@@ -84,8 +85,8 @@ public interface IServicio {
     @PUT("Registro/registroManifiestoPlanta")
     Call<DtoInfo> registrarPlanta(@Body RequestManifiestoPlanta model);
 
-    @PUT("Registro/registroPlantaDetalle")
-    Call<DtoInfo> registroPlantaDetalle(@Body RequestRegisterPlantaDetalle model);
+    @PUT("Registro/registroManifiestoDetallePlanta")
+    Call<DtoInfo> registroManifiestoDetallePlanta(@Body RequestRegisterPlantaDetalle model);
 
 
     @POST("Notificacion/registrarNotificacion")
@@ -99,6 +100,9 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerListHojaRutaSede")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);
+
+    @POST("HojaRuta/obtenerListaHojaRutaPlanta")
+    Call<List<DtoManifiestoPlanta>> traerManifiestosPlanta(@Body RequestManifiestoSede model);
 
     @PUT("Registro/registroLoteContenedor")
     Call<DtoInfo>registrarLoteinicio (@Body RequestInicioLoteSede model);

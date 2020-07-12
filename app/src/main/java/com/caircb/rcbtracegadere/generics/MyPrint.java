@@ -217,7 +217,7 @@ public class MyPrint {
                     row.getResiduo(),
                     String.valueOf(numeroBulto),
                     row.getTratamiento(),
-                    "",
+                    row.getDestinatario(),
                     false
             );
             zebraPrinterConnection.write(configLabel);
@@ -303,6 +303,7 @@ public class MyPrint {
         String cpclConfigLabel="";
         byte[] configLabel = null;
         String ItemDescripcion = recorreString(residuo);
+        tratamiento = tratamiento == null ? "" : tratamiento;
 
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";

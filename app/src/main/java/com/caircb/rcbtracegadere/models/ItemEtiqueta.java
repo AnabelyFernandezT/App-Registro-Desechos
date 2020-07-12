@@ -14,6 +14,7 @@ public class ItemEtiqueta {
     private String codigoQr;
     private Integer indexEtiqueta;
     private Integer totalEtiqueta;
+    private String destinatario;
 
 
 
@@ -95,5 +96,13 @@ public class ItemEtiqueta {
 
     public void setTotalEtiqueta(Integer totalEtiqueta) {
         this.totalEtiqueta = totalEtiqueta;
+    }
+
+    public String getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(String destinatario) {
+        this.destinatario = destinatario;
     }
 }

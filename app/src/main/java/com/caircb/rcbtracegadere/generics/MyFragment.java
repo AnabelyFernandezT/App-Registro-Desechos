@@ -11,6 +11,7 @@ import android.app.Fragment;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 
 public class MyFragment extends Fragment {
     AlertDialog.Builder messageBox;
@@ -82,12 +83,21 @@ public class MyFragment extends Fragment {
 
     public void messageBox(String message)
     {
+
+        DialogBuilder dialogBuilder = new DialogBuilder(mContext);
+        dialogBuilder.setTitle("INFO");
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("OK", null);
+        dialogBuilder.show();
+        /*
         messageBox = new AlertDialog.Builder(mContext);
         messageBox.setTitle("INFO");
         messageBox.setMessage(message);
         messageBox.setCancelable(false);
-        messageBox.setNeutralButton("OK", null);
+        messageBox.setPositiveButton("OK", null);
         messageBox.show();
+         */
     }
 
     public void messageBox2(String message, Context context)

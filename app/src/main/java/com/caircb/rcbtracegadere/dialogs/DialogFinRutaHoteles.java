@@ -160,7 +160,7 @@ public class DialogFinRutaHoteles extends MyDialog {
         builder = new DialogBuilder(getContext());
         builder.setMessage("¿Seguro que desea movilizar?");
         builder.setCancelable(true);
-        builder.setPositiveButton("OK", new View.OnClickListener() {
+        builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 guardarDatos();
@@ -224,7 +224,7 @@ public class DialogFinRutaHoteles extends MyDialog {
         ArrayList<String> listaData = new ArrayList<String>();
 
         //listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
-        listaData.add("Seleccione...");
+        listaData.add("SELECCIONE");
         if(catalogos.size() > 0){
             for (DtoCatalogo r : catalogos){
                 listaData.add(r.getNombre());

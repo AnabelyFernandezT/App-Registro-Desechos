@@ -83,6 +83,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
 
     public void init(){
         recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView.requestFocus();
         recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getActivity(),idAppManifiesto.toString(),1);
         manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
     }
@@ -114,7 +115,6 @@ public class TabManifiestoDetalleFragment extends Fragment {
                 detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
                 //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
                 recyclerviewAdapter.setTaskList(detalles);
-
             }
         });
         dialogBultos.show();

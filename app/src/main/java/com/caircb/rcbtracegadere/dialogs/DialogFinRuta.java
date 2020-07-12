@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.dialogs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -71,6 +72,7 @@ public class DialogFinRuta extends MyDialog {
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
+    TextView txtBuscar, txtSincronizar, txtManifiestos;
 
     public DialogFinRuta(@NonNull Context context) {
         super(context, R.layout.dialog_final_ruta);
@@ -110,6 +112,10 @@ public class DialogFinRuta extends MyDialog {
 
         kilometrajeFinal = (EditText)getView().findViewById(R.id.kilometrajeFinal) ;
         kilometrajeFinal.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+        txtBuscar = (TextView) getActivity().findViewById(R.id.txtBuscar);
+        txtSincronizar = (TextView) getActivity().findViewById(R.id.txtSincronizar);
+        txtManifiestos = (TextView) getActivity().findViewById(R.id.txtManifiestos);
 
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +174,8 @@ public class DialogFinRuta extends MyDialog {
             @Override
             public void onClick(View v) {
                 bandera = true;
-                if (kilometrajeFinal.getText().length()<0){
+                Integer kilo = kilometrajeFinal.getText().length();
+                if (kilometrajeFinal.getText().length()<=0){
                     messageBox("Se requiere que digite el kilometraje.");
                     return;
                 }else{
@@ -177,6 +184,7 @@ public class DialogFinRuta extends MyDialog {
                         messageBox("Kilometraje incorrecto");
                         return;
                     }else{
+
                         if(destino.equals("") || destinos.equals("")){
                             messageBox("Seleccione Destino");
                             return;
@@ -267,7 +275,7 @@ public class DialogFinRuta extends MyDialog {
         ArrayList<String> listaData = new ArrayList<String>();
 
         //listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
-        listaData.add("Seleccione...");
+        listaData.add("SELECCIONE");
         if(catalogos.size() > 0){
             for (DtoCatalogo r : catalogos){
                 listaData.add(r.getNombre());
@@ -300,6 +308,16 @@ public class DialogFinRuta extends MyDialog {
         btnListaAsignadaTransportista.setEnabled(false);
         btnPickUpTransportista.setEnabled(false);
         btnDropOffTransportista.setEnabled(false);
+
+        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
+        btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
+        btnListaAsignadaTransportista.setColorFilter(Color.rgb(115, 124, 119 ));
+
+        txtBuscar.setTextColor(Color.rgb(115, 124, 119 ));
+        txtManifiestos.setTextColor(Color.rgb(115, 124, 119 ));
+        txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+
+
         lnlIniciaRuta.setVisibility(View.VISIBLE);
         lnlFinRuta.setVisibility(View.GONE);
 

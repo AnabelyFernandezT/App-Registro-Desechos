@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 
 import java.io.ByteArrayOutputStream;
 
@@ -47,12 +48,21 @@ public class MyDialog extends Dialog {
 
     public void messageBox(String message)
     {
+        DialogBuilder dialogBuilder = new DialogBuilder(getContext());
+        dialogBuilder.setTitle("INFO");
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setPositiveButton("OK", null);
+        dialogBuilder.show();
+
+        /*
         messageBox = new AlertDialog.Builder(getContext());
         messageBox.setTitle("INFO");
         messageBox.setMessage(message);
         messageBox.setCancelable(false);
         messageBox.setNeutralButton("OK", null);
         messageBox.show();
+        */         
     }
 
     public void showToast(String mensaje) {
@@ -85,7 +95,7 @@ public class MyDialog extends Dialog {
         ArrayList<String> listaData = new ArrayList<String>();
 
         //MatrixCursor extras = new MatrixCursor(new String[] { "_id", "nombre"});
-        //extras.addRow(new String[] { "-1", "Seleccione..." });
+        //extras.addRow(new String[] { "-1", "SELECCIONE" });
         listaData.add(MyConstant.DEFAULD_SELECCIONE);
         if(_cursor.getCount()>0){
             if(_cursor.moveToFirst()){
