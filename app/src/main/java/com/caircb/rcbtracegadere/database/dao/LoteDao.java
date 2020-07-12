@@ -23,6 +23,9 @@ public abstract  class LoteDao {
     @Query("select * from tb_lotes")
     public abstract LoteEntity fetchLotesCompletos();
 
+    @Query("select * from tb_lotes where idLoteContenedor=:loteContenedor")
+    public abstract LoteEntity fetchLotesCompletosE(Integer loteContenedor);
+
     @Query("select idLoteContenedor,codigoLote,fechaRegistro, idDestinatarioFinRutaCatalogo, nombreDestinatarioFinRutaCatalogo,numeroManifiesto,subRuta,ruta,placaVehiculo from tb_lotes")
     @Transaction
     public abstract List<ItemLote> fetchLote();
@@ -32,9 +35,17 @@ public abstract  class LoteDao {
 
     public void saveOrUpdate(List<DtoLote> lotes){
         for(DtoLote c:lotes) {
-            LoteEntity lote = fetchLotesCompletos();
-            if (lote == null) {
+            LoteEntity lote = fetchLotesCompletosE(c.getIdLoteContenedor());
+            if (lote!=null) {
                 lote = new LoteEntity();
+                lote.setCodigoLote(c.getCodigoLote());
+                lote.setFechaRegistro(c.getFechaRegistro());
+                lote.setIdDestinatarioFinRutaCatalogo(c.getIdDestinatarioFinRutaCatalogo());
+                lote.setNombreDestinatarioFinRutaCatalogo(c.getNombreDestinatarioFinRutaCatalogo());
+                lote.setNumeroManifiesto(c.getNumeroManifiesto());
+                lote.setSubRuta(c.getSubRuta());
+                lote.setRuta(c.getRuta());
+                lote.setPlacaVehiculo(c.getPlacaVehiculo());
             } else {
                 lote.setCodigoLote(c.getCodigoLote());
                 lote.setFechaRegistro(c.getFechaRegistro());

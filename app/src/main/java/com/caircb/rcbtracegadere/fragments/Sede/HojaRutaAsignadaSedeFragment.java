@@ -137,7 +137,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         //menu(position);
-                        setNavegate(ManifiestoPlantaFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        setNavegate(ManifiestoSedeFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -189,7 +189,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRetornarListHojaRuta:
-                setNavegate(HomePlantaFragment.create());
+                setNavegate(HomeSedeFragment.create());
                 break;
         }
     }

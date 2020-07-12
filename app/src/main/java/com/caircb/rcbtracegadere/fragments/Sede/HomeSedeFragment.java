@@ -29,6 +29,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;
     ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
 
+    Integer inicioLote;
+    Integer finLote;
     UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
     LinearLayout lnlIniciaLote, lnlFinLote;
@@ -51,15 +53,19 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
+        regionBuscar = getView().findViewById(R.id.regionBuscar);
         lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
         btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaSede = getView().findViewById(R.id.btnListaAsignadaSede);
         btnMenu = getView().findViewById(R.id.btnMenu);
         lnlIniciaLote = getView().findViewById(R.id.LnlIniciaLote);
         btnInciaLote = getView().findViewById(R.id.btnInciaLote);
-        datosLotesDisponibles();
         lnlFinLote = getView().findViewById(R.id.LnlFinLote);
         btnFinLote = getView().findViewById(R.id.btnFinLote);
+
+        btnListaAsignadaSede.setEnabled(false);
+        btnSincManifiestos.setEnabled(false);
+        regionBuscar.setEnabled(false);
 
         verificarInicioLote();
 
@@ -144,11 +150,11 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
 
 
     private void initBuscador(){
-        regionBuscar = getView().findViewById(R.id.regionBuscar);
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNavegate(HojaFragment.newInstance());
+                datosLotesDisponibles();
+
             }
         });
     }
@@ -156,30 +162,42 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     private void datosLotesDisponibles(){
 
         consultarLotes = new UserConsultaLotes(getActivity());
+        consultarLotes.setOnRegisterListener(new UserConsultaLotes.TaskListener() {
+            @Override
+            public void onSuccessful() {
+                setNavegate(HojaFragment.newInstance());
+            }
+        });
         consultarLotes.execute();
     }
 
     private void verificarInicioLote(){
-
-        Integer inicioLote=0;
-        Integer finLote=0;
 
         ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
         ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
 
        if (iniciLote!=null){
            inicioLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
+       }else{
+           inicioLote=0;
        }
        if (finLotes!=null){
            finLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote").getValor());
+       }else {
+           finLote=0;
        }
 
             if(inicioLote == finLote) {
                 lnlIniciaLote.setVisibility(View.VISIBLE);
                 lnlFinLote.setVisibility(View.GONE);
+                btnListaAsignadaSede.setEnabled(false);
+                btnSincManifiestos.setEnabled(false);
+                regionBuscar.setEnabled(true);
             }else{
                 lnlIniciaLote.setVisibility(View.GONE);
                 lnlFinLote.setVisibility(View.VISIBLE);
+                btnListaAsignadaSede.setEnabled(true);
+                btnSincManifiestos.setEnabled(true);
             }
 
     }

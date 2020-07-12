@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacaRutasSedeTask;
@@ -30,6 +32,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     Activity _activity;
     Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
+    UserConsultaLotes consultarLotes;
     String placa;
     //UserConsultarPlacaRutasSedeTask consultarPlacasInicioRutaDisponible;
     UserConsultarVehiculosSedeTask consultarPlacas;
@@ -53,7 +56,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
 
     private void init() {
         listaPlacasDisponibles = new ArrayList<>();
-        lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
+        lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignado);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
 
@@ -88,6 +91,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
+                //datosLotesDisponibles();
                 cargarManifiesto();
                 dismiss();
             }
@@ -136,12 +140,20 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     };
 
     private void loadCantidadManifiestoAsignado() {
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
     }
 
+    @SuppressLint("SetTextI18n")
     private void cargarManifiesto(){
         consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(_activity);
         consultarHojaRutaTask.execute();
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+    }
+
+    private void datosLotesDisponibles(){
+
+        consultarLotes = new UserConsultaLotes(getActivity());
+        consultarLotes.execute();
     }
 
 

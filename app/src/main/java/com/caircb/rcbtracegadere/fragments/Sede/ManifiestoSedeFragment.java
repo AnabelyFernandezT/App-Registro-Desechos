@@ -72,7 +72,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnRetornarDetalleSede:
-                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
                 break;
         }
 

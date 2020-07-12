@@ -67,8 +67,6 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
                         progressHide();
                     }else {
                         progressHide();
-                        message(response.body().getMensaje());
-
                     }
                 }
 

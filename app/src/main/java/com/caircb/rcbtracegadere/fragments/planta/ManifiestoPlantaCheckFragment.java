@@ -112,7 +112,9 @@ public class ManifiestoPlantaCheckFragment extends MyFragment implements OnCamer
                         @Override
                         public void onSuccessful() {
                             messageBox("Bultos Guardados");
+                            setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                         }
+
 
                         @Override
                         public void onFail() {
