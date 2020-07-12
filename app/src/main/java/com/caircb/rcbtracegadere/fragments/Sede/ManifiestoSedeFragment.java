@@ -166,7 +166,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
+                openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
             }
         });
     }

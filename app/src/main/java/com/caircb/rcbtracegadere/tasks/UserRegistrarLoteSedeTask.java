@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
@@ -65,17 +66,27 @@ public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements Retrofit
     }
 
     private RequestMovilizarLoteSede requestMovilizarLoteSede(){
-        Integer loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
-        Integer vehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idContenedor = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
+        ParametroEntity pa = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote");
+        String val = pa == null ? "-1" : pa.getValor();
+        Integer vehiculo = Integer.parseInt(val.equals("null") ? "-1":val);
+
+      //  Integer loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
+
+      //  Integer vehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
 
         RequestMovilizarLoteSede rq = new RequestMovilizarLoteSede();
-        rq.setIdLoteContenedor(loteContenedor);
+        rq.setIdLoteContenedor(idContenedor);//
         rq.setIdTransportistaVehiculo(vehiculo);
         rq.setIdTransportistaRecolector(conductor);
         rq.setIdOperador1(operador);
         rq.setIdOperador2(operadorAuxiliar);
         rq.setFecha(new Date());
         rq.setIdDestinatarioFinRutaCatalogo(destino);
+        rq.setTipo(0);
 
         return rq;
 
