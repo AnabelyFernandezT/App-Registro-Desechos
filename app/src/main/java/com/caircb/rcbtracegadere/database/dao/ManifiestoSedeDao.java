@@ -52,6 +52,8 @@ public abstract class ManifiestoSedeDao {
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search, Integer vehiculo);
 
+    @Query("select count(*) from tb_manifiestos_sede")
+    public abstract int contarHojaRutaAsignadas();
     @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,DTVC.peso, DTC.nombreDesecho, " +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
             "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_sede_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
