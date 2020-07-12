@@ -68,7 +68,7 @@ public class HomeHotelFragment extends MyFragment implements OnHome {
         lotesConsultar.setmOnCountListaAsignaadasListeneer(new UserConsultarLotesHotelesTask.onCountListaAsigandasListenner() {
             @Override
             public void onSuccesfull(Integer total) {
-                System.out.println("dadada");
+                lblListaManifiestoAsignado.setText(String.valueOf(total));
             }
         });
         lotesConsultar.execute();

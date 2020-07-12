@@ -139,6 +139,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                 }
                             });
                             detalleSedeTask.execute();
+                        dialogBuilder.dismiss();
                         }
                     });
                     dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
