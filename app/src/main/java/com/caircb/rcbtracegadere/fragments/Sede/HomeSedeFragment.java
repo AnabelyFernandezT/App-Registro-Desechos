@@ -14,16 +14,19 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeSedeFragment extends MyFragment implements OnHome {
     UserConsultaLotes consultarLotes;
@@ -108,13 +111,13 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnFinLote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("");
-                builder.setMessage("Esta seguro de continuar");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setMessage("¿Esta seguro de continuar ?");
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                         registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
                         registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
                             @Override
@@ -130,16 +133,15 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                             }
                         });
                         registarFinLoteTask.execute();
-
                     }
                 });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                     }
                 });
-                builder.show();
+                dialogBuilder.show();
 
             }
         });

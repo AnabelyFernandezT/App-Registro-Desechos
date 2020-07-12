@@ -48,9 +48,7 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
     public void execute() {
 
         String tipoProcesoInfo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info");
-        System.out.println(tipoProcesoInfo);
         String placaInfo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
-        System.out.println(placaInfo);
         int idTransportistaInfo = MySession.getIdUsuario();
         System.out.println(idTransportistaInfo);
         AlertDialog.Builder builder;
@@ -66,7 +64,7 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                 public void onResponse(Call<List<DtoInformacionModulos>> call,final Response<List<DtoInformacionModulos>> response) {
                     progressShow("Cargando datos...");
                     if(response.isSuccessful()){
-                        if (response.body().size()!=0){
+                        if(response.body().size()!=0){
                             MyApp.getDBO().informacionModulosDao().saveOrUpdate(response.body());
                             dialogInformacionModulos.show();
                             progressHide();
@@ -91,7 +89,6 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                 @Override
                 public void onFailure(Call<List<DtoInformacionModulos>> call, Throwable t) {
                     progressHide();
-
                 }
             });
         }else {

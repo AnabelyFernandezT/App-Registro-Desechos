@@ -14,14 +14,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoAdicionalFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoDetalleFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,12 +50,12 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     private LinearLayout btnManifiestoCancel,btnManifiestoNext;
     private FragmentActivity myContext;
     UserRegisterPlantaDetalleTask userRegisterPlantaDetalleTask;
-
     //TabManifiestoGeneralFragment tab1;
     TabManifiestoDetalleFragment tab2;
     TabManifiestoAdicionalFragment tab3;
     boolean firma = false;
     String numeroManifiesto;
+    DialogBuilder builder;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -78,7 +85,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setView(inflater.inflate(R.layout.fragment_manifiesto, container, false));
+        setView(inflater.inflate(R.layout.fragment_manifiesto_planta, container, false));
         init();
         return getView();
     }
@@ -108,6 +115,11 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
 
         //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(manifiestoID);
+        if(estadoManifiesto.equals(4)){
+            btnManifiestoNext.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
@@ -119,27 +131,51 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             case R.id.btnManifiestoNext:
                 //vista preliminar...
                // setNavegate(VistaPreliminarFragment.newInstance(manifiestoID));
+                ItemManifiestoDetalleSede detalles;
+                detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosValidaInformacion(manifiestoID);
+                Integer bultos = detalles.getTotalBultos();
+                Integer bultosSeleccionados = detalles.getBultosSelecionado();
                     firma = tab3.validarInformacion();
                     if(!firma){
                         messageBox("Debe registrar la firma.!");
                     }else{
-                        registroPlantaDetalle();
+                        if(bultos.equals(bultosSeleccionados)) {
+                            registroPlantaDetalle();
+                        }
+                        else {
+                            messageBox("Seleccione todos los bultos.!");
+                        }
                     }
                 break;
         }
     }
 
     private void  registroPlantaDetalle(){
-        String observacion = tab3.sendObservacion()==null ? "": tab3.sendObservacion();
-
-        userRegisterPlantaDetalleTask = new UserRegisterPlantaDetalleTask(getActivity(), manifiestoID, observacion, numeroManifiesto);
-        userRegisterPlantaDetalleTask.setmOnRegisterPlantaDetalleListener(new UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner() {
+        builder = new DialogBuilder(getActivity());
+        builder.setMessage("¿Esta seguro que desea continuar?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
-            public void OnSucessfull() {
-                setNavegate(HojaRutaAsignadaPlantaFragment.create());
+            public void onClick(View v) {
+                String observacion = tab3.sendObservacion()==null ? "": tab3.sendObservacion();
+                userRegisterPlantaDetalleTask = new UserRegisterPlantaDetalleTask(getActivity(), manifiestoID, observacion, numeroManifiesto);
+                userRegisterPlantaDetalleTask.setmOnRegisterPlantaDetalleListener(new UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner() {
+                    @Override
+                    public void OnSucessfull() {
+                        setNavegate(HojaRutaAsignadaPlantaFragment.create());
+                    }
+                });
+                userRegisterPlantaDetalleTask.execute();
+                builder.dismiss();
             }
         });
-        userRegisterPlantaDetalleTask.execute();
+        builder.setNegativeButton("NO", new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
