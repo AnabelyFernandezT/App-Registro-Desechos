@@ -35,6 +35,9 @@ public abstract class ManifiestoSedeDetalleDao {
     @Query("select * from tb_manifiestos_sede_detalle where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
+    @Query("select count(*) from tb_manifiestos_sede")
+    public abstract int contarHojaRutaAsignadas();
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoSedeDetalleEntity entity);

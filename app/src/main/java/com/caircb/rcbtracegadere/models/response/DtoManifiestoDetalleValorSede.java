@@ -9,6 +9,7 @@ public class DtoManifiestoDetalleValorSede {
     private String codigoQR;
     private Integer idManifiestoDetalleValores;
     private String nombreBulto;
+    private Integer estado;
 
 
     public DtoManifiestoDetalleValorSede() {
@@ -52,5 +53,13 @@ public class DtoManifiestoDetalleValorSede {
 
     public void setIdManifiestoDetalleValores(Integer idManifiestoDetalleValores) {
         this.idManifiestoDetalleValores = idManifiestoDetalleValores;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 }

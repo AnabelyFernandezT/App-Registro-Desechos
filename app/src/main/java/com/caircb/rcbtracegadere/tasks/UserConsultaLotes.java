@@ -24,16 +24,18 @@ import retrofit2.Response;
 
 public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallbacks{
     Integer loteContenedor;
+
     public interface TaskListener {
         public void onSuccessful();
 
     }
 
-
+    private TaskListener mOnRegisterListener;
     public UserConsultaLotes(Context context) {
         super(context);
 
     }
+
 
     //idDestinatarioFinRuta sede, hotel
 
@@ -53,8 +55,10 @@ public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallback
             @Override
             public void onResponse(Call<List<DtoLote>> call, Response<List<DtoLote>> response) {
                 if (response.isSuccessful()){
+                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                     for(DtoLote reg:response.body()){
                         MyApp.getDBO().loteDao().saveOrUpdate(response.body());
+
                     }
                     progressHide();
                 }
@@ -66,6 +70,11 @@ public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallback
 
             }
         });
+    }
+
+    public void setOnRegisterListener(@NonNull TaskListener l){
+        mOnRegisterListener =l;
+
     }
 
 }

@@ -172,7 +172,7 @@ public class DialogInicioMovilizacion extends MyDialog {
         ArrayList<String> listaData = new ArrayList<String>();
 
         //listaRutas = MyApp.getDBO().rutasDao().fetchConsultarRutas();
-        listaData.add("Seleccione...");
+        listaData.add("SELECCIONE");
         if(catalogos.size() > 0){
             for (DtoCatalogo r : catalogos){
                 listaData.add(r.getNombre());

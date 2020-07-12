@@ -279,17 +279,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 int conteoManifiestos;
                 conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(rut.getIdSubRuta(),MySession.getIdUsuario());
                 if(conteoManifiestos>0){
-                    //messageBox("Existen manifiestos pendientes por recolectar");
-                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
-                    dialogBuilder.setCancelable(false);
-                    dialogBuilder.setMessage("Existen manifiestos pendientes por recolectar");
-                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                        }
-                    });
-                    dialogBuilder.show();
+                    messageBox("Existen manifiestos pendientes por recolectar");
                 }else{
                     openDialog_Fin_App();
                 }
@@ -340,7 +330,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     }
 
-    private void desbloque_botones(){
+    public void desbloque_botones(){
 
         regionBuscar.setEnabled(true);
         btnSincManifiestos.setEnabled(true);

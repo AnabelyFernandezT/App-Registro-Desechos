@@ -102,7 +102,7 @@ public class DialogMensajes extends MyDialog {
         Spinner defaulSpiner = spinner;
         ArrayList<String> listaData = new ArrayList<String>();
 
-        listaData.add("Seleccione...");
+        listaData.add("SELECCIONE");
         if(catalogos.size() > 0){
             for (DtoCatalogo r : catalogos){
                 listaData.add(r.getCodigo());
