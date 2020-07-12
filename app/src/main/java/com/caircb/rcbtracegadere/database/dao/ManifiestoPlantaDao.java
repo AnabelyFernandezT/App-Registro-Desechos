@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaEntity;
+import com.caircb.rcbtracegadere.models.ItemManifiestoPlantaCodigoQR;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
@@ -34,6 +35,22 @@ public abstract class ManifiestoPlantaDao {
             "from tb_manifiestos_planta MC " )
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
+
+    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,DTVC.peso, DTC.nombreDesecho, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
+            "from tb_manifiestos_planta MC INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DTC ON MC.idAppManifiesto=DTC.idAppManifiesto " +
+            "                              INNER JOIN  tb_manifiestos_planta_det_valor DTVC ON DTC.idManifiestoDetalle = DTVC.idManifiestoDetalle " +
+            "            WHERE DTVC.codigoQR=:codigoQR " )
+    @Transaction
+    public abstract ItemManifiestoPlantaCodigoQR fetchManifiestosBultos(String codigoQR);
+
 
     @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
             "            (SELECT COUNT(idManifiestoDetalleValor) " +

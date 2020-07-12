@@ -145,19 +145,17 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
             if (estadoBulto){
                 messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
             }else if (!estadoBulto){
-                dialogCodigoQR = new DialogInfoCodigoQR(getActivity());
+                dialogCodigoQR = new DialogInfoCodigoQR(getActivity(),data);
                 dialogCodigoQR.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogCodigoQR.setCancelable(false);
                 dialogCodigoQR.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
                     @Override
                     public void onSucefull() {
-                        //cargarLabelCantidad();
+                        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif();
+                        adapterList();
                     }
                 });
                 dialogCodigoQR.show();
-                MyApp.getDBO().manifiestoPlantaDetalleValorDao().actualizarBultoEstado(data);
-                rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif();
-                adapterList();
             }
         }
 
