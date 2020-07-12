@@ -22,6 +22,15 @@ public class ManifiestoSedeEntity {
 
     private Integer idTransporteVehiculo;
 
+    private Integer estado;
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
 
     public ManifiestoSedeEntity() {
     }

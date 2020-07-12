@@ -27,6 +27,13 @@ public abstract class ManifiestoPlantaDetalleDao {
     @Transaction
     public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
+    @Query("select idManifiestoDetalle,codigoMae,codigo,nombreDesecho,totalBultos, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) FROM tb_manifiestos_planta_det_valor DTV WHERE DT.idManifiestoDetalle = DTV.idManifiestoDetalle and DTV.estado = 1 )as bultosSelecionado " +
+            "from tb_manifiestos_planta_detalle DT "+
+            "where idAppManifiesto=:idManifiesto" )
+    @Transaction
+    public abstract ItemManifiestoDetalleSede fetchManifiestosValidaInformacion(Integer idManifiesto);
+
     @Query("select idManifiestoDetalle as idDetalle from tb_manifiestos_planta_detalle where idAppManifiesto=:idManifiesto" )
     @Transaction
     public abstract List<Integer> fetchManifiestosAsigDetalle(Integer idManifiesto);

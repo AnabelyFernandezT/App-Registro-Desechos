@@ -131,6 +131,14 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                 public void onSuccessful() {
                                     messageBox("Bultos Guardados");
                                 }
+                    detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
+                    detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            messageBox("Bultos Guardados");
+                            setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                        }
+
 
                                 @Override
                                 public void onFail() {
@@ -166,7 +174,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
+                openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
             }
         });
     }
