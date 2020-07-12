@@ -7,6 +7,8 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+
 
 public class MyRetrofitApi {
     private Context mContext;
@@ -49,12 +51,20 @@ public class MyRetrofitApi {
 
     public void message(@NonNull String message)
     {
+        DialogBuilder dialogBuilder = new DialogBuilder(mContext);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setTitle("INFO");
+        dialogBuilder.setPositiveButton("OK",null);
+        dialogBuilder.show();
+        /*
         messageBox =  new AlertDialog.Builder(mContext);
         messageBox.setTitle("INFO");
         messageBox.setMessage(message);
         messageBox.setCancelable(false);
         messageBox.setNeutralButton("OK", null);
         messageBox.show();
+         */
     }
     public void ProgressHide(){
         if(progressDialog!=null){

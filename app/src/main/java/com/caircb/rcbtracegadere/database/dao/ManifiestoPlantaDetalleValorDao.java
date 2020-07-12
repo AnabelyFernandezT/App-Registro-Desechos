@@ -28,9 +28,9 @@ public abstract class ManifiestoPlantaDetalleValorDao {
     @Transaction
     public abstract Boolean verificarBultoEstado(String codigoQR);
 
-    @Query("UPDATE tb_manifiestos_planta_det_valor SET estado = 1 where codigoQR=:codigoQR ")
+    @Query("UPDATE tb_manifiestos_planta_det_valor SET estado = 1 ,nuevoPeso=:nuevoPeso where codigoQR=:codigoQR ")
     @Transaction
-    public abstract void actualizarBultoEstado(String codigoQR);
+    public abstract void actualizarBultoEstado(String codigoQR,String nuevoPeso);
 
     @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado,nuevoPeso from tb_manifiestos_planta_det_valor where idManifiestoDetalle=:idManifiesto" )
     @Transaction

@@ -28,6 +28,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
@@ -59,7 +60,6 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
-    DialogBuilder dialogBuilder;
     RutaInicioFinEntity rut;
     ManifiestoEntity entity;
     Integer idFinRuta;

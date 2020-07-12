@@ -7,9 +7,18 @@ public class DtoManifiestoPlanta {
     private String numeroManifiesto;
     private String nombreCliente;
     private Integer idTransporteVehiculo;
+    private Integer estado;
     private List<DtoManifiestoDetalleSede> hojaRutaDetallePlanta;
 
     public DtoManifiestoPlanta() {
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 
     public Integer getIdManifiesto() {
