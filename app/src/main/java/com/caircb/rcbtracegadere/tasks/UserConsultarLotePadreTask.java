@@ -61,10 +61,8 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
                         }
                         progressHide();
                     }else {
-                        message("No hay datos para mostrar...");
-                        /*
                         builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("");
+                        builder.setMessage("Datos sincronizados.");
                         builder.setCancelable(false);
                         builder.setNegativeButton("Regresar", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -73,7 +71,6 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
                         });
                         AlertDialog dialog = builder.create();
                         dialog.show();
-                         */
                         progressHide();
                     }
                 }

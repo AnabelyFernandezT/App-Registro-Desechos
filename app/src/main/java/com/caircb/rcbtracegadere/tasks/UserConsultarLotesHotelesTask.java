@@ -31,7 +31,11 @@ public class UserConsultarLotesHotelesTask extends MyRetrofitApi implements Retr
     public interface OnPlacaListener {
         public void onSuccessful(List<DtoLotesHoteles> catalogos);
     }
+    public interface onCountListaAsigandasListenner {
+        public void onSuccesfull(Integer total);
+    }
 
+    private onCountListaAsigandasListenner mOnCountListaAsignaadasListeneer;
     private OnPlacaListener mOnVehiculoListener;
 
     @Override
@@ -43,7 +47,9 @@ public class UserConsultarLotesHotelesTask extends MyRetrofitApi implements Retr
                 if (response.isSuccessful()){
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                     //MyApp.getDBO().loteHotelesDao().eliminarLotes();
+                    if(mOnCountListaAsignaadasListeneer!=null) mOnCountListaAsignaadasListeneer.onSuccesfull(response.body().size());
                     MyApp.getDBO().loteHotelesDao().saveOrUpdate(response.body());
+
                    // for(DtoLotesHoteles reg:response.body()){
                     //}
                     progressHide();
@@ -59,4 +65,5 @@ public class UserConsultarLotesHotelesTask extends MyRetrofitApi implements Retr
 
     }
 
+    public void setmOnCountListaAsignaadasListeneer(onCountListaAsigandasListenner l) {  mOnCountListaAsignaadasListeneer = l; }
 }

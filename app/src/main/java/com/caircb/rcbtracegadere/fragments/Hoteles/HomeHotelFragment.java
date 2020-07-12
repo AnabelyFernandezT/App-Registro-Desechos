@@ -65,6 +65,12 @@ public class HomeHotelFragment extends MyFragment implements OnHome {
 
     private void buscarLotes(){
         lotesConsultar = new UserConsultarLotesHotelesTask(getActivity());
+        lotesConsultar.setmOnCountListaAsignaadasListeneer(new UserConsultarLotesHotelesTask.onCountListaAsigandasListenner() {
+            @Override
+            public void onSuccesfull(Integer total) {
+                lblListaManifiestoAsignado.setText(String.valueOf(total));
+            }
+        });
         lotesConsultar.execute();
     }
     public static HomeHotelFragment create(){

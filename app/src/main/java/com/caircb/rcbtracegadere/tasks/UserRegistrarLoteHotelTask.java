@@ -26,6 +26,11 @@ public class UserRegistrarLoteHotelTask extends MyRetrofitApi implements Retrofi
     Integer idDestinoFinRutaCatalogo;
 
 
+    public interface  onRegisterSuccesfullListener {
+        public void onSucessfull ();
+    }
+    private onRegisterSuccesfullListener mOnRegisterSesscesullListener;
+
     public UserRegistrarLoteHotelTask(Context context, Integer idDestinoFinRutaCatalogo) {
         super(context);
         this.idDestinoFinRutaCatalogo = idDestinoFinRutaCatalogo;
@@ -71,5 +76,7 @@ public class UserRegistrarLoteHotelTask extends MyRetrofitApi implements Retrofi
 
         return rq;
     }
+
+    public void setmOnRegisterSesscesullListener(onRegisterSuccesfullListener l){ mOnRegisterSesscesullListener= l;}
 
 }

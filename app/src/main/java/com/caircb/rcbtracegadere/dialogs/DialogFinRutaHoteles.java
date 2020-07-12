@@ -22,6 +22,8 @@ import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
+import com.caircb.rcbtracegadere.fragments.GestorAlterno.HomeGestorAlternoFragment;
+import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
@@ -185,6 +187,12 @@ public class DialogFinRutaHoteles extends MyDialog {
         MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
 
         registrarLoteHotelTask = new UserRegistrarLoteHotelTask(getContext(),idDestino);
+        registrarLoteHotelTask.setmOnRegisterSesscesullListener(new UserRegistrarLoteHotelTask.onRegisterSuccesfullListener() {
+            @Override
+        public void onSucessfull() {
+                dismiss();
+            }
+        });
         registrarLoteHotelTask.execute();
 
     }
