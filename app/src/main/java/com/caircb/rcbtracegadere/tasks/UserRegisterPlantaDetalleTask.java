@@ -95,6 +95,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
                     if(response.isSuccessful()){
                         if(response.body().getExito()){
                             if(mOnRegisterPlantaDetalleListener!=null){ mOnRegisterPlantaDetalleListener.OnSucessfull(); }
+                            MyApp.getDBO().manifiestoPlantaDao().updateEstadoManifiesto(idManifiesto);
                         }
                     }
                     progressHide();

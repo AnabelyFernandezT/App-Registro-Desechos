@@ -22,6 +22,7 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
     private Context mContext;
     int cRojo;
     int cVerde;
+    int cNaranja;
     private List<ItemManifiestoSede> manifiestosList ;
     private LinearLayout borderVerificacion;
 
@@ -35,6 +36,7 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manifiesto_sede,parent,false);
         cRojo=R.drawable.shape_card_border_red;
+        cNaranja=R.drawable.shape_card_border_naranja;
         cVerde = R.drawable.shape_card_border;
         return new MyViewHolder(view);
     }
@@ -45,7 +47,11 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
         holder.txtNumManifiesto.setText(it.getNumeroManifiesto());
         holder.txtCliente.setText(it.getNombreCliente());
         if(it.getBultosSelecionado()==it.getTotalBultos()) {
-            holder.borderVerificacion.setBackgroundResource(cVerde);
+            if(it.getEstado().equals(0)) {
+                holder.borderVerificacion.setBackgroundResource(cNaranja);
+            }else{
+                holder.borderVerificacion.setBackgroundResource(cVerde);
+            }
         }else{
             holder.borderVerificacion.setBackgroundResource(cRojo);
         }

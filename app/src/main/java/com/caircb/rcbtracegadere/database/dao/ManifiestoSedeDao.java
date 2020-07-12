@@ -24,7 +24,7 @@ public abstract class ManifiestoSedeDao {
     @Query("select * from tb_manifiestos_sede where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoSedeEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente, " +
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente, " +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
             "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
@@ -37,7 +37,7 @@ public abstract class ManifiestoSedeDao {
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
 
-    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente," +
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente," +
             "            (SELECT COUNT(idManifiestoDetalleValor) " +
             "            FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                                       INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
@@ -72,6 +72,7 @@ public abstract class ManifiestoSedeDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
+            entity.setEstado(0);
         }
         else if(entity!=null  ){
             entity = new ManifiestoSedeEntity();
@@ -79,6 +80,7 @@ public abstract class ManifiestoSedeDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
+            entity.setEstado(0);
         }
 
 

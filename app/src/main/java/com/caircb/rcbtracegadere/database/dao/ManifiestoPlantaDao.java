@@ -22,7 +22,7 @@ public abstract class ManifiestoPlantaDao {
     @Query("select * from tb_manifiestos_planta where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoPlantaEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
             "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
@@ -35,7 +35,7 @@ public abstract class ManifiestoPlantaDao {
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
 
-    @Query("select MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
             "            (SELECT COUNT(idManifiestoDetalleValor) " +
             "            FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_Planta_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                                       INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
@@ -48,6 +48,10 @@ public abstract class ManifiestoPlantaDao {
             "where (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search);
+
+
+    @Query("update tb_manifiestos_planta set estado=1  where idAppManifiesto=:idManifiesto")
+    public abstract void updateEstadoManifiesto(Integer idManifiesto);
 
 
     @Query("delete from tb_manifiestos_planta where idAppManifiesto=:idManifiesto")
@@ -70,6 +74,7 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
+            entity.setEstado(0);
         }
         else if(entity!=null  ){
             entity = new ManifiestoPlantaEntity();
@@ -77,6 +82,7 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
+            entity.setEstado(0);
         }
 
 
