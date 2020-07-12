@@ -124,13 +124,6 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                            detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
-                            detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
-                                @Override
-                                public void onSuccessful() {
-                                    messageBox("Bultos Guardados");
-                                }
                     detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
                     detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
                         @Override

@@ -99,7 +99,10 @@ public class TabManifiestoDetalleFragment extends Fragment {
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterPlanta.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
+                Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(idAppManifiesto);
+                if(estadoManifiesto != 4){
+                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
+                }
             }
         });
     }

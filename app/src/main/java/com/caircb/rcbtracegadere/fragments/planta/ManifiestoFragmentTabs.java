@@ -117,7 +117,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
 
         Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(manifiestoID);
         if(estadoManifiesto.equals(4)){
-            btnManifiestoNext.setEnabled(true);
+            btnManifiestoNext.setEnabled(false);
         }
 
     }
