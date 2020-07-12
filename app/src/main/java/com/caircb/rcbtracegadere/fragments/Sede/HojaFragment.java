@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -95,7 +96,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                //Toast.makeText(getActivity(),rowItems.get(position).getIdLoteContenedor(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),String.valueOf(rowItems.get(position).getIdLoteContenedor()), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -133,7 +134,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                 if (options[item].equals("MOVILIZAR"))
                 {
                     //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-                    openDialogInicioMovilizacion();
+                    openDialogInicioMovilizacion(position);
                 }
                 else if (options[item].equals("CANCELAR")) {
                     dialog.dismiss();
@@ -150,14 +151,14 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         consultarLotes.execute();
     }
 */
-    public void openDialogInicioMovilizacion(){
+    public void openDialogInicioMovilizacion(final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("CONFIRMACIÓN")
                 .setMessage("Esta seguro de movilizar el lote?")
                 .setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        movilizacion = new DialogInicioMovilizacion(getActivity());
+                        movilizacion = new DialogInicioMovilizacion(getActivity(),rowItems.get(position).getIdLoteContenedor());
                         movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         movilizacion.setCancelable(false);
                         movilizacion.show();

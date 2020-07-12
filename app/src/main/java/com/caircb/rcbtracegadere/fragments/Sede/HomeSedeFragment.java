@@ -174,6 +174,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     }
 
     private void verificarInicioLote(){
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
 
         ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
         ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
@@ -200,6 +201,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 lnlFinLote.setVisibility(View.VISIBLE);
                 btnListaAsignadaSede.setEnabled(true);
                 btnSincManifiestos.setEnabled(true);
+                regionBuscar.setEnabled(false);
             }
 
     }

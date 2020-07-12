@@ -39,11 +39,13 @@ public class DialogInicioMovilizacion extends MyDialog {
     UserConsultarConductoresTask conductoresTask;
     String destino = "", destinos="",conductor,operador,operadorAuxiliar;
     UserRegistrarLoteSedeTask registrarLoteSedeTask;
+    Integer idLoteContenedor;
 
 
-    public DialogInicioMovilizacion(@NonNull Context context) {
+    public DialogInicioMovilizacion(@NonNull Context context, Integer idLoteContenedor) {
         super(context, R.layout.dialog_movilizar_lote_sede);
         this._activity = (Activity)context;
+        this.idLoteContenedor = idLoteContenedor;
     }
 
     @Override
@@ -246,7 +248,7 @@ public class DialogInicioMovilizacion extends MyDialog {
         CatalogoEntity ce = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
         int idDestino = ce!=null?ce.getIdSistema():-1;
 
-        registrarLoteSedeTask = new UserRegistrarLoteSedeTask(getActivity(),idDestino,idConductor,idOperador,idOperadorAuxiliar);
+        registrarLoteSedeTask = new UserRegistrarLoteSedeTask(getActivity(),idDestino,idConductor,idOperador,idOperadorAuxiliar,idLoteContenedor);
         registrarLoteSedeTask.setOnRegisterListener(new UserRegistrarLoteSedeTask.OnRegisterListener() {
             @Override
             public void onSuccessful() {

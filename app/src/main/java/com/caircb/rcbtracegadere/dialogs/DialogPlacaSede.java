@@ -36,7 +36,7 @@ public class DialogPlacaSede extends MyDialog {
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
     UserRegistrarLoteInicioTask registrarLoteInicioTask;
-    ImageButton btnFinLote;
+    ImageButton btnFinLote, btnSincManifiestos,btnListaAsignadaSede,regionBuscar;
 
 
 
@@ -58,6 +58,10 @@ public class DialogPlacaSede extends MyDialog {
     private void init() {
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
+        btnSincManifiestos = getActivity().findViewById(R.id.btnSincManifiestos);
+        btnListaAsignadaSede = getActivity().findViewById(R.id.btnListaAsignadaSede);
+        regionBuscar = getActivity().findViewById(R.id.regionBuscar);
+
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
 
@@ -179,6 +183,9 @@ public class DialogPlacaSede extends MyDialog {
     private void activarFinLote(){
         lnlIniciaLote.setVisibility(View.GONE);
         lnlFinLote.setVisibility(View.VISIBLE);
+        btnListaAsignadaSede.setEnabled(true);
+        btnSincManifiestos.setEnabled(true);
+        regionBuscar.setEnabled(false);
     }
 
 
