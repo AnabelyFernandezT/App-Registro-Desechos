@@ -50,9 +50,11 @@ public abstract class ManifiestoPlantaDao {
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search);
 
 
-    @Query("update tb_manifiestos_planta set estado=1  where idAppManifiesto=:idManifiesto")
+    @Query("update tb_manifiestos_planta set estado=4  where idAppManifiesto=:idManifiesto")
     public abstract void updateEstadoManifiesto(Integer idManifiesto);
 
+    @Query("select estado from tb_manifiestos_planta where idAppManifiesto = :idManifiesto ")
+    public abstract Integer obtenerEstadoManifiesto(Integer idManifiesto);
 
     @Query("delete from tb_manifiestos_planta where idAppManifiesto=:idManifiesto")
     abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
@@ -74,7 +76,7 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            entity.setEstado(0);
+            entity.setEstado(4);
         }
         else if(entity!=null  ){
             entity = new ManifiestoPlantaEntity();
@@ -82,7 +84,7 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            entity.setEstado(0);
+            entity.setEstado(4);
         }
 
 
