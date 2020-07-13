@@ -45,6 +45,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                     response.body().getKilometrajeInicio(),
                                     response.body().getKilometrajeFin(),
                                     1);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
 
                         }
                     }

@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -205,8 +206,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             public void onClick(View v) {
                 //Valido si el parametro esta en NO si es verdadero presento el modal
                 rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-                idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idSubRuta,MySession.getIdUsuario()) >0 ){
+                ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
+                RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+                String valor = entity == null ?String.valueOf(rut.getIdSubRuta()) : entity.getValor();
+                Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
+               // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idRuta,MySession.getIdUsuario()) >0 ){
                     List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
                     if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
 
