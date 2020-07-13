@@ -27,6 +27,7 @@ import com.caircb.rcbtracegadere.models.response.DtoUserCredential;
 import com.caircb.rcbtracegadere.models.response.DtoUserTokenCredentials;
 import com.caircb.rcbtracegadere.services.WebService;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInformacionTransportista;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,6 +55,7 @@ public class MyAuthorization {
     FirebaseAuth auth;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     UserConsultarInformacionTransportista info;
+    UserConsultarInicioRutaTask verificarInicioRutaTask;
 
 
     public interface AuthorizationListener {
@@ -331,6 +333,7 @@ public class MyAuthorization {
 
         info =new UserConsultarInformacionTransportista(getActivity());
         info.execute();
+        consultarInicioFinRuta();
     }
 
     private void registarTokenOnServer(final DtoUserCredential user, String token){
@@ -402,5 +405,9 @@ public class MyAuthorization {
             progressDialog.cancel();
             progressDialog.dismiss();
         }
+    }
+    private void consultarInicioFinRuta(){
+        verificarInicioRutaTask = new UserConsultarInicioRutaTask(getActivity());
+        verificarInicioRutaTask.execute();
     }
 }
