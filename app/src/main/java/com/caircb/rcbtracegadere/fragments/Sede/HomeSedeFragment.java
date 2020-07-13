@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.fragments.Sede;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
+    TextView txtMovilizar , txtSincronizar, txtManifiesto;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,6 +68,18 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnInciaLote = getView().findViewById(R.id.btnInciaLote);
         lnlFinLote = getView().findViewById(R.id.LnlFinLote);
         btnFinLote = getView().findViewById(R.id.btnFinLote);
+
+        txtSincronizar = getView().findViewById(R.id.txtSincronizar);
+        txtManifiesto = getView().findViewById(R.id.txtManifiesto);
+        txtMovilizar = getView().findViewById(R.id.txtMovilizar);
+
+        btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
+        btnListaAsignadaSede.setColorFilter(Color.rgb(115, 124, 119 ));
+        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
+
+        txtManifiesto.setTextColor(Color.rgb(115, 124, 119 ));
+        txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+        txtMovilizar.setTextColor(Color.rgb(115, 124, 119 ));
 
         btnListaAsignadaSede.setEnabled(false);
         btnSincManifiestos.setEnabled(false);
@@ -122,9 +137,12 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                         registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
                             @Override
                             public void onSuccessful() {
-                                messageBox("Lote Cerrado Correctamente");
+                                messageBox("Lote # " + finLote + " se ha cerrado correctamente.");
+
+                                verificarInicioLote();
+                                /*
                                 lnlIniciaLote.setVisibility(View.VISIBLE);
-                                lnlFinLote.setVisibility(View.GONE);
+                                lnlFinLote.setVisibility(View.GONE);*/
                             }
 
                             @Override
@@ -190,18 +208,37 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
            finLote=0;
        }
 
-            if(inicioLote == finLote) {
+
+            if(inicioLote.equals(finLote)) {
                 lnlIniciaLote.setVisibility(View.VISIBLE);
                 lnlFinLote.setVisibility(View.GONE);
                 btnListaAsignadaSede.setEnabled(false);
                 btnSincManifiestos.setEnabled(false);
                 regionBuscar.setEnabled(true);
+
+                btnListaAsignadaSede.setColorFilter(Color.rgb(115, 124, 119 ));
+                btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
+
+                txtManifiesto.setTextColor(Color.rgb(115, 124, 119 ));
+                txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+
+                regionBuscar.setColorFilter(Color.TRANSPARENT);
+                txtMovilizar.setTextColor(Color.WHITE);
+
             }else{
+
                 lnlIniciaLote.setVisibility(View.GONE);
                 lnlFinLote.setVisibility(View.VISIBLE);
                 btnListaAsignadaSede.setEnabled(true);
                 btnSincManifiestos.setEnabled(true);
                 regionBuscar.setEnabled(false);
+
+                btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
+                btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
+                txtSincronizar.setTextColor(Color.WHITE);
+                txtManifiesto.setTextColor(Color.WHITE);
+
+                regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
             }
 
     }

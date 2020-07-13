@@ -20,13 +20,16 @@ import java.util.List;
 @Dao
 public abstract  class LoteDao {
 
+    @Query("update tb_lotes set movilizado=1 where idLoteContenedor=:id")
+    abstract void actualizarMovilizado(Integer id);
+
     @Query("select * from tb_lotes")
     public abstract LoteEntity fetchLotesCompletos();
 
     @Query("select * from tb_lotes where idLoteContenedor=:loteContenedor")
     public abstract LoteEntity fetchLotesCompletosE(Integer loteContenedor);
 
-    @Query("select idLoteContenedor,codigoLote,fechaRegistro, idDestinatarioFinRutaCatalogo, nombreDestinatarioFinRutaCatalogo,numeroManifiesto,subRuta,ruta,placaVehiculo from tb_lotes")
+    @Query("select idLoteContenedor,codigoLote,fechaRegistro, idDestinatarioFinRutaCatalogo, nombreDestinatarioFinRutaCatalogo,numeroManifiesto,subRuta,ruta,placaVehiculo from tb_lotes where movilizado=0")
     @Transaction
     public abstract List<ItemLote> fetchLote();
 
@@ -47,6 +50,8 @@ public abstract  class LoteDao {
                 lote.setSubRuta(lotes.getSubRuta());
                 lote.setRuta(lotes.getRuta());
                 lote.setPlacaVehiculo(lotes.getPlacaVehiculo());
+                lote.setMovilizado(false);
+
             } else {
                 lote.setCodigoLote(lotes.getCodigoLote());
                 lote.setIdLoteContenedor(lotes.getIdLoteContenedor());
@@ -62,5 +67,7 @@ public abstract  class LoteDao {
             createLote(lote);
         }
 
-
+    public void updataMovilizado(Integer id){
+        actualizarMovilizado(id);
+    }
 }
