@@ -107,7 +107,6 @@ public abstract class ManifiestoSedeDao {
             entity.setBultosTotal(manifiesto.getBultosTotal());
         }
         else if(entity!=null  ){
-            entity = new ManifiestoSedeEntity();
             entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());

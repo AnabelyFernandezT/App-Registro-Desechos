@@ -15,4 +15,9 @@
     <string name="default_notification_channel_name" translatable="true">Weather</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="btnDisabled1">115</string>
+    <string name="btnDisabled2">124</string>
+    <string name="btnDisabled3">119</string>
+
 </resources>

@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.dialogs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,9 +39,7 @@ public class DialogPlacaSede extends MyDialog {
     UserRegistrarLoteInicioTask registrarLoteInicioTask;
     ImageButton btnFinLote, btnSincManifiestos,btnListaAsignadaSede,regionBuscar;
 
-
-
-
+    TextView txtManifiesto, txtMovilizar, txtSincronizar;
 
     public DialogPlacaSede(@NonNull Context context) {
         super(context, R.layout.dialog_placa_sede);
@@ -68,6 +67,10 @@ public class DialogPlacaSede extends MyDialog {
         lnlIniciaLote = getActivity().findViewById(R.id.LnlIniciaLote);
         lnlFinLote = getActivity().findViewById(R.id.LnlFinLote);
         btnFinLote = (ImageButton) getActivity().findViewById(R.id.btnFinLote);
+
+        txtSincronizar = getActivity().findViewById(R.id.txtSincronizar);
+        txtManifiesto = getActivity().findViewById(R.id.txtManifiesto);
+        txtMovilizar = getActivity().findViewById(R.id.txtMovilizar);
 
         spinnerPlacas = (Spinner)getView().findViewById(R.id.lista_placas);
         spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -186,6 +189,15 @@ public class DialogPlacaSede extends MyDialog {
         btnListaAsignadaSede.setEnabled(true);
         btnSincManifiestos.setEnabled(true);
         regionBuscar.setEnabled(false);
+
+        btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
+        btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
+        txtManifiesto.setTextColor(Color.WHITE);
+        txtSincronizar.setTextColor(Color.WHITE);
+
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+
     }
 
 
