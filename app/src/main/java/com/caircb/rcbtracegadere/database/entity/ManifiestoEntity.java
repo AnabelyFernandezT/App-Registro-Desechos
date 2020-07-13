@@ -131,6 +131,8 @@ public class ManifiestoEntity {
 
     private Integer idDestinatarioFinRutaCatalogo;
 
+    private String correos;
+
     public ManifiestoEntity() {
     }
 
@@ -487,6 +489,14 @@ public class ManifiestoEntity {
 
     public void setIdDestinatarioFinRutaCatalogo(Integer idDestinatarioFinRutaCatalogo) {
         this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
+    }
+
+    public String getCorreos() {
+        return correos;
+    }
+
+    public void setCorreos(String correos) {
+        this.correos = correos;
     }
 }
 
