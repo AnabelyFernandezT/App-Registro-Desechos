@@ -72,6 +72,16 @@ public abstract class ManifiestoSedeDao {
     public abstract ItemManifiestoPlantaCodigoQR fetchManifiestosBultos(String codigoQR);
 
 
+    @Query("Select estado from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
+    @Transaction
+    public abstract int estadoManifiestoSede(Integer idManifiesto);
+
+    @Query("update tb_manifiestos_sede set estado=3 where idAppManifiesto=:idManifiesto")
+    @Transaction
+    public abstract int updateEstadoManifiesto(Integer idManifiesto);
+
+
+
     @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
     abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
 
@@ -92,8 +102,9 @@ public abstract class ManifiestoSedeDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            //entity.setEstado(manifiesto.get);
-            entity.setEstado(0);
+            entity.setEstado(manifiesto.getEstado());
+            entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
+            entity.setBultosTotal(manifiesto.getBultosTotal());
         }
         else if(entity!=null  ){
             entity = new ManifiestoSedeEntity();
@@ -101,8 +112,9 @@ public abstract class ManifiestoSedeDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            //entity.setEstado(manifiesto.get);
-            entity.setEstado(0);
+            entity.setEstado(manifiesto.getEstado());
+            entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
+            entity.setBultosTotal(manifiesto.getBultosTotal());
         }
 
 
