@@ -35,6 +35,7 @@ import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarDetalleSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -57,6 +58,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     ListView LtsManifiestoDetalle,mDialogMenuItems;
     DialogBultosSede dialogBultos;
     UserRegistarDetalleSedeTask detalleSedeTask;
+    UserConsultarManifiestosSedeTask consultarHojaRutaTask;
 
     public  ManifiestoSedeFragment (){
     }
@@ -131,6 +133,9 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                    public void onSuccessful() {
                                        messageBox("Bultos Guardados");
                                        setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                                       consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(getActivity());
+                                       consultarHojaRutaTask.execute();
+
                                    }
 
                                    @Override
@@ -139,7 +144,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                    }
                                });
                                detalleSedeTask.execute();
-                               MyApp.getDBO().manifiestoSedeDao().updateEstadoManifiesto(idAppManifiesto);
+                               //MyApp.getDBO().manifiestoSedeDao().updateEstadoManifiesto(idAppManifiesto);
                                dialogBuilder.dismiss();
                            }
                        });
