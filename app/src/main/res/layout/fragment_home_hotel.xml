@@ -124,7 +124,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/btnSincManifiestosPlanta"
+                android:id="@+id/btnSincManifiestosHotel"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:background="#00000000"
@@ -175,7 +175,7 @@
                 android:textIsSelectable="false" />
 
             <TextView
-                android:id="@+id/lblListaManifiestoAsignadoPlanta"
+                android:id="@+id/lblListaManifiestoAsignadoHotel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

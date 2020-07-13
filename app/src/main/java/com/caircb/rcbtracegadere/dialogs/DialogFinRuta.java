@@ -132,7 +132,7 @@ public class DialogFinRuta extends MyDialog {
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+position);
                     destinos = (String) listaDestino.getSelectedItem();
                     traerDestinoEspecifico();
-                    validarHoteles();
+                    //validarHoteles();
 
                 }
 
@@ -189,12 +189,14 @@ public class DialogFinRuta extends MyDialog {
                             messageBox("Seleccione Destino");
                             return;
                         }else {
+                            if(destinos.equals("HOTEL")){
+                                loteHotelPadre();
+                            }
+
                             guardarDatos();
                             //messageBox("guardado");
 
-                           /* if(destinos=="HOTEL"){
-                                loteHotelPadre();
-                            }*/
+
 
                         }
 
@@ -330,8 +332,7 @@ public class DialogFinRuta extends MyDialog {
 
     private void loteHotelPadre(){
         if(lotePadre!=null){
-            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
-            inicioFinLoteHotelTask.execute();
+            validarHoteles();
 
         }else {
             lotePadreHotelTask = new UserObtenerLotePadreHotelTask(getActivity());
@@ -349,31 +350,40 @@ public class DialogFinRuta extends MyDialog {
     }
 
     private void validarHoteles (){
-        if (destinos.equals("HOTEL")){
+
             builder = new DialogBuilder(getActivity());
             builder.setMessage("¿Es su último día de recolección?");
             builder.setCancelable(true);
             builder.setPositiveButton("Si", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    destino = "null";
+
                     listaDestinoParticular.setEnabled(false);
-                    loteHotelPadre();
-                    finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
-                    finLotePadreHotelTask.execute();
+
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+                    inicioFinLoteHotelTask.setOnRegisterListener(new UserRegistrarInicioFinLoteHotelTask.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
+                            finLotePadreHotelTask.execute();
+                        }
+                    });
+                    inicioFinLoteHotelTask.execute();
+
                     builder.dismiss();
                 }
             });
             builder.setNegativeButton("No", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    loteHotelPadre();
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+                    inicioFinLoteHotelTask.execute();
                     builder.dismiss();
                 }
             });
             builder.show();
 
-        }
+
     }
 
 }
