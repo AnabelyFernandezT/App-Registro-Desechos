@@ -93,7 +93,7 @@ public class DialogFinRuta extends MyDialog {
         destinosEspecificos = new ArrayList<>();
         txt_placa = (TextView)getView().findViewById(R.id.Txt_placa);
         txt_kilometraje_inicio = (TextView)getView().findViewById(R.id.txt_kilometraje_inicio);
-
+        List<DtoFindRutas> listaPlacasDisponibles;
         btnFinApp = (LinearLayout)getView().findViewById(R.id.btnFinalizarRuta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnCancelarApp);
 

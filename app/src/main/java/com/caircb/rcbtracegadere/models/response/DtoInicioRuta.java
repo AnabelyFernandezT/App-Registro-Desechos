@@ -3,10 +3,15 @@ package com.caircb.rcbtracegadere.models.response;
 public class DtoInicioRuta {
     private Integer idRutaInicioFin;
     private Integer idSubRuta;
+    private Integer idRuta;
+    private String placa;
+    private Integer estado;
     private String fechaInicio;
     private String fechaFin;
     private String kilometrajeInicio;
     private String kilometrajeFin;
+
+
 
     public DtoInicioRuta() {
     }
@@ -57,5 +62,29 @@ public class DtoInicioRuta {
 
     public void setKilometrajeFin(String kilometrajeFin) {
         this.kilometrajeFin = kilometrajeFin;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public Integer getIdRuta() {
+        return idRuta;
+    }
+
+    public void setIdRuta(Integer idRuta) {
+        this.idRuta = idRuta;
     }
 }
