@@ -180,6 +180,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setNovedadNoRecoleccion(createRequestNoRecoleccion());
             rq.setEstado(2);
             rq.setFechaInicioRecoleccion(model.getFechaInicioRecorrecion());
+            rq.setCorreos(model.getCorreos());
         }
         return  rq;
     }

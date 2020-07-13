@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -41,7 +43,12 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     @Override
     public void execute() {
 
-        Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
+        RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+        String valor = entity == null ?String.valueOf(rut.getIdSubRuta()) : entity.getValor();
+        Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
+        //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
 
             @Override

@@ -33,14 +33,16 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
                 if (response.isSuccessful()){
                     if (!verificarInicioRuta()){
-                        MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
-                                MySession.getIdUsuario(),
-                                response.body().getIdSubRuta(),
-                                new Date(),
-                                null,
-                                response.body().getKilometrajeInicio(),
-                                response.body().getKilometrajeFin(),
-                                1);
+                        if(response.body().getIdRutaInicioFin()>0 ){
+                            MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
+                                    MySession.getIdUsuario(),
+                                    response.body().getIdSubRuta(),
+                                    new Date(),
+                                    null,
+                                    response.body().getKilometrajeInicio(),
+                                    response.body().getKilometrajeFin(),
+                                    1);
+                        }
                     }else {
 
                     }
@@ -58,7 +60,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
     private Boolean verificarInicioRuta (){
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
 
-        if(model!=null && model.getIdRutaInicioFin()>0){
+        if(model!=null){
             return true;
         }else {
             return false;
