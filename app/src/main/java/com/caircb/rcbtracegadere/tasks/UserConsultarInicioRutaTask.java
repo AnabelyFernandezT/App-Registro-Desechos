@@ -32,20 +32,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
             @Override
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
                 if (response.isSuccessful()){
-                    if (!verificarInicioRuta()){
-                        if(response.body().getIdRutaInicioFin()>0 ){
-                            MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
-                                    MySession.getIdUsuario(),
-                                    response.body().getIdSubRuta(),
-                                    new Date(),
-                                    null,
-                                    response.body().getKilometrajeInicio(),
-                                    response.body().getKilometrajeFin(),
-                                    1);
-                        }
-                    }else {
 
-                    }
                 }
             }
 
