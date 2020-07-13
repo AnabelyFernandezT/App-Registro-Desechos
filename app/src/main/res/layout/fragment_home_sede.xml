@@ -101,8 +101,9 @@
                 android:scaleType="fitCenter"
                 android:focusable="false"
                 android:clickable="false"
-                android:src="@drawable/rcb_btn_manifiesto_search" />
+                android:src="@mipmap/icon_movilizar" />
             <TextView
+                android:id="@+id/txtMovilizar"
                 style="@style/title_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,6 +134,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/rcb_btn_sincronizar" />
             <TextView
+                android:id="@+id/txtSincronizar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/title_footer"
@@ -164,6 +166,7 @@
                 android:src="@drawable/rcb_btn_manifiesto" />
 
             <TextView
+                android:id="@+id/txtManifiesto"
                 style="@style/title_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -21,6 +21,7 @@ public class LoteEntity {
     private String subRuta;
     private String ruta;
     private String placaVehiculo;
+    private Boolean movilizado;
 
     public LoteEntity(){
 
@@ -96,5 +97,13 @@ public class LoteEntity {
 
     public void setPlacaVehiculo(String placaVehiculo) {
         this.placaVehiculo = placaVehiculo;
+    }
+
+    public Boolean getMovilizado() {
+        return movilizado;
+    }
+
+    public void setMovilizado(Boolean movilizado) {
+        this.movilizado = movilizado;
     }
 }
