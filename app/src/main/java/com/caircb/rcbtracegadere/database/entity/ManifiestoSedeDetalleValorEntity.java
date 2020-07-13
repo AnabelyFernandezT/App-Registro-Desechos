@@ -26,8 +26,18 @@ public class ManifiestoSedeDetalleValorEntity {
 
     private Boolean estado;
 
+    private Integer estadoEnvio;
+
 
     public ManifiestoSedeDetalleValorEntity() {
+    }
+
+    public Integer getEstadoEnvio() {
+        return estadoEnvio;
+    }
+
+    public void setEstadoEnvio(Integer estadoEnvio) {
+        this.estadoEnvio = estadoEnvio;
     }
 
     public String getNombreBulto() {

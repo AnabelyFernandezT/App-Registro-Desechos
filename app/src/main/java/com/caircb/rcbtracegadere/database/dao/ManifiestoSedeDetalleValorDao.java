@@ -33,7 +33,7 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Transaction
     public abstract Boolean verificarBultoEstado(String codigoQR);
 
-    @Query("UPDATE tb_manifiestos_sede_det_valor SET estado = 1 where codigoQR=:codigoQR ")
+    @Query("UPDATE tb_manifiestos_sede_det_valor SET estado = 1 and estadoEnvio = 1 where codigoQR=:codigoQR ")
     @Transaction
     public abstract void actualizarBultoEstado(String codigoQR);
 
@@ -41,13 +41,13 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Transaction
     public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
-    @Query("update tb_manifiestos_sede_det_valor set estado=:check where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
+    @Query("update tb_manifiestos_sede_det_valor set estado=:check , estadoEnvio = 1 where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
     public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);
 
     @Query("select * from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleValorEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    @Query("select idManifiestoDetalleValor from tb_manifiestos_sede_det_valor where estado = 1")
+    @Query("select idManifiestoDetalleValor from tb_manifiestos_sede_det_valor where estado = 1 and estadoEnvio = 1")
     public abstract List<Integer> fetchDetallesRecolectados();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -66,7 +66,7 @@ public abstract class ManifiestoSedeDetalleValorDao {
             entity.setEstado(manifiesto.getEstado());
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
-
+            entity.setEstadoEnvio(0);
         }else if(entity!=null  ){
             entity = new ManifiestoSedeDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
@@ -75,6 +75,7 @@ public abstract class ManifiestoSedeDetalleValorDao {
             entity.setEstado(manifiesto.getEstado());
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
+            entity.setEstadoEnvio(0);
         }
 
         if (entity!=null) createManifiesto(entity);
