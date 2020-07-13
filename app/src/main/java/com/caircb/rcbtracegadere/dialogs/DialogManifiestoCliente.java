@@ -63,6 +63,7 @@ public class DialogManifiestoCliente extends MyDialog {
                 if(txtManifiestoCliente.getText().toString().equals("")){
                     messageBox("No se a ingresado numero de manifiesto Cliente");
                 }else{
+                    //System.out.println("Placa transportista: "+MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista"));
                     MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,txtManifiestoCliente.getText().toString());
                     ((MainActivity) getActivity()).NavegationFragment(VistaPreliminarFragment.newInstance(idManifiesto,tipoPaquete));
 

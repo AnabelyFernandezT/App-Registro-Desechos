@@ -48,9 +48,9 @@ public class MyAppCompatActivity extends AppCompatActivity {
         if(mContext instanceof MainActivity) {
 
             initGPS();
-            /***Cometado para dispositivos emulador***/
+          /*  *//***Cometado para dispositivos emulador***//*
             initListenerScan();
-            /***********/
+            *//***********/
 
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
@@ -146,7 +146,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         initConnectivity();
        /***Cometado para dispositivos emulador***/
 
-       IntentFilter filter = new IntentFilter();
+     /*  IntentFilter filter = new IntentFilter();
 
         int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
         String[] value_buf = mScanManager.getParameterString(idbuf);
@@ -156,7 +156,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
             filter.addAction(SCAN_ACTION);
         }
 
-        registerReceiver(mScanReceiver, filter);
+        registerReceiver(mScanReceiver, filter);*/
 
         /**********/
     }
@@ -188,9 +188,9 @@ public class MyAppCompatActivity extends AppCompatActivity {
             mScanManager.stopDecode();
         }
 
-        /***Cometado para dispositivos emulador***/
+      /*  *//***Cometado para dispositivos emulador***//*
         unregisterReceiver(mScanReceiver);
-        /**********/
+        *//**********/
     }
 
     private void initListenerScan() {
