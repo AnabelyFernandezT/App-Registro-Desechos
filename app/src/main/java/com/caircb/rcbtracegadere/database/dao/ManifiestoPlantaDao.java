@@ -94,8 +94,9 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            entity.setEstado(0);
-            //entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(manifiesto.getEstado());
+            entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
+            entity.setBultosTotal(manifiesto.getBultosTotal());
         }
         else if(entity!=null  ){
             entity = new ManifiestoPlantaEntity();
@@ -103,8 +104,9 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            entity.setEstado(0);
-            //entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(manifiesto.getEstado());
+            entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
+            entity.setBultosTotal(manifiesto.getBultosTotal());
         }
 
 

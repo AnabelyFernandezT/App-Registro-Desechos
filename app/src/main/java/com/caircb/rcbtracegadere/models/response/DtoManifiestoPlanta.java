@@ -7,10 +7,28 @@ public class DtoManifiestoPlanta {
     private String numeroManifiesto;
     private String nombreCliente;
     private Integer idTransporteVehiculo;
+    private Integer bultosRegistrados;
+    private Integer bultosTotal;
     private Integer estado;
     private List<DtoManifiestoDetalleSede> hojaRutaDetallePlanta;
 
     public DtoManifiestoPlanta() {
+    }
+
+    public Integer getBultosRegistrados() {
+        return bultosRegistrados;
+    }
+
+    public void setBultosRegistrados(Integer bultosRegistrados) {
+        this.bultosRegistrados = bultosRegistrados;
+    }
+
+    public Integer getBultosTotal() {
+        return bultosTotal;
+    }
+
+    public void setBultosTotal(Integer bultosTotal) {
+        this.bultosTotal = bultosTotal;
     }
 
     public Integer getEstado() {
