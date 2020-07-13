@@ -42,23 +42,7 @@ public class RutaInicioFinEntity {
     @NonNull
     private Boolean sincronizadoFin;
 
-    private String placa;
-
-    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado, String placa) {
-        this.idRutaInicioFin = idRutaInicioFin;
-        this.idTransporteRecolector = idTransporteRecolector;
-        this.idSubRuta = idSubRuta;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.kilometrajeInicio = kilometrajeInicio;
-        this.kilometrajeFin = kilometrajeFin;
-        this.estado = estado;
-        this.sincronizado=false;
-        this.sincronizadoFin=false;
-        this.placa=placa;
-    }
-    @Ignore
-    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin) {
+    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado) {
         this.idRutaInicioFin = idRutaInicioFin;
         this.idTransporteRecolector = idTransporteRecolector;
         this.idSubRuta = idSubRuta;
@@ -162,11 +146,5 @@ public class RutaInicioFinEntity {
         this.sincronizadoFin = sincronizadoFin;
     }
 
-    public String getPlaca() {
-        return placa;
-    }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
 }

@@ -146,7 +146,7 @@ public interface IServicio {
     Call<DtoInfo>registrarFinLotePadreHotel(@Body RequestFinLotePadreHotelTask model);
 
     @POST("HojaRuta/obtenerRutaInicioFin")
-    Call<DtoInicioRuta>obtenerRutainicioFin(@Body RequestObtenerInicioFin model);
+    Call<List<DtoInicioRuta>>obtenerRutainicioFin(@Body RequestObtenerInicioFin model);
 
     @POST("Registro/registrarMovilizacionLoteContenedorHotel")
     Call<DtoInfo>registrarHotelLote(@Body RequestRegistarLotePadreHotel model);
