@@ -27,7 +27,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
 
     @Override
     public void execute() {
-
+/*
         WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoInicioRuta>() {
             @Override
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
@@ -41,7 +41,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
 
             }
         });
-
+*/
     }
 
     private Boolean verificarInicioRuta (){
