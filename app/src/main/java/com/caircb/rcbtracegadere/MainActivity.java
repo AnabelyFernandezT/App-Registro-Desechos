@@ -624,7 +624,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                             openMenuOpcion();
                             guardarLugar("GESTOR");
                         }
-                    }else if (item.getNombre().equals("MENSAJES")){
+                    }else if (item.getNombre().equals("NOTIFICACIONES")){
                         if(mdialog!=null){
                             mdialog.dismiss();
                             mensajes();

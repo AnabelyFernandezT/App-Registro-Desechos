@@ -49,10 +49,11 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
     }
 
     RequestFinLotePadreHotelTask finLotePadreHotelTask(){
-        RequestFinLotePadreHotelTask rq = new RequestFinLotePadreHotelTask();
+        RequestFinLotePadreHotelTask rq = null;
         lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
 
-        if(loteContenedorPadre!=null){
+        if(lotePadre!=null){
+            rq = new RequestFinLotePadreHotelTask();
             rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
             rq.setFechaRegistro(new Date());
             rq.setIdTransportistaRecolector(MySession.getIdUsuario());

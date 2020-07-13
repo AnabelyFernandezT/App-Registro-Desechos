@@ -32,14 +32,14 @@ public class HomeHotelFragment extends MyFragment implements OnHome {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setView(inflater.inflate(R.layout.fragment_home_hotel, container, false));
-        buscarLotes();
+        //buscarLotes();
         init();
         return getView();
     }
 
     private void init() {
-        lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
-        btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
+        lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignadoHotel);
+        btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestosHotel);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
         btnMenu = getView().findViewById(R.id.btnMenu);
         btnListaAsignadaTransportista.setOnClickListener(new View.OnClickListener() {
@@ -57,10 +57,17 @@ public class HomeHotelFragment extends MyFragment implements OnHome {
             }
         });
 
-        List<ItemLoteHoteles>  rowItems = MyApp.getDBO().loteHotelesDao().fetchLotesAsigando();
+        /*List<ItemLoteHoteles>  rowItems = MyApp.getDBO().loteHotelesDao().fetchLotesAsigando();
         if( rowItems !=null && rowItems.size()>0){
             lblListaManifiestoAsignado.setText(String.valueOf(rowItems.size()));
-        }
+        }*/
+
+        btnSincManifiestos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buscarLotes();
+            }
+        });
     }
 
     private void buscarLotes(){

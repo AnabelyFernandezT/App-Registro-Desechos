@@ -190,7 +190,9 @@ public class DialogFinRutaHoteles extends MyDialog {
         registrarLoteHotelTask.setmOnRegisterSesscesullListener(new UserRegistrarLoteHotelTask.onRegisterSuccesfullListener() {
             @Override
         public void onSucessfull() {
-                dismiss();
+                DialogFinRutaHoteles.this.dismiss();
+                messageBox("Se a movilizado correctamente");
+
             }
         });
         registrarLoteHotelTask.execute();
