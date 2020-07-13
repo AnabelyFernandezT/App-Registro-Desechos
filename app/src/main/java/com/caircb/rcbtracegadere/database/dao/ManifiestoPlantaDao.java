@@ -47,7 +47,8 @@ public abstract class ManifiestoPlantaDao {
             "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
             "from tb_manifiestos_planta MC INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DTC ON MC.idAppManifiesto=DTC.idAppManifiesto " +
             "                              INNER JOIN  tb_manifiestos_planta_det_valor DTVC ON DTC.idManifiestoDetalle = DTVC.idManifiestoDetalle " +
-            "            WHERE DTVC.codigoQR=:codigoQR " )
+            "            WHERE DTVC.codigoQR=:codigoQR "+
+            "GROUP BY MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,DTVC.peso, DTC.nombreDesecho")
     @Transaction
     public abstract ItemManifiestoPlantaCodigoQR fetchManifiestosBultos(String codigoQR);
 
