@@ -57,20 +57,22 @@ public abstract class ManifiestoPlantaDetalleValorDao {
 
         entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalle());
         if(entity==null){
+            Boolean estado = manifiesto.getEstado() ==1 ? true:false;
             entity = new ManifiestoPlantaDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
-            entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(estado);
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
 
         }else if(entity!=null  ){
+            Boolean estado = manifiesto.getEstado() ==1 ? true:false;
             entity = new ManifiestoPlantaDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
-            entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(estado);
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
         }

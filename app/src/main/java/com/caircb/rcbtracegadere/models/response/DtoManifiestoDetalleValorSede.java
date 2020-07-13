@@ -9,7 +9,7 @@ public class DtoManifiestoDetalleValorSede {
     private String codigoQR;
     private Integer idManifiestoDetalleValores;
     private String nombreBulto;
-    private Boolean estado;
+    private Integer estado;
 
 
     public DtoManifiestoDetalleValorSede() {
@@ -55,11 +55,11 @@ public class DtoManifiestoDetalleValorSede {
         this.idManifiestoDetalleValores = idManifiestoDetalleValores;
     }
 
-    public Boolean getEstado() {
+    public Integer getEstado() {
         return estado;
     }
 
-    public void setEstado(Boolean estado) {
+    public void setEstado(Integer estado) {
         this.estado = estado;
     }
 }
