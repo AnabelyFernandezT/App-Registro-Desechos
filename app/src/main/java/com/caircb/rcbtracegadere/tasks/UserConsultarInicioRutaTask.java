@@ -31,21 +31,23 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
     public void execute() {
         System.out.println("Usuariioooo "+MySession.getIdUsuario());
         System.out.println("FEchaaa "+new Date());
-        WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<List<DtoInicioRuta>>() {
+        WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoInicioRuta>() {
 
             @Override
-            public void onResponse(Call<List<DtoInicioRuta>> call, Response<List<DtoInicioRuta>> response) {
-                System.out.println("PLACAAAA "+response.body().get(0).getPlaca());
+            public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().getPlaca());
+                MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte",""+response.body().getEstado());
+                System.out.println("DATOS: "+response.body().getPlaca()+"---"+response.body().getEstado());
                 if (response.isSuccessful()){
                     if (!verificarInicioRuta()){
-                        if(response.body().get(0).getIdRutaInicioFin()>0 ){
-                            MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().get(0).getIdRutaInicioFin(),
+                        if(response.body().getIdRutaInicioFin()>0 ){
+                            MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
                                     MySession.getIdUsuario(),
-                                    response.body().get(0).getIdSubRuta(),
+                                    response.body().getIdSubRuta(),
                                     new Date(),
                                     null,
-                                    response.body().get(0).getKilometrajeInicio(),
-                                    response.body().get(0).getKilometrajeFin(),
+                                    response.body().getKilometrajeInicio(),
+                                    response.body().getKilometrajeFin(),
                                     1);
                         }
                     }else {
@@ -55,7 +57,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
             }
 
             @Override
-            public void onFailure(Call<List<DtoInicioRuta>> call, Throwable t) {
+            public void onFailure(Call<DtoInicioRuta> call, Throwable t) {
 
             }
         });
