@@ -31,6 +31,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
         WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoInicioRuta>() {
             @Override
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
+                System.out.println("Ruta inicio fin placa: " + response.body().getPlaca()+"--estado--"+response.body().getEstado()+"--Kilm--" + response.body().getKilometrajeInicio());
                 if (response.isSuccessful()){
                     if (!verificarInicioRuta()){
                         MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
@@ -40,7 +41,8 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                 null,
                                 response.body().getKilometrajeInicio(),
                                 response.body().getKilometrajeFin(),
-                                1);
+                                response.body().getEstado(),
+                                response.body().getPlaca());
                     }else {
 
                     }

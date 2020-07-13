@@ -48,10 +48,10 @@ public class MyAppCompatActivity extends AppCompatActivity {
         if(mContext instanceof MainActivity) {
 
             initGPS();
-            /***Cometado para dispositivos emulador***/
+     /*       *//***Cometado para dispositivos emulador***//*
             initListenerScan();
-            /***********/
-
+            *//***********//*
+*/
             boolean estado = Utils.isDataConnectivity(mContext);
             if(MySession.isConnecticity()!=estado) {
             MySession.setConnecticity(estado);
@@ -144,7 +144,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initConnectivity();
-       /***Cometado para dispositivos emulador***/
+    /*   *//***Cometado para dispositivos emulador***//*
 
        IntentFilter filter = new IntentFilter();
 
@@ -158,7 +158,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
 
         registerReceiver(mScanReceiver, filter);
 
-        /**********/
+        *//**********/
     }
 
     private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
@@ -188,9 +188,9 @@ public class MyAppCompatActivity extends AppCompatActivity {
             mScanManager.stopDecode();
         }
 
-        /***Cometado para dispositivos emulador***/
+       /* *//***Cometado para dispositivos emulador***//*
         unregisterReceiver(mScanReceiver);
-        /**********/
+        *//**********/
     }
 
     private void initListenerScan() {

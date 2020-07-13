@@ -23,7 +23,7 @@ public abstract class RutaInicioFinDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long createRegistro(RutaInicioFinEntity entity);
 
-    public long saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado ){
+    public long saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado, String placa ){
         RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutasE(idTransporteRecolector);
         if(registroInicio==null) {
             registroInicio = new RutaInicioFinEntity(
@@ -34,7 +34,7 @@ public abstract class RutaInicioFinDao {
                     fechaFin,
                     kilometrajeInicio,
                     kilometrajeFin,
-                    estado);
+                    estado, placa);
         }else{
             registroInicio.setIdRutaInicioFin(idRutaInicioFin);
             registroInicio.setFechaFin(fechaFin);
@@ -45,6 +45,29 @@ public abstract class RutaInicioFinDao {
 
         return createRegistro(registroInicio);
     }
+
+    public long saveOrUpdateFijRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado ){
+        RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutasE(idTransporteRecolector);
+        if(registroInicio==null) {
+            registroInicio = new RutaInicioFinEntity(
+                    idRutaInicioFin,
+                    idTransporteRecolector,
+                    IdTransporteVehiculo, //idSubruta
+                    fechaInicio,
+                    fechaFin,
+                    kilometrajeInicio,
+                    kilometrajeFin);
+        }else{
+            registroInicio.setIdRutaInicioFin(idRutaInicioFin);
+            registroInicio.setFechaFin(fechaFin);
+            registroInicio.setKilometrajeFin(kilometrajeFin);
+            registroInicio.setEstado(estado);
+
+        }
+
+        return createRegistro(registroInicio);
+    }
+
 
 
     @Query("select * from tb_rutaInicioFin where idTransporteRecolector=:idTransporteRecolector")
