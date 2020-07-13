@@ -73,13 +73,13 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         txtManifiesto = getView().findViewById(R.id.txtManifiesto);
         txtMovilizar = getView().findViewById(R.id.txtMovilizar);
 
-        btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnListaAsignadaSede.setColorFilter(Color.rgb(115, 124, 119 ));
-        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
+        btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
-        txtManifiesto.setTextColor(Color.rgb(115, 124, 119 ));
-        txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
-        txtMovilizar.setTextColor(Color.rgb(115, 124, 119 ));
+        txtManifiesto.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
         btnListaAsignadaSede.setEnabled(false);
         btnSincManifiestos.setEnabled(false);
@@ -216,11 +216,11 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 btnSincManifiestos.setEnabled(false);
                 regionBuscar.setEnabled(true);
 
-                btnListaAsignadaSede.setColorFilter(Color.rgb(115, 124, 119 ));
-                btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
+                btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+                btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
-                txtManifiesto.setTextColor(Color.rgb(115, 124, 119 ));
-                txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+                txtManifiesto.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+                txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
                 regionBuscar.setColorFilter(Color.TRANSPARENT);
                 txtMovilizar.setTextColor(Color.WHITE);
@@ -238,7 +238,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 txtSincronizar.setTextColor(Color.WHITE);
                 txtManifiesto.setTextColor(Color.WHITE);
 
-                regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
+                regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
             }
 
     }

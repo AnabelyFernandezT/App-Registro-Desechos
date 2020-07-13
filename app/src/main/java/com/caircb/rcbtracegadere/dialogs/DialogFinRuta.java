@@ -315,13 +315,13 @@ public class DialogFinRuta extends MyDialog {
         btnPickUpTransportista.setEnabled(false);
         btnDropOffTransportista.setEnabled(false);
 
-        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnListaAsignadaTransportista.setColorFilter(Color.rgb(115, 124, 119 ));
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        btnListaAsignadaTransportista.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
 
-        txtBuscar.setTextColor(Color.rgb(115, 124, 119 ));
-        txtManifiestos.setTextColor(Color.rgb(115, 124, 119 ));
-        txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+        txtBuscar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtManifiestos.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
 
         MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
         lnlIniciaRuta.setVisibility(View.VISIBLE);

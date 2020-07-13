@@ -195,8 +195,8 @@ public class DialogPlacaSede extends MyDialog {
         txtManifiesto.setTextColor(Color.WHITE);
         txtSincronizar.setTextColor(Color.WHITE);
 
-        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
-        txtMovilizar.setTextColor(Color.rgb(115, 124, 119 ));
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
 
     }
 
