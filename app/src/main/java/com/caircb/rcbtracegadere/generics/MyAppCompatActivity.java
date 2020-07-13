@@ -49,6 +49,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
 
             initGPS();
      /*       *//***Cometado para dispositivos emulador***//*
+            /***Cometado para dispositivos emulador**
             initListenerScan();
             *//***********//*
 */
@@ -144,6 +145,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initConnectivity();
+       /***Cometado para dispositivos emulador**
     /*   *//***Cometado para dispositivos emulador***//*
 
        IntentFilter filter = new IntentFilter();
@@ -188,6 +190,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
             mScanManager.stopDecode();
         }
 
+        /***Cometado para dispositivos emulador**
        /* *//***Cometado para dispositivos emulador***//*
         unregisterReceiver(mScanReceiver);
         *//**********/

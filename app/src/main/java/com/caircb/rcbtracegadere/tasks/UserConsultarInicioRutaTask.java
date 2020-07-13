@@ -31,18 +31,18 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
         WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoInicioRuta>() {
             @Override
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
-                System.out.println("Ruta inicio fin placa: " + response.body().getPlaca()+"--estado--"+response.body().getEstado()+"--Kilm--" + response.body().getKilometrajeInicio());
                 if (response.isSuccessful()){
                     if (!verificarInicioRuta()){
-                        MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
-                                MySession.getIdUsuario(),
-                                response.body().getIdSubRuta(),
-                                new Date(),
-                                null,
-                                response.body().getKilometrajeInicio(),
-                                response.body().getKilometrajeFin(),
-                                response.body().getEstado(),
-                                response.body().getPlaca());
+                        if(response.body().getIdRutaInicioFin()>0 ){
+                            MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
+                                    MySession.getIdUsuario(),
+                                    response.body().getIdSubRuta(),
+                                    new Date(),
+                                    null,
+                                    response.body().getKilometrajeInicio(),
+                                    response.body().getKilometrajeFin(),
+                                    1);
+                        }
                     }else {
 
                     }
@@ -60,7 +60,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
     private Boolean verificarInicioRuta (){
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
 
-        if(model!=null && model.getIdRutaInicioFin()>0){
+        if(model!=null){
             return true;
         }else {
             return false;
