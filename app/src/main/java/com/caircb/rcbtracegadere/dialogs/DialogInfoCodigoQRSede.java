@@ -76,7 +76,7 @@ public class DialogInfoCodigoQRSede extends MyDialog {
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    MyApp.getDBO().manifiestoDetalleValorSede().actualizarBultoEstado(codigoQR);
+                    MyApp.getDBO().manifiestoDetalleValorSede().actualizarBultoEstado(codigoQR,true);
                     DialogInfoCodigoQRSede.this.dismiss();
                     if (mOnclickSedeListener != null) {
                         mOnclickSedeListener.onSucefull();
