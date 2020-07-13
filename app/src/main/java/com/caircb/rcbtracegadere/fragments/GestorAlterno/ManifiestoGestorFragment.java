@@ -111,8 +111,9 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                 }
             });
-            registrarGestorAlterno.execute();
             datosManifiestosAsignados();
+            registrarGestorAlterno.execute();
+
         }
     }
 
