@@ -47,9 +47,9 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
             public void onResponse(Call<List<DtoManifiestoSede>> call, Response<List<DtoManifiestoSede>> response) {
                 if (response.isSuccessful()){
                     if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
-                    //MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
-                    //MyApp.getDBO().manifiestoDetalleSede().eliminarDetalle();
-                    //MyApp.getDBO().manifiestoDetalleValorSede().eliminarDetalle();
+                    MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
+                    MyApp.getDBO().manifiestoDetalleSede().eliminarDetalle();
+                    MyApp.getDBO().manifiestoDetalleValorSede().eliminarDetalle();
 
                     for(DtoManifiestoSede reg:response.body()){
                         MyApp.getDBO().manifiestoSedeDao().saveOrUpdate(reg);

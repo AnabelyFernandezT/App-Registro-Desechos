@@ -46,7 +46,7 @@ public abstract class ManifiestoSedeDetalleDao {
 
         ManifiestoSedeDetalleEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiesto());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalle());
         if(entity==null){
             entity = new ManifiestoSedeDetalleEntity();
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
