@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestHotelPadre;
 import com.caircb.rcbtracegadere.models.request.RequestInformacionModulos;
+import com.caircb.rcbtracegadere.models.request.RequestInformacionTransportista;
 import com.caircb.rcbtracegadere.models.request.RequestInicioLoteHotel;
 import com.caircb.rcbtracegadere.models.request.RequestInicioLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestLote;
@@ -149,4 +150,7 @@ public interface IServicio {
 
     @POST("Registro/registrarMovilizacionLoteContenedorHotel")
     Call<DtoInfo>registrarHotelLote(@Body RequestRegistarLotePadreHotel model);
+
+    @POST("HojaRuta/obtenerInformacionTransportista")
+    Call<DtoInfo>informacionTransportista(@Body RequestInformacionTransportista model);
 }

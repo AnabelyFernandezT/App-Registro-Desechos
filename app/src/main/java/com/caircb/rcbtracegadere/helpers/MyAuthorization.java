@@ -26,6 +26,7 @@ import com.caircb.rcbtracegadere.models.request.RequestTokenFCM;
 import com.caircb.rcbtracegadere.models.response.DtoUserCredential;
 import com.caircb.rcbtracegadere.models.response.DtoUserTokenCredentials;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInformacionTransportista;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +53,7 @@ public class MyAuthorization {
     String userStr;
     FirebaseAuth auth;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
+    UserConsultarInformacionTransportista info;
 
 
     public interface AuthorizationListener {
@@ -300,6 +302,7 @@ public class MyAuthorization {
             if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
             message("Usuario sin perfiles de acceso");
         }
+
     }
 
     private void guardarLugar(Integer perfilID,String nombreLugar,DtoUserCredential user, String token){
@@ -325,6 +328,9 @@ public class MyAuthorization {
             e.printStackTrace();
         }
         */
+
+        info =new UserConsultarInformacionTransportista(getActivity());
+        info.execute();
     }
 
     private void registarTokenOnServer(final DtoUserCredential user, String token){
