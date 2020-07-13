@@ -24,6 +24,26 @@ public class ManifiestoSedeEntity {
 
     private Integer estado;
 
+    private Integer bultosRegistrados;
+
+    private Integer bultosTotal;
+
+    public Integer getBultosRegistrados() {
+        return bultosRegistrados;
+    }
+
+    public void setBultosRegistrados(Integer bultosRegistrados) {
+        this.bultosRegistrados = bultosRegistrados;
+    }
+
+    public Integer getBultosTotal() {
+        return bultosTotal;
+    }
+
+    public void setBultosTotal(Integer bultosTotal) {
+        this.bultosTotal = bultosTotal;
+    }
+
     public Integer getEstado() {
         return estado;
     }

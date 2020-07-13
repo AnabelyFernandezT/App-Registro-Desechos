@@ -323,7 +323,7 @@ public class DialogFinRuta extends MyDialog {
         txtManifiestos.setTextColor(Color.rgb(115, 124, 119 ));
         txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
 
-
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
         lnlIniciaRuta.setVisibility(View.VISIBLE);
         lnlFinRuta.setVisibility(View.GONE);
 

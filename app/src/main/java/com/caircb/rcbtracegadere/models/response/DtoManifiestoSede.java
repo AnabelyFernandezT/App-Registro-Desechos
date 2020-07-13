@@ -8,11 +8,45 @@ public class DtoManifiestoSede {
     private String numeroManifiesto;
     private String nombreCliente;
     private Integer idTransporteVehiculo;
+    private Integer bultosRegistrados;
+    private Integer bultosTotal;
+    private Integer estado;
     private List<DtoManifiestoDetalleSede> hojaRutaDetalle;
 
     public DtoManifiestoSede() {
     }
 
+    public Integer getIdManifiesto() {
+        return idManifiesto;
+    }
+
+    public void setIdManifiesto(Integer idManifiesto) {
+        this.idManifiesto = idManifiesto;
+    }
+
+    public Integer getBultosRegistrados() {
+        return bultosRegistrados;
+    }
+
+    public void setBultosRegistrados(Integer bultosRegistrados) {
+        this.bultosRegistrados = bultosRegistrados;
+    }
+
+    public Integer getBultosTotal() {
+        return bultosTotal;
+    }
+
+    public void setBultosTotal(Integer bultosTotal) {
+        this.bultosTotal = bultosTotal;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
 
     public Integer getIdAppManifiesto() {
         return idManifiesto;

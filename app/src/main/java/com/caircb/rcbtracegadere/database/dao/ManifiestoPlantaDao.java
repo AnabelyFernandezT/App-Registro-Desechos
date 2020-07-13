@@ -47,7 +47,8 @@ public abstract class ManifiestoPlantaDao {
             "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
             "from tb_manifiestos_planta MC INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DTC ON MC.idAppManifiesto=DTC.idAppManifiesto " +
             "                              INNER JOIN  tb_manifiestos_planta_det_valor DTVC ON DTC.idManifiestoDetalle = DTVC.idManifiestoDetalle " +
-            "            WHERE DTVC.codigoQR=:codigoQR " )
+            "            WHERE DTVC.codigoQR=:codigoQR "+
+            "GROUP BY MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,DTVC.peso, DTC.nombreDesecho")
     @Transaction
     public abstract ItemManifiestoPlantaCodigoQR fetchManifiestosBultos(String codigoQR);
 
@@ -67,7 +68,7 @@ public abstract class ManifiestoPlantaDao {
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search);
 
 
-    @Query("update tb_manifiestos_planta set estado=4  where idAppManifiesto=:idManifiesto")
+    @Query("update tb_manifiestos_planta set estado=3  where idAppManifiesto=:idManifiesto")
     public abstract void updateEstadoManifiesto(Integer idManifiesto);
 
     @Query("select estado from tb_manifiestos_planta where idAppManifiesto = :idManifiesto ")
@@ -93,8 +94,9 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            entity.setEstado(0);
-            //entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(manifiesto.getEstado());
+            entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
+            entity.setBultosTotal(manifiesto.getBultosTotal());
         }
         else if(entity!=null  ){
             entity = new ManifiestoPlantaEntity();
@@ -102,8 +104,9 @@ public abstract class ManifiestoPlantaDao {
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
             entity.setIdTransporteVehiculo(manifiesto.getIdTransporteVehiculo());
-            entity.setEstado(0);
-            //entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(manifiesto.getEstado());
+            entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
+            entity.setBultosTotal(manifiesto.getBultosTotal());
         }
 
 
