@@ -93,7 +93,7 @@ public class DialogFinRuta extends MyDialog {
         destinosEspecificos = new ArrayList<>();
         txt_placa = (TextView)getView().findViewById(R.id.Txt_placa);
         txt_kilometraje_inicio = (TextView)getView().findViewById(R.id.txt_kilometraje_inicio);
-
+        List<DtoFindRutas> listaPlacasDisponibles;
         btnFinApp = (LinearLayout)getView().findViewById(R.id.btnFinalizarRuta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnCancelarApp);
 
@@ -217,7 +217,7 @@ public class DialogFinRuta extends MyDialog {
         MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
 
 
-        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(idInicioFin, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
+        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateFijRuta(idInicioFin, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
 
         registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);

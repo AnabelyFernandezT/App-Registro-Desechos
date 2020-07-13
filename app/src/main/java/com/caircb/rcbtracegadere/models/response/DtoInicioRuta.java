@@ -7,6 +7,8 @@ public class DtoInicioRuta {
     private String fechaFin;
     private String kilometrajeInicio;
     private String kilometrajeFin;
+    private Integer estado;
+    private String placa;
 
     public DtoInicioRuta() {
     }
@@ -57,5 +59,21 @@ public class DtoInicioRuta {
 
     public void setKilometrajeFin(String kilometrajeFin) {
         this.kilometrajeFin = kilometrajeFin;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 }

@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -41,7 +42,9 @@ public class RutaInicioFinEntity {
     @NonNull
     private Boolean sincronizadoFin;
 
-    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado) {
+    private String placa;
+
+    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado, String placa) {
         this.idRutaInicioFin = idRutaInicioFin;
         this.idTransporteRecolector = idTransporteRecolector;
         this.idSubRuta = idSubRuta;
@@ -52,8 +55,22 @@ public class RutaInicioFinEntity {
         this.estado = estado;
         this.sincronizado=false;
         this.sincronizadoFin=false;
-
+        this.placa=placa;
     }
+    @Ignore
+    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin) {
+        this.idRutaInicioFin = idRutaInicioFin;
+        this.idTransporteRecolector = idTransporteRecolector;
+        this.idSubRuta = idSubRuta;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.kilometrajeInicio = kilometrajeInicio;
+        this.kilometrajeFin = kilometrajeFin;
+        this.estado = estado;
+        this.sincronizado=false;
+        this.sincronizadoFin=false;
+    }
+
 
     public Integer get_id() {
         return _id;
@@ -143,5 +160,13 @@ public class RutaInicioFinEntity {
 
     public void setSincronizadoFin(@NonNull Boolean sincronizadoFin) {
         this.sincronizadoFin = sincronizadoFin;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 }
