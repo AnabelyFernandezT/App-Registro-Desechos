@@ -5,7 +5,7 @@ public class DtoInicioRuta {
     private Integer idSubRuta;
     private Integer idRuta;
     private String placa;
-    private Integer estado;
+    private Boolean estado;
     private String fechaInicio;
     private String fechaFin;
     private String kilometrajeInicio;
@@ -64,11 +64,11 @@ public class DtoInicioRuta {
         this.kilometrajeFin = kilometrajeFin;
     }
 
-    public Integer getEstado() {
+    public Boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(Integer estado) {
+    public void setEstado(Boolean estado) {
         this.estado = estado;
     }
 
