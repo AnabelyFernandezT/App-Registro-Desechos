@@ -133,7 +133,6 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                        setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
                                    }
 
-
                                    @Override
                                    public void onFail() {
                                        messageBox("Bultos No Guardados");
@@ -175,6 +174,11 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                 }
             }
         });
+
+        Integer estadoManifiesto = MyApp.getDBO().manifiestoSedeDao().estadoManifiestoSede(idAppManifiesto);
+        if(estadoManifiesto.equals(3)) {
+            btnRegistrar.setEnabled(false);
+        }
     }
 
 

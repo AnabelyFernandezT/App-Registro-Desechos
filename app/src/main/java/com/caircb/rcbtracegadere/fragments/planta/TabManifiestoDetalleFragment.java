@@ -100,7 +100,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
             @Override
             public void onItemClick(int position, View v) {
                 Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(idAppManifiesto);
-                if(estadoManifiesto != 4){
+                if(estadoManifiesto != 3){
                     openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
                 }
             }

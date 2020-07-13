@@ -68,7 +68,7 @@ public abstract class ManifiestoPlantaDao {
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(String search);
 
 
-    @Query("update tb_manifiestos_planta set estado=4  where idAppManifiesto=:idManifiesto")
+    @Query("update tb_manifiestos_planta set estado=3  where idAppManifiesto=:idManifiesto")
     public abstract void updateEstadoManifiesto(Integer idManifiesto);
 
     @Query("select estado from tb_manifiestos_planta where idAppManifiesto = :idManifiesto ")
