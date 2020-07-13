@@ -56,7 +56,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private ImagenUtils imagenUtils;
     private boolean firmaTransportista=false, firmaTecnicoGenerador=false;
     private CheckBox chkCorreoPrincipal,chkCorreoAlterno;
-    String identificacion, nombre, correo, telefono;
+    String identificacion, nombre, correo, telefono,correoPrincipal ="" ,correoAlterno = "",correoEnvio="";
     UserConsultarCedulaTask userConsultarCedulaTask;
 
     public TabManifiestoGeneral(Context context,Integer idAppManifiesto,Integer estado) {
@@ -386,6 +386,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         });
 
         visible();
+        checkCorreos();
 
     }
 
@@ -511,6 +512,79 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     public Integer getTipoPaquete(){
         return tipoPaquete!=null?(tipoPaquete>0?tipoPaquete:null):null;
+    }
+
+    public void checkCorreos() {
+        chkCorreoPrincipal.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    v.setSelected(true);
+                    correoPrincipal ="I";
+                    if(correoPrincipal.equals("I")&&correoAlterno.equals("H")){
+                        correoEnvio="H,I";
+                    }else if(correoPrincipal.equals("I")){
+                        correoEnvio="I";
+                    }else if(correoAlterno.equals("H")){
+                        correoEnvio="H";
+                    }else{
+                        correoEnvio="";
+                    }
+
+                    MyApp.getDBO().manifiestoDao().updateManifiestoCorreos(idAppManifiesto,correoEnvio);
+                } else {
+                    correoPrincipal ="";
+                    if(correoPrincipal.equals("I")&&correoAlterno.equals("H")){
+                        correoEnvio="H,I";
+                    }else if(correoPrincipal.equals("I")){
+                        correoEnvio="I";
+                    }else if(correoAlterno.equals("H")){
+                        correoEnvio="H";
+                    }else{
+                        correoEnvio="";
+                    }
+
+                    MyApp.getDBO().manifiestoDao().updateManifiestoCorreos(idAppManifiesto,correoEnvio);
+                    v.setSelected(false);
+                }
+            }
+        });
+
+        chkCorreoAlterno.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    v.setSelected(true);
+                    correoAlterno ="H";
+                    if(correoPrincipal.equals("I")&&correoAlterno.equals("H")){
+                        correoEnvio="H,I";
+                    }else if(correoPrincipal.equals("I")){
+                        correoEnvio="I";
+                    }else if(correoAlterno.equals("H")){
+                        correoEnvio="H";
+                    }else{
+                        correoEnvio="";
+                    }
+
+                    MyApp.getDBO().manifiestoDao().updateManifiestoCorreos(idAppManifiesto,correoEnvio);
+                } else {
+                    v.setSelected(false);
+                    correoAlterno ="";
+                    if(correoPrincipal.equals("I")&&correoAlterno.equals("H")){
+                        correoEnvio="H,I";
+                    }else if(correoPrincipal.equals("I")){
+                        correoEnvio="I";
+                    }else if(correoAlterno.equals("H")){
+                        correoEnvio="H";
+                    }else{
+                        correoEnvio="";
+                    }
+
+                    MyApp.getDBO().manifiestoDao().updateManifiestoCorreos(idAppManifiesto,correoEnvio);
+                }
+            }
+        });
+
     }
 
 

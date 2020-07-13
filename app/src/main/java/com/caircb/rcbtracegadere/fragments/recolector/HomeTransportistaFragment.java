@@ -320,15 +320,17 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnDropOffTransportista.setEnabled(false);
         //btnFinRuta.setEnabled(false);
 
-        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnListaAsignadaTransportista.setColorFilter(Color.rgb(115, 124, 119 ));
+        //regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        btnListaAsignadaTransportista.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
-        txtBuscar.setTextColor(Color.rgb(115, 124, 119 ));
-        txtManifiestos.setTextColor(Color.rgb(115, 124, 119 ));
-        txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+        txtBuscar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        txtManifiestos.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
     }
+
 
     public void desbloque_botones(){
 

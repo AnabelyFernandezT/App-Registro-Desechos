@@ -44,7 +44,7 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Query("update tb_manifiestos_sede_det_valor set estado=:check , estadoEnvio = 1 where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
     public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);
 
-    @Query("select * from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto limit 1")
+    @Query("select * from tb_manifiestos_sede_det_valor where idManifiestoDetalleValor=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleValorEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
     @Query("select idManifiestoDetalleValor from tb_manifiestos_sede_det_valor where estado = 1 and estadoEnvio = 1")
@@ -57,7 +57,7 @@ public abstract class ManifiestoSedeDetalleValorDao {
 
         ManifiestoSedeDetalleValorEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalle());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalleValores());
         if(entity==null){
             Boolean estado = manifiesto.getEstado() ==1 ? true:false;
             entity = new ManifiestoSedeDetalleValorEntity();
@@ -70,7 +70,6 @@ public abstract class ManifiestoSedeDetalleValorDao {
             entity.setEstadoEnvio(0);
         }else if(entity!=null  ){
             Boolean estado = manifiesto.getEstado() ==1 ? true:false;
-            entity = new ManifiestoSedeDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
