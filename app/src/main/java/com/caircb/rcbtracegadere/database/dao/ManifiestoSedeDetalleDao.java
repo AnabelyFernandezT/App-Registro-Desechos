@@ -32,7 +32,7 @@ public abstract class ManifiestoSedeDetalleDao {
     @Transaction
     public abstract List<ItemManifiestoDetalleSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
-    @Query("select * from tb_manifiestos_sede_detalle where idAppManifiesto=:idManifiesto limit 1")
+    @Query("select * from tb_manifiestos_sede_detalle where idManifiestoDetalle=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
     @Query("select count(*) from tb_manifiestos_sede")
@@ -57,8 +57,7 @@ public abstract class ManifiestoSedeDetalleDao {
             entity.setTotalBultos(manifiesto.getTotalBultos());
 
         }else if(entity!=null ){
-
-            entity = new ManifiestoSedeDetalleEntity();entity.setCodigo(manifiesto.getCodigo());
+            entity.setCodigo(manifiesto.getCodigo());
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setCodigoMae(manifiesto.getCodigoMae());

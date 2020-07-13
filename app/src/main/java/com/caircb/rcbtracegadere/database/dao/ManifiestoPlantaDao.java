@@ -99,7 +99,6 @@ public abstract class ManifiestoPlantaDao {
             entity.setBultosTotal(manifiesto.getBultosTotal());
         }
         else if(entity!=null  ){
-            entity = new ManifiestoPlantaEntity();
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
             entity.setNombreCliente(manifiesto.getNombreCliente());
