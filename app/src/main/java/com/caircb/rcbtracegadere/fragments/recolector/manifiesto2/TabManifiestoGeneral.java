@@ -56,7 +56,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private ImagenUtils imagenUtils;
     private boolean firmaTransportista=false, firmaTecnicoGenerador=false;
     private CheckBox chkCorreoPrincipal,chkCorreoAlterno;
-    String identificacion, nombre, correo, telefono;
+    String identificacion, nombre, correo, telefono,correoPrincipal,correoAlterno;
     UserConsultarCedulaTask userConsultarCedulaTask;
 
     public TabManifiestoGeneral(Context context,Integer idAppManifiesto,Integer estado) {
@@ -386,6 +386,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         });
 
         visible();
+        checkCorreos();
 
     }
 
@@ -511,6 +512,34 @@ public class TabManifiestoGeneral extends LinearLayout {
 
     public Integer getTipoPaquete(){
         return tipoPaquete!=null?(tipoPaquete>0?tipoPaquete:null):null;
+    }
+
+    public void checkCorreos() {
+        chkCorreoPrincipal.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    v.setSelected(true);
+                    //MyApp.getDBO().manifiestoDao().updateManifiestoCorreoPrincipal(idAppManifiesto,true);
+                } else {
+                    v.setSelected(false);
+                    //MyApp.getDBO().manifiestoDao().updateManifiestoCorreoPrincipal(idAppManifiesto,false);
+                }
+            }
+        });
+
+        chkCorreoAlterno.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    v.setSelected(true);
+                    //MyApp.getDBO().manifiestoDao().updateManifiestoCorreoAlterno(idAppManifiesto,true);
+                } else {
+                    v.setSelected(false);
+                    //MyApp.getDBO().manifiestoDao().updateManifiestoCorreoAlterno(idAppManifiesto,false);
+                }
+            }
+        });
     }
 
 
