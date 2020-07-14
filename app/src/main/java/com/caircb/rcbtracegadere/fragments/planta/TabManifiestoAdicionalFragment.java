@@ -214,14 +214,14 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     public  boolean validarNovedad (){
         String txtObservacion = txtotraNovedad.getText().toString();
         String numeroFotos = txtCountPhoto.getText().toString();
-        if(txtObservacion!=""){
+        if(txtObservacion.equals("")){
+           observacion=true;
+        }else{
             if(numeroFotos.equals("0")){
                 observacion = false;
             }else{
                 observacion = true;
             }
-        }else{
-            observacion =true;
         }
         return  observacion;
     }
