@@ -62,7 +62,8 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
    private RequestInicioLoteHotel requestInicioLoteHotel(){
        RequestInicioLoteHotel rq = new RequestInicioLoteHotel();
        HotelLotePadreEntity lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
-       RutaInicioFinEntity inicioFinRuta = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+       //RutaInicioFinEntity inicioFinRuta = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+       Integer inicioFinRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
        ManifiestoEntity entity = MyApp.getDBO().manifiestoDao().fetchHojaRuta();
 
        Integer idDestino =-1;
@@ -74,7 +75,7 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
        //Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
 
        rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
-       rq.setIdSubRuta(inicioFinRuta.getIdSubRuta());
+       rq.setIdSubRuta(inicioFinRuta);
        rq.setFecha(new Date());
        rq.setIdDestinatarioFinRutaCatalogo(idDestino);
        rq.setIdTransportistaVehiculo(entity.getIdTransporteVehiculo());
