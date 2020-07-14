@@ -53,7 +53,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     //TabManifiestoGeneralFragment tab1;
     TabManifiestoDetalleFragment tab2;
     TabManifiestoAdicionalFragment tab3;
-    boolean firma = false;
+    boolean firma = false, novedad=false;
     String numeroManifiesto;
     DialogBuilder builder;
     /**
@@ -136,16 +136,21 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                 Integer bultos = detalles.getTotalBultos();
                 Integer bultosSeleccionados = detalles.getBultosSelecionado();
                     firma = tab3.validarInformacion();
+                    novedad = tab3.validarNovedad();
                     if(!firma){
                         messageBox("Debe registrar la firma.!");
                     }else{
-                        if(bultos.equals(bultosSeleccionados)) {
-                            registroPlantaDetalle();
+                        if(novedad){
+                            if(bultos.equals(bultosSeleccionados)) {
+                                registroPlantaDetalle();
+                            }
+                            else {
+                                messageBox("Seleccione todos los bultos.!");
+                            }
+                        }else{
+                            messageBox("Ingrese una foto.!");
                         }
-                        else {
-                            messageBox("Seleccione todos los bultos.!");
-                        }
-                    }
+                                           }
                 break;
         }
     }
