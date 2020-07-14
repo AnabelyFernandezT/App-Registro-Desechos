@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.dialogs;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
@@ -187,6 +188,7 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
                 start();
                 btnStar.setVisibility(View.GONE);
                 btnPausa.setVisibility(View.VISIBLE);
+                btnCancel.setEnabled(false);
                 break;
             case R.id.btn_pausa:
                 pause();
@@ -197,6 +199,10 @@ public class DialogAudio extends MyDialog implements View.OnClickListener {
                 stop();
                 btnStar.setVisibility(View.VISIBLE);
                 btnPausa.setVisibility(View.GONE);
+                btnStar.setEnabled(false);
+
+                btnPausa.setEnabled(false);
+                btnStop.setEnabled(false);
                 break;
             case R.id.btnCancel:
                 DialogAudio.this.dismiss();

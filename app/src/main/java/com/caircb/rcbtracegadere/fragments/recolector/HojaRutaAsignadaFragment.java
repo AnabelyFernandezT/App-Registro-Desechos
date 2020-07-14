@@ -143,7 +143,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
             public void onIndependentViewClicked(int independentViewID, int position) {
 
             }
-        }).setSwipeOptionViews(R.id.btn_manifiesto_view, R.id.btn_manifiesto_more).setSwipeable(R.id.rowFG, R.id.rowBG, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
+        }).setSwipeOptionViews(R.id.btn_manifiesto_view/*, R.id.btn_manifiesto_more*/).setSwipeable(R.id.rowFG, R.id.rowBG, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
             @Override
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
@@ -152,8 +152,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         menu(position);
                         break;
-                    case R.id.btn_manifiesto_more:
-                        break;
+                    /*case R.id.btn_manifiesto_more:
+                        break;*/
                 }
             }
         });
@@ -163,17 +163,17 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     }
 
     private void  menu(final int position){
-        final CharSequence[] options = {"INICIAR RECOLECCION", "INGRESAR MOTIVO NO RECOLECCION", "CANCELAR"};
+        final CharSequence[] options = {"INICIAR RECOLECCIÓN", "NO RECOLECTAR", "CANCELAR"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("INICIAR RECOLECCION"))
+                if (options[item].equals("INICIAR RECOLECCIÓN"))
                 {
                     dialogBuilder = new DialogBuilder(getActivity());
-                    dialogBuilder.setMessage("¿Seguro que desea INICIAR RECOLECCIÓN ?");
+                    dialogBuilder.setMessage("¿Está seguro que desea INICIAR RECOLECCIÓN?");
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setTitle("CONFIRMACIÓN");
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
@@ -214,10 +214,51 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                     });
                     dialogBuilder.show();
                 }
-                else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
+                else if (options[item].equals("NO RECOLECTAR"))
                 {
+                    dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setMessage("¿Está seguro que NO ES POSIBLE RECOLECTAR?");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("CONFIRMACIÓN");
+                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Guardo la fecha de inicio recoleccion
+                            Date fecha = AppDatabase.getDateTime();
+                            //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                            MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(),fecha);
+                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+
+                            Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
+                            if(!estado){
+                                //actualizaria el primer registro
+                                Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
+                                if(_id!=null){
+                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                }
+                            }else{
+                                //busco con punto de partida mayor a cer
+                                Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
+                                if(idMayor >0){
+                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                }
+                            }
+                            dialogBuilder.dismiss();
+                            setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+
+
+/**
                     AlertDialog.Builder builderConfgirmaRecol= new AlertDialog.Builder(getActivity());
-                    builderConfgirmaRecol.setMessage("¿Seguro que desea INICIAR NO RECOLECCIÓN ?");
+                    builderConfgirmaRecol.setMessage("¿Está seguro que NO ES POSIBLE RECOLECTAR?");
                     builderConfgirmaRecol.setCancelable(false);
                     builderConfgirmaRecol.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -251,7 +292,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                     });
                     AlertDialog dialogConfirmacion = builderConfgirmaRecol.create();
                     dialogConfirmacion.show();
-
+***/
                 }
                 else if (options[item].equals("CANCELAR")) {
                     dialog.dismiss();
