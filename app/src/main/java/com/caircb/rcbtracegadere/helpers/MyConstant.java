@@ -18,8 +18,8 @@ public final class MyConstant {
 
     //public static final String PATH_SAPI="https://servicios.raulcoka.net/ServicioSeguridadesDev/api/v1/";//desarrollo
    // public static final String PATH_SAPI="http://40.117.35.70:8080/ServicioSeguridadesDev/api/v1/";
-    public static final String PATH_SAPI="http://13.90.16.70:8080/ServicioSeguridadesDev/api/v1/";
-    //public static final String PATH_SAPI="https://servicios.raulcoka.net/ServicioSeguridadNew/api/v1/";
+    //public static final String PATH_SAPI="http://13.90.16.70:8080/ServicioSeguridadesDev/api/v1/";
+    public static final String PATH_SAPI="https://servicios.raulcoka.net/ServicioSeguridadesDev/api/v1/";
     //public static final String PATH_SAPI=" https://servicios.raulcoka.net/ServicioSeguridades/api/v1/";//produccion
    // https://servicios.raulcoka.net/ServicioSeguridades/api/v1/login/authorization
     //public static final String PATH_QAPI="http://13.90.16.70:8080/ServicioEcuatoriano/Api/Consultar/";

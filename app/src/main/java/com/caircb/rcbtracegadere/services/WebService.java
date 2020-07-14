@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.services;
 
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.google.gson.Gson;
@@ -17,13 +18,18 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.TlsVersion;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -79,8 +85,8 @@ public class WebService {
             });
 
             Gson gson = builder.create();
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
+            //OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            OkHttpClient.Builder httpClient = getNewHttpClient();
 
             httpClient.addInterceptor(new Interceptor() {
                 @Override
@@ -89,8 +95,6 @@ public class WebService {
 
                 }
             });
-
-
 
             Retrofit mRestAdapter = new Retrofit.Builder()
                     .baseUrl(MyConstant.PATH)
@@ -135,8 +139,8 @@ public class WebService {
             });
 
             Gson gson = builder.create();
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
+            OkHttpClient.Builder httpClient = getNewHttpClient();
 
             httpClient.addInterceptor(new Interceptor() {
                 @Override
@@ -163,6 +167,20 @@ public class WebService {
         }
 
         return singletonAutenticacion;
+    }
+
+
+    private static OkHttpClient.Builder getNewHttpClient() {
+        OkHttpClient.Builder client = new OkHttpClient.Builder()
+                .followRedirects(true)
+                .followSslRedirects(true)
+                .retryOnConnectionFailure(true)
+                .cache(null)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS);
+
+        return  Https.enableTls12OnPreLollipop(client);
     }
 
 }
