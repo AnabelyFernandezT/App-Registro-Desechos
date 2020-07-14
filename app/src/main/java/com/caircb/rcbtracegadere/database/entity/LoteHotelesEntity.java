@@ -30,6 +30,8 @@ public class LoteHotelesEntity {
 
     private String hoteles;
 
+    private Integer movilizado;
+
     public LoteHotelesEntity(){
 
     }
@@ -112,5 +114,13 @@ public class LoteHotelesEntity {
 
     public void setOperador(String operador) {
         this.operador = operador;
+    }
+
+    public Integer getMovilizado() {
+        return movilizado;
+    }
+
+    public void setMovilizado(Integer movilizado) {
+        this.movilizado = movilizado;
     }
 }

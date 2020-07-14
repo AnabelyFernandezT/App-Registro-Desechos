@@ -33,21 +33,21 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Transaction
     public abstract Boolean verificarBultoEstado(String codigoQR);
 
-    @Query("UPDATE tb_manifiestos_sede_det_valor SET estado = 1 where codigoQR=:codigoQR ")
+    @Query("UPDATE tb_manifiestos_sede_det_valor SET estado = :check and estadoEnvio = 1 where codigoQR = :codigoQR ")
     @Transaction
-    public abstract void actualizarBultoEstado(String codigoQR);
+    public abstract void actualizarBultoEstado(String codigoQR, boolean check);
 
     @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto" )
     @Transaction
     public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
-    @Query("update tb_manifiestos_sede_det_valor set estado=:check where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
+    @Query("update tb_manifiestos_sede_det_valor set estado=:check , estadoEnvio = 1 where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
     public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);
 
-    @Query("select * from tb_manifiestos_sede_det_valor where idManifiestoDetalle=:idManifiesto limit 1")
+    @Query("select * from tb_manifiestos_sede_det_valor where idManifiestoDetalleValor=:idManifiesto limit 1")
     public abstract ManifiestoSedeDetalleValorEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
-    @Query("select idManifiestoDetalleValor from tb_manifiestos_sede_det_valor where estado = 1")
+    @Query("select idManifiestoDetalleValor from tb_manifiestos_sede_det_valor where estado = 1 and estadoEnvio = 1")
     public abstract List<Integer> fetchDetallesRecolectados();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -57,24 +57,26 @@ public abstract class ManifiestoSedeDetalleValorDao {
 
         ManifiestoSedeDetalleValorEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalle());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalleValores());
         if(entity==null){
+            Boolean estado = manifiesto.getEstado() ==1 ? true:false;
             entity = new ManifiestoSedeDetalleValorEntity();
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
-            entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(estado);
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
-
+            entity.setEstadoEnvio(0);
         }else if(entity!=null  ){
-            entity = new ManifiestoSedeDetalleValorEntity();
+            Boolean estado = manifiesto.getEstado() ==1 ? true:false;
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
-            entity.setEstado(manifiesto.getEstado());
+            entity.setEstado(estado);
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
+            entity.setEstadoEnvio(0);
         }
 
         if (entity!=null) createManifiesto(entity);

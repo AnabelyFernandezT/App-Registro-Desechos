@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -23,6 +24,7 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.LoteAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemLote;
@@ -95,7 +97,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                //Toast.makeText(getActivity(),rowItems.get(position).getIdLoteContenedor(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),String.valueOf(rowItems.get(position).getIdLoteContenedor()), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -123,6 +125,37 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
     }
 
     private void  menu(final int position){
+
+        final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setMessage("¿Esta seguro de movilizar el lote?");
+        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+
+                movilizacion = new DialogInicioMovilizacion(getActivity(),rowItems.get(position).getIdLoteContenedor());
+                movilizacion.setOnRegisterMovilizarListener(new DialogInicioMovilizacion.onRegisterMOvilizacionListenner() {
+                    @Override
+                    public void onSuccessful() {
+                        rowItems = MyApp.getDBO().loteDao().fetchLote();
+                        recyclerviewAdapter.setTaskList(rowItems);
+                    }
+                });
+                movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                movilizacion.setCancelable(false);
+                movilizacion.show();
+            }
+        });
+        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.show();
+
+          /*
         final CharSequence[] options = {"MOVILIZAR", "CANCELAR"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("");
@@ -133,7 +166,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                 if (options[item].equals("MOVILIZAR"))
                 {
                     //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-                    openDialogInicioMovilizacion();
+
                 }
                 else if (options[item].equals("CANCELAR")) {
                     dialog.dismiss();
@@ -142,6 +175,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
             }
         });
         builder.show();
+           */
     }
 
     /*private void datosLotesDisponibles(){
@@ -150,28 +184,6 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         consultarLotes.execute();
     }
 */
-    public void openDialogInicioMovilizacion(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("CONFIRMACIÓN")
-                .setMessage("Esta seguro de movilizar el lote?")
-                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        movilizacion = new DialogInicioMovilizacion(getActivity());
-                        movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        movilizacion.setCancelable(false);
-                        movilizacion.show();
-
-                    }
-                })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        builder.show();
-    }
 
 
     @Override

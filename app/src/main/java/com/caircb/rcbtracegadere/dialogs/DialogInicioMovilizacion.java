@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -39,11 +40,19 @@ public class DialogInicioMovilizacion extends MyDialog {
     UserConsultarConductoresTask conductoresTask;
     String destino = "", destinos="",conductor,operador,operadorAuxiliar;
     UserRegistrarLoteSedeTask registrarLoteSedeTask;
+    Integer idLoteContenedor;
+    boolean cancel =false;
 
+    public interface onRegisterMOvilizacionListenner{
+        public void onSuccessful();
+    }
 
-    public DialogInicioMovilizacion(@NonNull Context context) {
+    public onRegisterMOvilizacionListenner mOnRegisterMovilizacionListener;
+
+    public DialogInicioMovilizacion(@NonNull Context context, Integer idLoteContenedor) {
         super(context, R.layout.dialog_movilizar_lote_sede);
         this._activity = (Activity)context;
+        this.idLoteContenedor = idLoteContenedor;
     }
 
     @Override
@@ -71,7 +80,13 @@ public class DialogInicioMovilizacion extends MyDialog {
         btnMovilizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                guardar();
+
+                cancel = false;
+                validacionesInfo();
+
+                if(!cancel){
+                    guardar();
+                }
             }
         });
         listaConductor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -153,6 +168,22 @@ public class DialogInicioMovilizacion extends MyDialog {
         traerConductores();
         traerOperador();
         traerOperadorAuxiliar();
+    }
+
+    private void validacionesInfo(){
+        if(listaConductor.getSelectedItem().toString().equals("SELECCIONE")){
+            cancel = true;
+            messageBox("Debe seleccionar un conductor");
+            return;
+        }else if(listaDestino.getSelectedItem().toString().equals("SELECCIONE")){
+            cancel = true;
+            messageBox("Debe seleccionar un destino");
+            return;
+        }else if(listaDestinoParticular.getSelectedItem().toString().equals("SELECCIONE")){
+            cancel = true;
+            messageBox("Debe seleccionar un destino de llegada");
+            return;
+        }
     }
 
     private void traerDestinos(){
@@ -246,21 +277,26 @@ public class DialogInicioMovilizacion extends MyDialog {
         CatalogoEntity ce = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
         int idDestino = ce!=null?ce.getIdSistema():-1;
 
-        registrarLoteSedeTask = new UserRegistrarLoteSedeTask(getActivity(),idDestino,idConductor,idOperador,idOperadorAuxiliar);
+        registrarLoteSedeTask = new UserRegistrarLoteSedeTask(getActivity(),idDestino,idConductor,idOperador,idOperadorAuxiliar,idLoteContenedor);
         registrarLoteSedeTask.setOnRegisterListener(new UserRegistrarLoteSedeTask.OnRegisterListener() {
             @Override
             public void onSuccessful() {
-                messageBox("Datos enviados a: " + destino);
-            }
 
+                MyApp.getDBO().loteDao().updataMovilizado(idLoteContenedor);
+                messageBox("Datos enviados a: " + destino);
+                if(mOnRegisterMovilizacionListener != null)mOnRegisterMovilizacionListener.onSuccessful();
+                DialogInicioMovilizacion.this.dismiss();
+
+            }
             @Override
             public void onFail() {
                 messageBox("Datos no enviados a: " + destino);
-
+                DialogInicioMovilizacion.this.dismiss();
             }
         });
         registrarLoteSedeTask.execute();
 
-
     }
+
+    public void setOnRegisterMovilizarListener(@Nullable onRegisterMOvilizacionListenner l){ mOnRegisterMovilizacionListener = l;}
 }

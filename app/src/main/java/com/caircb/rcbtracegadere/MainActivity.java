@@ -386,32 +386,32 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     if(nombreLugar.equals("TRANSPORTISTA")){
                         MySession.setDestinoEspecifico("");
                         initMenuLateral();
-                        //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                         MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+0);
                         MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+1);
                         navegate((HomeTransportistaFragment.create()));
                     }else {
                         if(nombreLugar.equals("PLANTA")){
-                           // MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+2);
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+2);
                             traerDestinoEspecifico();
                             //navegate((HomePlantaFragment.create()));
                         } else {
                             if (nombreLugar.equals("SEDE")){
-                                //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+1);
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+6);
                                 traerDestinoEspecifico();
                                 //navegate(HomeSedeFragment.create());
                             }else {
                                 if (nombreLugar.equals("HOTEL")){
-                                    //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+4);
                                     //traerDestinoEspecifico();
                                     navegate(HomeHotelFragment.create());
                                 }else {
-                                   // MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+3);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+5);
                                     traerDestinoEspecifico();
@@ -624,7 +624,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                             openMenuOpcion();
                             guardarLugar("GESTOR");
                         }
-                    }else if (item.getNombre().equals("MENSAJES")){
+                    }else if (item.getNombre().equals("NOTIFICACIONES")){
                         if(mdialog!=null){
                             mdialog.dismiss();
                             mensajes();

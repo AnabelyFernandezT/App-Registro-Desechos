@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -205,8 +206,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             public void onClick(View v) {
                 //Valido si el parametro esta en NO si es verdadero presento el modal
                 rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-                idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idSubRuta,MySession.getIdUsuario()) >0 ){
+                ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
+                RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+                String valor = entity == null ?String.valueOf(rut.getIdSubRuta()) : entity.getValor();
+                Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
+
+               // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idRuta,MySession.getIdUsuario()) >0 ){
                     List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
                     if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
 
@@ -320,15 +326,17 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnDropOffTransportista.setEnabled(false);
         //btnFinRuta.setEnabled(false);
 
-        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnListaAsignadaTransportista.setColorFilter(Color.rgb(115, 124, 119 ));
+        //regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        btnListaAsignadaTransportista.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
-        txtBuscar.setTextColor(Color.rgb(115, 124, 119 ));
-        txtManifiestos.setTextColor(Color.rgb(115, 124, 119 ));
-        txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+        txtBuscar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        txtManifiestos.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
     }
+
 
     public void desbloque_botones(){
 

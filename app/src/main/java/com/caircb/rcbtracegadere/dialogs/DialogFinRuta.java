@@ -93,7 +93,7 @@ public class DialogFinRuta extends MyDialog {
         destinosEspecificos = new ArrayList<>();
         txt_placa = (TextView)getView().findViewById(R.id.Txt_placa);
         txt_kilometraje_inicio = (TextView)getView().findViewById(R.id.txt_kilometraje_inicio);
-
+        List<DtoFindRutas> listaPlacasDisponibles;
         btnFinApp = (LinearLayout)getView().findViewById(R.id.btnFinalizarRuta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnCancelarApp);
 
@@ -132,7 +132,7 @@ public class DialogFinRuta extends MyDialog {
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+position);
                     destinos = (String) listaDestino.getSelectedItem();
                     traerDestinoEspecifico();
-                    validarHoteles();
+                    //validarHoteles();
 
                 }
 
@@ -189,9 +189,15 @@ public class DialogFinRuta extends MyDialog {
                             messageBox("Seleccione Destino");
                             return;
                         }else {
+                            if(destinos.equals("HOTEL")){
+                                loteHotelPadre();
+                            }
+
                             guardarDatos();
                             //messageBox("guardado");
-                            loteHotelPadre();
+
+
+
                         }
 
                     }
@@ -309,15 +315,15 @@ public class DialogFinRuta extends MyDialog {
         btnPickUpTransportista.setEnabled(false);
         btnDropOffTransportista.setEnabled(false);
 
-        regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnSincManifiestos.setColorFilter(Color.rgb(115, 124, 119 ));
-        btnListaAsignadaTransportista.setColorFilter(Color.rgb(115, 124, 119 ));
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        btnListaAsignadaTransportista.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
 
-        txtBuscar.setTextColor(Color.rgb(115, 124, 119 ));
-        txtManifiestos.setTextColor(Color.rgb(115, 124, 119 ));
-        txtSincronizar.setTextColor(Color.rgb(115, 124, 119 ));
+        txtBuscar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtManifiestos.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
 
-
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
         lnlIniciaRuta.setVisibility(View.VISIBLE);
         lnlFinRuta.setVisibility(View.GONE);
 
@@ -326,8 +332,7 @@ public class DialogFinRuta extends MyDialog {
 
     private void loteHotelPadre(){
         if(lotePadre!=null){
-            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
-            inicioFinLoteHotelTask.execute();
+            validarHoteles();
 
         }else {
             lotePadreHotelTask = new UserObtenerLotePadreHotelTask(getActivity());
@@ -345,29 +350,40 @@ public class DialogFinRuta extends MyDialog {
     }
 
     private void validarHoteles (){
-        if (destinos.equals("HOTEL")){
+
             builder = new DialogBuilder(getActivity());
             builder.setMessage("¿Es su último día de recolección?");
             builder.setCancelable(true);
             builder.setPositiveButton("Si", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    destino = "null";
+
                     listaDestinoParticular.setEnabled(false);
-                    finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity(),lotePadre.getIdLoteContenedorHotel());
-                    finLotePadreHotelTask.execute();
+
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+                    inicioFinLoteHotelTask.setOnRegisterListener(new UserRegistrarInicioFinLoteHotelTask.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
+                            finLotePadreHotelTask.execute();
+                        }
+                    });
+                    inicioFinLoteHotelTask.execute();
+
                     builder.dismiss();
                 }
             });
             builder.setNegativeButton("No", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+                    inicioFinLoteHotelTask.execute();
                     builder.dismiss();
                 }
             });
             builder.show();
 
-        }
+
     }
 
 }

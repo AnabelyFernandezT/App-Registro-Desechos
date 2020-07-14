@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.dialogs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,11 +37,9 @@ public class DialogPlacaSede extends MyDialog {
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
     UserRegistrarLoteInicioTask registrarLoteInicioTask;
-    ImageButton btnFinLote;
+    ImageButton btnFinLote, btnSincManifiestos,btnListaAsignadaSede,regionBuscar;
 
-
-
-
+    TextView txtManifiesto, txtMovilizar, txtSincronizar;
 
     public DialogPlacaSede(@NonNull Context context) {
         super(context, R.layout.dialog_placa_sede);
@@ -58,12 +57,20 @@ public class DialogPlacaSede extends MyDialog {
     private void init() {
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
+        btnSincManifiestos = getActivity().findViewById(R.id.btnSincManifiestos);
+        btnListaAsignadaSede = getActivity().findViewById(R.id.btnListaAsignadaSede);
+        regionBuscar = getActivity().findViewById(R.id.regionBuscar);
+
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
 
         lnlIniciaLote = getActivity().findViewById(R.id.LnlIniciaLote);
         lnlFinLote = getActivity().findViewById(R.id.LnlFinLote);
         btnFinLote = (ImageButton) getActivity().findViewById(R.id.btnFinLote);
+
+        txtSincronizar = getActivity().findViewById(R.id.txtSincronizar);
+        txtManifiesto = getActivity().findViewById(R.id.txtManifiesto);
+        txtMovilizar = getActivity().findViewById(R.id.txtMovilizar);
 
         spinnerPlacas = (Spinner)getView().findViewById(R.id.lista_placas);
         spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -92,12 +99,17 @@ public class DialogPlacaSede extends MyDialog {
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
-                int idVehiculo = c!=null?c.getIdSistema():-1;
-                System.out.println(c!=null?c.getNombre():-1);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo_inicio_lote",""+idVehiculo);
-                registrarLote();
-                dismiss();
+
+                if(!spinnerPlacas.getSelectedItem().toString().equals("SELECCIONE")){
+                    CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
+                    int idVehiculo = c!=null?c.getIdSistema():-1;
+                    System.out.println(c!=null?c.getNombre():-1);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo_inicio_lote",""+idVehiculo);
+                    registrarLote();
+                    dismiss();
+                }else{
+                    messageBox("Debe seleccionar una placa");
+                }
             }
         });
 
@@ -174,6 +186,18 @@ public class DialogPlacaSede extends MyDialog {
     private void activarFinLote(){
         lnlIniciaLote.setVisibility(View.GONE);
         lnlFinLote.setVisibility(View.VISIBLE);
+        btnListaAsignadaSede.setEnabled(true);
+        btnSincManifiestos.setEnabled(true);
+        regionBuscar.setEnabled(false);
+
+        btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
+        btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
+        txtManifiesto.setTextColor(Color.WHITE);
+        txtSincronizar.setTextColor(Color.WHITE);
+
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+
     }
 
 

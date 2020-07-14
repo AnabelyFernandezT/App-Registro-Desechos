@@ -31,21 +31,28 @@ public class UserConsultarLotesHotelesTask extends MyRetrofitApi implements Retr
     public interface OnPlacaListener {
         public void onSuccessful(List<DtoLotesHoteles> catalogos);
     }
+    public interface onCountListaAsigandasListenner {
+        public void onSuccesfull(Integer total);
+    }
 
-    private OnPlacaListener mOnVehiculoListener;
+    private onCountListaAsigandasListenner mOnCountListaAsignaadasListeneer;
+
 
     @Override
     public void execute() {
-
+        progressShow("Buscando información de hoteles...");
         WebService.api().traerLotesHoteles(new RequestLotesHoteles(MySession.getIdUsuario(),new Date())).enqueue(new Callback<List<DtoLotesHoteles>>() {
             @Override
             public void onResponse(Call<List<DtoLotesHoteles>> call, Response<List<DtoLotesHoteles>> response) {
                 if (response.isSuccessful()){
-                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                     //MyApp.getDBO().loteHotelesDao().eliminarLotes();
+                    if(mOnCountListaAsignaadasListeneer!=null) mOnCountListaAsignaadasListeneer.onSuccesfull(response.body().size());
                     MyApp.getDBO().loteHotelesDao().saveOrUpdate(response.body());
+
                    // for(DtoLotesHoteles reg:response.body()){
                     //}
+                    progressHide();
+                }else {
                     progressHide();
                 }
             }
@@ -59,4 +66,5 @@ public class UserConsultarLotesHotelesTask extends MyRetrofitApi implements Retr
 
     }
 
+    public void setmOnCountListaAsignaadasListeneer(onCountListaAsigandasListenner l) {  mOnCountListaAsignaadasListeneer = l; }
 }

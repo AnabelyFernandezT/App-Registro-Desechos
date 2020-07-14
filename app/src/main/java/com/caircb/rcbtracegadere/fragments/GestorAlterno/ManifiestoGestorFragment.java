@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
+import com.caircb.rcbtracegadere.tasks.UserConsultarLotePadreTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarGestorAlternoTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.caircb.rcbtracegadere.utils.Utils;
@@ -50,6 +51,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     DialogAgregarFotografias dialogAgregarFotografias;
     boolean info = false;
     Window window;
+    UserConsultarLotePadreTask consultarLotePadre;
 
     @Override
     public void onClick(View v) {
@@ -106,10 +108,18 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 public void onSussfull() {
                     messageBox("Registrado correctamente!!");
                     setNavegate(HomeGestorAlternoFragment.create());
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
                 }
             });
+            datosManifiestosAsignados();
             registrarGestorAlterno.execute();
+
         }
+    }
+
+    private void datosManifiestosAsignados(){
+        consultarLotePadre = new UserConsultarLotePadreTask(getActivity());
+        consultarLotePadre.execute();
     }
 
     @Override

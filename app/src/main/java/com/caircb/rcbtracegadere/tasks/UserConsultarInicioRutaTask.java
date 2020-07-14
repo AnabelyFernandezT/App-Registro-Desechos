@@ -10,9 +10,11 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
 import com.caircb.rcbtracegadere.models.response.DtoInicioRuta;
+import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.services.WebService;
 
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,19 +33,24 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
         WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoInicioRuta>() {
             @Override
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
-                if (response.isSuccessful()){
+                if(response.isSuccessful()){
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().getPlaca());
+                    MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte",""+response.body().getEstado());
                     if (!verificarInicioRuta()){
-                        MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
-                                MySession.getIdUsuario(),
-                                response.body().getIdSubRuta(),
-                                new Date(),
-                                null,
-                                response.body().getKilometrajeInicio(),
-                                response.body().getKilometrajeFin(),
-                                1);
-                    }else {
+                        if(response.body().getEstado()){
+                            MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
+                                    MySession.getIdUsuario(),
+                                    response.body().getIdSubRuta(),
+                                    new Date(),
+                                    null,
+                                    response.body().getKilometrajeInicio(),
+                                    response.body().getKilometrajeFin(),
+                                    1);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
 
+                        }
                     }
+
                 }
             }
 
@@ -55,10 +62,10 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
 
     }
 
-    private Boolean verificarInicioRuta (){
+    private Boolean verificarInicioRuta(){
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
 
-        if(model!=null && model.getIdRutaInicioFin()>0){
+        if(model!=null){
             return true;
         }else {
             return false;

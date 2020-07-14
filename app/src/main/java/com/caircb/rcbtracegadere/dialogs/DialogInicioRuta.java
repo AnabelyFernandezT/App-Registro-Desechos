@@ -277,7 +277,7 @@ public class DialogInicioRuta extends MyDialog {
         Date fechaInicio = AppDatabase.getDateTime();
         idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
-        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
+        //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
         //MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
 
         //EMPIEZA RUTEO RECOLECCION

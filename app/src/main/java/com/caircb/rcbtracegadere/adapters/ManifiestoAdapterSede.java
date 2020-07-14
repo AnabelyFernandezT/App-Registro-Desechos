@@ -46,11 +46,11 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
         final ItemManifiestoSede it = manifiestosList.get(position);
         holder.txtNumManifiesto.setText(it.getNumeroManifiesto());
         holder.txtCliente.setText(it.getNombreCliente());
-        if(it.getBultosSelecionado()==it.getTotalBultos()) {
-            if(it.getEstado().equals(0)) {
-                holder.borderVerificacion.setBackgroundResource(cNaranja);
-            }else{
+        if(it.getBultosSelecionado()>0) {
+            if(it.getEstado().equals(3)) {
                 holder.borderVerificacion.setBackgroundResource(cVerde);
+            }else{
+                holder.borderVerificacion.setBackgroundResource(cNaranja);
             }
         }else{
             holder.borderVerificacion.setBackgroundResource(cRojo);

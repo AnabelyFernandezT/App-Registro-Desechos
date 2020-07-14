@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -52,8 +53,8 @@ public class RutaInicioFinEntity {
         this.estado = estado;
         this.sincronizado=false;
         this.sincronizadoFin=false;
-
     }
+
 
     public Integer get_id() {
         return _id;
@@ -144,4 +145,6 @@ public class RutaInicioFinEntity {
     public void setSincronizadoFin(@NonNull Boolean sincronizadoFin) {
         this.sincronizadoFin = sincronizadoFin;
     }
+
+
 }

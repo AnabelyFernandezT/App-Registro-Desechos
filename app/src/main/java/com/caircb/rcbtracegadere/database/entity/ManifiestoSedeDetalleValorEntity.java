@@ -24,10 +24,20 @@ public class ManifiestoSedeDetalleValorEntity {
 
     private String nombreBulto;
 
-    private Integer estado;
+    private Boolean estado;
+
+    private Integer estadoEnvio;
 
 
     public ManifiestoSedeDetalleValorEntity() {
+    }
+
+    public Integer getEstadoEnvio() {
+        return estadoEnvio;
+    }
+
+    public void setEstadoEnvio(Integer estadoEnvio) {
+        this.estadoEnvio = estadoEnvio;
     }
 
     public String getNombreBulto() {
@@ -71,11 +81,11 @@ public class ManifiestoSedeDetalleValorEntity {
         this.codigoQR = codigoQR;
     }
 
-    public Integer getEstado() {
+    public Boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(Integer estado) {
+    public void setEstado(Boolean estado) {
         this.estado = estado;
     }
 

@@ -9,6 +9,7 @@ public class ItemManifiestoSede {
     private Integer idTransporteVehiculo;
     private Integer estado;
 
+
     public ItemManifiestoSede() {
     }
 

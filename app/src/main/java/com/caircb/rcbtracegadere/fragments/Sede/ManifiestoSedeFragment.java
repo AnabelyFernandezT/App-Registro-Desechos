@@ -35,6 +35,7 @@ import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarDetalleSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -57,6 +58,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
     ListView LtsManifiestoDetalle,mDialogMenuItems;
     DialogBultosSede dialogBultos;
     UserRegistarDetalleSedeTask detalleSedeTask;
+    UserConsultarManifiestosSedeTask consultarHojaRutaTask;
 
     public  ManifiestoSedeFragment (){
     }
@@ -116,42 +118,47 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Integer loteContenedor = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
-                if(loteContenedor!=null){
-                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
-                    dialogBuilder.setCancelable(false);
-                    dialogBuilder.setMessage("¿Esta seguro de continuar ?");
-                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                            detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
-                            detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
-                                @Override
-                                public void onSuccessful() {
-                                    messageBox("Bultos Guardados");
-                                }
+                   if (loteContenedor != null) {
+                       final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                       dialogBuilder.setCancelable(false);
+                       dialogBuilder.setMessage("¿Esta seguro de continuar ?");
+                       dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               detalleSedeTask = new UserRegistarDetalleSedeTask(getActivity());
+                               detalleSedeTask.setOnRegisterListener(new UserRegistarDetalleSedeTask.OnRegisterListener() {
+                                   @Override
+                                   public void onSuccessful() {
+                                       messageBox("Bultos Guardados");
+                                       setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                                       consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(getActivity());
+                                       consultarHojaRutaTask.execute();
 
-                                @Override
-                                public void onFail() {
-                                    messageBox("Bultos No Guardados");
-                                }
-                            });
-                            detalleSedeTask.execute();
-                        }
-                    });
-                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                        }
-                    });
-                    dialogBuilder.show();
-                }else {
-                    messageBox("Debe Iniciar Lote");
-                }
+                                   }
 
-            }
+                                   @Override
+                                   public void onFail() {
+                                       messageBox("Bultos No Guardados");
+                                   }
+                               });
+                               detalleSedeTask.execute();
+                               //MyApp.getDBO().manifiestoSedeDao().updateEstadoManifiesto(idAppManifiesto);
+                               dialogBuilder.dismiss();
+                           }
+                       });
+                       dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               dialogBuilder.dismiss();
+                           }
+                       });
+                       dialogBuilder.show();
+                   } else {
+                       messageBox("Debe Iniciar Lote");
+                   }
+               }
         });
     }
 
@@ -166,9 +173,17 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapterSede.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(),position);
+                Integer estadoManifiesto = MyApp.getDBO().manifiestoSedeDao().estadoManifiestoSede(idAppManifiesto);
+                if(estadoManifiesto != 3) {
+                    openOpcionesItems(detalles.get(position).getIdManifiestoDetalle(), position);
+                }
             }
         });
+
+        Integer estadoManifiesto = MyApp.getDBO().manifiestoSedeDao().estadoManifiestoSede(idAppManifiesto);
+        if(estadoManifiesto.equals(3)) {
+            btnRegistrar.setEnabled(false);
+        }
     }
 
 

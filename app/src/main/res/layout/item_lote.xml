@@ -96,7 +96,7 @@
         android:background="@drawable/shape_card_border"
         android:id="@+id/rowFGL"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="330dp"
         android:clickable="true"
         android:elevation="4dp"
         android:focusable="true"
@@ -121,6 +121,21 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
                     android:text="NUMERO DE LOTE"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:id="@+id/itm_cod_lote"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="CODIGO DE LOTE"
                     style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
                     />

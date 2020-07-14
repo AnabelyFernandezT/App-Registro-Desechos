@@ -116,8 +116,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(manifiestoID);
-        if(estadoManifiesto.equals(4)){
-            btnManifiestoNext.setVisibility(View.INVISIBLE);
+        if(estadoManifiesto.equals(3)){
+            btnManifiestoNext.setEnabled(false);
         }
 
     }

@@ -12,6 +12,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestRegistarLotePadreHotel;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.util.Date;
 
@@ -25,6 +26,11 @@ public class UserRegistrarLoteHotelTask extends MyRetrofitApi implements Retrofi
     Integer idDestinoFinRutaCatalogo;
 
 
+    public interface  onRegisterSuccesfullListener {
+        public void onSucessfull ();
+    }
+    private onRegisterSuccesfullListener mOnRegisterSesscesullListener;
+
     public UserRegistrarLoteHotelTask(Context context, Integer idDestinoFinRutaCatalogo) {
         super(context);
         this.idDestinoFinRutaCatalogo = idDestinoFinRutaCatalogo;
@@ -33,12 +39,17 @@ public class UserRegistrarLoteHotelTask extends MyRetrofitApi implements Retrofi
     @Override
     public void execute() {
         RequestRegistarLotePadreHotel request = requestRegistarLotePadreHotel();
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
+        System.out.println(json);
+
         if(request!=null){
             WebService.api().registrarHotelLote(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if (response.isSuccessful()){
-
+                        MyApp.getDBO().loteHotelesDao().updataMovilizado(Integer.parseInt(response.message()));
+                        if(mOnRegisterSesscesullListener!=null)mOnRegisterSesscesullListener.onSucessfull();
                     }
                 }
 
@@ -66,5 +77,7 @@ public class UserRegistrarLoteHotelTask extends MyRetrofitApi implements Retrofi
 
         return rq;
     }
+
+    public void setmOnRegisterSesscesullListener(onRegisterSuccesfullListener l){ mOnRegisterSesscesullListener= l;}
 
 }

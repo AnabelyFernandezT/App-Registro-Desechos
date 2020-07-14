@@ -42,7 +42,7 @@ public abstract class ManifiestoPlantaDetalleDao {
     @Transaction
     public abstract List<DtoDetallesBultoPlanta> fetchManifiestosAsigDetalleBultos(Integer idManifiesto);
 
-    @Query("select * from tb_manifiestos_planta_detalle where idAppManifiesto=:idManifiesto limit 1")
+    @Query("select * from tb_manifiestos_planta_detalle where idManifiestoDetalle=:idManifiesto limit 1")
     public abstract ManifiestoPlantaDetalleEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
 
@@ -53,7 +53,7 @@ public abstract class ManifiestoPlantaDetalleDao {
 
         ManifiestoPlantaDetalleEntity entity;
 
-        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiesto());
+        entity = fetchHojaRutabyIdManifiesto(manifiesto.getIdManifiestoDetalle());
         if(entity==null){
             entity = new ManifiestoPlantaDetalleEntity();
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
@@ -64,8 +64,6 @@ public abstract class ManifiestoPlantaDetalleDao {
             entity.setTotalBultos(manifiesto.getTotalBultos());
 
         }else if(entity!=null ){
-
-            entity = new ManifiestoPlantaDetalleEntity();entity.setCodigo(manifiesto.getCodigo());
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setCodigoMae(manifiesto.getCodigoMae());

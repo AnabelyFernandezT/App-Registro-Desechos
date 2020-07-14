@@ -106,62 +106,67 @@ public class DialogInformacionModulos extends MyDialog {
     private void datosInformacionModulo(){
         InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
         int idTipoProceso=Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino"));
+        boolean estadoProceso=Boolean.parseBoolean(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estado_transporte"));
         if (idTipoProceso==1){
-            lblTituloRecoleccion.setVisibility(View.VISIBLE);
-            lblTituloRuta.setVisibility(View.GONE);
-            sectionGeneral.setVisibility(View.VISIBLE);
-            sectionEspecifica.setVisibility(View.VISIBLE);
+            if (estadoProceso==true){
+                lblTituloRecoleccion.setVisibility(View.VISIBLE);
+                lblTituloRuta.setVisibility(View.GONE);
+                sectionGeneral.setVisibility(View.VISIBLE);
+                sectionEspecifica.setVisibility(View.VISIBLE);
 
-            lblRutaInfo.setText(informacionModulos.getRuta());
-            lblSubrutaInfo.setText(informacionModulos.getSubruta());
-            lblPlacaInfo.setText(informacionModulos.getPlaca());
-            lblChoferInfo.setText(informacionModulos.getChofer());
-            lblAuxiliarRecoleccion1Info.setText(informacionModulos.getAuxiliarRecoleccion1());
-            lblAuxiliarRecoleccion2Info.setText(informacionModulos.getAuxiliarRecoleccion2());
-            lblKilometrajeInfo.setText(informacionModulos.getKilometrajeInicio().toString());
+                lblRutaInfo.setText(informacionModulos.getRuta());
+                lblSubrutaInfo.setText(informacionModulos.getSubruta());
+                lblPlacaInfo.setText(informacionModulos.getPlaca());
+                lblChoferInfo.setText(informacionModulos.getChofer());
+                lblAuxiliarRecoleccion1Info.setText(informacionModulos.getAuxiliarRecoleccion1());
+                lblAuxiliarRecoleccion2Info.setText(informacionModulos.getAuxiliarRecoleccion2());
+                lblKilometrajeInfo.setText(informacionModulos.getKilometrajeInicio().toString());
         /*    if (informacionModulos.getObservacionResiduos().equals(null)){
                 lblObservaciones.setText("");
             }else {
                 lblObservaciones.setText(informacionModulos.getObservacionResiduos());
             }*/
-            if (informacionModulos.getResiduoSujetoFiscalizacion()==0){
-                chkFiscalizacionNo.setChecked(true);
-                chkFiscalizacionSi.setSelected(false);
+                if (informacionModulos.getResiduoSujetoFiscalizacion()==0){
+                    chkFiscalizacionNo.setChecked(true);
+                    chkFiscalizacionSi.setSelected(false);
               /*chkFiscalizacionArcsa.setText();
                 chkFiscalizacionMi.setText();*/
+                }else {
+                    chkFiscalizacionNo.setSelected(false);
+                    chkFiscalizacionSi.setSelected(true);
+                }
+                if (informacionModulos.getRequiereDevolucionRecipientes()==0){
+                    chkDevolucionRecipienteSi.setChecked(false);
+                    chkDevolucionRecipienteNo.setChecked(true);
+                }else {
+                    chkDevolucionRecipienteSi.setChecked(true);
+                    chkDevolucionRecipienteNo.setChecked(false);
+                }
+                if (informacionModulos.getTieneDisponibilidadMontacarga()==0){
+                    chkMontacargasSi.setChecked(false);
+                    chkMontacargasNo.setChecked(true);
+                }else {
+                    chkMontacargasSi.setChecked(true);
+                    chkMontacargasNo.setChecked(false);
+                }
+                if (informacionModulos.getTieneDisponibilidadBalanza()==0){
+                    chkBalanzaSi.setChecked(false);
+                    chkBalanzaNo.setChecked(true);
+                }else {
+                    chkBalanzaSi.setChecked(true);
+                    chkBalanzaNo.setChecked(false);
+                }
+                if (informacionModulos.getRequiereIncineracionPresenciada()==0){
+                    chkPresenciadoSi.setChecked(false);
+                    chkPresenciadoNo.setChecked(true);
+                }else {
+                    chkPresenciadoSi.setChecked(true);
+                    chkPresenciadoNo.setChecked(false);
+                }
             }else {
-                chkFiscalizacionNo.setSelected(false);
-                chkFiscalizacionSi.setSelected(true);
+                AlertDialog.Builder builder;
+                messageBox("Manifiestos ya recolectados...");
             }
-            if (informacionModulos.getRequiereDevolucionRecipientes()==0){
-                chkDevolucionRecipienteSi.setChecked(false);
-                chkDevolucionRecipienteNo.setChecked(true);
-            }else {
-                chkDevolucionRecipienteSi.setChecked(true);
-                chkDevolucionRecipienteNo.setChecked(false);
-            }
-            if (informacionModulos.getTieneDisponibilidadMontacarga()==0){
-                chkMontacargasSi.setChecked(false);
-                chkMontacargasNo.setChecked(true);
-            }else {
-                chkMontacargasSi.setChecked(true);
-                chkMontacargasNo.setChecked(false);
-            }
-            if (informacionModulos.getTieneDisponibilidadBalanza()==0){
-                chkBalanzaSi.setChecked(false);
-                chkBalanzaNo.setChecked(true);
-            }else {
-                chkBalanzaSi.setChecked(true);
-                chkBalanzaNo.setChecked(false);
-            }
-            if (informacionModulos.getRequiereIncineracionPresenciada()==0){
-                chkPresenciadoSi.setChecked(false);
-                chkPresenciadoNo.setChecked(true);
-            }else {
-                chkPresenciadoSi.setChecked(true);
-                chkPresenciadoNo.setChecked(false);
-            }
-
         }else {
             lblTituloRecoleccion.setVisibility(View.GONE);
             lblTituloRuta.setVisibility(View.VISIBLE);
