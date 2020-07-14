@@ -331,8 +331,7 @@ public class MyAuthorization {
         }
         */
 
-        info =new UserConsultarInformacionTransportista(getActivity());
-        info.execute();
+
         consultarInicioFinRuta();
     }
 
@@ -351,6 +350,9 @@ public class MyAuthorization {
             credentials.setImei(MySession.getIdDevice());
             credentials.setUsuario(MySession.getIdUsuario());
             credentials.setPerfil(MySession.getIdPerfil());
+
+            info =new UserConsultarInformacionTransportista(getActivity());
+            info.execute();
 
             WebService.seg().registrarSession(credentials).enqueue(new Callback<DtoUserTokenCredentials>() {
                 @Override

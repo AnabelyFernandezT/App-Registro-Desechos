@@ -101,7 +101,7 @@
                 android:scaleType="fitCenter"
                 android:focusable="false"
                 android:clickable="false"
-                android:src="@mipmap/icon_movilizar" />
+                android:src="@drawable/rcb_button_inicia_ruta" />
             <TextView
                 android:id="@+id/txtMovilizar"
                 style="@style/title_footer"

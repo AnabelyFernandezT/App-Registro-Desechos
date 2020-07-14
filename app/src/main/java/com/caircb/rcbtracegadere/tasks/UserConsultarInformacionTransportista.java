@@ -8,6 +8,7 @@ import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestInformacionTransportista;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
+import com.caircb.rcbtracegadere.models.response.DtoInformacionTransportista;
 import com.caircb.rcbtracegadere.services.WebService;
 
 import retrofit2.Call;
@@ -23,19 +24,21 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
     @Override
     public void execute() {
 
-        WebService.api().informacionTransportista(new RequestInformacionTransportista(MySession.getIdUsuario())).enqueue(new Callback<DtoInfo>() {
+        WebService.api().informacionTransportista(new RequestInformacionTransportista(MySession.getIdUsuario())).enqueue(new Callback<DtoInformacionTransportista>() {
             @Override
-            public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
+            public void onResponse(Call<DtoInformacionTransportista> call, Response<DtoInformacionTransportista> response) {
                 if(response.isSuccessful()){
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",response.body().getMensaje());
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+response.body().getIdFinRutaCatalogo());
+                    MySession.setDestinoEspecifico(response.body().getNombreCorto());
 
                 }
             }
 
             @Override
-            public void onFailure(Call<DtoInfo> call, Throwable t) {
+            public void onFailure(Call<DtoInformacionTransportista> call, Throwable t) {
 
             }
         });
+
     }
 }
