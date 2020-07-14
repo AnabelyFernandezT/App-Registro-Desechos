@@ -70,7 +70,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogBuilder builder;
     double pesoT=0;
-    private boolean firma = false;
+    private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
     TextView txtCountPhoto;
     boolean info = false;
@@ -209,6 +209,21 @@ public class TabManifiestoAdicionalFragment extends Fragment {
 
     public String sendObservacion(){
         return txtotraNovedad.getText().toString();
+    }
+
+    public  boolean validarNovedad (){
+        String txtObservacion = txtotraNovedad.getText().toString();
+        String numeroFotos = txtCountPhoto.getText().toString();
+        if(txtObservacion!=""){
+            if(numeroFotos.equals("0")){
+                observacion = false;
+            }else{
+                observacion = true;
+            }
+        }else{
+            observacion =true;
+        }
+        return  observacion;
     }
 
     public boolean validarInformacion(){
