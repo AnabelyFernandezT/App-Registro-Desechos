@@ -24,7 +24,7 @@ public abstract class RutaInicioFinDao {
     abstract long createRegistro(RutaInicioFinEntity entity);
 
     public long saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado ){
-        RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutasE(idRutaInicioFin);
+        RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutas(idRutaInicioFin);
         if(registroInicio==null) {
             registroInicio = new RutaInicioFinEntity(
                     idRutaInicioFin,
@@ -70,11 +70,11 @@ public abstract class RutaInicioFinDao {
 
 
 
-    @Query("select * from tb_rutaInicioFin where idTransporteRecolector=:idTransporteRecolector")
-    public abstract List<RutaInicioFinEntity> fechConsultaInicioFinRutas(Integer idTransporteRecolector );
+    @Query("select * from tb_rutaInicioFin where idRutaInicioFin=:idRutaInicioFin")
+    public abstract RutaInicioFinEntity fechConsultaInicioFinRutas(Integer idRutaInicioFin );
 
-    @Query("select * from tb_rutaInicioFin where idRutaInicioFin=:idInicioFinRuta limit 1")
-    public abstract RutaInicioFinEntity fechConsultaInicioFinRutasE(Integer idInicioFinRuta );
+    @Query("select * from tb_rutaInicioFin where idTransporteRecolector=:idTransporteRecolector limit 1")
+    public abstract RutaInicioFinEntity fechConsultaInicioFinRutasE(Integer idTransporteRecolector );
 
 
 
