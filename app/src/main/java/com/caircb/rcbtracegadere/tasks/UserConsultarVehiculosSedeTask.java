@@ -47,6 +47,7 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
                         List<DtoCatalogo> data = response.body();
                         for(DtoCatalogo c : response.body()){
                             MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+c.getId(),""+c.getDatoAdicional());
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+c.getNombre());
                         }
 
                         if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful((List<DtoCatalogo>) response.body());
