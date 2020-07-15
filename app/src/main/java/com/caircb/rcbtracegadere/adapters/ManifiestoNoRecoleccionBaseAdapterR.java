@@ -139,7 +139,7 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
 
     public void registarCheckObservacion(Integer idAppManifiseto,Integer id, boolean check){
         //dbHelper.open();
-        MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().saveOrUpdate(idAppManifiseto,id,check);
+        MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().updateManifiestoNorecolecion(idAppManifiseto,id,check);
         //dbHelper.close();
     }
     public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
@@ -149,6 +149,6 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
         mOnReloadAdaptador = l;
     }
     public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
-        //MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
+        MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
     }
 }
