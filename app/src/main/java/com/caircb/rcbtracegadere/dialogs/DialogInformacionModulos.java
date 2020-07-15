@@ -49,7 +49,7 @@ public class DialogInformacionModulos extends MyDialog {
     LinearLayout btnRetornarMenu,sectionGeneral,sectionEspecifica;
     List<DtoInformacionModulos> listaInformacionModulos;
     private List<ItemInformacionModulos> rowItems;
-
+    AlertDialog.Builder builder;
 
     public DialogInformacionModulos(@NonNull Context context) {
         super(context, R.layout.dialog_informacion_modulos);
@@ -107,8 +107,8 @@ public class DialogInformacionModulos extends MyDialog {
         InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
         int idTipoProceso=Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino"));
         boolean estadoProceso=Boolean.parseBoolean(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estado_transporte"));
-        if (idTipoProceso==1){
-            if (estadoProceso==true){
+
+        if (idTipoProceso==1||idTipoProceso==0){
                 lblTituloRecoleccion.setVisibility(View.VISIBLE);
                 lblTituloRuta.setVisibility(View.GONE);
                 sectionGeneral.setVisibility(View.VISIBLE);
@@ -163,10 +163,7 @@ public class DialogInformacionModulos extends MyDialog {
                     chkPresenciadoSi.setChecked(true);
                     chkPresenciadoNo.setChecked(false);
                 }
-            }else {
-                AlertDialog.Builder builder;
-                messageBox("Manifiestos ya recolectados...");
-            }
+
         }else {
             lblTituloRecoleccion.setVisibility(View.GONE);
             lblTituloRuta.setVisibility(View.VISIBLE);

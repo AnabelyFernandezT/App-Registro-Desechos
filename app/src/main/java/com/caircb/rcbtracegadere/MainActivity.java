@@ -548,8 +548,21 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
 
         dialogInformacionModulos = new DialogInformacionModulos(this);
-        informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
-        informacionModulosTaskl.execute();
+        int idTipoProceso=Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino"));
+        boolean estadoProceso=Boolean.parseBoolean(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estado_transporte"));
+        if (idTipoProceso==1||idTipoProceso==0){
+            if (estadoProceso==true){
+                informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
+                informacionModulosTaskl.execute();
+            }
+            else {
+                message("No hay datos para mostrar...");
+            }
+        }else {
+            informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
+            informacionModulosTaskl.execute();
+        }
+
 
 
         /*DisplayMetrics displaymetrics = new DisplayMetrics(); getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
