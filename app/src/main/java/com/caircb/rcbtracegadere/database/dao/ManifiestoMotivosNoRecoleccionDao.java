@@ -20,6 +20,10 @@ public abstract class ManifiestoMotivosNoRecoleccionDao {
             " from tb_catalogos c where tipo=6")
     public  abstract List<RowItemNoRecoleccion> fetchHojaRutaMotivoNoRecoleccion(Integer idManifiesto);
 
+    @Query("select count(idAppManifiesto) as estadoChek from tb_manifiestos_motivo_norecoleccion  nor " +
+            "where nor.estadoChek=1 and nor.idAppManifiesto=:idManifiesto " )
+    public  abstract Integer fetchHojaRutaMotivoNoRecoleccionEstado(Integer idManifiesto);
+
     @Query("select count(*) " +
             " from tb_catalogos c" +
             " inner join tb_manifiestos_motivo_norecoleccion mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=6 and estadoChek=1" +

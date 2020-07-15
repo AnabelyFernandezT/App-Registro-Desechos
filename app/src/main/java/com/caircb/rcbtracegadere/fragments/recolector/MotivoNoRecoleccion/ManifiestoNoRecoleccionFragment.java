@@ -151,10 +151,25 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
             case R.id.btnManifiestoNext:
                 //tab genearl...
                 boolean aplicaNoRecoleccion= tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion();
+                Integer estadoCheck;
+                estadoCheck = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccionEstado(idAppManifiesto);
 
-                if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
-                    messageBox("Se requiere de la firma del transportista");
-                    return;
+                if(estadoCheck>0){
+
+                    if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
+                        messageBox("Se requiere de la firma del transportista");
+                        return;
+                    }
+                    if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
+                        messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
+                        return;
+                    }
+                    setNavegate(VistaPreliminarNoRecolectadoFragment.newInstance(
+                            idAppManifiesto,
+                            tabManifiestoGeneral.getTipoPaquete()
+                    ));
+                }else{
+                    messageBox("Ingrese motivo de NO RECOLECCIÓN");
                 }
  /*               if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
                     messageBox("Se require que ingrese los datos del tecnico responsable de la entrega de los residuos recolectados");
@@ -165,15 +180,6 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                     return;
                 }
 **/
-                if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
-                    messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
-                    return;
-                }
-                setNavegate(VistaPreliminarNoRecolectadoFragment.newInstance(
-                        idAppManifiesto,
-                        tabManifiestoGeneral.getTipoPaquete()
-                ));
-
 
                 break;
         }
