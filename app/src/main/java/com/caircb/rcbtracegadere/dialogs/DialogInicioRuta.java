@@ -141,6 +141,7 @@ public class DialogInicioRuta extends MyDialog {
                     placa = (String) spinnerPlacas.getSelectedItem();
                     lblPlaca.setText(listaPlacasDisponibles.get(position-1).getPlaca());
                     placaInfoModulos=listaPlacasDisponibles.get(position-1).getPlaca();
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
                     lblTransportistaRecolector.setText(listaPlacasDisponibles.get(position-1).getNombreChofer());
                     lblAuxiliarRecoleccion1.setText(listaPlacasDisponibles.get(position-1).getNombreAuxiliar());
                     if (listaPlacasDisponibles.get(position-1).getNombreConductor()!=null){

@@ -138,7 +138,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                             @Override
                             public void onSuccessful() {
                                 messageBox("Lote # " + finLote + " se ha cerrado correctamente.");
-
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_lote","-10");
                                 verificarInicioLote();
                                 /*
                                 lnlIniciaLote.setVisibility(View.VISIBLE);

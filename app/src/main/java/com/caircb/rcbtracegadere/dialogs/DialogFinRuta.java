@@ -224,6 +224,8 @@ public class DialogFinRuta extends MyDialog {
         registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
             @Override
             public void onSuccessful() {
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
+
                 DialogFinRuta.this.dismiss();
             }
 
@@ -236,9 +238,6 @@ public class DialogFinRuta extends MyDialog {
         registroFinRuta.execute();
 
         finRuta();
-
-
-
     }
 
     private void traerDatosAnteriores(){

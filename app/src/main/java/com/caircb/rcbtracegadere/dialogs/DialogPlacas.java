@@ -80,8 +80,8 @@ public class DialogPlacas extends MyDialog {
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
                     MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta",""+idPlaca);
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);//Placa para consulta de información modulos
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+placa);
                 }
-
             }
 
             @Override

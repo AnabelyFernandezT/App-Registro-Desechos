@@ -104,6 +104,7 @@ public class DialogPlacaSede extends MyDialog {
                     CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                     int idVehiculo = c!=null?c.getIdSistema():-1;
                     System.out.println(c!=null?c.getNombre():-1);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_lote",""+placa);
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo_inicio_lote",""+idVehiculo);
                     registrarLote();
                     dismiss();
