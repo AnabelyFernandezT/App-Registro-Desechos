@@ -60,6 +60,12 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
         holder.txtCountPhoto.setText(""+item.getNumFotos());
         holder.chkEstado.setChecked(item.isEstadoChek());
 
+        if(item.isEstadoChek()){
+            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
+        }else{
+            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
+        }
+
         if(estadoManifiesto !=1) {
             holder.chkEstado.setClickable(false);
         }
@@ -78,10 +84,12 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
                         if (((CheckBox) v).isChecked()) {
                             v.setSelected(true);
                             item.setEstadoChek(true);
+                            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
                             registarCheckObservacion(idAppManifiseto, item.getId(), true);
                         } else {
                             v.setSelected(false);
                             item.setEstadoChek(false);
+                            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
                             registarCheckObservacion(idAppManifiseto, item.getId(), false);
                         }
                     }
