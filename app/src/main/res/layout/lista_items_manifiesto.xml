@@ -103,6 +103,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:orientation="vertical"
             android:id="@+id/btnEleminarItem"
             android:gravity="center"
             android:layout_gravity="center"
@@ -119,10 +120,10 @@
                 android:focusableInTouchMode="false"/>
 
             <ImageView
-                android:visibility="gone"
-                android:src="@mipmap/icon_delete"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_notificacion"
+                android:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>
