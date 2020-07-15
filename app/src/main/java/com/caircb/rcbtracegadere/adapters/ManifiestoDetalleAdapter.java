@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.dialogs.DialogNotificacionPesoExtra;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
@@ -74,6 +77,16 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
                 }
             });
         }
+
+        holder.btnNotificador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogNotificacionPesoExtra dialogMensajes = new DialogNotificacionPesoExtra(mContext,it.getId());
+                dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogMensajes.setCancelable(false);
+                dialogMensajes.show();
+            }
+        });
     }
 
     @Override
@@ -97,6 +110,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         CheckBox chkEstado;
         TextView txtTipoBalanza;
         TextView txtPesoReferencial;
+        ImageView btnNotificador;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -110,6 +124,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
             txtTipoBalanza = itemView.findViewById(R.id.txtTipoBalanza);
             txtPesoReferencial = itemView.findViewById(R.id.txtPesoReferencial);
+            btnNotificador = itemView.findViewById(R.id.btnNotificador);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
