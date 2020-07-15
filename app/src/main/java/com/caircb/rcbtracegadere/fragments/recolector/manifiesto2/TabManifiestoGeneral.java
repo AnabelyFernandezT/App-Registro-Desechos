@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
@@ -142,45 +143,48 @@ public class TabManifiestoGeneral extends LinearLayout {
 
                 }else{
                     //consultar en servicio remoto...
-                    userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(),txtRespEntregaIdentificacion.getText().toString());
-                    userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
-                        @Override
-                        public void onSuccessful(DtoIdentificacion identificacion) {
-                            txtRespEntregaNombre.setText(identificacion.getEcuatorianoNombre());
-                            txtRespEntregaCorreo.requestFocus();
-                            txtRespEntregaCorreo.setEnabled(true);
-                            txtRespEntregaTelefono.setEnabled(true);
-                            txtRespEntregaCorreo.setError(null);
+                    boolean estadoCedula = validadorDeCedula(txtRespEntregaIdentificacion.getText().toString());
+                    if(estadoCedula) {
+                        userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(), txtRespEntregaIdentificacion.getText().toString());
+                        userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
+                            @Override
+                            public void onSuccessful(DtoIdentificacion identificacion) {
+                                txtRespEntregaNombre.setText(identificacion.getEcuatorianoNombre());
+                                txtRespEntregaCorreo.requestFocus();
+                                txtRespEntregaCorreo.setEnabled(true);
+                                txtRespEntregaTelefono.setEnabled(true);
+                                txtRespEntregaCorreo.setError(null);
 
-                            if (txtRespEntregaNombre.getText().length()<=0){
-                                txtRespEntregaNombre.setEnabled(true);
+                                if (txtRespEntregaNombre.getText().length() <= 0) {
+                                    txtRespEntregaNombre.setEnabled(true);
+                                }
+                                if (txtRespEntregaNombre.getText().length() > 0) {
+                                    txtRespEntregaNombre.setEnabled(false);
+                                }
+                                //txtRespEntregaNombre.setEnabled(false);
+                                //insert datos en dbo local...
+                                Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto, txtRespEntregaIdentificacion.getText().toString(), identificacion.getEcuatorianoNombre(), "", "");
+
+                                MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
+                                //MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
+
+                                if (!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()) {
+                                    txtRespEntregaCorreo.setError("Ingrese un correo válido");
+                                }
                             }
-                            if (txtRespEntregaNombre.getText().length()>0){
-                                txtRespEntregaNombre.setEnabled(false);
+
+                            @Override
+                            public void onFailure() {
+                                txtRespEntregaNombre.requestFocus();
+                                //txtRespEntregaNombre.setEnabled(true);
+                                txtRespEntregaCorreo.setEnabled(true);
+                                txtRespEntregaTelefono.setEnabled(true);
+                                txtRespEntregaCorreo.setError(null);
+                                Toast.makeText(getContext(), "El numero de cedula " + txtRespEntregaIdentificacion.getText().toString() + " no genero resultados", Toast.LENGTH_SHORT).show();
                             }
-                            //txtRespEntregaNombre.setEnabled(false);
-                            //insert datos en dbo local...
-                            Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),identificacion.getEcuatorianoNombre(),"","");
-
-                            MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,idTecnico.intValue());
-                            //MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
-
-                            if(!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
-                                txtRespEntregaCorreo.setError("Ingrese un correo valido");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            txtRespEntregaNombre.requestFocus();
-                            //txtRespEntregaNombre.setEnabled(true);
-                            txtRespEntregaCorreo.setEnabled(true);
-                            txtRespEntregaTelefono.setEnabled(true);
-                            txtRespEntregaCorreo.setError(null);
-                            Toast.makeText(getContext(), "El numero de cedula "+txtRespEntregaIdentificacion.getText().toString()+ " no genero resultados", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    userConsultarCedulaTask.execute();
+                        });
+                        userConsultarCedulaTask.execute();
+                    }
                 }
                 if (txtRespEntregaNombre.getText().length()<=0){
                     txtRespEntregaNombre.setEnabled(true);
@@ -347,7 +351,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             public void onFocusChange(View v, boolean hasFocus) {
 
                     if(!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
-                        txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                        txtRespEntregaCorreo.setError("Ingrese un correo válido");
                     }
 
                 if(!hasFocus){
@@ -455,7 +459,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                     txtRespEntregaCorreo.setError(null);
                     if(!correo.isEmpty()){
                         if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
-                            txtRespEntregaCorreo.setError("Ingrese un correo valido");
+                            txtRespEntregaCorreo.setError("Ingrese un correo válido");
                             txtRespEntregaCorreo.setEnabled(true);
 
                         }
@@ -611,11 +615,71 @@ public class TabManifiestoGeneral extends LinearLayout {
     }
 
 
+    public boolean validadorDeCedula(String cedula) {
+        boolean cedulaCorrecta = false;
+
+        try {
+
+            if (cedula.length() == 10) // ConstantesApp.LongitudCedula
+            {
+                int tercerDigito = Integer.parseInt(cedula.substring(2, 3));
+                if (tercerDigito < 6) {
+                    // Coeficientes de validación cédula
+                    // El decimo digito se lo considera dígito verificador
+                    int[] coefValCedula = { 2, 1, 2, 1, 2, 1, 2, 1, 2 };
+                    int verificador = Integer.parseInt(cedula.substring(9,10));
+                    int suma = 0;
+                    int digito = 0;
+                    for (int i = 0; i < (cedula.length() - 1); i++) {
+                        digito = Integer.parseInt(cedula.substring(i, i + 1))* coefValCedula[i];
+                        suma += ((digito % 10) + (digito / 10));
+                    }
+
+                    if ((suma % 10 == 0) && (suma % 10 == verificador)) {
+                        cedulaCorrecta = true;
+                    }
+                    else if ((10 - (suma % 10)) == verificador) {
+                        cedulaCorrecta = true;
+                    } else {
+                        cedulaCorrecta = false;
+                    }
+                } else {
+                    cedulaCorrecta = false;
+                }
+            } else {
+                cedulaCorrecta = false;
+            }
+        } catch (NumberFormatException nfe) {
+            cedulaCorrecta = false;
+        } catch (Exception err) {
+            System.out.println("Una excepcion ocurrio en el proceso de validadcion");
+            messageBox("Una excepcion ocurrio en el proceso de validadcion");
+            cedulaCorrecta = false;
+        }
+
+        if (!cedulaCorrecta) {
+            System.out.println("La Cédula ingresada es Incorrecta");
+            messageBox("La Cédula ingresada es Incorrecta");
+        }
+        return cedulaCorrecta;
+    }
+
+    public void messageBox(String message)
+    {
+
+        DialogBuilder dialogBuilder = new DialogBuilder(getContext());
+        dialogBuilder.setTitle("INFO");
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("OK", null);
+        dialogBuilder.show();
+    }
+
     private boolean validarCorreo(){
         String email = txtGenTecCorreo.getText().toString().trim();
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            txtGenTecCorreo.setError("Ingrese un correo valido");
+            txtGenTecCorreo.setError("Ingrese un correo válido");
             return false;
         }
         return true;
