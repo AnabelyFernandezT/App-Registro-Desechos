@@ -69,7 +69,9 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                             dialogInformacionModulos.show();
                             progressHide();
                         }else {
+
                             message("No hay datos para mostrar...");
+
                             /*
                             builder2 = new AlertDialog.Builder(getContext());
                             builder2.setMessage("No hay datos para mostrar...");

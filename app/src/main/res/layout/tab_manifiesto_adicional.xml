@@ -284,9 +284,9 @@
                         android:textColor="@color/app_gadere"
                         android:fontFamily="@font/quicksand_bold"
                         android:layout_marginRight="10dp"
-                        android:text="AGREGAR"
+                        android:text="GRABAR AUDIO"
                         android:gravity="center"
-                        android:layout_width="90dp"
+                        android:layout_width="110dp"
                         android:layout_height="match_parent"/>
                     <TextView
                         android:id="@+id/btnEliminarAudio"

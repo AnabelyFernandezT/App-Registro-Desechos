@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/rowBG"
+        android:layout_width="wrap_content"
+        android:layout_height="280dp"
+        android:layout_alignParentRight="true"
+        android:gravity="right|center"
+        android:orientation="vertical">
+
+        <!--VER MANIFIESTO-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@color/app_gadere"
+            android:padding="10dp">
+
+            <RelativeLayout
+
+                android:id="@+id/btn_manifiesto_view"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/ic_btn_ver_manifiesto"
+                        android:tint="@android:color/white" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!--MORE OPTION-->
+       <!-- <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp">
+
+            <RelativeLayout
+
+                android:id="@+id/btn_manifiesto_more"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/ic_button_more"
+                        android:tint="@android:color/white" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+        -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:background="@drawable/shape_card_border"
+        android:id="@+id/rowFG"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="?attr/selectableItemBackground">
+            <LinearLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/expandedListItem_detalle_Manifiesto">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="NUMERO MANIFIESTO"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:id="@+id/itm_num_manifiesto"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="CLIENTE"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/itm_cliente"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="SUCURSAL"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/itm_sucursal"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="DIRECCIÓN"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/itm_Direccion"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:maxLines="2"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="PROVINCIA"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/itm_Provincia"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="CIUDAD"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/itm_Ciudad"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

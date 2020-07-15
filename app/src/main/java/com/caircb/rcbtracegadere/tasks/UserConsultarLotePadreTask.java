@@ -61,17 +61,7 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
                         }
                         progressHide();
                     }else {
-                        builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("Datos sincronizados.");
-                        builder.setCancelable(false);
-                        builder.setNegativeButton("Regresar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        progressHide();
+
                     }
                 }
             }
@@ -79,7 +69,6 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
             @Override
             public void onFailure(Call<List<DtoLotePadreGestor>> call, Throwable t) {
                     progressHide();
-
             }
         });
 

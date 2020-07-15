@@ -116,7 +116,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
         rq = new RequestRegisterPlantaDetalle();
         rq.setIdManifiesto(idManifiesto);
         rq.setObservacion(observacion);
-        rq.setDetalles(obtenerDetalles());
+        rq.setDetalle(obtenerDetalles());
         rq.setFotos(obtenerFotos());
         rq.setUrlFima(firmaRecoleccion!=null?(path+"/"+firmaRecoleccion.getUrl()):"");
 

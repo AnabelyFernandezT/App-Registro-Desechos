@@ -32,7 +32,7 @@
                         android:layout_width="wrap_content"
                         android:textStyle="bold"
                         android:textColor="#fff"
-                        android:text="OBSERVACIONES ENCONTRADA POR EL CLIENTE"
+                        android:text="OBSERVACIONES ENCONTRADAS POR EL CLIENTE"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
                 <EditText
@@ -104,9 +104,9 @@
                         android:textColor="@color/app_gadere"
                         android:fontFamily="@font/quicksand_bold"
                         android:layout_marginRight="10dp"
-                        android:text="AGREGAR"
+                        android:text="GRABAR AUDIO"
                         android:gravity="center"
-                        android:layout_width="90dp"
+                        android:layout_width="110dp"
                         android:layout_height="match_parent"/>
                     <TextView
                         android:id="@+id/btnEliminarAudio"
@@ -140,7 +140,7 @@
                         android:layout_width="wrap_content"
                         android:textStyle="bold"
                         android:textColor="#fff"
-                        android:text="MOTIVOS NO RECOLECCION"
+                        android:text="MOTIVOS DE NO RECOLECCIÓN"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 

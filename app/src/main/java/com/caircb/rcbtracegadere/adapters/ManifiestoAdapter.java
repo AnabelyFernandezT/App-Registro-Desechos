@@ -28,7 +28,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_manifiesto,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_manifiesto_new,parent,false);
         return new MyViewHolder(view);
     }
 
