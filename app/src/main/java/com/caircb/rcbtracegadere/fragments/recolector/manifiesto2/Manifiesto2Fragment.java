@@ -222,6 +222,13 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                        manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
                        manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
                        manifiestoCliente.setCancelable(false);
+                       manifiestoCliente.setmOnRegisterListener(new DialogManifiestoCliente.onRegisterListenner() {
+                           @Override
+                           public void onSucessfull() {
+                               dialogBuilder.dismiss();
+                               setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete()));
+                           }
+                       });
                        manifiestoCliente.show();
                    }
                });

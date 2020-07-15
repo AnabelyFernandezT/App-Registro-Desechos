@@ -51,6 +51,8 @@ public class ManifiestoDetalleEntity {
 
     private String nombreDestinatario;
 
+    private double pesoReferencial;
+
     public ManifiestoDetalleEntity() {
     }
 
@@ -178,5 +180,13 @@ public class ManifiestoDetalleEntity {
 
     public void setNombreDestinatario(String nombreDestinatario) {
         this.nombreDestinatario = nombreDestinatario;
+    }
+
+    public double getPesoReferencial() {
+        return pesoReferencial;
+    }
+
+    public void setPesoReferencial(double pesoReferencial) {
+        this.pesoReferencial = pesoReferencial;
     }
 }

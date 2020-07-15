@@ -56,7 +56,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     List<String> itemsCategoriaPaquete;
     Integer tipoGestion;
     PaqueteEntity pkg;
-
+    Integer tipoBalanza=0;
 
     public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto,Integer estado) {
         super(context);
@@ -122,6 +122,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             @Override
             public void onClick(View v) {
                 MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
+                tipoBalanza = 1;
                 showTipoPaquete(positionItem);
             }
         });
@@ -129,6 +130,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             @Override
             public void onClick(View v) {
                 MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
+                tipoBalanza = 2;
                 //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
                 showTipoPaquete(positionItem);
             }
@@ -192,7 +194,7 @@ public class TabManifiestoDetalle extends LinearLayout {
         }
     }
 
-    private void openDialogBultos(Integer position, Integer tipoGestion){
+    private void openDialogBultos(Integer position, final Integer tipoGestion){
 
         if(dialogBultos==null){
             dialogOpcioneItem.dismiss();
@@ -217,7 +219,7 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                     RowItemManifiesto row = detalles.get(position);
                     row.setPeso(valor.doubleValue());
-
+                    row.setTipoBalanza(tipoBalanza);;
 
                     if(row.getTipoItem()==1) row.setCantidadBulto(cantidad); //unidad
                     else if(row.getTipoItem()==2) row.setCantidadBulto(1); //servicio
