@@ -16,7 +16,8 @@ public class DtoManifiestoDetalle {
     private String codigoMAE;
     private String nombreDesecho;
     private String nombreDestinatario;
-
+    private double pesoReferencial;
+    private String tratamiento;
 
     public DtoManifiestoDetalle() {
     }
@@ -123,5 +124,21 @@ public class DtoManifiestoDetalle {
 
     public void setNombreDestinatario(String nombreDestinatario) {
         this.nombreDestinatario = nombreDestinatario;
+    }
+
+    public double getPesoReferencial() {
+        return pesoReferencial;
+    }
+
+    public void setPesoReferencial(double pesoReferencial) {
+        this.pesoReferencial = pesoReferencial;
+    }
+
+    public String getTratamiento() {
+        return tratamiento;
+    }
+
+    public void setTratamiento(String tratamiento) {
+        this.tratamiento = tratamiento;
     }
 }

@@ -30,7 +30,7 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set tipoBalanza =:idTipoBalanza where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idDetalleManifiesto")
     public abstract  void updateTipoBalanzaByDetalleId(Integer idManifiesto, Integer idDetalleManifiesto, Integer idTipoBalanza);
 
-    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete" +
+    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto")
@@ -81,6 +81,9 @@ public abstract class ManifiestoDetalleDao {
             entity.setCodigoMAE(dt.getCodigoMAE());
             entity.setNombreDesecho(dt.getNombreDesecho());
             entity.setNombreDestinatario(dt.getNombreDestinatario());
+            entity.setPesoReferencial(dt.getPesoReferencial());
+            entity.setTipoBalanza(0);
+            entity.setTratamiento(dt.getTratamiento());
 
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());

@@ -34,11 +34,28 @@
                             android:layout_height="wrap_content" />
                         <TextView
                             android:id="@+id/txtItemUnidad"
-                            android:text="KILOGRAMO"
+                            android:text="KG"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
                 </LinearLayout>
+                <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/TextViewTitleItem"
+                    android:text="PESO REF."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtPesoReferencial"
+                    android:text="0.0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
                 <LinearLayout
                     android:layout_weight="1"
                     android:orientation="vertical"
@@ -78,16 +95,44 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
-            <TextView
-                style="@style/TextViewTitleItem"
-                android:text="TRATAMIENTO"
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/txtItemTratamiento"
-                android:text=""
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        style="@style/TextViewTitleItem"
+                        android:text="TRATAMIENTO"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/txtItemTratamiento"
+                        android:text=""
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/TextViewTitleItem"
+                        android:text="BALANZA"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/txtTipoBalanza"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
             <TextView
                 style="@style/TextViewTitleItem"
                 android:text="DESCRIPCION"
