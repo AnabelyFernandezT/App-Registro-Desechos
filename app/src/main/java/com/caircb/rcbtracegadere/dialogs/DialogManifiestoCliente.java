@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.caircb.rcbtracegadere.MainActivity;
@@ -28,6 +29,11 @@ public class DialogManifiestoCliente extends MyDialog {
 
     Manifiesto2Fragment principal = new Manifiesto2Fragment();
     Integer idManifiesto, tipoPaquete;
+
+    public interface onRegisterListenner {
+        public void onSucessfull();
+    }
+    public onRegisterListenner mOnRegisterListener;
 
     public DialogManifiestoCliente(@NonNull Context context, Integer idManifiesto, Integer tipoPaquete) {
         super(context, R.layout.dialog_manifiesto_cliente);
@@ -61,7 +67,7 @@ public class DialogManifiestoCliente extends MyDialog {
 
 
                 if(txtManifiestoCliente.getText().toString().equals("")){
-                    messageBox("No se a ingresado numero de manifiesto Cliente");
+                    messageBox("No ingresó un número de manifiesto cliente!");
                 }else{
                     //System.out.println("Placa transportista: "+MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista"));
                     MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,txtManifiestoCliente.getText().toString());
@@ -74,4 +80,6 @@ public class DialogManifiestoCliente extends MyDialog {
         });
 
     }
+
+    public void setmOnRegisterListener(@Nullable onRegisterListenner l){ mOnRegisterListener = l;}
 }

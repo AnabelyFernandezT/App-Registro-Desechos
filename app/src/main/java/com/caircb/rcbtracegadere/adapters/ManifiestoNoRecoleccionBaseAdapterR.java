@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 
@@ -25,6 +27,7 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
     List<RowItemNoRecoleccion> listItems;
     Integer idAppManifiseto,estadoManifiesto;
     boolean desactivarComp;
+    AlertDialog.Builder messageBox;
 
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer cantidad);
@@ -60,6 +63,12 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
         holder.txtCountPhoto.setText(""+item.getNumFotos());
         holder.chkEstado.setChecked(item.isEstadoChek());
 
+        if(item.isEstadoChek()){
+            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
+        }else{
+            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
+        }
+
         if(estadoManifiesto !=1) {
             holder.chkEstado.setClickable(false);
         }
@@ -76,26 +85,30 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
                             mOnReloadAdaptador.onShowM(item.getId(), position);
                     } else {
                         if (((CheckBox) v).isChecked()) {
-                            v.setSelected(true);
-                            item.setEstadoChek(true);
-                            registarCheckObservacion(idAppManifiseto, item.getId(), true);
+                            Integer estadoCheck;
+                            estadoCheck = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccionEstado(idAppManifiseto);
+                            if(estadoCheck<=0){
+                                v.setSelected(true);
+                                item.setEstadoChek(true);
+                                holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
+                                registarCheckObservacion(idAppManifiseto, item.getId(), true);
+                            }else{
+                                holder.chkEstado.setChecked(false);
+                                DialogBuilder dialogBuilder = new DialogBuilder(mContext);
+                                dialogBuilder.setTitle("INFO");
+                                dialogBuilder.setMessage("No puede ingresar dos motivos de NO RECOLECCIÓN!");
+                                dialogBuilder.setCancelable(false);
+                                dialogBuilder.setPositiveButton("OK", null);
+                                dialogBuilder.show();
+
+                            }
                         } else {
                             v.setSelected(false);
                             item.setEstadoChek(false);
+                            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
                             registarCheckObservacion(idAppManifiseto, item.getId(), false);
                         }
                     }
-                /*
-                if(((CheckBox)v).isChecked()){
-                    v.setSelected(true);
-                    item.setEstadoChek(true);
-                    registarCheckObservacion(item.getId(),true);
-                }else{
-                    v.setSelected(true);
-                    item.setEstadoChek(false);
-                    registarCheckObservacion(item.getId(),false);
-                }
-                */
                 }
             });
 
@@ -131,7 +144,7 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
 
     public void registarCheckObservacion(Integer idAppManifiseto,Integer id, boolean check){
         //dbHelper.open();
-        MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().saveOrUpdate(idAppManifiseto,id,check);
+        MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().updateManifiestoNorecolecion(idAppManifiseto,id,check);
         //dbHelper.close();
     }
     public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
@@ -141,6 +154,10 @@ public class ManifiestoNoRecoleccionBaseAdapterR extends RecyclerView.Adapter<Ma
         mOnReloadAdaptador = l;
     }
     public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
-        //MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
+        MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
+    }
+
+    private void validarNoRecolecion(){
+
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<ManifiestoNovedadBaseAdapterR.MyViewHolder> {
 
     private Context mContext;
-    private boolean desactivaComp;
+    private boolean desactivaComp,activarCamara;
     List<RowItemHojaRutaCatalogo> listItems;
     //private Integer tipoUsuario ;
     Integer idManifiesto,estadoManifiesto;
@@ -64,8 +64,14 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         holder.txtCatalogo.setText(item.getCatalogo());
         holder.lnlBadge.setVisibility(item.getNumFotos() > 0? View.VISIBLE : View.GONE);
         holder.txtCountPhoto.setText(""+item.getNumFotos());
-
         holder.chkEstado.setChecked(item.isEstadoChek());
+
+        if(item.isEstadoChek()){
+            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
+        }else{
+            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
+        }
+
         if(desactivaComp == true){
             holder.chkEstado.setEnabled(false);
         }
@@ -84,16 +90,19 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                         if (((CheckBox) v).isChecked()) {
                             v.setSelected(true);
                             item.setEstadoChek(true);
+                            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
                             registarCheckItemCatalogo(idManifiesto, item.getId(), true);
                         } else {
                             v.setSelected(false);
                             item.setEstadoChek(false);
+                            holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
                             registarCheckItemCatalogo(idManifiesto, item.getId(), false);
                         }
                     }
 
                 }
             });
+
 
             holder.btnEvidenciaNovedadFrecuente.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,6 +126,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         //dbHelper.open();
         ///
         //if (tipoUsuario.equals(1)){
+
         //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionRecepcionbyId(idManifiesto,id,check);
         //}else{
             MyApp.getDBO().manifiestoObservacionFrecuenteDao().saveOrUpdateManifiestoNovedadFrecuente(idManifiesto,idCatalogo,check);
@@ -149,7 +159,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     }
 
     public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
-        //MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
+        MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
     }
 
 }

@@ -76,6 +76,7 @@ public class TabManifiestoAdicional extends LinearLayout {
 
     LinearLayout lnlmsgAdicionales;
     DialogBuilder builder;
+    LinearLayout lnyTipoManifiestoPaquete;
 
     View focusView;
 
@@ -107,6 +108,7 @@ public class TabManifiestoAdicional extends LinearLayout {
         txtItemPaqueteADFunda = this.findViewById(R.id.txtItemPaqueteADFunda);
         txtItemPaqueteADGuardianes = this.findViewById(R.id.txtItemPaqueteADGuardianes);
         lnlmsgAdicionales = this.findViewById(R.id.lnlmsgAdicionales);
+        lnyTipoManifiestoPaquete = this.findViewById(R.id.lnyTipoManifiestoPaquete);
 
         progressAudio = this.findViewById(R.id.progressAudio);
         mChronometer = this.findViewById(R.id.chronometer);
@@ -114,6 +116,13 @@ public class TabManifiestoAdicional extends LinearLayout {
         btnEliminarAudio = this.findViewById(R.id.btnEliminarAudio);
         txtTimeGrabacion = this.findViewById(R.id.txtTimeGrabacion);
         btnAgregarAudio = this.findViewById(R.id.btnAgregarAudio);
+
+        if(idAppTipoPaquete == null){
+            lnyTipoManifiestoPaquete.setVisibility(GONE);
+        }else{
+            lnyTipoManifiestoPaquete.setVisibility(VISIBLE);
+        }
+
         btnAgregarAudio.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -293,6 +302,8 @@ public class TabManifiestoAdicional extends LinearLayout {
                     public void onClick(View v) {
                         recyclerAdapterNovedades.registarCheckItemCatalogo(idAppManifiesto,catalogoID,false);
                         recyclerAdapterNovedades.deleteFotosByItem(idAppManifiesto, catalogoID, position);
+
+                        List<RowItemHojaRutaCatalogo> lista = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
 
                         novedadfrecuentes.get(position).setNumFotos(0);
                         novedadfrecuentes.get(position).setEstadoChek(false);

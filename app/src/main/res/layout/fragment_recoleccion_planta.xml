@@ -74,6 +74,31 @@
                 android:background="@drawable/border_imput_text"
                 android:layout_weight="1"
                 />
+
+        </LinearLayout>
+
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OTRA OBSERVACION:"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txtotraNovedad"
+                android:layout_height="57dp"
+                android:textSize="22dp"
+                android:layout_width="match_parent"
+                android:inputType="text|textMultiLine|textCapCharacters"
+                android:background="@drawable/border_imput_text"
+                android:layout_weight="1"
+                />
             <LinearLayout
                 android:id="@+id/btnEvidenciaObservacion"
                 android:layout_width="42dp"
@@ -115,28 +140,6 @@
 
 
             </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:textSize="20dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OTRA OBSERVACION:"
-            android:textStyle="bold" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/txtotraNovedad"
-                android:layout_height="57dp"
-                android:textSize="22dp"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/btnAgregarFirma"

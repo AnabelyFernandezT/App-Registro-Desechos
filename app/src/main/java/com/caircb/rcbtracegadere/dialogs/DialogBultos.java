@@ -422,6 +422,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 setDato("9");
                 break;
             case R.id.btn_ok:
+                BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                createBulto(imputValor);
                 boolean resp = verificarTodosBultosImpresos();
                 if(!resp){
                     if(mOnBultoListener!=null){

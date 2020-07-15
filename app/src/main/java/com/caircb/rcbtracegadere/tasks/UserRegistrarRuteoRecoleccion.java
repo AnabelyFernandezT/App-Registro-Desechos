@@ -49,8 +49,6 @@ public class UserRegistrarRuteoRecoleccion extends MyRetrofitApi implements Retr
 
             Gson g = new Gson();
             String f = g.toJson(sendDto);
-            System.out.println(f);
-
             //if(mOnRegisterRuteroRecoleecionListener!=null)mOnRegisterRuteroRecoleecionListener.onSuccessful();
             //progressHide();
 
