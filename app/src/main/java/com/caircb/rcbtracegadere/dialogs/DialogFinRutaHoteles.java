@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -68,6 +69,12 @@ public class DialogFinRutaHoteles extends MyDialog {
         super(context, R.layout.dialog_final_ruta_hoteles);
         this._activity = (Activity)context;
     }
+
+    public interface onRegisterMOvilizacionListenner{
+        public void onSuccessful();
+    }
+
+    public onRegisterMOvilizacionListenner mOnRegisterMovilizacionListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,11 +198,13 @@ public class DialogFinRutaHoteles extends MyDialog {
             @Override
         public void onSucessfull() {
                 DialogFinRutaHoteles.this.dismiss();
+
                 messageBox("Se a movilizado correctamente");
 
             }
         });
         registrarLoteHotelTask.execute();
+        if(mOnRegisterMovilizacionListener != null)mOnRegisterMovilizacionListener.onSuccessful();
 
     }
 
@@ -261,6 +270,6 @@ public class DialogFinRutaHoteles extends MyDialog {
     }
 
 
-
+    public void setOnRegisterMovilizarListener(@Nullable onRegisterMOvilizacionListenner l){ mOnRegisterMovilizacionListener = l;}
 
 }

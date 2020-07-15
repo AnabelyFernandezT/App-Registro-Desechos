@@ -48,7 +48,7 @@ public class UserRegistrarLoteHotelTask extends MyRetrofitApi implements Retrofi
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if (response.isSuccessful()){
-                        MyApp.getDBO().loteHotelesDao().updataMovilizado(Integer.parseInt(response.message()));
+                        MyApp.getDBO().loteHotelesDao().eliminarLotes();
                         if(mOnRegisterSesscesullListener!=null)mOnRegisterSesscesullListener.onSucessfull();
                     }
                 }
