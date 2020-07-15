@@ -33,6 +33,7 @@
                 android:textSize="22dp"
                 android:layout_width="match_parent"
                 android:background="@drawable/border_imput_text"
+                android:inputType="text|textMultiLine|textCapCharacters"
                 android:layout_weight="1"
                 />
 
