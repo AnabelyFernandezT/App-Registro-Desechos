@@ -110,6 +110,13 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
                 dialogPlacasRecolector.setCancelable(false);
                 dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
+                dialogPlacasRecolector.setmOnSincronizarListener(new DialogPlacaSedeRecolector.onSincronizarListener() {
+                    @Override
+                    public void onSuccessfull() {
+                        Integer num = MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas();
+                        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+                    }
+                });
                 dialogPlacasRecolector.show();
             }
         });
@@ -136,8 +143,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                         registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
                         registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
                             @Override
-                            public void onSuccessful() {
-                                messageBox("Lote # " + finLote + " se ha cerrado correctamente.");
+                            public void onSuccessful(String numLote) {
+                                messageBox("Lote # " + numLote + " se ha cerrado correctamente.");
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_lote","-10");
                                 verificarInicioLote();
                                 /*

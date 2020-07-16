@@ -293,11 +293,13 @@ public class DialogInicioRuta extends MyDialog {
         registroInicioRuta.setOnIniciaRutaListener(new UserRegistrarInicioRutaTask.OnIniciaRutaListener() {
             @Override
             public void onSuccessful() {
+                MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","true");
                 DialogInicioRuta.this.dismiss();
             }
 
             @Override
             public void onFailure(int error) {
+                MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","false");
                 mensaje("error "+String.valueOf(error)+" al registrar inicio ruta en el servidor datos registrados en la base de datos local");
                 DialogInicioRuta.this.dismiss();
             }

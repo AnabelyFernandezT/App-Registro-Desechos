@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.tasks;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
@@ -46,7 +47,7 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
             @Override
             public void onResponse(Call<List<DtoManifiestoSede>> call, Response<List<DtoManifiestoSede>> response) {
                 if (response.isSuccessful()){
-                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
+
                     //MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
                     //MyApp.getDBO().manifiestoDetalleSede().eliminarDetalle();
                     //MyApp.getDBO().manifiestoDetalleValorSede().eliminarDetalle();
@@ -60,6 +61,8 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
                             }
                         }
                     }
+
+                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                     progressHide();
                 }
             }
@@ -73,4 +76,5 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
 
     }
 
+    public void setmOnVehiculoListener(@Nullable OnPlacaListener l) {  mOnVehiculoListener = l;}
 }

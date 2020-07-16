@@ -143,7 +143,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
             public void onIndependentViewClicked(int independentViewID, int position) {
 
             }
-        }).setSwipeOptionViews(R.id.btn_manifiesto_view, R.id.btn_manifiesto_more).setSwipeable(R.id.rowFG, R.id.rowBG, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
+        }).setSwipeOptionViews(R.id.btn_manifiesto_view/*, R.id.btn_manifiesto_more*/).setSwipeable(R.id.rowFG, R.id.rowBG, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
             @Override
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
@@ -162,8 +162,8 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                                 break;
                         }
                         break;
-                    case R.id.btn_manifiesto_more:
-                        break;
+                   /* case R.id.btn_manifiesto_more:
+                        break;*/
                 }
             }
         });

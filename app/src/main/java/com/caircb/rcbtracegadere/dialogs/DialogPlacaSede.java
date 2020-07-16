@@ -41,7 +41,7 @@ public class DialogPlacaSede extends MyDialog {
 
     TextView txtManifiesto, txtMovilizar, txtSincronizar;
 
-    public DialogPlacaSede(@NonNull Context context) {
+    public  DialogPlacaSede(@NonNull Context context) {
         super(context, R.layout.dialog_placa_sede);
         this._activity = (Activity)context;
 
