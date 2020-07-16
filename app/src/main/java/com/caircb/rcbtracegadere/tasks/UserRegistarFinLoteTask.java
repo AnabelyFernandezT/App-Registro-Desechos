@@ -26,7 +26,7 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
         super(context);
     }
     public interface OnRegisterListener {
-        public void onSuccessful();
+        public void onSuccessful(String numeroLoteFin);
         public void onFail();
     }
 
@@ -44,7 +44,7 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
                         if (response.body().getExito()){
                             progressHide();
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_fin_lote",""+response.body().getMensaje());
-                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful(response.body().getMensaje().toString());
                         }
                     }else {
                         progressHide();

@@ -124,9 +124,9 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                     if(response.isSuccessful()){
                         //actualizar el estado a recibido del manifiesto...
                         if(response.body().getExito()) {
-                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
                             //imprimirEtiquetas();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
                             progressHide();
                             //ejecutar el proceso de imprecion..
 

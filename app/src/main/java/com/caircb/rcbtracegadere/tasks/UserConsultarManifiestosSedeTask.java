@@ -51,7 +51,6 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
                     //MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
                     //MyApp.getDBO().manifiestoDetalleSede().eliminarDetalle();
                     //MyApp.getDBO().manifiestoDetalleValorSede().eliminarDetalle();
-                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
 
                     for(DtoManifiestoSede reg:response.body()){
                         MyApp.getDBO().manifiestoSedeDao().saveOrUpdate(reg);
@@ -62,6 +61,8 @@ public class UserConsultarManifiestosSedeTask extends MyRetrofitApi implements R
                             }
                         }
                     }
+
+                    if(mOnVehiculoListener!=null)mOnVehiculoListener.onSuccessful(response.body());
                     progressHide();
                 }
             }
