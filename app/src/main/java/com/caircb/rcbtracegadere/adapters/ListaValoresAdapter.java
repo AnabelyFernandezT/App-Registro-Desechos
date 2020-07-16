@@ -80,7 +80,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         }else {
             holder = (ListaValoresAdapter.ViewHolder) convertView.getTag();
         }
-        holder.txtItem.setText("Bulto "+cont+":           "+row.getValor());
+        holder.txtItem.setText("Bulto "+row.getNumeroBulto()+":           "+row.getValor());
         if(row.getTipo().length()>0){holder.txtItemTipo.setVisibility(View.VISIBLE);holder.txtItemTipo.setText(row.getTipo());}
 
         holder.btnEliminar.setOnClickListener(new View.OnClickListener() {

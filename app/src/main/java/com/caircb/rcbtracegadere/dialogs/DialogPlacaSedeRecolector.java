@@ -12,12 +12,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
@@ -40,6 +42,10 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     UserConsultarManifiestosSedeTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
 
+    public interface onSincronizarListener{
+        public void onSuccessfull();
+    }
+    public onSincronizarListener mOnSincronizarListener;
 
     public DialogPlacaSedeRecolector(@NonNull Context context) {
         super(context, R.layout.dialog_placa_sede);
@@ -146,6 +152,12 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     @SuppressLint("SetTextI18n")
     private void cargarManifiesto(){
         consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(_activity);
+        consultarHojaRutaTask.setmOnVehiculoListener(new UserConsultarManifiestosSedeTask.OnPlacaListener() {
+            @Override
+            public void onSuccessful(List<DtoManifiestoSede> catalogos) {
+                if(mOnSincronizarListener!=null){ mOnSincronizarListener.onSuccessfull();}
+            }
+        });
         consultarHojaRutaTask.execute();
         lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
     }
@@ -156,5 +168,5 @@ public class DialogPlacaSedeRecolector extends MyDialog {
         consultarLotes.execute();
     }
 
-
+    public void setmOnSincronizarListener (@Nullable onSincronizarListener l){ mOnSincronizarListener = l;}
 }
