@@ -114,7 +114,7 @@ public class DialogInformacionModulos extends MyDialog {
 
     private void datosInformacionModulo(){
         InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
-        int idTipoEspiecifico = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_especifico"));
+        int idTipoEspiecifico = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info"));
 
         if (idTipoEspiecifico==1||idTipoEspiecifico==0){
                 lblTituloRecoleccion.setVisibility(View.VISIBLE);

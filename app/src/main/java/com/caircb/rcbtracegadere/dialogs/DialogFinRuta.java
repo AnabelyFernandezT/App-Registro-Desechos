@@ -225,7 +225,7 @@ public class DialogFinRuta extends MyDialog {
             @Override
             public void onSuccessful() {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
-
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
                 DialogFinRuta.this.dismiss();
             }
 

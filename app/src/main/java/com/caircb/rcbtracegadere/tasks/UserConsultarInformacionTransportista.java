@@ -29,6 +29,7 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
             public void onResponse(Call<DtoInformacionTransportista> call, Response<DtoInformacionTransportista> response) {
                 if(response.isSuccessful()){
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+response.body().getIdFinRutaCatalogo());
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+response.body().getIdFinRutaCatalogo());
                     MySession.setDestinoEspecifico(response.body().getNombreCorto());
 
                 }

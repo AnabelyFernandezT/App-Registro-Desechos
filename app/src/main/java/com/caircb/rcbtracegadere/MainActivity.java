@@ -392,13 +392,14 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                         MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
                         MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 0);
                         MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
-                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 1);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                         navegate((HomeTransportistaFragment.create()));
                     } else {
                         if (nombreLugar.equals("PLANTA")) {
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 2);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                             traerDestinoEspecifico();
                             //navegate((HomePlantaFragment.create()));
                         } else {
@@ -406,6 +407,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 1);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                                 traerDestinoEspecifico();
                                 //navegate(HomeSedeFragment.create());
                             } else {
@@ -413,12 +415,14 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 20);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 4);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                                     //traerDestinoEspecifico();
                                     navegate(HomeHotelFragment.create());
                                 } else {
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 3);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                                     traerDestinoEspecifico();
                                     navegate(HomeGestorAlternoFragment.create());
                                 }
@@ -554,7 +558,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
         dialogInformacionModulos = new DialogInformacionModulos(this);
         boolean estadoProceso = Boolean.parseBoolean(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estado_transporte"));
-        int idTipoEspiecifico = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_especifico"));
+        int idTipoEspiecifico = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info"));
         System.out.println("RUTA " + estadoProceso + "--" + idTipoEspiecifico);
 
         if (idTipoEspiecifico == 1 || idTipoEspiecifico == 0) {

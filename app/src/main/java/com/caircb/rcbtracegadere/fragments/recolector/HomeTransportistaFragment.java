@@ -79,10 +79,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_home_transportista, container, false));
 
+
         initBuscador();
         init();
         loadCantidadManifiestoAsignado();
         loadCantidadManifiestoProcesado();
+
 
         return getView();
 

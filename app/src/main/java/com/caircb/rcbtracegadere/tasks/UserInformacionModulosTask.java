@@ -47,7 +47,7 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
     @Override
     public void execute() {
 
-        String tipoProcesoInfo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_especifico");
+        String tipoProcesoInfo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info");
         String placaInfo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
         int idTransportistaInfo = MySession.getIdUsuario();
         System.out.println(idTransportistaInfo + "---"+tipoProcesoInfo+"---"+placaInfo);
