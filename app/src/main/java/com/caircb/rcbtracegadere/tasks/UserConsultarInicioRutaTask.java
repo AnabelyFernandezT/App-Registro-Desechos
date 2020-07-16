@@ -2,6 +2,8 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
@@ -27,6 +29,12 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
         super(context);
     }
 
+    public interface OnRegisterListener {
+        public void onSuccessful();
+    }
+
+    private OnRegisterListener mOnRegisterListener;
+
     @Override
     public void execute() {
 
@@ -47,10 +55,12 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                     response.body().getKilometrajeFin(),
                                     1);
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
-
+                            message("Ha iniciado previamente sesion, SINCRONICE manifiestos pendientes de recolección");
+                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                         }
+                    }else {
+                       // if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                     }
-
                 }
             }
 
@@ -71,5 +81,8 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
             return false;
         }
 
+    }
+    public void setOnRegisterListener(@NonNull OnRegisterListener l){
+        mOnRegisterListener =l;
     }
 }

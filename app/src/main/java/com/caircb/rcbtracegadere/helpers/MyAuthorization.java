@@ -332,7 +332,7 @@ public class MyAuthorization {
         */
 
 
-        consultarInicioFinRuta();
+
     }
 
     private void registarTokenOnServer(final DtoUserCredential user, String token){
@@ -351,9 +351,6 @@ public class MyAuthorization {
             credentials.setUsuario(MySession.getIdUsuario());
             credentials.setPerfil(MySession.getIdPerfil());
 
-            info =new UserConsultarInformacionTransportista(getActivity());
-            info.execute();
-
             WebService.seg().registrarSession(credentials).enqueue(new Callback<DtoUserTokenCredentials>() {
                 @Override
                 public void onResponse(Call<DtoUserTokenCredentials> call, Response<DtoUserTokenCredentials> response) {
@@ -362,6 +359,10 @@ public class MyAuthorization {
                         MySession.setId(response.body().getId());
                         MySession.setMenus(user.getListaEmpresas().get(0).getLugares().get(0).getMenus());
 
+                        info =new UserConsultarInformacionTransportista(getActivity());
+                        info.execute();
+
+                        //consultarInicioFinRuta();
 
                         //if(progressDialog!=null){progressDialog.dismiss();progressDialog=null;}
                         mOnAuthorizationListenerListener.onSuccessful();//initMain(true);
