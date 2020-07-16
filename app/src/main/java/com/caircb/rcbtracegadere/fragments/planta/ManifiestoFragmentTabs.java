@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoDetalleFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.google.android.material.tabs.TabLayout;
@@ -131,8 +132,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             case R.id.btnManifiestoNext:
                 //vista preliminar...
                // setNavegate(VistaPreliminarFragment.newInstance(manifiestoID));
-                ItemManifiestoDetalleSede detalles;
-                detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosValidaInformacion(manifiestoID);
+                ItemManifiestoSede detalles;
+                detalles = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByTotal(manifiestoID);
                 Integer bultos = detalles.getTotalBultos();
                 Integer bultosSeleccionados = detalles.getBultosSelecionado();
                     firma = tab3.validarInformacion();
