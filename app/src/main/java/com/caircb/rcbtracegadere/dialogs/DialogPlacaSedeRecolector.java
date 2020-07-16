@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -40,6 +41,10 @@ public class DialogPlacaSedeRecolector extends MyDialog {
     UserConsultarManifiestosSedeTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado;
 
+    public interface onSincronizarListener{
+        public void onSuccessfull();
+    }
+    public onSincronizarListener mOnSincronizarListener;
 
     public DialogPlacaSedeRecolector(@NonNull Context context) {
         super(context, R.layout.dialog_placa_sede);
@@ -156,5 +161,5 @@ public class DialogPlacaSedeRecolector extends MyDialog {
         consultarLotes.execute();
     }
 
-
+    public void setmOnSincronizarListener (@Nullable onSincronizarListener l){ mOnSincronizarListener = l;}
 }

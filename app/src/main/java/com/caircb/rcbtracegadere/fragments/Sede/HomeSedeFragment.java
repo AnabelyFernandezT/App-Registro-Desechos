@@ -110,6 +110,12 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
                 dialogPlacasRecolector.setCancelable(false);
                 dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
+                dialogPlacasRecolector.setmOnSincronizarListener(new DialogPlacaSedeRecolector.onSincronizarListener() {
+                    @Override
+                    public void onSuccessfull() {
+                        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+                    }
+                });
                 dialogPlacasRecolector.show();
             }
         });
