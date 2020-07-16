@@ -141,6 +141,7 @@ public class DialogInicioRuta extends MyDialog {
                     placa = (String) spinnerPlacas.getSelectedItem();
                     lblPlaca.setText(listaPlacasDisponibles.get(position-1).getPlaca());
                     placaInfoModulos=listaPlacasDisponibles.get(position-1).getPlaca();
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
                     lblTransportistaRecolector.setText(listaPlacasDisponibles.get(position-1).getNombreChofer());
                     lblAuxiliarRecoleccion1.setText(listaPlacasDisponibles.get(position-1).getNombreAuxiliar());
                     if (listaPlacasDisponibles.get(position-1).getNombreConductor()!=null){
@@ -292,11 +293,13 @@ public class DialogInicioRuta extends MyDialog {
         registroInicioRuta.setOnIniciaRutaListener(new UserRegistrarInicioRutaTask.OnIniciaRutaListener() {
             @Override
             public void onSuccessful() {
+                MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","true");
                 DialogInicioRuta.this.dismiss();
             }
 
             @Override
             public void onFailure(int error) {
+                MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","false");
                 mensaje("error "+String.valueOf(error)+" al registrar inicio ruta en el servidor datos registrados en la base de datos local");
                 DialogInicioRuta.this.dismiss();
             }

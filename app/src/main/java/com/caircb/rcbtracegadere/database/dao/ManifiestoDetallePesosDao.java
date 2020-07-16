@@ -17,8 +17,10 @@ import java.util.List;
 @Dao
 public abstract class ManifiestoDetallePesosDao {
 
+    @Query("select numeroBulto from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle order by numeroBulto desc limit 1")
+    public abstract int countNumeroBultosByIdManifiestoIdDet (Integer idManifiesto, Integer idManifiestoDetalle);
 
-    @Query("select _id as idCatalogo, valor,descripcion as tipo, impresion from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle ")
+    @Query("select _id as idCatalogo, valor,descripcion as tipo, impresion, numeroBulto from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract List<CatalogoItemValor> fecthConsultarValores(Integer idManifiesto, Integer idManifiestoDetalle);
 
     @Query("select count(*) from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle and descripcion=:categoria limit 1")
@@ -67,8 +69,8 @@ public abstract class ManifiestoDetallePesosDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long insertValores(ManifiestoDetallePesosEntity entity);
 
-    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion){
-        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion);
+    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion, Integer numeroBulto){
+        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion, numeroBulto);
         return insertValores(r);
     }
 

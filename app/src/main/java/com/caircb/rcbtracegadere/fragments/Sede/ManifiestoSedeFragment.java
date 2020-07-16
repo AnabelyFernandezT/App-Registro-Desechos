@@ -35,6 +35,7 @@ import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarDetalleSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
@@ -132,10 +133,14 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                    @Override
                                    public void onSuccessful() {
                                        messageBox("Bultos Guardados");
-                                       setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
                                        consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(getActivity());
+                                       consultarHojaRutaTask.setmOnVehiculoListener(new UserConsultarManifiestosSedeTask.OnPlacaListener() {
+                                           @Override
+                                           public void onSuccessful(List<DtoManifiestoSede> catalogos) {
+                                               setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                                           }
+                                       });
                                        consultarHojaRutaTask.execute();
-
                                    }
 
                                    @Override

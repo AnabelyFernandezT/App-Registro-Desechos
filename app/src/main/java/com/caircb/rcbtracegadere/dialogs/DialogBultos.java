@@ -174,7 +174,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 /*************************************/
 
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
-                //imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), pos+1);
+                //imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -339,13 +339,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     public void addBulto(BigDecimal imput, String tipo){
 
         subtotal = subtotal.add(imput);
-        Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false);
+
+        Integer ultimoBultoByIdDet = MyApp.getDBO().manifiestoDetallePesosDao().countNumeroBultosByIdManifiestoIdDet(idManifiesto, idManifiestoDetalle);
+        ultimoBultoByIdDet = ultimoBultoByIdDet + 1;
+
+        Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
 
         if(tipo.length()>0){
             MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto,tipoPaquete,tipo);
         }
 
-        bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, false));
+        bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, false, ultimoBultoByIdDet));
         listaValoresAdapter.notifyDataSetChanged();
 
         txtTotal.setText("KG "+subtotal);
@@ -422,6 +426,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 setDato("9");
                 break;
             case R.id.btn_ok:
+                BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                createBulto(imputValor);
                 boolean resp = verificarTodosBultosImpresos();
                 if(!resp){
                     if(mOnBultoListener!=null){

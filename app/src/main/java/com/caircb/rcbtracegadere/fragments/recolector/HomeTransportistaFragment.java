@@ -79,10 +79,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_home_transportista, container, false));
 
+
         initBuscador();
         init();
         loadCantidadManifiestoAsignado();
         loadCantidadManifiestoProcesado();
+
 
         return getView();
 
@@ -361,6 +363,15 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     private void consultarInicioFinRuta(){
         verificarInicioRutaTask = new UserConsultarInicioRutaTask(getActivity());
+        verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
+            @Override
+            public void onSuccessful() {
+               // messageBox("Ha iniciado previamente sesion");
+               setNavegate(HomeTransportistaFragment.create());
+             //  loadCantidadManifiestoAsignado();
+              // loadCantidadManifiestoProcesado();
+            }
+        });
         verificarInicioRutaTask.execute();
     }
 

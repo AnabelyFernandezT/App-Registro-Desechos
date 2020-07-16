@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 
 import androidx.annotation.Dimension;
@@ -55,6 +56,7 @@ import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
@@ -81,15 +83,16 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     AlertDialog.Builder builder;
     private TextView txtUserNombre, txtnombreLugarTrabajo, nombreLugarTrabajo;
     UserInformacionModulosTask informacionModulosTaskl;
-    List<DtoCatalogo> listaDestinos,destinosEspecificos;
+    List<DtoCatalogo> listaDestinos, destinosEspecificos;
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
     DialogInformacionModulos dialogInformacionModulos;
+    UserConsultarInicioRutaTask verificarInicioRutaTask;
 
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private List<RowItem> rowItems;
     final ArrayList selectedItems = new ArrayList();
-    final CharSequence[] optionsCatalog = {"OBSERVACIONES","TIPO DESECHOS","TIPO UNIDAD","VEHICULOS","PAQUETES","MOTIVOS NO RECOLECION"};
+    final CharSequence[] optionsCatalog = {"OBSERVACIONES", "TIPO DESECHOS", "TIPO UNIDAD", "VEHICULOS", "PAQUETES", "MOTIVOS NO RECOLECION"};
 
     //Parametros Globales
     private boolean inicioSesion;
@@ -115,38 +118,41 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //consultarInicioFinRuta();
         initMenuLateral();
         existeCatalogos();
         existePaquetes();
         cargarRutas();
         validateInitFragment();
         initBorrarCache();
+
     }
 
-    private void validateInitFragment(){
+    private void validateInitFragment() {
         //if(1==1){
-           //initFragment((HomeTransportistaFragment.create()));
-           //initFragment(HomePlantaFragment.create());
+        //initFragment((HomeTransportistaFragment.create()));
+        //initFragment(HomePlantaFragment.create());
         //}
-        switch (MySession.getIdPerfil()){
+        switch (MySession.getIdPerfil()) {
 
-            case 3136 :
+            case 3136:
                 initFragment((HomeTransportistaFragment.create()));
                 break;
-            case 3137 :
+            case 3137:
                 initFragment((HomePlantaFragment.create()));
                 break;
-            case 4136 :
+            case 4136:
                 initFragment((HomeSedeFragment.create()));
                 break;
-            case 4137 :
+            case 4137:
                 initFragment((HomeHotelFragment.create()));
                 break;
-            case 4138 :
+            case 4138:
                 initFragment((HomeGestorAlternoFragment.create()));
                 break;
         }
     }
+
     private void initFragment(Fragment _fragmentinit) {
         fragment = _fragmentinit;
         getFragmentManager()
@@ -156,15 +162,15 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         fm = getFragmentManager();
     }
 
-    public void initMenuLateral(){
+    public void initMenuLateral() {
         RequestCredentials cr = new RequestCredentials();
 
         mDrawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerMenuItems = (ListView)findViewById(R.id.menu_items);
+        mDrawerMenuItems = (ListView) findViewById(R.id.menu_items);
 
-        txtUserNombre = (TextView)findViewById(R.id.nombreUsuario);
-        txtnombreLugarTrabajo = (TextView)findViewById(R.id.txtNombreLugarTrabajo);
+        txtUserNombre = (TextView) findViewById(R.id.nombreUsuario);
+        txtnombreLugarTrabajo = (TextView) findViewById(R.id.txtNombreLugarTrabajo);
         nombreLugarTrabajo = (TextView) findViewById(R.id.nombreLugarTrabajo);
 
         txtUserNombre.setText(MySession.getUsuarioNombre());
@@ -174,20 +180,20 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
         rowItems = new ArrayList<>();
 
-        try{
+        try {
             jsonMenus = new JSONArray(MySession.getMenus());
             jsonLugares = new JSONArray(MySession.getLugares());
-            if(jsonMenus.length()>0){
-                for (int i = 0; i < jsonMenus.length(); i++){
+            if (jsonMenus.length() > 0) {
+                for (int i = 0; i < jsonMenus.length(); i++) {
                     json = jsonMenus.getJSONObject(i);
-                    if(json.getString("nombre").equals("MÓDULOS")){
-                        if(jsonLugares.length()>1){
+                    if (json.getString("nombre").equals("MÓDULOS")) {
+                        if (jsonLugares.length() > 1) {
                             rowItems.add(new RowItem(
                                     json.getString("nombre"),
                                     getResources(json.getString("icono")),
                                     json.getBoolean("isHabilitado")));
                         }
-                    }else{
+                    } else {
                         rowItems.add(new RowItem(
                                 json.getString("nombre"),
                                 getResources(json.getString("icono")),
@@ -196,10 +202,10 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 }
             }
 
-            jsonMenus=null;
-            json=null;
+            jsonMenus = null;
+            json = null;
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -211,8 +217,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
 
-
-    private void onCloseApp(){
+    private void onCloseApp() {
         final DialogBuilder dialogBuilder = new DialogBuilder(MainActivity.this);
         dialogBuilder.setCancelable(false);
         dialogBuilder.setMessage("¿Esta usted seguro de salir del sistema ?");
@@ -234,7 +239,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         dialogBuilder.show();
     }
 
-    private void onCopyDatabase(){
+    private void onCopyDatabase() {
         /*try {
             if(dbHelper.copyDataBase()) {
                 showToast("¡base de datos respaldada!");
@@ -248,7 +253,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         navegate(_fragment);
     }
 
-    private void navegate(Fragment _fragment){
+    private void navegate(Fragment _fragment) {
         fragment = _fragment;
         fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.animator.enter_from_left, R.animator.enter_from_right, 0, 0);
@@ -256,29 +261,29 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         fragmentTransaction.commit();
     }
 
-    public void openMenuOpcion(){
-        if (mDrawer.isDrawerOpen(mDrawerLayout)){
+    public void openMenuOpcion() {
+        if (mDrawer.isDrawerOpen(mDrawerLayout)) {
             mDrawer.closeDrawers();
-        }else{
+        } else {
             mDrawer.openDrawer(mDrawerLayout);
         }
     }
 
-    private void openConfigurar(){
+    private void openConfigurar() {
         final Dialog mdialog = new Dialog(this);
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
         myListOfItems.add(new MenuItem("IMPRESORA"));
-        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this,myListOfItems);
+        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this, myListOfItems);
         View view = getLayoutInflater().inflate(R.layout.dialog_main, null);
-        mDialogMenuItems =(ListView) view.findViewById(R.id.custom_list);
+        mDialogMenuItems = (ListView) view.findViewById(R.id.custom_list);
         mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
         mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MenuItem item= myListOfItems.get(position);
-                if(!item.isEnabled()){
-                     if(item.getNombre().equals("IMPRESORA")){
-                        if(mdialog!=null){
+                MenuItem item = myListOfItems.get(position);
+                if (!item.isEnabled()) {
+                    if (item.getNombre().equals("IMPRESORA")) {
+                        if (mdialog != null) {
                             mdialog.dismiss();
                             openMenuOpcion();
                             NavegationFragment(ImpresoraConfigurarFragment.create());
@@ -294,7 +299,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         mdialog.show();
     }
 
-    private void openActualizar(){
+    private void openActualizar() {
 
         final Dialog mdialog = new Dialog(this);
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
@@ -302,17 +307,17 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         //myListOfItems.add(new MenuItem("Catalogos"));
         //myListOfItems.add(new MenuItem("Impresora"));
 
-        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this,myListOfItems);
+        dialogMenuBaseAdapter = new DialogMenuBaseAdapter(this, myListOfItems);
         View view = getLayoutInflater().inflate(R.layout.dialog_main, null);
-        mDialogMenuItems =(ListView) view.findViewById(R.id.custom_list);
+        mDialogMenuItems = (ListView) view.findViewById(R.id.custom_list);
         mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
         mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MenuItem item= myListOfItems.get(position);
-                if(!item.isEnabled()){
-                    if (item.getNombre().equals("APLICACIÓN")){
-                        if(mdialog!=null){
+                MenuItem item = myListOfItems.get(position);
+                if (!item.isEnabled()) {
+                    if (item.getNombre().equals("APLICACIÓN")) {
+                        if (mdialog != null) {
                             mdialog.dismiss();
                             onUpdateApp();
                         }
@@ -327,41 +332,43 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         mdialog.show();
     }
 
-    private void onUpdateApp(){
+    private void onUpdateApp() {
         userUpdateAppTask = new UserUpdateAppTask(this);
         userUpdateAppTask.execute();
     }
 
-    private void existeCatalogos(){
+    private void existeCatalogos() {
         List<Integer> listaCatalogos = new ArrayList<>();
 
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(1)) listaCatalogos.add(1);
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(2)) listaCatalogos.add(2);
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(3)) listaCatalogos.add(3);
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(4)) listaCatalogos.add(4);
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(6)) listaCatalogos.add(6);
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(7)) listaCatalogos.add(7);//notificaciones
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(1)) listaCatalogos.add(1);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(2)) listaCatalogos.add(2);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(3)) listaCatalogos.add(3);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(4)) listaCatalogos.add(4);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(6)) listaCatalogos.add(6);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(7))
+            listaCatalogos.add(7);//notificaciones
         //if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(8)) listaCatalogos.add(8);//rutas
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(9)) listaCatalogos.add(9);//destino
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(12)) listaCatalogos.add(12);//
-        if(!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(14)) listaCatalogos.add(14);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(9))
+            listaCatalogos.add(9);//destino
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(12)) listaCatalogos.add(12);//
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(14)) listaCatalogos.add(14);
 
-        if(listaCatalogos.size()>0){
-            consultarCatalogosTask = new UserConsultarCatalogosTask(this,listaCatalogos);
+        if (listaCatalogos.size() > 0) {
+            consultarCatalogosTask = new UserConsultarCatalogosTask(this, listaCatalogos);
             consultarCatalogosTask.execute();
         }
     }
 
-    private void existePaquetes(){
+    private void existePaquetes() {
 
-       if(!MyApp.getDBO().paqueteDao().existePaquetes()){
-                paquetesTask = new PaquetesTask(this, listener);
-                paquetesTask.execute();
+        if (!MyApp.getDBO().paqueteDao().existePaquetes()) {
+            paquetesTask = new PaquetesTask(this, listener);
+            paquetesTask.execute();
         }
     }
 
-    private void cargarRutas(){
-        if(!MyApp.getDBO().rutasDao().existeRutas()){
+    private void cargarRutas() {
+        if (!MyApp.getDBO().rutasDao().existeRutas()) {
             rutasTask = new UserConsultarRutasTask(this);
             rutasTask.execute();
         }
@@ -375,45 +382,51 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         return c.getCount()>0;
     }*/
 
-    private void guardarLugar(String nombreLugar){
-        try{
+    private void guardarLugar(String nombreLugar) {
+        try {
             jsonLugares = new JSONArray(MySession.getLugares());
-            for (int i = 0; i < jsonLugares.length(); i++){
+            for (int i = 0; i < jsonLugares.length(); i++) {
                 json = jsonLugares.getJSONObject(i);
-                if(json.getString("nombre").equals(nombreLugar)){
+                if (json.getString("nombre").equals(nombreLugar)) {
                     MySession.setIdPerfil(json.getInt("idPerfil"));
                     MySession.setLugarNombre(json.getString("nombre"));
-                    if(nombreLugar.equals("TRANSPORTISTA")){
+                    if (nombreLugar.equals("TRANSPORTISTA")) {
                         MySession.setDestinoEspecifico("");
                         initMenuLateral();
-                        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
-                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+0);
-                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+1);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 0);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                         navegate((HomeTransportistaFragment.create()));
-                    }else {
-                        if(nombreLugar.equals("PLANTA")){
-                            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
-                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+2);
-                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+2);
+                    } else {
+                        if (nombreLugar.equals("PLANTA")) {
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 2);
+                            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                             traerDestinoEspecifico();
                             //navegate((HomePlantaFragment.create()));
                         } else {
-                            if (nombreLugar.equals("SEDE")){
-                                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
-                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+1);
-                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+6);
+                            if (nombreLugar.equals("SEDE")) {
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 1);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                                 traerDestinoEspecifico();
                                 //navegate(HomeSedeFragment.create());
-                            }else {
-                                if (nombreLugar.equals("HOTEL")){
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+4);
+                            } else {
+                                if (nombreLugar.equals("HOTEL")) {
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 20);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 4);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                                     //traerDestinoEspecifico();
                                     navegate(HomeHotelFragment.create());
-                                }else {
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+3);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+5);
+                                } else {
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + 0);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 3);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
                                     traerDestinoEspecifico();
                                     navegate(HomeGestorAlternoFragment.create());
                                 }
@@ -426,26 +439,26 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     nombreLugarTrabajo.setText(MySession.getDestinoEspecifico());
                 }
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void traerDestinoEspecifico(){
+    private void traerDestinoEspecifico() {
         consultaDestinoEspecifico = new UserDestinoEspecificoTask(this);
         consultaDestinoEspecifico.setOnDestinoListener(new UserDestinoEspecificoTask.OnDestinoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos, Integer idDestino) {
                 destinosEspecificos = catalogos;
                 selectDestinoEspecifico(catalogos);
-                if(idDestino == 1){
+                if (idDestino == 1) {
                     navegate(HomeSedeFragment.create());
-                }else if(idDestino == 2){
+                } else if (idDestino == 2) {
                     navegate((HomePlantaFragment.create()));
-                }else if (idDestino == 3){
+                } else if (idDestino == 3) {
                     navegate(HomeGestorAlternoFragment.create());
-                }else if(idDestino ==4){
+                } else if (idDestino == 4) {
                     navegate(HomeHotelFragment.create());
                 }
             }
@@ -455,9 +468,9 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     private void selectDestinoEspecifico(List<DtoCatalogo> catalogos) {
-        final String[] options=new String[catalogos.size()];
-        for (int i=0; i<destinosEspecificos.size();i++){
-            options[i]=destinosEspecificos.get(i).getNombre();
+        final String[] options = new String[catalogos.size()];
+        for (int i = 0; i < destinosEspecificos.size(); i++) {
+            options[i] = destinosEspecificos.get(i).getNombre();
 
         }
 
@@ -467,7 +480,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+destinosEspecificos.get(item).getId());
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + destinosEspecificos.get(item).getId());
                 MySession.setDestinoEspecifico(destinosEspecificos.get(item).getNombre());
                 initMenuLateral();
                 //System.out.println("Acceso a la variable: "+MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
@@ -479,29 +492,29 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     //////////////////////////////////////////
-    private void openSincronizaCatalogos(){
+    private void openSincronizaCatalogos() {
         selectedItems.clear();
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("CATALOGOS")
                 .setMultiChoiceItems(optionsCatalog, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                        if (isChecked){
-                            selectedItems.add(position+1);
-                        }else if (selectedItems.contains(position+1)){
-                            selectedItems.remove(Integer.valueOf(position+1));
+                        if (isChecked) {
+                            selectedItems.add(position + 1);
+                        } else if (selectedItems.contains(position + 1)) {
+                            selectedItems.remove(Integer.valueOf(position + 1));
                         }
                     }
                 }).setPositiveButton("SINCRONIZAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(selectedItems.size()>0){
+                if (selectedItems.size() > 0) {
                     //String ids = TextUtils.join(",",selectedItems);
-                    for (final Object catalogoID :selectedItems) {
-                        if (catalogoID.equals(5)){
+                    for (final Object catalogoID : selectedItems) {
+                        if (catalogoID.equals(5)) {
                             existePaquetes();
-                        }else{
-                            consultarCatalogosTask = new UserConsultarCatalogosTask(MainActivity.this,selectedItems);
+                        } else {
+                            consultarCatalogosTask = new UserConsultarCatalogosTask(MainActivity.this, selectedItems);
                             consultarCatalogosTask.execute();
                         }
                     }
@@ -519,7 +532,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(rowItems!=null) {
+        if (rowItems != null) {
             switch (rowItems.get(position).getNombre()) {
                 case "SALIR":
                     onCloseApp();
@@ -542,49 +555,65 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             }
         }
     }
-    ProgressDialog dialog;
 
-    private void openInformacion(){
+
+    private void openInformacion() {
 
 
         dialogInformacionModulos = new DialogInformacionModulos(this);
-        int idTipoProceso=Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino"));
-        boolean estadoProceso=Boolean.parseBoolean(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estado_transporte"));
-        if (idTipoProceso==1||idTipoProceso==0){
-            if (estadoProceso==true){
-                informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
+        boolean estadoProceso = Boolean.parseBoolean(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estado_transporte"));
+        int idTipoEspiecifico = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info"));
+        System.out.println("RUTA " + estadoProceso + "--" + idTipoEspiecifico);
+
+        if (idTipoEspiecifico == 1 || idTipoEspiecifico == 0) {
+            if (estadoProceso == true) {
+                informacionModulosTaskl = new UserInformacionModulosTask(this, dialogInformacionModulos);
                 informacionModulosTaskl.execute();
-            }
-            else {
+            } else {
                 message("No hay datos para mostrar...");
             }
-        }else {
-            informacionModulosTaskl = new UserInformacionModulosTask(this,dialogInformacionModulos);
-            informacionModulosTaskl.execute();
+        }
+
+        if (idTipoEspiecifico >= 3 && idTipoEspiecifico <= 5) {
+            String t = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_lote");
+            String idInicioLote = t != null ? t.toString() : "-1";
+            if (idInicioLote.equals("-1")) {
+                message("No ha iniciado lote...");
+            } else {
+                informacionModulosTaskl = new UserInformacionModulosTask(this, dialogInformacionModulos);
+                informacionModulosTaskl.execute();
+            }
+            if (idInicioLote.equals("-10")) {
+                message("Lote finalizado...");
+            }
+        }
+
+        if (idTipoEspiecifico >= 6 && idTipoEspiecifico <= 7) {
+            String t = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta");
+            String idInicioLote = t != null ? t.toString() : "-1";
+            if (idInicioLote.equals("-1")){
+                message("No ha sincronizado...");
+            }else {
+                informacionModulosTaskl = new UserInformacionModulosTask(this, dialogInformacionModulos);
+                informacionModulosTaskl.execute();
+                //dialogInformacionModulos.show();
+            }
         }
 
 
 
-        /*DisplayMetrics displaymetrics = new DisplayMetrics(); getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int height = displaymetrics.heightPixels;
-        int width = displaymetrics.widthPixels;
-        dialogInformacionModulos.getWindow().setLayout(width,height);*/
-        /*int width = this.getResources().getDisplayMetrics().widthPixels;
-        int height = this.getResources().getDisplayMetrics().heightPixels;
-        final WindowManager.LayoutParams WMLP = dialogInformacionModulos.getWindow().getAttributes();
-        WMLP.y = height;
-        WMLP.x = width;
-        dialogInformacionModulos.getWindow().setAttributes(WMLP);*/
+
     }
 
-    private void openModulos(){
+
+    private void openModulos() {
         final Dialog mdialog = new Dialog(MainActivity.this);
         final ArrayList<MenuItem> myListOfItems = new ArrayList<>();
 
-        try{
+        try {
             jsonLugares = new JSONArray(MySession.getLugares());
-            if(jsonLugares.length()>0){
-                for (int i = 0; i < jsonLugares.length(); i++){
+            if (jsonLugares.length() > 0) {
+                for (int i = 0; i < jsonLugares.length(); i++) {
                     json = jsonLugares.getJSONObject(i);
                     myListOfItems.add(new MenuItem(json.getString("nombre")));
                 }
@@ -592,10 +621,10 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             //MySession.getIdUsuario();
 
 
-            jsonLugares=null;
-            json=null;
+            jsonLugares = null;
+            json = null;
             myListOfItems.add(new MenuItem("NOTIFICACIONES"));
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         dialogMenuBaseAdapter = new DialogMenuBaseAdapter(MainActivity.this, myListOfItems);
@@ -616,8 +645,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     } else if (item.getNombre().equals("PLANTA")) {
                         if (mdialog != null) {
                             mdialog.dismiss();
-                                openMenuOpcion();
-                                guardarLugar("PLANTA");
+                            openMenuOpcion();
+                            guardarLugar("PLANTA");
                         }
                     } else if (item.getNombre().equals("SEDE")) {
                         if (mdialog != null) {
@@ -637,8 +666,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                             openMenuOpcion();
                             guardarLugar("GESTOR");
                         }
-                    }else if (item.getNombre().equals("NOTIFICACIONES")){
-                        if(mdialog!=null){
+                    } else if (item.getNombre().equals("NOTIFICACIONES")) {
+                        if (mdialog != null) {
                             mdialog.dismiss();
                             mensajes();
                         }
@@ -652,17 +681,17 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         mdialog.show();
     }
 
-    private void mensajes(){
+    private void mensajes() {
         DialogMensajes dialogMensajes = new DialogMensajes(MainActivity.this);
         dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogMensajes.show();
     }
 
-    private void initBorrarCache(){
+    private void initBorrarCache() {
         File dir = this.getCacheDir();
-        if(deleteDir(dir)){
+        if (deleteDir(dir)) {
             System.out.println("CACHE BORRADA");
-        }else{
+        } else {
             System.out.println("FALLO BORRADO");
         }
     }
@@ -677,7 +706,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;
@@ -686,7 +715,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onBackPressed() {
-        if(fragment!=null) {
+        if (fragment != null) {
             if (fragment instanceof OnBackPressed) {
                 ((OnBackPressed) fragment).onBackPressed();
             }
@@ -703,5 +732,17 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         }
     }
 
+    private void consultarInicioFinRuta(){
+        verificarInicioRutaTask = new UserConsultarInicioRutaTask(MainActivity.this);
+        verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
+            @Override
+            public void onSuccessful() {
+                //message("Ha iniciado previamente sesion");
+                navegate(HomeTransportistaFragment.create());
+
+            }
+        });
+        verificarInicioRutaTask.execute();
+    }
 
 }

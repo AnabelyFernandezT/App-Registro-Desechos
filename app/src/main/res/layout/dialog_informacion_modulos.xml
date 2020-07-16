@@ -35,6 +35,136 @@
         android:textAlignment="center"
         android:text="INFORMACIÓN DE RECOLECCIÓN"></TextView>
 
+    <LinearLayout
+        android:id="@+id/sectionPlanta"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="5dp" >
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Operador:"/>
+        <TextView
+            android:id="@+id/lblNombreChoferPlanta"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ruta:"/>
+        <TextView
+            android:id="@+id/lblRutaPlanta"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sub - ruta:"/>
+        <TextView
+            android:id="@+id/lblSubrutaPlanta"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Placa Sincronizada:"/>
+        <TextView
+            android:id="@+id/lblPlacaPlanta"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chofer:"/>
+        <TextView
+            android:id="@+id/lblChoferPlanta"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Auxiliar de recolección 1:"/>
+        <TextView
+            android:id="@+id/lblAuxiliarPlanta1"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/sectionSede"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="5dp" >
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chofer:"/>
+        <TextView
+            android:id="@+id/lblNombreChoferSede"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Placa Lote:"/>
+        <TextView
+            android:id="@+id/lblPlacaLote"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="13dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Placa sincronizada:"/>
+        <TextView
+            android:id="@+id/lblPlacaSincronizada"
+            android:textSize="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/sectionGeneral"

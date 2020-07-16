@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogManifiestoCliente;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
+import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -93,8 +94,9 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         mensajes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogMensajes dialogMensajes = new DialogMensajes(getActivity());
+                DialogNotificacionDetalle dialogMensajes = new DialogNotificacionDetalle(getActivity(),idAppManifiesto);
                 dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogMensajes.setCancelable(false);
                 dialogMensajes.show();
             }
         });
@@ -209,7 +211,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     return;
                 }*/
 
-
                dialogBuilder = new DialogBuilder(getActivity());
                dialogBuilder.setMessage("¿El cliente es registro generador?");
                dialogBuilder.setCancelable(false);
@@ -220,6 +221,13 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                        manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
                        manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
                        manifiestoCliente.setCancelable(false);
+                       manifiestoCliente.setmOnRegisterListener(new DialogManifiestoCliente.onRegisterListenner() {
+                           @Override
+                           public void onSucessfull() {
+                               dialogBuilder.dismiss();
+                               setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete()));
+                           }
+                       });
                        manifiestoCliente.show();
                    }
                });

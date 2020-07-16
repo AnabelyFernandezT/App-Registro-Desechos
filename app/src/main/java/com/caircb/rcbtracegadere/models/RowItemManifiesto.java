@@ -12,6 +12,8 @@ public class RowItemManifiesto {
     private Integer tipoItem;
     private Integer tipoPaquete;
     private boolean estado;
+    private int tipoBalanza;
+    private double pesoReferencial;
 
     public RowItemManifiesto(){}
 
@@ -75,4 +77,20 @@ public class RowItemManifiesto {
     public String getCodigo() { return codigo;}
 
     public void setCodigo(String codigo) { this.codigo = codigo;}
+
+    public int getTipoBalanza() {
+        return tipoBalanza;
+    }
+
+    public void setTipoBalanza(int tipoBalanza) {
+        this.tipoBalanza = tipoBalanza;
+    }
+
+    public double getPesoReferencial() {
+        return pesoReferencial;
+    }
+
+    public void setPesoReferencial(double pesoReferencial) {
+        this.pesoReferencial = pesoReferencial;
+    }
 }

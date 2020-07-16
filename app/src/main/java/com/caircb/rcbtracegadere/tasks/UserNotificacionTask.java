@@ -85,7 +85,7 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
         rq.setIdReceptor(518);
         rq.setMensaje(mensaje);
         rq.setIdEmisor(MySession.getIdUsuario());
-        rq.setToken(MySession.getId());
+        rq.setTitulo("");
         //rq.setToken(MySession.getId());
         rq.setIdManifiesto(idAppManifiesto);
         rq.setIdHojaRuta(hojaRuta);
