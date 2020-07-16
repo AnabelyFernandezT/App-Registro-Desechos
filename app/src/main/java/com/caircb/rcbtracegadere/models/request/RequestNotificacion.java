@@ -5,7 +5,7 @@ public class RequestNotificacion {
     private Integer idReceptor;
     private String mensaje;
     private Integer idEmisor;
-    private String token;
+    private String titulo;
     private Integer idManifiesto;
     private String idHojaRuta;
     private Integer idCatNotificacion;
@@ -34,12 +34,12 @@ public class RequestNotificacion {
         this.idEmisor = idEmisor;
     }
 
-    public String getToken() {
-        return token;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public Integer getIdManifiesto() {

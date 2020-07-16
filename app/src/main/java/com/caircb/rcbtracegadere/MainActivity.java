@@ -56,6 +56,7 @@ import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
@@ -86,6 +87,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
     DialogInformacionModulos dialogInformacionModulos;
+    UserConsultarInicioRutaTask verificarInicioRutaTask;
 
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private List<RowItem> rowItems;
@@ -116,12 +118,14 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //consultarInicioFinRuta();
         initMenuLateral();
         existeCatalogos();
         existePaquetes();
         cargarRutas();
         validateInitFragment();
         initBorrarCache();
+
     }
 
     private void validateInitFragment() {
@@ -728,5 +732,17 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         }
     }
 
+    private void consultarInicioFinRuta(){
+        verificarInicioRutaTask = new UserConsultarInicioRutaTask(MainActivity.this);
+        verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
+            @Override
+            public void onSuccessful() {
+                //message("Ha iniciado previamente sesion");
+                navegate(HomeTransportistaFragment.create());
+
+            }
+        });
+        verificarInicioRutaTask.execute();
+    }
 
 }
