@@ -44,7 +44,7 @@ public class DialogInformacionModulos extends MyDialog {
     Activity _activity;
     UserInformacionModulosTask informacionModulosTaskl;
     TextView lblRutaInfo,lblSubrutaInfo,lblPlacaInfo,lblChoferInfo,lblAuxiliarRecoleccion1Info,lblAuxiliarRecoleccion2Info,lblKilometrajeInfo,lblObservaciones,lblTituloRuta
-            ,lblTituloRecoleccion,lblPlacaLote,lblPlacaSincronizada,lblNombreChoferSede, lblNombreChoferPlanta,lblPlacaSede;
+            ,lblTituloRecoleccion,lblPlacaLote,lblPlacaSincronizada,lblNombreChoferSede, lblNombreChoferPlanta,lblPlacaPlanta,lblRutaPlanta,lblSubrutaPlanta,lblChoferPlanta,lblAuxiliarPlanta1;
     CheckBox chkFiscalizacionNo,chkFiscalizacionSi,chkFiscalizacionArcsa,chkFiscalizacionMi,chkDevolucionRecipienteSi,chkDevolucionRecipienteNo,chkMontacargasSi,chkMontacargasNo
             ,chkBalanzaSi,chkBalanzaNo,chkPresenciadoSi,chkPresenciadoNo;
     LinearLayout btnRetornarMenu,sectionGeneral,sectionEspecifica,sectionSede,sectionPlanta;
@@ -92,7 +92,11 @@ public class DialogInformacionModulos extends MyDialog {
         lblNombreChoferSede = getView().findViewById(R.id.lblNombreChoferSede);
 
         lblNombreChoferPlanta = getView().findViewById(R.id.lblNombreChoferPlanta);
-        lblPlacaSede = getView().findViewById(R.id.lblPlacaSede);
+        lblPlacaPlanta = getView().findViewById(R.id.lblPlacaPlanta);
+        lblRutaPlanta = getView().findViewById(R.id.lblRutaPlanta);
+        lblSubrutaPlanta = getView().findViewById(R.id.lblSubrutaPlanta);
+        lblChoferPlanta = getView().findViewById(R.id.lblChoferPlanta);
+        lblAuxiliarPlanta1 = getView().findViewById(R.id.lblAuxiliarPlanta1);
 
         lblTituloRuta = getView().findViewById(R.id.lblTituloRuta);
         lblTituloRecoleccion = getView().findViewById(R.id.lblTituloRecoleccion);
@@ -199,9 +203,13 @@ public class DialogInformacionModulos extends MyDialog {
             sectionEspecifica.setVisibility(View.GONE);
             sectionSede.setVisibility(View.GONE);
             sectionPlanta.setVisibility(View.VISIBLE);
-            System.out.println("SI");
+
             lblNombreChoferPlanta.setText(informacionModulos.getChofer());
-            lblPlacaSede.setText(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista"));
+            lblPlacaPlanta.setText(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista"));
+            lblRutaPlanta.setText(informacionModulos.getRuta());
+            lblSubrutaPlanta.setText(informacionModulos.getSubruta());
+            lblChoferPlanta.setText(informacionModulos.getChofer());
+            lblAuxiliarPlanta1.setText(informacionModulos.getAuxiliarRecoleccion1());
         }
 
 
