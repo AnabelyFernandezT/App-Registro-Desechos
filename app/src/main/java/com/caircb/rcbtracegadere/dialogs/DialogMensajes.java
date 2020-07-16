@@ -64,7 +64,7 @@ public class DialogMensajes extends MyDialog {
                 UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),null,
                                                             txtMensaje.getText().toString(),
                                                             idNotificacion,
-                                                            "1");
+                                                            "1",0.0);
                 notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
                     @Override
                     public void onSuccessful() {

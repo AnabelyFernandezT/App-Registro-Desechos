@@ -9,6 +9,8 @@ public class RequestNotificacion {
     private Integer idManifiesto;
     private String idHojaRuta;
     private Integer idCatNotificacion;
+    private Double pesoExtra;
+
 
     public Integer getIdReceptor() {
         return idReceptor;
@@ -64,5 +66,13 @@ public class RequestNotificacion {
 
     public void setIdCatNotificacion(Integer idCatNotificacion) {
         this.idCatNotificacion = idCatNotificacion;
+    }
+
+    public Double getPesoExtra() {
+        return pesoExtra;
+    }
+
+    public void setPesoExtra(Double pesoExtra) {
+        this.pesoExtra = pesoExtra;
     }
 }
