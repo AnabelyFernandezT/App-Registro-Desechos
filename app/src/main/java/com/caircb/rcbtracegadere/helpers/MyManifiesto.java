@@ -564,7 +564,7 @@ public class MyManifiesto {
                 operador2.scaleToFit(70,150);
                 tb10.addCell((createCell_ImagenFirma_NO_BORDER(operador2,f6,Element.ALIGN_CENTER)));
             }else{
-                tb10.addCell(createCell_VACIO());
+                tb10.addCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
             }
 
             //cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
@@ -622,9 +622,18 @@ public class MyManifiesto {
         tb6.addCell(_cell);
 
         Paragraph para4 = new Paragraph();
-        para4.add(new Chunk(manifiesto.getAuxiliarNombre(),f6));
+        if(manifiesto.getAuxiliarNombre()!=null){
+            para4.add(new Chunk(manifiesto.getAuxiliarNombre(),f6));
+        }else {
+            para4.add(new Chunk("",f6));
+        }
         para4.add(Chunk.NEWLINE);
-        para4.add(new Chunk(manifiesto.getAuxiliarIdentificacion(),f6));
+        if(manifiesto.getAuxiliarIdentificacion()!=null){
+            para4.add(new Chunk(manifiesto.getAuxiliarIdentificacion(),f6));
+        }else{
+            para4.add(new Chunk("",f6));
+        }
+
         para4.add(Chunk.NEWLINE);
         _cell = new PdfPCell(para4);
         _cell.setBorder(Rectangle.NO_BORDER);
@@ -642,9 +651,18 @@ public class MyManifiesto {
         tb6.addCell(_cell);
 
         Paragraph para7 = new Paragraph();
-        para7.add(new Chunk(manifiesto.getNombreOperadorRecolector(),f6));
+        if(manifiesto.getNombreOperadorRecolector()!=null){
+            para7.add(new Chunk(manifiesto.getNombreOperadorRecolector(),f6));
+        }else {
+            para7.add(new Chunk("",f6));
+        }
         para7.add(Chunk.NEWLINE);
-        para7.add(new Chunk(manifiesto.getIdentificacionOperadorRecolector(),f6));
+        if(manifiesto.getIdentificacionOperadorRecolector()!=null){
+            para7.add(new Chunk(manifiesto.getIdentificacionOperadorRecolector(),f6));
+        }else {
+            para7.add(new Chunk("",f6));
+        }
+
         para7.add(Chunk.NEWLINE);
         _cell = new PdfPCell(para7);
         _cell.setBorder(Rectangle.NO_BORDER);
