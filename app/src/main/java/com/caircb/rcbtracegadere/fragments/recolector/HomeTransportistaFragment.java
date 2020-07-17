@@ -220,7 +220,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
                         dialogBuilder = new DialogBuilder(getActivity());
                         dialogBuilder.setCancelable(false);
-                        dialogBuilder.setMessage("¿Iniciar trazlado al proximo punto de recolección?");
+                        dialogBuilder.setMessage("¿Iniciar traslado al próximo punto de recolección?");
                         dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

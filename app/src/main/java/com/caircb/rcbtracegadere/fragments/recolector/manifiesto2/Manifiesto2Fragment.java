@@ -189,11 +189,11 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     return;
                 }
                 if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
-                    messageBox("Se require que ingrese los datos del tecnico responsable de la entrega de los residuos recolectados");
+                    messageBox("Se require que ingrese los datos del técnico responsable de la entrega de los residuos recolectados");
                     return;
                 }
                 if(tabManifiestoGeneral.validaExisteFirmaTecnicoGenerador() && !aplicaNoRecoleccion){
-                    messageBox("Se requiere de la firma del tecnico generador");
+                    messageBox("Se requiere de la firma del técnico generador");
                     return;
                 }
                 //tab detalle...
