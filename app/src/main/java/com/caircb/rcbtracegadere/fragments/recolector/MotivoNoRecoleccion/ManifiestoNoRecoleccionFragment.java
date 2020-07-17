@@ -156,10 +156,15 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
 
                if(estadoCheck>0){
 
+                   if(!tabManifiestoGeneral.validaExisteFirmaTransportista()){
+                       messageBox("Se requiere de la firma del transportista");
+                       return;
+                   }
+                   /*
                     if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
                         messageBox("Se requiere de la firma del transportista");
                         return;
-                    }
+                    }*/
                     if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
                         messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
                         return;

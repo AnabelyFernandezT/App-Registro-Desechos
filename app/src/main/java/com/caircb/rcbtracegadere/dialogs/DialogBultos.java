@@ -166,11 +166,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             public void onSendImpresion(Integer pos) {
                 CatalogoItemValor item = bultos.get(pos);
                 //Probar sin impresiora
-                /*************************************/
+                /************************************/
+
                 bultos.get(pos).setImpresion(true);
                 MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
                 listaValoresAdapter.filterList(bultos);
                 listaValoresAdapter.notifyDataSetChanged();
+
                 /*************************************/
 
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
@@ -206,6 +208,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer idCatalogo, Integer numeroBulto){
+        /*
+        bultos.clear();
+        subtotal= BigDecimal.ZERO;
+        MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, idCatalogo, true);
+        loadData();*/
+
         try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
@@ -213,14 +221,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 public void onSuccessful() {
                     //Impresion finalizada
                     bultos.clear();
+                    subtotal= BigDecimal.ZERO;
                     MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, idCatalogo, true);
                     loadData();
                 }
-
                 @Override
-                public void onFailure(String message) {
-                    messageBox(message);
-                }
+                public void onFailure(String message) { messageBox(message); }
             });
             print.printerIndividual(idAppManifiesto, idManifiestoDetalle, idCatalogo, numeroBulto);
 
@@ -228,6 +234,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             messageBox("No hay conexion con la impresora");
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
+
     }
 
 
@@ -361,13 +368,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void aplicar(){
         BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
-        if(imput.doubleValue()==0 && subtotal.doubleValue()>0){
+        if(imput.doubleValue()==0d && subtotal.doubleValue()>0d){
             if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true);
-        }else if(imput.doubleValue()>0){
-            if(bultos.size()>=0 && pkg ==null){
+        }else if(imput.doubleValue()>0d){
+            if(bultos.size()>=0d && pkg ==null){
                 createBulto(imput);
                 if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), null,true);
-            }else if(bultos.size()>=0 && pkg!=null){
+            }else if(bultos.size()>=0d && pkg!=null){
                 //region para paquetes...
                 closable=true;
                 createBulto(imput);
