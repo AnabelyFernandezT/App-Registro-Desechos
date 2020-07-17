@@ -27,6 +27,7 @@ import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQR;
 import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQRSede;
+import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.ManifiestoPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
@@ -113,9 +114,27 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
-        adapterList();
+        String estado = MyApp.getDBO().parametroDao().fecthParametroValor("loteBandera_sedes");
+        System.out.println(estado);
 
+        //String numeroLote = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_inicio_lote");
+        //rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+        /*
+        if(rowItems.size()>0){
+
+            for(ItemManifiestoSede reg: rowItems){
+                if(reg.getEstado() == 3){
+                    MyApp.getDBO().manifiestoSedeDao().updateManifiestoAtado(reg.getIdAppManifiesto(), numeroLote);
+                }
+            }
+        }
+         */
+
+        //rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManifInicioLote(numeroLote);
+        rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+
+        //rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
+        adapterList();
     }
 
     private void adapterList(){

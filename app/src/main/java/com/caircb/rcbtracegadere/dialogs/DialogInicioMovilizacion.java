@@ -112,13 +112,10 @@ public class DialogInicioMovilizacion extends MyDialog {
                     destinos = (String) listaDestino.getSelectedItem();
                     traerDestinoEspecifico();
                 }
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
         listaDestinoParticular.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -128,13 +125,10 @@ public class DialogInicioMovilizacion extends MyDialog {
                     destinosEspecificos.get(position-1);
                     destino = (String) listaDestinoParticular.getSelectedItem();
                 }
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
         listaOperador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -146,9 +140,7 @@ public class DialogInicioMovilizacion extends MyDialog {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
         listaOperadorAuxiliar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

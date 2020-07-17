@@ -154,7 +154,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                 Integer estadoCheck;
                 estadoCheck = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccionEstado(idAppManifiesto);
 
-                if(estadoCheck>0){
+               if(estadoCheck>0){
 
                     if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
                         messageBox("Se requiere de la firma del transportista");
@@ -169,7 +169,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                             tabManifiestoGeneral.getTipoPaquete()
                     ));
                 }else{
-                    messageBox("Ingrese motivo de NO RECOLECCIÓN");
+                 messageBox("Ingrese motivo de NO RECOLECCIÓN");
                 }
  /*               if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
                     messageBox("Se require que ingrese los datos del tecnico responsable de la entrega de los residuos recolectados");

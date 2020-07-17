@@ -1,3 +1,4 @@
+
 package com.caircb.rcbtracegadere.fragments.Sede;
 
 import android.app.AlertDialog;
@@ -97,6 +98,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnInciaLote.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+
                 dialogPlacas = new DialogPlacaSede(getActivity());
                 dialogPlacas.setCancelable(false);
                 dialogPlacas.setTitle("INICIAR LOTE");
@@ -133,6 +135,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
         btnFinLote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
                 dialogBuilder.setCancelable(false);
                 dialogBuilder.setMessage("¿Esta seguro de continuar ?");
@@ -144,6 +147,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                         registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
                             @Override
                             public void onSuccessful(String numLote) {
+                                MyApp.getDBO().parametroDao().saveOrUpdate("loteBandera_sedes","false");
+
                                 messageBox("Lote # " + numLote + " se ha cerrado correctamente.");
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_lote","-10");
                                 verificarInicioLote();
@@ -167,21 +172,15 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                     }
                 });
                 dialogBuilder.show();
-
             }
         });
-
-
     }
-
-
 
     private void initBuscador(){
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datosLotesDisponibles();
-
             }
         });
     }
@@ -249,8 +248,6 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             }
 
     }
-
-
 
     public static HomeSedeFragment create(){
         return new HomeSedeFragment();

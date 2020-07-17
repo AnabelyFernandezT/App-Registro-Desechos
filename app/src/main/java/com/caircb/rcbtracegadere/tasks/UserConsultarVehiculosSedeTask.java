@@ -12,6 +12,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,9 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
     public void execute() {
         progressShow("Consultando vihiculos disponibles...");
         RequestDataCatalogo requestDataCatalogo = requestDataCatalogo();
+        Gson gson = new Gson();
+        String json = gson.toJson(requestDataCatalogo);
+        System.out.println(requestDataCatalogo);
 
         if (requestDataCatalogo!= null){
 

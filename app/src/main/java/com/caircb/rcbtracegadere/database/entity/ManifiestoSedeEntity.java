@@ -28,6 +28,7 @@ public class ManifiestoSedeEntity {
 
     private Integer bultosTotal;
 
+
     public Integer getBultosRegistrados() {
         return bultosRegistrados;
     }
