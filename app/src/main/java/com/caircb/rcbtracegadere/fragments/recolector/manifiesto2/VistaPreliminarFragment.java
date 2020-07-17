@@ -167,7 +167,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                                 if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() >0 ){
 
                                     dialogBuilder = new DialogBuilder(getActivity());
-                                    dialogBuilder.setMessage("¿Desea iniciar trazlado al proximo punto de recoleccion ?");
+                                    dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
                                     dialogBuilder.setCancelable(false);
                                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                                         @Override

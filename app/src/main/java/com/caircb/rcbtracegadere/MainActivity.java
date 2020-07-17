@@ -220,7 +220,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private void onCloseApp() {
         final DialogBuilder dialogBuilder = new DialogBuilder(MainActivity.this);
         dialogBuilder.setCancelable(false);
-        dialogBuilder.setMessage("¿Esta usted seguro de salir del sistema ?");
+        dialogBuilder.setMessage("¿Está usted seguro de salir del sistema ?");
         dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -164,7 +164,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
 
                                 if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() >0 ){
                                     AlertDialog.Builder builderDialog= new AlertDialog.Builder(getActivity());
-                                    builderDialog.setMessage("¿Desea iniciar trazlado al proximo punto de recoleccion ?");
+                                    builderDialog.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
                                     builderDialog.setCancelable(false);
                                     builderDialog.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
