@@ -167,16 +167,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 CatalogoItemValor item = bultos.get(pos);
                 //Probar sin impresiora
                 /************************************/
-                /*
+
                 bultos.get(pos).setImpresion(true);
                 MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
                 listaValoresAdapter.filterList(bultos);
                 listaValoresAdapter.notifyDataSetChanged();
-                 */
+
                 /*************************************/
 
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
-                imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
+                //imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -208,13 +208,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer idCatalogo, Integer numeroBulto){
-
+        /*
         bultos.clear();
         subtotal= BigDecimal.ZERO;
         MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, idCatalogo, true);
-        loadData();
+        loadData();*/
 
-        /*
         try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
@@ -235,7 +234,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             messageBox("No hay conexion con la impresora");
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
-         */
+
     }
 
 
