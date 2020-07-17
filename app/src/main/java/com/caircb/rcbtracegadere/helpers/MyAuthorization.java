@@ -290,7 +290,14 @@ public class MyAuthorization {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                    mdialog.dismiss();
                    progressDialog.show();
-                   guardarLugar(myListOfItems.get(position).getId(),myListOfItems.get(position).getNombre(),user,token);
+                    MenuItem item = myListOfItems.get(position);
+                    if (item.getNombre().equals("CANCELAR")) {
+                        mdialog.dismiss();
+                        progressDialog.dismiss();
+                    }else {
+                        guardarLugar(myListOfItems.get(position).getId(),myListOfItems.get(position).getNombre(),user,token);
+                    }
+
                 }
             });
             mdialog.setTitle("MODULOS");
