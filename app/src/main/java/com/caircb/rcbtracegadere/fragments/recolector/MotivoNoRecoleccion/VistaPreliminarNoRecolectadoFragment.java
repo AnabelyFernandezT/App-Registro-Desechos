@@ -19,6 +19,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
+import com.caircb.rcbtracegadere.helpers.MyManifiestoNoRecoleccion;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarNoRecoleccion;
@@ -45,7 +46,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
     LinearLayout btnVistaPreviaCancelar,btnVistaPreviaGuardar;
     ProgressDialog dialog;
     PDFView pdfView;
-    MyManifiesto myManifiesto;
+    MyManifiestoNoRecoleccion myManifiesto;
     UserRegistrarNoRecoleccion noRecoleccion;
     UserRegistrarRuteoRecoleccion userRegistrarRuteoRecoleccion;
 
@@ -109,7 +110,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
 
             @Override
             protected String doInBackground(Void... voids) {
-                myManifiesto = new MyManifiesto(getActivity(),idAppManifiesto,idAppTipoPaquete);
+                myManifiesto = new MyManifiestoNoRecoleccion(getActivity(),idAppManifiesto,idAppTipoPaquete);
                 myManifiesto.create();
                 return myManifiesto.getPathFile();
             }
