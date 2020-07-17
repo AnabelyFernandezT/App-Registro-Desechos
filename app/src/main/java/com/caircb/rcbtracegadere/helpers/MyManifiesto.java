@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
@@ -45,8 +46,12 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.ref.PhantomReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Phaser;
 
 public class MyManifiesto {
 
@@ -59,9 +64,13 @@ public class MyManifiesto {
     Bitmap imagenUnCheck;
     Bitmap firma;
     Bitmap firmaNoRecoleccion;
-    Bitmap firmaTransportista;
-    ItemFile fileFirmaTecnico;
-    ItemFile fileFirmaTecnicoNoRecoleccion;
+    Bitmap firmaTransportista, firmaOperador1, firmaOperador2, firmaOperador1NoRecoleccion, firmaOperador2NoRecoleccion;
+    ItemFile fileFirmaTecnico,fileFirmaTecnicoNoRecoleccion, fileFirmaOperador1, fileFirmaOperador2,fileFirmaOperador1NoRecoleccion,fileFirmaOperador2NoRecoleccion;
+    SimpleDateFormat simpleDate = new SimpleDateFormat("MM/dd/yyyy");
+    CatalogoEntity catalogo;
+
+    private String getPath() { return simpleDate.format(new Date());}
+    String fecha = getPath();
 
 
     public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete){
@@ -78,13 +87,29 @@ public class MyManifiesto {
             imagenCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_check);
             imagenUnCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_uncheck);
 
-
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
+            catalogo = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(manifiesto.getNumeroPlacaVehiculo(),4);
+            //RECOLECCION
             fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTecnico!=null) firma = Utils.StringToBitMap(fileFirmaTecnico.getFile());
 
+            fileFirmaOperador1 = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1,MyConstant.STATUS_RECOLECCION);
+            if(fileFirmaOperador1!=null) firmaOperador1 = Utils.StringToBitMap(fileFirmaOperador1.getFile());
+
+            fileFirmaOperador2 = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2,MyConstant.STATUS_RECOLECCION);
+            if(fileFirmaOperador2!=null) firmaOperador2 = Utils.StringToBitMap(fileFirmaOperador2.getFile());
+
+            //NO RECOLECCION
             fileFirmaTecnicoNoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_NO_RECOLECCION);
             if(fileFirmaTecnicoNoRecoleccion!=null) firmaNoRecoleccion = Utils.StringToBitMap(fileFirmaTecnicoNoRecoleccion.getFile());
+
+            fileFirmaOperador1NoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1,MyConstant.STATUS_NO_RECOLECCION);
+            if(fileFirmaOperador1NoRecoleccion!=null) firmaOperador1NoRecoleccion = Utils.StringToBitMap(fileFirmaOperador1NoRecoleccion.getFile());
+
+            fileFirmaOperador2NoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2,MyConstant.STATUS_NO_RECOLECCION);
+            if(fileFirmaOperador2NoRecoleccion!=null) firmaOperador2NoRecoleccion = Utils.StringToBitMap(fileFirmaOperador2NoRecoleccion.getFile());
+
+
 
             ItemFile fileFirmaTransporte = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTransporte!=null) firmaTransportista = Utils.StringToBitMap(fileFirmaTransporte.getFile());
@@ -229,13 +254,15 @@ public class MyManifiesto {
         PdfPTable tb = new PdfPTable(1);
 
         //tabla 1
-        PdfPTable tb1 = new PdfPTable(3);
+        PdfPTable tb1 = new PdfPTable(new float[] { 30, 30,30,10});
         tb1.addCell(new PdfPCell(new Phrase("1. NÚM. DE REGISTRO COMO GENERADOR DE DESECHOS.",f6)));
         tb1.addCell(new PdfPCell(new Phrase("2. NÚM.. DE LICENCIA AMBIENTAL.",f6)));
         tb1.addCell(new PdfPCell(new Phrase("3. No. DE MANIFIESTO",f6)));
+        tb1.addCell(new PdfPCell(new Phrase("4. PÁGINA",f6)));
         tb1.addCell(createCell("NO TIENE",f6));
         tb1.addCell(createCell("",f6));
         tb1.addCell(createCell(manifiesto.getNumeroManifiesto(),f6));
+        tb1.addCell(createCell_VACIO());
         tb1.completeRow();
 
         _cell = new PdfPCell(tb1);
@@ -257,9 +284,11 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 3
-        PdfPTable tb3 = new PdfPTable(new float[] { 18, 88});
+        PdfPTable tb3 = new PdfPTable(new float[] { 15, 40,15,30});
         tb3.addCell(new PdfPCell(new Phrase("DOMICILIO (CALLE Y NO):",f6)));
         tb3.addCell(new PdfPCell(new Phrase(manifiesto.getDireccionCliente(),f6)));
+        tb3.addCell(new PdfPCell(new Phrase("PROVINCIA:",f6)));
+        tb3.addCell(new PdfPCell(new Phrase(manifiesto.getProvincia(),f6)));
         tb3.completeRow();
 
         _cell = new PdfPCell(tb3);
@@ -267,9 +296,7 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 4
-        PdfPTable tb4 = new PdfPTable(new float[] { 18,18,16,16,16,16});
-        tb4.addCell(new PdfPCell(new Phrase("PROVINCIA:",f6)));
-        tb4.addCell(new PdfPCell(new Phrase(manifiesto.getProvincia(),f6)));
+        PdfPTable tb4 = new PdfPTable(new float[] { 20,30,20,30});
         tb4.addCell(new PdfPCell(new Phrase("CANTÓN:",f6)));
         tb4.addCell(new PdfPCell(new Phrase(manifiesto.getCanton(),f6)));
         tb4.addCell(new PdfPCell(new Phrase("PARROQUIA:",f6)));
@@ -281,12 +308,34 @@ public class MyManifiesto {
         _cell.setBorder(Rectangle.NO_BORDER);
         tb.addCell(_cell);
 
+        //tabla 4.1 (11)
+        PdfPTable tb11 = new PdfPTable(new float[]{40,15,45});
+        tb11.addCell(new PdfPCell(new Phrase("No. ONU:",f6)));
+        tb11.addCell(new PdfPCell(new Phrase("TEL: ",f6)));
+        tb11.addCell(new PdfPCell(new Phrase("",f6)));
+        tb11.completeRow();
+
+        _cell =  new PdfPCell(tb11);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb.addCell(_cell);
+
         //tabla 5
-        PdfPTable tb5 = new PdfPTable(new float[] { 50, 20, 15, 15});
-        tb5.addCell(new PdfPCell(new Phrase("8. DESCRIPCION:",f6)));
-        tb5.addCell(new PdfPCell(new Phrase("CÓDIGO:",f6)));
-        tb5.addCell(new PdfPCell(new Phrase("CANTIDAD:",f6)));
+        PdfPTable tb5 = new PdfPTable(new float[] { 45, 10, 20, 15,10});
+        tb5.addCell(new PdfPCell(new Phrase("8. DESCRIPCION (Nombre del desecho de acuerdo al listado Nacional e indicar CRTIB):",f6)));
+        tb5.addCell(new PdfPCell(new Phrase("Código del desecho:",f6)));
+        tb5.addCell(new PdfPCell(new Phrase("CONTENEDOR",f6)));
+
+        /*PdfPTable tb12 =  new PdfPTable(2);
+        tb12.addCell(new Phrase("TIPO",f6));
+        tb12.addCell(new Phrase("CAPACIDAD",f6));
+        tb12.completeRow();
+        _cell = new PdfPCell(tb12);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb.addCell(_cell);*/
+
+        tb5.addCell(new PdfPCell(new Phrase("CANTIDAD TOTAL DEL DESECHO:",f6)));
         tb5.addCell(new PdfPCell(new Phrase("UNIDAD VOLUMEN/PESO:",f6)));
+        tb5.setHorizontalAlignment(1);
         tb5.completeRow();
 
         _cell = new PdfPCell(tb5);
@@ -379,7 +428,7 @@ public class MyManifiesto {
         PdfPTable tb10 = new PdfPTable(new float[] { 50,20,30});
         tb10.addCell(new PdfPCell(new Phrase("NO. DE RESOLUTIVO DE NO REUSO/RECICLAJE EN LA INSTALACIÓN.:",f6)));
         tb10.addCell(new PdfPCell(new Phrase("FECHA:",f6)));
-        tb10.addCell(new PdfPCell(new Phrase(":",f6)));
+        tb10.addCell(new PdfPCell(new Phrase(fecha,f6)));
         tb10.completeRow();
 
         _cell = new PdfPCell(tb10);
@@ -398,9 +447,8 @@ public class MyManifiesto {
         PdfPTable tb = new PdfPTable(1);
 
         //tabla 1
-        PdfPTable tb1 = new PdfPTable(new float[] { 50,50});
-        tb1.addCell(new PdfPCell(new Phrase("11. NOMBRE DE LA EMPRESA TRANSPORTISTA:",f6)));
-        tb1.addCell(createCell("GADERE S.A",f6));
+        PdfPTable tb1 = new PdfPTable(1);
+        tb1.addCell(new PdfPCell(new Phrase("11. NOMBRE DE LA EMPRESA TRANSPORTISTA:         GADERE S.A",f6)));
         tb1.completeRow();
 
         _cell = new PdfPCell(tb1);
@@ -409,12 +457,10 @@ public class MyManifiesto {
 
         //tabla 2
         PdfPTable tb2 = new PdfPTable(new float[] { 10,90});
-        tb2.addCell(new PdfPCell(new Phrase("GUAYAQUIL:",f6)));
-        tb2.addCell(createCell("Cdla la Garzola Mz. 150 Solar B, Av. de las Américas",f6));
-        tb2.addCell(new PdfPCell(new Phrase("QUITO:",f6)));
-        tb2.addCell(createCell("Av. Naciones Unidas 1014 y Av. Amazonas Edif. La Previsora, Torre B 4to piso Of. 408",f6));
-        tb2.addCell(new PdfPCell(new Phrase("CUENCA:",f6)));
-        tb2.addCell(createCell("Av. Agustín Cueva 7-35 y Av.Julio Matovelle",f6));
+        tb2.addCell(new PdfPCell(new Phrase("DOMICILIO:",f6)));
+        tb2.addCell(new PdfPCell(new Phrase("GUAYAQUIL: Cdla la Garzola Mz. 150 Solar B, Av. de las Américas\n"+
+                "QUITO: Av. Naciones Unidas 1014 y Av. Amazonas Edif. La Previsora, Torre B 4to piso Of. 408\n"+
+                "CUENCA: Av. Agustín Cueva 7-35 y Av.Julio Matovelle",f6)));
         tb2.completeRow();
 
         _cell = new PdfPCell(tb2);
@@ -461,12 +507,93 @@ public class MyManifiesto {
         _cell.setBorder(Rectangle.NO_BORDER);
         tb.addCell(_cell);
 
+        //tab 10 firmas
+        PdfPTable tb10 = new PdfPTable(7);
+        tb10.addCell(createCell_VACIO());
+        Image jpg;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if(firmaTransportista!=null){
+            firmaTransportista.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            jpg = Image.getInstance(stream.toByteArray());
+            jpg.scaleToFit(70,150);
+            tb10.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
+        }else{
+            if (firmaNoRecoleccion!=null){
+                firmaNoRecoleccion.compress(Bitmap.CompressFormat.PNG,100,stream);
+                jpg = Image.getInstance(stream.toByteArray());
+                jpg.scaleToFit(70,150);
+                tb10.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
+            }else{
+                tb10.addCell(createCell_VACIO());
+            }
+
+        }
+        tb10.addCell(createCell_VACIO());
+        Image operador;
+        ByteArrayOutputStream streamO = new ByteArrayOutputStream();
+        if(firmaOperador1!=null){
+            firmaOperador1.compress(Bitmap.CompressFormat.PNG, 100, streamO);
+            operador = Image.getInstance(streamO.toByteArray());
+            operador.scaleToFit(70,150);
+            tb10.addCell((createCell_ImagenFirma_NO_BORDER(operador,f6,Element.ALIGN_CENTER)));
+        }else{
+            if (firmaOperador1NoRecoleccion!=null){
+                firmaOperador1NoRecoleccion.compress(Bitmap.CompressFormat.PNG,100,streamO);
+                operador = Image.getInstance(streamO.toByteArray());
+                operador.scaleToFit(70,150);
+                tb10.addCell((createCell_ImagenFirma_NO_BORDER(operador,f6,Element.ALIGN_CENTER)));
+            }else{
+                tb10.addCell(createCell_VACIO());
+            }
+
+            //cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
+        }
+        tb10.addCell(createCell_VACIO());
+
+        Image operador2;
+        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+        if(firmaOperador2!=null){
+            firmaOperador2.compress(Bitmap.CompressFormat.PNG, 100, stream1);
+            operador2 = Image.getInstance(stream1.toByteArray());
+            operador2.scaleToFit(70,150);
+            tb10.addCell((createCell_ImagenFirma_NO_BORDER(operador2,f6,Element.ALIGN_CENTER)));
+        }else{
+            if (firmaOperador2NoRecoleccion!=null){
+                firmaOperador2NoRecoleccion.compress(Bitmap.CompressFormat.PNG,100,stream1);
+                operador2 = Image.getInstance(stream1.toByteArray());
+                operador2.scaleToFit(70,150);
+                tb10.addCell((createCell_ImagenFirma_NO_BORDER(operador2,f6,Element.ALIGN_CENTER)));
+            }else{
+                tb10.addCell(createCell_VACIO());
+            }
+
+            //cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
+        }
+       // tb10.addCell(new PdfPCell(new Phrase("")));
+        Paragraph para8 = new Paragraph();
+        para8.add(new Chunk("FECHA EMBARQUE:",f6));
+        para8.add(Chunk.NEWLINE);
+        para8.add(new Chunk(fecha,f6));
+        para8.add(Chunk.NEWLINE);
+        para8.add(new Chunk("Dia  Mes  Año",f6));
+        para8.add(Chunk.NEWLINE);
+        _cell = new PdfPCell(para8);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb10.addCell(_cell);
+
+        tb10.completeRow();
+        _cell = new PdfPCell(tb10);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb.addCell(_cell);
 
         //tabla 6
-        PdfPTable tb6 = new PdfPTable(6);
+        PdfPTable tb6 = new PdfPTable(7);
 
         Paragraph para1 = new Paragraph();
-        para1.add(new Chunk("Nombre:",f6));
+
+        para1.add(new Chunk("NOMBRE:",f6));
+        para1.add(Chunk.NEWLINE);
+        para1.add(new Chunk("CI:",f6));
         para1.add(Chunk.NEWLINE);
         para1.add(new Chunk("CONDUCTOR DE RECOLECCIÓN",f6));
         para1.add(Chunk.NEWLINE);
@@ -477,12 +604,16 @@ public class MyManifiesto {
         Paragraph para2 = new Paragraph();
         para2.add(new Chunk(manifiesto.getConductorNombre(),f6));
         para2.add(Chunk.NEWLINE);
+        para2.add(new Chunk(manifiesto.getConductorIdentificacion(),f6));
+        para2.add(Chunk.NEWLINE);
         _cell = new PdfPCell(para2);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb6.addCell(_cell);
 
         Paragraph para3 = new Paragraph();
-        para3.add(new Chunk("Nombre:",f6));
+        para3.add(new Chunk("NOMBRE:",f6));
+        para3.add(Chunk.NEWLINE);
+        para3.add(new Chunk("CI:",f6));
         para3.add(Chunk.NEWLINE);
         para3.add(new Chunk("AUXILIAR DE RECOLECCIÓN",f6));
         para3.add(Chunk.NEWLINE);
@@ -493,38 +624,40 @@ public class MyManifiesto {
         Paragraph para4 = new Paragraph();
         para4.add(new Chunk(manifiesto.getAuxiliarNombre(),f6));
         para4.add(Chunk.NEWLINE);
+        para4.add(new Chunk(manifiesto.getAuxiliarIdentificacion(),f6));
+        para4.add(Chunk.NEWLINE);
         _cell = new PdfPCell(para4);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb6.addCell(_cell);
 
+        Paragraph para6 = new Paragraph();
+        para6.add(new Chunk("NOMBRE:",f6));
+        para6.add(Chunk.NEWLINE);
+        para6.add(new Chunk("CI:",f6));
+        para6.add(Chunk.NEWLINE);
+        para6.add(new Chunk("AUXILIAR DE RECOLECCIÓN",f6));
+        para6.add(Chunk.NEWLINE);
+        _cell = new PdfPCell(para6);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb6.addCell(_cell);
+
+        Paragraph para7 = new Paragraph();
+        para7.add(new Chunk(manifiesto.getNombreOperadorRecolector(),f6));
+        para7.add(Chunk.NEWLINE);
+        para7.add(new Chunk(manifiesto.getIdentificacionOperadorRecolector(),f6));
+        para7.add(Chunk.NEWLINE);
+        _cell = new PdfPCell(para7);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb6.addCell(_cell);
+
         Paragraph para5 = new Paragraph();
-        para5.add(new Chunk("FECHA EMBARQUE:",f6));
+        para5.add(new Chunk("FIRMA FIRMA:",f6));
         para5.add(Chunk.NEWLINE);
-        para5.add(Chunk.NEWLINE);
-        para5.add(new Chunk("FIRMA:",f6));
+        para5.add(new Chunk(fecha,f6));
         _cell = new PdfPCell(para5);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb6.addCell(_cell);
 
-        Image jpg;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if(firmaTransportista!=null){
-            firmaTransportista.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            jpg = Image.getInstance(stream.toByteArray());
-            jpg.scaleToFit(70,150);
-            tb6.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
-        }else{
-            if (firmaNoRecoleccion!=null){
-                firmaNoRecoleccion.compress(Bitmap.CompressFormat.PNG,100,stream);
-                jpg = Image.getInstance(stream.toByteArray());
-                jpg.scaleToFit(70,150);
-                tb6.addCell((createCell_ImagenFirma_NO_BORDER(jpg,f6,Element.ALIGN_CENTER)));
-            }else{
-                tb6.addCell(new PdfPCell(new Phrase("")));
-            }
-
-            //cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
-        }
 
         tb6.completeRow();
 
@@ -557,9 +690,9 @@ public class MyManifiesto {
         //tabla 9
         PdfPTable tb9 = new PdfPTable(new float[] { 25,25,25,25});
         tb9.addCell(new PdfPCell(new Phrase("14. TIPO DE VEHÍCULO",f6)));
-        tb9.addCell(new PdfPCell(new Phrase("",f6)));
+        tb9.addCell(new PdfPCell(new Phrase(catalogo.getNombre(),f6)));
         tb9.addCell(new PdfPCell(new Phrase("No. DE PLACA:",f6)));
-        tb9.addCell(new PdfPCell(new Phrase("",f6)));
+        tb9.addCell(new PdfPCell(new Phrase(manifiesto.getNumeroPlacaVehiculo(),f6)));
         tb9.completeRow();
 
         _cell = new PdfPCell(tb9);
@@ -632,7 +765,7 @@ public class MyManifiesto {
 
         //tabla 6
         PdfPTable tb6 = new PdfPTable(1);
-        tb6.addCell(new PdfPCell(new Phrase("15.3 Destinatario alterno: ",f6)));
+        tb6.addCell(new PdfPCell(new Phrase("15.3 Destinatario alterno:      Nombre:",f6)));
         tb6.completeRow();
 
         _cell = new PdfPCell(tb6);
@@ -640,13 +773,9 @@ public class MyManifiesto {
         tb.addCell(_cell);
 
         //tabla 7
-        PdfPTable tb7 = new PdfPTable(new float[] { 15,20,15,15,15,20});
-        tb7.addCell(new PdfPCell(new Phrase("Nombre: ",f6)));
-        tb7.addCell(new PdfPCell());
+        PdfPTable tb7 = new PdfPTable(2);
         tb7.addCell(new PdfPCell(new Phrase("Telefono: ",f6)));
-        tb7.addCell(new PdfPCell());
-        tb7.addCell(new PdfPCell(new Phrase("No. de Licencia: ",f6)));
-        tb7.addCell(new PdfPCell());
+        tb7.addCell(new PdfPCell(new Phrase("No. de Licencia Ambiental: ",f6)));
         tb7.completeRow();
 
         _cell = new PdfPCell(tb7);
@@ -658,10 +787,10 @@ public class MyManifiesto {
 
         tb8.addCell(new PdfPCell(new Phrase("15.4 Nombre y Firma del responsable del destinatario alterno",f6)));
         tb8.addCell(new PdfPCell(new Phrase("",f6)));
-        tb8.addCell(new PdfPCell(new Phrase("\n FECHA",f6)));
-        tb8.addCell(new PdfPCell(new Phrase("\n"+ "_______\n"+"Dia",f6)));
-        tb8.addCell(new PdfPCell(new Phrase("\n"+ "_______\n"+"Mes",f6)));
-        tb8.addCell(new PdfPCell(new Phrase("\n"+ "_______\n"+"Año",f6)));
+        tb8.addCell(new PdfPCell(new Phrase("FECHA",f6)));
+        tb8.addCell(new PdfPCell(new Phrase("Dia",f6)));
+        tb8.addCell(new PdfPCell(new Phrase("Mes",f6)));
+        tb8.addCell(new PdfPCell(new Phrase("Año",f6)));
         tb8.completeRow();
 
         _cell = new PdfPCell(tb8);
@@ -720,7 +849,8 @@ public class MyManifiesto {
                 "      Mes"+
                 "           Año",f6)));
 
-        tb13.addCell(new PdfPCell(new Phrase("FIRMA",f6)));
+        tb13.addCell(new PdfPCell(new Phrase("FIRMA\n\n"
+                + "NOMBRE: ",f6)));
         tb13.completeRow();
 
         _cell = new PdfPCell(tb13);
@@ -1125,7 +1255,7 @@ public class MyManifiesto {
         List<RowItemManifiesto> detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idManifiesto);
         //dbHelper.close();
 
-        PdfPTable det = new PdfPTable(new float[]{50, 20, 15, 15});
+        PdfPTable det = new PdfPTable(new float[]{40, 20, 10, 10,10,10});
         det.setWidthPercentage(100);
         /*
         PdfPTable det = new PdfPTable(4);
@@ -1148,14 +1278,12 @@ public class MyManifiesto {
                 }else {
                     det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos + 1, nombre.length()), f6, null));
                 }
-                if(pos==-1|| pos>9){
-                    det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
-                }else {
-                    det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(0, pos), f6, Element.ALIGN_CENTER));
-                }
+                det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
+                det.addCell(createCell_VACIO());
+                det.addCell(createCell_VACIO());
                 det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
 
-                det.addCell(createCell_NO_BORDER(reg.getUnidad(), f6,Element.ALIGN_CENTER));
+                det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6,Element.ALIGN_CENTER));
                 det.completeRow();
             }
         }
