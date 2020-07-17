@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.util.Date;
 
@@ -45,6 +46,9 @@ public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements Retrofit
     @Override
     public void execute() {
         RequestMovilizarLoteSede request = requestMovilizarLoteSede();
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
+
         if(request!=null){
             WebService.api().registrarmovilizacionLoteSede(request).enqueue(new Callback<DtoInfo>() {
                 @Override

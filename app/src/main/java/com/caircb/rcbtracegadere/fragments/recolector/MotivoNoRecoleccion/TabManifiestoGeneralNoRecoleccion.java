@@ -475,7 +475,8 @@ visible();
     }
 
     public boolean validaExisteFirmaTransportista(){
-        return !firmaTransportista;
+        boolean resp = firmaTransportista;
+        return firmaTransportista;
     }
 
     //public boolean validaExisteFirmaTecnicoGenerador(){
