@@ -159,7 +159,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
             }
         });
         consultarHojaRutaTask.execute();
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+        //lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
     }
 
     private void datosLotesDisponibles(){

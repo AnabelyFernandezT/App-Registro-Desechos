@@ -172,6 +172,8 @@ public class DialogPlacaSede extends MyDialog {
             @Override
             public void onSuccessful() {
                 messageBox("Lote Registrado");
+                MyApp.getDBO().parametroDao().saveOrUpdate("loteBandera_sedes","true");
+
                 activarFinLote();
             }
 

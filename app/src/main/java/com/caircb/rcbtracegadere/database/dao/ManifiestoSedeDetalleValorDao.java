@@ -50,6 +50,9 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Query("select idManifiestoDetalleValor from tb_manifiestos_sede_det_valor where estado = 1 and estadoEnvio = 1")
     public abstract List<Integer> fetchDetallesRecolectados();
 
+    @Query("select idManifiestoDetalle from tb_manifiestos_sede_det_valor where estado = 1 and estadoEnvio = 1")
+    public abstract List<Integer> fetchDetallesRecolectadosByIdeManifiestoDetalle();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoSedeDetalleValorEntity entity);
 

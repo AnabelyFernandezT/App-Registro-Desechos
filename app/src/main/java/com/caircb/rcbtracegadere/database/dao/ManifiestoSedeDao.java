@@ -38,6 +38,11 @@ public abstract class ManifiestoSedeDao {
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
 
+    /*******/
+
+    /*******/
+
+
     @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente," +
             "            (SELECT COUNT(idManifiestoDetalleValor) " +
             "            FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
@@ -79,8 +84,6 @@ public abstract class ManifiestoSedeDao {
     @Query("update tb_manifiestos_sede set estado=3 where idAppManifiesto=:idManifiesto")
     @Transaction
     public abstract int updateEstadoManifiesto(Integer idManifiesto);
-
-
 
     @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
     abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);

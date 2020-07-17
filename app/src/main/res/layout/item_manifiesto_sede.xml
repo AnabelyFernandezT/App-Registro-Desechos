@@ -48,6 +48,7 @@
 
         <!--MORE OPTION-->
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@android:color/darker_gray"
