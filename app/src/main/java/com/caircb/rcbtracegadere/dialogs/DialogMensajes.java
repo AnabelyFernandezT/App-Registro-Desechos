@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
@@ -25,11 +26,12 @@ import java.util.List;
 public class DialogMensajes extends MyDialog {
     Activity _activity;
     EditText txtMensaje;
-    Integer idNotificacion;
+    Integer idNotificacion, idManifiesto;
     LinearLayout btnIngresarApp, btnCancelarApp;
     Spinner ltsNotificaciones;
     List<DtoCatalogo> catalogos;
     String novedad;
+    ManifiestoEntity entity;
 
     public DialogMensajes(@NonNull Context context) {
         super(context, R.layout.dialog_mensajes);
@@ -43,6 +45,8 @@ public class DialogMensajes extends MyDialog {
     }
 
     private void init() {
+
+        entity = MyApp.getDBO().manifiestoDao().fetchHojaRuta();
 
         catalogos = new ArrayList<>();
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
@@ -61,10 +65,15 @@ public class DialogMensajes extends MyDialog {
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),null,
+                if(entity!=null){
+                    idManifiesto = entity.getIdAppManifiesto();
+                }else {
+                    idManifiesto = 0;
+                }
+                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),idManifiesto,
                                                             txtMensaje.getText().toString(),
                                                             idNotificacion,
-                                                            "1");
+                                                            "1",0.0);
                 notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
                     @Override
                     public void onSuccessful() {

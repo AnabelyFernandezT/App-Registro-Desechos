@@ -17,21 +17,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallbacks {
-    Integer idAppManifiesto;
+    Integer idAppManifiesto,idNotificacion;
     String mensaje;
-    Integer idNotificacion;
+    Double pesoExtra;
     String hojaRuta;
 
     public UserNotificacionTask(Context context,
                                 Integer idAppManifiesto,
                                 String mensaje,
                                 Integer idNotificacion,
-                                String hojaRuta) {
+                                String hojaRuta,
+                                Double pesoExtra) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.mensaje = mensaje;
         this.idNotificacion =idNotificacion;
         this.hojaRuta = hojaRuta;
+        this.pesoExtra = pesoExtra;
     }
 
     public interface OnNotificacionListener {
@@ -57,7 +59,7 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
                         if(response.body().getExito()){
-                            message("Enviado");
+                            message(" Enviado ");
                             if(mOnNotificacionListener!=null)mOnNotificacionListener.onSuccessful();
                             progressHide();
                         }else{
@@ -90,6 +92,7 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
         rq.setIdManifiesto(idAppManifiesto);
         rq.setIdHojaRuta(hojaRuta);
         rq.setIdCatNotificacion(idNotificacion);
+        rq.setPesoExtra(pesoExtra);
 
 
         return rq;

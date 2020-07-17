@@ -73,7 +73,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     private void init(){
         calculoPaquetes= new MyCalculoPaquetes(idAppManifiesto,tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
-        recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto,estadoManifiesto);
+        recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto,estadoManifiesto,idAppManifiesto);
     }
 
     private void loadData(){

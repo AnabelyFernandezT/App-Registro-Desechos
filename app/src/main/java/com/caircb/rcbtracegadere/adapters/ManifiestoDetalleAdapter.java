@@ -30,13 +30,14 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
     private Context mContext;
     private List<RowItemManifiesto> manifiestosDtList;
     private String numeroManifiesto;
-    private Integer estadoManifiesto;
+    private Integer estadoManifiesto,idAppManifiesto;
 
-    public ManifiestoDetalleAdapter(Context context,String numeroManifiesto,Integer estadoManifiesto){
+    public ManifiestoDetalleAdapter(Context context,String numeroManifiesto,Integer estadoManifiesto, Integer idAppManifiesto){
         this.mContext = context;
         this.manifiestosDtList = new ArrayList<>();
         this.numeroManifiesto=numeroManifiesto;
         this.estadoManifiesto =estadoManifiesto;
+        this.idAppManifiesto = idAppManifiesto;
     }
 
     @NonNull
@@ -78,10 +79,16 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             });
         }
 
+        if(Double.parseDouble(holder.txtPesoReferencial.getText().toString()) > Double.parseDouble(holder.txtPeso.getText().toString())){
+            holder.btnNotificador.setVisibility(View.GONE);
+        }else {
+            holder.btnNotificador.setVisibility(View.VISIBLE);
+        }
         holder.btnNotificador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogNotificacionPesoExtra dialogMensajes = new DialogNotificacionPesoExtra(mContext,it.getId());
+                DialogNotificacionPesoExtra dialogMensajes = new DialogNotificacionPesoExtra(mContext,it.getId(), idAppManifiesto,
+                                                                                            it.getPeso());
                 dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogMensajes.setCancelable(false);
                 dialogMensajes.show();

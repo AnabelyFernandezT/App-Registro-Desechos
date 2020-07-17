@@ -30,11 +30,15 @@ public class DialogNotificacionPesoExtra extends MyDialog {
     List<DtoCatalogo> catalogos;
     String novedad;
     Integer idManifiestoDetalle;
+    Integer numeroManifiesto;
+    Double pesoExtra;
 
-    public DialogNotificacionPesoExtra(@NonNull Context context,Integer idManifiestoDetalle) {
+    public DialogNotificacionPesoExtra(@NonNull Context context,Integer idManifiestoDetalle, Integer numeroManifiesto, Double pesoExtra) {
         super(context, R.layout.dialog_mensajes);
         this._activity = (Activity)context;
         this.idManifiestoDetalle = idManifiestoDetalle;
+        this.numeroManifiesto= numeroManifiesto;
+        this.pesoExtra= pesoExtra;
     }
 
     @Override
@@ -62,10 +66,10 @@ public class DialogNotificacionPesoExtra extends MyDialog {
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),idManifiestoDetalle,
+                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),numeroManifiesto,
                                                             txtMensaje.getText().toString(),
                                                             idNotificacion,
-                                                            "1");
+                                                            String.valueOf(idManifiestoDetalle),pesoExtra);
                 notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
                     @Override
                     public void onSuccessful() {
