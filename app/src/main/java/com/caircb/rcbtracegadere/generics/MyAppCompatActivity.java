@@ -23,6 +23,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.processes.GPSService;
 import com.caircb.rcbtracegadere.utils.Utils;
@@ -112,12 +113,19 @@ public class MyAppCompatActivity extends AppCompatActivity {
 
     public void message(String message)
     {
-        messageBox = new AlertDialog.Builder(mContext);
+        DialogBuilder dialogBuilder = new DialogBuilder(mContext);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setTitle("INFO");
+        dialogBuilder.setPositiveButton("OK",null);
+        dialogBuilder.show();
+
+        /*messageBox = new AlertDialog.Builder(mContext);
         messageBox.setTitle("INFO");
         messageBox.setMessage(message);
         messageBox.setCancelable(false);
         messageBox.setNeutralButton("OK", null);
-        messageBox.show();
+        messageBox.show();*/
     }
 
     public void showToast(String mensaje) {
