@@ -38,6 +38,23 @@ public abstract class ManifiestoSedeDao {
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif();
 
+    /*******/
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_sede_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
+            "from tb_manifiestos_sede MC  where MC.estado in  (1,2)  and MC.manifiestoAsociado in (:numeroLoteAtado, '') ")
+    @Transaction
+    public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManifInicioLote(String numeroLoteAtado);
+
+    /*******/
+
+
     @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente," +
             "            (SELECT COUNT(idManifiestoDetalleValor) " +
             "            FROM tb_manifiestos_sede M INNER JOIN TB_MANIFIESTOS_SEDE_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
@@ -80,7 +97,8 @@ public abstract class ManifiestoSedeDao {
     @Transaction
     public abstract int updateEstadoManifiesto(Integer idManifiesto);
 
-
+    @Query("update tb_manifiestos_sede set manifiestoAsociado =:manifiestoAtado where idAppManifiesto=:idManifiesto")
+    public abstract void updateManifiestoAtado(Integer idManifiesto, String manifiestoAtado);
 
     @Query("delete from tb_manifiestos_sede where idAppManifiesto=:idManifiesto")
     abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
@@ -105,6 +123,7 @@ public abstract class ManifiestoSedeDao {
             entity.setEstado(manifiesto.getEstado());
             entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
             entity.setBultosTotal(manifiesto.getBultosTotal());
+            entity.setManifiestoAsociado("");
         }
         else if(entity!=null  ){
             entity.setIdAppManifiesto(manifiesto.getIdAppManifiesto());

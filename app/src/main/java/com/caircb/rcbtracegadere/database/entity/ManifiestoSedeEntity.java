@@ -28,6 +28,8 @@ public class ManifiestoSedeEntity {
 
     private Integer bultosTotal;
 
+    private String manifiestoAsociado;
+
     public Integer getBultosRegistrados() {
         return bultosRegistrados;
     }
@@ -94,6 +96,14 @@ public class ManifiestoSedeEntity {
 
     public void setIdTransporteVehiculo(Integer idTransporteVehiculo) {
         this.idTransporteVehiculo = idTransporteVehiculo;
+    }
+
+    public String getManifiestoAsociado() {
+        return manifiestoAsociado;
+    }
+
+    public void setManifiestoAsociado(String manifiestoAsociado) {
+        this.manifiestoAsociado = manifiestoAsociado;
     }
 }
 
