@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     private List<ItemManifiestoDetalleValorSede> manifiestosDtList;
     private Integer estadoManifiesto,idManifiestoDetalle;
     AlertDialog.Builder messageBox;
+    int type = InputType.TYPE_CLASS_NUMBER |  InputType.TYPE_NUMBER_FLAG_DECIMAL;
 
     public ManifiestoDetalleBultosAdapterPlanta(Context context, Integer idManifiestoDetalle, Integer estadoManifiesto){
         this.mContext = context;
@@ -113,6 +116,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
             txtPeso = itemView.findViewById(R.id.txtBultos);
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
             txtNuevoPeso = (EditText)itemView.findViewById(R.id.txtIgnBultos);
+            txtNuevoPeso.setInputType(type);
             txtNuevoPeso.requestFocus();
             txtNuevoPeso.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
