@@ -12,6 +12,7 @@ public class RequestManifiestoPlanta {
     private Date fechaRecepcionPlanta;
     private String observacionPeso;
     private String observacionOtra;
+    private Integer idPlantaRecolector;
     private List<RequestManifiestoNovedadFrecuente> novedadFrecuentePlanta;
 
     public Integer getIdAppManifiesto() {
@@ -76,5 +77,13 @@ public class RequestManifiestoPlanta {
 
     public void setObservacionOtra(String observacionOtra) {
         this.observacionOtra = observacionOtra;
+    }
+
+    public Integer getIdPlantaRecolector() {
+        return idPlantaRecolector;
+    }
+
+    public void setIdPlantaRecolector(Integer idPlantaRecolector) {
+        this.idPlantaRecolector = idPlantaRecolector;
     }
 }

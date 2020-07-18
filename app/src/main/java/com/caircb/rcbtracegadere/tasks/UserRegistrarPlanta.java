@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoFile;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoNovedadFrecuente;
@@ -131,6 +132,7 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
             rq.setNovedadFrecuentePlanta(createRequestNovedadFrecuente());
             rq.setObservacionPeso(observacionPeso);
             rq.setObservacionOtra(observacionOtra);
+            rq.setIdPlantaRecolector(MySession.getIdUsuario());
         }
 
         return rq;

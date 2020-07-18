@@ -474,7 +474,8 @@ public class MyManifiesto {
                 "   TELF. QUITO            TELF. CUENCA\n" +
                 "     26015070                  72814991 \n",f6)));
         tb3.addCell(new PdfPCell(new Phrase("NO. DE LICENCIA AMBIENTAL DEL MAE:\n" +
-                " ",f6)));
+                " Resolución N° 118 -\n" +
+                "Diciembre/2004",f6)));
         tb3.addCell(new PdfPCell(new Phrase("NO. DE LICENCIA DE POLICÍA NACIONAL.\n" +
                 " ",f6)));
         tb3.addCell(new PdfPCell(new Phrase("NO. DE PLAN DE CONTINGENCIAS APROBADO:\n" +
