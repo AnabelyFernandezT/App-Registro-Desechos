@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,6 +44,8 @@ public class DialogInfoCodigoQR extends MyDialog {
     UserConsultarManifiestosPlantaTask consultarManifiestosPlanta;
     TextView txtManifiesto,txtPeso,txtNumBultos,txtCliente,txtDescripcion;
     EditText txtIngPes;
+    int type = InputType.TYPE_CLASS_NUMBER |  InputType.TYPE_NUMBER_FLAG_DECIMAL;
+
     public DialogInfoCodigoQR(@NonNull Context context,String codigoQR) {
         super(context, R.layout.dialog_info_codigo_qr);
         this._activity = (Activity)context;
@@ -69,6 +72,7 @@ public class DialogInfoCodigoQR extends MyDialog {
         txtCliente= (TextView)getView().findViewById(R.id.txtCliente);
         txtDescripcion= (TextView)getView().findViewById(R.id.txtItemDescripcion);
         txtIngPes = (EditText)getView().findViewById(R.id.txtIgnBultos);
+        txtIngPes.setInputType(type);
 
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
