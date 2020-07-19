@@ -74,7 +74,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     @Override
     public void execute() {
         //Subir Fotos
-        progressShow("registrando recoleccion...");
+        progressShow("registrando ...");
         model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         //images por defecto
@@ -100,6 +100,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
             @Override
             public void onSuccessful() {
+                progressHide();
+                progressShow("registrando recoleccion...");
                 register();
             }
 

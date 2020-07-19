@@ -17,6 +17,7 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
 
 public class ManifiestoPlantaFragment extends MyFragment implements OnCameraListener, View.OnClickListener {

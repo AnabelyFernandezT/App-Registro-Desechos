@@ -130,29 +130,27 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                 setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 break;
             case R.id.btnManifiestoNext:
-                //vista preliminar...
-               // setNavegate(VistaPreliminarFragment.newInstance(manifiestoID));
                 ItemManifiestoSede detalles;
                 detalles = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByTotal(manifiestoID);
-                Integer bultos = detalles.getTotalBultos();
-                Integer bultosSeleccionados = detalles.getBultosSelecionado();
-                    firma = tab3.validarInformacion();
-                    novedad = tab3.validarNovedad();
-                    if(!firma){
-                        messageBox("Debe registrar la firma.!");
-                    }else{
-                        if(novedad){
-                            if(bultos.equals(bultosSeleccionados)) {
-                                registroPlantaDetalle();
-                            }
-                            else {
-                                messageBox("Seleccione todos los bultos.!");
-                            }
-                        }else{
-                            messageBox("Ingrese una foto.!");
-                        }
-                                           }
-                break;
+            Integer bultos = detalles.getTotalBultos();
+            Integer bultosSeleccionados = detalles.getBultosSelecionado();
+            firma = tab3.validarInformacion();
+            novedad = tab3.validarNovedad();
+            if(!firma){
+                messageBox("Debe registrar la firma.!");
+            }else{
+                if(novedad){
+                    if(bultos.equals(bultosSeleccionados)) {
+                        registroPlantaDetalle();
+                    }
+                    else {
+                        messageBox("Seleccione todos los bultos.!");
+                    }
+                }else{
+                    messageBox("Ingrese una foto.!");
+                }
+            }
+            break;
         }
     }
 
