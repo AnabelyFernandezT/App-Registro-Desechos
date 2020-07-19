@@ -175,14 +175,12 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 //setNavegate(HojaRutaAsignadaFragment.newInstance());
                 switch (estadoPantalla){
                     case 1:
-                        System.out.println(tabs.getCurrentTab());
                         int i= tabs.getCurrentTab();
                         if (i==0){
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
                             break;
                         }
                         if (i==1){
-                            System.out.println(tabs.getCurrentTab());
                             tabs.setCurrentTab(tabs.getCurrentTab()-1);
                             break;
                         }
@@ -199,7 +197,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                             break;
                         }
                         if (j==1){
-                            System.out.println(tabs.getCurrentTab());
                             tabs.setCurrentTab(tabs.getCurrentTab()-1);
                             break;
                         }
