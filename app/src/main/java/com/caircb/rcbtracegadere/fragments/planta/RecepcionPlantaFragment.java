@@ -21,6 +21,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -262,16 +263,16 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         }
 
 
-        List<ManifiestoDetallePesosEntity> bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiesto(idManifiesto);
-        if(bultos.size()>0){
+        ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
+       /* if(bultos.size()>0){
             for (ManifiestoDetallePesosEntity p:bultos){
                 pesoT= pesoT+ p.getValor();
 
             }
 
-        }
+        }*/
 
-        txtPesoRecolectado.setText(String.valueOf(pesoT));
+        txtPesoRecolectado.setText(String.valueOf(bultos.getPesoUnidad()));
     }
 
     public void setMakePhoto(Integer code) {
@@ -287,12 +288,15 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     double validacion=(Double.parseDouble(txtPesoRecolectado.getText().toString())*0.03)+Double.parseDouble(txtPesoRecolectado.getText().toString());
     double valorIngresado = Double.parseDouble(txtPeso.getText().toString());
 
+
+    if(!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())){
         if(valorIngresado>validacion){
-        //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
-        txtNovedad.setText("Peso ingresado es mayor al peso Total");
-    }else{
-        //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
-        txtNovedad.setText("Peso ingresado es menor al peso Total");
+            //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
+            txtNovedad.setText("Peso ingresado es mayor al peso Total");
+        }else{
+            //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
+            txtNovedad.setText("Peso ingresado es menor al peso Total");
+        }
     }
 
     }

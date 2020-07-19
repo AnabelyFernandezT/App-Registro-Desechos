@@ -11,6 +11,7 @@ public class RequestRegisterPlantaDetalle {
     private List<DtoFotoPlanta> fotos;
     private String observacion;
     private String urlFima;
+    private Integer idPlantaRecolector;
 
     public RequestRegisterPlantaDetalle() {
     }
@@ -53,5 +54,13 @@ public class RequestRegisterPlantaDetalle {
 
     public void setUrlFima(String urlFima) {
         this.urlFima = urlFima;
+    }
+
+    public Integer getIdPlantaRecolector() {
+        return idPlantaRecolector;
+    }
+
+    public void setIdPlantaRecolector(Integer idPlantaRecolector) {
+        this.idPlantaRecolector = idPlantaRecolector;
     }
 }

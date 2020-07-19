@@ -75,6 +75,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
                       v.setSelected(true);
                       it.setEstado(true);
                   } else {
+                      holder.txtNuevoPeso.setText("0");
                       v.setSelected(false);
                       it.setEstado(false);
                   }

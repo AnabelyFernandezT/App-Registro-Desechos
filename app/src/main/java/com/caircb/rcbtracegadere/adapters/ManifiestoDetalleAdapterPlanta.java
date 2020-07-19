@@ -10,12 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.itextpdf.text.pdf.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<ManifiestoDetalleAdapterPlanta.MyViewHolder>  {
 
@@ -42,9 +45,10 @@ public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<Manifie
     @Override
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
         final ItemManifiestoDetalleSede it = manifiestosDtList.get(position);
-        holder.txtCodigoMae.setText(it.getCodigo());
-        holder.txtCodigo.setText(""+it.getCodigoMae());
-        holder.txtDescripcion.setText(""+it.getNombreDesecho());
+        holder.txtCodigoMae.setText(it.getCodigoMae());
+        String descripcion = it.getNombreDesecho();
+        descripcion = descripcion.substring(0,1).toUpperCase() + descripcion.substring(1).toLowerCase();
+        holder.txtDescripcion.setText(""+descripcion);
         holder.totalBultos.setText(""+it.getBultosSelecionado()+" / "+it.getTotalBultos());
         holder.chkEstado.setClickable(false);
 
@@ -67,7 +71,6 @@ public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<Manifie
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtCodigo;
         TextView txtCodigoMae;
         TextView txtDescripcion;
         TextView totalBultos;
@@ -77,7 +80,6 @@ public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<Manifie
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            txtCodigo = itemView.findViewById(R.id.txtCodigo);
             txtCodigoMae = itemView.findViewById(R.id.txtCodigoMae);
             txtDescripcion = itemView.findViewById(R.id.txtItemDescripcion);
             btnEleminarItem = itemView.findViewById(R.id.btnEleminarItem);

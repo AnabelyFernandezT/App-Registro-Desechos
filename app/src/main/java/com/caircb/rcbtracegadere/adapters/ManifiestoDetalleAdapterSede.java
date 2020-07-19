@@ -46,8 +46,7 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
     @Override
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
         final ItemManifiestoDetalleSede it = manifiestosDtList.get(position);
-        holder.txtCodigoMae.setText(it.getCodigo());
-        holder.txtCodigo.setText(""+it.getCodigoMae());
+        holder.txtCodigoMae.setText(it.getCodigoMae());
         holder.txtDescripcion.setText(""+it.getNombreDesecho());
         holder.totalBultos.setText(""+it.getBultosSelecionado()+" / "+it.getTotalBultos());
         holder.chkEstado.setClickable(false);
@@ -71,7 +70,6 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtCodigo;
         TextView txtCodigoMae;
         TextView txtDescripcion;
         TextView totalBultos;
@@ -81,7 +79,7 @@ public class ManifiestoDetalleAdapterSede extends RecyclerView.Adapter<Manifiest
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            txtCodigo = itemView.findViewById(R.id.txtCodigo);
+
             txtCodigoMae = itemView.findViewById(R.id.txtCodigoMae);
             txtDescripcion = itemView.findViewById(R.id.txtItemDescripcion);
             btnEleminarItem = itemView.findViewById(R.id.btnEleminarItem);

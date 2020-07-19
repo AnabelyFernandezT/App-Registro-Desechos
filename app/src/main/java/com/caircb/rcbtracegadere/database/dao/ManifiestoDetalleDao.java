@@ -43,8 +43,8 @@ public abstract class ManifiestoDetalleDao {
         actualizarPesoManifiestoDetalle(idManifiestoDetalle,pesoUnidad,pesoUnidad>0);
     }
 
-    @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto")
-    public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetallebyID(Integer idManifiesto);
+    @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto LIMIT 1")
+    public abstract ManifiestoDetalleEntity fecthConsultarManifiestoDetallebyID(Integer idManifiesto);
 
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and estadoChek=1")
     public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetalleSeleccionados(Integer idManifiesto);
