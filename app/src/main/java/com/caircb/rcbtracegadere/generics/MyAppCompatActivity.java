@@ -50,7 +50,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
 
             initGPS();
             /***Cometado para dispositivos emulador***/
-            //initListenerScan();
+            initListenerScan();
             /***********/
 
             boolean estado = Utils.isDataConnectivity(mContext);
@@ -153,7 +153,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         super.onResume();
         initConnectivity();
        /***Cometado para dispositivos emulador***/
-        /*
+
        IntentFilter filter = new IntentFilter();
 
         int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
@@ -165,7 +165,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         }
 
         registerReceiver(mScanReceiver, filter);
-            */
+
         /**********/
     }
 
@@ -197,7 +197,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
         }
 
         /***Cometado para dispositivos emulador***/
-        //unregisterReceiver(mScanReceiver);
+        unregisterReceiver(mScanReceiver);
         /**********/
     }
 

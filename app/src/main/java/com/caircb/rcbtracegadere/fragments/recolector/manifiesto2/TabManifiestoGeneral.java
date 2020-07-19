@@ -436,12 +436,16 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtClienteProvincia.setText(manifiesto.getProvincia());
             txtClienteCanton.setText(manifiesto.getCanton());
             txtCorreoAlterno.setText(manifiesto.getCorreoAlterno());
+            if(manifiesto.getCorreoAlterno().equals(""))
+                chkCorreoAlterno.setEnabled(false);
             txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
 
             txtTransReco.setText(manifiesto.getConductorNombre());
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
 
             txtGenTecCorreo.setText(manifiesto.getTecnicoCorreo());
+            if(manifiesto.getTecnicoCorreo().equals(""))
+                chkCorreoPrincipal.setEnabled(false);
             txtGenTecTelefono.setText(manifiesto.getTecnicoTelefono());
 
             txtEmpresaDestinatario.setText(manifiesto.getEmpresaDestinataria());

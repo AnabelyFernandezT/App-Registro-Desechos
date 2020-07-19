@@ -384,8 +384,8 @@ public class MyPrint {
         Integer totalCaract = residuo.length();
 
         if(totalCaract > 27){
-            part1 = residuo.substring(0,27);
-            resto = residuo.substring(27,totalCaract);
+            part1 = caracter.substring(0,27);
+            resto = caracter.substring(27,totalCaract);
 
             if(resto.length() > 27){
                 parte2 = resto.substring(0,27);
@@ -446,5 +446,14 @@ public class MyPrint {
 
     public void setOnPrinterListener(@NonNull OnPrinterListener l){
         mOnPrinterListener = l;
+    }
+
+    public void printerVerificarImpresora(){
+        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+
+        }else {
+            Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+            disconnect("Impresora no encontrada");
+        }
     }
 }
