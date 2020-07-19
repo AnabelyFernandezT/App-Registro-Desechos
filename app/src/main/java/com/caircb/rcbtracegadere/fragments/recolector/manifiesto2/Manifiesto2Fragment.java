@@ -46,7 +46,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     TabManifiestoGeneral tabManifiestoGeneral;
     TabManifiestoDetalle tabManifiestoDetalle;
     TabManifiestoAdicional tabManifiestoAdicional;
-
+    TabHost tabs;
     FloatingActionButton mensajes;
     Integer idAppManifiesto,estadoPantalla;
 
@@ -79,6 +79,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_hoja_ruta2, container, false));
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_tab",""+0);
         init();
         initTab();
         return getView();
@@ -108,7 +109,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
         inicializeTab();
 
-        TabHost tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
+        tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
         tabs.setup();
 
         TabHost.TabSpec spec=tabs.newTabSpec("GENERAL");
@@ -139,6 +140,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         tabs.addTab(spec);
         tabs.setCurrentTab(0);
 
+
         tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String s) {
@@ -167,21 +169,59 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
     @Override
     public void onClick(View view) {
+        tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
         switch (view.getId()){
             case R.id.btnManifiestoCancel:
                 //setNavegate(HojaRutaAsignadaFragment.newInstance());
                 switch (estadoPantalla){
                     case 1:
-                        setNavegate(HojaRutaAsignadaFragment.newInstance());
-                        break;
+                        System.out.println(tabs.getCurrentTab());
+                        int i= tabs.getCurrentTab();
+                        if (i==0){
+                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                            break;
+                        }
+                        if (i==1){
+                            System.out.println(tabs.getCurrentTab());
+                            tabs.setCurrentTab(tabs.getCurrentTab()-1);
+                            break;
+                        }
+                        if (i==2){
+                            tabs.setCurrentTab(tabs.getCurrentTab()-1);
+                            break;
+                        }
+
                     case 2:
-                        setNavegate(HojaRutaBuscarFragment.newInstance());
+                        System.out.println(tabs.getCurrentTab());
+                        int j= tabs.getCurrentTab();
+                        if (j==0){
+                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                            break;
+                        }
+                        if (j==1){
+                            System.out.println(tabs.getCurrentTab());
+                            tabs.setCurrentTab(tabs.getCurrentTab()-1);
+                            break;
+                        }
+                        if (j==2){
+                            tabs.setCurrentTab(tabs.getCurrentTab()-1);
+                            break;
+                        }
                         break;
                 }
-
                 break;
             case R.id.btnManifiestoNext:
-                //tab genearl...
+
+
+                int i=tabs.getCurrentTab();
+                if (i==0){
+                    tabs.setCurrentTab(tabs.getCurrentTab()+1);
+                }
+                if (i==1){
+                    tabs.setCurrentTab(tabs.getCurrentTab()+1);
+                }
+                if (i==2){
+                           //tab genearl...
                 boolean aplicaNoRecoleccion= tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion();
 
                 if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
@@ -243,6 +283,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 });
                 dialogBuilder.show();
 
+                }
+                System.out.println(tabs.getCurrentTab());
                 break;
         }
     }
