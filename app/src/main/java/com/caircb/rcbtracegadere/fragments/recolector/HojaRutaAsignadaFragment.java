@@ -61,7 +61,10 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     private ManifiestoAdapter recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiesto> rowItems;
+    private List<ItemManifiesto>
+
+
+            rowItems;
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
