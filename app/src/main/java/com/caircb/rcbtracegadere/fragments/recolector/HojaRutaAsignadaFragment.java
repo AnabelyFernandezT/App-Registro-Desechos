@@ -181,7 +181,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         @Override
                         public void onClick(View v) {
                             dialogBuilder.dismiss();
-                            if(!MyApp.getDBO().impresoraDao().existeImpresora()){
+                           // if(!MyApp.getDBO().impresoraDao().existeImpresora()){
                                 Date fecha = AppDatabase.getDateTime();
                                 //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                 MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(),fecha);
@@ -206,9 +206,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
                                 //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                 setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-                            }else{
-                                Toast.makeText(getActivity(),"Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                            }
+                          //  }else{
+                             //   Toast.makeText(getActivity(),"Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                           // }
 
                         }
                     });
