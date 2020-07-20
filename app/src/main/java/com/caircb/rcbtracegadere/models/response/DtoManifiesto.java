@@ -70,6 +70,7 @@ public class DtoManifiesto {
     private Integer Apertura2;
     private Integer Cierre1;
     private Integer Cierre2;
+    private String serie;
 
 
     public DtoManifiesto() {
@@ -523,5 +524,13 @@ public class DtoManifiesto {
 
     public void setCierre2(Integer cierre2) {
         Cierre2 = cierre2;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
     }
 }

@@ -264,6 +264,7 @@ public abstract class ManifiestoDao {
             entity.setApertura2(manifiesto.getApertura2());
             entity.setCierre1(manifiesto.getCierre1());
             entity.setCierre2(manifiesto.getCierre2());
+            entity.setSerie(manifiesto.getSerie());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -330,6 +331,7 @@ public abstract class ManifiestoDao {
             entity.setApertura2(manifiesto.getApertura2());
             entity.setCierre1(manifiesto.getCierre1());
             entity.setCierre2(manifiesto.getCierre2());
+            entity.setSerie(manifiesto.getSerie());
         }
 
         if (entity!=null) createManifiesto(entity);
