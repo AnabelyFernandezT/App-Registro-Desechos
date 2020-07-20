@@ -10,6 +10,11 @@ public class ItemManifiesto {
     private String provincia;
     private String canton;
     private String numeroPlacaVehiculo;
+    private  Integer Apertura1;
+    private Integer Apertura2;
+    private Integer Cierre1;
+    private Integer Cierre2;
+
 
 
     public ItemManifiesto() {
@@ -85,5 +90,38 @@ public class ItemManifiesto {
 
     public void setSucursal(String sucursal) {
         this.sucursal = sucursal;
+    }
+
+
+    public Integer getApertura1() {
+        return Apertura1;
+    }
+
+    public void setApertura1(Integer apertura1) {
+        Apertura1 = apertura1;
+    }
+
+    public Integer getApertura2() {
+        return Apertura2;
+    }
+
+    public void setApertura2(Integer apertura2) {
+        Apertura2 = apertura2;
+    }
+
+    public Integer getCierre1() {
+        return Cierre1;
+    }
+
+    public void setCierre1(Integer cierre1) {
+        Cierre1 = cierre1;
+    }
+
+    public Integer getCierre2() {
+        return Cierre2;
+    }
+
+    public void setCierre2(Integer cierre2) {
+        Cierre2 = cierre2;
     }
 }

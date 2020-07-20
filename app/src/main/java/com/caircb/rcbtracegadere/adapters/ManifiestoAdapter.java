@@ -25,6 +25,12 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     private Context mContext;
     private List<ItemManifiesto> manifiestosList ;
     UserInformacionModulosTask informacionModulosTaskl;
+    private Integer apertura1 = 0;
+    private Integer apertura2 = 0;
+    private Integer cierre1=0;
+    private Integer cierre2=0;
+
+    int position=0;
 
     public ManifiestoAdapter(Context context){
         mContext = context;
@@ -47,6 +53,12 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
         holder.txtCiudad.setText(it.getCanton());
+        apertura1=it.getApertura1();
+        apertura2=it.getApertura2();
+        cierre1=it.getCierre1();
+        cierre2=it.getCierre2();
+
+        this.position=position;
     }
 
     @Override
@@ -81,7 +93,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             btnInfoCardTransporte.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext);
+                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, apertura1,apertura2,cierre1,cierre2);
                     informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
                     informacionModulosTaskl.execute();
                 }

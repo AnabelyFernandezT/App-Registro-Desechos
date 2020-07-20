@@ -60,7 +60,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                         @Override
                         protected void onProgressUpdate(Integer... values) {
                             progressUpdateText("Sincronizando  [ "+values[0]+" de "+cont+" ]");
-                        }
+                     }
 
                         @Override
                         protected Boolean doInBackground(Void... voids) {

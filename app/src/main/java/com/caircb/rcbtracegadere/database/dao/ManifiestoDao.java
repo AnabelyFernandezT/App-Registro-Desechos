@@ -260,6 +260,10 @@ public abstract class ManifiestoDao {
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
             entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
             entity.setIdDestinatarioFinRutaCatalogo(manifiesto.getIdDestinatarioFinRutaCatalogo());
+            entity.setApertura1(manifiesto.getApertura1());
+            entity.setApertura2(manifiesto.getApertura2());
+            entity.setCierre1(manifiesto.getCierre1());
+            entity.setCierre2(manifiesto.getCierre2());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -318,6 +322,14 @@ public abstract class ManifiestoDao {
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
             entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
             entity.setIdDestinatarioFinRutaCatalogo(manifiesto.getIdDestinatarioFinRutaCatalogo());
+            entity.setApertura1(manifiesto.getApertura1());
+            entity.setApertura2(manifiesto.getApertura2());
+            entity.setCierre1(manifiesto.getCierre1());
+            entity.setCierre2(manifiesto.getCierre2());
+            entity.setApertura1(manifiesto.getApertura1());
+            entity.setApertura2(manifiesto.getApertura2());
+            entity.setCierre1(manifiesto.getCierre1());
+            entity.setCierre2(manifiesto.getCierre2());
         }
 
         if (entity!=null) createManifiesto(entity);
