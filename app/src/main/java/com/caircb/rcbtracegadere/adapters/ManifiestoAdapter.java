@@ -4,13 +4,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogInformacionTransportista;
+import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +24,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
 
     private Context mContext;
     private List<ItemManifiesto> manifiestosList ;
+    UserInformacionModulosTask informacionModulosTaskl;
 
     public ManifiestoAdapter(Context context){
         mContext = context;
@@ -37,7 +43,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         final ItemManifiesto it = manifiestosList.get(position);
         holder.txtNumManifiesto.setText(it.getNumero());
         holder.txtCliente.setText(it.getCliente());
-        holder.txtSucursal.setText(it.getProvincia());
+        holder.txtSucursal.setText(it.getCanton());
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
         holder.txtCiudad.setText(it.getCanton());
@@ -61,16 +67,25 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         TextView txtDireccion;
         TextView txtProvincia;
         TextView txtCiudad;
+        LinearLayout btnInfoCardTransporte;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(final View itemView) {
             super(itemView);
-
             txtNumManifiesto = itemView.findViewById(R.id.itm_num_manifiesto);
             txtCliente = itemView.findViewById(R.id.itm_cliente);
             txtSucursal = itemView.findViewById(R.id.itm_sucursal);
             txtDireccion = itemView.findViewById(R.id.itm_Direccion);
             txtProvincia = itemView.findViewById(R.id.itm_Provincia);
             txtCiudad = itemView.findViewById(R.id.itm_Ciudad);
+            btnInfoCardTransporte = itemView.findViewById(R.id.btnInfoCardTransporte);
+            btnInfoCardTransporte.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext);
+                    informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
+                    informacionModulosTaskl.execute();
+                }
+            });
         }
     }
 }

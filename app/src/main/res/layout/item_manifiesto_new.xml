@@ -87,14 +87,13 @@
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
         android:layout_height="320dp"
-        android:clickable="true"
+        android:clickable="false"
         android:elevation="4dp"
         android:focusable="true"
         android:orientation="horizontal"
         android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackground">
@@ -106,21 +105,57 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/expandedListItem_detalle_Manifiesto">
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="3dp"
-                    android:text="NUMERO MANIFIESTO"
-                    style="@style/TextViewTitleItem"
-                    android:paddingBottom="3dp"
-                    />
-                <TextView
-                    android:id="@+id/itm_num_manifiesto"
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:textColor="#737373"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <LinearLayout
+                        android:layout_width="370dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:text="NUMERO MANIFIESTO"
+                            style="@style/TextViewTitleItem"
+                            android:paddingBottom="3dp"
+                            />
+                        <TextView
+                            android:id="@+id/itm_num_manifiesto"
+                            android:layout_width="match_parent"
+                            android:textColor="#737373"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="3dp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnInfoCardTransporte"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:clickable="true">
+                        <LinearLayout
+                            android:gravity="center"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent">
+                            <ImageView
+                                android:layout_marginRight="-4dp"
+                                android:clickable="false"
+                                android:src="@mipmap/ic_buscar48"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

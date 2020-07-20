@@ -9,6 +9,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.InformacionModulosEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogInformacionModulos;
+import com.caircb.rcbtracegadere.dialogs.DialogInformacionTransportista;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -36,12 +37,19 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
 
     }
     DialogInformacionModulos dialogInformacionModulos;
+    DialogInformacionTransportista dialogInformacionTransportista;
+    int numero=0;
 
     public UserInformacionModulosTask(Context context, DialogInformacionModulos dialogInformacionModulos) {
         super(context);
         this.dialogInformacionModulos=dialogInformacionModulos;
+        this.numero=1;
     }
-
+    public UserInformacionModulosTask(Context context, DialogInformacionTransportista dialogInformacionTransportista) {
+        super(context);
+        this.dialogInformacionTransportista=dialogInformacionTransportista;
+        this.numero=2;
+    }
 
 
     @Override
@@ -66,7 +74,12 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                     if(response.isSuccessful()){
                         if(response.body().size()!=0){
                             MyApp.getDBO().informacionModulosDao().saveOrUpdate(response.body());
-                            dialogInformacionModulos.show();
+                            if (numero==2){
+                                dialogInformacionTransportista.show();
+                            }else {
+                                dialogInformacionModulos.show();
+                            }
+
                             progressHide();
                         }else {
 

@@ -61,10 +61,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     private ManifiestoAdapter recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiesto>
-
-
-            rowItems;
+    private List<ItemManifiesto> rowItems;
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
@@ -140,7 +137,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

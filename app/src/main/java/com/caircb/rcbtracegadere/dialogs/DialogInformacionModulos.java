@@ -47,7 +47,7 @@ public class DialogInformacionModulos extends MyDialog {
             ,lblTituloRecoleccion,lblPlacaLote,lblPlacaSincronizada,lblNombreChoferSede, lblNombreChoferPlanta,lblPlacaPlanta,lblRutaPlanta,lblSubrutaPlanta,lblChoferPlanta,lblAuxiliarPlanta1;
     CheckBox chkFiscalizacionNo,chkFiscalizacionSi,chkFiscalizacionArcsa,chkFiscalizacionMi,chkDevolucionRecipienteSi,chkDevolucionRecipienteNo,chkMontacargasSi,chkMontacargasNo
             ,chkBalanzaSi,chkBalanzaNo,chkPresenciadoSi,chkPresenciadoNo;
-    LinearLayout btnRetornarMenu,sectionGeneral,sectionEspecifica,sectionSede,sectionPlanta;
+    LinearLayout btnRetornarMenu,sectionGeneral,sectionSede,sectionPlanta;
     List<DtoInformacionModulos> listaInformacionModulos;
     private List<ItemInformacionModulos> rowItems;
     AlertDialog.Builder builder;
@@ -73,7 +73,7 @@ public class DialogInformacionModulos extends MyDialog {
         lblAuxiliarRecoleccion1Info = getView().findViewById(R.id.lblAuxiliarRecoleccion1Info);
         lblAuxiliarRecoleccion2Info = getView().findViewById(R.id.lblAuxiliarRecoleccion2Info);
         lblKilometrajeInfo = getView().findViewById(R.id.lblKilometrajeInfo);
-        chkFiscalizacionNo = getView().findViewById(R.id.chkFiscalizacionNo);
+/*        chkFiscalizacionNo = getView().findViewById(R.id.chkFiscalizacionNo);
         chkFiscalizacionSi = getView().findViewById(R.id.chkFiscalizacionSi);
         chkFiscalizacionArcsa = getView().findViewById(R.id.chkFiscalizacionArcsa);
         chkFiscalizacionMi = getView().findViewById(R.id.chkFiscalizacionMi);
@@ -85,8 +85,8 @@ public class DialogInformacionModulos extends MyDialog {
         chkBalanzaNo = getView().findViewById(R.id.chkBalanzaNo);
         chkPresenciadoSi = getView().findViewById(R.id.chkPresenciadoSi);
         chkPresenciadoNo = getView().findViewById(R.id.chkPresenciadoNo);
+        lblObservaciones = getView().findViewById(R.id.lblObservaciones);*/
         btnRetornarMenu = getView().findViewById(R.id.btnRetornarMenu);
-        lblObservaciones = getView().findViewById(R.id.lblObservaciones);
         lblPlacaLote = getView().findViewById(R.id.lblPlacaLote);
         lblPlacaSincronizada = getView().findViewById(R.id.lblPlacaSincronizada);
         lblNombreChoferSede = getView().findViewById(R.id.lblNombreChoferSede);
@@ -101,7 +101,6 @@ public class DialogInformacionModulos extends MyDialog {
         lblTituloRuta = getView().findViewById(R.id.lblTituloRuta);
         lblTituloRecoleccion = getView().findViewById(R.id.lblTituloRecoleccion);
         sectionGeneral = getView().findViewById(R.id.sectionGeneral);
-        sectionEspecifica = getView().findViewById(R.id.sectionEspecifica);
         sectionSede = getView().findViewById(R.id.sectionSede);
         sectionPlanta = getView().findViewById(R.id.sectionPlanta);
 
@@ -124,7 +123,6 @@ public class DialogInformacionModulos extends MyDialog {
                 lblTituloRecoleccion.setVisibility(View.VISIBLE);
                 lblTituloRuta.setVisibility(View.GONE);
                 sectionGeneral.setVisibility(View.VISIBLE);
-                sectionEspecifica.setVisibility(View.VISIBLE);
                 sectionSede.setVisibility(View.GONE);
                 sectionPlanta.setVisibility(View.GONE);
 
@@ -140,11 +138,11 @@ public class DialogInformacionModulos extends MyDialog {
             }else {
                 lblObservaciones.setText(informacionModulos.getObservacionResiduos());
             }*/
-                if (informacionModulos.getResiduoSujetoFiscalizacion()==0){
+               /* if (informacionModulos.getResiduoSujetoFiscalizacion()==0){
                     chkFiscalizacionNo.setChecked(true);
                     chkFiscalizacionSi.setSelected(false);
-              /*chkFiscalizacionArcsa.setText();
-                chkFiscalizacionMi.setText();*/
+              *//*chkFiscalizacionArcsa.setText();
+                chkFiscalizacionMi.setText();*//*
                 }else {
                     chkFiscalizacionNo.setSelected(false);
                     chkFiscalizacionSi.setSelected(true);
@@ -176,13 +174,12 @@ public class DialogInformacionModulos extends MyDialog {
                 }else {
                     chkPresenciadoSi.setChecked(true);
                     chkPresenciadoNo.setChecked(false);
-                }
+                }*/
 
         }else if(idTipoEspiecifico>=3 && idTipoEspiecifico<=5) {
             lblTituloRecoleccion.setVisibility(View.GONE);
             lblTituloRuta.setVisibility(View.VISIBLE);
             sectionGeneral.setVisibility(View.GONE);
-            sectionEspecifica.setVisibility(View.GONE);
             sectionSede.setVisibility(View.VISIBLE);
             sectionPlanta.setVisibility(View.GONE);
 
@@ -200,7 +197,6 @@ public class DialogInformacionModulos extends MyDialog {
             lblTituloRecoleccion.setVisibility(View.GONE);
             lblTituloRuta.setVisibility(View.VISIBLE);
             sectionGeneral.setVisibility(View.GONE);
-            sectionEspecifica.setVisibility(View.GONE);
             sectionSede.setVisibility(View.GONE);
             sectionPlanta.setVisibility(View.VISIBLE);
 

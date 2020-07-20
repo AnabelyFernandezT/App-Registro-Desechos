@@ -1,518 +1,562 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
-    android:layout_height="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
-    android:orientation="vertical">
-
-<LinearLayout
     android:layout_width="350dp"
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/lblTituloRuta"
-        android:visibility="gone"
-        android:textSize="20dp"
-        android:textColor="@color/app_gadere"
-        android:fontFamily="@font/quicksand_bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="INFORMACIÓN DE RUTA"></TextView>
-
-    <TextView
-        android:id="@+id/lblTituloRecoleccion"
-        android:visibility="gone"
-        android:textSize="20dp"
-        android:textColor="@color/app_gadere"
-        android:fontFamily="@font/quicksand_bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="INFORMACIÓN DE RECOLECCIÓN"></TextView>
-
     <LinearLayout
-        android:id="@+id/sectionPlanta"
-        android:visibility="gone"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="5dp" >
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Operador:"/>
-        <TextView
-            android:id="@+id/lblNombreChoferPlanta"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ruta:"/>
-        <TextView
-            android:id="@+id/lblRutaPlanta"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sub - ruta:"/>
-        <TextView
-            android:id="@+id/lblSubrutaPlanta"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Placa Sincronizada:"/>
-        <TextView
-            android:id="@+id/lblPlacaPlanta"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Chofer:"/>
-        <TextView
-            android:id="@+id/lblChoferPlanta"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Auxiliar de recolección 1:"/>
-        <TextView
-            android:id="@+id/lblAuxiliarPlanta1"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/sectionSede"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="5dp" >
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Chofer:"/>
-        <TextView
-            android:id="@+id/lblNombreChoferSede"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Placa Lote:"/>
-        <TextView
-            android:id="@+id/lblPlacaLote"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Placa sincronizada:"/>
-        <TextView
-            android:id="@+id/lblPlacaSincronizada"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/sectionGeneral"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="5dp" >
+        android:orientation="vertical">
 
         <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
+            android:id="@+id/lblTituloRuta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ruta:"/>
-        <TextView
-            android:id="@+id/lblRutaInfo"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
             android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SUB - RUTA:"/>
-        <TextView
-            android:id="@+id/lblSubrutaInfo"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Placa:"/>
-        <TextView
-            android:id="@+id/lblPlacaInfo"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Chofer:"/>
-        <TextView
-            android:id="@+id/lblChoferInfo"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Auxiliar de Recolección:"/>
-        <TextView
-            android:id="@+id/lblAuxiliarRecoleccion1Info"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Auxiliar de Recolección:"/>
-        <TextView
-            android:id="@+id/lblAuxiliarRecoleccion2Info"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kilometraje inicio:"/>
-        <TextView
-            android:id="@+id/lblKilometrajeInfo"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:id="@+id/sectionEspecifica"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="5dp">
-        <TextView
-            android:textSize="20dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:text="INFORMACIÓN DE RUTA"
             android:textAlignment="center"
-            android:text="RECOLECCIÓN INDUSTRIAL"></TextView>
+            android:textColor="@color/app_gadere"
+            android:textSize="20dp"
+            android:visibility="gone"></TextView>
 
         <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
+            android:id="@+id/lblTituloRecoleccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="¿Residuo sujeto a fiscalización?:"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:fontFamily="@font/quicksand_bold"
+            android:text="INFORMACIÓN DE RECOLECCIÓN"
+            android:textAlignment="center"
+            android:textColor="@color/app_gadere"
+            android:textSize="20dp"
+            android:visibility="gone"></TextView>
 
-            <CheckBox
-                android:id="@+id/chkFiscalizacionNo"
-                android:enabled="false"
+        <LinearLayout
+            android:id="@+id/sectionPlanta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:visibility="gone">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NO" />
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Operador:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblNombreChoferPlanta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Ruta:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblRutaPlanta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Sub - ruta:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblSubrutaPlanta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Placa Sincronizada:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblPlacaPlanta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Chofer:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblChoferPlanta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Auxiliar de recolección 1:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblAuxiliarPlanta1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/sectionSede"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Chofer:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblNombreChoferSede"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Placa Lote:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblPlacaLote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Placa sincronizada:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblPlacaSincronizada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sectionGeneral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Ruta:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblRutaInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="SUB - RUTA:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblSubrutaInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Placa:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblPlacaInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Chofer:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblChoferInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Auxiliar de Recolección:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblAuxiliarRecoleccion1Info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Auxiliar de Recolección:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblAuxiliarRecoleccion2Info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Kilometraje inicio:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblKilometrajeInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+        </LinearLayout>
+
+<!--
+        <LinearLayout
+            android:id="@+id/sectionEspecifica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="RECOLECCIÓN INDUSTRIAL"
+                android:textAlignment="center"
+                android:textColor="@color/app_gadere"
+                android:textSize="20dp"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="¿Residuo sujeto a fiscalización?:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <CheckBox
-                    android:id="@+id/chkFiscalizacionSi"
-                    android:enabled="false"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/chkFiscalizacionNo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="5dp"
+                    android:enabled="false"
+                    android:text="NO" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/chkFiscalizacionSi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:paddingRight="5dp"
+                        android:text="SI" />
+
+                    <CheckBox
+                        android:id="@+id/chkFiscalizacionArcsa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:paddingRight="5dp"
+                        android:text="ARCSA" />
+
+                    <CheckBox
+                        android:id="@+id/chkFiscalizacionMi"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:enabled="false"
+                        android:text="Ministerio del Interior" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="¿Requiere devolución de recipientes?:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chkDevolucionRecipienteSi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
                     android:text="SI" />
+
                 <CheckBox
-                    android:id="@+id/chkFiscalizacionArcsa"
-                    android:enabled="false"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/chkDevolucionRecipienteNo"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingRight="5dp"
-                    android:text="ARCSA" />
-                <CheckBox
-                    android:id="@+id/chkFiscalizacionMi"
+                    android:layout_weight="1"
                     android:enabled="false"
+                    android:text="NO" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Tiene disponibilidad de montacargas:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chkMontacargasSi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="SI" />
+
+                <CheckBox
+                    android:id="@+id/chkMontacargasNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="NO" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Tiene disponibilidad de balanza:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chkBalanzaSi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="SI" />
+
+                <CheckBox
+                    android:id="@+id/chkBalanzaNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="NO" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Requiere que nuestro servicio de incineración sea presenciado:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chkPresenciadoSi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="SI" />
+
+                <CheckBox
+                    android:id="@+id/chkPresenciadoNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="NO" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Observaciones:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lblObservaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp" />
+
+        </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rcb_border_footer"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:id="@+id/btnRetornarMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_button_skin_right"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="-4dp"
+                        android:clickable="false"
+                        android:src="@mipmap/ic_button_back" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Ministerio del Interior" />
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="RETORNAR"
+                        android:textColor="#fff"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
-
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="¿Requiere devolución de recipientes?:"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-
-            <CheckBox
-                android:id="@+id/chkDevolucionRecipienteSi"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="SI" />
-
-            <CheckBox
-                android:id="@+id/chkDevolucionRecipienteNo"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="NO" />
-
-
-        </LinearLayout>
-
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tiene disponibilidad de montacargas:"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-
-            <CheckBox
-                android:id="@+id/chkMontacargasSi"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="SI" />
-
-            <CheckBox
-                android:id="@+id/chkMontacargasNo"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="NO" />
-
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand_bold"
-            android:text="Tiene disponibilidad de balanza:"
-            android:textColor="@color/app_gadere"
-            android:textSize="13dp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-
-            <CheckBox
-                android:id="@+id/chkBalanzaSi"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="SI" />
-
-            <CheckBox
-                android:id="@+id/chkBalanzaNo"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="NO" />
-
-        </LinearLayout>
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Requiere que nuestro servicio de incineración sea presenciado:"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-
-            <CheckBox
-                android:id="@+id/chkPresenciadoSi"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="SI" />
-
-            <CheckBox
-                android:id="@+id/chkPresenciadoNo"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="NO" />
-
-        </LinearLayout>
-        <TextView
-            android:textSize="13dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Observaciones:"/>
-        <TextView
-            android:id="@+id/lblObservaciones"
-            android:textSize="13dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/footer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center"
-        android:background="@drawable/rcb_border_footer"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="60dp">
-
-        <LinearLayout
-            android:clickable="true"
-            android:id="@+id/btnRetornarMenu"
-            android:orientation="horizontal"
-            android:background="@drawable/ic_button_skin_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:gravity="center"
-                android:layout_width="50dp"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_marginRight="-4dp"
-                    android:clickable="false"
-                    android:src="@mipmap/ic_button_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="RETORNAR"
-                    android:textColor="#fff"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
         </LinearLayout>
 
 
     </LinearLayout>
-
-
-</LinearLayout>
 </ScrollView>
