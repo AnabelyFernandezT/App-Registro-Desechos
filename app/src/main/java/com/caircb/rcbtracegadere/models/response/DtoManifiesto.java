@@ -66,10 +66,10 @@ public class DtoManifiesto {
     private Integer estadoFinRuta;
     private String nombreDestinatario;
     private Integer idDestinatarioFinRutaCatalogo;
-    private  Integer Apertura1;
-    private Integer Apertura2;
-    private Integer Cierre1;
-    private Integer Cierre2;
+    private  Integer apertura1;
+    private Integer apertura2;
+    private Integer cierre1;
+    private Integer cierre2;
     private String serie;
 
 
@@ -495,35 +495,35 @@ public class DtoManifiesto {
     }
 
     public Integer getApertura1() {
-        return Apertura1;
+        return apertura1;
     }
 
     public void setApertura1(Integer apertura1) {
-        Apertura1 = apertura1;
+        this.apertura1 = apertura1;
     }
 
     public Integer getApertura2() {
-        return Apertura2;
+        return apertura2;
     }
 
     public void setApertura2(Integer apertura2) {
-        Apertura2 = apertura2;
+        this.apertura2 = apertura2;
     }
 
     public Integer getCierre1() {
-        return Cierre1;
+        return cierre1;
     }
 
     public void setCierre1(Integer cierre1) {
-        Cierre1 = cierre1;
+        this.cierre1 = cierre1;
     }
 
     public Integer getCierre2() {
-        return Cierre2;
+        return cierre2;
     }
 
     public void setCierre2(Integer cierre2) {
-        Cierre2 = cierre2;
+        this.cierre2 = cierre2;
     }
 
     public String getSerie() {
