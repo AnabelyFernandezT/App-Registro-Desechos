@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Environment;
 
 import androidx.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
@@ -22,6 +24,7 @@ import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
 import com.caircb.rcbtracegadere.utils.Utils;
 import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -53,12 +56,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Phaser;
 
+import static android.graphics.Color.*;
+
 public class MyManifiesto {
 
     private File pdfFile;
     Context context;
     Integer idManifiesto,idAppTipoPaquete;
     ManifiestoEntity manifiesto;
+    TecnicoEntity tecnicoEntity;
     Bitmap logoMAE;
     Bitmap imagenCheck;
     Bitmap imagenUnCheck;
@@ -87,6 +93,7 @@ public class MyManifiesto {
             imagenCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_check);
             imagenUnCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_uncheck);
 
+            tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyManifiesto(idManifiesto);
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
             catalogo = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(manifiesto.getNumeroPlacaVehiculo(),4);
             //RECOLECCION
@@ -387,9 +394,9 @@ public class MyManifiesto {
         tb9.addCell(cell);
 
         Paragraph para3 = new Paragraph();
-        para3.add(new Chunk(manifiesto.getTecnicoResponsable(),f6));
+        para3.add(new Chunk(tecnicoEntity.getNombre() +"   "+tecnicoEntity.getIdentificacion(),f6));
         para3.add(Chunk.NEWLINE);
-        para3.add(new Chunk(manifiesto.getTecnicoTelefono(),f6));
+        para3.add(new Chunk(tecnicoEntity.getTelefono()+"   "+tecnicoEntity.getCorreo(),f6));
         para3.add(Chunk.NEWLINE);
 
         //cell = new PdfPCell(new Phrase(manifiesto.getTecnicoResponsable(),f6));
@@ -410,9 +417,6 @@ public class MyManifiesto {
 
             cell = new PdfPCell(createCell_NO_BORDER("",f6,Element.ALIGN_CENTER));
         }
-
-
-
 
         tb9.addCell(cell);
 
@@ -670,9 +674,10 @@ public class MyManifiesto {
         tb6.addCell(_cell);
 
         Paragraph para5 = new Paragraph();
-        para5.add(new Chunk("FIRMA FIRMA:",f6));
+        //para5.add(new Chunk("FIRMA FIRMA:",f6));
+        para5.add(new Chunk("",f6));
         para5.add(Chunk.NEWLINE);
-        para5.add(new Chunk(fecha,f6));
+        //para5.add(new Chunk(fecha,f6));
         _cell = new PdfPCell(para5);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb6.addCell(_cell);
@@ -980,10 +985,23 @@ public class MyManifiesto {
 
         //tabla 5
         PdfPTable tb5 = new PdfPTable(new float[] { 100});
+        Image jpg = null;
+
 
         tb5.addCell(new PdfPCell(new Phrase(" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+
-                " \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+"                                                                     __________________________\n"+"                 " +
-                "                                                                           FIRMA\n"+
+                " \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+"\n",f3)));
+        if(fileFirmaTecnico!=null){
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            jpg = Image.getInstance(stream.toByteArray());
+            jpg.scaleToFit(40,150);
+            tb5.addCell(new PdfPCell(createCell_ImagenFirma_NO_BORDER(jpg,f3,Element.ALIGN_CENTER)));
+        }else {
+
+            tb5.addCell(new PdfPCell(createCell_NO_BORDER("",f3,Element.ALIGN_CENTER)));
+        }
+
+        tb5.addCell(new PdfPCell(new Phrase("                                                                           FIRMA\n"+
                 "DECLARO CONFORMIDAD DE LA INFORMACION ADICIONAL",f3)));
         tb5.completeRow();
 

@@ -39,25 +39,7 @@
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <TextView
-                        style="@style/TextViewTitleItem"
-                        android:text="CODIGO"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/txtCodigo"
-                        android:text="codigo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_weight="1"
@@ -91,6 +73,7 @@
                 android:id="@+id/txtItemDescripcion"
                 android:textSize="18dp"
                 android:text="descripcion"
+                android:inputType="textCapWords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="normal" />

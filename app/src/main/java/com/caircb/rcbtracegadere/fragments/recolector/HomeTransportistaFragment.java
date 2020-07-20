@@ -214,7 +214,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
                // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idRuta,MySession.getIdUsuario()) >0 ){
+                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) >0 ){
                     List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
                     if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
 
@@ -285,8 +285,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v) {
                 int conteoManifiestos;
-                //conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(rut.getIdSubRuta(),MySession.getIdUsuario());
-                conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas();
+                conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario());
+                //conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas();
                 if(conteoManifiestos>0){
                     messageBox("Existen manifiestos pendientes por recolectar");
                 }else{
@@ -299,8 +299,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     private void loadCantidadManifiestoAsignado(){
         //dbHelper.open();
-        //lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(idSubRuta == null ? 0:idSubRuta,MySession.getIdUsuario()));
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas());
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()));
+        //lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas());
         //dbHelper.close();
     }
 

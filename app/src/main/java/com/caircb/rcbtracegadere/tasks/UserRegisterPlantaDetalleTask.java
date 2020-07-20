@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoDetallesBultoPlanta;
 import com.caircb.rcbtracegadere.models.DtoDetallesPlanta;
 import com.caircb.rcbtracegadere.models.DtoFile;
@@ -96,6 +97,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
                         if(response.body().getExito()){
                             if(mOnRegisterPlantaDetalleListener!=null){ mOnRegisterPlantaDetalleListener.OnSucessfull(); }
                             MyApp.getDBO().manifiestoPlantaDao().updateEstadoManifiesto(idManifiesto);
+                            message(response.body().getMensaje());
                         }
                     }
                     progressHide();
@@ -119,6 +121,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
         rq.setDetalle(obtenerDetalles());
         rq.setFotos(obtenerFotos());
         rq.setUrlFima(firmaRecoleccion!=null?(path+"/"+firmaRecoleccion.getUrl()):"");
+        rq.setIdPlantaRecolector(MySession.getIdUsuario());
 
         return rq;
     }
