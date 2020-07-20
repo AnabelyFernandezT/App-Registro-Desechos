@@ -82,7 +82,7 @@ public class DialogNotificacionDetalle extends MyDialog {
                 if(position>0){
                     catalogos.get(position-1);
                     novedad = (String) ltsNotificaciones.getSelectedItem();
-                    idNotificacion=position;
+                    idNotificacion=2;
                 }
 
             }
@@ -119,7 +119,7 @@ public class DialogNotificacionDetalle extends MyDialog {
     }
 
     private void cargarNovedades(){
-        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(7);
+        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(2,7);
 
         loadSpinner(ltsNotificaciones,catalogos,true);
     }

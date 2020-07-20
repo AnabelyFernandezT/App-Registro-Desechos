@@ -91,7 +91,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
-        mensajes = getView().findViewById(R.id.fab);
+        /*mensajes = getView().findViewById(R.id.fab);
         mensajes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +100,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 dialogMensajes.setCancelable(false);
                 dialogMensajes.show();
             }
-        });
+        });*/
     }
 
 

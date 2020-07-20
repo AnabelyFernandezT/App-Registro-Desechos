@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Editable;
@@ -28,6 +29,7 @@ import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCedulaTask;
 import com.caircb.rcbtracegadere.utils.ImagenUtils;
 import com.caircb.rcbtracegadere.utils.Utils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.regex.Pattern;
 
@@ -59,6 +61,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     private CheckBox chkCorreoPrincipal,chkCorreoAlterno;
     String identificacion, nombre, correo, telefono,correoPrincipal ="" ,correoAlterno = "",correoEnvio="";
     UserConsultarCedulaTask userConsultarCedulaTask;
+    private FloatingActionButton fab;
 
     public TabManifiestoGeneral(Context context,Integer idAppManifiesto,Integer estado) {
         super(context);
@@ -69,7 +72,9 @@ public class TabManifiestoGeneral extends LinearLayout {
         loadDataManifiesto();
     }
 
+    @SuppressLint("RestrictedApi")
     private void init(){
+
         txtNumManifiesto = this.findViewById(R.id.txtNumManifiesto) ;
         txtClienteNombre = this.findViewById(R.id.txtClienteNombre);
         txtClienteIdentificacion =this.findViewById(R.id.txtClienteIdentificacion);

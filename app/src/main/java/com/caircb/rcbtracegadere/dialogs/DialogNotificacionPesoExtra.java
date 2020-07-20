@@ -86,7 +86,7 @@ public class DialogNotificacionPesoExtra extends MyDialog {
                 if(position>0){
                     catalogos.get(position-1);
                     novedad = (String) ltsNotificaciones.getSelectedItem();
-                    idNotificacion=position;
+                    idNotificacion=3;
                 }
 
             }
@@ -123,7 +123,7 @@ public class DialogNotificacionPesoExtra extends MyDialog {
     }
 
     private void cargarNovedades(){
-        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(7);
+        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(3,7);
 
         loadSpinner(ltsNotificaciones,catalogos,true);
     }

@@ -26,9 +26,11 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
+import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
 import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     DialogBultos dialogBultos;
     DialogMenuBaseAdapter dialogMenuBaseAdapter;
     MyCalculoPaquetes calculoPaquetes;
-
+    FloatingActionButton mensajes;
     AlertDialog alert;
     AlertDialog.Builder alertDialog;
     List<String> itemsCategoriaPaquete;
@@ -71,6 +73,17 @@ public class TabManifiestoDetalle extends LinearLayout {
     }
 
     private void init(){
+        mensajes = this.findViewById(R.id.fab);
+        mensajes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogNotificacionDetalle dialogMensajes = new DialogNotificacionDetalle(getContext(),idAppManifiesto);
+                dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogMensajes.setCancelable(false);
+                dialogMensajes.show();
+            }
+        });
+
         calculoPaquetes= new MyCalculoPaquetes(idAppManifiesto,tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
         recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto,estadoManifiesto,idAppManifiesto);

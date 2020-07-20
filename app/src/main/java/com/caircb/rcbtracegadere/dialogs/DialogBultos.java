@@ -167,16 +167,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 CatalogoItemValor item = bultos.get(pos);
                 //Probar sin impresiora
                 /************************************/
-/*
+
                 bultos.get(pos).setImpresion(true);
                 MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
                 listaValoresAdapter.filterList(bultos);
                 listaValoresAdapter.notifyDataSetChanged();
-*/
+
                 /*************************************/
 
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
-                imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
+                //imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {

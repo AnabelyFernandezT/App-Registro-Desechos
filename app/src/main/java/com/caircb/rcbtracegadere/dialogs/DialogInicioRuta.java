@@ -318,7 +318,7 @@ public class DialogInicioRuta extends MyDialog {
     };
     private void loadCantidadManifiestoAsignado(){
         //dbHelper.open();
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas());
+        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()));
         //dbHelper.close();
     }
 
