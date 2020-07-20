@@ -249,7 +249,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 }*/
 
                dialogBuilder = new DialogBuilder(getActivity());
-               dialogBuilder.setMessage("¿El cliente es registro generador?");
+               dialogBuilder.setMessage("¿El Cliente Genera Propio Manifiesto?");
                dialogBuilder.setCancelable(false);
                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                    @Override
