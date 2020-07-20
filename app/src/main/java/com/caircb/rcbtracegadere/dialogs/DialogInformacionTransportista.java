@@ -66,7 +66,7 @@ public class DialogInformacionTransportista extends MyDialog {
         chkPresenciadoNo = getView().findViewById(R.id.chkPresenciadoNo);
         lblObservaciones = getView().findViewById(R.id.lblObservaciones);
 
-        datosCabecera();
+        //datosCabecera();
 
         btnRetornarMenu.setOnClickListener(new View.OnClickListener() {
             @Override
