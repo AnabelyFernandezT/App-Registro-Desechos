@@ -23,7 +23,7 @@ import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
-import com.caircb.rcbtracegadere.models.ItemEtiqueta;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -483,4 +483,6 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         }
         return resul;
     }
+
+
 }
