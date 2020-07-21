@@ -619,7 +619,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     }
 
     public boolean validarCorreos(){
-        if(txtGenTecCorreo.getText().toString().equals("") && txtCorreoAlterno.getText().toString().equals("")){
+        if(txtGenTecCorreo.getText().toString().equals("") && txtCorreoAlterno.getText().toString().equals("") && txtRespEntregaCorreo.getText().toString().equals("")){
             return true;
         }
         return false;
