@@ -143,6 +143,10 @@ public class ManifiestoEntity {
 
     private String serie;
 
+    private String frecuencia;
+
+    private String sucursal;
+
     public ManifiestoEntity() {
     }
 
@@ -509,7 +513,6 @@ public class ManifiestoEntity {
         this.correos = correos;
     }
 
-
     public Integer getApertura1() {
         return apertura1;
     }
@@ -548,6 +551,22 @@ public class ManifiestoEntity {
 
     public void setSerie(String serie) {
         this.serie = serie;
+    }
+
+    public String getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
     }
 }
 

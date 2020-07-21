@@ -108,6 +108,21 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/sectionCuadro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
+
+            <!--<
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </>-->
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/sectionEspecifica"
@@ -371,7 +386,6 @@
 
 
         </LinearLayout>
-
 
 
     </LinearLayout>
