@@ -19,6 +19,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fra
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,12 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     private Context mContext;
     private List<ItemManifiesto> manifiestosList ;
     UserInformacionModulosTask informacionModulosTaskl;
+    private Integer apertura1 = 0;
+    private Integer apertura2 = 0;
+    private Integer cierre1=0;
+    private Integer cierre2=0;
+
+    int position=0;
 
     public ManifiestoAdapter(Context context){
         mContext = context;
@@ -45,7 +52,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         final ItemManifiesto it = manifiestosList.get(position);
         holder.txtNumManifiesto.setText(it.getNumero());
         holder.txtCliente.setText(it.getCliente());
-        holder.txtSucursal.setText(it.getCanton());
+        holder.txtSucursal.setText(it.getSucursal());
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
         holder.txtCiudad.setText(it.getCanton());
@@ -63,6 +70,12 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         }
 
         holder.txtEstado.setText(estadoString.toString());
+        apertura1=it.getApertura1();
+        apertura2=it.getApertura2();
+        cierre1=it.getCierre1();
+        cierre2=it.getCierre2();
+
+        this.position=position;
     }
 
     @Override
@@ -99,7 +112,9 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             btnInfoCardTransporte.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext);
+                    int positionSelected= MyViewHolder.this.getPosition();
+                    ItemManifiesto it = manifiestosList.get(positionSelected);
+                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2());
                     informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
                     informacionModulosTaskl.execute();
                 }

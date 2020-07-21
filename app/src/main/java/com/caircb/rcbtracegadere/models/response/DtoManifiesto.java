@@ -66,6 +66,14 @@ public class DtoManifiesto {
     private Integer estadoFinRuta;
     private String nombreDestinatario;
     private Integer idDestinatarioFinRutaCatalogo;
+    private  Integer apertura1;
+    private Integer apertura2;
+    private Integer cierre1;
+    private Integer cierre2;
+    private String serie;
+    private String frecuencia;
+    private String sucursal;
+
 
     public DtoManifiesto() {
     }
@@ -486,5 +494,61 @@ public class DtoManifiesto {
 
     public void setIdDestinatarioFinRutaCatalogo(Integer idDestinatarioFinRutaCatalogo) {
         this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
+    }
+
+    public Integer getApertura1() {
+        return apertura1;
+    }
+
+    public void setApertura1(Integer apertura1) {
+        this.apertura1 = apertura1;
+    }
+
+    public Integer getApertura2() {
+        return apertura2;
+    }
+
+    public void setApertura2(Integer apertura2) {
+        this.apertura2 = apertura2;
+    }
+
+    public Integer getCierre1() {
+        return cierre1;
+    }
+
+    public void setCierre1(Integer cierre1) {
+        this.cierre1 = cierre1;
+    }
+
+    public Integer getCierre2() {
+        return cierre2;
+    }
+
+    public void setCierre2(Integer cierre2) {
+        this.cierre2 = cierre2;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public String getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
     }
 }

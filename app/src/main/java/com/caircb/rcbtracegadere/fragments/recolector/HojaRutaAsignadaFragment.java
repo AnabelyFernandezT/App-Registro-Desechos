@@ -137,7 +137,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                //Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),rowItems.get(position).getNumero(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -181,7 +181,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         @Override
                         public void onClick(View v) {
                             dialogBuilder.dismiss();
-                           if(MyApp.getDBO().impresoraDao().existeImpresora()){
+                           if(!MyApp.getDBO().impresoraDao().existeImpresora()){
                                 Date fecha = AppDatabase.getDateTime();
                                 //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                 MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(),fecha);

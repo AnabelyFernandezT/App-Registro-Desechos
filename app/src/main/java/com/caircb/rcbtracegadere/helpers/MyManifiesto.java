@@ -268,7 +268,7 @@ public class MyManifiesto {
         tb1.addCell(new PdfPCell(new Phrase("4. PÁGINA",f6)));
         tb1.addCell(createCell("NO TIENE",f6));
         tb1.addCell(createCell("",f6));
-        tb1.addCell(createCell(manifiesto.getNumeroManifiesto(),f6));
+        tb1.addCell(createCell(manifiesto.getSerie()+"  "+manifiesto.getNumeroManifiesto(),f6));
         tb1.addCell(createCell_VACIO());
         tb1.completeRow();
 

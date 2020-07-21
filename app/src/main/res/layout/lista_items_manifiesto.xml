@@ -175,12 +175,9 @@
                 android:id="@+id/btnNotificador"
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_notificacion"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
-
-
-
 
 </RelativeLayout>

@@ -17,14 +17,24 @@ import com.caircb.rcbtracegadere.generics.MyDialog;
 
 public class DialogInformacionTransportista extends MyDialog {
     Activity _activity;
-    TextView lblApertura1, lblApertura2, lblCierre1, lblCierre2, lblTelefonoCliente,lblObservaciones;
+    TextView lblApertura1, lblApertura2, lblCierre1, lblCierre2, lblTelefonoCliente, lblObservaciones;
     CheckBox chkFiscalizacionNo, chkFiscalizacionSi, chkFiscalizacionArcsa, chkFiscalizacionMi, chkDevolucionRecipienteSi, chkDevolucionRecipienteNo, chkMontacargasSi, chkMontacargasNo, chkBalanzaSi,
             chkBalanzaNo, chkPresenciadoSi, chkPresenciadoNo;
     LinearLayout btnRetornarMenu;
+    int position = 0;
+    private Integer apertura1 = 0;
+    private Integer apertura2 = 0;
+    private Integer cierre1 = 0;
+    private Integer cierre2 = 0;
 
-    public DialogInformacionTransportista(@NonNull Context context) {
+    public DialogInformacionTransportista(@NonNull Context context, Integer apertura1, Integer apertura2, Integer cierre1, Integer cierre2) {
         super(context, R.layout.dialog_informacion_transportista);
         this._activity = (Activity) context;
+        this.position = position;
+        this.apertura1 = apertura1;
+        this.apertura2 = apertura2;
+        this.cierre1 = cierre1;
+        this.cierre2 = cierre2;
     }
 
     @Override
@@ -56,6 +66,8 @@ public class DialogInformacionTransportista extends MyDialog {
         chkPresenciadoNo = getView().findViewById(R.id.chkPresenciadoNo);
         lblObservaciones = getView().findViewById(R.id.lblObservaciones);
 
+        datosCabecera();
+
         btnRetornarMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +75,13 @@ public class DialogInformacionTransportista extends MyDialog {
             }
         });
 
+    }
+
+    private void datosCabecera() {
+        lblApertura1.setText(apertura1.toString());
+        lblApertura2.setText(apertura2.toString());
+        lblCierre1.setText(cierre1.toString());
+        lblCierre2.setText(cierre2.toString());
     }
 
     private void datosInformacionModulo() {

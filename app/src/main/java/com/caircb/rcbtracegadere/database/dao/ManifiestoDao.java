@@ -62,7 +62,7 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigando();
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
@@ -87,7 +87,8 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta(Integer Subruta, Integer idFinRuta);
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos " +
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,+" +
+            " apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos " +
             "where estado=1 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idSubRuta=:SubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManif(String search,Integer SubRuta,Integer idChoferRecolector);
@@ -260,6 +261,13 @@ public abstract class ManifiestoDao {
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
             entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
             entity.setIdDestinatarioFinRutaCatalogo(manifiesto.getIdDestinatarioFinRutaCatalogo());
+            entity.setApertura1(manifiesto.getApertura1());
+            entity.setApertura2(manifiesto.getApertura2());
+            entity.setCierre1(manifiesto.getCierre1());
+            entity.setCierre2(manifiesto.getCierre2());
+            entity.setSerie(manifiesto.getSerie());
+            entity.setFrecuencia(manifiesto.getFrecuencia());
+            entity.setSucursal(manifiesto.getSucursal());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -318,6 +326,17 @@ public abstract class ManifiestoDao {
             entity.setEstadoFinRuta(manifiesto.getEstadoFinRuta());
             entity.setNombreDestinatario(manifiesto.getNombreDestinatario());
             entity.setIdDestinatarioFinRutaCatalogo(manifiesto.getIdDestinatarioFinRutaCatalogo());
+            entity.setApertura1(manifiesto.getApertura1());
+            entity.setApertura2(manifiesto.getApertura2());
+            entity.setCierre1(manifiesto.getCierre1());
+            entity.setCierre2(manifiesto.getCierre2());
+            entity.setApertura1(manifiesto.getApertura1());
+            entity.setApertura2(manifiesto.getApertura2());
+            entity.setCierre1(manifiesto.getCierre1());
+            entity.setCierre2(manifiesto.getCierre2());
+            entity.setSerie(manifiesto.getSerie());
+            entity.setFrecuencia(manifiesto.getFrecuencia());
+            entity.setSucursal(manifiesto.getSucursal());
         }
 
         if (entity!=null) createManifiesto(entity);

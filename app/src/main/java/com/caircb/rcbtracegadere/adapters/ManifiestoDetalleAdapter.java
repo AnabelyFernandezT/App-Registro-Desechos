@@ -83,7 +83,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             });
         }
 
-        if(Double.parseDouble(holder.txtPesoReferencial.getText().toString()) > Double.parseDouble(holder.txtPeso.getText().toString())){
+        /*if(Double.parseDouble(holder.txtPesoReferencial.getText().toString()) > Double.parseDouble(holder.txtPeso.getText().toString())){
             holder.btnNotificador.setVisibility(View.GONE);
         }else {
             holder.btnNotificador.setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
                 dialogMensajes.setCancelable(false);
                 dialogMensajes.show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -121,7 +121,6 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         CheckBox chkEstado;
         TextView txtTipoBalanza;
         TextView txtPesoReferencial;
-        ImageView btnNotificador;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -135,7 +134,6 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
             txtTipoBalanza = itemView.findViewById(R.id.txtTipoBalanza);
             txtPesoReferencial = itemView.findViewById(R.id.txtPesoReferencial);
-            btnNotificador = itemView.findViewById(R.id.btnNotificador);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

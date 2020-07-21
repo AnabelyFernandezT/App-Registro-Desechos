@@ -17,8 +17,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.caircb.rcbtracegadere.MainActivity;
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
 import com.google.firebase.messaging.RemoteMessage;
 
 ;
@@ -55,12 +57,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Data: " + remoteMessage.getData());
+            MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+remoteMessage.getData().get("idCatalogoRespuesta"));
         }
 
     }
 
     private void showNotification(String title, String body) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("notification_data",body);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -91,7 +95,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     private void showNotificationAutoPesos(String title, String body) {
-        Intent intent = new Intent(this, DialogBultos.class);
+        Intent intent = new Intent(this, TabManifiestoDetalle.class);
+        intent.putExtra("notification_data",body);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 

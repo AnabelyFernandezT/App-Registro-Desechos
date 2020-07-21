@@ -53,6 +53,8 @@ public class ManifiestoDetalleEntity {
 
     private double pesoReferencial;
 
+    private String validadorReferencial;
+
     public ManifiestoDetalleEntity() {
     }
 
@@ -188,5 +190,13 @@ public class ManifiestoDetalleEntity {
 
     public void setPesoReferencial(double pesoReferencial) {
         this.pesoReferencial = pesoReferencial;
+    }
+
+    public String getValidadorReferencial() {
+        return validadorReferencial;
+    }
+
+    public void setValidadorReferencial(String validadorReferencial) {
+        this.validadorReferencial = validadorReferencial;
     }
 }
