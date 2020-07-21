@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogInformacionTransportista;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
+import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2FragmentProcesada;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 
@@ -47,6 +49,20 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
         holder.txtCiudad.setText(it.getCanton());
+        String estadoString = "";
+        switch (it.getEstado()){
+            case 1 :
+                estadoString ="ASIGNADO";
+                break;
+            case 2 :
+                estadoString ="RECOLECTADO";
+                break;
+            case 3:
+                estadoString ="NO RECOLECTADO";
+                break;
+        }
+
+        holder.txtEstado.setText(estadoString.toString());
     }
 
     @Override
@@ -67,6 +83,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         TextView txtDireccion;
         TextView txtProvincia;
         TextView txtCiudad;
+        TextView txtEstado;
         LinearLayout btnInfoCardTransporte;
 
         public MyViewHolder(final View itemView) {
@@ -77,6 +94,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             txtDireccion = itemView.findViewById(R.id.itm_Direccion);
             txtProvincia = itemView.findViewById(R.id.itm_Provincia);
             txtCiudad = itemView.findViewById(R.id.itm_Ciudad);
+            txtEstado = itemView.findViewById(R.id.itm_Estado);
             btnInfoCardTransporte = itemView.findViewById(R.id.btnInfoCardTransporte);
             btnInfoCardTransporte.setOnClickListener(new View.OnClickListener() {
                 @Override
