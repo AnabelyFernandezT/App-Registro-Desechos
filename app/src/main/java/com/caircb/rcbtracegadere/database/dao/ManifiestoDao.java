@@ -62,7 +62,7 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigando();
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, telefono as telefono, frecuencia as frecuencia from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
