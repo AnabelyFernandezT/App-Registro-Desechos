@@ -84,6 +84,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setPesoReferencial(dt.getPesoReferencial());
             entity.setTipoBalanza(0);
             entity.setTratamiento(dt.getTratamiento());
+            entity.setValidadorReferencial(dt.getValidadorReferencial());
 
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
@@ -98,6 +99,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setCodigoMAE(dt.getCodigoMAE());
             entity.setNombreDesecho(dt.getNombreDesecho());
             entity.setNombreDestinatario(dt.getNombreDestinatario());
+            entity.setValidadorReferencial(dt.getValidadorReferencial());
         }
 
         createManifiestoDetalle(entity);

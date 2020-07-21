@@ -19,6 +19,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.generics.MyPrint;
@@ -40,12 +41,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     String dato = "0";
     String inputDefault = "0";
-    String codigoDetalle="";
+    String codigoDetalle="", vreferencial;
     BigDecimal subtotal= BigDecimal.ZERO;
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
     Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete;
     PaqueteEntity pkg;
+    ManifiestoDetalleEntity detalle;
     List<String> itemsCategoriaPaquete;
     Boolean closable=false;
     MyPrint print;
@@ -89,6 +91,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         initBotones();
         initCategoriaPaquetes();
         loadData();
+        detalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
+        vreferencial = detalle.getValidadorReferencial();
     }
 
     private void initBotones() {

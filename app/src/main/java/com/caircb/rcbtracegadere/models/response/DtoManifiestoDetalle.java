@@ -18,6 +18,7 @@ public class DtoManifiestoDetalle {
     private String nombreDestinatario;
     private double pesoReferencial;
     private String tratamiento;
+    private String validadorReferencial;
 
     public DtoManifiestoDetalle() {
     }
@@ -140,5 +141,13 @@ public class DtoManifiestoDetalle {
 
     public void setTratamiento(String tratamiento) {
         this.tratamiento = tratamiento;
+    }
+
+    public String getValidadorReferencial() {
+        return validadorReferencial;
+    }
+
+    public void setValidadorReferencial(String validadorReferencial) {
+        this.validadorReferencial = validadorReferencial;
     }
 }
