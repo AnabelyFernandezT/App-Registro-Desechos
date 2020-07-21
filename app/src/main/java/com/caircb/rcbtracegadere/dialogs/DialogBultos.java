@@ -507,6 +507,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 if (mOnBultoListener != null) {
                     mOnBultoListener.onCanceled();
                 }
+                aplicar();
                 break;
             case R.id.btn_decimal:
                 setDato(".");
