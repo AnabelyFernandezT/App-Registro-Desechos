@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -21,6 +22,7 @@ import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
@@ -42,16 +44,18 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     String dato = "0";
     String inputDefault = "0";
     String codigoDetalle="", vreferencial;
+    Double pesoReferencial;
     BigDecimal subtotal= BigDecimal.ZERO;
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
-    Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete;
+    Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete,autorizacion=0;
     PaqueteEntity pkg;
     ManifiestoDetalleEntity detalle;
     List<String> itemsCategoriaPaquete;
     Boolean closable=false;
     MyPrint print;
     Integer tipoGestion;
+    DialogBuilder builder;
 
     public interface OnBultoListener {
         public void onSuccessful(
@@ -93,6 +97,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         loadData();
         detalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
         vreferencial = detalle.getValidadorReferencial();
+        pesoReferencial = detalle.getPesoReferencial();
     }
 
     private void initBotones() {
@@ -157,6 +162,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void loadData(){
         //bultos = new ArrayList<>();
+        String valor = null;
+        ParametroEntity para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
+        if(para!=null){
+            valor = para.getValor();
+        }
+        if(valor.equals("5")){
+            autorizacion = 1;
+            btn_add.setEnabled(true);
+        }else {
+            btn_add.setEnabled(true);
+        }
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
         if(bultos.size()>0){
             for (CatalogoItemValor r:bultos){
@@ -347,9 +363,37 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         return  MyApp.getDBO().manifiestoDetallePesosDao().existeBultoCategoriaPaquete(idManifiesto,idManifiestoDetalle,categoria);
     }
 
-    public void addBulto(BigDecimal imput, String tipo){
+    public void addBulto(final BigDecimal imput, String tipo){
 
         subtotal = subtotal.add(imput);
+
+        if( vreferencial.equals("SI") && subtotal.doubleValue() > pesoReferencial && autorizacion.equals(0)){
+
+            builder = new DialogBuilder(getActivity());
+            builder.setMessage("¿Necesita autorización porque el peso excede el peso referencial?");
+            builder.setCancelable(true);
+            builder.setPositiveButton("SI", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(),idManifiestoDetalle,idManifiesto,subtotal.doubleValue());
+                    pesoExtra.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    pesoExtra.setCancelable(false);
+                    pesoExtra.show();
+                    btn_add.setEnabled(false);
+                    builder.dismiss();
+                }
+            });
+            builder.setNegativeButton("NO", new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    subtotal = subtotal.subtract(imput);
+                    builder.dismiss();
+                }
+            });
+            builder.show();
+
+            return;
+        }
 
         Integer ultimoBultoByIdDet = MyApp.getDBO().manifiestoDetallePesosDao().countNumeroBultosByIdManifiestoIdDet(idManifiesto, idManifiestoDetalle);
         ultimoBultoByIdDet = ultimoBultoByIdDet + 1;
@@ -369,7 +413,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         if(closable && mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), pkg,true);
     }
-
+/////////////////////////
     private void aplicar(){
         BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
         if(imput.doubleValue()==0d && subtotal.doubleValue()>0d){
@@ -454,7 +498,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 createBulto(imput);
                 break;
             case R.id.btn_cancel:
-                limpiarBultosNoConfirmados();
+                //limpiarBultosNoConfirmados();
                 if (mOnBultoListener != null) {
                     mOnBultoListener.onCanceled();
                 }
