@@ -146,6 +146,7 @@ public class ManifiestoEntity {
     private String frecuencia;
 
     private String sucursal;
+    private String telefono;
 
     public ManifiestoEntity() {
     }
@@ -567,6 +568,14 @@ public class ManifiestoEntity {
 
     public void setSucursal(String sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 }
 

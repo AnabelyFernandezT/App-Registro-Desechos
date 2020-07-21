@@ -30,6 +30,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     private Integer apertura2 = 0;
     private Integer cierre1=0;
     private Integer cierre2=0;
+    private String frecuencia;
 
     int position=0;
 
@@ -58,6 +59,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         apertura2=it.getApertura2();
         cierre1=it.getCierre1();
         cierre2=it.getCierre2();
+        frecuencia=it.getFrecuencia();
 
         this.position=position;
     }
@@ -96,9 +98,10 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
                 public void onClick(View v) {
                     int positionSelected= MyViewHolder.this.getPosition();
                     ItemManifiesto it = manifiestosList.get(positionSelected);
-                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2());
-                    informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
-                    informacionModulosTaskl.execute();
+                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),it.getIdAppManifiesto(),frecuencia);
+                    //informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
+                    //informacionModulosTaskl.execute();
+                    dialogInformacionTransportista.show();
                 }
             });
         }

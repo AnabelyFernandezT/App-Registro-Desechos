@@ -14,6 +14,8 @@ public class ItemManifiesto {
     private Integer Apertura2;
     private Integer Cierre1;
     private Integer Cierre2;
+    private String telefono;
+    private String frecuencia;
 
 
 
@@ -123,5 +125,21 @@ public class ItemManifiesto {
 
     public void setCierre2(Integer cierre2) {
         Cierre2 = cierre2;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
     }
 }
