@@ -8,6 +8,7 @@ import androidx.room.Query;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowItemManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.RowItemManifiestoPrint;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 
@@ -35,6 +36,12 @@ public abstract class ManifiestoDetalleDao {
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto")
     public abstract List<RowItemManifiesto> fetchHojaRutaDetallebyIdManifiesto(Integer idManifiesto);
+
+    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae" +
+            " from tb_manifiestos_detalle d" +
+            " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
+            " where idAppManifiesto=:idManifiesto")
+    public abstract List<RowItemManifiestoDetalle> fetchHojaRutaDetallebyIdManifiesto2(Integer idManifiesto);
 
     @Query("update tb_manifiestos_detalle set pesoUnidad=:pesoUnidad, estadoChek=:check where idAppManifiestoDetalle=:idManifiestoDetalle")
     abstract void actualizarPesoManifiestoDetalle(Integer idManifiestoDetalle, double pesoUnidad, boolean check);
