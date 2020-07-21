@@ -490,6 +490,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 if(!resp){
                     if(mOnBultoListener!=null){
                         aplicar();
+                        autorizacion=0;
+                        MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
                     }
                 }else{
                     messageBox("Debe imprimir todos los bultos para continuar...!");

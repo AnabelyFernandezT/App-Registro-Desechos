@@ -233,6 +233,11 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     messageBox("Se requiere de la firma del técnico generador");
                     return;
                 }
+
+                if(tabManifiestoGeneral.validarCorreos()&& !aplicaNoRecoleccion){
+                    messageBox("Se requiere que ingrese un correo electrónico");
+                    return;
+                }
                 //tab detalle...
                 if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados() && !aplicaNoRecoleccion) {
                     messageBox("Se requiere que registre al menos un item como recolectado");
@@ -243,6 +248,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }
+
                /* if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
                     messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
                     return;

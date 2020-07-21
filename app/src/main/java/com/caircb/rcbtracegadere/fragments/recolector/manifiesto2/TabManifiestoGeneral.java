@@ -618,6 +618,13 @@ public class TabManifiestoGeneral extends LinearLayout {
         return !firmaTransportista;
     }
 
+    public boolean validarCorreos(){
+        if(txtGenTecCorreo.getText().toString().equals("") && txtCorreoAlterno.getText().toString().equals("")){
+            return true;
+        }
+        return false;
+    }
+
     public boolean validaExisteFirmaTecnicoGenerador(){
         return !firmaTecnicoGenerador;
     }

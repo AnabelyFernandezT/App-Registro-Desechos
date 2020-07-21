@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationBuilderWithBuilderAccessor;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -21,9 +22,10 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.google.firebase.messaging.RemoteMessage;
 
-;
+;import java.util.Date;
 
 /**
  * Created by jlsuarez on 03/08/2017.
@@ -38,6 +40,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onCreate() {
 
     }
+
+    public interface OnRegisterListener {
+        public void onNoPeso();
+        public void onSiPeso();
+    }
+
+    private OnRegisterListener mOnRegisterListener;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -59,7 +68,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             Log.d(TAG, "Data: " + remoteMessage.getData());
             MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+remoteMessage.getData().get("idCatalogoRespuesta"));
         }
+        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(5)){
+            if(mOnRegisterListener!=null)mOnRegisterListener.onNoPeso();
+        }
 
+        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(6)){
+            if(mOnRegisterListener!=null)mOnRegisterListener.onSiPeso();
+        }
     }
 
     private void showNotification(String title, String body) {
@@ -126,6 +141,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-
+    public void setOnRegisterListener(@NonNull OnRegisterListener l){
+        mOnRegisterListener =l;
+    }
 
 }
