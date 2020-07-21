@@ -14,6 +14,8 @@ public class RowItemManifiestoDetalle {
     private int tipoBalanza;
     private double pesoReferencial;
     private String codigoMae;
+    private String tipoContenedor;
+    private String estadoFisico;
 
     public RowItemManifiestoDetalle() {
     }
@@ -120,5 +122,21 @@ public class RowItemManifiestoDetalle {
 
     public void setCodigoMae(String codigoMae) {
         this.codigoMae = codigoMae;
+    }
+
+    public String getTipoContenedor() {
+        return tipoContenedor;
+    }
+
+    public void setTipoContenedor(String tipoContenedor) {
+        this.tipoContenedor = tipoContenedor;
+    }
+
+    public String getEstadoFisico() {
+        return estadoFisico;
+    }
+
+    public void setEstadoFisico(String estadoFisico) {
+        this.estadoFisico = estadoFisico;
     }
 }

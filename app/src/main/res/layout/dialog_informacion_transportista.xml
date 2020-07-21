@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:orientation="vertical"
     android:paddingTop="0dp">
 
     <LinearLayout
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="0dp">
 
         <TextView
             android:id="@+id/lblTituloRuta"
@@ -21,8 +20,87 @@
             android:text="INFORMACIÓN DE MANIFIESTO"
             android:textAlignment="center"
             android:textColor="@color/app_gadere"
-            android:textSize="20dp"></TextView>
+            android:textSize="18dp"></TextView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Apertura 1: "
+                    android:textColor="@color/app_gadere"
+                    android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/lblApertura1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Cierre 1: "
+                    android:textColor="@color/app_gadere"
+                    android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/lblCierre1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textSize="12dp"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Apertura 2: "
+                    android:textColor="@color/app_gadere"
+                    android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/lblApertura2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Cierre 2: "
+                    android:textColor="@color/app_gadere"
+                    android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/lblCierre2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textSize="12dp"></TextView>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,76 +113,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="Apertura 1: "
-                android:textColor="@color/app_gadere"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:id="@+id/lblApertura1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Apertura 2: "
-                android:textColor="@color/app_gadere"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:id="@+id/lblApertura2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Cierre 1: "
-                android:textColor="@color/app_gadere"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:id="@+id/lblCierre1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Cierre 2: "
-                android:textColor="@color/app_gadere"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:id="@+id/lblCierre2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="13dp"></TextView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
                 android:text="Teléfono Cliente: "
                 android:textColor="@color/app_gadere"
-                android:textSize="13dp"></TextView>
+                android:textSize="12dp"></TextView>
 
             <TextView
                 android:id="@+id/lblTelefonoCliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="13dp"></TextView>
+                android:textSize="12dp"></TextView>
 
 
         </LinearLayout>
@@ -113,10 +131,21 @@
             android:id="@+id/sectionCuadro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="DETALLES DE MANIFIESTO"
+                android:textAlignment="center"
+                android:textColor="@color/app_gadere"
+                android:textSize="18dp"></TextView>
+
             <ScrollView
+                android:background="@color/app_gadere"
+                android:fillViewport="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <HorizontalScrollView
@@ -145,8 +174,9 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:text="RECOLECCIÓN INDUSTRIAL"
                 android:textAlignment="center"
+                android:paddingTop="8dp"
                 android:textColor="@color/app_gadere"
-                android:textSize="20dp"></TextView>
+                android:textSize="18dp"></TextView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -154,7 +184,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:text="¿Residuo sujeto a fiscalización?:"
                 android:textColor="@color/app_gadere"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -205,7 +235,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:text="¿Requiere devolución de recipientes?:"
                 android:textColor="@color/app_gadere"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -237,7 +267,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Tiene disponibilidad de montacargas:"
                 android:textColor="@color/app_gadere"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -269,7 +299,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Tiene disponibilidad de balanza:"
                 android:textColor="@color/app_gadere"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -300,7 +330,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Requiere que nuestro servicio de incineración sea presenciado:"
                 android:textColor="@color/app_gadere"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -331,7 +361,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Observaciones:"
                 android:textColor="@color/app_gadere"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/lblObservaciones"

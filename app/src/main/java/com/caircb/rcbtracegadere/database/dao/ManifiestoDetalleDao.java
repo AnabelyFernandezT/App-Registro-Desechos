@@ -37,7 +37,7 @@ public abstract class ManifiestoDetalleDao {
             " where idAppManifiesto=:idManifiesto")
     public abstract List<RowItemManifiesto> fetchHojaRutaDetallebyIdManifiesto(Integer idManifiesto);
 
-    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae" +
+    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae, estadoFisico as estadoFisico, tipoContenedor as tipoContenedor" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto")
@@ -92,6 +92,8 @@ public abstract class ManifiestoDetalleDao {
             entity.setTipoBalanza(0);
             entity.setTratamiento(dt.getTratamiento());
             entity.setValidadorReferencial(dt.getValidadorReferencial());
+            entity.setTipoContenedor(dt.getTipoContenedor());
+            entity.setEstadoFisico(dt.getEstadoFisico());
 
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
@@ -107,6 +109,8 @@ public abstract class ManifiestoDetalleDao {
             entity.setNombreDesecho(dt.getNombreDesecho());
             entity.setNombreDestinatario(dt.getNombreDestinatario());
             entity.setValidadorReferencial(dt.getValidadorReferencial());
+            entity.setTipoContenedor(dt.getTipoContenedor());
+            entity.setEstadoFisico(dt.getEstadoFisico());
         }
 
         createManifiestoDetalle(entity);

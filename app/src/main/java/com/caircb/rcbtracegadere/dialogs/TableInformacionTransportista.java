@@ -1,10 +1,15 @@
 package com.caircb.rcbtracegadere.dialogs;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 
 import org.w3c.dom.Text;
 
@@ -39,18 +44,28 @@ public class TableInformacionTransportista {
     private void newRow(){
         tableRow=new TableRow(context);
     }
+
     private  void newCell(){
         txtCell=new TextView(context);
-        txtCell.setGravity(Gravity.CENTER);
+        txtCell.setGravity(Gravity.LEFT);
         txtCell.setTextSize(10);
+        txtCell.setBackgroundColor(Color.WHITE);
+        txtCell.setWidth(400);
+        txtCell.setHeight(90);
+    }
+    private  void newCellHeader(){
+        txtCell=new TextView(context);
+        txtCell.setGravity(Gravity.CENTER);
+        txtCell.setTextSize(15);
+        txtCell.setBackgroundColor(Color.parseColor("#00BC71"));
     }
     private void createHeader(){
         indexC=0;
         newRow();
         while (indexC<header.length){
-            newCell();
+            newCellHeader();
             txtCell.setText(header[indexC++]);
-            tableRow.addView(txtCell,newTableRowParams());
+            tableRow.addView(txtCell,newTableRowParamsHeader());
         }
         tableLayout.addView(tableRow);
     }
@@ -71,7 +86,13 @@ public class TableInformacionTransportista {
 
     private TableRow.LayoutParams newTableRowParams(){
         TableRow.LayoutParams params = new TableRow.LayoutParams();
-        params.setMargins(15,15,15,15);
+        params.setMargins(5,5,5,5);
+        params.weight=0.80f;
+        return params;
+    }
+    private TableRow.LayoutParams newTableRowParamsHeader(){
+        TableRow.LayoutParams params = new TableRow.LayoutParams();
+        params.setMargins(5,5,5,5);
         params.weight=0.80f;
         return params;
     }

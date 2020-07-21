@@ -19,6 +19,8 @@ public class DtoManifiestoDetalle {
     private double pesoReferencial;
     private String tratamiento;
     private String validadorReferencial;
+    private String tipoContenedor;
+    private String estadoFisico;
 
     public DtoManifiestoDetalle() {
     }
@@ -149,5 +151,21 @@ public class DtoManifiestoDetalle {
 
     public void setValidadorReferencial(String validadorReferencial) {
         this.validadorReferencial = validadorReferencial;
+    }
+
+    public String getTipoContenedor() {
+        return tipoContenedor;
+    }
+
+    public void setTipoContenedor(String tipoContenedor) {
+        this.tipoContenedor = tipoContenedor;
+    }
+
+    public String getEstadoFisico() {
+        return estadoFisico;
+    }
+
+    public void setEstadoFisico(String estadoFisico) {
+        this.estadoFisico = estadoFisico;
     }
 }

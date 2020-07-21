@@ -118,7 +118,7 @@ public class DialogInformacionTransportista extends MyDialog {
 
     private ArrayList<String[]> getDatos(){
         for (int i=0; i<detalles.size(); i++){
-            rows.add(new String[]{detalles.get(i).getDescripcion(),detalles.get(i).getCodigoMae(),detalles.get(i).getTipoItem().toString(),detalles.get(i).getUnidad(),detalles.get(i).getCantidadBulto()+"",detalles.get(i).getPeso()+"",detalles.get(i).getTratamiento()});
+            rows.add(new String[]{detalles.get(i).getDescripcion(),detalles.get(i).getCodigoMae(),detalles.get(i).getEstadoFisico(),detalles.get(i).getTipoContenedor(),detalles.get(i).getCantidadBulto()+"",detalles.get(i).getPeso()+"",detalles.get(i).getTratamiento()});
         }
         return rows;
     }

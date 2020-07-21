@@ -55,6 +55,12 @@ public class ManifiestoDetalleEntity {
 
     private String validadorReferencial;
 
+    private String tipoContenedor;
+    private String estadoFisico;
+
+
+
+
     public ManifiestoDetalleEntity() {
     }
 
@@ -198,5 +204,21 @@ public class ManifiestoDetalleEntity {
 
     public void setValidadorReferencial(String validadorReferencial) {
         this.validadorReferencial = validadorReferencial;
+    }
+
+    public String getTipoContenedor() {
+        return tipoContenedor;
+    }
+
+    public void setTipoContenedor(String tipoContenedor) {
+        this.tipoContenedor = tipoContenedor;
+    }
+
+    public String getEstadoFisico() {
+        return estadoFisico;
+    }
+
+    public void setEstadoFisico(String estadoFisico) {
+        this.estadoFisico = estadoFisico;
     }
 }
