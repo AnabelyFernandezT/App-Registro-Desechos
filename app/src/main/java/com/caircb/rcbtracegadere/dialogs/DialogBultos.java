@@ -166,13 +166,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         ParametroEntity para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
         if(para!=null){
             valor = para.getValor();
+
+            if(valor.equals("5")){
+                autorizacion = 1;
+                btn_add.setEnabled(true);
+            }else {
+                btn_add.setEnabled(true);
+            }
+
         }
-        if(valor.equals("5")){
-            autorizacion = 1;
-            btn_add.setEnabled(true);
-        }else {
-            btn_add.setEnabled(true);
-        }
+
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
         if(bultos.size()>0){
             for (CatalogoItemValor r:bultos){
