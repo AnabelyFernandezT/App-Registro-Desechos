@@ -272,6 +272,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
+                        MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idAppManifiesto,"");
                         setNavegate(VistaPreliminarFragment.newInstance(
                                 idAppManifiesto,
                                 tabManifiestoGeneral.getTipoPaquete()

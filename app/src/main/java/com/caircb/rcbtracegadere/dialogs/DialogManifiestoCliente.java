@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
@@ -50,7 +51,9 @@ public class DialogManifiestoCliente extends MyDialog {
     }
 
     private void init() {
+        ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
         txtManifiestoCliente = getView().findViewById(R.id.txtManifiestoCliente);
+        txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
         btnIniciaRutaAplicar = getView().findViewById(R.id.btnIniciaRutaAplicar);
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);
 

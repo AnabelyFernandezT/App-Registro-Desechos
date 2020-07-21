@@ -204,6 +204,22 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="3dp"
                     />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="ESTADO"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/itm_Estado"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
