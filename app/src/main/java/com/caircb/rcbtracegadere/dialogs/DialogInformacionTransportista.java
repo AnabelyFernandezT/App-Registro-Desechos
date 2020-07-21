@@ -66,7 +66,7 @@ public class DialogInformacionTransportista extends MyDialog {
         chkPresenciadoNo = getView().findViewById(R.id.chkPresenciadoNo);
         lblObservaciones = getView().findViewById(R.id.lblObservaciones);
 
-        //datosCabecera();
+        datosCabecera();
 
         btnRetornarMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +78,10 @@ public class DialogInformacionTransportista extends MyDialog {
     }
 
     private void datosCabecera() {
-        lblApertura1.setText(apertura1);
-        lblApertura2.setText(apertura2);
-        lblCierre1.setText(cierre1);
-        lblCierre2.setText(cierre2);
+        lblApertura1.setText(apertura1.toString());
+        lblApertura2.setText(apertura2.toString());
+        lblCierre1.setText(cierre1.toString());
+        lblCierre2.setText(cierre2.toString());
     }
 
     private void datosInformacionModulo() {

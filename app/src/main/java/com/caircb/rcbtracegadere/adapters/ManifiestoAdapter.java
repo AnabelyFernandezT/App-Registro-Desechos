@@ -17,6 +17,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         final ItemManifiesto it = manifiestosList.get(position);
         holder.txtNumManifiesto.setText(it.getNumero());
         holder.txtCliente.setText(it.getCliente());
-        holder.txtSucursal.setText(it.getCanton());
+        holder.txtSucursal.setText(it.getSucursal());
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
         holder.txtCiudad.setText(it.getCanton());
@@ -93,7 +94,9 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             btnInfoCardTransporte.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, apertura1,apertura2,cierre1,cierre2);
+                    int positionSelected= MyViewHolder.this.getPosition();
+                    ItemManifiesto it = manifiestosList.get(positionSelected);
+                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2());
                     informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
                     informacionModulosTaskl.execute();
                 }

@@ -71,6 +71,8 @@ public class DtoManifiesto {
     private Integer cierre1;
     private Integer cierre2;
     private String serie;
+    private String frecuencia;
+    private String sucursal;
 
 
     public DtoManifiesto() {
@@ -532,5 +534,21 @@ public class DtoManifiesto {
 
     public void setSerie(String serie) {
         this.serie = serie;
+    }
+
+    public String getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
     }
 }
