@@ -41,6 +41,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
     private static final String ARG_PARAM1 = "manifiestoID";
     private static final String ARG_PANTALLA = "pantallaID";
+    private static final String ARG_TIPORECOLECCION = "pantallaID";
 
     LinearLayout btnManifiestoCancel, btnManifiestoNext;
 
@@ -49,7 +50,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     TabManifiestoAdicional tabManifiestoAdicional;
     TabHost tabs;
     FloatingActionButton mensajes;
-    Integer idAppManifiesto,estadoPantalla;
+    Integer idAppManifiesto,estadoPantalla,tipoRecoleccion;
 
     DialogManifiestoCliente manifiestoCliente;
     DialogBuilder dialogBuilder;
@@ -58,11 +59,12 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     public Manifiesto2Fragment() {
     }
 
-    public static Manifiesto2Fragment newInstance(Integer manifiestoID,Integer estadoPantalla) {
+    public static Manifiesto2Fragment newInstance(Integer manifiestoID,Integer estadoPantalla, Integer tipoRecoleccion) {
         Manifiesto2Fragment f= new Manifiesto2Fragment();
         Bundle b = new Bundle();
         b.putInt(ARG_PARAM1,manifiestoID);
-        b.putInt(ARG_PANTALLA,estadoPantalla); /// llega uno de la pantalla de buscar y 2 desde la de manifiestos
+        b.putInt(ARG_PANTALLA,estadoPantalla);
+        b.putInt(ARG_TIPORECOLECCION,tipoRecoleccion);/// llega uno de la pantalla de buscar y 2 desde la de manifiestos
         f.setArguments(b);
         return f;
     }
@@ -73,6 +75,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         if(getArguments()!=null){
             idAppManifiesto = getArguments().getInt(ARG_PARAM1);
             estadoPantalla = getArguments().getInt(ARG_PANTALLA);
+            tipoRecoleccion=getArguments().getInt(ARG_TIPORECOLECCION);
         }
     }
 
@@ -160,7 +163,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         tabManifiestoDetalle = new TabManifiestoDetalle(getActivity(),
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
-                tabManifiestoGeneral.getNumeroManifiesto(),1);
+                tabManifiestoGeneral.getNumeroManifiesto(),1,tipoRecoleccion);
 
         tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
                 idAppManifiesto,
