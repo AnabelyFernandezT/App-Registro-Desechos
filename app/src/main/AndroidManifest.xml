@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ResultActivity"
-            android:theme="@style/Base.Theme.AppCompat.Dialog"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog"
             android:launchMode="singleTask"
             android:taskAffinity=""
             android:excludeFromRecents="true">

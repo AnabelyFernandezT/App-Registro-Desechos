@@ -74,15 +74,17 @@ public class MyManifiesto {
     ItemFile fileFirmaTecnico,fileFirmaTecnicoNoRecoleccion, fileFirmaOperador1, fileFirmaOperador2,fileFirmaOperador1NoRecoleccion,fileFirmaOperador2NoRecoleccion;
     SimpleDateFormat simpleDate = new SimpleDateFormat("MM/dd/yyyy");
     CatalogoEntity catalogo;
+    String identificacion;
 
     private String getPath() { return simpleDate.format(new Date());}
     String fecha = getPath();
 
 
-    public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete){
+    public MyManifiesto(@Nullable Context context, @Nullable Integer idManifiesto, Integer idAppTipoPaquete, String identificacion){
         this.context = context;
         this.idManifiesto = idManifiesto;
         this.idAppTipoPaquete = idAppTipoPaquete;
+        this.identificacion = identificacion;
     }
 
     public void create(){
@@ -93,7 +95,7 @@ public class MyManifiesto {
             imagenCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_check);
             imagenUnCheck = BitmapFactory.decodeResource( context.getResources(), R.mipmap.ic_uncheck);
 
-            tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyManifiesto(idManifiesto);
+            tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(identificacion);
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
             catalogo = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(manifiesto.getNumeroPlacaVehiculo(),4);
             //RECOLECCION
@@ -394,10 +396,17 @@ public class MyManifiesto {
         tb9.addCell(cell);
 
         Paragraph para3 = new Paragraph();
-        para3.add(new Chunk(tecnicoEntity.getNombre() +"   "+tecnicoEntity.getIdentificacion(),f6));
-        para3.add(Chunk.NEWLINE);
-        para3.add(new Chunk(tecnicoEntity.getTelefono()+"   "+tecnicoEntity.getCorreo(),f6));
-        para3.add(Chunk.NEWLINE);
+        if(tecnicoEntity!=null) {
+            para3.add(new Chunk(tecnicoEntity.getNombre() + "   " + tecnicoEntity.getIdentificacion(), f6));
+            para3.add(Chunk.NEWLINE);
+            para3.add(new Chunk(tecnicoEntity.getTelefono() + "   " + tecnicoEntity.getCorreo(), f6));
+            para3.add(Chunk.NEWLINE);
+        }else{
+            para3.add(new Chunk("", f6));
+            para3.add(Chunk.NEWLINE);
+            para3.add(new Chunk("", f6));
+            para3.add(Chunk.NEWLINE);
+        }
 
         //cell = new PdfPCell(new Phrase(manifiesto.getTecnicoResponsable(),f6));
         cell =  new PdfPCell(para3);

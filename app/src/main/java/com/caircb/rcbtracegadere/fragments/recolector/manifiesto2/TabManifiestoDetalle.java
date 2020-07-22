@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -89,7 +90,9 @@ public class TabManifiestoDetalle extends LinearLayout {
         recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto,estadoManifiesto,idAppManifiesto);
     }
 
+    @SuppressLint("RestrictedApi")
     private void loadData(){
+        if(estadoManifiesto!= 1){mensajes.setVisibility(GONE);}
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
@@ -98,10 +101,11 @@ public class TabManifiestoDetalle extends LinearLayout {
         recyclerView.setAdapter(recyclerviewAdapter);
 
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapter.ClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(int position, View v) {
                 int x=0;
-                if(estadoManifiesto == 1){
+                if(estadoManifiesto == 1) {
                     openOpcionesItems(position, detalles.get(position).getId());
                 }
             }
@@ -224,7 +228,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {
                 @Override
-                public void onSuccessful(BigDecimal valor, int position, int cantidad, PaqueteEntity pkg, boolean isClose) {
+                public void onSuccessful(BigDecimal valor, int position, int cantidad, PaqueteEntity pkg, boolean isClose, boolean faltaImpresiones) {
                     if(isClose && dialogBultos!=null){
                             dialogBultos.dismiss();
                             dialogBultos = null;
@@ -240,6 +244,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                     //else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
 
                     row.setEstado(true);
+                    row.setFaltaImpresiones(faltaImpresiones);
                     recyclerviewAdapter.notifyDataSetChanged();
                     //actualizar datos en dbo local...
                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),cantidad,row.isEstado());
@@ -251,8 +256,12 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
 
                 @Override
-                public void onCanceled() {
+                public void onCanceled(boolean faltaImpresos) {
                     if(dialogBultos!=null){
+                        if(faltaImpresos){
+                            detalles.clear();
+                            loadData();
+                        }
                         dialogBultos.dismiss();
                         dialogBultos=null;
                     }

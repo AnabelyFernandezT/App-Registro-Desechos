@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -140,8 +141,8 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
-        mensajes = getView().findViewById(R.id.fab);
-        mensajes.setVisibility(View.INVISIBLE);
+        //mensajes = getView().findViewById(R.id.fab);
+        //mensajes.setVisibility(View.INVISIBLE);
 
         manifiestoPlanta = new RecepcionPlantaFragment(getActivity(),idAppManifiesto);
     }
@@ -159,4 +160,9 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
         f.setArguments(b);
         return f;
     }
+
+    public void guardarObservaciones(DtoManifiestoPlantaObservacion ob){
+
+    }
+
 }

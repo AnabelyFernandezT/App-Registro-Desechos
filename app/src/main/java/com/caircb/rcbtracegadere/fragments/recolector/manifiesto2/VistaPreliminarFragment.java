@@ -42,6 +42,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
     DialogBuilder builder;
 
     Integer idAppManifiesto,idAppTipoPaquete;
@@ -52,11 +53,13 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     UserRegistrarRecoleccion userRegistrarRecoleccion;
     UserRegistrarRuteoRecoleccion userRegistrarRuteoRecoleccion;
     DialogBuilder dialogBuilder;
+    String identifiacion;
 
-    public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete) {
+    public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
         VistaPreliminarFragment fragment = new VistaPreliminarFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
+        args.putString(ARG_PARAM3,identificacion);
         if(idAppTipoPaquete!=null){
             args.putInt(ARG_PARAM2,idAppTipoPaquete);
         }else{
@@ -73,6 +76,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
         if (getArguments() != null) {
             idAppManifiesto= getArguments().getInt(ARG_PARAM1);
             idAppTipoPaquete = getArguments().getInt(ARG_PARAM2);
+            identifiacion = getArguments().getString(ARG_PARAM3);
         }
     }
 
@@ -113,7 +117,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
 
             @Override
             protected String doInBackground(Void... voids) {
-                myManifiesto = new MyManifiesto(getActivity(),idAppManifiesto,idAppTipoPaquete);
+                myManifiesto = new MyManifiesto(getActivity(),idAppManifiesto,idAppTipoPaquete, identifiacion);
                 myManifiesto.create();
                 return myManifiesto.getPathFile();
             }
