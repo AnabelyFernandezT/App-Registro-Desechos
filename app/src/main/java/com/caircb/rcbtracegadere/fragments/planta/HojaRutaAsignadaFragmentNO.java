@@ -111,7 +111,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
     private void filtro(String texto){
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManif(texto,entity.getIdSubRuta(),MySession.getIdUsuario());
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManifPlanta(texto,entity.getIdSubRuta(),MySession.getIdUsuario());
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }

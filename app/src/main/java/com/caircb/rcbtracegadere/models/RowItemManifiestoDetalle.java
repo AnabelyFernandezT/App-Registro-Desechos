@@ -16,6 +16,13 @@ public class RowItemManifiestoDetalle {
     private String codigoMae;
     private String tipoContenedor;
     private String estadoFisico;
+    private Integer residuoSujetoFiscalizacion;
+    private Integer requiereDevolucionRecipientes;
+    private Integer tieneDisponibilidadMontacarga;
+    private Integer tieneDisponibilidadBalanza;
+    private Integer requiereIncineracionPresenciada;
+    private String observacionResiduos;
+
 
     public RowItemManifiestoDetalle() {
     }
@@ -138,5 +145,53 @@ public class RowItemManifiestoDetalle {
 
     public void setEstadoFisico(String estadoFisico) {
         this.estadoFisico = estadoFisico;
+    }
+
+    public Integer getResiduoSujetoFiscalizacion() {
+        return residuoSujetoFiscalizacion;
+    }
+
+    public void setResiduoSujetoFiscalizacion(Integer residuoSujetoFiscalizacion) {
+        this.residuoSujetoFiscalizacion = residuoSujetoFiscalizacion;
+    }
+
+    public Integer getRequiereDevolucionRecipientes() {
+        return requiereDevolucionRecipientes;
+    }
+
+    public void setRequiereDevolucionRecipientes(Integer requiereDevolucionRecipientes) {
+        this.requiereDevolucionRecipientes = requiereDevolucionRecipientes;
+    }
+
+    public Integer getTieneDisponibilidadMontacarga() {
+        return tieneDisponibilidadMontacarga;
+    }
+
+    public void setTieneDisponibilidadMontacarga(Integer tieneDisponibilidadMontacarga) {
+        this.tieneDisponibilidadMontacarga = tieneDisponibilidadMontacarga;
+    }
+
+    public Integer getTieneDisponibilidadBalanza() {
+        return tieneDisponibilidadBalanza;
+    }
+
+    public void setTieneDisponibilidadBalanza(Integer tieneDisponibilidadBalanza) {
+        this.tieneDisponibilidadBalanza = tieneDisponibilidadBalanza;
+    }
+
+    public Integer getRequiereIncineracionPresenciada() {
+        return requiereIncineracionPresenciada;
+    }
+
+    public void setRequiereIncineracionPresenciada(Integer requiereIncineracionPresenciada) {
+        this.requiereIncineracionPresenciada = requiereIncineracionPresenciada;
+    }
+
+    public String getObservacionResiduos() {
+        return observacionResiduos;
+    }
+
+    public void setObservacionResiduos(String observacionResiduos) {
+        this.observacionResiduos = observacionResiduos;
     }
 }
