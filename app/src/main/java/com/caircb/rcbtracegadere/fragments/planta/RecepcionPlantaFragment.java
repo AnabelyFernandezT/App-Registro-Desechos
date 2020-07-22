@@ -307,20 +307,22 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     private void validarPesos(){
-    double validacion=(Double.parseDouble(txtPesoRecolectado.getText().toString())*0.03)+Double.parseDouble(txtPesoRecolectado.getText().toString());
-    double valorIngresado = Double.parseDouble(txtPeso.getText().toString());
+        if(txtPeso.getText().toString().equals("")) {}
+            else{
+            double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
+            double valorIngresado = Double.parseDouble(txtPeso.getText().toString());
 
 
-    if(!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())){
-        if(valorIngresado>validacion){
-            //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
-            txtNovedad.setText("Peso ingresado es mayor al peso Total");
-        }else{
-            //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
-            txtNovedad.setText("Peso ingresado es menor al peso Total");
+            if (!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())) {
+                if (valorIngresado > validacion) {
+                    //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
+                    txtNovedad.setText("Peso ingresado es mayor al peso Total");
+                } else {
+                    //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
+                    txtNovedad.setText("Peso ingresado es menor al peso Total");
+                }
+            }
         }
-    }
-
     }
 
     public boolean validaExisteFirma(){
@@ -362,12 +364,15 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     public void guardarObservaciones(){
-        DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
-        p.setIdManifiesto(idManifiesto);
-        p.setPesoPlanta(Double.parseDouble(txtPeso.getText().toString()));
-        p.setObservacionPeso(txtNovedad.getText().toString());
-        p.setObservacionOtra(txtotraNovedad.getText().toString());
-        MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
+        if(txtPeso.getText().toString().equals("")) {}
+        else{
+            DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
+            p.setIdManifiesto(idManifiesto);
+            p.setPesoPlanta(Double.parseDouble(txtPeso.getText().toString()));
+            p.setObservacionPeso(txtNovedad.getText().toString());
+            p.setObservacionOtra(txtotraNovedad.getText().toString());
+            MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
+        }
     }
 
 }
