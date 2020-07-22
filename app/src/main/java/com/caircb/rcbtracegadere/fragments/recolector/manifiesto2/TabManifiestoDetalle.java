@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -98,11 +99,14 @@ public class TabManifiestoDetalle extends LinearLayout {
         recyclerView.setAdapter(recyclerviewAdapter);
 
         recyclerviewAdapter.setOnItemClickListener(new ManifiestoDetalleAdapter.ClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(int position, View v) {
                 int x=0;
                 if(estadoManifiesto == 1){
                     openOpcionesItems(position, detalles.get(position).getId());
+                }else{
+                    mensajes.setVisibility(GONE);
                 }
             }
         });
