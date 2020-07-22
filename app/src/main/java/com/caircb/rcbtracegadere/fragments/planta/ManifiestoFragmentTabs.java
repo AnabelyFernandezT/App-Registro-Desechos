@@ -97,7 +97,6 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         btnManifiestoNext=getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext.setOnClickListener(this);
-
         tabLayout = (TabLayout) getView().findViewById(R.id.tabLayout);
         //tabLayout.addTab(tabLayout.newTab().setText("GENERAL"));
         tabLayout.addTab(tabLayout.newTab().setText("DETALLE"));

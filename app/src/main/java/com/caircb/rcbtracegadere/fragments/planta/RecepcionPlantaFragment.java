@@ -29,6 +29,8 @@ import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.caircb.rcbtracegadere.utils.Utils;
 
@@ -170,12 +172,32 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                 }
             }
         });
+        obtenerObservaciones();
 
         txtPeso.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
                     validarPesos();
+                    guardarObservaciones();
+                }
+            }
+        });
+
+        txtNovedad.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    guardarObservaciones();
+                }
+            }
+        });
+
+        txtotraNovedad.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    guardarObservaciones();
                 }
             }
         });
@@ -329,5 +351,23 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         return (txtotraNovedad.getText().toString()==null? "": txtotraNovedad.getText().toString());
     }
 
+    public void obtenerObservaciones(){
+        DtoManifiestoPlantaObservacion d;
+        d = MyApp.getDBO().manifiestoPlantaObservacionesDao().obtenerObservaciones(idManifiesto);
+        if(d!=null){
+            txtPeso.setText(""+d.getPesoPlanta());
+            txtNovedad.setText(d.getObservacionPeso());
+            txtotraNovedad.setText(d.getObservacionOtra());
+        }
+    }
+
+    public void guardarObservaciones(){
+        DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
+        p.setIdManifiesto(idManifiesto);
+        p.setPesoPlanta(Double.parseDouble(txtPeso.getText().toString()));
+        p.setObservacionPeso(txtNovedad.getText().toString());
+        p.setObservacionOtra(txtotraNovedad.getText().toString());
+        MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
+    }
 
 }

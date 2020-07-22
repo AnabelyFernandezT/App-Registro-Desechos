@@ -25,17 +25,8 @@ public abstract class ManifiestoPlantaObservacionesDao {
     public abstract ManifiestoPlantaObservacionesEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
 
-    @Query("update tb_manifiestos_planta set estado=3  where idAppManifiesto=:idManifiesto")
-    public abstract void updateEstadoManifiesto(Integer idManifiesto);
-
-    @Query("select estado from tb_manifiestos_planta where idAppManifiesto = :idManifiesto ")
-    public abstract Integer obtenerEstadoManifiesto(Integer idManifiesto);
-
-    @Query("delete from tb_manifiestos_planta where idAppManifiesto=:idManifiesto")
-    abstract void eliminarManifiestobyIdManifiesto(Integer idManifiesto);
-
-    @Query("delete from tb_manifiestos_planta ")
-    public abstract void eliminarManifiestos();
+    @Query("Select * from  tb_manifiestos_planta_observaciones where idAppManifiesto=:idManifiesto")
+    public abstract DtoManifiestoPlantaObservacion obtenerObservaciones(Integer idManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoPlantaObservacionesEntity entity);

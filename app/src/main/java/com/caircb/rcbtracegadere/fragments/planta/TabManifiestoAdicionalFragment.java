@@ -39,6 +39,7 @@ import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.utils.Utils;
 
 import java.util.List;
@@ -205,6 +206,13 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             }
         });
 
+        txtotraNovedad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                guardarObservaciones();
+            }
+        });
+        obtenerObservaciones();
     }
 
     public String sendObservacion(){
@@ -256,6 +264,22 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         if(dialogAgregarFotografias!=null){
             dialogAgregarFotografias.setMakePhoto(code);
         }
+    }
+
+    public void obtenerObservaciones(){
+        DtoManifiestoPlantaObservacion d;
+        d = MyApp.getDBO().manifiestoPlantaObservacionesDao().obtenerObservaciones(idAppManifiesto);
+        if(d!=null){
+            txtotraNovedad.setText(d.getObservacionOtra());
+        }
+    }
+
+
+    public void guardarObservaciones(){
+        DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
+        p.setIdManifiesto(idAppManifiesto);
+        p.setObservacionOtra(txtotraNovedad.getText().toString());
+        MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
     }
 
 }
