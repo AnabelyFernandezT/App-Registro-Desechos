@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogAgregarBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
@@ -59,14 +60,16 @@ public class TabManifiestoDetalle extends LinearLayout {
     Integer tipoGestion;
     PaqueteEntity pkg;
     Integer tipoBalanza=0;
+    Integer tipoRecoleccion;
 
-    public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto,Integer estado) {
+    public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto,Integer estado, Integer tipoRecoleccion) {
         super(context);
         this.idAppManifiesto=manifiestoID;
         this.tipoPaquete=tipoPaquete;
         //this.detalles = detalles;
         this.estadoManifiesto = estado;
         this.numeroManifiesto=numeroManifiesto;
+        this.tipoRecoleccion=tipoRecoleccion;
         View.inflate(context, R.layout.tab_manifiesto_detalle, this);
         init();
         loadData();
@@ -102,7 +105,13 @@ public class TabManifiestoDetalle extends LinearLayout {
             public void onItemClick(int position, View v) {
                 int x=0;
                 if(estadoManifiesto == 1){
-                    openOpcionesItems(position, detalles.get(position).getId());
+                    if (tipoRecoleccion == 1){
+                        openOpcionesItems(position, detalles.get(position).getId());
+                    }
+                    if (tipoRecoleccion == 2){
+                        DialogAgregarBultos dialogAgregarBultos=new DialogAgregarBultos(getContext(),detalles.get(position).getId(),idAppManifiesto);
+                        dialogAgregarBultos.show();
+                    }
                 }
             }
         });
