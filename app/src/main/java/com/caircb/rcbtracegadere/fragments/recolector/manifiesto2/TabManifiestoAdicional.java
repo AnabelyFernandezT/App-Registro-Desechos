@@ -248,14 +248,13 @@ public class TabManifiestoAdicional extends LinearLayout {
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
             listaPaquetes = new ArrayList<>();
-            /*
-            if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas():0, manifiestoPkg.getDatosFundasPendientes()!=null ? manifiestoPkg.getDatosFundasPendientes() : 0, 1));
-            if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes():0, manifiestoPkg.getDatosGuardianesPendientes()!=null ? manifiestoPkg.getDatosGuardianesPendientes():0, 2));
-            */
+
+
+            //if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas():0, manifiestoPkg.getDatosFundasPendientes()!=null ? manifiestoPkg.getDatosFundasPendientes() : 0, 1));
+            //if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes():0, manifiestoPkg.getDatosGuardianesPendientes()!=null ? manifiestoPkg.getDatosGuardianesPendientes():0, 2));
 
             if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null?manifiestoPkg.getDatosFundas():0, 0, 1));
             if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null?manifiestoPkg.getDatosGuardianes():0, 0, 2));
-
 
             recyclerLtsPaquetes.setLayoutManager(new LinearLayoutManager(getContext()));
             manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete);
@@ -278,6 +277,7 @@ public class TabManifiestoAdicional extends LinearLayout {
         if(listaPaquetes!=null && listaPaquetes.size()>0) {
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, idAppTipoPaquete);
             if(listaPaquetes.size()==2) {
+
                 //listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas() : 0);
                 //listaPaquetes.get(1).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes() : 0);
 
