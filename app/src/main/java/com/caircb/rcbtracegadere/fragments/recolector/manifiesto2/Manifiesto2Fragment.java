@@ -211,6 +211,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
 
+                final String identifiacion = tabManifiestoGeneral.getIdentificacion();
+
                 int i=tabs.getCurrentTab();
                 if (i==0){
                     tabs.setCurrentTab(tabs.getCurrentTab()+1);
@@ -271,14 +273,14 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                    @Override
                    public void onClick(View v) {
                        dialogBuilder.dismiss();
-                       manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete());
+                       manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete(),identifiacion);
                        manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
                        manifiestoCliente.setCancelable(false);
                        manifiestoCliente.setmOnRegisterListener(new DialogManifiestoCliente.onRegisterListenner() {
                            @Override
                            public void onSucessfull() {
                                dialogBuilder.dismiss();
-                               setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete()));
+                               setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
                            }
                        });
                        manifiestoCliente.show();
@@ -291,7 +293,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                         MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idAppManifiesto,"");
                         setNavegate(VistaPreliminarFragment.newInstance(
                                 idAppManifiesto,
-                                tabManifiestoGeneral.getTipoPaquete()
+                                tabManifiestoGeneral.getTipoPaquete(),
+                                identifiacion
                         ));
                     }
                 });
@@ -318,7 +321,5 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         builder.show();
 
     }
-    public void vistaPrevia(Integer idAppManifiesto, Integer tipoPaquete){
-        setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto,tipoPaquete));
-    }
+
 }

@@ -408,7 +408,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             btnBuscarIdentificacion.setEnabled(false);
             txtRespEntregaIdentificacion.setEnabled(false);
             chkCorreoAlterno.setClickable(false);
-            chkCorreoAlterno.setClickable(false);
+            chkCorreoPrincipal.setClickable(false);
             txtRespEntregaNombre.setEnabled(false);
             txtRespEntregaCorreo.setEnabled(false);
             txtRespEntregaTelefono.setEnabled(false);
@@ -717,4 +717,6 @@ public class TabManifiestoGeneral extends LinearLayout {
         return true;
     }
 
+    public String getIdentificacion(){ return txtRespEntregaIdentificacion.getText().toString();
+    }
 }

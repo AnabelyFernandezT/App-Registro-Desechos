@@ -21,6 +21,9 @@ public abstract class TecnicoDao {
     @Query("select * from tb_tecnicos where idManifiesto=:idManifiesto")
     public abstract TecnicoEntity fechConsultaTecnicobyManifiesto(Integer idManifiesto);
 
+    @Query("select * from tb_tecnicos where idManifiesto=:idManifiesto and identificacion=:identificacion")
+    public abstract TecnicoEntity fechConsultaTecnicobyManifiestoAndIf(Integer idManifiesto,String identificacion);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long createTecnico(TecnicoEntity entity);
 
@@ -28,7 +31,7 @@ public abstract class TecnicoDao {
     public abstract void deleteTecnico();
 
     public long saveOrUpdate(Integer idManifiesto, String cedula, String nombre, String correo, String telefono ){
-        TecnicoEntity tecnico = fechConsultaTecnicobyIdentidad(cedula);
+        TecnicoEntity tecnico = fechConsultaTecnicobyManifiestoAndIf(idManifiesto, cedula);
         if(tecnico==null) {
             tecnico = new TecnicoEntity(idManifiesto,nombre,cedula,correo,telefono);
         }else{
