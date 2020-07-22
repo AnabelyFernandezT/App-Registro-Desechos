@@ -128,49 +128,85 @@ public class DialogInformacionTransportista extends MyDialog {
         if (frecuencia.equals("PUNTUAL")) {
             sectionCuadro.setVisibility(View.VISIBLE);
             sectionEspecifica.setVisibility(View.VISIBLE);
-           /* InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
-            if (informacionModulos.getObservacionResiduos().equals(null)) {
+            //InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
+            if (detalles.get(0).getObservacionResiduos().equals("")) {
                 lblObservaciones.setText("");
             } else {
-                lblObservaciones.setText(informacionModulos.getObservacionResiduos());
+                lblObservaciones.setText(detalles.get(0).getObservacionResiduos());
             }
-            if (informacionModulos.getResiduoSujetoFiscalizacion() == 0) {
-                chkFiscalizacionNo.setChecked(true);
+            if (detalles.get(0).getResiduoSujetoFiscalizacion() == 0) {
+                chkFiscalizacionNo.setChecked(false);
                 chkFiscalizacionSi.setSelected(false);
-                   *//* chkFiscalizacionArcsa.setText();
-                    chkFiscalizacionMi.setText();*//*
-            } else {
+                /*    chkFiscalizacionArcsa.setText();
+                    chkFiscalizacionMi.setText();*/
+            }
+            if (detalles.get(0).getResiduoSujetoFiscalizacion() == 1){
                 chkFiscalizacionNo.setSelected(false);
                 chkFiscalizacionSi.setSelected(true);
             }
-            if (informacionModulos.getRequiereDevolucionRecipientes() == 0) {
+            if (detalles.get(0).getResiduoSujetoFiscalizacion() == 2){
+                chkFiscalizacionNo.setSelected(true);
+                chkFiscalizacionSi.setSelected(false);
+            }
+
+
+            if (detalles.get(0).getRequiereDevolucionRecipientes() == 0) {
                 chkDevolucionRecipienteSi.setChecked(false);
-                chkDevolucionRecipienteNo.setChecked(true);
-            } else {
+                chkDevolucionRecipienteNo.setChecked(false);
+            }
+            if(detalles.get(0).getRequiereDevolucionRecipientes() == 1) {
                 chkDevolucionRecipienteSi.setChecked(true);
                 chkDevolucionRecipienteNo.setChecked(false);
             }
-            if (informacionModulos.getTieneDisponibilidadMontacarga() == 0) {
+            if(detalles.get(0).getRequiereDevolucionRecipientes() == 2) {
+                chkDevolucionRecipienteSi.setChecked(false);
+                chkDevolucionRecipienteNo.setChecked(true);
+            }
+
+
+
+            if (detalles.get(0).getTieneDisponibilidadMontacarga() == 0) {
                 chkMontacargasSi.setChecked(false);
-                chkMontacargasNo.setChecked(true);
-            } else {
+                chkMontacargasNo.setChecked(false);
+            }
+            if (detalles.get(0).getTieneDisponibilidadMontacarga() == 1){
                 chkMontacargasSi.setChecked(true);
                 chkMontacargasNo.setChecked(false);
             }
-            if (informacionModulos.getTieneDisponibilidadBalanza() == 0) {
+            if (detalles.get(0).getTieneDisponibilidadMontacarga() == 2){
+                chkMontacargasSi.setChecked(false);
+                chkMontacargasNo.setChecked(true);
+            }
+
+
+
+            if (detalles.get(0).getTieneDisponibilidadBalanza() == 0) {
                 chkBalanzaSi.setChecked(false);
-                chkBalanzaNo.setChecked(true);
-            } else {
+                chkBalanzaNo.setChecked(false);
+            }
+            if(detalles.get(0).getTieneDisponibilidadBalanza() == 1){
                 chkBalanzaSi.setChecked(true);
                 chkBalanzaNo.setChecked(false);
             }
-            if (informacionModulos.getRequiereIncineracionPresenciada() == 0) {
+            if(detalles.get(0).getTieneDisponibilidadBalanza() == 2){
+                chkBalanzaSi.setChecked(false);
+                chkBalanzaNo.setChecked(true);
+            }
+
+            if (detalles.get(0).getRequiereIncineracionPresenciada() == 0) {
                 chkPresenciadoSi.setChecked(false);
-                chkPresenciadoNo.setChecked(true);
-            } else {
+                chkPresenciadoNo.setChecked(false);
+            }
+            if (detalles.get(0).getRequiereIncineracionPresenciada() == 1){
                 chkPresenciadoSi.setChecked(true);
                 chkPresenciadoNo.setChecked(false);
-            }*/
+            }
+            if (detalles.get(0).getRequiereIncineracionPresenciada() == 2){
+                chkPresenciadoSi.setChecked(false);
+                chkPresenciadoNo.setChecked(true);
+            }
+
+
         }else {
             sectionCuadro.setVisibility(View.GONE);
             sectionEspecifica.setVisibility(View.GONE);

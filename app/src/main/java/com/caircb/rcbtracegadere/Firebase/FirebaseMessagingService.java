@@ -20,6 +20,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.ResultActivity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
@@ -78,10 +79,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     private void showNotification(String title, String body) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
         intent.putExtra("notification_data",body);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent notifyPendingIntent = PendingIntent.getActivity(
+                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -91,7 +95,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(soundUri)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(notifyPendingIntent);
 
         String channelId = getString(R.string.default_notification_channel_name);
 
@@ -113,7 +117,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Intent intent = new Intent(this, TabManifiestoDetalle.class);
         intent.putExtra("notification_data",body);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(MyApp.getsInstance().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
