@@ -5,10 +5,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
 import com.caircb.rcbtracegadere.models.response.DtoInicioRuta;
@@ -24,6 +26,7 @@ import retrofit2.Response;
 
 public class UserConsultarInicioRutaTask extends MyRetrofitApi implements RetrofitCallbacks {
     private RutaInicioFinEntity model;
+    Date fechaInicio = AppDatabase.getDateTime();
 
     public UserConsultarInicioRutaTask(Context context) {
         super(context);
@@ -54,7 +57,9 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                     response.body().getKilometrajeInicio(),
                                     response.body().getKilometrajeFin(),
                                     1);
+
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
+                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(response.body().getIdSubRuta(), fechaInicio, 0, null, null, false));
                             message("Ha iniciado previamente sesion, SINCRONICE manifiestos pendientes de recolección");
                             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                         }

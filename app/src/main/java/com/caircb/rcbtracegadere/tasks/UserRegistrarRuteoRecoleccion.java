@@ -36,7 +36,7 @@ public class UserRegistrarRuteoRecoleccion extends MyRetrofitApi implements Retr
 
     @Override
     public void execute() {
-        progressShow("Registrando...");
+
         RequestRuteoRecoleccion sendDto = null;
         if(dtoRuteo != null){
             sendDto = new RequestRuteoRecoleccion();
@@ -51,7 +51,7 @@ public class UserRegistrarRuteoRecoleccion extends MyRetrofitApi implements Retr
             String f = g.toJson(sendDto);
             //if(mOnRegisterRuteroRecoleecionListener!=null)mOnRegisterRuteroRecoleecionListener.onSuccessful();
             //progressHide();
-
+            progressShow("Registrando Ruteo...");
             WebService.api().registrarRuteoRecollecion(sendDto).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {

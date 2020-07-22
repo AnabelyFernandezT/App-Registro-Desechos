@@ -22,6 +22,7 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogManifiestoCliente;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
@@ -52,6 +53,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
     DialogManifiestoCliente manifiestoCliente;
     DialogBuilder dialogBuilder;
+    DialogBultos bultos;
 
     public Manifiesto2Fragment() {
     }
@@ -233,16 +235,26 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     messageBox("Se requiere de la firma del técnico generador");
                     return;
                 }
+
+                if(tabManifiestoGeneral.validarCorreos()&& !aplicaNoRecoleccion){
+                    messageBox("Se requiere que ingrese un correo electrónico");
+                    return;
+                }
                 //tab detalle...
                 if(!tabManifiestoDetalle.validaExisteDetallesSeleccionados() && !aplicaNoRecoleccion) {
                     messageBox("Se requiere que registre al menos un item como recolectado");
                     return;
                 }
+               /* if(bultos.verificarTodosBultosImpresos()&& !aplicaNoRecoleccion){
+                    messageBox("Hay bultos pendientes de imprimir");
+                    return;
+                }*/
                 //tab de adicionales...
                 if(tabManifiestoAdicional.validaNovedadesFrecuentesPendienteFotos()){
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }
+
                /* if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
                     messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
