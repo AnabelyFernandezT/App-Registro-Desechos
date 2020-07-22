@@ -407,8 +407,8 @@ public class TabManifiestoGeneral extends LinearLayout {
             btnAgregarFirmaTransportista.setEnabled(false);
             btnBuscarIdentificacion.setEnabled(false);
             txtRespEntregaIdentificacion.setEnabled(false);
-            chkCorreoAlterno.setEnabled(false);
-            chkCorreoAlterno.setEnabled(false);
+            chkCorreoAlterno.setClickable(false);
+            chkCorreoAlterno.setClickable(false);
             txtRespEntregaNombre.setEnabled(false);
             txtRespEntregaCorreo.setEnabled(false);
             txtRespEntregaTelefono.setEnabled(false);
