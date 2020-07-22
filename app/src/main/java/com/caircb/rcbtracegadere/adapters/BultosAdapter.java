@@ -20,9 +20,8 @@ public class BultosAdapter extends RecyclerView.Adapter<BultosAdapter.MyViewHold
     private OnItemClickListener itemClickListener;
     private RecyclerView reciclerView;
     private  RecyclerView.Adapter adapter;
-    private int position;
     private LinearLayout btn;
-
+    private int position=0;
 
     public BultosAdapter (RecyclerView recicler,ArrayList<String> pesos, int layout, OnItemClickListener listener){
         this.pesos=pesos;
@@ -42,7 +41,7 @@ public class BultosAdapter extends RecyclerView.Adapter<BultosAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull BultosAdapter.MyViewHolder holder, int position) {
         holder.bind(pesos.get(position), itemClickListener);
-        this.position=position;
+
     }
 
     @Override
@@ -53,19 +52,12 @@ public class BultosAdapter extends RecyclerView.Adapter<BultosAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView lblBultoNumero, txtItemPesoBulto;
-        public LinearLayout btnDelete;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             this.lblBultoNumero = itemView.findViewById(R.id.lblBultoNumero);
             this.txtItemPesoBulto = itemView.findViewById(R.id.txtItemPesoBulto);
-            this.btnDelete = itemView.findViewById(R.id.btnDeleteItem);
-            btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //deleteItem(position);
-                }
-            });
+
         }
         public void bind(final String item, final OnItemClickListener listener){
             this.txtItemPesoBulto.setText(item);
@@ -83,9 +75,5 @@ public class BultosAdapter extends RecyclerView.Adapter<BultosAdapter.MyViewHold
         void OnItemClick(String txtItemPesoBulto,int position);
     }
 
-  /*  private void deleteItem(int position){
-        pesos.remove(position);
-        adapter.notifyItemRemoved(position);
-    }
-*/
+
 }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.BultosAdapter;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class DialogAgregarBultos extends MyDialog implements View.OnClickListene
     private EditText pesoBulto;
     private int idManifiestoDetalle;
     private  int idManifiesto;
-
+    DialogBuilder dialogBuilder;
 
     public DialogAgregarBultos(@NonNull Context context, int idManifiestoDetalle, int idManifiesto) {
         super(context, R.layout.dialog_agregar_bultos);
@@ -66,7 +67,25 @@ public class DialogAgregarBultos extends MyDialog implements View.OnClickListene
                 itemsBultos.add(pesoBulto.getText().toString());
                 recyclerAdapter = new BultosAdapter(recylcerBultos,itemsBultos, R.layout.item_bulto, new BultosAdapter.OnItemClickListener() {
                     @Override
-                    public void OnItemClick(String txtItemPesoBulto, int position) {
+                    public void OnItemClick(String txtItemPesoBulto, final int position) {
+                        dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("¿Está seguro de eliminar bulto?");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setTitle("CONFIRMACIÓN");
+                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                deleteItem(position);
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
 
                     }
                 });
