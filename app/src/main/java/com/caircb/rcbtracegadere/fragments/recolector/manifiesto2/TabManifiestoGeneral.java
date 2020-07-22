@@ -443,6 +443,17 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtCorreoAlterno.setText(manifiesto.getCorreoAlterno());
             if(manifiesto.getCorreoAlterno().equals(""))
                 chkCorreoAlterno.setEnabled(false);
+            if(manifiesto.getCorreos()!=null){
+                if(manifiesto.getCorreos().equals("I")){
+                    chkCorreoPrincipal.setChecked(true);
+                }else if (manifiesto.getCorreos().equals("H")){
+                    chkCorreoAlterno.setChecked(true);
+                }else  if (manifiesto.getCorreos().equals("H,I")){
+                    chkCorreoAlterno.setChecked(true);
+                    chkCorreoPrincipal.setChecked(true);
+                }
+            }
+
             txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
 
             txtTransReco.setText(manifiesto.getConductorNombre());

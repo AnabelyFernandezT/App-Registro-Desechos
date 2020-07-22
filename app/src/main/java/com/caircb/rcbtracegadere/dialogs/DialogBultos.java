@@ -40,6 +40,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     TextView txtTotal;
     AlertDialog.Builder alertDialog;
     AlertDialog alert;
+    String valor = null;
 
     String dato = "0";
     String inputDefault = "0";
@@ -162,19 +163,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void loadData(){
         //bultos = new ArrayList<>();
-        String valor = null;
-        ParametroEntity para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
-        if(para!=null){
-            valor = para.getValor();
 
-            if(valor.equals("5")){
-                autorizacion = 1;
-                btn_add.setEnabled(true);
-            }else {
-                btn_add.setEnabled(true);
-            }
-
-        }
 
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
         if(bultos.size()>0){
@@ -499,6 +488,19 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                 break;
             case R.id.btn_add:
+                ParametroEntity para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
+                if(para!=null){
+                    valor = para.getValor();
+
+                    if(valor.equals("5")){
+                        autorizacion = 1;
+                        btn_add.setEnabled(true);
+                    }else {
+                        btn_add.setEnabled(true);
+                    }
+
+                }
+
                 BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
                 createBulto(imput);
                 break;
