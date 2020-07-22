@@ -29,6 +29,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
+import com.caircb.rcbtracegadere.models.RowItemManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -204,74 +205,6 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     private void load(){
-       /* novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(idManifiesto);
-        recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterRecepcionR(getContext(), novedadfrecuentes, bloquear,idManifiesto);
-
-        recyclerAdapterNovedades.setOnClickReaload(new ManifiestoNovedadBaseAdapterRecepcionR.OnReloadAdater() {
-            @Override
-            public void onShowM(final Integer catalogoID, final Integer position) {
-                builder = new DialogBuilder(getContext());
-                builder.setMessage("¿Seguro que desea desactivar el registro, automáticamente se borrarán las evidencias?");
-                builder.setCancelable(true);
-                builder.setPositiveButton("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        recyclerAdapterNovedades.registarCheckItemCatalogo(idManifiesto,catalogoID,false);
-                        recyclerAdapterNovedades.deleteFotosByItem(idManifiesto, catalogoID, position);
-
-                        novedadfrecuentes.get(position).setNumFotos(0);
-                        novedadfrecuentes.get(position).setEstadoChek(false);
-
-                        recyclerAdapterNovedades.notifyDataSetChanged();
-                        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
-                        builder.dismiss();
-                    }
-                });
-                builder.setNegativeButton("NO", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        //novedadfrecuentes.get(position).setEstadoChek(true);
-                        //recyclerAdapterNovedades.registarCheckItemCatalogo(idManifiesto,novedadfrecuentes.get(position).getId(),true);
-                        recyclerAdapterNovedades.notifyDataSetChanged();
-                        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
-                        builder.dismiss();
-                    }
-                });
-                builder.show();
-            }
-        });
-        recyclerAdapterNovedades.setOnClickOpenFotografias(new ManifiestoNovedadBaseAdapterRecepcionR.OnClickOpenFotografias() {
-            @Override
-            public void onShow(Integer catalogoID, final Integer position) {
-                if(dialogAgregarFotografias==null){
-                    dialogAgregarFotografias = new DialogAgregarFotografias(getContext(),idManifiesto,catalogoID, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION, MyConstant.STATUS_RECEPCION_PLANTA);
-                    dialogAgregarFotografias.setCancelable(false);
-                    dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
-                        @Override
-                        public void onSuccessful(Integer cantidad) {
-                            if(dialogAgregarFotografias!=null && dialogAgregarFotografias.isShowing()){
-                                dialogAgregarFotografias.dismiss();
-                                dialogAgregarFotografias=null;
-
-                                novedadfrecuentes.get(position).setNumFotos(cantidad);
-                                novedadfrecuentes.get(position).setEstadoChek(true);
-                                //poner estado check en true...
-                                recyclerAdapterNovedades.registarCheckItemCatalogo(idManifiesto,novedadfrecuentes.get(position).getId(),true);
-                                //refress cambios...
-                                recyclerAdapterNovedades.notifyDataSetChanged();
-                            }
-                        }
-                    });
-                    dialogAgregarFotografias.show();
-
-                    window = dialogAgregarFotografias.getWindow();
-                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                }
-            }
-        });
-        recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);*/
 
         ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
         if(f != null){
@@ -284,17 +217,18 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         }
 
+        List<RowItemManifiestoDetalle> bultos = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto2(idManifiesto);
 
-        ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
-       /* if(bultos.size()>0){
-            for (ManifiestoDetallePesosEntity p:bultos){
-                pesoT= pesoT+ p.getValor();
+       // ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
+       if(bultos.size()>0){
+            for (RowItemManifiestoDetalle p:bultos){
+                pesoT= pesoT+ p.getPeso();
 
             }
 
-        }*/
+        }
 
-        txtPesoRecolectado.setText(String.valueOf(bultos.getPesoUnidad()));
+        txtPesoRecolectado.setText(String.valueOf(pesoT));
     }
 
     public void setMakePhoto(Integer code) {
