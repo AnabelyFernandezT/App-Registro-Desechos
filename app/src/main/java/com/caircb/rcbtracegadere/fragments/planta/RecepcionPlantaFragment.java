@@ -56,7 +56,7 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogBuilder builder;
     double pesoT=0;
-    private boolean firma = false;
+    private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
     TextView txtCountPhoto;
 
@@ -201,6 +201,21 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                 }
             }
         });
+    }
+
+    public  boolean validarNovedad (){
+        String txtObservacion = txtotraNovedad.getText().toString();
+        String numeroFotos = txtCountPhoto.getText().toString();
+        if(txtObservacion.equals("")){
+            observacion=true;
+        }else{
+            if(numeroFotos.equals("0")){
+                observacion = false;
+            }else{
+                observacion = true;
+            }
+        }
+        return  observacion;
     }
 
     private void load(){
