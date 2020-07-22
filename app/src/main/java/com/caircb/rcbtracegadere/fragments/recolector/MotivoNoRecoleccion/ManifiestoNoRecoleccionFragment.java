@@ -38,7 +38,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
     TabManifiestoAdicionalNoRecoleccion tabManifiestoAdicional;
 
     Integer idAppManifiesto,pantallaEstado;
-    FloatingActionButton mensajes;
+
 
 
     public ManifiestoNoRecoleccionFragment() {
@@ -79,8 +79,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext = getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoNext.setOnClickListener(this);
-        mensajes = getView().findViewById(R.id.fab);
-        mensajes.setVisibility(View.INVISIBLE);
+
     }
 
 
