@@ -129,7 +129,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         if(getIntent().getExtras()!=null){
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
-                message(value + " SINCRONICE");
+                message(value);
             }
 
         }
