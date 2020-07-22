@@ -60,7 +60,7 @@ public abstract  class RuteoRecoleccionDao {
             ruteo.setFechaLlegadaRuta(dto.getFechaLlegadaRuta());
             ruteo.setEstado(dto.isEstado());
         }else{
-            ruteo = new RuteoRecoleccionEntity();
+
             ruteo.setIdSubRuta(dto.getIdSubRuta());
             ruteo.setFechaInicioRuta(dto.getFechaInicioRuta());
             ruteo.setPuntoPartida(dto.getPuntoPartida());
