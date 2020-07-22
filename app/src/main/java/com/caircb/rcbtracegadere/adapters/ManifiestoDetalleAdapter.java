@@ -60,6 +60,12 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         holder.txtTipoBalanza.setText(it.getTipoBalanza()== 0 ? "" : it.getTipoBalanza()== 1 ? "Gadere" :"Cliente");
         holder.txtPesoReferencial.setText(String.valueOf(it.getPesoReferencial()));
 
+        if(it.isFaltaImpresiones()){
+            holder.imgFaltaImpresiones.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgFaltaImpresiones.setVisibility(View.GONE);
+        }
+
         if(holder.txtPeso.getText().toString().equals("0.0")){
             holder.chkEstado.setChecked(false);
         }
@@ -121,6 +127,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         CheckBox chkEstado;
         TextView txtTipoBalanza;
         TextView txtPesoReferencial;
+        ImageView imgFaltaImpresiones;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -134,6 +141,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
             txtTipoBalanza = itemView.findViewById(R.id.txtTipoBalanza);
             txtPesoReferencial = itemView.findViewById(R.id.txtPesoReferencial);
+            imgFaltaImpresiones = itemView.findViewById(R.id.imgFaltaImpresiones);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

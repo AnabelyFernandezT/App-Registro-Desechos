@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPaquete;
@@ -123,12 +124,20 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
 
     public void messageBox(String message)
     {
+        DialogBuilder dialogBuilder = new DialogBuilder(mContext);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setTitle("INFO");
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setPositiveButton("OK", null);
+        dialogBuilder.show();
+        /*
         messageBox = new AlertDialog.Builder(mContext);
         messageBox.setTitle("INFO");
         messageBox.setMessage(message);
         messageBox.setCancelable(false);
         messageBox.setNeutralButton("OK", null);
         messageBox.show();
+        */
     }
 
     public void setTaskList(List<RowItemPaquete> taskList) {
