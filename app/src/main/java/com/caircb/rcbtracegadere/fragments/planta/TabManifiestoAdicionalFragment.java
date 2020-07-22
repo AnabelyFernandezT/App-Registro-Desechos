@@ -260,6 +260,8 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         }
     }
 
+
+
     public void setMakePhoto(Integer code) {
         if(dialogAgregarFotografias!=null){
             dialogAgregarFotografias.setMakePhoto(code);

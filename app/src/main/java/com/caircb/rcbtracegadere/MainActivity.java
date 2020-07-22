@@ -732,7 +732,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (fragment != null) {
+        if (fragment != null&& resultCode!=0)  {
             if (fragment instanceof OnCameraListener) {
                 ((OnCameraListener) fragment).onCameraResult(requestCode, resultCode, data);
             }
