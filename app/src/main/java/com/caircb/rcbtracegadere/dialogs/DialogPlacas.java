@@ -65,7 +65,7 @@ public class DialogPlacas extends MyDialog {
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
-
+        btnIngresarApp.setEnabled(false);
         spinnerPlacas = (Spinner)getView().findViewById(R.id.lista_placas);
         spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -74,6 +74,7 @@ public class DialogPlacas extends MyDialog {
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
                     System.out.println(placa+"placa");
+                    btnIngresarApp.setEnabled(true);
                     idPlaca = spinnerPlacas.getId();
                     CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                     int idVehiculo = c!=null?c.getIdSistema():-1;
