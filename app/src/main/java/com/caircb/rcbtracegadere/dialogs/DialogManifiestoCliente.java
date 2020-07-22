@@ -30,17 +30,19 @@ public class DialogManifiestoCliente extends MyDialog {
 
     Manifiesto2Fragment principal = new Manifiesto2Fragment();
     Integer idManifiesto, tipoPaquete;
+    String identificacion;
 
     public interface onRegisterListenner {
         public void onSucessfull();
     }
     public onRegisterListenner mOnRegisterListener;
 
-    public DialogManifiestoCliente(@NonNull Context context, Integer idManifiesto, Integer tipoPaquete) {
+    public DialogManifiestoCliente(@NonNull Context context, Integer idManifiesto, Integer tipoPaquete, String identificacion) {
         super(context, R.layout.dialog_manifiesto_cliente);
         this._activity = (Activity)context;
         this.idManifiesto = idManifiesto;
         this.tipoPaquete = tipoPaquete;
+        this.identificacion = identificacion;
 
     }
 
@@ -74,7 +76,7 @@ public class DialogManifiestoCliente extends MyDialog {
                 }else{
                     //System.out.println("Placa transportista: "+MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista"));
                     MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,txtManifiestoCliente.getText().toString());
-                    ((MainActivity) getActivity()).NavegationFragment(VistaPreliminarFragment.newInstance(idManifiesto,tipoPaquete));
+                    ((MainActivity) getActivity()).NavegationFragment(VistaPreliminarFragment.newInstance(idManifiesto,tipoPaquete,identificacion));
 
                     DialogManifiestoCliente.this.dismiss();
 
