@@ -46,15 +46,16 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }*/
-                if(manifiestoPlanta.validaExisteFirma()){
-                    messageBox("Se requiere firma  ");
-                    return;
-                }
+                if (manifiestoPlanta.validarNovedad()) {
+                    if (manifiestoPlanta.validaExisteFirma()) {
+                        messageBox("Se requiere firma  ");
+                        return;
+                    }
 
-                if(manifiestoPlanta.validaPeso()){
-                    messageBox("Se requiere que ingrese el peso");
-                    return;
-                }
+                    if (manifiestoPlanta.validaPeso()) {
+                        messageBox("Se requiere que ingrese el peso");
+                        return;
+                    }
 
 
                 peso = manifiestoPlanta.guardar();
@@ -68,7 +69,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
-                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(),idAppManifiesto,peso,observacionPeso, observacionOtra);
+                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(), idAppManifiesto, peso, observacionPeso, observacionOtra);
                         userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
                             @Override
                             public void onSuccessful() {
@@ -86,7 +87,9 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                     }
                 });
                 dialogBuilder.show();
-
+                }else{
+                messageBox("Ingrese una foto.!");
+            }
                 break;
         }
 

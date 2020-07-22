@@ -141,7 +141,7 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
                 tabManifiestoGeneral.getNumeroManifiesto(),
-                estado);
+                estado,1);
 
         tabManifiestoAdicional = new TabManifiestoAdicional(getActivity(),
                 idAppManifiesto,
