@@ -90,7 +90,9 @@ public class TabManifiestoDetalle extends LinearLayout {
         recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(),numeroManifiesto,estadoManifiesto,idAppManifiesto);
     }
 
+    @SuppressLint("RestrictedApi")
     private void loadData(){
+        if(estadoManifiesto!= 1){mensajes.setVisibility(GONE);}
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
@@ -103,10 +105,8 @@ public class TabManifiestoDetalle extends LinearLayout {
             @Override
             public void onItemClick(int position, View v) {
                 int x=0;
-                if(estadoManifiesto == 1){
+                if(estadoManifiesto == 1) {
                     openOpcionesItems(position, detalles.get(position).getId());
-                }else{
-                    mensajes.setVisibility(GONE);
                 }
             }
         });
