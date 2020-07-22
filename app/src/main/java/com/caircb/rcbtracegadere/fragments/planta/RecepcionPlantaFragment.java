@@ -308,6 +308,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
     private void validarPesos(){
     double validacion=(Double.parseDouble(txtPesoRecolectado.getText().toString())*0.03)+Double.parseDouble(txtPesoRecolectado.getText().toString());
+    double validacionMenor = (Double.parseDouble(txtPesoRecolectado.getText().toString())- Double.parseDouble(txtPesoRecolectado.getText().toString())*0.03);
     double valorIngresado = Double.parseDouble(txtPeso.getText().toString());
 
 
@@ -315,10 +316,14 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         if(valorIngresado>validacion){
             //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
             txtNovedad.setText("Peso ingresado es mayor al peso Total");
-        }else{
+        }else if(valorIngresado<validacionMenor){
             //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
             txtNovedad.setText("Peso ingresado es menor al peso Total");
+        }else{
+            txtNovedad.setText(" ");
         }
+    }else{
+        txtNovedad.setText(" ");
     }
 
     }
