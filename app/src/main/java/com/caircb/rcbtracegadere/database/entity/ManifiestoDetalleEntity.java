@@ -65,7 +65,7 @@ public class ManifiestoDetalleEntity {
     private Integer requiereIncineracionPresenciada;
     private String observacionResiduos;
 
-
+    private boolean faltaImpresiones;
 
 
     public ManifiestoDetalleEntity() {
@@ -275,5 +275,13 @@ public class ManifiestoDetalleEntity {
 
     public void setObservacionResiduos(String observacionResiduos) {
         this.observacionResiduos = observacionResiduos;
+    }
+
+    public boolean isFaltaImpresiones() {
+        return faltaImpresiones;
+    }
+
+    public void setFaltaImpresiones(boolean faltaImpresiones) {
+        this.faltaImpresiones = faltaImpresiones;
     }
 }

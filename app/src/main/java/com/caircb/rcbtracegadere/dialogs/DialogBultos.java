@@ -40,6 +40,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     TextView txtTotal;
     AlertDialog.Builder alertDialog;
     AlertDialog alert;
+    String valor = null;
 
     String dato = "0";
     String inputDefault = "0";
@@ -56,6 +57,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     MyPrint print;
     Integer tipoGestion;
     DialogBuilder builder;
+    boolean faltaImpresos=false;
 
     public interface OnBultoListener {
         public void onSuccessful(
@@ -63,9 +65,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 int position,
                 int cantidad,
                 PaqueteEntity pkg,
-                boolean isClose);
+                boolean isClose,
+                boolean faltaImpresiones);
 
-        void onCanceled();
+        void onCanceled(boolean falataImpresos);
     }
 
     private OnBultoListener mOnBultoListener;
@@ -162,19 +165,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void loadData(){
         //bultos = new ArrayList<>();
-        String valor = null;
-        ParametroEntity para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
-        if(para!=null){
-            valor = para.getValor();
 
-            if(valor.equals("5")){
-                autorizacion = 1;
-                btn_add.setEnabled(true);
-            }else {
-                btn_add.setEnabled(true);
-            }
-
-        }
 
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
         if(bultos.size()>0){
@@ -188,18 +179,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             @Override
             public void onSendImpresion(Integer pos) {
                 CatalogoItemValor item = bultos.get(pos);
-                //Probar sin impresiora
-                /************************************/
-
-                bultos.get(pos).setImpresion(true);
-                MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
-                listaValoresAdapter.filterList(bultos);
-                listaValoresAdapter.notifyDataSetChanged();
-
-                /*************************************/
 
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
-                //imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
+                imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -221,7 +203,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     @Override
                     public void run() {
                         // Code here will run in UI thread
-                        if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal,position,bultos.size(),pkg,false);
+                        if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal,position,bultos.size(),pkg,false, faltaImpresos);
                     }
                 });
             }
@@ -231,12 +213,19 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer idCatalogo, Integer numeroBulto){
-        /*
+
+        //Probar sin impresiora
+        /************************************/
+
         bultos.clear();
         subtotal= BigDecimal.ZERO;
         MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, idCatalogo, true);
-        loadData();*/
+        loadData();
 
+        /**************************************/
+
+        //Probar con impresiora
+        /*
         try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
@@ -257,6 +246,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             messageBox("No hay conexion con la impresora");
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
+
+         */
 
     }
 
@@ -414,17 +405,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         dato="0";
         txtpantalla.setText("0");
 
-        if(closable && mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), pkg,true);
+        if(closable && mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), pkg,true, faltaImpresos);
     }
 /////////////////////////
     private void aplicar(){
         BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
         if(imput.doubleValue()==0d && subtotal.doubleValue()>0d){
-            if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true);
+            if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true, faltaImpresos);
         }else if(imput.doubleValue()>0d){
             if(bultos.size()>=0d && pkg ==null){
                 createBulto(imput);
-                if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), null,true);
+                if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), null,true, faltaImpresos);
             }else if(bultos.size()>=0d && pkg!=null){
                 //region para paquetes...
                 closable=true;
@@ -486,8 +477,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             case R.id.btn_ok:
                 BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
                 createBulto(imputValor);
-                boolean resp = verificarTodosBultosImpresos();
-                if(!resp){
+                faltaImpresos = verificarTodosBultosImpresos();
+                if(!faltaImpresos){
+                    MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                     if(mOnBultoListener!=null){
                         aplicar();
                         autorizacion=0;
@@ -499,13 +491,32 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                 break;
             case R.id.btn_add:
+                ParametroEntity para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
+                if(para!=null){
+                    valor = para.getValor();
+
+                    if(valor.equals("5")){
+                        autorizacion = 1;
+                        btn_add.setEnabled(true);
+                    }else {
+                        btn_add.setEnabled(true);
+                    }
+
+                }
+
                 BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
                 createBulto(imput);
                 break;
             case R.id.btn_cancel:
                 //limpiarBultosNoConfirmados();
+                faltaImpresos = verificarTodosBultosImpresos();
+                if(faltaImpresos){
+                    MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                }else{
+                    MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                }
                 if (mOnBultoListener != null) {
-                    mOnBultoListener.onCanceled();
+                    mOnBultoListener.onCanceled(faltaImpresos);
                 }
                 aplicar();
                 break;
@@ -519,6 +530,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 break;
         }
     }
+
+    /*
     private void limpiarBultosNoConfirmados (){
         MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresNoConfirmados(idManifiesto,idManifiestoDetalle);
         double nuevoSubtotal  = MyApp.getDBO().manifiestoDetallePesosDao().sumaPesoFinal(idManifiesto,idManifiestoDetalle);
@@ -526,6 +539,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(BigDecimal.valueOf(nuevoSubtotal),position,bultostTotal.size(),pkg,false);
     }
+     */
     private boolean verificarTodosBultosImpresos(){
         boolean resul = false;
         if(bultos != null && bultos.size()>0){
