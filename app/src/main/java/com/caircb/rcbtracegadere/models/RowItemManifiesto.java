@@ -14,6 +14,7 @@ public class RowItemManifiesto {
     private boolean estado;
     private int tipoBalanza;
     private double pesoReferencial;
+    private boolean faltaImpresiones;
 
     public RowItemManifiesto(){}
 
@@ -92,5 +93,13 @@ public class RowItemManifiesto {
 
     public void setPesoReferencial(double pesoReferencial) {
         this.pesoReferencial = pesoReferencial;
+    }
+
+    public boolean isFaltaImpresiones() {
+        return faltaImpresiones;
+    }
+
+    public void setFaltaImpresiones(boolean faltaImpresiones) {
+        this.faltaImpresiones = faltaImpresiones;
     }
 }

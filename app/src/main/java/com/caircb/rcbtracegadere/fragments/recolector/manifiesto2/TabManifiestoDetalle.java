@@ -224,7 +224,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {
                 @Override
-                public void onSuccessful(BigDecimal valor, int position, int cantidad, PaqueteEntity pkg, boolean isClose) {
+                public void onSuccessful(BigDecimal valor, int position, int cantidad, PaqueteEntity pkg, boolean isClose, boolean faltaImpresiones) {
                     if(isClose && dialogBultos!=null){
                             dialogBultos.dismiss();
                             dialogBultos = null;
@@ -240,6 +240,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                     //else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
 
                     row.setEstado(true);
+                    row.setFaltaImpresiones(faltaImpresiones);
                     recyclerviewAdapter.notifyDataSetChanged();
                     //actualizar datos en dbo local...
                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),cantidad,row.isEstado());
@@ -251,8 +252,12 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
 
                 @Override
-                public void onCanceled() {
+                public void onCanceled(boolean faltaImpresos) {
                     if(dialogBultos!=null){
+                        if(faltaImpresos){
+                            detalles.clear();
+                            loadData();
+                        }
                         dialogBultos.dismiss();
                         dialogBultos=null;
                     }

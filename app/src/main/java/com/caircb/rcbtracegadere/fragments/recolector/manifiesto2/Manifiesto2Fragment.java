@@ -211,7 +211,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 break;
             case R.id.btnManifiestoNext:
 
-
                 int i=tabs.getCurrentTab();
                 if (i==0){
                     tabs.setCurrentTab(tabs.getCurrentTab()+1);
@@ -238,6 +237,11 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
                 if(tabManifiestoGeneral.validarCorreos()&& !aplicaNoRecoleccion){
                     messageBox("Se requiere que ingrese un correo electrónico");
+                    return;
+                }
+
+                if(MyApp.getDBO().manifiestoDetalleDao().countDetallesSinImprimirByIdManifiesto(idAppManifiesto)>0){
+                    messageBox("Existen bultos sin imprimir, Favor verificarlos para continuar");
                     return;
                 }
                 //tab detalle...

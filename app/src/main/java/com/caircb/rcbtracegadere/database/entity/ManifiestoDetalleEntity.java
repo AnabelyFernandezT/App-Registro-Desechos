@@ -56,9 +56,10 @@ public class ManifiestoDetalleEntity {
     private String validadorReferencial;
 
     private String tipoContenedor;
+
     private String estadoFisico;
 
-
+    private boolean faltaImpresiones;
 
 
     public ManifiestoDetalleEntity() {
@@ -220,5 +221,13 @@ public class ManifiestoDetalleEntity {
 
     public void setEstadoFisico(String estadoFisico) {
         this.estadoFisico = estadoFisico;
+    }
+
+    public boolean isFaltaImpresiones() {
+        return faltaImpresiones;
+    }
+
+    public void setFaltaImpresiones(boolean faltaImpresiones) {
+        this.faltaImpresiones = faltaImpresiones;
     }
 }
