@@ -35,6 +35,7 @@ import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.caircb.rcbtracegadere.utils.Utils;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -179,12 +180,28 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    validarPesos();
+
                     guardarObservaciones();
                 }
             }
         });
 
+        txtPeso.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validarPesos();
+            }
+        });
         txtNovedad.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -256,6 +273,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     private void validarPesos(){
+        DecimalFormat df = new DecimalFormat("#.####");
         if(txtPeso.getText().toString().equals("")) {}
             else{
             double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
@@ -273,7 +291,8 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
             txtPeso.setError("MARGEN DE ERROR DE PESO MENOR AL 3%");
             txtNovedad.setText(" ");
         }else{
-            txtNovedad.setText("EXISTE DIFERENCIA DE "+ Math.abs(validacion - valorIngresado) +" KG" );
+            Double diferencia = Math.abs((Double.parseDouble(txtPesoRecolectado.getText().toString())) - valorIngresado);
+            txtNovedad.setText("EXISTE DIFERENCIA DE "+ df.format(diferencia) +" KG" );
         }
     }else{
         txtNovedad.setText(" ");
