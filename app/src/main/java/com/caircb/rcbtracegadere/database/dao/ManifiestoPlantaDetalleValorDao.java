@@ -77,7 +77,9 @@ public abstract class ManifiestoPlantaDetalleValorDao {
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());
-            entity.setEstado(estado);
+            if(entity.getNuevoPeso()==null){
+                entity.setEstado(estado);
+            }
             entity.setIdManifiestoDetalleValor(manifiesto.getIdManifiestoDetalleValores());
             entity.setNombreBulto(manifiesto.getNombreBulto());
         }
