@@ -62,9 +62,14 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigando();
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado=1 and idTransporteVehiculo=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
+
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado=1 and idTransporteVehiculo=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRutaPlanta(Integer idSubRuta, Integer idChoferRecolector);
+
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=1000 order by nombreCliente")
     @Transaction
@@ -89,9 +94,16 @@ public abstract class ManifiestoDao {
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,+" +
             " apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos " +
-            "where estado=1 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idTransporteVehiculo=:SubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+            "where estado=1 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idSubRuta=:SubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManif(String search,Integer SubRuta,Integer idChoferRecolector);
+
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,+" +
+            " apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos " +
+            "where estado=1 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idTransporteVehiculo=:SubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManifPlantaXNO(String search,Integer SubRuta,Integer idChoferRecolector);
+
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,+" +
             " apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos " +
