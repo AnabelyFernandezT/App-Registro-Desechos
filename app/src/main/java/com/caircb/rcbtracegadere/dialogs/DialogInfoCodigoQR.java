@@ -116,7 +116,7 @@ public class DialogInfoCodigoQR extends MyDialog {
         txtDescripcion.setText(item.getNombreDesecho());
     }
 
-    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
+  /*  UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
         public void onSuccessful() {
             loadCantidadManifiestoAsignado();
@@ -126,7 +126,7 @@ public class DialogInfoCodigoQR extends MyDialog {
 
     private void loadCantidadManifiestoAsignado() {
         lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
-    }
+    }*/
 
 
 
