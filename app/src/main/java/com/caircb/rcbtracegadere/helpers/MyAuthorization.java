@@ -88,32 +88,36 @@ public class MyAuthorization {
             MySession.setUsuarioNombre(user);
 
             progressDialog.show();
-            WebService.seg().autentication(cr).enqueue(new Callback<DtoUserCredential>() {
-                @Override
-                public void onResponse(Call<DtoUserCredential> call, Response<DtoUserCredential> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body().isExito()) {
-                            obtnerTokenAutorizacionFCM(response.body());
+            if(cr!=null) {
+                WebService.seg().autentication(cr).enqueue(new Callback<DtoUserCredential>() {
+                    @Override
+                    public void onResponse(Call<DtoUserCredential> call, Response<DtoUserCredential> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().isExito()) {
+                                obtnerTokenAutorizacionFCM(response.body());
+                            } else {
+                                if (progressDialog != null) {
+                                    progressDialog.dismiss();
+                                    progressDialog = null;
+                                }
+                                message(response.body().getMensaje());
+                            }
                         } else {
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
                                 progressDialog = null;
                             }
-                            message(response.body().getMensaje());
-                        }
-                    } else {
-                        if (progressDialog != null) {
-                            progressDialog.dismiss();
-                            progressDialog = null;
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<DtoUserCredential> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<DtoUserCredential> call, Throwable t) {
+                        progressDialog.dismiss();
+                    }
+                });
+            }else{
+                progressDialog.dismiss();
+            }
         }
     }
 

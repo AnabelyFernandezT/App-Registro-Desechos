@@ -81,7 +81,7 @@
             android:id="@+id/txtObservacionPeso"
             android:layout_height="57dp"
             android:visibility="gone"
-            android:textSize="22dp"
+            android:textSize="15dp"
             android:layout_width="match_parent"
             android:background="@drawable/border_imput_text"
             android:inputType="text|textMultiLine|textCapCharacters"
