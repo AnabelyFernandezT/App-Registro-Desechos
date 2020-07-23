@@ -46,6 +46,7 @@ public class ManifiestoPlantaCheckFragment extends MyFragment implements OnCamer
     ListView LtsManifiestoDetalle,mDialogMenuItems;
     DialogBultosPlanta dialogBultos;
     UserRegistarDetalleSedeTask detalleSedeTask;
+    Window window;
 
     public ManifiestoPlantaCheckFragment(){
     }
@@ -163,6 +164,9 @@ public class ManifiestoPlantaCheckFragment extends MyFragment implements OnCamer
             }
         });
         dialogBultos.show();
+        window = dialogBultos.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
     }
 
     public static ManifiestoPlantaCheckFragment newInstance() {

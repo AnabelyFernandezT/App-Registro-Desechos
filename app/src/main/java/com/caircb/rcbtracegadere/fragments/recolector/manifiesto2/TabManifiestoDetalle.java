@@ -27,6 +27,7 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarBultos;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosNo;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
@@ -36,6 +37,7 @@ import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,22 +118,40 @@ public class TabManifiestoDetalle extends LinearLayout {
                     }
                     if (tipoRecoleccion == 2){
                         final DialogBultosNo dialogBultosNo = new DialogBultosNo(getContext(),idAppManifiesto,detalles.get(position).getId());
+                        dialogBultosNo.setCancelable(false);
+                        dialogBultosNo.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialogBultosNo.setmOnRegistrarBultoListener(new DialogBultosNo.OnRegistrarBultoListener() {
                             @Override
                             public void onSuccesfull(String numeroBultos, Integer idDetalle) {
                                 MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresNoConfirmados(idAppManifiesto,idDetalle);
                                 if (numeroBultos.equals("")||numeroBultos.equals("0")){
-                                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idDetalle,0.0,0,0,false);
+                                    final DialogBuilder dialogBuilder2=new DialogBuilder(getContext());
+                                    dialogBuilder2.setMessage("Ingrese un numero válido");
+                                    dialogBuilder2.setCancelable(false);
+                                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                    dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogBuilder2.dismiss();
+                                                }
+                                     });
+                                    //MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idDetalle,0.0,0,0,false);
+                                    dialogBuilder2.show();
                                 }else {
                                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idDetalle,numeroBultos.equals("")?0.0:Double.parseDouble(numeroBultos),0,0,true);
+                                    for (int i=1;i<=Integer.parseInt(numeroBultos);i++){
+                                        MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto,idDetalle,0.0,"",null,"", false, i);
+                                    }
+                                    List<CatalogoItemValor> item=MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idAppManifiesto,idDetalle);
+                                    detalles.clear();
+                                    loadData();
+                                    dialogBultosNo.dismiss();
                                 }
-                                for (int i=1;i<=Integer.parseInt(numeroBultos);i++){
-                                    MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto,idDetalle,0.0,"",null,"", false, i);
-                                }
-
-                                List<CatalogoItemValor> item=MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idAppManifiesto,idDetalle);
-                                detalles.clear();
-                                loadData();
+                            }
+                        });
+                        dialogBultosNo.setmOnCancelarBultoListener(new DialogBultosNo.OnCancelarBultoListener() {
+                            @Override
+                            public void onSuccesfull() {
                                 dialogBultosNo.dismiss();
                             }
                         });

@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 
 import java.math.BigDecimal;
@@ -58,11 +60,69 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
         holder.txtNuevoPeso.setFocusableInTouchMode(true);
         holder.txtNuevoPeso.requestFocus();
 
+        if(it.getEstado()){
+            holder.txtNuevoPeso.setEnabled(false);
+        }else{
+            holder.txtNuevoPeso.setEnabled(true);
+        }
+
+        holder.txtNuevoPeso.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable peso) {
+                if(peso.toString().equals("")) {
+                    MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), null, it.getIdManifiestoDetalleValores());
+                }else{
+                    MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
+                }
+            }
+        });
+
+        holder.chkEstado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nuevoValor = holder.txtNuevoPeso.getText().toString().equals("") ? "0": holder.txtNuevoPeso.getText().toString();
+                if(Double.valueOf(nuevoValor)>0){
+
+                    if(((CheckBox) v).isChecked()){
+                        v.setSelected(true);
+                        holder.txtNuevoPeso.setEnabled(false);
+                        MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), true, it.getIdManifiestoDetalleValores());
+                    }else{
+                        v.setSelected(false);
+                        holder.txtNuevoPeso.setEnabled(true);
+                        MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), false, it.getIdManifiestoDetalleValores());
+                    }
+
+                    MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
+                    //MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(), it.getIdManifiestoDetalleValores());
+                }else{
+                    holder.chkEstado.setChecked(false);
+                    DialogBuilder dialogBuilder = new DialogBuilder(mContext);
+                    dialogBuilder.setTitle("INFO");
+                    dialogBuilder.setMessage("Debe ingresar peso del bulto!");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("OK", null);
+                    dialogBuilder.show();
+                }
+            }
+        });
+
+
+
+/*
           holder.chkEstado.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
                   String nuevoValor = holder.txtNuevoPeso.getText().toString() == "" ? "0": holder.txtNuevoPeso.getText().toString();
                   Integer valida = 0;
+
                   if(nuevoValor.equals("")){
                       valida = 0;
                       holder.chkEstado.setChecked(false);
@@ -71,26 +131,32 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
                   }
 
                   if(valida.equals(1) ) {
-                  if (((CheckBox) v).isChecked()) {
-                      v.setSelected(true);
-                      it.setEstado(true);
-                  } else {
-                      holder.txtNuevoPeso.setText("0");
-                      v.setSelected(false);
-                      it.setEstado(false);
-                  }
-                  MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
-                  MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(), it.getIdManifiestoDetalleValores());
+                      if (((CheckBox) v).isChecked()) {
+                          v.setSelected(true);
+                          it.setEstado(true);
+                      } else {
+                          holder.txtNuevoPeso.setText("0");
+                          v.setSelected(false);
+                          it.setEstado(false);
+                      }
+
+                      MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
+                      MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(), it.getIdManifiestoDetalleValores());
+
+                  //MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
+                  //MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(), it.getIdManifiestoDetalleValores());
               }else{
-                      messageBox = new AlertDialog.Builder(mContext);
-                      messageBox.setTitle("INFO");
-                      messageBox.setMessage("Debe ingresar peso del bulto!");
-                      messageBox.setCancelable(false);
-                      messageBox.setNeutralButton("OK", null);
-                      messageBox.show();
-                  }
+
+                  DialogBuilder dialogBuilder = new DialogBuilder(mContext);
+                  dialogBuilder.setTitle("INFO");
+                  dialogBuilder.setMessage("Debe ingresar peso del bulto!");
+                  dialogBuilder.setCancelable(false);
+                  dialogBuilder.setPositiveButton("OK", null);
+                  dialogBuilder.show();
+              }
               }
           });
+        */
       }
 
 
