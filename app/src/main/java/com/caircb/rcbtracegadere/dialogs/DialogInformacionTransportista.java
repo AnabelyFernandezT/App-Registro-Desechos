@@ -153,6 +153,18 @@ public class DialogInformacionTransportista extends MyDialog {
                 chkFiscalizacionNo.setSelected(true);
                 chkFiscalizacionSi.setSelected(false);
             }
+            if (detalles.get(0).getResiduoSujetoFiscalizacion()==3){
+                chkFiscalizacionSi.setSelected(true);
+                chkFiscalizacionNo.setChecked(false);
+                chkFiscalizacionMi.setSelected(false);
+                chkFiscalizacionArcsa.setSelected(true);
+            }
+            if (detalles.get(0).getResiduoSujetoFiscalizacion()==4){
+                chkFiscalizacionSi.setSelected(true);
+                chkFiscalizacionNo.setChecked(false);
+                chkFiscalizacionMi.setSelected(true);
+                chkFiscalizacionArcsa.setSelected(false);
+            }
 
 
             if (detalles.get(0).getRequiereDevolucionRecipientes() == 0) {
