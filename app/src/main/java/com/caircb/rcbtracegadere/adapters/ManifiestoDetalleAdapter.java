@@ -31,13 +31,15 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
     private List<RowItemManifiesto> manifiestosDtList;
     private String numeroManifiesto;
     private Integer estadoManifiesto,idAppManifiesto;
+    private Integer tipoProceso;
 
-    public ManifiestoDetalleAdapter(Context context,String numeroManifiesto,Integer estadoManifiesto, Integer idAppManifiesto){
+    public ManifiestoDetalleAdapter(Context context,String numeroManifiesto,Integer estadoManifiesto, Integer idAppManifiesto, Integer tipoProceso){
         this.mContext = context;
         this.manifiestosDtList = new ArrayList<>();
         this.numeroManifiesto=numeroManifiesto;
         this.estadoManifiesto =estadoManifiesto;
         this.idAppManifiesto = idAppManifiesto;
+        this.tipoProceso=tipoProceso;
     }
 
     @NonNull
@@ -66,9 +68,15 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             holder.imgFaltaImpresiones.setVisibility(View.GONE);
         }
 
-        if(holder.txtPeso.getText().toString().equals("0.0")){
-            holder.chkEstado.setChecked(false);
+        if (tipoProceso==1){
+            if(holder.txtPeso.getText().toString().equals("0.0")){
+                holder.chkEstado.setChecked(false);
+            }
+        }else {
+            holder.chkEstado.setChecked(it.isEstado());
         }
+
+
 
         if(estadoManifiesto !=1) {
             holder.chkEstado.setClickable(false);

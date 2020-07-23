@@ -53,6 +53,7 @@ public class BultosAdapter extends RecyclerView.Adapter<BultosAdapter.MyViewHold
 
         public TextView lblBultoNumero, txtItemPesoBulto;
 
+
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             this.lblBultoNumero = itemView.findViewById(R.id.lblBultoNumero);
