@@ -28,12 +28,9 @@ import java.util.List;
 
 public class DialogBultosPlanta extends MyDialog {
     Activity _activity;
-    Spinner spinnerPlacas;
     List<DtoCatalogo> listaPlacasDisponibles;
-    String placa;
     Integer idAppManifiestoDet;
-    UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
-    LinearLayout btnIngresarApp, btnCancelarApp;
+    LinearLayout btnAceptarIngresoBultos;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     ManifiestoDetalleBultosAdapterPlanta recyclerviewAdapter;
     TextView lblListaManifiestoAsignado;
@@ -65,23 +62,40 @@ public class DialogBultosPlanta extends MyDialog {
 
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
-        btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
-        btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
+        btnAceptarIngresoBultos = (LinearLayout)getView().findViewById(R.id.btnAceptarIngresoBultos);
 
-      btnCancelarApp.setOnClickListener(new View.OnClickListener() {
+        btnAceptarIngresoBultos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogBultosPlanta.this.dismiss();
+                boolean bandera = false;
+                List<ItemManifiestoDetalleValorSede> lista = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
+                for(ItemManifiestoDetalleValorSede reg: lista){
+                    if(reg.getNuevoPeso() != null && !(reg.getEstado())) {
+                        messageBox("Debe seleccionar los bultos faltantes");
+                        bandera = true;
+                        return;
+                    }
+                }
+                if(!bandera){
+                    String nn = "";
+                    DialogBultosPlanta.this.dismiss();
+                    if(mOnclickSedeListener!=null){
+                        mOnclickSedeListener.onSucefull();
+                    }
+                }
+
+                String nombre ="";
+                //DialogBultosPlanta.this.dismiss();
+                /*
                 if(mOnclickSedeListener!=null){
                     mOnclickSedeListener.onSucefull();
                 }
+                 */
             }
         });
 
         //datosPlacasDisponibles();
     }
-
-
 
     private void loadData(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -90,7 +104,6 @@ public class DialogBultosPlanta extends MyDialog {
 
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
-
     }
 
 
