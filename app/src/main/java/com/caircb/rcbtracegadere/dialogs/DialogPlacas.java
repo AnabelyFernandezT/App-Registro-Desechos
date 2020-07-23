@@ -21,6 +21,7 @@ import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaXNoTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarVehiculosSedeTask;
 
@@ -36,10 +37,11 @@ public class DialogPlacas extends MyDialog {
     //UserConsultarPlacasInicioRutaDisponible consultarPlacasInicioRutaDisponible;
     LinearLayout btnIngresarApp, btnCancelarApp;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
+    UserConsultarHojaRutaPlacaXNoTask consultarHojaRutaTaskXNO;
     TextView lblListaManifiestoAsignado;
     DialogBuilder builder;
     UserConsultarVehiculosSedeTask consultarVehiculos;
-    UserConsultarManifiestosPlantaTask consultarManifiestosPlanta;
+    UserConsultarHojaRutaPlacaXNoTask consultarManifiestosPlanta;
 
     public DialogPlacas(@NonNull Context context) {
         super(context, R.layout.dialog_spinner);
@@ -106,8 +108,7 @@ public class DialogPlacas extends MyDialog {
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
 
                 if(bandera.equals("1")){
-                    consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
-                    consultarManifiestosPlanta.execute();
+                    cargarXNOManifiesto();
                     dismiss();
                 }else if(bandera.equals("2")){
                     cargarManifiesto();
@@ -165,12 +166,8 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+1);
-                consultarManifiestosPlanta = new UserConsultarManifiestosPlantaTask(getActivity());
-                consultarManifiestosPlanta.execute();
-                if(mOnclickSedeListener!=null){
-                    mOnclickSedeListener.onSucefull();
-                }
-                cargarLabelCantidad();
+                cargarXNOManifiesto();
+                //cargarLabelCantidad();
                 builder.dismiss();
                 dismiss();
             }
@@ -185,10 +182,7 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+2);
                 cargarManifiesto();
-                cargarLabelCantidad();
-                if(mOnclickSedeListener!=null){
-                    mOnclickSedeListener.onSucefull();
-                }
+                //cargarLabelCantidad();
                 builder.dismiss();
                 dismiss();
             }
@@ -199,13 +193,30 @@ public class DialogPlacas extends MyDialog {
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
         public void onSuccessful() {
-            loadCantidadManifiestoAsignado();
+            //loadCantidadManifiestoAsignado();
+            if(mOnclickSedeListener!=null){
+                mOnclickSedeListener.onSucefull();
+            }
+        }
+    };
+    UserConsultarHojaRutaPlacaXNoTask.TaskListener listenerHojaRutaNo = new UserConsultarHojaRutaPlacaXNoTask.TaskListener() {
+        @Override
+        public void onSuccessful() {
+            //loadCantidadManifiestoAsignado();
+            if(mOnclickSedeListener!=null){
+                mOnclickSedeListener.onSucefull();
+            }
         }
     };
 
     private void cargarManifiesto(){
         consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
+    }
+
+    private void cargarXNOManifiesto(){
+        consultarHojaRutaTaskXNO = new UserConsultarHojaRutaPlacaXNoTask(_activity,listenerHojaRutaNo);
+        consultarHojaRutaTaskXNO.execute();
     }
 
     public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
@@ -233,27 +244,6 @@ public class DialogPlacas extends MyDialog {
     }*/
 
 
-    private void cargarLabelCantidad(){
-        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
-        String valor = parametro == null ? "-1" : parametro.getValor();
-        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
-
-        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-        if(bandera.equals("1")){
-            loadCantidadManifiestoAsignado();
-        }else if (bandera.equals("2")){
-            loadCantidadManifiestoAsignadoNO();
-        }
-    }
-
-    private void loadCantidadManifiestoAsignado() {
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
-    }
-
-
-    private void loadCantidadManifiestoAsignadoNO() {
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta());
-    }
 
     public void setmOnclickSedeListener(@NonNull DialogBultosPlanta.onclickSedeListener l){
         mOnclickSedeListener = l;
