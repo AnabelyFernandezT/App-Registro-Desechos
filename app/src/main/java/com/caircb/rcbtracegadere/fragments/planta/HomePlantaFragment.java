@@ -39,7 +39,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     DialogPlacas dialogPlacas;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
-    Integer idVehiculoPara;
 
     public Context mContext;
 
@@ -50,6 +49,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
         public void onSuccessful() {
+           Integer idVehiculoPara = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
            loadCantidadManifiestoAsignadoNO(idVehiculoPara);
         }
     };
@@ -90,7 +90,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnDropOffTransportista = (ImageView) getView().findViewById(R.id.btnDropOffTransportista);
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
-        idVehiculoPara = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
         cargarLabelCantidad();
 
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +117,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                Integer idVehiculoPara = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
                 Integer banderaUno= MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculoPara);
                 Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada();
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
