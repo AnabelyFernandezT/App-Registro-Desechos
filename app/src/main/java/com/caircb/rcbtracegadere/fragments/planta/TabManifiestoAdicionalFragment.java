@@ -29,6 +29,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterR;
 import com.caircb.rcbtracegadere.adapters.ManifiestoNovedadBaseAdapterRecepcionR;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoPlantaDetalleValorDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -37,6 +38,7 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
@@ -59,9 +61,9 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     RecyclerView recyclerViewLtsManifiestoObservaciones;
     Activity _activity;
     ImageView imgFirmaPlanta;
-    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
+    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar,btnInformacion;
     EditText txtPeso,txtNovedad,txtotraNovedad;
-    TextView txtFirmaPlanta, txtPesoRecolectado;
+    TextView txtFirmaPlanta, txtPesoRecolectado, txtObservacionPeso;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
     boolean bloquear;
@@ -70,11 +72,12 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogBuilder builder;
-    double pesoT=0;
+    double pesoT, pesoRecolectado=0;
     private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
-    TextView txtCountPhoto;
+    TextView txtCountPhoto, txtPesoPlanta;
     boolean info = false;
+    DialogBuilder message;
 
     public static TabManifiestoAdicionalFragment newInstance (Integer manifiestoID){
         TabManifiestoAdicionalFragment f = new TabManifiestoAdicionalFragment();
@@ -99,6 +102,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_recoleccion_planta_adicional, container, false);
         init();
         loadData();
+        validarPesoExtra();
         return  view;
     }
 
@@ -108,11 +112,14 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         btnGuardar = view.findViewById(R.id.btnGuardar);
         btnCancelar = view.findViewById(R.id.btnCancelar);
 
+        btnInformacion = view.findViewById(R.id.btnInformacion);
         btnAgregarFirma = view.findViewById(R.id.btnAgregarFirma);
         imgFirmaPlanta = view.findViewById(R.id.imgFirmaPlanta);
         txtFirmaPlanta = view.findViewById(R.id.txtFirmaPlanta);
         txtPesoRecolectado = view.findViewById(R.id.txtPesoRecolectado);
+        txtPesoPlanta = view.findViewById(R.id.txtPesoPlanta);
         txtotraNovedad = view.findViewById(R.id.txtotraNovedad);
+        txtObservacionPeso = view.findViewById(R.id.txtObservacionPeso);
 
         txtNovedad = view.findViewById(R.id.txtNovedad);
         btnEvidenciaObservacion = view.findViewById(R.id.btnEvidenciaObservacion);
@@ -252,13 +259,81 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         }
 
 
-        List<ManifiestoDetallePesosEntity> bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiesto(idManifiesto);
+        List<ItemManifiestoDetalleValorSede> bultos = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManif(idAppManifiesto);
         if(bultos.size()>0){
-            for (ManifiestoDetallePesosEntity p:bultos){
-                pesoT= pesoT+ p.getValor();
+            for (ItemManifiestoDetalleValorSede p:bultos){
+                pesoT= pesoT+ p.getPeso();
+                if(p.getNuevoPeso()!=null){
+                    pesoRecolectado = pesoRecolectado + p.getNuevoPeso();
+                }
             }
+
+        }
+        txtPesoRecolectado.setText(String.valueOf(pesoT));
+        txtPesoPlanta.setText(String.valueOf(pesoRecolectado));
+    }
+
+    private void validarPesoExtra(){
+        double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
+        double validacionMenor = ( Double.parseDouble(txtPesoRecolectado.getText().toString()) -Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03);
+        double valorIngresado = Double.parseDouble(txtPesoPlanta.getText().toString());
+
+        if(!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())){
+            if(valorIngresado>validacion){
+                //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
+                btnInformacion.setVisibility(View.VISIBLE);
+                btnInformacion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder = new DialogBuilder(getActivity());
+                        builder.setMessage("Peso ingresado es mayor al peso Total");
+                        builder.setCancelable(true);
+                        builder.setNeutralButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                builder.dismiss();
+                            }
+                        });
+                        builder.show();
+                    }
+                });
+
+                txtObservacionPeso.setVisibility(View.GONE);
+                txtObservacionPeso.setText("");
+            }else if(valorIngresado<validacionMenor){
+                //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
+                btnInformacion.setVisibility(View.VISIBLE);
+                btnInformacion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder = new DialogBuilder(getActivity());
+                        builder.setMessage("Peso ingresado es menor al peso Total");
+                        builder.setCancelable(true);
+                        builder.setNeutralButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                builder.dismiss();
+                            }
+                        });
+                        builder.show();
+                    }
+                });
+
+                txtObservacionPeso.setVisibility(View.GONE);
+                txtObservacionPeso.setText("");
+
+            }else{
+                txtObservacionPeso.setText("Observacion de Peso");
+                txtObservacionPeso.setVisibility(View.VISIBLE);
+                btnInformacion.setVisibility(View.GONE);
+            }
+        }else{
+            btnInformacion.setVisibility(View.GONE);
+            txtObservacionPeso.setVisibility(View.GONE);
+            txtObservacionPeso.setText(" ");
         }
     }
+
 
     public void setMakePhoto(Integer code) {
         if(dialogAgregarFotografias!=null){

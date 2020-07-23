@@ -100,7 +100,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         tabLayout = (TabLayout) getView().findViewById(R.id.tabLayout);
         //tabLayout.addTab(tabLayout.newTab().setText("GENERAL"));
         tabLayout.addTab(tabLayout.newTab().setText("DETALLE"));
-        tabLayout.addTab(tabLayout.newTab().setText("FIRMA"));
+        tabLayout.addTab(tabLayout.newTab().setText("REGISTRAR"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) getView().findViewById(R.id.pager);

@@ -71,6 +71,7 @@
                 android:layout_height="57dp"
                 android:textSize="22dp"
                 android:enabled="false"
+                android:textColor="@color/coloRedRockwell"
                 android:layout_width="match_parent"
                 android:background="@drawable/border_imput_text"
                 android:layout_weight="1"

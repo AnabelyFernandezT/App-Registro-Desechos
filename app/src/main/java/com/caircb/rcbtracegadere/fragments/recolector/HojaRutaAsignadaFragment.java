@@ -183,51 +183,114 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         public void onClick(View v) {
                             dialogBuilder.dismiss();
 
-                            dialogBuilder2 = new DialogBuilder(getActivity());
-                            dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
-                            dialogBuilder2.setCancelable(false);
-                            dialogBuilder2.setTitle("CONFIRMACIÓN");
-                            dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder2.dismiss();
-                                    if (MyApp.getDBO().impresoraDao().existeImpresora()) {
-                                        Date fecha = AppDatabase.getDateTime();
-                                        //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                        MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
+                            if (rowItems.get(position).getTipoPaquete()==null ||  rowItems.get(position).getTipoPaquete()==0){
 
-                                        //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                dialogBuilder2 = new DialogBuilder(getActivity());
+                                dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                                dialogBuilder2.setCancelable(false);
+                                dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                            Date fecha = AppDatabase.getDateTime();
+                                            //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
 
-                                        Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
-                                        if (!estado) {
-                                            //actualizaria el primer registro
-                                            Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
-                                            if (_id != null) {
-                                                MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                            //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
+                                            Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
+                                            if (!estado) {
+                                                //actualizaria el primer registro
+                                                Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
+                                                if (_id != null) {
+                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                                }
+                                            } else {
+                                                //busco con punto de partida mayor a cer
+                                                Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
+                                                if (idMayor > 0) {
+                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                                }
                                             }
-                                        } else {
-                                            //busco con punto de partida mayor a cer
-                                            Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
-                                            if (idMayor > 0) {
-                                                MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
-                                            }
-                                        }
-                                        List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                            List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
-                                        //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1));
-                                    } else {
-                                        Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1,1));
+                                       // } else {
+                                       //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                      //  }
                                     }
-                                }
-                            });
-                            dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder2.dismiss();
-                                }
-                            });
-                            dialogBuilder2.show();
+                                });
+                                dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        if (!MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                            Date fecha = AppDatabase.getDateTime();
+                                            //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
+
+                                            //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
+                                            Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
+                                            if (!estado) {
+                                                //actualizaria el primer registro
+                                                Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
+                                                if (_id != null) {
+                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                                }
+                                            } else {
+                                                //busco con punto de partida mayor a cer
+                                                Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
+                                                if (idMayor > 0) {
+                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                                }
+                                            }
+                                            List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
+                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1,2));
+                                        } else {
+                                            Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                dialogBuilder2.show();
+
+                            }else {
+
+                                //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                    Date fecha = AppDatabase.getDateTime();
+                                    //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                    MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
+
+                                    //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
+                                    Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
+                                    if (!estado) {
+                                        //actualizaria el primer registro
+                                        Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
+                                        if (_id != null) {
+                                            MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                        }
+                                    } else {
+                                        //busco con punto de partida mayor a cer
+                                        Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
+                                        if (idMayor > 0) {
+                                            MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                        }
+                                    }
+                                    List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
+                                    //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1,1));
+                               // } else {
+                               //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                               // }
+                            }
+
                         }
                     });
                     dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {

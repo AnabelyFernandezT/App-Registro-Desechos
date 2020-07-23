@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2FragmentProcesada;
@@ -54,6 +55,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     RutaInicioFinEntity rut;
+    DialogBuilder dialogBuilder2;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -165,7 +167,25 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("INICIAR RECOLECCION"))
                 {
-                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
+                    dialogBuilder2 = new DialogBuilder(getActivity());
+                    dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                    dialogBuilder2.setCancelable(false);
+                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2,1));
+                        }
+                    });
+                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2,2));
+                        }
+                    });
+                    dialogBuilder2.show();
                 }
                 else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
                 {

@@ -117,7 +117,7 @@ public class DialogAgregarFotografias extends MyDialog implements  View.OnClickL
 
 
     public void setMakePhoto(Integer code) {
-
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (mImageCaptureUri != null) {
             String str = imagenUtils.compressImage(mImageCaptureUri);
             if (str != null && str.length() > 0) {

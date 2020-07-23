@@ -36,6 +36,11 @@ public abstract class ManifiestoPlantaDetalleValorDao {
     @Transaction
     public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByClienteOrNumManif(Integer idManifiesto);
 
+    @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado,nuevoPeso from tb_manifiestos_planta_det_valor where idManifiesto=:idManifiesto" )
+    @Transaction
+    public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByNumManif(Integer idManifiesto);
+
+
     @Query("update tb_manifiestos_planta_det_valor set estado=:check where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
     public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);
 
@@ -51,7 +56,7 @@ public abstract class ManifiestoPlantaDetalleValorDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoPlantaDetalleValorEntity entity);
 
-    public void saveOrUpdate(DtoManifiestoDetalleValorSede manifiesto){
+    public void saveOrUpdate(Integer idManifiesto, DtoManifiestoDetalleValorSede manifiesto){
 
         ManifiestoPlantaDetalleValorEntity entity;
 
@@ -59,6 +64,7 @@ public abstract class ManifiestoPlantaDetalleValorDao {
         if(entity==null){
             Boolean estado = manifiesto.getEstado() ==1 ? true:false;
             entity = new ManifiestoPlantaDetalleValorEntity();
+            entity.setIdManifiesto(idManifiesto);
             entity.setIdManifiestoDetalle(manifiesto.getIdManifiestoDetalle());
             entity.setPeso(manifiesto.getPeso());
             entity.setCodigoQR(manifiesto.getCodigoQR());

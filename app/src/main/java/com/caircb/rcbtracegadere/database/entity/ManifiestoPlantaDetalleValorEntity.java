@@ -14,6 +14,8 @@ public class ManifiestoPlantaDetalleValorEntity {
     @NonNull
     private Integer idManifiestoDetalle;
 
+    private Integer idManifiesto;
+
     private Double peso;
 
     private String codigoQR;
@@ -92,6 +94,14 @@ public class ManifiestoPlantaDetalleValorEntity {
 
     public void setIdManifiestoDetalleValor(Integer idManifiestoDetalleValor) {
         this.idManifiestoDetalleValor = idManifiestoDetalleValor;
+    }
+
+    public Integer getIdManifiesto() {
+        return idManifiesto;
+    }
+
+    public void setIdManifiesto(Integer idManifiesto) {
+        this.idManifiesto = idManifiesto;
     }
 }
 

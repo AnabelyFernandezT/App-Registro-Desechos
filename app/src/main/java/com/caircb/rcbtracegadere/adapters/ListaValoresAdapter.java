@@ -15,13 +15,22 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.MainActivity;
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
+import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
@@ -89,7 +98,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                 if(row.isImpresion()){
 
                     dialogBuilder = new DialogBuilder(getContext());
-                    dialogBuilder.setMessage("BULTO IMPRESO: Seguro que desea eliminarlo ?");
+                    dialogBuilder.setMessage("BULTO IMPRESO: Seguro que desea eliminarlo?");
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override
@@ -108,7 +117,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
                 }else{
                     dialogBuilder = new DialogBuilder(getContext());
-                    dialogBuilder.setMessage("Seguro que desea elimarlo ?");
+                    dialogBuilder.setMessage("Seguro que desea eliminarlo?");
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override
@@ -180,5 +189,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         this.listaItems = updateList;
         notifyDataSetChanged();
     }
+
+
 
 }

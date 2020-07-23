@@ -146,7 +146,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnVistaPreviaCancelar:
-                setNavegate(Manifiesto2Fragment.newInstance(idAppManifiesto,2));
+                setNavegate(Manifiesto2Fragment.newInstance(idAppManifiesto,2,1));
                 break;
             case R.id.btnVistaPreviaGuardar:
                builder = new DialogBuilder(getActivity());
