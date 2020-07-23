@@ -29,6 +29,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogFirma;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
+import com.caircb.rcbtracegadere.models.RowItemManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
@@ -56,7 +57,7 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogBuilder builder;
     double pesoT=0;
-    private boolean firma = false;
+    private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
     TextView txtCountPhoto;
 
@@ -203,6 +204,21 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         });
     }
 
+    public  boolean validarNovedad (){
+        String txtObservacion = txtotraNovedad.getText().toString();
+        String numeroFotos = txtCountPhoto.getText().toString();
+        if(txtObservacion.equals("")){
+            observacion=true;
+        }else{
+            if(numeroFotos.equals("0")){
+                observacion = false;
+            }else{
+                observacion = true;
+            }
+        }
+        return  observacion;
+    }
+
     private void load(){
        /* novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuenteRecepcion(idManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -284,17 +300,18 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         }
 
+        List<RowItemManifiestoDetalle> bultos = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto2(idManifiesto);
 
-        ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
-       /* if(bultos.size()>0){
-            for (ManifiestoDetallePesosEntity p:bultos){
-                pesoT= pesoT+ p.getValor();
+       // ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
+       if(bultos.size()>0){
+            for (RowItemManifiestoDetalle p:bultos){
+                pesoT= pesoT+ p.getPeso();
 
             }
 
-        }*/
+        }
 
-        txtPesoRecolectado.setText(String.valueOf(bultos.getPesoUnidad()));
+        txtPesoRecolectado.setText(String.valueOf(pesoT));
     }
 
     public void setMakePhoto(Integer code) {
@@ -307,20 +324,36 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     private void validarPesos(){
-    double validacion=(Double.parseDouble(txtPesoRecolectado.getText().toString())*0.03)+Double.parseDouble(txtPesoRecolectado.getText().toString());
-    double valorIngresado = Double.parseDouble(txtPeso.getText().toString());
+        if(txtPeso.getText().toString().equals("")) {}
+            else{
+            double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
+            double valorIngresado = Double.parseDouble(txtPeso.getText().toString());
 
 
     if(!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())){
         if(valorIngresado>validacion){
             //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
             txtNovedad.setText("Peso ingresado es mayor al peso Total");
-        }else{
+        }else if(valorIngresado<validacionMenor){
             //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
             txtNovedad.setText("Peso ingresado es menor al peso Total");
+        }else{
+            txtNovedad.setText(" ");
         }
+    }else{
+        txtNovedad.setText(" ");
     }
 
+            if (!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())) {
+                if (valorIngresado > validacion) {
+                    //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
+                    txtNovedad.setText("Peso ingresado es mayor al peso Total");
+                } else {
+                    //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
+                    txtNovedad.setText("Peso ingresado es menor al peso Total");
+                }
+            }
+        }
     }
 
     public boolean validaExisteFirma(){
@@ -362,12 +395,15 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     public void guardarObservaciones(){
-        DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
-        p.setIdManifiesto(idManifiesto);
-        p.setPesoPlanta(Double.parseDouble(txtPeso.getText().toString()));
-        p.setObservacionPeso(txtNovedad.getText().toString());
-        p.setObservacionOtra(txtotraNovedad.getText().toString());
-        MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
+        if(txtPeso.getText().toString().equals("")) {}
+        else{
+            DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
+            p.setIdManifiesto(idManifiesto);
+            p.setPesoPlanta(Double.parseDouble(txtPeso.getText().toString()));
+            p.setObservacionPeso(txtNovedad.getText().toString());
+            p.setObservacionOtra(txtotraNovedad.getText().toString());
+            MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
+        }
     }
 
 }
