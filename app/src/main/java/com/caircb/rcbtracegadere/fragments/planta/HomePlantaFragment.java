@@ -40,7 +40,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
 
-
     public Context mContext;
 
     ImageButton regionBuscar;
@@ -50,7 +49,8 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
         public void onSuccessful() {
-           loadCantidadManifiestoAsignadoNO();
+           Integer idVehiculoPara = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+           loadCantidadManifiestoAsignadoNO(idVehiculoPara);
         }
     };
 
@@ -90,7 +90,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnDropOffTransportista = (ImageView) getView().findViewById(R.id.btnDropOffTransportista);
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
-
         cargarLabelCantidad();
 
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +117,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
-                Integer banderaUno= MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta();
+                Integer banderaUno= MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo);
                 Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada();
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
                 if(bandera!=null) {
@@ -152,12 +151,11 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         String valor = parametro == null ? "-1" : parametro.getValor();
         Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-
         if(bandera!=null) {
             if (bandera.equals("1")) {
                 loadCantidadManifiestoAsignado();
             } else if (bandera.equals("2")) {
-                loadCantidadManifiestoAsignadoNO();
+                loadCantidadManifiestoAsignadoNO(idVehiculo);
             }
         }
     }
@@ -167,8 +165,8 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     }
 
 
-    private void loadCantidadManifiestoAsignadoNO() {
-        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta());
+    private void loadCantidadManifiestoAsignadoNO(Integer idVehiculo) {
+        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo));
     }
 
 }
