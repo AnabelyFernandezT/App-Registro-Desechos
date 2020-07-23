@@ -48,6 +48,7 @@
                     android:textSize="15dp"
                     android:id="@+id/txtPesoBultoNo"
                     android:inputType="number"
+                    android:maxLength="3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
