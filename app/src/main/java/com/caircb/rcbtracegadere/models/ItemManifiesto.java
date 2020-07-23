@@ -16,6 +16,7 @@ public class ItemManifiesto {
     private Integer Cierre2;
     private String telefono;
     private String frecuencia;
+    private Integer tipoPaquete;
 
 
 
@@ -141,5 +142,13 @@ public class ItemManifiesto {
 
     public void setFrecuencia(String frecuencia) {
         this.frecuencia = frecuencia;
+    }
+
+    public Integer getTipoPaquete() {
+        return tipoPaquete;
+    }
+
+    public void setTipoPaquete(Integer tipoPaquete) {
+        this.tipoPaquete = tipoPaquete;
     }
 }

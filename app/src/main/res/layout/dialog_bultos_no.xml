@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:id="@+id/fragment_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="BULTOS"
+            android:textAlignment="center"
+            android:textColor="@color/app_gadere"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:textColor="@color/app_gadere"
+                    android:textSize="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ingrese numero de bultos:">
+
+                </TextView>
+
+                <EditText
+                    android:textSize="15dp"
+                    android:id="@+id/txtPesoBultoNo"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btn_addNo"
+                android:clickable="true"
+                android:background="@drawable/ic_background_button_keyboard_blue"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1"
+                android:text="fourth">
+                <ImageButton
+                    android:clickable="false"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_button_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</LinearLayout>
