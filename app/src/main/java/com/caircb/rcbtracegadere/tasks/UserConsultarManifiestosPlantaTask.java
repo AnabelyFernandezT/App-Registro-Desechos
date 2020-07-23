@@ -50,7 +50,7 @@ public class UserConsultarManifiestosPlantaTask extends MyRetrofitApi implements
                         for (DtoManifiestoDetalleSede mdet:reg.getHojaRutaDetallePlanta()){
                             MyApp.getDBO().manifiestoPlantaDetalleDao().saveOrUpdate(mdet);
                             for(DtoManifiestoDetalleValorSede sedeVa : mdet.getHojaRutaDetalleValor()){
-                                MyApp.getDBO().manifiestoPlantaDetalleValorDao().saveOrUpdate(sedeVa);
+                                MyApp.getDBO().manifiestoPlantaDetalleValorDao().saveOrUpdate(reg.getIdManifiesto(),sedeVa);
                             }
                         }
                     }

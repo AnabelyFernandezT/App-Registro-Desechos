@@ -89,7 +89,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                 if(row.isImpresion()){
 
                     dialogBuilder = new DialogBuilder(getContext());
-                    dialogBuilder.setMessage("BULTO IMPRESO: Seguro que desea eliminarlo ?");
+                    dialogBuilder.setMessage("BULTO IMPRESO: Seguro que desea eliminarlo?");
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override
@@ -108,7 +108,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
                 }else{
                     dialogBuilder = new DialogBuilder(getContext());
-                    dialogBuilder.setMessage("Seguro que desea elimarlo ?");
+                    dialogBuilder.setMessage("Seguro que desea eliminarlo?");
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override

@@ -717,6 +717,6 @@ public class TabManifiestoGeneral extends LinearLayout {
         return true;
     }
 
-    public String getIdentificacion(){ return txtRespEntregaIdentificacion.getText().toString();
-    }
+    public String getIdentificacion(){ return txtRespEntregaIdentificacion.getText().toString();}
+
 }
