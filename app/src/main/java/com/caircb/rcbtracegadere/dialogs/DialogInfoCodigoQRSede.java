@@ -96,8 +96,8 @@ public class DialogInfoCodigoQRSede extends MyDialog {
         txtPeso.setText(""+item.getPeso());
         txtDescripcion.setText(item.getNombreDesecho());
     }
-
-    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
+/*
+      UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
         public void onSuccessful() {
             loadCantidadManifiestoAsignado();
@@ -108,7 +108,7 @@ public class DialogInfoCodigoQRSede extends MyDialog {
     private void loadCantidadManifiestoAsignado() {
         lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
     }
-
+*/
 
 
     public void setmOnclickSedeListener(@NonNull DialogBultosPlanta.onclickSedeListener l){

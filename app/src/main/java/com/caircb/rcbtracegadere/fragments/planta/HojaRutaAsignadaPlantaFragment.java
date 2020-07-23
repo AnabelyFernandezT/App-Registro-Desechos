@@ -17,6 +17,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQR;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
@@ -90,7 +91,10 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     private void filtro(String texto){
         List<ItemManifiestoSede> result = new ArrayList<>();
         List<ItemManifiestoSede> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif(texto);
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+        listaItems =  MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManifPlanta(texto,idVehiculo);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -99,8 +103,10 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif();
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif(idVehiculo);
         adapterList();
 
     }
@@ -151,7 +157,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                 dialogCodigoQR.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
                     @Override
                     public void onSucefull() {
-                        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif();
+                        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManifCodigoQR();
                         adapterList();
                     }
                 });
