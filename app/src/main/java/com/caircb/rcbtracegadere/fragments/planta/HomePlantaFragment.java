@@ -118,7 +118,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                 Integer banderaUno= MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo);
-                Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada();
+                Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada(idVehiculo);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
                 if(bandera!=null) {
                     if (bandera.equals("1") ) {
@@ -153,15 +153,15 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
         if(bandera!=null) {
             if (bandera.equals("1")) {
-                loadCantidadManifiestoAsignado();
+                loadCantidadManifiestoAsignado(idVehiculo);
             } else if (bandera.equals("2")) {
                 loadCantidadManifiestoAsignadoNO(idVehiculo);
             }
         }
     }
 
-    private void loadCantidadManifiestoAsignado() {
-        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada());
+    private void loadCantidadManifiestoAsignado(Integer idVehiculo) {
+        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada(idVehiculo));
     }
 
 
