@@ -116,7 +116,8 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
                 public void onClick(View v) {
                     int positionSelected= MyViewHolder.this.getPosition();
                     ItemManifiesto it = manifiestosList.get(positionSelected);
-                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),it.getIdAppManifiesto(),frecuencia);
+                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),it.getIdAppManifiesto(),it.getFrecuencia());
+                    dialogInformacionTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     //informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
                     //informacionModulosTaskl.execute();
                     dialogInformacionTransportista.show();

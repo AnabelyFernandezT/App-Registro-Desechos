@@ -60,7 +60,7 @@ public class DialogInformacionTransportista extends MyDialog {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(getView());
         init();
-        datosInformacionModulo();
+
     }
 
     private void init() {
@@ -90,13 +90,18 @@ public class DialogInformacionTransportista extends MyDialog {
         sectionCuadro = getView().findViewById(R.id.sectionCuadro);
         sectionEspecifica = getView().findViewById(R.id.sectionEspecifica);
 
+
+
         datosCabecera();
         datosTabla();
+
+        datosInformacionModulo();
 
         btnRetornarMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogInformacionTransportista.this.dismiss();
+
             }
         });
 
@@ -147,6 +152,18 @@ public class DialogInformacionTransportista extends MyDialog {
             if (detalles.get(0).getResiduoSujetoFiscalizacion() == 2){
                 chkFiscalizacionNo.setSelected(true);
                 chkFiscalizacionSi.setSelected(false);
+            }
+            if (detalles.get(0).getResiduoSujetoFiscalizacion()==3){
+                chkFiscalizacionSi.setSelected(true);
+                chkFiscalizacionNo.setChecked(false);
+                chkFiscalizacionMi.setSelected(false);
+                chkFiscalizacionArcsa.setSelected(true);
+            }
+            if (detalles.get(0).getResiduoSujetoFiscalizacion()==4){
+                chkFiscalizacionSi.setSelected(true);
+                chkFiscalizacionNo.setChecked(false);
+                chkFiscalizacionMi.setSelected(true);
+                chkFiscalizacionArcsa.setSelected(false);
             }
 
 
