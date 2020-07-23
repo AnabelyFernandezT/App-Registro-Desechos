@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -109,9 +110,12 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
     }
 
     private void filtro(String texto){
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
         List<ItemManifiesto> result = new ArrayList<>();
         List<ItemManifiesto> listaItems = new ArrayList<>() ;
-        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManifPlanta(texto,entity.getIdSubRuta(),MySession.getIdUsuario());
+        listaItems =  MyApp.getDBO().manifiestoDao().fetchManifiestosAsigByClienteOrNumManifPlanta(texto,idVehiculo);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -120,8 +124,10 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta(entity.getIdSubRuta(),idFinRuta);
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
+        String valor = parametro == null ? "-1" : parametro.getValor();
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandoPlanta(idVehiculo);
         adapterList();
 
     }
