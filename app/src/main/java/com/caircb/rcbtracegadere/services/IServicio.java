@@ -106,6 +106,9 @@ public interface IServicio {
     @POST("HojaRuta/obtenerListaHojaRutaPlanta")
     Call<List<DtoManifiestoPlanta>> traerManifiestosPlanta(@Body RequestManifiestoSede model);
 
+    @GET("HojaRuta/obtenerListaHojaRutaPlantaNoPesados")
+    Call<List<DtoManifiestoPlanta>> obtenerListaHojaRutaPlantaPendientesPeso();
+
     @PUT("Registro/registroLoteContenedor")
     Call<DtoInfo>registrarLoteinicio (@Body RequestInicioLoteSede model);
 

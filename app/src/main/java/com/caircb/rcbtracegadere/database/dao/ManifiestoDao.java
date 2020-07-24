@@ -45,8 +45,8 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado<>1 ")
     public abstract int contarHojaRutaProcesada();
 
-    @Query("select count(*) from tb_manifiestos where estado=2 ") /*** se quito and estadoFinRuta=0  ****/
-    public abstract int contarHojaRutaProcesadaPlanta();
+    @Query("select count(*) from tb_manifiestos where estado=2 and idTransporteVehiculo =:idVehiculo") /*** se quito and estadoFinRuta=0  ****/
+    public abstract int contarHojaRutaProcesadaPlanta(Integer idVehiculo);
 
     @Query("select count(*) from tb_manifiestos where estado<>1 and idSubRuta=:idSubruta and idChoferRecolector=:idChoferRecolector ")
     public abstract int contarHojaRutaProcesadaPara(Integer idSubruta, Integer idChoferRecolector);
@@ -66,6 +66,11 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado=1 and idTransporteVehiculo=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRutaPlanta(Integer idSubRuta, Integer idChoferRecolector);
+
+
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=1000 order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosBuscarData();
@@ -83,9 +88,9 @@ public abstract class ManifiestoDao {
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoByPlaca(Integer idPlaca);
 
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, numeroPlacaVehiculo from tb_manifiestos where estado=2 and idSubRuta=:Subruta and idDestinatarioFinRutaCatalogo=:idFinRuta  order by nombreCliente") /***and estadoFinRuta=0***/
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, numeroPlacaVehiculo from tb_manifiestos where estado=2 and idTransporteVehiculo=:idPlaca  order by nombreCliente") /***and estadoFinRuta=0***/
     @Transaction
-    public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta(Integer Subruta, Integer idFinRuta);
+    public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta(Integer idPlaca);
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,+" +
             " apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos " +
@@ -95,9 +100,16 @@ public abstract class ManifiestoDao {
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,+" +
             " apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos " +
-            "where estado=2 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idSubRuta=:SubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+            "where estado=1 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idTransporteVehiculo=:SubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
-    public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManifPlanta(String search,Integer SubRuta,Integer idChoferRecolector);
+    public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManifPlantaXNO(String search,Integer SubRuta,Integer idChoferRecolector);
+
+
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,+" +
+            " apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal from tb_manifiestos " +
+            "where estado=2 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%') and idTransporteVehiculo=:idVehiculo order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManifPlanta(String search,Integer idVehiculo);
 
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos " +
@@ -105,7 +117,7 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumProcesado(String search,Integer SubRuta,Integer idChoferRecolector);
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos " +
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero, sucursal as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos " +
             "where (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  and idSubRuta=:SubRuta  and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigByClienteOrNumManifSearch(String search, Integer SubRuta,Integer idChoferRecolector);

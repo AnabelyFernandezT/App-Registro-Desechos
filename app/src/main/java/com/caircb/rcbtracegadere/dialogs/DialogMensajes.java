@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +56,25 @@ public class DialogMensajes extends MyDialog {
         txtMensaje = getView().findViewById(R.id.txtMensaje);
         ltsNotificaciones = getView().findViewById(R.id.lista_notificacion);
 
+        ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    catalogos.get(position-1);
+                    novedad = (String) ltsNotificaciones.getSelectedItem();
+                    idNotificacion=position;
+
+                    btnIngresarApp.setEnabled(true);
+                }else{
+                    btnIngresarApp.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        cargarNovedades();
 
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,19 +82,19 @@ public class DialogMensajes extends MyDialog {
                 dismiss();
             }
         });
-
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(entity!=null){
                     idManifiesto = entity.getIdAppManifiesto();
                 }else {
                     idManifiesto = 0;
                 }
                 UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),idManifiesto,
-                                                            txtMensaje.getText().toString(),
-                                                            idNotificacion,
-                                                            "1",0.0);
+                        txtMensaje.getText().toString(),
+                        idNotificacion,
+                        "1",0.0);
                 notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
                     @Override
                     public void onSuccessful() {
@@ -83,25 +104,6 @@ public class DialogMensajes extends MyDialog {
                 notificacionTask.execute();
             }
         });
-
-        ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0){
-                    catalogos.get(position-1);
-                    novedad = (String) ltsNotificaciones.getSelectedItem();
-                    idNotificacion=position;
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        cargarNovedades();
 
     }
 
@@ -123,12 +125,10 @@ public class DialogMensajes extends MyDialog {
         defaulSpiner.setEnabled(bhabilitar);
 
         return defaulSpiner;
-
     }
 
     private void cargarNovedades(){
         catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(1,7);
-
         loadSpinner(ltsNotificaciones,catalogos,true);
     }
 }

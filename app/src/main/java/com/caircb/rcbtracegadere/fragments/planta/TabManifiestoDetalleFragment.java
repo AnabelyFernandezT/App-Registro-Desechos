@@ -43,7 +43,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
     private static final String ARG_PARAM1 = "idAppManifiesto";
 
     View view;
-
+    Window window;
     Integer idAppManifiesto;
     private List<ItemManifiestoDetalleSede> detalles;
     RecyclerView recyclerView;
@@ -121,6 +121,9 @@ public class TabManifiestoDetalleFragment extends Fragment {
             }
         });
         dialogBultos.show();
+        window = dialogBultos.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
     }
 
 

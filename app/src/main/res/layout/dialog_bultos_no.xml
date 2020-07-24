@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand_bold"
-            android:text="BULTOS"
+            android:text="NUMERO DE BULTOS"
             android:textAlignment="center"
             android:textColor="@color/app_gadere"
             android:textSize="20dp" />
@@ -32,7 +32,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
@@ -48,31 +48,99 @@
                     android:textSize="15dp"
                     android:id="@+id/txtPesoBultoNo"
                     android:inputType="number"
+                    android:maxLength="3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 </EditText>
             </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <LinearLayout
+            android:clickable="true"
+            android:id="@+id/btnCancelarBultos"
+            android:orientation="horizontal"
+            android:background="@drawable/ic_button_skin_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
             <LinearLayout
-                android:id="@+id/btn_addNo"
-                android:clickable="true"
-                android:background="@drawable/ic_background_button_keyboard_blue"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
                 android:gravity="center"
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:text="fourth">
-                <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_marginRight="-4dp"
                     android:clickable="false"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_button_add"
+                    android:src="@mipmap/ic_button_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="RETORNAR"
+                    android:textColor="#fff"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:clickable="true"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btnAplicarBultos"
+            android:orientation="horizontal"
+            android:background="@drawable/ic_button_skin_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="APLICAR"
+                    android:textColor="#fff"
+                    android:textSize="14dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:clickable="false"
+                    android:src="@mipmap/ic_button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
 
 
     </LinearLayout>

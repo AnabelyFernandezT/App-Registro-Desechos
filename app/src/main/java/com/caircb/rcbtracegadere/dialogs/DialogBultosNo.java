@@ -19,15 +19,19 @@ import com.caircb.rcbtracegadere.generics.MyDialog;
 public class DialogBultosNo extends MyDialog implements View.OnClickListener {
     Activity _activity;
     EditText txtPesoBultoNo;
-    LinearLayout btnAgregar;
+    LinearLayout btnCancelarBultos,btnAplicarBultos;
     private int idManifiesto;
     private int idManifiestoDetalle;
 
     public interface OnRegistrarBultoListener {
         public void onSuccesfull(String numeroBultos, Integer idManifiestoDetalle);
     }
+    public interface OnCancelarBultoListener {
+        public void onSuccesfull();
+    }
 
     private OnRegistrarBultoListener mOnRegistrarBultoListener;
+    private OnCancelarBultoListener mOnCancelarBultoListener;
 
     public DialogBultosNo(@NonNull Context context, int idManifiesto, int idManifiestoDetalle) {
         super(context, R.layout.dialog_bultos_no);
@@ -50,20 +54,29 @@ public class DialogBultosNo extends MyDialog implements View.OnClickListener {
     public void init() {
         txtPesoBultoNo = findViewById(R.id.txtPesoBultoNo);
         String valor = txtPesoBultoNo.getText().toString();
-        btnAgregar = findViewById(R.id.btn_addNo);
-        btnAgregar.setOnClickListener(new View.OnClickListener() {
+        btnAplicarBultos = findViewById(R.id.btnAplicarBultos);
+        btnAplicarBultos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idManifiestoDetalle,cantidadBultos,0,0,true);
                 if (mOnRegistrarBultoListener != null) {
                     mOnRegistrarBultoListener.onSuccesfull(txtPesoBultoNo.getText().toString(),idManifiestoDetalle);
                 }
             }
         });
+        btnCancelarBultos = findViewById(R.id.btnCancelarBultos);
+        btnCancelarBultos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnCancelarBultoListener.onSuccesfull();
+            }
+        });
+
     }
 
     public void setmOnRegistrarBultoListener(@Nullable OnRegistrarBultoListener l) {
         mOnRegistrarBultoListener = l;
     }
-
+    public void setmOnCancelarBultoListener(@Nullable OnCancelarBultoListener l) {
+        mOnCancelarBultoListener = l;
+    }
 }

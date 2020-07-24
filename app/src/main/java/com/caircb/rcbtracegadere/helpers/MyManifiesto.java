@@ -72,7 +72,7 @@ public class MyManifiesto {
     Bitmap firmaNoRecoleccion;
     Bitmap firmaTransportista, firmaOperador1, firmaOperador2, firmaOperador1NoRecoleccion, firmaOperador2NoRecoleccion;
     ItemFile fileFirmaTecnico,fileFirmaTecnicoNoRecoleccion, fileFirmaOperador1, fileFirmaOperador2,fileFirmaOperador1NoRecoleccion,fileFirmaOperador2NoRecoleccion;
-    SimpleDateFormat simpleDate = new SimpleDateFormat("MM/dd/yyyy");
+    SimpleDateFormat simpleDate = new SimpleDateFormat("dd//MM/yyyy");
     CatalogoEntity catalogo;
     String identificacion;
 

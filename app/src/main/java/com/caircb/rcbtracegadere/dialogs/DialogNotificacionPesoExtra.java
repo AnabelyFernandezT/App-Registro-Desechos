@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +57,24 @@ public class DialogNotificacionPesoExtra extends MyDialog {
         txtMensaje = getView().findViewById(R.id.txtMensaje);
         ltsNotificaciones = getView().findViewById(R.id.lista_notificacion);
 
+        ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    catalogos.get(position-1);
+                    novedad = (String) ltsNotificaciones.getSelectedItem();
+                    idNotificacion=3;
+
+                    btnIngresarApp.setEnabled(true);
+                }else{
+                    btnIngresarApp.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        cargarNovedades();
 
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +82,6 @@ public class DialogNotificacionPesoExtra extends MyDialog {
                 dismiss();
             }
         });
-
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,25 +98,6 @@ public class DialogNotificacionPesoExtra extends MyDialog {
                 notificacionTask.execute();
             }
         });
-
-        ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0){
-                    catalogos.get(position-1);
-                    novedad = (String) ltsNotificaciones.getSelectedItem();
-                    idNotificacion=3;
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        cargarNovedades();
 
     }
 

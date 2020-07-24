@@ -131,6 +131,7 @@
             android:id="@+id/sectionCuadro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical"
             android:paddingLeft="5dp">
 
@@ -162,6 +163,7 @@
 
         <LinearLayout
             android:id="@+id/sectionEspecifica"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

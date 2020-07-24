@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,6 +53,25 @@ public class DialogNotificacionDetalle extends MyDialog {
         txtMensaje = getView().findViewById(R.id.txtMensaje);
         ltsNotificaciones = getView().findViewById(R.id.lista_notificacion);
 
+        ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    catalogos.get(position-1);
+                    novedad = (String) ltsNotificaciones.getSelectedItem();
+                    idNotificacion=2;
+
+                    btnIngresarApp.setEnabled(true);
+                }else{
+                    btnIngresarApp.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        cargarNovedades();
 
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,10 +79,10 @@ public class DialogNotificacionDetalle extends MyDialog {
                 dismiss();
             }
         });
-
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),idAppManifiesto,
                                                             txtMensaje.getText().toString(),
                                                             idNotificacion,
@@ -76,24 +97,37 @@ public class DialogNotificacionDetalle extends MyDialog {
             }
         });
 
-        ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*
+        if(ltsNotificaciones.getSelectedItem().toString().equals("SELECCIONE")){
+            btnIngresarApp.setEnabled(false);
+        }else{
+            btnIngresarApp.setEnabled(true);
+        }
+
+         */
+    /*
+        txtMensaje.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0){
-                    catalogos.get(position-1);
-                    novedad = (String) ltsNotificaciones.getSelectedItem();
-                    idNotificacion=2;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable texto) {
+
+                if(!texto.toString().equals("")){
+                    if(ltsNotificaciones.getSelectedItem().toString().equals("SELECCIONE")){
+                        btnIngresarApp.setEnabled(false);
+                    }else{
+                        btnIngresarApp.setEnabled(true);
+                    }
+                }else{
+                    btnIngresarApp.setEnabled(false);
                 }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
-        cargarNovedades();
+     */
 
     }
 
