@@ -123,7 +123,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                         dialogBultosNo.setmOnRegistrarBultoListener(new DialogBultosNo.OnRegistrarBultoListener() {
                             @Override
                             public void onSuccesfull(String numeroBultos, Integer idDetalle) {
-                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresNoConfirmados(idAppManifiesto,idDetalle);
+                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValores(idAppManifiesto,idDetalle);
                                 if (numeroBultos.equals("")||numeroBultos.equals("0")){
                                     final DialogBuilder dialogBuilder2=new DialogBuilder(getContext());
                                     dialogBuilder2.setMessage("Ingrese un numero válido");
