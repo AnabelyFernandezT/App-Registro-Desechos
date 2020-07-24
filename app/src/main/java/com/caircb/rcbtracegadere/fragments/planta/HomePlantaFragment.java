@@ -22,8 +22,10 @@ import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPendientesPesarTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 
 import java.util.List;
@@ -39,7 +41,8 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     DialogPlacas dialogPlacas;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
-
+    UserConsultarManifiestosPendientesPesarTask userConsultarManifiestosPendientesPesarTask;
+    TextView lblDropOffTransportista;
     public Context mContext;
 
     ImageButton regionBuscar;
@@ -90,7 +93,25 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnDropOffTransportista = (ImageView) getView().findViewById(R.id.btnDropOffTransportista);
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
+        lblDropOffTransportista = getView().findViewById(R.id.lblDropOffTransportista);
         cargarLabelCantidad();
+
+
+        btnDropOffTransportista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
+                userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
+                    @Override
+                    public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
+                        setNavegate(HojaRutaPlantaPendientesPesoFragment.newInstance());
+                        lblDropOffTransportista.setText(String.valueOf(listaManifiestos.size()));
+                    }
+                });
+                userConsultarManifiestosPendientesPesarTask.execute();
+            }
+        });
 
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
             @Override

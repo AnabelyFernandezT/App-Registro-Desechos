@@ -103,6 +103,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         init();
         loadData();
         validarPesoExtra();
+        bloquerAdiciona();
         return  view;
     }
 
@@ -355,6 +356,14 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         p.setIdManifiesto(idAppManifiesto);
         p.setObservacionOtra(txtotraNovedad.getText().toString());
         MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
+    }
+
+    public void bloquerAdiciona(){
+        Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(idAppManifiesto);
+        if(estadoManifiesto == 3){
+            txtotraNovedad.setEnabled(false);
+            btnAgregarFirma.setEnabled(false);
+        }
     }
 
 }
