@@ -35,18 +35,13 @@ import java.util.List;
  */
 public class HomePlantaFragment extends MyFragment implements OnHome {
     ImageButton btnSincManifiestosPlanta,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
-    UserConsultarRecolectadosTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogPlacas dialogPlacas;
-    UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
-    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
     UserConsultarManifiestosPendientesPesarTask userConsultarManifiestosPendientesPesarTask;
     TextView lblDropOffTransportista;
     public Context mContext;
-
     ImageButton regionBuscar;
-    //ImageButton btnCalculadora;
 
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
@@ -69,7 +64,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
 
         initBuscador();
         init();
-        //cargarManifiesto();
         cargarLbael();
         return getView();
 

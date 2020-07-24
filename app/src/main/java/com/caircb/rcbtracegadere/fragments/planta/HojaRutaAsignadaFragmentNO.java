@@ -49,18 +49,12 @@ import java.util.List;
  */
 public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnClickListener {
 
-
     LinearLayout btnRetornarListHojaRuta;
-
-    private Window window;
     private RecyclerView recyclerView;
     private ManifiestoAdapter recyclerviewAdapter;
-
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
     private SearchView searchView;
-    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
-    private ListView mDrawerMenuItems, mDialogMenuItems;
     RutaInicioFinEntity rut;
     ManifiestoEntity entity;
     Integer idFinRuta;

@@ -74,7 +74,7 @@ public class DialogFinRuta extends MyDialog {
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
-    TextView txtBuscar, txtSincronizar, txtManifiestos;
+    TextView txtBuscar, txtSincronizar, txtManifiestos, lblpickUpTransportista;
 
     public DialogFinRuta(@NonNull Context context) {
         super(context, R.layout.dialog_final_ruta);
@@ -90,6 +90,7 @@ public class DialogFinRuta extends MyDialog {
     }
 
     private void init(){
+        lblpickUpTransportista = getActivity().findViewById(R.id.lblpickUpTransportista);
         parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_hotel");
         if(parametro!=null){
             inicioHotel = parametro.getValor();
@@ -256,6 +257,7 @@ public class DialogFinRuta extends MyDialog {
 
                // MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
+                lblpickUpTransportista.setText("0");
                 DialogFinRuta.this.dismiss();
             }
 
@@ -345,6 +347,7 @@ public class DialogFinRuta extends MyDialog {
         btnPickUpTransportista.setEnabled(false);
         btnDropOffTransportista.setEnabled(false);
 
+
         regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
         btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
         btnListaAsignadaTransportista.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
@@ -389,7 +392,7 @@ public class DialogFinRuta extends MyDialog {
 
             builder = new DialogBuilder(getActivity());
             builder.setMessage("¿Es su último día de recolección?");
-            builder.setCancelable(true);
+            builder.setCancelable(false);
             builder.setPositiveButton("Si", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

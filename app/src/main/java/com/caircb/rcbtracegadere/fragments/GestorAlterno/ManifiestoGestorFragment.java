@@ -35,10 +35,9 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     LinearLayout btnManifiestoCancel, btnManifiestoNext;
 
     private static final String ARG_PARAM1 = "manifiestoID";
-    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
+    LinearLayout btnAgregarFirma;
     RecepcionGestorFragment manifiestoGestor;
     Integer idAppManifiesto;
-    UserRegistrarPlanta userRegistrarPlanta;
     ImageView imgFirmaPlanta;
     TextView txtFirmaPlanta, txtPesoTotal;
     DialogFirma dialogFirma;
@@ -145,14 +144,12 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_hoja_ruta_gestor, container, false));
         init();
-
         return getView();
     }
 
@@ -244,14 +241,10 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
 
         txtNovedad.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -262,7 +255,6 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
                 }
             }
         });
-
         loadData();
     }
 

@@ -48,13 +48,9 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     private static final String ARG_PARAM4 = "pesajePendiente";
 
     private Integer manifiestoID;
-    private Boolean bloqueado;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
     private LinearLayout btnManifiestoCancel,btnManifiestoNext;
     private FragmentActivity myContext;
     UserRegisterPlantaDetalleTask userRegisterPlantaDetalleTask;
-    //TabManifiestoGeneralFragment tab1;
     TabManifiestoDetalleFragment tab2;
     TabManifiestoAdicionalFragment tab3;
     TabHost tabs;
@@ -137,7 +133,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
 
     private void inicializeTab(){
         tab2 = new TabManifiestoDetalleFragment(getActivity(), manifiestoID);
-        tab3 = new TabManifiestoAdicionalFragment(getActivity(), manifiestoID);
+        tab3 = new TabManifiestoAdicionalFragment(getActivity(), manifiestoID, pesajePendiente);
     }
 
     private void init(){
@@ -171,8 +167,22 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                 Integer bultosSeleccionados = detalles.getBultosSelecionado();
                 firma = tab3.validarInformacion();
                 novedad = tab3.validarNovedad();
-                if(!firma){
-                    messageBox("Debe registrar la firma.!");
+
+                if(pesajePendiente.equals("NO")){
+                    if(!firma){
+                        messageBox("Debe registrar la firma.!");
+                    }else{
+                        if(novedad){
+                            if(bultos.equals(bultosSeleccionados)) {
+                                registroPlantaDetalle();
+                            }
+                            else {
+                                messageBox("Seleccione todos los bultos.!");
+                            }
+                        }else{
+                            messageBox("Ingrese una foto.!");
+                        }
+                    }
                 }else{
                     if(novedad){
                         if(bultos.equals(bultosSeleccionados)) {
@@ -184,6 +194,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                     }else{
                         messageBox("Ingrese una foto.!");
                     }
+
                 }
                 break;
         }
