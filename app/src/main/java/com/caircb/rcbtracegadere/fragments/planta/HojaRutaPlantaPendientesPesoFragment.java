@@ -18,6 +18,8 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
+import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQR;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
@@ -35,6 +37,7 @@ public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements 
     private SearchView searchView;
     private List<ItemManifiestoSede> rowItems;
     private OnRecyclerTouchListener touchListener;
+    DialogInfoCodigoQR dialogCodigoQR;
 
     public static HojaRutaPlantaPendientesPesoFragment newInstance() {
         return new HojaRutaPlantaPendientesPesoFragment();
@@ -118,7 +121,27 @@ public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements 
 
     @Override
     public void reciveData(String data) {
+        Boolean estadoBulto = MyApp.getDBO().manifiestoPlantaDetalleValorDao().verificarBultoEstado(data);
 
+        if(estadoBulto==null){
+            messageBox("CODIGO QR NO EXISTE..!");
+        }else{
+            if (estadoBulto){
+                messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
+            }else if (!estadoBulto){
+                dialogCodigoQR = new DialogInfoCodigoQR(getActivity(),data);
+                dialogCodigoQR.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogCodigoQR.setCancelable(false);
+                dialogCodigoQR.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
+                    @Override
+                    public void onSucefull() {
+                        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManifCodigoQR();
+                        adapterList();
+                    }
+                });
+                dialogCodigoQR.show();
+            }
+        }
     }
 
     @Override
