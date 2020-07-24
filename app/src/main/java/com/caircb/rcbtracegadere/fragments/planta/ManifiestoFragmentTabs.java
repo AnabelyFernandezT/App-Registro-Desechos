@@ -208,7 +208,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             @Override
             public void onClick(View v) {
                 String observacion = tab3.sendObservacion()==null ? "": tab3.sendObservacion();
-                userRegisterPlantaDetalleTask = new UserRegisterPlantaDetalleTask(getActivity(), manifiestoID, observacion, numeroManifiesto, pesajePendiente.equals("NO")?2:3);
+                userRegisterPlantaDetalleTask = new UserRegisterPlantaDetalleTask(getActivity(), manifiestoID, observacion, numeroManifiesto, pesajePendiente.equals("NO")?1:3);
                 userRegisterPlantaDetalleTask.setmOnRegisterPlantaDetalleListener(new UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner() {
                     @Override
                     public void OnSucessfull() {
