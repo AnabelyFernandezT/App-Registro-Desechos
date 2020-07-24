@@ -109,10 +109,10 @@ public class DialogInformacionTransportista extends MyDialog {
 
     private void datosCabecera() {
         lblApertura1.setText(apertura1==null?"":apertura1.toString());
-        lblApertura2.setText(apertura2==null?"":apertura1.toString());
-        lblCierre1.setText(cierre1==null?"":apertura1.toString());
-        lblCierre2.setText(cierre2==null?"":apertura1.toString());
-        lblTelefonoCliente.setText(telefono==null?"":apertura1.toString());
+        lblApertura2.setText(apertura2==null?"":apertura2.toString());
+        lblCierre1.setText(cierre1==null?"":cierre1.toString());
+        lblCierre2.setText(cierre2==null?"":cierre2.toString());
+        lblTelefonoCliente.setText(telefono==null?"":telefono.toString());
     }
 
     private  void datosTabla(){
