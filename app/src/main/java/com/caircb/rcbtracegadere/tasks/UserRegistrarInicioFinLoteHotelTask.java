@@ -64,15 +64,7 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
        HotelLotePadreEntity lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
        //RutaInicioFinEntity inicioFinRuta = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
        Integer inicioFinRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-       ManifiestoEntity entity = MyApp.getDBO().manifiestoDao().fetchHojaRuta();
-
-       Integer idDestino =-1;
-       String id = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor();
-       if(!id.equals("")){
-            idDestino = Integer.valueOf(id);
-       }
-
-       //Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
+       ManifiestoEntity entity = MyApp.getDBO().manifiestoDao().fetchHojaRutaEn(MySession.getIdUsuario());
 
        rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
        rq.setIdSubRuta(inicioFinRuta);
