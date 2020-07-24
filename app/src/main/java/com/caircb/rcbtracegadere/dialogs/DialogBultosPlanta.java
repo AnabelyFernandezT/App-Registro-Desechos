@@ -17,6 +17,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBultosAdapterPlanta;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleBultosAdapterSede;
+import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoAdicionalFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
@@ -93,7 +94,8 @@ public class DialogBultosPlanta extends MyDialog {
                  */
             }
         });
-
+        TabManifiestoAdicionalFragment ta = new TabManifiestoAdicionalFragment();
+        ta.validarPesoExtra();
         //datosPlacasDisponibles();
     }
 

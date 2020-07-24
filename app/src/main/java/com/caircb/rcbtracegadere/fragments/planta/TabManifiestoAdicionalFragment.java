@@ -260,6 +260,11 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         }
 
 
+
+    }
+
+    public void validarPesoExtra(){
+
         List<ItemManifiestoDetalleValorSede> bultos = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManif(idAppManifiesto);
         if(bultos.size()>0){
             for (ItemManifiestoDetalleValorSede p:bultos){
@@ -272,9 +277,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         }
         txtPesoRecolectado.setText(String.valueOf(pesoT));
         txtPesoPlanta.setText(String.valueOf(pesoRecolectado));
-    }
 
-    private void validarPesoExtra(){
         double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
         double validacionMenor = ( Double.parseDouble(txtPesoRecolectado.getText().toString()) -Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03);
         double valorIngresado = Double.parseDouble(txtPesoPlanta.getText().toString());

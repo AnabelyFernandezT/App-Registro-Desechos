@@ -86,7 +86,7 @@
         android:background="@drawable/shape_card_border"
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
-        android:layout_height="345dp"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:elevation="4dp"
         android:focusable="true"

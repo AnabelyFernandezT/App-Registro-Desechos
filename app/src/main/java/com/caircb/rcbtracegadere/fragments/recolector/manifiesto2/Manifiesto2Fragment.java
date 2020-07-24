@@ -380,6 +380,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     }
 
     private void registarDatos(){
+        MyApp.getDBO().manifiestoDao().updateManifiestoFechaRecoleccion(idAppManifiesto,new Date());
         userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation());
         userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
             @Override
