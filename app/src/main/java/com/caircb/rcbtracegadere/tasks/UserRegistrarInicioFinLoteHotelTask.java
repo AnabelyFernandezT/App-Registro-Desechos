@@ -77,7 +77,7 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
        rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
        rq.setIdSubRuta(inicioFinRuta);
        rq.setFecha(new Date());
-       rq.setIdDestinatarioFinRutaCatalogo(idDestino);
+       rq.setIdDestinatarioFinRutaCatalogo(destinatarioInicioFinRutaCatalogo);
        rq.setIdTransportistaVehiculo(entity.getIdTransporteVehiculo());
 
         return rq;
