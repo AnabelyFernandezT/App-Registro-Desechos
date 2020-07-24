@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.fragments.planta;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
@@ -43,13 +44,15 @@ import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.utils.Utils;
+import com.itextpdf.text.pdf.languages.ArabicLigaturizer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TabManifiestoAdicionalFragment extends Fragment {
+public class TabManifiestoAdicionalFragment extends LinearLayout {
 
     private static final String ARG_PARAM1 = "idAppManifiesto";
     private static final String ARG_PARAM2 = "Manifiestobloqueado";
@@ -78,54 +81,38 @@ public class TabManifiestoAdicionalFragment extends Fragment {
     TextView txtCountPhoto, txtPesoPlanta;
     boolean info = false;
     DialogBuilder message;
+    List<ItemManifiestoDetalleValorSede> bultos = new ArrayList<>();
 
-    public static TabManifiestoAdicionalFragment newInstance (Integer manifiestoID){
-        TabManifiestoAdicionalFragment f = new TabManifiestoAdicionalFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, manifiestoID);
-        f.setArguments(args);
-        return f;
-    }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            idAppManifiesto= getArguments().getInt(ARG_PARAM1);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_recoleccion_planta_adicional, container, false);
+    public TabManifiestoAdicionalFragment(Context context, Integer manifiestoID){
+        super(context);
+        View.inflate(context, R.layout.fragment_recoleccion_planta_adicional, this);
+        this.idAppManifiesto = manifiestoID;
         init();
         loadData();
         validarPesoExtra();
         bloquerAdiciona();
-        return  view;
     }
 
     private void init(){
-        recyclerViewLtsManifiestoObservaciones = view.findViewById(R.id.LtsManifiestoObservaciones);
-        txtPeso = view.findViewById(R.id.txtPeso);
-        btnGuardar = view.findViewById(R.id.btnGuardar);
-        btnCancelar = view.findViewById(R.id.btnCancelar);
+        recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
+        txtPeso = this.findViewById(R.id.txtPeso);
+        btnGuardar = this.findViewById(R.id.btnGuardar);
+        btnCancelar = this.findViewById(R.id.btnCancelar);
 
-        btnInformacion = view.findViewById(R.id.btnInformacion);
-        btnAgregarFirma = view.findViewById(R.id.btnAgregarFirma);
-        imgFirmaPlanta = view.findViewById(R.id.imgFirmaPlanta);
-        txtFirmaPlanta = view.findViewById(R.id.txtFirmaPlanta);
-        txtPesoRecolectado = view.findViewById(R.id.txtPesoRecolectado);
-        txtPesoPlanta = view.findViewById(R.id.txtPesoPlanta);
-        txtotraNovedad = view.findViewById(R.id.txtotraNovedad);
-        txtObservacionPeso = view.findViewById(R.id.txtObservacionPeso);
+        btnInformacion = this.findViewById(R.id.btnInformacion);
+        btnAgregarFirma = this.findViewById(R.id.btnAgregarFirma);
+        imgFirmaPlanta = this.findViewById(R.id.imgFirmaPlanta);
+        txtFirmaPlanta = this.findViewById(R.id.txtFirmaPlanta);
+        txtPesoRecolectado = this.findViewById(R.id.txtPesoRecolectado);
+        txtPesoPlanta = this.findViewById(R.id.txtPesoPlanta);
+        txtotraNovedad = this.findViewById(R.id.txtotraNovedad);
+        txtObservacionPeso = this.findViewById(R.id.txtObservacionPeso);
 
-        txtNovedad = view.findViewById(R.id.txtNovedad);
-        btnEvidenciaObservacion = view.findViewById(R.id.btnEvidenciaObservacion);
-        lnlCountPhoto = view.findViewById(R.id.lnlCountPhoto);
-        txtCountPhoto = view.findViewById(R.id.txtCountPhoto);
+        txtNovedad = this.findViewById(R.id.txtNovedad);
+        btnEvidenciaObservacion = this.findViewById(R.id.btnEvidenciaObservacion);
+        lnlCountPhoto = this.findViewById(R.id.lnlCountPhoto);
+        txtCountPhoto = this.findViewById(R.id.txtCountPhoto);
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
@@ -140,7 +127,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(dialogFirma==null) {
-                    dialogFirma = new DialogFirma(getActivity());
+                    dialogFirma = new DialogFirma(getContext());
                     dialogFirma.setTitle("SU FIRMA");
                     dialogFirma.setCancelable(false);
                     dialogFirma.setOnSignaturePadListener(new DialogFirma.OnSignaturePadListener() {
@@ -179,7 +166,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogAgregarFotografias = new DialogAgregarFotografias(getActivity(), idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
+                dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
                 dialogAgregarFotografias.setCancelable(false);
                 dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
@@ -258,14 +245,13 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             firmaConfirmada = imagen;
             firma=true;
         }
-
-
-
     }
 
     public void validarPesoExtra(){
-
-        List<ItemManifiestoDetalleValorSede> bultos = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManif(idAppManifiesto);
+        bultos.clear();
+        pesoT = 0.0;
+        pesoRecolectado = 0;
+        bultos = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManif(idAppManifiesto);
         if(bultos.size()>0){
             for (ItemManifiestoDetalleValorSede p:bultos){
                 pesoT= pesoT+ p.getPeso();
@@ -273,7 +259,6 @@ public class TabManifiestoAdicionalFragment extends Fragment {
                     pesoRecolectado = pesoRecolectado + p.getNuevoPeso();
                 }
             }
-
         }
 
         if (txtPesoRecolectado!=null) {
@@ -291,7 +276,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
                     btnInformacion.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            builder = new DialogBuilder(getActivity());
+                            builder = new DialogBuilder(getContext());
                             builder.setMessage("Peso ingresado es mayor al peso Total");
                             builder.setCancelable(true);
                             builder.setNeutralButton("OK", new View.OnClickListener() {
@@ -312,7 +297,7 @@ public class TabManifiestoAdicionalFragment extends Fragment {
                     btnInformacion.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            builder = new DialogBuilder(getActivity());
+                            builder = new DialogBuilder(getContext());
                             builder.setMessage("Peso ingresado es menor al peso Total");
                             builder.setCancelable(true);
                             builder.setNeutralButton("OK", new View.OnClickListener() {

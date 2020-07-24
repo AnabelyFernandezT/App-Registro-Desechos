@@ -84,18 +84,9 @@ public class DialogBultosPlanta extends MyDialog {
                         mOnclickSedeListener.onSucefull();
                     }
                 }
-
-                String nombre ="";
-                //DialogBultosPlanta.this.dismiss();
-                /*
-                if(mOnclickSedeListener!=null){
-                    mOnclickSedeListener.onSucefull();
-                }
-                 */
             }
         });
-        TabManifiestoAdicionalFragment ta = new TabManifiestoAdicionalFragment();
-        ta.validarPesoExtra();
+
         //datosPlacasDisponibles();
     }
 
