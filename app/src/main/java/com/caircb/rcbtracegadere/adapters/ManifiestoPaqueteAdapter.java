@@ -232,6 +232,5 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        int x=0;
     }
 }
