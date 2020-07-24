@@ -45,15 +45,14 @@ public class TabManifiestoDetalleFragment extends LinearLayout {
 
     private static final String ARG_PARAM1 = "idAppManifiesto";
 
-    View view;
     Window window;
     Integer idAppManifiesto;
     private List<ItemManifiestoDetalleSede> detalles;
     RecyclerView recyclerView;
-
     RecepcionGestorFragment manifiestoGestor;
     ManifiestoDetalleAdapterPlanta recyclerviewAdapter;
     DialogBultosPlanta dialogBultos;
+    String pesajePendiente;
 
     public TabManifiestoDetalleFragment(Context context, Integer idAppManifiesto){
         super(context);
@@ -98,8 +97,6 @@ public class TabManifiestoDetalleFragment extends LinearLayout {
             public void onSucefull() {
                 List<ItemManifiestoDetalleSede> detalles;
                 detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
-                //manifiestoAdicional.validarPesoExtra();
-                //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
                 recyclerviewAdapter.setTaskList(detalles);
             }
         });
