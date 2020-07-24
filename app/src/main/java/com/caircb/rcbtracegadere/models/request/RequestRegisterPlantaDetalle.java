@@ -12,6 +12,7 @@ public class RequestRegisterPlantaDetalle {
     private String observacion;
     private String urlFima;
     private Integer idPlantaRecolector;
+    private Integer tipoRecoleccion;
 
     public RequestRegisterPlantaDetalle() {
     }
@@ -62,5 +63,13 @@ public class RequestRegisterPlantaDetalle {
 
     public void setIdPlantaRecolector(Integer idPlantaRecolector) {
         this.idPlantaRecolector = idPlantaRecolector;
+    }
+
+    public Integer getTipoRecoleccion() {
+        return tipoRecoleccion;
+    }
+
+    public void setTipoRecoleccion(Integer tipoRecoleccion) {
+        this.tipoRecoleccion = tipoRecoleccion;
     }
 }

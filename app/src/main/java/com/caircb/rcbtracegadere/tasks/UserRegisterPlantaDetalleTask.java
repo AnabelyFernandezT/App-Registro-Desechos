@@ -45,6 +45,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
     UserUploadFileTask userUploadFileTask;
     String observacion, numeroManifiesto;
+    Integer tipoRecoleccion;
 
     public interface onRegisterPlantaDetalleListenner{
         public void OnSucessfull();
@@ -52,11 +53,12 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
 
     private UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner mOnRegisterPlantaDetalleListener;
 
-    public UserRegisterPlantaDetalleTask(Context context, Integer idManifiesto, String observacion, String numeroManifiesto){
+    public UserRegisterPlantaDetalleTask(Context context, Integer idManifiesto, String observacion, String numeroManifiesto, Integer tipoRecoleccion){
         super(context);
         this.idManifiesto = idManifiesto;
         this.observacion = observacion;
         this.numeroManifiesto = numeroManifiesto;
+        this.tipoRecoleccion = tipoRecoleccion;
     }
 
     @Override
@@ -122,6 +124,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
         rq.setFotos(obtenerFotos());
         rq.setUrlFima(firmaRecoleccion!=null?(path+"/"+firmaRecoleccion.getUrl()):"");
         rq.setIdPlantaRecolector(MySession.getIdUsuario());
+        rq.setTipoRecoleccion(tipoRecoleccion);
 
         return rq;
     }

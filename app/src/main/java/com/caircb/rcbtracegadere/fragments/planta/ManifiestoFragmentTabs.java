@@ -2,12 +2,14 @@ package com.caircb.rcbtracegadere.fragments.planta;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TabHost;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -55,6 +57,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     //TabManifiestoGeneralFragment tab1;
     TabManifiestoDetalleFragment tab2;
     TabManifiestoAdicionalFragment tab3;
+    TabHost tabs;
+
     boolean firma = false, novedad=false;
     String numeroManifiesto;
     String pesajePendiente;
@@ -92,7 +96,48 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                              Bundle savedInstanceState) {
         setView(inflater.inflate(R.layout.fragment_manifiesto_planta, container, false));
         init();
+        initTab();
         return getView();
+    }
+
+    private void initTab(){
+        inicializeTab();
+
+        tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
+        tabs.setup();
+
+        TabHost.TabSpec spec=tabs.newTabSpec("DETALLE");
+        spec.setContent(new TabHost.TabContentFactory() {
+            public View createTabContent(String tag) {
+                return tab2;
+            }
+        });
+        spec.setIndicator("DETALLE");
+        tabs.addTab(spec);
+
+        spec=tabs.newTabSpec("FIRMA");
+        spec.setContent(new TabHost.TabContentFactory() {
+            public View createTabContent(String tag) {
+                return tab3;
+            }
+        });
+        spec.setIndicator("FIRMA");
+        tabs.addTab(spec);
+
+        tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String s) {
+                if(s.equals("FIRMA")){
+                    tab3.validarPesoExtra();
+                }
+            }
+        });
+
+    }
+
+    private void inicializeTab(){
+        tab2 = new TabManifiestoDetalleFragment(getActivity(), manifiestoID);
+        tab3 = new TabManifiestoAdicionalFragment(getActivity(), manifiestoID);
     }
 
     private void init(){
@@ -101,33 +146,15 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         btnManifiestoNext=getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext.setOnClickListener(this);
-        tabLayout = (TabLayout) getView().findViewById(R.id.tabLayout);
-        //tabLayout.addTab(tabLayout.newTab().setText("GENERAL"));
-        tabLayout.addTab(tabLayout.newTab().setText("DETALLE"));
-        tabLayout.addTab(tabLayout.newTab().setText("FIRMAS"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        viewPager = (ViewPager) getView().findViewById(R.id.pager);
-
-        Pager adapter = new Pager(myContext.getSupportFragmentManager(), tabLayout.getTabCount());
-
-        //Adding adapter to pager
-        viewPager.setAdapter(adapter);
-
-        //Adding onTabSelectedListener to swipe views
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
-
-        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
         Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(manifiestoID);
         if(estadoManifiesto.equals(3)){
             btnManifiestoNext.setEnabled(false);
         }
 
     }
-
     @Override
     public void onClick(View v) {
+        tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
         switch (v.getId()){
             case R.id.btnManifiestoCancel:
                 if(pesajePendiente.equals("NO")){
@@ -140,25 +167,25 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             case R.id.btnManifiestoNext:
                 ItemManifiestoSede detalles;
                 detalles = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByTotal(manifiestoID);
-            Integer bultos = detalles.getTotalBultos();
-            Integer bultosSeleccionados = detalles.getBultosSelecionado();
-            firma = tab3.validarInformacion();
-            novedad = tab3.validarNovedad();
-            if(!firma){
-                messageBox("Debe registrar la firma.!");
-            }else{
-                if(novedad){
-                    if(bultos.equals(bultosSeleccionados)) {
-                        registroPlantaDetalle();
-                    }
-                    else {
-                        messageBox("Seleccione todos los bultos.!");
-                    }
+                Integer bultos = detalles.getTotalBultos();
+                Integer bultosSeleccionados = detalles.getBultosSelecionado();
+                firma = tab3.validarInformacion();
+                novedad = tab3.validarNovedad();
+                if(!firma){
+                    messageBox("Debe registrar la firma.!");
                 }else{
-                    messageBox("Ingrese una foto.!");
+                    if(novedad){
+                        if(bultos.equals(bultosSeleccionados)) {
+                            registroPlantaDetalle();
+                        }
+                        else {
+                            messageBox("Seleccione todos los bultos.!");
+                        }
+                    }else{
+                        messageBox("Ingrese una foto.!");
+                    }
                 }
-            }
-            break;
+                break;
         }
     }
 
@@ -170,7 +197,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             @Override
             public void onClick(View v) {
                 String observacion = tab3.sendObservacion()==null ? "": tab3.sendObservacion();
-                userRegisterPlantaDetalleTask = new UserRegisterPlantaDetalleTask(getActivity(), manifiestoID, observacion, numeroManifiesto);
+                userRegisterPlantaDetalleTask = new UserRegisterPlantaDetalleTask(getActivity(), manifiestoID, observacion, numeroManifiesto, pesajePendiente.equals("NO")?2:3);
                 userRegisterPlantaDetalleTask.setmOnRegisterPlantaDetalleListener(new UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner() {
                     @Override
                     public void OnSucessfull() {
@@ -208,42 +235,5 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         }else if( tab3 !=null && (requestCode>=1601 && requestCode<=1604) || (requestCode>=1601 && (requestCode<=1604))){
             tab3.setMakePhoto(requestCode);
         }
-    }
-
-    public class Pager extends FragmentStatePagerAdapter {
-
-        //integer to count number of tabs
-        int tabCount;
-
-        //Constructor to the class
-        public Pager(FragmentManager fm, int tabCount) {
-            super(fm);
-            //Initializing tab count
-            this.tabCount= tabCount;
-        }
-
-        //Overriding method getItem
-        @Override
-        public androidx.fragment.app.Fragment getItem(int position) {
-            //Returning the current tabs
-            switch (position) {
-
-                case 0:
-                    tab2 = TabManifiestoDetalleFragment.newInstance(manifiestoID);
-                    return tab2;
-                case 1:
-                    tab3 = TabManifiestoAdicionalFragment.newInstance(manifiestoID);
-                    return tab3;
-                default:
-                    return null;
-            }
-        }
-
-        //Overriden method getCount to get the number of tabs
-        @Override
-        public int getCount() {
-            return tabCount;
-        }
-
     }
 }

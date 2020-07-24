@@ -248,7 +248,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
                                     dialogBuilder2.setCancelable(false);
                                     dialogBuilder2.setTitle("CONFIRMACIÓN");
-                                    dialogBuilder2.setPositiveButton("Continuar", new View.OnClickListener() {
+                                    dialogBuilder2.setPositiveButton("Ok", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             dialogBuilder2.dismiss();
@@ -260,7 +260,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                             //  }
                                         }
                                     });
-                                    dialogBuilder2.setNegativeButton("Regresar", new View.OnClickListener() {
+                                    dialogBuilder2.setNegativeButton("Atras", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             dialogBuilder2.dismiss();

@@ -211,7 +211,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
                 RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
                 String valor = entity == null ?String.valueOf(rut.getIdSubRuta()) : entity.getValor();
-                Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
+                //Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
                // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
                 if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) >0 ){
