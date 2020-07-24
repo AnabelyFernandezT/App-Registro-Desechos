@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapterPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.RecepcionGestorFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoAdicional;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
@@ -53,6 +54,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
     ManifiestoDetalleAdapterPlanta recyclerviewAdapter;
     UserRegistarDetalleSedeTask detalleSedeTask;
     DialogBultosPlanta dialogBultos;
+    TabManifiestoAdicionalFragment manifiestoAdicional  = new TabManifiestoAdicionalFragment();
 
     public static TabManifiestoDetalleFragment newInstance (Integer manifiestoID){
         TabManifiestoDetalleFragment f = new TabManifiestoDetalleFragment();
@@ -116,7 +118,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
             public void onSucefull() {
                 List<ItemManifiestoDetalleSede> detalles;
                 detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
-
+                manifiestoAdicional.validarPesoExtra();
                 //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
                 recyclerviewAdapter.setTaskList(detalles);
             }

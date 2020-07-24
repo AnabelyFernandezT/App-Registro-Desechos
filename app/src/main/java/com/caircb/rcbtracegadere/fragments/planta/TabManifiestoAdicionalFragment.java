@@ -260,6 +260,11 @@ public class TabManifiestoAdicionalFragment extends Fragment {
         }
 
 
+
+    }
+
+    public void validarPesoExtra(){
+
         List<ItemManifiestoDetalleValorSede> bultos = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManif(idAppManifiesto);
         if(bultos.size()>0){
             for (ItemManifiestoDetalleValorSede p:bultos){
@@ -270,68 +275,69 @@ public class TabManifiestoAdicionalFragment extends Fragment {
             }
 
         }
-        txtPesoRecolectado.setText(String.valueOf(pesoT));
-        txtPesoPlanta.setText(String.valueOf(pesoRecolectado));
-    }
 
-    private void validarPesoExtra(){
-        double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
-        double validacionMenor = ( Double.parseDouble(txtPesoRecolectado.getText().toString()) -Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03);
-        double valorIngresado = Double.parseDouble(txtPesoPlanta.getText().toString());
+        if (txtPesoRecolectado!=null) {
+            txtPesoRecolectado.setText(String.valueOf(pesoT));
+            txtPesoPlanta.setText(String.valueOf(pesoRecolectado));
 
-        if(!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())){
-            if(valorIngresado>validacion){
-                //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
-                btnInformacion.setVisibility(View.VISIBLE);
-                btnInformacion.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder = new DialogBuilder(getActivity());
-                        builder.setMessage("Peso ingresado es mayor al peso Total");
-                        builder.setCancelable(true);
-                        builder.setNeutralButton("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                builder.dismiss();
-                            }
-                        });
-                        builder.show();
-                    }
-                });
+            double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
+            double validacionMenor = (Double.parseDouble(txtPesoRecolectado.getText().toString()) - Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03);
+            double valorIngresado = Double.parseDouble(txtPesoPlanta.getText().toString());
 
-                txtObservacionPeso.setVisibility(View.GONE);
-                txtObservacionPeso.setText("");
-            }else if(valorIngresado<validacionMenor){
-                //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
-                btnInformacion.setVisibility(View.VISIBLE);
-                btnInformacion.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder = new DialogBuilder(getActivity());
-                        builder.setMessage("Peso ingresado es menor al peso Total");
-                        builder.setCancelable(true);
-                        builder.setNeutralButton("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                builder.dismiss();
-                            }
-                        });
-                        builder.show();
-                    }
-                });
+            if (!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())) {
+                if (valorIngresado > validacion) {
+                    //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
+                    btnInformacion.setVisibility(View.VISIBLE);
+                    btnInformacion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            builder = new DialogBuilder(getActivity());
+                            builder.setMessage("Peso ingresado es mayor al peso Total");
+                            builder.setCancelable(true);
+                            builder.setNeutralButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    builder.dismiss();
+                                }
+                            });
+                            builder.show();
+                        }
+                    });
 
-                txtObservacionPeso.setVisibility(View.GONE);
-                txtObservacionPeso.setText("");
+                    txtObservacionPeso.setVisibility(View.GONE);
+                    txtObservacionPeso.setText("");
+                } else if (valorIngresado < validacionMenor) {
+                    //Toast.makeText(getContext(), "El peso es menor al recolectado", Toast.LENGTH_SHORT).show();
+                    btnInformacion.setVisibility(View.VISIBLE);
+                    btnInformacion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            builder = new DialogBuilder(getActivity());
+                            builder.setMessage("Peso ingresado es menor al peso Total");
+                            builder.setCancelable(true);
+                            builder.setNeutralButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    builder.dismiss();
+                                }
+                            });
+                            builder.show();
+                        }
+                    });
 
-            }else{
-                txtObservacionPeso.setText("Observacion de Peso");
-                txtObservacionPeso.setVisibility(View.VISIBLE);
+                    txtObservacionPeso.setVisibility(View.GONE);
+                    txtObservacionPeso.setText("");
+
+                } else {
+                    txtObservacionPeso.setText("Observacion de Peso");
+                    txtObservacionPeso.setVisibility(View.VISIBLE);
+                    btnInformacion.setVisibility(View.GONE);
+                }
+            } else {
                 btnInformacion.setVisibility(View.GONE);
+                txtObservacionPeso.setVisibility(View.GONE);
+                txtObservacionPeso.setText(" ");
             }
-        }else{
-            btnInformacion.setVisibility(View.GONE);
-            txtObservacionPeso.setVisibility(View.GONE);
-            txtObservacionPeso.setText(" ");
         }
     }
 

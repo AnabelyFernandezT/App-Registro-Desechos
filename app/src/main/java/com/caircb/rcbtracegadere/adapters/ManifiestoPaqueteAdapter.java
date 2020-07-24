@@ -48,7 +48,7 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
     public void onBindViewHolder(final @NonNull MyViewHolder holder, final int position) {
         final RowItemPaquete it = paquetesList.get(position);
         holder.txtPkgNombre.setText(it.getNombre());
-        holder.txtPkgCantidad.setText(""+it.getCantidad());
+        holder.txtPkgCantidad.setText(""+(it.getCantidad() - it.getDiferencia()));//- it.getDiferencia()
         holder.txtPkgPendiente.setText(""+it.getPendiente());
 
 
@@ -60,17 +60,63 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
             holder.txtPkgPendiente.setEnabled(true);
             holder.txtPkgPendiente.setFocusable(true);
             holder.txtPkgPendiente.setFocusableInTouchMode(true);
+            holder.txtPkgPendiente.setTag(it.getPendiente());
         }
 
 
         holder.txtPkgPendiente.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
+                EditText v = (EditText) view;
                 if(!hasFocus){
-                    EditText v = (EditText) view;
+                    //metodo que se ejecuta a lo que avandona el imput...
                     String pendiente = v.getText().toString();
+                    if(!pendiente.equals("")){
+                        if(Integer.parseInt(pendiente) > it.getCantidad()){
+                            messageBox("Valor ingresado no debe ser mayor a la cantidad!!");
+                            holder.txtPkgPendiente.setText(""+Integer.parseInt(v.getTag().toString()));
+                        }
+                        else if(Integer.parseInt(pendiente) < 0){
+                            messageBox("Valor ingresado NO debe ser negativo!!");
+                            holder.txtPkgPendiente.setText(""+Integer.parseInt(v.getTag().toString()));
+                        }
+                        else {
+                            Integer valor = Integer.valueOf(pendiente);
+                            Integer valorDiferencia = it.getCantidad() - valor;
+                            if(valor==0) valorDiferencia=0;
 
 
+                            holder.txtPkgPendiente.setText(""+pendiente);
+                            holder.txtPkgCantidad.setText(String.valueOf(valor==0?it.getCantidad():valorDiferencia));
+
+                            if(it.getCantidad()==valor) valorDiferencia=it.getCantidad();
+                            if(it.getTipo() == 1){ //fundas
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, valor, valorDiferencia);
+                            }else if(it.getTipo()==2){ // guardianes
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, valor, valorDiferencia);
+                            }
+
+                            it.setPendiente(valor);
+                            it.setDiferencia(valorDiferencia);
+                            holder.txtPkgPendiente.setTag(valor);
+                        }
+                    }else {
+                        holder.txtPkgPendiente.setText("" + v.getTag().toString());
+                        if (it.getInitPendiente() == null) {
+                            if(it.getTipo() == 1) {
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, 0, 0);
+                                it.setPendiente(0);
+                                it.setInitPendiente(0);
+                            }
+                            if(it.getTipo() == 2) {
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0);
+                                it.setPendiente(0);
+                                it.setInitPendiente(0);
+                            }
+                        }
+                    }
+
+                    /*
                     if(!pendiente.equals("")){
                         if(Integer.valueOf(pendiente) > it.getCantidad()){
                             messageBox("Valor ingresado no debe ser mayor a la cantidad!!");
@@ -103,12 +149,14 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
                         holder.txtPkgPendiente.setText(""+0);
                         if(it.getTipo() == 1) {MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, 0, 0);}
                         if(it.getTipo() == 2) {MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0);}
-                    }
+                    }*/
 
                 } else {
+                    //metodo que se ejecita a lo que ingresa el focus al imput...
                     if(holder.txtPkgPendiente.getText().toString().equals("")){
                         holder.txtPkgPendiente.setText(""+0);
                     }else {
+
                         holder.txtPkgPendiente.setText("");
                     }
                 }
@@ -179,4 +227,11 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
     public interface ClickListener {
         void onItemClick(int position, View v);
     }*/
+
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        int x=0;
+    }
 }

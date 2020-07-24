@@ -61,7 +61,7 @@ public class MyManifiestoNoRecoleccion {
     Bitmap firmaNoRecoleccion;
     Bitmap firmaTransportista, firmaOperador1, firmaOperador2, firmaOperador1NoRecoleccion, firmaOperador2NoRecoleccion;
     ItemFile fileFirmaTecnico,fileFirmaTecnicoNoRecoleccion, fileFirmaOperador1, fileFirmaOperador2,fileFirmaOperador1NoRecoleccion,fileFirmaOperador2NoRecoleccion;
-    SimpleDateFormat simpleDate = new SimpleDateFormat("MM/dd/yyyy");
+    SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
     CatalogoEntity catalogo;
 
     private String getPath() { return simpleDate.format(new Date());}
@@ -674,9 +674,9 @@ public class MyManifiestoNoRecoleccion {
         tb6.addCell(_cell);
 
         Paragraph para5 = new Paragraph();
-        para5.add(new Chunk("FIRMA FIRMA:",f6));
+        para5.add(new Chunk("",f6));
         para5.add(Chunk.NEWLINE);
-        para5.add(new Chunk(fecha,f6));
+        para5.add(new Chunk("",f6));
         _cell = new PdfPCell(para5);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb6.addCell(_cell);

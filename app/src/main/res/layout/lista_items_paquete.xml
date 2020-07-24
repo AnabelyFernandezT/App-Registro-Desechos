@@ -59,6 +59,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:background="@drawable/ic_edittextbox_rounded"
                     android:text=""
+                    android:focusableInTouchMode="true"
                     android:gravity="center"
                     android:inputType="numberSigned"
                     android:layout_width="match_parent"

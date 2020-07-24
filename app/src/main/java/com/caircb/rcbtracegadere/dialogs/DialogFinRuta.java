@@ -153,8 +153,6 @@ public class DialogFinRuta extends MyDialog {
                     CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
                     idDestino = c!=null?c.getIdSistema():-1;
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
-
-
                 }
 
             }
@@ -359,7 +357,7 @@ public class DialogFinRuta extends MyDialog {
 
                     listaDestinoParticular.setEnabled(false);
 
-                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),0);
                     inicioFinLoteHotelTask.setOnRegisterListener(new UserRegistrarInicioFinLoteHotelTask.OnRegisterListener() {
                         @Override
                         public void onSuccessful() {
