@@ -22,8 +22,10 @@ import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPendientesPesarTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 
 import java.util.List;
@@ -39,6 +41,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     DialogPlacas dialogPlacas;
     UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
+    UserConsultarManifiestosPendientesPesarTask userConsultarManifiestosPendientesPesarTask;
 
     public Context mContext;
 
@@ -91,6 +94,23 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         cargarLabelCantidad();
+
+        btnDropOffTransportista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
+                userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
+                    @Override
+                    public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
+
+                    }
+                });
+                userConsultarManifiestosPendientesPesarTask.execute();
+
+                setNavegate(HojaRutaPlantaPendientesPesoFragment.newInstance());
+            }
+        });
 
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
             @Override
