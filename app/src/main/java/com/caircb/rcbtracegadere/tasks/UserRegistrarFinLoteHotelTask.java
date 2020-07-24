@@ -35,6 +35,7 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
 
+
                     }
                 }
 
