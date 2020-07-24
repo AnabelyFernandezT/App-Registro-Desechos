@@ -54,40 +54,31 @@ import java.util.List;
  */
 public class TabManifiestoAdicionalFragment extends LinearLayout {
 
-    private static final String ARG_PARAM1 = "idAppManifiesto";
-    private static final String ARG_PARAM2 = "Manifiestobloqueado";
-
-    View view;
     DialogAgregarFotografias dialogAgregarFotografias;
-
     Integer idAppManifiesto;
     RecyclerView recyclerViewLtsManifiestoObservaciones;
-    Activity _activity;
     ImageView imgFirmaPlanta;
     LinearLayout btnAgregarFirma, btnCancelar, btnGuardar,btnInformacion;
     EditText txtPeso,txtNovedad,txtotraNovedad;
     TextView txtFirmaPlanta, txtPesoRecolectado, txtObservacionPeso;
     DialogFirma dialogFirma;
-    private Integer idManifiesto;
-    boolean bloquear;
     Window window;
     Bitmap firmaConfirmada;
-    List<RowItemHojaRutaCatalogo> novedadfrecuentes;
-    ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogBuilder builder;
     double pesoT, pesoRecolectado=0;
     private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
     TextView txtCountPhoto, txtPesoPlanta;
     boolean info = false;
-    DialogBuilder message;
+    String pesajePendiente;
     List<ItemManifiestoDetalleValorSede> bultos = new ArrayList<>();
 
 
-    public TabManifiestoAdicionalFragment(Context context, Integer manifiestoID){
+    public TabManifiestoAdicionalFragment(Context context, Integer manifiestoID, String pesajePendiente){
         super(context);
         View.inflate(context, R.layout.fragment_recoleccion_planta_adicional, this);
         this.idAppManifiesto = manifiestoID;
+        this.pesajePendiente = pesajePendiente;
         init();
         loadData();
         validarPesoExtra();
@@ -115,6 +106,12 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
         txtCountPhoto = this.findViewById(R.id.txtCountPhoto);
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
+
+        if(pesajePendiente.equals("SI")){
+            btnAgregarFirma.setVisibility(GONE);
+        }else{
+            btnAgregarFirma.setVisibility(VISIBLE);
+        }
 
         Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA );
         if(numeroFotos != null && numeroFotos > 0){
