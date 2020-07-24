@@ -1,12 +1,14 @@
 package com.caircb.rcbtracegadere.database.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoLotePadreHotel;
@@ -18,6 +20,9 @@ public abstract class HotelLotePadreDao {
 
     @Query("select * from tb_hotel_padre where idTransportistaRecolector=:id")
     public abstract HotelLotePadreEntity fetchConsultarHotelLote(Integer id);
+
+    @Delete
+    abstract void deleteFile(HotelLotePadreEntity model);
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

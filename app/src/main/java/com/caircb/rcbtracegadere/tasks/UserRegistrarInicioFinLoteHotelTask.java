@@ -40,7 +40,7 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
     public void execute() {
         final RequestInicioLoteHotel request = requestInicioLoteHotel();
         if(request!=null){
-            WebService.api().inicioFinLoteHotel(request).enqueue(new Callback<DtoInfo>() {
+           WebService.api().inicioFinLoteHotel(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
@@ -66,11 +66,22 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
        Integer inicioFinRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
        ManifiestoEntity entity = MyApp.getDBO().manifiestoDao().fetchHojaRutaEn(MySession.getIdUsuario());
 
-       rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
-       rq.setIdSubRuta(inicioFinRuta);
-       rq.setFecha(new Date());
-       rq.setIdDestinatarioFinRutaCatalogo(destinatarioInicioFinRutaCatalogo);
-       rq.setIdTransportistaVehiculo(entity.getIdTransporteVehiculo());
+       Integer idDestino =-1;
+       String id = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor();
+       if(!id.equals("")){
+            idDestino = Integer.valueOf(id);
+       }
+
+       //Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
+
+       if(lotePadre!=null){
+           rq.setIdLoteContenedorHotel(lotePadre.getIdLoteContenedorHotel());
+           rq.setIdSubRuta(inicioFinRuta);
+           rq.setFecha(new Date());
+           rq.setIdDestinatarioFinRutaCatalogo(idDestino);
+           rq.setIdTransportistaVehiculo(entity.getIdTransporteVehiculo());
+       }
+
 
         return rq;
    }
