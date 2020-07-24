@@ -43,6 +43,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     private static final String ARG_PARAM1 = "idAppManifiesto";
     private static final String ARG_PARAM2 = "Manifiestobloqueado";
     private static final String ARG_PARAM3 = "numeroManifiesto";
+    private static final String ARG_PARAM4 = "pesajePendiente";
 
     private Integer manifiestoID;
     private Boolean bloqueado;
@@ -56,6 +57,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     TabManifiestoAdicionalFragment tab3;
     boolean firma = false, novedad=false;
     String numeroManifiesto;
+    String pesajePendiente;
     DialogBuilder builder;
     /**
      * Use this factory method to create a new instance of
@@ -65,11 +67,12 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
      * @return A new instance of fragment ManifiestoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ManifiestoFragmentTabs newInstance(Integer manifiestoID, String numeroManifiesto) {
+    public static ManifiestoFragmentTabs newInstance(Integer manifiestoID, String numeroManifiesto, String pesajePendiente) {
         ManifiestoFragmentTabs fragment = new ManifiestoFragmentTabs();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
         args.putString(ARG_PARAM3, numeroManifiesto);
+        args.putString(ARG_PARAM4, pesajePendiente);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,6 +83,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         if (getArguments() != null) {
             manifiestoID= getArguments().getInt(ARG_PARAM1);
             numeroManifiesto = getArguments().getString(ARG_PARAM3);
+            pesajePendiente = getArguments().getString(ARG_PARAM4);
         }
     }
 
@@ -126,7 +130,12 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnManifiestoCancel:
-                setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                if(pesajePendiente.equals("NO")){
+                    setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
+                }else {
+                    setNavegate(HojaRutaPlantaPendientesPesoFragment.newInstance());
+                }
+
                 break;
             case R.id.btnManifiestoNext:
                 ItemManifiestoSede detalles;
@@ -165,7 +174,12 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                 userRegisterPlantaDetalleTask.setmOnRegisterPlantaDetalleListener(new UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner() {
                     @Override
                     public void OnSucessfull() {
-                        setNavegate(HojaRutaAsignadaPlantaFragment.create());
+                        if(pesajePendiente.equals("NO")){
+                            setNavegate(HojaRutaAsignadaPlantaFragment.create());
+                        }else{
+                            setNavegate(HojaRutaPlantaPendientesPesoFragment.create());
+                        }
+
                     }
                 });
                 userRegisterPlantaDetalleTask.execute();

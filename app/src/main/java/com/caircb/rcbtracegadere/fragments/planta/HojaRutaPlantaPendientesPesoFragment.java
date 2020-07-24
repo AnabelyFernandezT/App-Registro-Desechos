@@ -1,6 +1,5 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapterSede;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQR;
-import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
-import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
-import com.caircb.rcbtracegadere.fragments.Sede.ManifiestoSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
@@ -31,31 +28,19 @@ import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HojaRutaAsignadaPlantaFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.OnClickListener, OnBarcodeListener {
-
+public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements View.OnClickListener, OnBarcodeListener {
 
     LinearLayout btnRetornarListHojaRuta;
-
+    private Window window;
     private RecyclerView recyclerView;
     private ManifiestoAdapterSede recyclerviewAdapter;
-
-    private OnRecyclerTouchListener touchListener;
-    private List<ItemManifiestoSede> rowItems;
     private SearchView searchView;
+    private List<ItemManifiestoSede> rowItems;
+    private OnRecyclerTouchListener touchListener;
     DialogInfoCodigoQR dialogCodigoQR;
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment HojaRutaAsignadaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HojaRutaAsignadaPlantaFragment newInstance() {
-        return new HojaRutaAsignadaPlantaFragment();
+
+    public static HojaRutaPlantaPendientesPesoFragment newInstance() {
+        return new HojaRutaPlantaPendientesPesoFragment();
     }
 
     @Override
@@ -66,10 +51,11 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setView(inflater.inflate(R.layout.fragment_hoja_ruta_asignada, container, false));
+        setView(inflater.inflate(R.layout.fragment_hoja_ruta_procesada, container, false));
         setHideHeader();
         init();
         initItems();
+
         return getView();
     }
 
@@ -89,26 +75,19 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     }
 
     private void filtro(String texto){
-        List<ItemManifiestoSede> result = new ArrayList<>();
         List<ItemManifiestoSede> listaItems = new ArrayList<>() ;
-        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
-        String valor = parametro == null ? "-1" : parametro.getValor();
-        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
-        listaItems =  MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManifPlanta(texto,idVehiculo);
+        List<ItemManifiestoSede> rowItems = new ArrayList<>();
+        listaItems =  MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosPendientesXpesarSearch(texto);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
 
-
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
-        String valor = parametro == null ? "-1" : parametro.getValor();
-        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
-        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif(idVehiculo);
-        adapterList();
 
+        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosPendientesXpesar();
+        adapterList();
     }
 
     private void adapterList(){
@@ -131,7 +110,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto(), "NO"));
+                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto(), "SI"));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -142,7 +121,6 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
 
     @Override
     public void reciveData(String data) {
-
         Boolean estadoBulto = MyApp.getDBO().manifiestoPlantaDetalleValorDao().verificarBultoEstado(data);
 
         if(estadoBulto==null){
@@ -164,25 +142,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                 dialogCodigoQR.show();
             }
         }
-
-        /*List<DtoDespachoCodigoBarras> listaCodigoBarras = getListBultosByCodigoBarras(data);
-        String mensaje;
-
-        if(listaCodigoBarras.size() > 0){
-            if(listaCodigoBarras.size() > 1){
-                openSeleccionarListaEmpaque(listaCodigoBarras);
-            }else{
-                DtoDespachoCodigoBarras codigo = listaCodigoBarras.get(0);
-                Integer despachoDetalleId = codigo.getDespachoDetalleId();
-                Integer cantidad = codigo.getCantidad();
-                tratamientoProductoEncontrado(despachoDetalleId, cantidad);
-            }
-        }else{
-            mensaje = "EL ITEM " + data + " NO EXISTE DENTRO DE NINGUN DESPACHO";
-            mostrarMensajeBarra(0, mensaje);
-        }*/
     }
-
 
     @Override
     public void onClick(View v) {
@@ -192,7 +152,6 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                 break;
         }
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -204,9 +163,9 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //recyclerView.destroyDrawingCache();
     }
-    public static HojaRutaAsignadaPlantaFragment create(){
-        return new HojaRutaAsignadaPlantaFragment();
+
+    public static HojaRutaPlantaPendientesPesoFragment create(){
+        return new HojaRutaPlantaPendientesPesoFragment();
     }
 }
