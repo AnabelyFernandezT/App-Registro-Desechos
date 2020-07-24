@@ -342,7 +342,7 @@ public class DialogFinRuta extends MyDialog {
         regionBuscar.setEnabled(false);
         btnSincManifiestos.setEnabled(false);
         btnListaAsignadaTransportista.setEnabled(false);
-        btnPickUpTransportista.setEnabled(false);
+        //btnPickUpTransportista.setEnabled(false);
         btnDropOffTransportista.setEnabled(false);
 
         regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
