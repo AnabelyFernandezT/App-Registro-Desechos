@@ -131,7 +131,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto()));
+                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto(), "NO"));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;

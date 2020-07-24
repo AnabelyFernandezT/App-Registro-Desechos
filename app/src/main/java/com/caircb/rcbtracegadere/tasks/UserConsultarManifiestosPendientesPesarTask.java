@@ -39,7 +39,6 @@ public class UserConsultarManifiestosPendientesPesarTask  extends MyRetrofitApi 
 
                     if(mOnListasManifiestosPendientesistener!=null)mOnListasManifiestosPendientesistener.onSuccessful(response.body());
 
-                    /*
                     for(DtoManifiestoPlanta reg:response.body()){
                         MyApp.getDBO().manifiestoPlantaDao().saveOrUpdate(reg);
                         for (DtoManifiestoDetalleSede mdet:reg.getHojaRutaDetallePlanta()){
@@ -49,7 +48,7 @@ public class UserConsultarManifiestosPendientesPesarTask  extends MyRetrofitApi 
                             }
                         }
                     }
-                     */
+
 
                     progressHide();
                 }

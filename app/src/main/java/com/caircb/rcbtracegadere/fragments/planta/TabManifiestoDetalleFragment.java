@@ -116,6 +116,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
             public void onSucefull() {
                 List<ItemManifiestoDetalleSede> detalles;
                 detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
+
                 //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
                 recyclerviewAdapter.setTaskList(detalles);
             }

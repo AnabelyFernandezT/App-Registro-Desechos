@@ -74,7 +74,7 @@ public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements 
     private void filtro(String texto){
         List<ItemManifiestoSede> listaItems = new ArrayList<>() ;
         List<ItemManifiestoSede> rowItems = new ArrayList<>();
-        //listaItems =  MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManifPlanta(texto,idVehiculo);
+        listaItems =  MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosPendientesXpesarSearch(texto);
         rowItems=listaItems;
         recyclerviewAdapter.setTaskList(rowItems);
     }
@@ -83,10 +83,7 @@ public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
-        String valor = parametro == null ? "-1" : parametro.getValor();
-        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
-        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManif(idVehiculo);
+        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosPendientesXpesar();
         adapterList();
     }
 
@@ -110,7 +107,7 @@ public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements 
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        //setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto()));
+                        setNavegate(ManifiestoFragmentTabs.newInstance(rowItems.get(position).getIdAppManifiesto(), rowItems.get(position).getNumeroManifiesto(), "SI"));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;
@@ -143,5 +140,9 @@ public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public static HojaRutaPlantaPendientesPesoFragment create(){
+        return new HojaRutaPlantaPendientesPesoFragment();
     }
 }
