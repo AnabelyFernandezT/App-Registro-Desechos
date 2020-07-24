@@ -108,11 +108,11 @@ public class DialogInformacionTransportista extends MyDialog {
     }
 
     private void datosCabecera() {
-        lblApertura1.setText(apertura1.toString());
-        lblApertura2.setText(apertura2.toString());
-        lblCierre1.setText(cierre1.toString());
-        lblCierre2.setText(cierre2.toString());
-        lblTelefonoCliente.setText(telefono.toString());
+        lblApertura1.setText(apertura1==null?"":apertura1.toString());
+        lblApertura2.setText(apertura2==null?"":apertura1.toString());
+        lblCierre1.setText(cierre1==null?"":apertura1.toString());
+        lblCierre2.setText(cierre2==null?"":apertura1.toString());
+        lblTelefonoCliente.setText(telefono==null?"":apertura1.toString());
     }
 
     private  void datosTabla(){
@@ -130,7 +130,8 @@ public class DialogInformacionTransportista extends MyDialog {
 
     private void datosInformacionModulo() {
 
-        if (frecuencia.equals("PUNTUAL")) {
+        String frecuenciaTransform=frecuencia==null?"":frecuencia;
+        if (frecuenciaTransform.equals("PUNTUAL")) {
             sectionCuadro.setVisibility(View.VISIBLE);
             sectionEspecifica.setVisibility(View.VISIBLE);
             //InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
