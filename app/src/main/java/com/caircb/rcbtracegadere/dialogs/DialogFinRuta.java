@@ -56,7 +56,7 @@ public class DialogFinRuta extends MyDialog {
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
     String kilometrajeInicio;
-    Integer placaInicio, idInicioFin ,idRuta, finHotel;
+    Integer placaInicio, idInicioFin ,idRuta, finHotel=3;
     Date diaAnterior;
     Spinner listaDestino, listaDestinoParticular;
     String destino = "", destinos="",inicioHotel;
