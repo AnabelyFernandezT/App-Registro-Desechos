@@ -42,7 +42,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
     UserConsultarManifiestosPendientesPesarTask userConsultarManifiestosPendientesPesarTask;
-
+    TextView lblDropOffTransportista;
     public Context mContext;
 
     ImageButton regionBuscar;
@@ -70,6 +70,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         initBuscador();
         init();
         //cargarManifiesto();
+        cargarLbael();
         return getView();
 
     }
@@ -93,7 +94,9 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnDropOffTransportista = (ImageView) getView().findViewById(R.id.btnDropOffTransportista);
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
+        lblDropOffTransportista = getView().findViewById(R.id.lblDropOffTransportista);
         cargarLabelCantidad();
+
 
         btnDropOffTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,12 +106,11 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
                     @Override
                     public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
-
+                        setNavegate(HojaRutaPlantaPendientesPesoFragment.newInstance());
+                        lblDropOffTransportista.setText(String.valueOf(listaManifiestos.size()));
                     }
                 });
                 userConsultarManifiestosPendientesPesarTask.execute();
-
-                setNavegate(HojaRutaPlantaPendientesPesoFragment.newInstance());
             }
         });
 
@@ -163,6 +165,18 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 }
             }
         });
+
+    }
+
+    private void cargarLbael(){
+        userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
+        userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
+            @Override
+            public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
+                lblDropOffTransportista.setText(String.valueOf(listaManifiestos.size()));
+            }
+        });
+        userConsultarManifiestosPendientesPesarTask.execute();
 
     }
 

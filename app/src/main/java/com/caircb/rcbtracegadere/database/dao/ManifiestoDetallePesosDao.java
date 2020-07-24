@@ -44,6 +44,12 @@ public abstract class ManifiestoDetallePesosDao {
     @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle and impresion=0")
     public abstract void deleteTableValoresNoConfirmados(Integer idManifiesto, Integer idManifiestoDetalle);
 
+    @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
+    public abstract void deleteTableValores(Integer idManifiesto, Integer idManifiestoDetalle);
+
+    @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto")
+    public abstract void deleteTableValoresByIdManifiesto(Integer idManifiesto);
+
     @Query("Select sum(valor) from tb_manifiesto_detalle_pesos b where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract double sumaPesoFinal(Integer idManifiesto, Integer idManifiestoDetalle);
 

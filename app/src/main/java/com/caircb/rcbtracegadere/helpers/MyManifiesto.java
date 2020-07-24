@@ -618,8 +618,13 @@ public class MyManifiesto {
         Paragraph para2 = new Paragraph();
         para2.add(new Chunk(manifiesto.getConductorNombre(),f6));
         para2.add(Chunk.NEWLINE);
-        para2.add(new Chunk(manifiesto.getConductorIdentificacion(),f6));
-        para2.add(Chunk.NEWLINE);
+        if(manifiesto.getConductorIdentificacion()!= null){
+            para2.add(new Chunk(manifiesto.getConductorIdentificacion(),f6));
+            para2.add(Chunk.NEWLINE);
+        }else{
+            para2.add(new Chunk("",f6));
+            para2.add(Chunk.NEWLINE);
+        }
         _cell = new PdfPCell(para2);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb6.addCell(_cell);

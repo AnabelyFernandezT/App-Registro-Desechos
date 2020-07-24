@@ -23,6 +23,36 @@ public abstract class ManifiestoPlantaDao {
     @Query("select * from tb_manifiestos_planta where idAppManifiesto=:idManifiesto limit 1")
     public abstract ManifiestoPlantaEntity fetchHojaRutabyIdManifiesto(Integer idManifiesto);
 
+    /******************/
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
+            "            (SELECT COUNT(idManifiestoDetalleValor) " +
+            "            FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_Planta_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                                       INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "            WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
+            "            (SELECT COUNT(idManifiestoDetalleValor) " +
+            "            FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                                       INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "            WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos " +
+            "            from tb_manifiestos_planta MC  " +
+            "where MC.estado=4 and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiestoSede> fetchManifiestosPendientesXpesarSearch(String search);
+
+
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto and DTV.estado = 1 ) as bultosSelecionado, " +
+            "(SELECT COUNT(idManifiestoDetalleValor) " +
+            "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
+            "                           INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
+            "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
+            "from tb_manifiestos_planta MC  WHERE MC.estado = 4 " )
+    @Transaction
+    public abstract List<ItemManifiestoSede> fetchManifiestosPendientesXpesar();
+
+    /*******************/
     @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
             "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +

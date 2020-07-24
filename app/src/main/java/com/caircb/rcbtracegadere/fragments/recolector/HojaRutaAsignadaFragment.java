@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
@@ -40,6 +42,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.MenuItem;
+import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,9 +62,10 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     private Window window;
     private RecyclerView recyclerView;
     private ManifiestoAdapter recyclerviewAdapter;
-
+    private List<ManifiestoDetallePesosEntity> listManifiestoBultos;
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
+    private List<RowItemManifiesto> rowItemsManifiestoDetalle;
     private SearchView searchView;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private ListView mDrawerMenuItems, mDialogMenuItems;
@@ -172,150 +176,228 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
-            public void onClick(DialogInterface dialog, int item) {
+            public void onClick(final DialogInterface dialog, int item) {
                 if (options[item].equals("INICIAR RECOLECCIÓN")) {
-                    dialogBuilder = new DialogBuilder(getActivity());
-                    dialogBuilder.setMessage("¿Está seguro que desea INICIAR RECOLECCIÓN?");
-                    dialogBuilder.setCancelable(false);
-                    dialogBuilder.setTitle("CONFIRMACIÓN");
-                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
 
-                            if (rowItems.get(position).getTipoPaquete()==null ||  rowItems.get(position).getTipoPaquete()==0){
+                    listManifiestoBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiesto(rowItems.get(position).getIdAppManifiesto());
+                    if (listManifiestoBultos.size() == 0) {
 
-                                dialogBuilder2 = new DialogBuilder(getActivity());
-                                dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
-                                dialogBuilder2.setCancelable(false);
-                                dialogBuilder2.setTitle("CONFIRMACIÓN");
-                                dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder2.dismiss();
-                                        //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
-                                            Date fecha = AppDatabase.getDateTime();
-                                            //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                            MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
+                        dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("¿Está seguro que desea INICIAR RECOLECCIÓN?");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setTitle("CONFIRMACIÓN");
+                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
 
-                                            //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                Date fecha = AppDatabase.getDateTime();
+                                //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
 
-                                            Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
-                                            if (!estado) {
-                                                //actualizaria el primer registro
-                                                Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
-                                                if (_id != null) {
-                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
-                                                }
-                                            } else {
-                                                //busco con punto de partida mayor a cer
-                                                Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
-                                                if (idMayor > 0) {
-                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
-                                                }
-                                            }
-                                            List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
-                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1,1));
-                                       // } else {
-                                       //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                      //  }
+                                Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
+                                if (!estado) {
+                                    //actualizaria el primer registro
+                                    Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
+                                    if (_id != null) {
+                                        MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
                                     }
-                                });
-                                dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder2.dismiss();
-                                        if (!MyApp.getDBO().impresoraDao().existeImpresora()) {
-                                            Date fecha = AppDatabase.getDateTime();
-                                            //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                            MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
-
-                                            //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
-
-                                            Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
-                                            if (!estado) {
-                                                //actualizaria el primer registro
-                                                Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
-                                                if (_id != null) {
-                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
-                                                }
-                                            } else {
-                                                //busco con punto de partida mayor a cer
-                                                Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
-                                                if (idMayor > 0) {
-                                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
-                                                }
-                                            }
-                                            List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
-
-                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1,2));
-                                        } else {
-                                            Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                        }
+                                } else {
+                                    //busco con punto de partida mayor a cer
+                                    Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
+                                    if (idMayor > 0) {
+                                        MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
                                     }
-                                });
-                                dialogBuilder2.show();
+                                }
+                                List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
-                            }else {
-
-                                dialogBuilder2 = new DialogBuilder(getActivity());
-                                dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
-                                dialogBuilder2.setCancelable(false);
-                                dialogBuilder2.setTitle("CONFIRMACIÓN");
-                                dialogBuilder2.setPositiveButton("Continuar", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder2.dismiss();
-                                        //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
-                                        Date fecha = AppDatabase.getDateTime();
-                                        //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                        MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
-
-                                        //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
-
-                                        Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
-                                        if (!estado) {
-                                            //actualizaria el primer registro
-                                            Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
-                                            if (_id != null) {
-                                                MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
-                                            }
-                                        } else {
-                                            //busco con punto de partida mayor a cer
-                                            Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
-                                            if (idMayor > 0) {
-                                                MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
-                                            }
+                                if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
+                                    dialogBuilder2 = new DialogBuilder(getActivity());
+                                    dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                                    dialogBuilder2.setCancelable(false);
+                                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder2.dismiss();
+                                            //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                            // } else {
+                                            //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                            //  }
                                         }
-                                        List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                    });
+                                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder2.dismiss();
+                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
 
+                                        }
+                                    });
+                                    dialogBuilder2.show();
+
+                                } else {
+                                    dialogBuilder2 = new DialogBuilder(getActivity());
+                                    dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
+                                    dialogBuilder2.setCancelable(false);
+                                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                    dialogBuilder2.setPositiveButton("Continuar", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder2.dismiss();
+                                            //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                            // } else {
+                                            //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                            //  }
+                                        }
+                                    });
+                                    dialogBuilder2.setNegativeButton("Regresar", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder2.dismiss();
+                                        }
+                                    });
+                                    dialogBuilder2.show();
+                                }
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
+
+                    } else {
+                        if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
+                            dialogBuilder2 = new DialogBuilder(getActivity());
+                            dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                            dialogBuilder2.setCancelable(false);
+                            dialogBuilder2.setTitle("CONFIRMACIÓN");
+                            dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder2.dismiss();
+                                    int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
+                                    System.out.println(tipoRecoleccion+" SI");
+                                    if (tipoRecoleccion==1){
+                                        //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
                                         //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1,1));
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
                                         // } else {
                                         //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                        // }
+                                        //  }
+                                    }else if (tipoRecoleccion==2){
+                                        dialogBuilder = new DialogBuilder(getActivity());
+                                        dialogBuilder.setMessage("Usted seleccionó anteriormente, NO recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
+                                        dialogBuilder.setCancelable(false);
+                                        dialogBuilder.setTitle("CONFIRMACIÓN");
+                                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder.dismiss();
+                                                MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                                rowItemsManifiestoDetalle =  MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                for (int i=0;i<rowItemsManifiestoDetalle.size();i++){
+                                                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(rowItemsManifiestoDetalle.get(i).getId(),0,0,0,true);
+                                                }
+                                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                            }
+                                        });
+                                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder.dismiss();
+                                            }
+                                        });
+                                        dialogBuilder.show();
                                     }
-                                });
-                                dialogBuilder2.setNegativeButton("Regresar", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder2.dismiss();
+                                }
+                            });
+                            dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder2.dismiss();
+                                    int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
+                                    System.out.println(tipoRecoleccion+" NO");
+                                    if (tipoRecoleccion==2){
+                                        //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                        //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
+                                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
+                                        // } else {
+                                        //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                        //  }
+                                    }else if(tipoRecoleccion==1) {
+                                        dialogBuilder = new DialogBuilder(getActivity());
+                                        dialogBuilder.setMessage("Usted seleccionó anteriormente, SI recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
+                                        dialogBuilder.setCancelable(false);
+                                        dialogBuilder.setTitle("CONFIRMACIÓN");
+                                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder.dismiss();
+                                                MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
+                                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                rowItemsManifiestoDetalle =  MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                for (int i=0;i<rowItemsManifiestoDetalle.size();i++){
+                                                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(rowItemsManifiestoDetalle.get(i).getId(),0,0,0,false);
+                                                }
+                                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
+                                            }
+                                        });
+                                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder.dismiss();
+                                            }
+                                        });
+                                        dialogBuilder.show();
                                     }
-                                });
-                                dialogBuilder2.show();
-                            }
+
+                                }
+                            });
+                            dialogBuilder2.show();
+
+                        } else {
+                            dialogBuilder2 = new DialogBuilder(getActivity());
+                            dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
+                            dialogBuilder2.setCancelable(false);
+                            dialogBuilder2.setTitle("CONFIRMACIÓN");
+                            dialogBuilder2.setPositiveButton("Continuar", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder2.dismiss();
+                                    //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                    //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                    // } else {
+                                    //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                    //  }
+                                }
+                            });
+                            dialogBuilder2.setNegativeButton("Regresar", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder2.dismiss();
+                                }
+                            });
+                            dialogBuilder2.show();
                         }
-                    });
-                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                        }
-                    });
-                    dialogBuilder.show();
+                    }
+
                 } else if (options[item].equals("NO RECOLECTAR")) {
                     dialogBuilder = new DialogBuilder(getActivity());
                     dialogBuilder.setMessage("¿Está seguro que NO ES POSIBLE RECOLECTAR?");
@@ -437,4 +519,6 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         super.onDestroy();
         //recyclerView.destroyDrawingCache();
     }
+
+
 }
