@@ -108,7 +108,7 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
                                 it.setPendiente(0);
                                 it.setInitPendiente(0);
                             }
-                            if(it.getTipo() == 2) {
+                            else if(it.getTipo() == 2) {
                                 MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0);
                                 it.setPendiente(0);
                                 it.setInitPendiente(0);
@@ -153,10 +153,10 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
 
                 } else {
                     //metodo que se ejecita a lo que ingresa el focus al imput...
-                    if(holder.txtPkgPendiente.getText().toString().equals("")){
-                        holder.txtPkgPendiente.setText(""+0);
-                    }else {
-
+                    //if(holder.txtPkgPendiente.getText().toString().equals("")){
+                    //    holder.txtPkgPendiente.setText(""+0);
+                    //}else {
+                    if(!holder.txtPkgPendiente.getText().toString().equals("")){
                         holder.txtPkgPendiente.setText("");
                     }
                 }
