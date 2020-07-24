@@ -70,6 +70,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         initBuscador();
         init();
         //cargarManifiesto();
+        cargarLbael();
         return getView();
 
     }
@@ -164,6 +165,18 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
                 }
             }
         });
+
+    }
+
+    private void cargarLbael(){
+        userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
+        userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
+            @Override
+            public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
+                lblDropOffTransportista.setText(String.valueOf(listaManifiestos.size()));
+            }
+        });
+        userConsultarManifiestosPendientesPesarTask.execute();
 
     }
 

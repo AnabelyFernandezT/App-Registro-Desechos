@@ -21,7 +21,9 @@ import retrofit2.Response;
 
 public class UserConsultarManifiestosPendientesPesarTask  extends MyRetrofitApi implements RetrofitCallbacks {
 
-    public UserConsultarManifiestosPendientesPesarTask (Context context){ super(context);}
+    public UserConsultarManifiestosPendientesPesarTask (Context context) {
+        super(context);
+    }
 
     public interface OnListasManifiestosPendientesistener {
         public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos);
@@ -31,7 +33,7 @@ public class UserConsultarManifiestosPendientesPesarTask  extends MyRetrofitApi 
 
     @Override
     public void execute() {
-
+        progressShow("Sincronizando pendientes...");
         WebService.api().obtenerListaHojaRutaPlantaPendientesPeso().enqueue(new Callback<List<DtoManifiestoPlanta>>() {
             @Override
             public void onResponse(Call<List<DtoManifiestoPlanta>> call, Response<List<DtoManifiestoPlanta>> response) {
