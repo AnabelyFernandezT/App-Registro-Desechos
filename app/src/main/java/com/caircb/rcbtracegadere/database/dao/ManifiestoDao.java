@@ -91,7 +91,7 @@ public abstract class ManifiestoDao {
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoByPlaca(Integer idPlaca);
 
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, numeroPlacaVehiculo from tb_manifiestos where estado=2 and idTransporteVehiculo=:idPlaca  order by nombreCliente") /***and estadoFinRuta=0***/
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,sucursal as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, numeroPlacaVehiculo from tb_manifiestos where estado=2 and idTransporteVehiculo=:idPlaca  order by nombreCliente") /***and estadoFinRuta=0***/
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoPlanta(Integer idPlaca);
 
