@@ -392,7 +392,7 @@ public class DialogFinRuta extends MyDialog {
 
             builder = new DialogBuilder(getActivity());
             builder.setMessage("¿Es su último día de recolección?");
-            builder.setCancelable(true);
+            builder.setCancelable(false);
             builder.setPositiveButton("Si", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

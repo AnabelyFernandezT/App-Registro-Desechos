@@ -33,12 +33,13 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     private Integer cierre1=0;
     private Integer cierre2=0;
     private String frecuencia;
-
     int position=0;
+    int moduloSeleccionado;
 
-    public ManifiestoAdapter(Context context){
+    public ManifiestoAdapter(Context context, int modulo){
         mContext = context;
         manifiestosList = new ArrayList<>();
+        this.moduloSeleccionado=modulo;
     }
 
     @NonNull
@@ -111,18 +112,22 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             txtCiudad = itemView.findViewById(R.id.itm_Ciudad);
             txtEstado = itemView.findViewById(R.id.itm_Estado);
             btnInfoCardTransporte = itemView.findViewById(R.id.btnInfoCardTransporte);
-            btnInfoCardTransporte.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int positionSelected= MyViewHolder.this.getPosition();
-                    ItemManifiesto it = manifiestosList.get(positionSelected);
-                    DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),it.getIdAppManifiesto(),it.getFrecuencia());
-                    dialogInformacionTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    //informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
-                    //informacionModulosTaskl.execute();
-                    dialogInformacionTransportista.show();
-                }
-            });
+            if (moduloSeleccionado==2){
+                btnInfoCardTransporte.setVisibility(View.GONE);
+            }else {
+                btnInfoCardTransporte.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int positionSelected= MyViewHolder.this.getPosition();
+                        ItemManifiesto it = manifiestosList.get(positionSelected);
+                        DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),it.getIdAppManifiesto(),it.getFrecuencia());
+                        dialogInformacionTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        //informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
+                        //informacionModulosTaskl.execute();
+                        dialogInformacionTransportista.show();
+                    }
+                });
+            }
         }
     }
 }

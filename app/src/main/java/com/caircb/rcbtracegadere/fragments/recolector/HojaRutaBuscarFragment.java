@@ -93,7 +93,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),1);
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         txtManifiesto = getView().findViewById(R.id.txtManifiesto);
