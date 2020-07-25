@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestInicioLoteHotel;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.util.Date;
 
@@ -40,6 +41,9 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
     public void execute() {
         final RequestInicioLoteHotel request = requestInicioLoteHotel();
         if(request!=null){
+            Gson g = new Gson();
+            String f = g.toJson(request);
+
            WebService.api().inicioFinLoteHotel(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
