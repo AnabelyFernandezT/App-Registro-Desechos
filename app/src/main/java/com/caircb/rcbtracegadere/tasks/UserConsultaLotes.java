@@ -41,7 +41,7 @@ public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallback
 
     @Override
     public void execute() {
-
+        progressShow("Consultado datos...");
         ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
 
         if (finLotes!=null){
