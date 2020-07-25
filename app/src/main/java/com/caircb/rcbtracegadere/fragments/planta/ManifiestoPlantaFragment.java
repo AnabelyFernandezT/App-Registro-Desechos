@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
@@ -49,7 +51,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                 if (manifiestoPlanta.validarNovedad()) {
 
                     if (manifiestoPlanta.validaExisteFirma()) {
-                        messageBox("Se requiere firma  ");
+                        messageBox("Se requiere firma");
                         return;
                     }
                     /*
@@ -74,8 +76,9 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                         userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
                             @Override
                             public void onSuccessful() {
-
                                 setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
+                                MyApp.getDBO().manifiestoPlantaObservacionesDao().eliminarObtenerObservaciones(idAppManifiesto);
+                                MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idAppManifiesto, -2);
                             }
                         });
                         userRegistrarPlanta.execute();

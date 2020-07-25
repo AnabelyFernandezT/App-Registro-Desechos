@@ -89,7 +89,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
-        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -1, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION );
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -2, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA );
         if(numeroFotos != null && numeroFotos > 0){
             lnlCountPhoto.setVisibility(View.VISIBLE);
             txtCountPhoto.setText(String.valueOf(numeroFotos));
@@ -223,6 +223,16 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
             }
         });
          */
+
+        txtotraNovedad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    guardarObservaciones();
+                }
+            }
+        });
+        obtenerObservaciones();
     }
 
     public  boolean validarNovedad (){
@@ -344,18 +354,13 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         }
     }
 
-    /*
+
     public void guardarObservaciones(){
-        if(txtPeso.getText().toString().equals("")) {}
-        else{
             DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
             p.setIdManifiesto(idManifiesto);
-            p.setPesoPlanta(Double.parseDouble(txtPeso.getText().toString()));
+            p.setPesoPlanta(0.0);
             p.setObservacionPeso(txtNovedad.getText().toString());
             p.setObservacionOtra(txtotraNovedad.getText().toString());
             MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
-        }
     }
-     */
-
 }

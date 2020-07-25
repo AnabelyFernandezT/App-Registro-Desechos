@@ -173,9 +173,25 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
                                 //MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,txtGenTecIdentificacion.getText().toString());
 
-                                if (!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()) {
-                                    txtRespEntregaCorreo.setError("Ingrese un correo válido");
-                                }
+                                txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable s) {
+                                        if (!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()) {
+                                            txtRespEntregaCorreo.setError("Ingrese un correo válido");
+                                        }
+                                    }
+                                });
+
                             }
 
                             @Override

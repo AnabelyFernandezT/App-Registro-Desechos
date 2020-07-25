@@ -278,7 +278,7 @@ public class TabManifiestoAdicionalNoRecoleccion extends LinearLayout {
 
     private void preLoadAudio(String tiempo){
         if(tiempo!=null && (!tiempo.equals("00:00") && tiempo.length()>0)){
-            ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION,MyConstant.STATUS_RECOLECCION);
+            ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION,MyConstant.STATUS_NO_RECOLECCION);
             if(f!=null) {
                 mAudio = f.getFile();
                 btnAgregarAudio.setVisibility(View.GONE);

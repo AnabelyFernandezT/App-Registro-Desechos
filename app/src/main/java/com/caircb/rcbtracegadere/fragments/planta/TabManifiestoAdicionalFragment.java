@@ -46,6 +46,7 @@ import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.utils.Utils;
 import com.itextpdf.text.pdf.languages.ArabicLigaturizer;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -244,6 +245,12 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
         }
     }
 
+    private String obtieneDosDecimales(double valor){
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
+    }
+
     public void validarPesoExtra(){
         bultos.clear();
         pesoT = 0.0;
@@ -259,8 +266,8 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
         }
 
         if (txtPesoRecolectado!=null) {
-            txtPesoRecolectado.setText(String.valueOf(pesoT));
-            txtPesoPlanta.setText(String.valueOf(pesoRecolectado));
+            txtPesoRecolectado.setText(obtieneDosDecimales(pesoT));
+            txtPesoPlanta.setText(obtieneDosDecimales(pesoRecolectado));
 
             double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
             double validacionMenor = (Double.parseDouble(txtPesoRecolectado.getText().toString()) - Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03);
@@ -351,6 +358,8 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
         if(estadoManifiesto == 3){
             txtotraNovedad.setEnabled(false);
             btnAgregarFirma.setEnabled(false);
+            btnEvidenciaObservacion.setEnabled(false);
+
         }
     }
 
