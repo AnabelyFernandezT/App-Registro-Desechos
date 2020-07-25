@@ -41,15 +41,12 @@ import java.util.List;
 
 public class RecepcionPlantaFragment extends LinearLayout  {
 
-
-    Activity _activity;
     ImageView imgFirmaPlanta;
     LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
     EditText txtPeso,txtNovedad,txtotraNovedad;
     TextView txtFirmaPlanta, txtPesoRecolectado;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
-    boolean bloquear;
     Window window;
     Bitmap firmaConfirmada;
     List<RowItemHojaRutaCatalogo> novedadfrecuentes;
@@ -92,7 +89,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
-        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -1, ManifiestoFileDao.FOTO_NOVEDAD_FRECUENTE_RECEPCION );
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -2, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA );
         if(numeroFotos != null && numeroFotos > 0){
             lnlCountPhoto.setVisibility(View.VISIBLE);
             txtCountPhoto.setText(String.valueOf(numeroFotos));
@@ -176,6 +173,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         });
         obtenerObservaciones();
 
+        /*
         txtPeso.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -185,7 +183,9 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                 }
             }
         });
+         */
 
+        /*
         txtPeso.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -202,6 +202,8 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                 validarPesos();
             }
         });
+         */
+        /*
         txtNovedad.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -210,7 +212,8 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                 }
             }
         });
-
+         */
+        /*
         txtotraNovedad.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -219,6 +222,17 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                 }
             }
         });
+         */
+
+        txtotraNovedad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    guardarObservaciones();
+                }
+            }
+        });
+        obtenerObservaciones();
     }
 
     public  boolean validarNovedad (){
@@ -252,12 +266,11 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         List<RowItemManifiestoDetalle> bultos = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto2(idManifiesto);
 
        // ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
-       if(bultos.size()>0){
+
+        if(bultos.size()>0){
             for (RowItemManifiestoDetalle p:bultos){
                 pesoT= pesoT+ p.getPeso();
-
             }
-
         }
 
         txtPesoRecolectado.setText(String.valueOf(pesoT));
@@ -272,6 +285,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         return MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFotoPlanta(idManifiesto)>0;
     }
 
+    /*
     private void validarPesos(){
         DecimalFormat df = new DecimalFormat("#.####");
         if(txtPeso.getText().toString().equals("")) {}
@@ -300,6 +314,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         }
     }
+     */
 
     public boolean validaExisteFirma(){
         return !firma;
@@ -339,16 +354,13 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         }
     }
 
+
     public void guardarObservaciones(){
-        if(txtPeso.getText().toString().equals("")) {}
-        else{
             DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
             p.setIdManifiesto(idManifiesto);
-            p.setPesoPlanta(Double.parseDouble(txtPeso.getText().toString()));
+            p.setPesoPlanta(0.0);
             p.setObservacionPeso(txtNovedad.getText().toString());
             p.setObservacionOtra(txtotraNovedad.getText().toString());
             MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
-        }
     }
-
 }

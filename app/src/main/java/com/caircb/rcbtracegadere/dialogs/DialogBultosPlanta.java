@@ -71,8 +71,8 @@ public class DialogBultosPlanta extends MyDialog {
                 boolean bandera = false;
                 List<ItemManifiestoDetalleValorSede> lista = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
                 for(ItemManifiestoDetalleValorSede reg: lista){
-                    if(reg.getNuevoPeso() != null && !(reg.getEstado())) {
-                        messageBox("Debe seleccionar los bultos faltantes");
+                    if(reg.getNuevoPeso() > 0 && !(reg.getEstado())) {
+                        messageBox("Debe seleccionar todos los bultos");
                         bandera = true;
                         return;
                     }
@@ -84,18 +84,9 @@ public class DialogBultosPlanta extends MyDialog {
                         mOnclickSedeListener.onSucefull();
                     }
                 }
-
-                String nombre ="";
-                //DialogBultosPlanta.this.dismiss();
-                /*
-                if(mOnclickSedeListener!=null){
-                    mOnclickSedeListener.onSucefull();
-                }
-                 */
             }
         });
-        TabManifiestoAdicionalFragment ta = new TabManifiestoAdicionalFragment();
-        ta.validarPesoExtra();
+
         //datosPlacasDisponibles();
     }
 

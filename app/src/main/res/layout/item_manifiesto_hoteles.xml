@@ -58,6 +58,7 @@
                 android:id="@+id/btn_manifiesto_more"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical">

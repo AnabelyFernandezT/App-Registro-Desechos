@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoFileEntity;
@@ -128,7 +129,8 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
             rq.setNumeroManifiesto(model.getNumeroManifiesto());
             rq.setPeso(peso);
             rq.setUrlFirmaPlanta(firmaPlanta!=null?(path+"/"+firmaPlanta.getUrl()):"");
-            rq.setFechaRecepcionPlanta(model.getFechaRecepcionPlanta());
+            //rq.setFechaRecepcionPlanta(model.getFechaRecepcionPlanta());
+            rq.setFechaRecepcionPlanta(AppDatabase.getDateTime());
             rq.setNovedadFrecuentePlanta(createRequestNovedadFrecuente());
             rq.setObservacionPeso(observacionPeso);
             rq.setObservacionOtra(observacionOtra);

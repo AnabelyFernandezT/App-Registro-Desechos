@@ -69,7 +69,7 @@ public class DialogBultosSede extends MyDialog {
 
         listaPlacasDisponibles = new ArrayList<>();
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
-        btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
+        btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnAceptarIngresoBultos);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
 
       btnCancelarApp.setOnClickListener(new View.OnClickListener() {

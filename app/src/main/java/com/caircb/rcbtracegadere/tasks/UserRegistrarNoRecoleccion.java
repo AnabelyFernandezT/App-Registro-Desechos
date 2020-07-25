@@ -77,7 +77,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
         //images por defecto
         listaFileDefauld = new ArrayList<>();
 
-        firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_RECOLECCION);
+        firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_NO_RECOLECCION);
         if(firmaTransportista!=null && !firmaTransportista.isSincronizado())listaFileDefauld.add(firmaTransportista);
 
         firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_NO_RECOLECCION);
@@ -89,7 +89,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
         firmaConductorRecolector = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, MyConstant.STATUS_NO_RECOLECCION);
         if(firmaConductorRecolector!=null && !firmaConductorRecolector.isSincronizado())listaFileDefauld.add(firmaConductorRecolector);
 
-        audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
+        audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_NO_RECOLECCION);
         if(audioNovedadCliente!=null && !audioNovedadCliente.isSincronizado())listaFileDefauld.add(audioNovedadCliente);
 
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();

@@ -62,7 +62,8 @@ public abstract class ManifiestoPlantaDao {
             "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
             "WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos "+
-            "from tb_manifiestos_planta MC  where idTransporteVehiculo =:idtransporte" )
+            "from tb_manifiestos_planta MC  where idTransporteVehiculo =:idtransporte " +
+            "Order by estado asc" )
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManif(Integer idtransporte);
 
@@ -133,7 +134,8 @@ public abstract class ManifiestoPlantaDao {
             "                                       INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +
             "            WHERE MC.idAppManifiesto = M.idAppManifiesto) as totalBultos " +
             "            from tb_manifiestos_planta MC  " +
-            "where idTransporteVehiculo=:idVehiculo and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  order by nombreCliente")
+            "where idTransporteVehiculo=:idVehiculo and (numeroManifiesto like '%' || :search || '%' or nombreCliente like '%' || :search || '%')  " +
+            "Order by estado asc")
     @Transaction
     public abstract List<ItemManifiestoSede> fetchManifiestosAsigByClienteOrNumManifPlanta(String search, Integer idVehiculo);
 

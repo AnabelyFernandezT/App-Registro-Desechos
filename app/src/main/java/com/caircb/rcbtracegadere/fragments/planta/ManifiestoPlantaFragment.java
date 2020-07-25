@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
@@ -31,7 +33,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     Integer idAppManifiesto;
     UserRegistrarPlanta userRegistrarPlanta;
     FloatingActionButton mensajes;
-    double peso;
+    //double peso;
     DialogBuilder dialogBuilder;
 
 
@@ -47,34 +49,36 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                     return;
                 }*/
                 if (manifiestoPlanta.validarNovedad()) {
+
                     if (manifiestoPlanta.validaExisteFirma()) {
-                        messageBox("Se requiere firma  ");
+                        messageBox("Se requiere firma");
                         return;
                     }
-
+                    /*
                     if (manifiestoPlanta.validaPeso()) {
                         messageBox("Se requiere que ingrese el peso");
                         return;
                     }
+                     */
 
-
-                peso = manifiestoPlanta.guardar();
+                //peso = manifiestoPlanta.guardar();
                 final String observacionPeso = manifiestoPlanta.obtenerNovedad();
                 final String observacionOtra = manifiestoPlanta.obtenerOtraNovedad();
 
                 dialogBuilder = new DialogBuilder(getActivity());
-                dialogBuilder.setMessage("Esta seguro de continuar");
+                dialogBuilder.setMessage("¿Está seguro de continuar?");
                 dialogBuilder.setCancelable(false);
                 dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
-                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(), idAppManifiesto, peso, observacionPeso, observacionOtra);
+                        userRegistrarPlanta = new UserRegistrarPlanta(getActivity(), idAppManifiesto, 0.0, observacionPeso, observacionOtra);
                         userRegistrarPlanta.setOnRegisterListener(new UserRegistrarPlanta.OnRegisterListener() {
                             @Override
                             public void onSuccessful() {
-
                                 setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
+                                MyApp.getDBO().manifiestoPlantaObservacionesDao().eliminarObtenerObservaciones(idAppManifiesto);
+                                MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idAppManifiesto, -2);
                             }
                         });
                         userRegistrarPlanta.execute();
@@ -117,7 +121,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        setView(inflater.inflate(R.layout.fragment_hoja_ruta2, container, false));
+        setView(inflater.inflate(R.layout.fragment_hoja_ruta_planta_2, container, false));
         init();
         iniTab();
 
@@ -150,8 +154,6 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
         manifiestoPlanta = new RecepcionPlantaFragment(getActivity(),idAppManifiesto);
     }
 
-
-
     public static ManifiestoPlantaFragment newInstance() {
         return new ManifiestoPlantaFragment();
     }
@@ -162,10 +164,6 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
         b.putInt(ARG_PARAM1,manifiestoID);
         f.setArguments(b);
         return f;
-    }
-
-    public void guardarObservaciones(DtoManifiestoPlantaObservacion ob){
-
     }
 
 }

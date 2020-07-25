@@ -35,18 +35,12 @@ import java.util.List;
  */
 public class HomePlantaFragment extends MyFragment implements OnHome {
     ImageButton btnSincManifiestosPlanta,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
-    UserConsultarRecolectadosTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogPlacas dialogPlacas;
-    UserConsultarHojaRutaPlacaTask consultarHojaRutaPlacaTaskTask;
-    UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRutaPlaca;
     UserConsultarManifiestosPendientesPesarTask userConsultarManifiestosPendientesPesarTask;
     TextView lblDropOffTransportista;
     public Context mContext;
-
-    ImageButton regionBuscar;
-    //ImageButton btnCalculadora;
 
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
@@ -67,23 +61,13 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_home_planta, container, false));
 
-        initBuscador();
         init();
-        //cargarManifiesto();
-        cargarLbael();
+        //cargarLbael();
         return getView();
 
     }
 
-    private void initBuscador(){
-        regionBuscar = (ImageButton)getView().findViewById(R.id.regionBuscar);
-        regionBuscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
-    }
 
     private void init() {
         lblListaManifiestoAsignadoPlanta = (TextView) getView().findViewById(R.id.lblListaManifiestoAsignadoPlanta);

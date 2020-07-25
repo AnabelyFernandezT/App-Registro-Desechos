@@ -47,6 +47,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
         RequestFinRuta requestFinRuta = createRequestFin();
         if(requestFinRuta!=null){
+            if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onSuccessful();
             WebService.api().putFin(requestFinRuta).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -68,8 +69,9 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
                     if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onFailure();
                 }
             });
+            progressHide();
         }else {
-            message("Usuario no asociado con Seguridad");
+            message("Request no encontrado");
             progressHide();
         }
     }

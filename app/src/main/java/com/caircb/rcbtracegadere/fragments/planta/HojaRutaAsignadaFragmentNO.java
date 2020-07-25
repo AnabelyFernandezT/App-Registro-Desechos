@@ -49,18 +49,12 @@ import java.util.List;
  */
 public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnClickListener {
 
-
     LinearLayout btnRetornarListHojaRuta;
-
-    private Window window;
     private RecyclerView recyclerView;
     private ManifiestoAdapter recyclerviewAdapter;
-
     private OnRecyclerTouchListener touchListener;
     private List<ItemManifiesto> rowItems;
     private SearchView searchView;
-    private DialogMenuBaseAdapter dialogMenuBaseAdapter;
-    private ListView mDrawerMenuItems, mDialogMenuItems;
     RutaInicioFinEntity rut;
     ManifiestoEntity entity;
     Integer idFinRuta;
@@ -91,7 +85,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity());
+        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),2);
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);

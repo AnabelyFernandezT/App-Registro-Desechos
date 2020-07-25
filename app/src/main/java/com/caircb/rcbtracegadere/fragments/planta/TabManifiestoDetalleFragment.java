@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.fragments.planta;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.adapters.ViewBindingAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,60 +41,37 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TabManifiestoDetalleFragment extends Fragment {
+public class TabManifiestoDetalleFragment extends LinearLayout {
 
     private static final String ARG_PARAM1 = "idAppManifiesto";
 
-    View view;
     Window window;
     Integer idAppManifiesto;
     private List<ItemManifiestoDetalleSede> detalles;
     RecyclerView recyclerView;
-
-    LinearLayout btnManifiestoCancel,btnRegistrar;
     RecepcionGestorFragment manifiestoGestor;
     ManifiestoDetalleAdapterPlanta recyclerviewAdapter;
-    UserRegistarDetalleSedeTask detalleSedeTask;
     DialogBultosPlanta dialogBultos;
-    TabManifiestoAdicionalFragment manifiestoAdicional  = new TabManifiestoAdicionalFragment();
+    String pesajePendiente;
 
-    public static TabManifiestoDetalleFragment newInstance (Integer manifiestoID){
-        TabManifiestoDetalleFragment f = new TabManifiestoDetalleFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, manifiestoID);
-        f.setArguments(args);
-        return f;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            idAppManifiesto= getArguments().getInt(ARG_PARAM1);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_hoja_ruta_planta, container, false);
-        idAppManifiesto = this.getArguments().getInt(ARG_PARAM1);
+    public TabManifiestoDetalleFragment(Context context, Integer idAppManifiesto){
+        super(context);
+        View.inflate(context, R.layout.fragment_hoja_ruta_planta, this);
+        this.idAppManifiesto = idAppManifiesto;
         init();
         loadData();
-        return view;
     }
 
     public void init(){
-        recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView = this.findViewById(R.id.recyclerview);
         recyclerView.requestFocus();
-        recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getActivity(),idAppManifiesto.toString(),1);
-        manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
+        recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getContext(),idAppManifiesto.toString(),1);
+        manifiestoGestor = new RecepcionGestorFragment(getContext(),idAppManifiesto);
     }
 
     private void loadData(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
         //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
         recyclerviewAdapter.setTaskList(detalles);
@@ -110,7 +89,7 @@ public class TabManifiestoDetalleFragment extends Fragment {
     }
 
     private void openOpcionesItems(final Integer idManifiestoDetalle,Integer position){
-        dialogBultos = new DialogBultosPlanta(getActivity(),idManifiestoDetalle);
+        dialogBultos = new DialogBultosPlanta(getContext(),idManifiestoDetalle);
         dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogBultos.setCancelable(false);
         dialogBultos.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
@@ -118,8 +97,6 @@ public class TabManifiestoDetalleFragment extends Fragment {
             public void onSucefull() {
                 List<ItemManifiestoDetalleSede> detalles;
                 detalles = MyApp.getDBO().manifiestoPlantaDetalleDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiesto);
-                manifiestoAdicional.validarPesoExtra();
-                //Integer numeroSelecionado = MyApp.getDBO().manifiestoDetalleValorSede().fetchNumeroTotalAsigByManifiesto(idAppManifiesto);
                 recyclerviewAdapter.setTaskList(detalles);
             }
         });
