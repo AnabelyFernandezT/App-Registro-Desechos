@@ -51,7 +51,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                 if (manifiestoPlanta.validarNovedad()) {
 
                     if (manifiestoPlanta.validaExisteFirma()) {
-                        messageBox("Se requiere firma  ");
+                        messageBox("Se requiere firma");
                         return;
                     }
                     /*
@@ -66,7 +66,7 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
                 final String observacionOtra = manifiestoPlanta.obtenerOtraNovedad();
 
                 dialogBuilder = new DialogBuilder(getActivity());
-                dialogBuilder.setMessage("Esta seguro de continuar");
+                dialogBuilder.setMessage("¿Esta seguro de continuar?");
                 dialogBuilder.setCancelable(false);
                 dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override

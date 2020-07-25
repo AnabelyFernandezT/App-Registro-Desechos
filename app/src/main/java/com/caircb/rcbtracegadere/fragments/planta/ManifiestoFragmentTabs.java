@@ -170,17 +170,17 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
 
                 if(pesajePendiente.equals("NO")){
                     if(!firma){
-                        messageBox("Debe registrar la firma.!");
+                        messageBox("Debe registrar la firma");
                     }else{
                         if(novedad){
                             if(bultos.equals(bultosSeleccionados)) {
                                 registroPlantaDetalle();
                             }
                             else {
-                                messageBox("Seleccione todos los bultos.!");
+                                messageBox("Seleccione todos los bultos");
                             }
                         }else{
-                            messageBox("Ingrese una foto.!");
+                            messageBox("Ingrese una foto");
                         }
                     }
                 }else{
@@ -189,10 +189,10 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                             registroPlantaDetalle();
                         }
                         else {
-                            messageBox("Seleccione todos los bultos.!");
+                            messageBox("Seleccione todos los bultos");
                         }
                     }else{
-                        messageBox("Ingrese una foto.!");
+                        messageBox("Ingrese una foto");
                     }
 
                 }
