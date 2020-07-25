@@ -17,60 +17,60 @@
         app:layout_columnWeight="1"
         app:layout_rowWeight="1"
         app:layout_row="2">
+
         <LinearLayout
-            android:padding="10dp"
-            android:orientation="vertical"
-            android:background="@drawable/ic_background_button_keyboard_pant"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_background_button_keyboard_pant"
+            android:orientation="vertical"
+            android:padding="10dp">
+
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="25dp">
+                android:layout_height="25dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
                 <TextView
                     android:id="@+id/txtTotal"
-                    android:gravity="center|left"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/quicksand_bold"
+                    android:gravity="center|left"
                     android:text=""
-                    android:textSize="18dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:textSize="18dp" />
             </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ListView
-                        android:id="@+id/listViewBultos"
-                        android:stackFromBottom="true"
-                        android:transcriptMode="alwaysScroll"
-                        android:layout_width="match_parent"
-                        android:layout_marginBottom="10dp"
-                        android:layout_height="180dp"></ListView>
-                </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <EditText
-                    android:focusable="false"
-                    android:enabled="false"
-                    android:id="@+id/txtpantalla"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:background="@android:color/transparent"
-                    android:layout_height="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ListView
+                    android:id="@+id/listViewBultos"
                     android:layout_width="match_parent"
+                    android:layout_height="180dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/txtpantalla"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:fontFamily="@font/quicksand_bold"
                     android:gravity="right"
-                    android:text="0"
-                    android:paddingTop="1dp"
-                    android:paddingBottom="7dp"
-                    android:paddingRight="15dp"
                     android:paddingLeft="15dp"
-                    android:textSize="28dp"
-                    android:textColor="#333"/>
+                    android:paddingTop="1dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="7dp"
+                    android:text="0"
+                    android:textColor="#333"
+                    android:textSize="28dp" />
             </LinearLayout>
         </LinearLayout>
         <!--
