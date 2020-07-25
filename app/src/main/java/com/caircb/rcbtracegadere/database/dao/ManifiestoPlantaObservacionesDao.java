@@ -28,6 +28,10 @@ public abstract class ManifiestoPlantaObservacionesDao {
     @Query("Select * from  tb_manifiestos_planta_observaciones where idAppManifiesto=:idManifiesto")
     public abstract DtoManifiestoPlantaObservacion obtenerObservaciones(Integer idManifiesto);
 
+
+    @Query("delete from tb_manifiestos_planta_observaciones where idAppManifiesto=:idManifiesto")
+    public abstract void eliminarObtenerObservaciones(Integer idManifiesto);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoPlantaObservacionesEntity entity);
 
