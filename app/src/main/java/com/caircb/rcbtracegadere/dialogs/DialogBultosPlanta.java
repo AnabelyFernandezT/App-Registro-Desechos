@@ -71,7 +71,7 @@ public class DialogBultosPlanta extends MyDialog {
                 boolean bandera = false;
                 List<ItemManifiestoDetalleValorSede> lista = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByClienteOrNumManif(idAppManifiestoDet);
                 for(ItemManifiestoDetalleValorSede reg: lista){
-                    if(reg.getNuevoPeso() != null && !(reg.getEstado())) {
+                    if(reg.getNuevoPeso() > 0 && !(reg.getEstado())) {
                         messageBox("Debe seleccionar todos los bultos");
                         bandera = true;
                         return;
