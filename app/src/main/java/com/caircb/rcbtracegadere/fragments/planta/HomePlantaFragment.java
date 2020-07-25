@@ -62,7 +62,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         setView(inflater.inflate(R.layout.fragment_home_planta, container, false));
 
         init();
-        cargarLbael();
+        //cargarLbael();
         return getView();
 
     }
