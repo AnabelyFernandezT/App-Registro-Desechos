@@ -117,7 +117,7 @@ public class DialogFinRutaHoteles extends MyDialog {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
                     listaDestinos.get(position-1);
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+position);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino",""+2);
                     destinos = (String) listaDestino.getSelectedItem();
                     traerDestinoEspecifico();
                 }
@@ -227,15 +227,9 @@ public class DialogFinRutaHoteles extends MyDialog {
     }
 
     private void traerDestinos(){
-        consultarDetino = new UserConsultarDestinosTask(getActivity());
-        consultarDetino.setOnDestinoListener(new UserConsultarDestinosTask.OnDestinoListener() {
-            @Override
-            public void onSuccessful(List<DtoCatalogo> catalogos) {
-                listaDestinos = catalogos;
-                listaDestino = cargarSpinnerDestino(listaDestino,catalogos,true);
-            }
-        });
-        consultarDetino.execute();
+
+        listaDestinos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(2,9);
+        cargarSpinnerDestino(listaDestino,listaDestinos,true);
     }
     public Spinner cargarSpinnerDestino(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
         ArrayAdapter<String> adapter;

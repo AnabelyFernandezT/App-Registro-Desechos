@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements RetrofitCallbacks {
 
     String fechaSincronizacion;
-    String obfechaActualizacion = "fecha_actualizacion_"+ MySession.getIdUsuario().toString()+"_"+MySession.getIdLugar().toString();
+    String obfechaActualizacion = "fecha_actualizacion_"+ MySession.getIdUsuario().toString()+"_"+MySession.getLugarNombre();
 
     public interface TaskListener {
         public void onSuccessful();
@@ -104,7 +104,11 @@ public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements Ret
     }
 
     private Date fechaActutalizacion (String fechaActualizacion) throws ParseException {
-        final DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        return fecha.parse(fechaActualizacion);
+        if(fechaActualizacion!=null){
+            final DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            return fecha.parse(fechaActualizacion);
+        }else {
+            return null;
+        }
     }
 }
