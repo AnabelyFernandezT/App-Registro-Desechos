@@ -275,9 +275,30 @@ public class TabManifiestoAdicional extends LinearLayout {
             //lnlAdicionales.setVisibility(pkg.getFlagAdicionales()?View.VISIBLE:View.GONE);
             lnlmsgAdicionales.setVisibility(pkg.getFlagAdicionales()?View.GONE:View.VISIBLE);
         }
+
         if(idAppTipoPaquete == null){
            // lnlAdicionales.setVisibility(View.GONE);
             lnlmsgAdicionales.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void resetDataPaquetesPedientes(){
+        if(listaPaquetes!=null && listaPaquetes.size()>0) {
+            //actualizar los pendientes a 0...
+            for(RowItemPaquete it:listaPaquetes) {
+                if(it.getTipo() == 1) {
+                    MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idAppTipoPaquete, 0, 0);
+                    it.setPendiente(0);
+                    it.setDiferencia(0);
+                    it.setInitPendiente(0);
+                }
+                else if(it.getTipo() == 2) {
+                    MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idAppTipoPaquete, 0, 0);
+                    it.setPendiente(0);
+                    it.setDiferencia(0);
+                    it.setInitPendiente(0);
+                }
+            }
         }
     }
 
@@ -512,6 +533,10 @@ public class TabManifiestoAdicional extends LinearLayout {
 
     public boolean validaExisteNovedadesNoRecoleccion(){
         return MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().existeNovedadNoRecoleccion(idAppManifiesto);
+    }
+
+    public List<RowItemPaquete> validaDataListaPaquetes(){
+        return listaPaquetes;
     }
 
 }

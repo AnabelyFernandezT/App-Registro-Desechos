@@ -56,6 +56,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     Boolean closable=false;
     MyPrint print;
     Integer tipoGestion;
+    Integer cantidaBultosInitial;
     DialogBuilder builder;
     boolean faltaImpresos=false;
 
@@ -66,7 +67,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 int cantidad,
                 PaqueteEntity pkg,
                 boolean isClose,
-                boolean faltaImpresiones);
+                boolean faltaImpresiones,
+                boolean isChangeTotalBultos);
 
         void onCanceled(boolean falataImpresos);
     }
@@ -97,7 +99,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         initBotones();
         initCategoriaPaquetes();
-        loadData();
+        initDataOnOpen();
         detalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
         vreferencial = detalle.getValidadorReferencial();
         pesoReferencial = detalle.getPesoReferencial();
@@ -163,17 +165,23 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         }
     }
 
-    private void loadData(){
-        //bultos = new ArrayList<>();
-
-
+    private void initDataOnOpen(){
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
+        if(bultos==null) bultos = new ArrayList<>();
+        cantidaBultosInitial = bultos.size();
+
         if(bultos.size()>0){
             for (CatalogoItemValor r:bultos){
                 subtotal =  subtotal.add(new BigDecimal(r.getValor()));
             }
             txtTotal.setText("KG "+subtotal);
         }
+
+        initAdapterBultos();
+
+    }
+
+    private void initAdapterBultos(){
         listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos);
         listaValoresAdapter.setOnItemBultoImpresion(new ListaValoresAdapter.OnItemBultoImpresionListener() {
             @Override
@@ -203,13 +211,28 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     @Override
                     public void run() {
                         // Code here will run in UI thread
-                        if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal,position,bultos.size(),pkg,false, faltaImpresos);
+                        if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal,position,bultos.size(),pkg,false, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
                     }
                 });
             }
         });
 
         listViewBultos.setAdapter(listaValoresAdapter);
+    }
+
+    private void loadData(){
+        //bultos = new ArrayList<>();
+
+        if(bultos.size()>0){
+            for (CatalogoItemValor r:bultos){
+                subtotal =  subtotal.add(new BigDecimal(r.getValor()));
+            }
+            txtTotal.setText("KG "+subtotal);
+        }
+
+        bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
+        initAdapterBultos();
+
     }
 
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer idCatalogo, Integer numeroBulto){
@@ -405,17 +428,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         dato="0";
         txtpantalla.setText("0");
 
-        if(closable && mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), pkg,true, faltaImpresos);
+        if(closable && mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), pkg,true, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
     }
 /////////////////////////
     private void aplicar(){
         BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
         if(imput.doubleValue()==0d && subtotal.doubleValue()>0d){
-            if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true, faltaImpresos);
+            if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
         }else if(imput.doubleValue()>0d){
             if(bultos.size()>=0d && pkg ==null){
                 createBulto(imput);
-                if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), null,true, faltaImpresos);
+                if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), null,true, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
             }else if(bultos.size()>=0d && pkg!=null){
                 //region para paquetes...
                 closable=true;

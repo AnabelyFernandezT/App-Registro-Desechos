@@ -36,6 +36,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
+import com.caircb.rcbtracegadere.models.RowItemPaquete;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -64,6 +65,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
     DialogBultos bultos;
     UserRegistrarRecoleccion userRegistrarRecoleccion;
     UserRegistrarRuteoRecoleccion userRegistrarRuteoRecoleccion;
+
+    List<RowItemPaquete> listaPaquetes;
 
     public Manifiesto2Fragment() {
     }
@@ -158,7 +161,14 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String s) {
-                if(s.equals("ADICIONALES")){
+                if(s.equals("GENERAL")){
+                    tabManifiestoDetalle.resetParameters();
+                }
+                else if(s.equals("DETALLE")){
+                    tabManifiestoDetalle.resetParameters();
+                }
+                else if(s.equals("ADICIONALES")){
+                    if(tabManifiestoDetalle.validaExisteCambioTotalBultos()){tabManifiestoAdicional.resetDataPaquetesPedientes();}
                     tabManifiestoAdicional.reloadDataPaquetes();
                 }
             }
@@ -204,7 +214,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                         }
 
                     case 2:
-                        System.out.println(tabs.getCurrentTab());
+                        //System.out.println(tabs.getCurrentTab());
                         int j= tabs.getCurrentTab();
                         if (j==0){
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
@@ -273,66 +283,98 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     return;
                 }
 
+                //validacion de lista de paquetes... con sus pendientes..
+                listaPaquetes = tabManifiestoAdicional.validaDataListaPaquetes();
+                if(listaPaquetes !=null && listaPaquetes.size()>0){
+                    int pendientes=0;
+                    StringBuilder sb = new StringBuilder();
+                    for(RowItemPaquete row:listaPaquetes){
+                        pendientes += row.getPendiente();
+                        if(row.getTipo()==1) sb.append(""+row.getPendiente()+" infeccioso").append(System.getProperty("line.separator"));
+                        if(row.getTipo()==2) sb.append(""+row.getPendiente()+" cortopunzante").append(System.getProperty("line.separator"));
+                    }
+
+                    if(pendientes==0){
+                        sb = null;
+                        dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("Se entregaron todos los insumos al cliente?");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setTitle("CONFIRMACIÓN");
+                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                continuarToVistaPreliminar(identifiacion);
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
+
+                    }else{
+
+                        dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("Confirma que quedan pendientes?"+System.getProperty("line.separator")+sb.toString());
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setTitle("INFO");
+                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                continuarToVistaPreliminar(identifiacion);
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
+
+                    }
+                }else {
+                    continuarToVistaPreliminar(identifiacion);
+                }
+
+
                /* if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
                     messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }*/
 
-               dialogBuilder = new DialogBuilder(getActivity());
-               dialogBuilder.setMessage("¿El Cliente Genera Propio Manifiesto?");
-               dialogBuilder.setCancelable(false);
-               dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       dialogBuilder.dismiss();
-                       manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete(),identifiacion,tipoRecoleccion);
-                       manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                       manifiestoCliente.setCancelable(false);
-                       manifiestoCliente.setmOnRegisterListener(new DialogManifiestoCliente.onRegisterListenner() {
-                           @Override
-                           public void onSucessfull() {
-                               dialogBuilder.dismiss();
-                               manifiestoCliente.dismiss();
 
-                               if (tipoRecoleccion==1){
-                                   setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
-                               }else {
-                                   final DialogBuilder dialogBuilder2=new DialogBuilder(getActivity());
-                                   dialogBuilder2.setMessage("¿Está seguro que desea guardar?");
-                                   dialogBuilder2.setCancelable(false);
-                                   dialogBuilder2.setTitle("CONFIRMACIÓN");
-                                   dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View v) {
-                                           dialogBuilder2.dismiss();
-                                           registarDatos();
-                                       }
-                                   });
-                                   dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View v) {
-                                           dialogBuilder2.dismiss();
-                                       }
-                                   });
-                                   dialogBuilder2.show();
-                               }
 
-                           }
-                       });
-                       manifiestoCliente.show();
-                   }
-               });
-                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+
+                }
+                System.out.println(tabs.getCurrentTab());
+                break;
+        }
+    }
+
+    private void continuarToVistaPreliminar(final String identifiacion){
+        dialogBuilder = new DialogBuilder(getActivity());
+        dialogBuilder.setMessage("¿El Cliente Genera Propio Manifiesto?");
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+                manifiestoCliente = new DialogManifiestoCliente(getActivity(),idAppManifiesto,tabManifiestoGeneral.getTipoPaquete(),identifiacion,tipoRecoleccion);
+                manifiestoCliente.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                manifiestoCliente.setCancelable(false);
+                manifiestoCliente.setmOnRegisterListener(new DialogManifiestoCliente.onRegisterListenner() {
                     @Override
-                    public void onClick(View v) {
+                    public void onSucessfull() {
                         dialogBuilder.dismiss();
-                        MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idAppManifiesto,"");
+                        manifiestoCliente.dismiss();
+
                         if (tipoRecoleccion==1){
-                            setNavegate(VistaPreliminarFragment.newInstance(
-                                    idAppManifiesto,
-                                    tabManifiestoGeneral.getTipoPaquete(),
-                                    identifiacion
-                            ));
+                            setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
                         }else {
                             final DialogBuilder dialogBuilder2=new DialogBuilder(getActivity());
                             dialogBuilder2.setMessage("¿Está seguro que desea guardar?");
@@ -356,12 +398,44 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
                     }
                 });
-                dialogBuilder.show();
-
+                manifiestoCliente.show();
+            }
+        });
+        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+                MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idAppManifiesto,"");
+                if (tipoRecoleccion==1){
+                    setNavegate(VistaPreliminarFragment.newInstance(
+                            idAppManifiesto,
+                            tabManifiestoGeneral.getTipoPaquete(),
+                            identifiacion
+                    ));
+                }else {
+                    final DialogBuilder dialogBuilder2=new DialogBuilder(getActivity());
+                    dialogBuilder2.setMessage("¿Está seguro que desea guardar?");
+                    dialogBuilder2.setCancelable(false);
+                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                            registarDatos();
+                        }
+                    });
+                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                        }
+                    });
+                    dialogBuilder2.show();
                 }
-                System.out.println(tabs.getCurrentTab());
-                break;
-        }
+
+            }
+        });
+        dialogBuilder.show();
     }
 
     @Override

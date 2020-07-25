@@ -52,11 +52,11 @@ public class TabManifiestoDetalle extends LinearLayout {
     Integer idAppManifiesto,tipoPaquete,estadoManifiesto;
     String numeroManifiesto;
     Window window;
-    ListView mDialogMenuItems;
+    //ListView mDialogMenuItems;
 
     Dialog dialogOpcioneItem;
     DialogBultos dialogBultos;
-    DialogMenuBaseAdapter dialogMenuBaseAdapter;
+    //DialogMenuBaseAdapter dialogMenuBaseAdapter;
     MyCalculoPaquetes calculoPaquetes;
     FloatingActionButton mensajes;
     AlertDialog alert;
@@ -66,8 +66,14 @@ public class TabManifiestoDetalle extends LinearLayout {
     PaqueteEntity pkg;
     Integer tipoBalanza=0;
     Integer tipoRecoleccion;
+    private boolean isChangeTotalCreateBultos=false;
 
-    public TabManifiestoDetalle(Context context,Integer manifiestoID,Integer tipoPaquete,String numeroManifiesto,Integer estado, Integer tipoRecoleccion) {
+    public TabManifiestoDetalle(Context context,
+                                Integer manifiestoID,
+                                Integer tipoPaquete,
+                                String numeroManifiesto,
+                                Integer estado,
+                                Integer tipoRecoleccion) {
         super(context);
         this.idAppManifiesto=manifiestoID;
         this.tipoPaquete=tipoPaquete;
@@ -76,6 +82,7 @@ public class TabManifiestoDetalle extends LinearLayout {
         this.numeroManifiesto=numeroManifiesto;
         this.tipoRecoleccion=tipoRecoleccion;
         View.inflate(context, R.layout.tab_manifiesto_detalle, this);
+
         init();
         loadData();
     }
@@ -282,7 +289,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogBultos.setOnBultoListener(new DialogBultos.OnBultoListener() {
                 @Override
-                public void onSuccessful(BigDecimal valor, int position, int cantidad, PaqueteEntity pkg, boolean isClose, boolean faltaImpresiones) {
+                public void onSuccessful(BigDecimal valor, int position, int cantidad, PaqueteEntity pkg, boolean isClose, boolean faltaImpresiones,boolean isChangeTotalBultos) {
                     if(isClose && dialogBultos!=null){
                             dialogBultos.dismiss();
                             dialogBultos = null;
@@ -303,6 +310,8 @@ public class TabManifiestoDetalle extends LinearLayout {
                     //actualizar datos en dbo local...
                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(),row.getCantidadBulto(),row.getPeso(),cantidad,row.isEstado());
 
+                    //si cambia los item(add/remove) de la calculadora se resetea los valores pendientes ingresados por el usuario...
+                    isChangeTotalCreateBultos = isChangeTotalBultos;
                     //calculo de paquetes...
                     if(pkg!=null){
                        calculoPaquetes.algoritmo(pkg);
@@ -330,5 +339,13 @@ public class TabManifiestoDetalle extends LinearLayout {
 
     public boolean validaExisteDetallesSeleccionados(){
         return MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleSeleccionados(idAppManifiesto).size()>0;
+    }
+
+    public boolean validaExisteCambioTotalBultos(){
+        return  isChangeTotalCreateBultos;
+    }
+
+    public void resetParameters(){
+        isChangeTotalCreateBultos=false;
     }
 }
