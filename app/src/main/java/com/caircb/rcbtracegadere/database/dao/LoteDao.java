@@ -33,6 +33,10 @@ public abstract  class LoteDao {
     @Transaction
     public abstract List<ItemLote> fetchLote();
 
+    @Query("select idLoteContenedor,codigoLote,fechaRegistro, idDestinatarioFinRutaCatalogo, nombreDestinatarioFinRutaCatalogo,numeroManifiesto,subRuta,ruta,placaVehiculo from tb_lotes where movilizado=0 and idLoteContenedor like '%' || :numeroLote || '%'")
+    @Transaction
+    public abstract List<ItemLote> fetchLoteSearchView(String numeroLote);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createLote(LoteEntity entity);
 

@@ -28,10 +28,12 @@ import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemLote;
+import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioMovilizacion;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HojaFragment extends MyFragment implements View.OnClickListener{
@@ -81,7 +83,18 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
         btnRetornarListHojaLotes = getView().findViewById(R.id.btnRetornarListHojaLotes);
         btnRetornarListHojaLotes.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewLotes);
-
+        searchView.setOnSearchListener(new SearchView.OnSearchListener() {
+            @Override
+            public void onSearch(String data) {
+                filtro(data);
+            }
+        });
+    }
+    private void filtro(String texto){
+        List<ItemLote> listaItems = new ArrayList<>() ;
+        listaItems =  MyApp.getDBO().loteDao().fetchLoteSearchView(texto);
+        rowItems=listaItems;
+        recyclerviewAdapter.setTaskList(rowItems);
     }
 
 
