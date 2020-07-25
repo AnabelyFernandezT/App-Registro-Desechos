@@ -17,6 +17,9 @@ import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuen
 import com.caircb.rcbtracegadere.services.WebService;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +30,8 @@ import retrofit2.Response;
 
 public class UserConsultarHojaRutaTask extends MyRetrofitApi implements RetrofitCallbacks {
 
+    String fechaSincronizacion;
+    String obfechaActualizacion = "fecha_actualizacion_"+MySession.getIdUsuario().toString()+"_"+MySession.getLugarNombre();
 
     public interface TaskListener {
         public void onSuccessful();
@@ -41,15 +46,19 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     }
 
     @Override
-    public void execute() {
+    public void execute() throws ParseException {
 
         ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
+        ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-        String valor = entity == null ?String.valueOf(rut.getIdSubRuta()) : entity.getValor();
-        Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
+        String valor = entity == null ?(rut.getIdSubRuta()!=null?String.valueOf(rut.getIdSubRuta()):null) : entity.getValor();
+        Integer idRuta = valor==null?-1:Integer.parseInt(valor);
+        if(fechaActualiza!=null){fechaSincronizacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion).getValor();
+        }else fechaSincronizacion = null;
+        Date fecha = fechaActutalizacion(fechaSincronizacion);
 
         //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),fecha,0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
 
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
@@ -68,6 +77,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
                             for (DtoManifiesto reg:respuesta){
                                 MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
                                 for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
                                     MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
                                 }
@@ -103,4 +113,15 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
             }
         });
     }
+
+    private Date fechaActutalizacion (String fechaActualizacion) throws ParseException {
+        if(fechaActualizacion!=null){
+            final DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            return fecha.parse(fechaActualizacion);
+        }else {
+            return null;
+        }
+    }
+
+
 }

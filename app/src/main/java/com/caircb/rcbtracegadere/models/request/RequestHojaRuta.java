@@ -4,13 +4,15 @@ import java.util.Date;
 
 public class RequestHojaRuta {
     private Date fecha;
+    private Date fechaSincronizacion;
     private Integer idVehiculo;
     private Integer idSubRuta;
 
-    public  RequestHojaRuta(Date fecha, Integer idVehiculo, Integer IdRuta) {
+    public RequestHojaRuta(Date fecha, Date fechaSincronizacion, Integer idVehiculo, Integer idSubRuta) {
         this.fecha = fecha;
+        this.fechaSincronizacion = fechaSincronizacion;
         this.idVehiculo = idVehiculo;
-        this.idSubRuta = IdRuta;
+        this.idSubRuta = idSubRuta;
     }
 
     public Date getFecha() {
@@ -35,5 +37,13 @@ public class RequestHojaRuta {
 
     public void setIdSubRuta(Integer idSubRuta) {
         this.idSubRuta = idSubRuta;
+    }
+
+    public Date getFechaSincronizacion() {
+        return fechaSincronizacion;
+    }
+
+    public void setFechaSincronizacion(Date fechaSincronizacion) {
+        this.fechaSincronizacion = fechaSincronizacion;
     }
 }

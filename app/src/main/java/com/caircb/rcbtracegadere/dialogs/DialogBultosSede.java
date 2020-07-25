@@ -27,6 +27,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +110,7 @@ public class DialogBultosSede extends MyDialog {
         lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesada());
     }
 
-    private void cargarManifiesto(){
+    private void cargarManifiesto() throws ParseException {
         consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
     }

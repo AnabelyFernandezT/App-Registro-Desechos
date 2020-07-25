@@ -28,6 +28,8 @@ public class ManifiestoSedeDetalleValorEntity {
 
     private Integer estadoEnvio;
 
+    private Boolean estadoChecks;
+
 
     public ManifiestoSedeDetalleValorEntity() {
     }
@@ -95,6 +97,14 @@ public class ManifiestoSedeDetalleValorEntity {
 
     public void setIdManifiestoDetalleValor(Integer idManifiestoDetalleValor) {
         this.idManifiestoDetalleValor = idManifiestoDetalleValor;
+    }
+
+    public Boolean getEstadoChecks() {
+        return estadoChecks;
+    }
+
+    public void setEstadoChecks(Boolean estadoChecks) {
+        this.estadoChecks = estadoChecks;
     }
 }
 

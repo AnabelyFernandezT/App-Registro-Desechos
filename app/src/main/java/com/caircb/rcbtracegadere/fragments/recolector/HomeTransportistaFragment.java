@@ -31,6 +31,7 @@ import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -82,8 +83,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
         initBuscador();
         init();
-        loadCantidadManifiestoAsignado();
-        loadCantidadManifiestoProcesado();
+
 
 
         return getView();
@@ -199,7 +199,11 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v) {
                 consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),listenerHojaRuta);
-                consultarHojaRutaTask.execute();
+                try {
+                    consultarHojaRutaTask.execute();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -327,6 +331,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnListaAsignadaTransportista.setEnabled(false);
         btnPickUpTransportista.setEnabled(false);
         btnDropOffTransportista.setEnabled(false);
+        lblpickUpTransportista.setText("0");
+        lblListaManifiestoAsignado.setText("0");
         //btnFinRuta.setEnabled(false);
 
         //regionBuscar.setColorFilter(Color.rgb(115, 124, 119 ));
@@ -349,6 +355,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnPickUpTransportista.setEnabled(true);
         btnDropOffTransportista.setEnabled(true);
         //btnFinRuta.setEnabled(true);
+        loadCantidadManifiestoAsignado();
+        loadCantidadManifiestoProcesado();
 
 
         regionBuscar.setColorFilter(Color.TRANSPARENT);

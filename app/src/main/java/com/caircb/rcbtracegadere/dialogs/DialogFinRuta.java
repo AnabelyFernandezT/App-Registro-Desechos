@@ -74,7 +74,7 @@ public class DialogFinRuta extends MyDialog {
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
-    TextView txtBuscar, txtSincronizar, txtManifiestos, lblpickUpTransportista;
+    TextView txtBuscar, txtSincronizar, txtManifiestos, lblpickUpTransportista,lblListaManifiestoAsignado;
 
     public DialogFinRuta(@NonNull Context context) {
         super(context, R.layout.dialog_final_ruta);
@@ -91,6 +91,7 @@ public class DialogFinRuta extends MyDialog {
 
     private void init(){
         lblpickUpTransportista = getActivity().findViewById(R.id.lblpickUpTransportista);
+        lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignado);
         parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_hotel");
         if(parametro!=null){
             inicioHotel = parametro.getValor();
@@ -258,6 +259,7 @@ public class DialogFinRuta extends MyDialog {
                // MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
                 lblpickUpTransportista.setText("0");
+                lblListaManifiestoAsignado.setText("0");
                 DialogFinRuta.this.dismiss();
             }
 
