@@ -176,7 +176,9 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
                                     @Override
                                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                                        if (!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()) {
+                                            txtRespEntregaCorreo.setError("Ingrese un correo válido");
+                                        }
                                     }
 
                                     @Override
@@ -186,9 +188,7 @@ public class TabManifiestoGeneral extends LinearLayout {
 
                                     @Override
                                     public void afterTextChanged(Editable s) {
-                                        if (!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()) {
-                                            txtRespEntregaCorreo.setError("Ingrese un correo válido");
-                                        }
+
                                     }
                                 });
 
@@ -425,6 +425,8 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtRespEntregaIdentificacion.setEnabled(false);
             chkCorreoAlterno.setClickable(false);
             chkCorreoPrincipal.setEnabled(false);
+            chkCorreoPrincipal.setClickable(false);
+            chkCorreoAlterno.setEnabled(false);
             txtRespEntregaNombre.setEnabled(false);
             txtRespEntregaCorreo.setEnabled(false);
             txtRespEntregaTelefono.setEnabled(false);

@@ -73,6 +73,7 @@ public class DtoManifiesto {
     private String serie;
     private String frecuencia;
     private String sucursal;
+    private String fechaModificacion;
 
 
     public DtoManifiesto() {
@@ -550,5 +551,13 @@ public class DtoManifiesto {
 
     public void setSucursal(String sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public String getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(String fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 }

@@ -35,6 +35,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -196,7 +197,11 @@ public class DialogInicioRuta extends MyDialog {
                 if(spinnerPlacas.getSelectedItem().toString().equals("SELECCIONE")){
                     messageBox("Debe seleccionar una subRuta");
                 }else{
-                    guardarDatos();
+                    try {
+                        guardarDatos();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -265,7 +270,7 @@ public class DialogInicioRuta extends MyDialog {
 
 
 
-    private void guardarDatos(){
+    private void guardarDatos() throws ParseException {
 
         String kilometrajeInicio = txtKilometraje.getText().toString();
 
@@ -328,7 +333,7 @@ public class DialogInicioRuta extends MyDialog {
         //dbHelper.close();
     }
 
-    private void inicioRuta(){
+    private void inicioRuta() throws ParseException {
 
         regionBuscar.setEnabled(true);
         btnSincManifiestos.setEnabled(true);

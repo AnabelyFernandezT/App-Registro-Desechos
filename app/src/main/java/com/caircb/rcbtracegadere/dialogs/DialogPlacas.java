@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaXNoTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarVehiculosSedeTask;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,7 +114,11 @@ public class DialogPlacas extends MyDialog {
                     cargarXNOManifiesto();
                     dismiss();
                 }else if(bandera.equals("2")){
-                    cargarManifiesto();
+                    try {
+                        cargarManifiesto();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     dismiss();
                 }else if(bandera.equals("0")){
                     dialogoConfirmacion();
@@ -183,7 +188,11 @@ public class DialogPlacas extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta","");
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placa);
                 MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+2);
-                cargarManifiesto();
+                try {
+                    cargarManifiesto();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 //cargarLabelCantidad();
                 builder.dismiss();
                 dismiss();
@@ -211,7 +220,7 @@ public class DialogPlacas extends MyDialog {
         }
     };
 
-    private void cargarManifiesto(){
+    private void cargarManifiesto() throws ParseException {
         consultarHojaRutaTask = new UserConsultarHojaRutaPlacaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
     }

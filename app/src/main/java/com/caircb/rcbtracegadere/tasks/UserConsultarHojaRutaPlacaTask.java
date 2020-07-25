@@ -4,13 +4,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.services.WebService;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +26,8 @@ import retrofit2.Response;
 
 public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements RetrofitCallbacks {
 
+    String fechaSincronizacion;
+    String obfechaActualizacion = "fecha_actualizacion_"+ MySession.getIdUsuario().toString()+"_"+MySession.getIdLugar().toString();
 
     public interface TaskListener {
         public void onSuccessful();
@@ -35,11 +42,14 @@ public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements Ret
     }
 
     @Override
-    public void execute() {
+    public void execute() throws ParseException {
+        ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
+        if(fechaActualiza!=null){fechaSincronizacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion).getValor();
+        }else fechaSincronizacion = null;
 
         Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
 
-        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),idVehiculo,0)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),fechaActutalizacion(fechaSincronizacion),idVehiculo,0)).enqueue(new Callback<List<DtoManifiesto>>() {
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
                 if(response.isSuccessful()){
@@ -91,5 +101,10 @@ public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements Ret
                 progressHide();
             }
         });
+    }
+
+    private Date fechaActutalizacion (String fechaActualizacion) throws ParseException {
+        final DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        return fecha.parse(fechaActualizacion);
     }
 }

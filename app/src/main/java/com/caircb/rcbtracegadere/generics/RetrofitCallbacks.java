@@ -1,5 +1,7 @@
 package com.caircb.rcbtracegadere.generics;
 
+import java.text.ParseException;
+
 public interface RetrofitCallbacks {
-    void execute();
+    void execute() throws ParseException;
 }
