@@ -8,6 +8,7 @@ public class ItemManifiestoDetalleValorSede {
     private String nombreBulto;
     private Boolean estado;
     private Double nuevoPeso;
+    private Boolean estadoChecks;
 
     public ItemManifiestoDetalleValorSede() {
     }
@@ -66,5 +67,13 @@ public class ItemManifiestoDetalleValorSede {
 
     public void setCodigoQR(String codigoQR) {
         this.codigoQR = codigoQR;
+    }
+
+    public Boolean getEstadoChecks() {
+        return estadoChecks;
+    }
+
+    public void setEstadoChecks(Boolean estadoChecks) {
+        this.estadoChecks = estadoChecks;
     }
 }

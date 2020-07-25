@@ -24,6 +24,7 @@ public class ManifiestoDetalleBultosAdapterSede extends RecyclerView.Adapter<Man
     private ClickListener mClickListener;
     private Context mContext;
     private List<ItemManifiestoDetalleValorSede> manifiestosDtList;
+    private List<ItemManifiestoDetalleValorSede> detalles;
     private Integer estadoManifiesto,idManifiestoDetalle;
 
     public ManifiestoDetalleBultosAdapterSede(Context context, Integer idManifiestoDetalle, Integer estadoManifiesto){
@@ -31,6 +32,7 @@ public class ManifiestoDetalleBultosAdapterSede extends RecyclerView.Adapter<Man
         this.manifiestosDtList = new ArrayList<>();
         this.idManifiestoDetalle=idManifiestoDetalle;
         this.estadoManifiesto =estadoManifiesto;
+
     }
 
     @NonNull
@@ -46,6 +48,11 @@ public class ManifiestoDetalleBultosAdapterSede extends RecyclerView.Adapter<Man
         holder.txtPeso.setText(it.getPeso().toString());
         holder.txtNombre.setText(it.getNombreBulto());
         holder.chkEstado.setChecked(it.getEstado());
+        if (it.getEstadoChecks()){
+            holder.chkEstado.setEnabled(false);
+        }else {
+            holder.chkEstado.setEnabled(true);
+        }
             holder.chkEstado.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,6 +66,7 @@ public class ManifiestoDetalleBultosAdapterSede extends RecyclerView.Adapter<Man
                     MyApp.getDBO().manifiestoDetalleValorSede().updateManifiestoDetalleValorSedebyId(it.getIdManifiestoDetalle(), it.getEstado(),it.getIdManifiestoDetalleValores());
                 }
             });
+
 
     }
 
