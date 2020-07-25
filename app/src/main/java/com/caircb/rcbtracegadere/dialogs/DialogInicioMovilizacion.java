@@ -80,13 +80,28 @@ public class DialogInicioMovilizacion extends MyDialog {
         btnMovilizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setMessage("¿Esta seguro de movilizar el lote?");
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        cancel = false;
+                        validacionesInfo();
 
-                cancel = false;
-                validacionesInfo();
-
-                if(!cancel){
-                    guardar();
-                }
+                        if(!cancel){
+                            guardar();
+                        }
+                    }
+                });
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+                dialogBuilder.show();
             }
         });
         listaConductor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
