@@ -65,7 +65,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignado);
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
         btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
-
+        btnIngresarApp.setEnabled(false);
         spinnerPlacas = (Spinner)getView().findViewById(R.id.lista_placas);
         spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -73,13 +73,16 @@ public class DialogPlacaSedeRecolector extends MyDialog {
                 if(position>0){
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
+                    btnIngresarApp.setEnabled(true);
+                }else{
+                    btnIngresarApp.setEnabled(false);
                 }
 
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                btnIngresarApp.setEnabled(false);
             }
         });
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
