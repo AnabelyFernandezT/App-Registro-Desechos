@@ -684,7 +684,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         });
         mdialog.setTitle("MÓDULOS");
         mdialog.setContentView(view);
-        mdialog.setCancelable(false);
+        //mdialog.setCancelable(false);
         mdialog.show();
     }
 
