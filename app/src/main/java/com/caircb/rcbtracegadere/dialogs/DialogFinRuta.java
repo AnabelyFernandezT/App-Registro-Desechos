@@ -241,11 +241,6 @@ public class DialogFinRuta extends MyDialog {
         idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(idInicioFin, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
 
-        if(finHotel.equals(1)){
-            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
-            inicioFinLoteHotelTask.execute();
-        }
-
         registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
         registroFinRuta.setOnIniciaRutaListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
             @Override
@@ -263,6 +258,8 @@ public class DialogFinRuta extends MyDialog {
                 DialogFinRuta.this.dismiss();
             }
 
+
+
             @Override
             public void onFailure() {
                 DialogFinRuta.this.dismiss();
@@ -271,6 +268,10 @@ public class DialogFinRuta extends MyDialog {
 
         registroFinRuta.execute();
 
+        if(finHotel.equals(1)){
+            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+            inicioFinLoteHotelTask.execute();
+        }
 
         finRuta();
     }

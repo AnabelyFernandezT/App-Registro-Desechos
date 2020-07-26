@@ -59,10 +59,10 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         Integer idRuta = valor==null?-1:Integer.parseInt(valor);
         if(fechaActualiza!=null){fechaSincronizacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion).getValor();
         }else fechaSincronizacion = null;
-        //Date fecha = deserialize(fechaSincronizacion);
+        Date fecha = deserialize(fechaSincronizacion);
 
         //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),new Date(),0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),fecha,0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
 
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
@@ -122,19 +122,23 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     final DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public Date deserialize(String json) throws JsonParseException {
-        try {
+        if(json!=null){
+            try {
+                String fecha = json;
 
-            String fecha = json;
+                if(fecha.length()==19)
+                    return df2.parse(fecha);
+                else
+                    return df1.parse(fecha);
 
-            if(fecha.length()==19)
-                return df2.parse(fecha);
-            else
-                return df1.parse(fecha);
-
-        } catch (final java.text.ParseException e) {
-            e.printStackTrace();
+            } catch (final java.text.ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }else {
             return null;
         }
+
     }
 
 
