@@ -78,10 +78,6 @@ public class DialogBultosPlanta extends MyDialog {
                                 bandera = true;
                                 return;
                             }
-                        }else{
-                            messageBox("Debe seleccionar todos los bultos");
-                            bandera = true;
-                            return;
                         }
 
                     }
