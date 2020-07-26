@@ -269,11 +269,11 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
             txtPesoRecolectado.setText(obtieneDosDecimales(pesoT));
             txtPesoPlanta.setText(obtieneDosDecimales(pesoRecolectado));
 
-            double validacion = (Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03) + Double.parseDouble(txtPesoRecolectado.getText().toString());
-            double validacionMenor = (Double.parseDouble(txtPesoRecolectado.getText().toString()) - Double.parseDouble(txtPesoRecolectado.getText().toString()) * 0.03);
-            double valorIngresado = Double.parseDouble(txtPesoPlanta.getText().toString());
+            Double validacion = (pesoT * 0.03) + pesoT;
+            Double validacionMenor = pesoT - (pesoT * 0.03);
+            Double valorIngresado = pesoRecolectado;
 
-            if (!String.valueOf(valorIngresado).equals(txtPesoRecolectado.getText())) {
+            if (!txtPesoPlanta.getText().toString().equals(txtPesoRecolectado.getText().toString())) {
                 if (valorIngresado > validacion) {
                     //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
                     btnInformacion.setVisibility(View.VISIBLE);
@@ -281,7 +281,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
                         @Override
                         public void onClick(View v) {
                             builder = new DialogBuilder(getContext());
-                            builder.setMessage("Peso ingresado es mayor al peso Total");
+                            builder.setMessage("MARGEN DE ERROR DE PESO MAYOR AL 3%");
                             builder.setCancelable(true);
                             builder.setNeutralButton("OK", new View.OnClickListener() {
                                 @Override
@@ -302,7 +302,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
                         @Override
                         public void onClick(View v) {
                             builder = new DialogBuilder(getContext());
-                            builder.setMessage("Peso ingresado es menor al peso Total");
+                            builder.setMessage("MARGEN DE ERROR DE PESO MENOR AL 3%");
                             builder.setCancelable(true);
                             builder.setNeutralButton("OK", new View.OnClickListener() {
                                 @Override
@@ -318,7 +318,8 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
                     txtObservacionPeso.setText("");
 
                 } else {
-                    txtObservacionPeso.setText("Observacion de Peso");
+                    Double diferencia = Math.abs(pesoRecolectado-pesoT);
+                    txtObservacionPeso.setText("EXISTE DIFERENCIA DE "+ obtieneDosDecimales(diferencia) + " KG");
                     txtObservacionPeso.setVisibility(View.VISIBLE);
                     btnInformacion.setVisibility(View.GONE);
                 }

@@ -16,7 +16,11 @@ import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
 import com.caircb.rcbtracegadere.services.WebService;
 import com.google.gson.Gson;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +59,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         Integer idRuta = valor==null?-1:Integer.parseInt(valor);
         if(fechaActualiza!=null){fechaSincronizacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion).getValor();
         }else fechaSincronizacion = null;
-        Date fecha = fechaActutalizacion(fechaSincronizacion);
+        Date fecha = deserialize(fechaSincronizacion);
 
         //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),fecha,0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
@@ -114,13 +118,27 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         });
     }
 
-    private Date fechaActutalizacion (String fechaActualizacion) throws ParseException {
-        if(fechaActualizacion!=null){
-            final DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-            return fecha.parse(fechaActualizacion);
+    final DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    final DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    public Date deserialize(String json) throws JsonParseException {
+        if(json!=null){
+            try {
+                String fecha = json;
+
+                if(fecha.length()==19)
+                    return df2.parse(fecha);
+                else
+                    return df1.parse(fecha);
+
+            } catch (final java.text.ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
         }else {
             return null;
         }
+
     }
 
 
