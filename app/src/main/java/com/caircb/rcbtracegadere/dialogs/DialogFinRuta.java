@@ -273,6 +273,18 @@ public class DialogFinRuta extends MyDialog {
             inicioFinLoteHotelTask.execute();
         }
 
+        if (finHotel.equals(0)){
+            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),0);
+            inicioFinLoteHotelTask.setOnRegisterListener(new UserRegistrarInicioFinLoteHotelTask.OnRegisterListener() {
+                @Override
+                public void onSuccessful() {
+                    finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
+                    finLotePadreHotelTask.execute();
+                }
+            });
+            inicioFinLoteHotelTask.execute();
+        }
+
         finRuta();
     }
 
@@ -402,18 +414,7 @@ public class DialogFinRuta extends MyDialog {
 
                     listaDestinoParticular.setEnabled(false);
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
-                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),0);
-                    inicioFinLoteHotelTask.setOnRegisterListener(new UserRegistrarInicioFinLoteHotelTask.OnRegisterListener() {
-                        @Override
-                        public void onSuccessful() {
-                            idDestino = 0;
-                            finHotel=0;
-                            finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
-                            finLotePadreHotelTask.execute();
-                        }
-                    });
-                    inicioFinLoteHotelTask.execute();
-
+                    finHotel=0;
                     builder.dismiss();
                 }
             });

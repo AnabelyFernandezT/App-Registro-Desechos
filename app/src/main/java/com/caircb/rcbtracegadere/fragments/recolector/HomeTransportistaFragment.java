@@ -28,10 +28,12 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +50,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
     Integer idSubRuta;
+    UserConsultarCatalogosTask consultarCatalogosTask;
 
     //public Context mContext;
 
@@ -198,12 +201,17 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnSincManifiestos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<Integer> listaCatalogos = new ArrayList<>();
+                listaCatalogos.add(2);
+
                 consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),listenerHojaRuta);
                 try {
                     consultarHojaRutaTask.execute();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
+                consultarCatalogosTask.execute();
             }
         });
 

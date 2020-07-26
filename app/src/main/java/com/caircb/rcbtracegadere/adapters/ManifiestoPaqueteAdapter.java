@@ -64,6 +64,12 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
             holder.txtPkgPendiente.setTag(it.getPendiente());
         }
 
+        if(estadoManifiesto !=1){
+            holder.txtPkgPendiente.setEnabled(false);
+            holder.txtPkgPendiente.setEnabled(false);
+            holder.txtPkgNombre.setEnabled(false);
+        }
+
 
         holder.txtPkgPendiente.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -217,9 +223,7 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
             });
              */
 
-            if(estadoManifiesto !=1){
-                txtPkgPendiente.setEnabled(false);
-            }
+
         }
     }
     /*
