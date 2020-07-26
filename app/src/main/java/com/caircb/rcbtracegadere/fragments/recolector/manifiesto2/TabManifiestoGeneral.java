@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -127,6 +128,9 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onClick(View v) {
                 //MyApp.getDBO().tecnicoDao().deleteTecnico();
+                InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputMethodManager.hideSoftInputFromWindow(txtRespEntregaIdentificacion.getWindowToken(), 0);
                 int estado=0;
                 TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtRespEntregaIdentificacion.getText().toString());
                 //txtRespEntregaNombre.setEnabled(true);
