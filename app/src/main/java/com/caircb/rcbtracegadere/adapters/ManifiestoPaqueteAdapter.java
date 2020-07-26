@@ -28,13 +28,14 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
 
     private Context mContext;
     private List<RowItemPaquete> paquetesList ;
-    Integer idPaquete, idAppmanifiesto;
+    Integer idPaquete, estadoManifiesto;
     AlertDialog.Builder messageBox;
 
-    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete){
+    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete, Integer estadoManifiesto){
         mContext = context;
         paquetesList = new ArrayList<>();
         this.idPaquete = idPaquete;
+        this.estadoManifiesto = estadoManifiesto;
     }
 
     @NonNull
@@ -61,6 +62,12 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
             holder.txtPkgPendiente.setFocusable(true);
             holder.txtPkgPendiente.setFocusableInTouchMode(true);
             holder.txtPkgPendiente.setTag(it.getPendiente());
+        }
+
+        if(estadoManifiesto !=1){
+            holder.txtPkgPendiente.setEnabled(false);
+            holder.txtPkgPendiente.setEnabled(false);
+            holder.txtPkgNombre.setEnabled(false);
         }
 
 
@@ -216,8 +223,8 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
             });
              */
 
-        }
 
+        }
     }
     /*
     public void setOnItemClickListener(@NonNull ClickListener l) {

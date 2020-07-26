@@ -267,7 +267,7 @@ public class TabManifiestoAdicional extends LinearLayout {
                     2));
 
             recyclerLtsPaquetes.setLayoutManager(new LinearLayoutManager(getContext()));
-            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete);
+            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete, estadoManifiesto);
             manifiestoPaqueteAdapter.setTaskList(listaPaquetes);
             recyclerLtsPaquetes.setAdapter(manifiestoPaqueteAdapter);
 

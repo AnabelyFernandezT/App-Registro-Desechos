@@ -73,7 +73,7 @@ public class MyAuthorization {
     }
 
 
-    public void loginUser(final String user, String password){
+    public void loginUser(@NonNull final String user, @NonNull String password){
         if(mOnAuthorizationListenerListener!=null) {
             userStr = user;
 
@@ -282,32 +282,36 @@ public class MyAuthorization {
         }
 
         if(myListOfItems.size()>1) {
-            final Dialog mdialog = new Dialog(getActivity());
-            if(progressDialog!=null && progressDialog.isShowing()){progressDialog.dismiss();}
-
-            dialogMenuBaseAdapter = new DialogMenuBaseAdapter(getActivity(), myListOfItems);
-            View view = progressDialog.getWindow().getLayoutInflater().inflate(R.layout.dialog_main, null);
-            mDialogMenuItems = (ListView) view.findViewById(R.id.custom_list);
-            mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
-            mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                   mdialog.dismiss();
-                   progressDialog.show();
-                    MenuItem item = myListOfItems.get(position);
-                    if (item.getNombre().equals("CANCELAR")) {
-                        mdialog.dismiss();
-                        progressDialog.dismiss();
-                    }else {
-                        guardarLugar(myListOfItems.get(position).getId(),myListOfItems.get(position).getNombre(),user,token);
-                    }
-
+            if(getActivity()!=null) {
+                final Dialog mdialog = new Dialog(getActivity());
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
-            });
-            mdialog.setTitle("MODULOS");
-            mdialog.setContentView(view);
-            mdialog.setCancelable(false);
-            mdialog.show();
+
+                dialogMenuBaseAdapter = new DialogMenuBaseAdapter(getActivity(), myListOfItems);
+                View view = progressDialog.getWindow().getLayoutInflater().inflate(R.layout.dialog_main, null);
+                mDialogMenuItems = (ListView) view.findViewById(R.id.custom_list);
+                mDialogMenuItems.setAdapter(dialogMenuBaseAdapter);
+                mDialogMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        mdialog.dismiss();
+                        progressDialog.show();
+                        MenuItem item = myListOfItems.get(position);
+                        if (item.getNombre().equals("CANCELAR")) {
+                            mdialog.dismiss();
+                            progressDialog.dismiss();
+                        } else {
+                            guardarLugar(myListOfItems.get(position).getId(), myListOfItems.get(position).getNombre(), user, token);
+                        }
+
+                    }
+                });
+                mdialog.setTitle("MODULOS");
+                mdialog.setContentView(view);
+                mdialog.setCancelable(false);
+                mdialog.show();
+            }
 
         }else if (myListOfItems.size()==1){
             guardarLugar(myListOfItems.get(0).getId(),myListOfItems.get(0).getNombre(),user,token);

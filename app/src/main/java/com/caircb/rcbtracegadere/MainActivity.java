@@ -349,6 +349,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(1)) listaCatalogos.add(1);
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(2)) listaCatalogos.add(2);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(2)) listaCatalogos.add(2);
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(3)) listaCatalogos.add(3);
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(4)) listaCatalogos.add(4);
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(6)) listaCatalogos.add(6);
@@ -684,7 +685,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         });
         mdialog.setTitle("MÓDULOS");
         mdialog.setContentView(view);
-        mdialog.setCancelable(false);
+        //mdialog.setCancelable(false);
         mdialog.show();
     }
 

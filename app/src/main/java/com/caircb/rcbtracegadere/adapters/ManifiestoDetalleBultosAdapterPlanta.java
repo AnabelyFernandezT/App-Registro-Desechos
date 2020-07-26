@@ -56,14 +56,6 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     public void onBindViewHolder(final @NonNull MyViewHolder holder, final int position) {
         final ItemManifiestoDetalleValorSede it = manifiestosDtList.get(position);
 
-
-        //holder.txtNuevoPeso.setText(holder.getAdapterPosition());
-        /*
-        holder.txtNuevoPeso.setFocusable(true);
-        holder.txtNuevoPeso.setFocusableInTouchMode(true);
-        holder.txtNuevoPeso.requestFocus();
-         */
-
         holder.txtNuevoPeso.setEnabled(!it.getEstado());
         holder.txtNuevoPeso.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -72,29 +64,6 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
                 return false;
             }
         });
-
-/*
-        holder.txtNuevoPeso.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(holder.txtNuevoPeso.getText().toString().equals("")) {
-                    MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), null, it.getIdManifiestoDetalleValores());
-                    manifiestosDtList.get(position).setNuevoPeso(null);
-                }else{
-                    MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(it.getIdManifiestoDetalle(), (holder.txtNuevoPeso.getText().toString()), it.getIdManifiestoDetalleValores());
-                    manifiestosDtList.get(position).setNuevoPeso(Double.valueOf(holder.txtNuevoPeso.getText().toString()));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable peso) {
-
-            }
-        });
-*/
 
         holder.chkEstado.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,36 +135,6 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
             txtNuevoPeso = (EditText)itemView.findViewById(R.id.txtIgnBultos);
 
-            /*
-            txtNuevoPeso.setInputType(type);
-            txtNuevoPeso.requestFocus();
-            txtNuevoPeso.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if(hasFocus){
-
-                    }
-                }
-            });
-
-            itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if(hasFocus){
-
-                    }
-                }
-            });
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(mClickListener!=null)mClickListener.onItemClick(getAdapterPosition(),v);
-                }
-            });
-
-             */
-
         }
 
     }
@@ -218,7 +157,11 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
                 @Override
                 public void onFinished(double valor, Integer code, Integer idManifiestoDet, Integer idManifiestoDetValores) {
 
-                    MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(idManifiestoDet,String.valueOf(valor), idManifiestoDetalleValores);
+                    if(valor == 0.0){
+                        MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(idManifiestoDet,null, idManifiestoDetalleValores);
+                    }else{
+                        MyApp.getDBO().manifiestoPlantaDetalleValorDao().updateManifiestoDetalleValorPlantaPesoNuevo(idManifiestoDet,String.valueOf(valor), idManifiestoDetalleValores);
+                    }
                     dialogKeyBoardPlanta.dismiss();
                     dialogKeyBoardPlanta = null;
                     setNuevoPeso(valor, code);

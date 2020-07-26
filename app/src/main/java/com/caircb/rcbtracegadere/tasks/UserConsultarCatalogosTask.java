@@ -3,12 +3,17 @@ package com.caircb.rcbtracegadere.tasks;
 import android.content.Context;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.JsonParseException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +23,9 @@ import retrofit2.Response;
 
 public class UserConsultarCatalogosTask extends MyRetrofitApi implements RetrofitCallbacks {
 
+    String fechaSincronizacion;
+    String obfechaActualizacion = "fecha_actualizacion_catalogo"+ MySession.getIdUsuario().toString()+"_"+MySession.getLugarNombre();
+
     List<Integer> ids;
     public UserConsultarCatalogosTask(Context context, List<Integer> ids) {
         super(context);
@@ -26,6 +34,12 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
 
     @Override
     public void execute() {
+
+        ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
+        if(fechaActualiza!=null){fechaSincronizacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion).getValor();
+        }else fechaSincronizacion = null;
+        Date fecha = deserialize(fechaSincronizacion);
+
 
         for (final Integer catalogoID:ids) {
             WebService.api().getCatalogos(new RequestCatalogo(catalogoID, new Date())).enqueue(new Callback<List<DtoCatalogo>>() {
@@ -46,6 +60,29 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
                 }
             });
         }
+    }
+
+    final DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    final DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    public Date deserialize(String json) throws JsonParseException {
+        if(json!=null){
+            try {
+                String fecha = json;
+
+                if(fecha.length()==19)
+                    return df2.parse(fecha);
+                else
+                    return df1.parse(fecha);
+
+            } catch (final java.text.ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }else {
+            return null;
+        }
+
     }
 
 }

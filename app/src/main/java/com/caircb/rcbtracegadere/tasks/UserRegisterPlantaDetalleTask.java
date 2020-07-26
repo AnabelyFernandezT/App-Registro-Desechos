@@ -81,8 +81,6 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
             }
         });
         userUploadFileTask.uploadPlantaAdicionales(listaFileDefauld, idManifiesto);
-        System.out.println(path);
-
     }
 
     private void register(){
