@@ -20,14 +20,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.work.Constraints;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.processes.GPSService;
+import com.caircb.rcbtracegadere.processes.OffLineWorker;
 import com.caircb.rcbtracegadere.utils.Utils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import java.util.concurrent.TimeUnit;
 
 public class MyAppCompatActivity extends AppCompatActivity {
     private AlertDialog.Builder messageBox;
@@ -43,6 +49,10 @@ public class MyAppCompatActivity extends AppCompatActivity {
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+
+        if(mContext instanceof MainActivity){
+            initWorked();
+        }
     }
 
     private void initConnectivity(){
@@ -70,6 +80,19 @@ public class MyAppCompatActivity extends AppCompatActivity {
         }else{
             gps.showSettingsAlert();
         }
+    }
+
+    private void initWorked(){
+        final Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                //.setRequiresCharging(true)
+                .build();
+
+        final PeriodicWorkRequest periodicWorkRequest
+                = new PeriodicWorkRequest.Builder(OffLineWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance().enqueue(periodicWorkRequest);
     }
 
     public Location getLocation(){

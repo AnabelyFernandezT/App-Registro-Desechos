@@ -131,8 +131,7 @@ public class LoginActivity extends AppCompatActivity {
             //MySession.setIdDevice(telephonyManager.getDeviceId().toString());
             MySession.setIdDevice(myAndroidDeviceId);
             MySession.setIdChip(myAndroidDeviceSim);
-
-            loginUser();
+            if(userStr!=null && passStr!=null){ loginUser();}
         } else {
             focusView.requestFocus();
             cancel = false;
