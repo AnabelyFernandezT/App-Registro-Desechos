@@ -191,6 +191,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             public void onClick(View v) {
                                 dialogBuilder.dismiss();
 
+                                if (!MyApp.getDBO().impresoraDao().existeImpresora()) {
+
                                 Date fecha = AppDatabase.getDateTime();
                                 //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                 MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
@@ -222,13 +224,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                         @Override
                                         public void onClick(View v) {
                                             dialogBuilder2.dismiss();
-                                            //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
                                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                             MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
                                             setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
-                                            // } else {
-                                            //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                            //  }
                                         }
                                     });
                                     dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
@@ -252,12 +250,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                         @Override
                                         public void onClick(View v) {
                                             dialogBuilder2.dismiss();
-                                            //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
                                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                             setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
-                                            // } else {
-                                            //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                            //  }
                                         }
                                     });
                                     dialogBuilder2.setNegativeButton("Atras", new View.OnClickListener() {
@@ -267,6 +261,10 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                         }
                                     });
                                     dialogBuilder2.show();
+                                }
+
+                                } else {
+                                    Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -291,13 +289,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
                                     System.out.println(tipoRecoleccion+" SI");
                                     if (tipoRecoleccion==1){
-                                        //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
                                         //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                         MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
                                         setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
-                                        // } else {
-                                        //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                        //  }
                                     }else if (tipoRecoleccion==2){
                                         dialogBuilder = new DialogBuilder(getActivity());
                                         dialogBuilder.setMessage("Usted seleccionó anteriormente, NO recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
@@ -333,13 +327,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
                                     System.out.println(tipoRecoleccion+" NO");
                                     if (tipoRecoleccion==2){
-                                        //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
                                         //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                         MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
                                         setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                        // } else {
-                                        //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                        //  }
                                     }else if(tipoRecoleccion==1) {
                                         dialogBuilder = new DialogBuilder(getActivity());
                                         dialogBuilder.setMessage("Usted seleccionó anteriormente, SI recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
@@ -380,12 +370,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 @Override
                                 public void onClick(View v) {
                                     dialogBuilder2.dismiss();
-                                    //if (MyApp.getDBO().impresoraDao().existeImpresora()) {
                                     //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                     setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
-                                    // } else {
-                                    //     Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
-                                    //  }
                                 }
                             });
                             dialogBuilder2.setNegativeButton("Regresar", new View.OnClickListener() {

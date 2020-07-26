@@ -39,6 +39,7 @@ public class MyPrint {
     private Context mContext;
     private Activity activity;
     private boolean connected=false;
+    private boolean saltoLinea = false;
 
 
     public interface OnPrinterListener {
@@ -302,28 +303,49 @@ public class MyPrint {
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
         byte[] configLabel = null;
-        String ItemDescripcion = recorreString(residuo);
-        tratamiento = tratamiento == null ? "" : tratamiento;
+        tratamiento = tratamiento == null ? "" : recorreString(tratamiento, 19, "590");
+        String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "710":"680");
 
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
         }else{
             //String descripcion = row.getDescripcion().substring(10, 33);
-            cpclConfigLabel =
-                    "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
-                    "^FS^FO60,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
-                    "^FS^FO60,90^AD^FD #M.U.E: "+manifiesto.trim()+
-                    "^FS^FO60,120^AD^FD FECHA: "+fecha+
-                    "^FS^FO60,150^AD^FD PESO:"+peso+
-                    //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
-                    //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
-                    "^FS^FO60,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
-                    "^FS^FO60,530^AD^FD NO. BULTOS:"+ numeroBulto +
-                    "^FS^FO60,560^AD^FD TRATAMIENTO:"+ tratamiento +
-                    "^FS^FO60,590^AD^FD DESTINATARIO:"+ destinatario.toUpperCase() +
-                    "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:"+ (aplicaDevolucion?"SI":"NO") +
-                    "^FS^FO60,650^AD^FD ITEM:"+ ItemDescripcion.toUpperCase() +
-                    "^FS ^XZ";
+
+            if(!saltoLinea) {
+                cpclConfigLabel =
+                        "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                                "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
+                                "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
+                                "^FS^FO60,120^AD^FD FECHA: " + fecha +
+                                "^FS^FO60,150^AD^FD PESO:" + peso +
+                                //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                                //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                                "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
+                                "^FS^FO60,530^AD^FD NO. BULTOS:" + numeroBulto +
+                                "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
+
+                                 "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
+                                "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
+                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS ^XZ";
+            }else{
+                cpclConfigLabel =
+                        "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                                "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
+                                "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
+                                "^FS^FO60,120^AD^FD FECHA: " + fecha +
+                                "^FS^FO60,150^AD^FD PESO:" + peso +
+                                //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                                //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                                "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
+                                "^FS^FO60,530^AD^FD NO. BULTOS:" + numeroBulto +
+                                "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
+
+                                "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
+                                "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS ^XZ";
+            }
         }
 
         configLabel = cpclConfigLabel.getBytes();
@@ -350,7 +372,7 @@ public class MyPrint {
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
         byte[] configLabel = null;
-        String ItemDescripcion = recorreString(residuo);
+        String ItemDescripcion = recorreString(residuo, 27, "680");
 
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
@@ -377,24 +399,29 @@ public class MyPrint {
         return configLabel;
     }
 
-    private String recorreString(String caracter){
+    private String recorreString(String caracter, int logitud, String salto){
         String impresion="";
         String part1="",  resto ="", parte2="";
-        String residuo = caracter.substring(10,caracter.length());
+        String residuo = caracter.substring(0,caracter.length());
         Integer totalCaract = residuo.length();
 
-        if(totalCaract > 27){
-            part1 = caracter.substring(0,27);
-            resto = caracter.substring(27,totalCaract);
+        if(totalCaract > logitud){
+            part1 = caracter.substring(0,logitud);
+            resto = caracter.substring(logitud,totalCaract);
 
-            if(resto.length() > 27){
-                parte2 = resto.substring(0,27);
-                impresion = part1 + "^FS^FO60,680^AD^FD " + parte2;
+            if(logitud == 19)
+                saltoLinea = true;
+
+            if(resto.length() > logitud){
+                parte2 = resto.substring(0,logitud);
+                impresion = part1 + "^FS^FO60,"+salto+"^AD^FD " + parte2; //impresion = part1 + "^FS^FO60,680^AD^FD " + parte2;
             }else{
-                impresion = part1 + "^FS^FO60,680^AD^FD " + resto;
+                impresion = part1 + "^FS^FO60,"+salto+"^AD^FD " + resto;
             }
         }else{
             impresion = residuo;
+            if(logitud == 19)
+                saltoLinea = false;
         }
        return impresion;
     }
