@@ -28,13 +28,14 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
 
     private Context mContext;
     private List<RowItemPaquete> paquetesList ;
-    Integer idPaquete, idAppmanifiesto;
+    Integer idPaquete, estadoManifiesto;
     AlertDialog.Builder messageBox;
 
-    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete){
+    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete, Integer estadoManifiesto){
         mContext = context;
         paquetesList = new ArrayList<>();
         this.idPaquete = idPaquete;
+        this.estadoManifiesto = estadoManifiesto;
     }
 
     @NonNull
@@ -216,8 +217,10 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
             });
              */
 
+            if(estadoManifiesto !=1){
+                txtPkgPendiente.setEnabled(false);
+            }
         }
-
     }
     /*
     public void setOnItemClickListener(@NonNull ClickListener l) {
