@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
@@ -34,20 +35,20 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class HomePlantaFragment extends MyFragment implements OnHome {
-    ImageButton btnSincManifiestosPlanta,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
+    ImageButton btnSincManifiestosPlanta, btnListaAsignadaTransportista, btnMenu, btnInicioRuta, btnFinRuta;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogPlacas dialogPlacas;
     UserConsultarManifiestosPendientesPesarTask userConsultarManifiestosPendientesPesarTask;
     TextView lblDropOffTransportista;
     public Context mContext;
-
+    private Integer controlDropOff = 0;
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
         public void onSuccessful() {
-           Integer idVehiculoPara = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
-           loadCantidadManifiestoAsignadoNO(idVehiculoPara);
+            Integer idVehiculoPara = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+            loadCantidadManifiestoAsignadoNO(idVehiculoPara);
         }
     };
 
@@ -68,7 +69,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     }
 
 
-
     private void init() {
         lblListaManifiestoAsignadoPlanta = (TextView) getView().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnSincManifiestosPlanta = (ImageButton) getView().findViewById(R.id.btnSincManifiestosPlanta);
@@ -80,21 +80,34 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lblDropOffTransportista = getView().findViewById(R.id.lblDropOffTransportista);
         cargarLabelCantidad();
-
+        cargarLbael();
 
         btnDropOffTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (controlDropOff == 0) {
+                    final DialogBuilder builder = new DialogBuilder(v.getContext());
+                    builder.setMessage("No existen manifiestos para procesar");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            builder.dismiss();
+                        }
+                    });
+                    builder.show();
 
-                userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
-                userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
-                    @Override
-                    public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
-                        setNavegate(HojaRutaPlantaPendientesPesoFragment.newInstance());
-                        lblDropOffTransportista.setText(String.valueOf(listaManifiestos.size()));
-                    }
-                });
-                userConsultarManifiestosPendientesPesarTask.execute();
+                } else {
+                    userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
+                    userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
+                        @Override
+                        public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
+                            setNavegate(HojaRutaPlantaPendientesPesoFragment.newInstance());
+                            lblDropOffTransportista.setText(String.valueOf(listaManifiestos.size()));
+                        }
+                    });
+                    userConsultarManifiestosPendientesPesarTask.execute();
+                }
             }
         });
 
@@ -120,19 +133,19 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
             public void onClick(View v) {
                 ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
                 String valor = parametro == null ? "-1" : parametro.getValor();
-                Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
+                Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1" : valor);
 
                 //setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
-                Integer banderaUno= MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo);
+                Integer banderaUno = MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo);
                 Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada(idVehiculo);
-                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-                if(bandera!=null) {
-                    if (bandera.equals("1") ) {
-                        if(banderaDos>0){
+                String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
+                if (bandera != null) {
+                    if (bandera.equals("1")) {
+                        if (banderaDos > 0) {
                             setNavegate(HojaRutaAsignadaPlantaFragment.newInstance());
                         }
                     } else if (bandera.equals("2")) {
-                        if( banderaUno > 0) {
+                        if (banderaUno > 0) {
                             setNavegate(HojaRutaAsignadaFragmentNO.newInstance());
                         }
                     }
@@ -144,32 +157,33 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity() instanceof MainActivity){
-                    ((MainActivity)getActivity()).openMenuOpcion();
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).openMenuOpcion();
                 }
             }
         });
 
     }
 
-    private void cargarLbael(){
+    private void cargarLbael() {
         userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
         userConsultarManifiestosPendientesPesarTask.setmOnListasManifiestosPendientesistener(new UserConsultarManifiestosPendientesPesarTask.OnListasManifiestosPendientesistener() {
             @Override
             public void onSuccessful(List<DtoManifiestoPlanta> listaManifiestos) {
                 lblDropOffTransportista.setText(String.valueOf(listaManifiestos.size()));
+                controlDropOff = listaManifiestos.size();
             }
         });
         userConsultarManifiestosPendientesPesarTask.execute();
 
     }
 
-    private void cargarLabelCantidad(){
+    private void cargarLabelCantidad() {
         ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
         String valor = parametro == null ? "-1" : parametro.getValor();
-        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
-        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-        if(bandera!=null) {
+        Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1" : valor);
+        String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
+        if (bandera != null) {
             if (bandera.equals("1")) {
                 loadCantidadManifiestoAsignado(idVehiculo);
             } else if (bandera.equals("2")) {
@@ -179,12 +193,12 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     }
 
     private void loadCantidadManifiestoAsignado(Integer idVehiculo) {
-        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada(idVehiculo));
+        lblListaManifiestoAsignadoPlanta.setText("" + MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada(idVehiculo));
     }
 
 
     private void loadCantidadManifiestoAsignadoNO(Integer idVehiculo) {
-        lblListaManifiestoAsignadoPlanta.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo));
+        lblListaManifiestoAsignadoPlanta.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo));
     }
 
 }

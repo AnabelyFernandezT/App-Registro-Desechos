@@ -27,6 +27,8 @@ import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -393,7 +395,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
             builder = new DialogBuilder(getActivity());
             builder.setMessage("¿Necesita autorización porque el peso excede el peso referencial?");
-            builder.setCancelable(true);
+            builder.setCancelable(false);
             builder.setPositiveButton("SI", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
