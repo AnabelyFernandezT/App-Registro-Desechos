@@ -76,7 +76,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
 
         btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
         btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
-        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        //regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
         txtManifiesto.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
         txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
@@ -84,7 +84,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
 
         btnListaAsignadaSede.setEnabled(false);
         btnSincManifiestos.setEnabled(false);
-        regionBuscar.setEnabled(false);
+       // regionBuscar.setEnabled(true);
 
         verificarInicioLote();
 
@@ -221,7 +221,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 lnlFinLote.setVisibility(View.GONE);
                 btnListaAsignadaSede.setEnabled(false);
                 btnSincManifiestos.setEnabled(false);
-                regionBuscar.setEnabled(true);
+                //regionBuscar.setEnabled(true);
 
                 btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
                 btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
@@ -229,7 +229,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 txtManifiesto.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
                 txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
-                regionBuscar.setColorFilter(Color.TRANSPARENT);
+                //regionBuscar.setColorFilter(Color.TRANSPARENT);
                 txtMovilizar.setTextColor(Color.WHITE);
 
             }else{
@@ -238,14 +238,14 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 lnlFinLote.setVisibility(View.VISIBLE);
                 btnListaAsignadaSede.setEnabled(true);
                 btnSincManifiestos.setEnabled(true);
-                regionBuscar.setEnabled(false);
+                //regionBuscar.setEnabled(false);
 
                 btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
                 btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
                 txtSincronizar.setTextColor(Color.WHITE);
                 txtManifiesto.setTextColor(Color.WHITE);
 
-                regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+               // regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
             }
 
     }

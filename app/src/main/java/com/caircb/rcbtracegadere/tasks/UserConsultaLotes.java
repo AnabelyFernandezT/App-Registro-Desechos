@@ -49,6 +49,7 @@ public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallback
         }else{
             loteContenedor=0;
         }
+        System.out.println(MySession.getIdUsuario()+""+new Date()+"");
 
 
         WebService.api().traerLotes(new RequestLote(MySession.getIdUsuario(),new Date())).enqueue(new Callback<List<DtoLote>>() {
