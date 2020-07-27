@@ -321,6 +321,7 @@ public class DialogInicioRuta extends MyDialog {
         public void onSuccessful() {
             loadCantidadManifiestoAsignado();
             loadCantidadManifiestoProcesado();
+            loadCataalogos();
 
         }
     };

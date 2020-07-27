@@ -43,6 +43,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
     private SoundPool soundpool = null;
     private int soundid;
     private ScanManager mScanManager;
+
     private final static String SCAN_ACTION = ScanManager.ACTION_DECODE;
 
     @Override
