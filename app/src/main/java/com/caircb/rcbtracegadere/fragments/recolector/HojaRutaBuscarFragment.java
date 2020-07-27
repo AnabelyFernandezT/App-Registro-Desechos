@@ -178,14 +178,14 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
     }
 
     private void  menu(final int position){
-        final CharSequence[] options = {"INICIAR RECOLECCION", "INGRESAR MOTIVO NO RECOLECCION", "CANCELAR"};
+        final CharSequence[] options = {"INICIAR RECOLECCIÓN", "NO RECOLECTAR", "CANCELAR"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("INICIAR RECOLECCION"))
+                if (options[item].equals("INICIAR RECOLECCIÓN"))
                 {
                     dialogBuilder2 = new DialogBuilder(getActivity());
                     dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
@@ -207,7 +207,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                     });
                     dialogBuilder2.show();
                 }
-                else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
+                else if (options[item].equals("NO RECOLECTAR"))
                 {
                     setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2));
                 }
