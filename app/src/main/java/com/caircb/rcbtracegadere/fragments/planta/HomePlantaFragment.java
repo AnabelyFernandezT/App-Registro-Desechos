@@ -80,7 +80,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lblDropOffTransportista = getView().findViewById(R.id.lblDropOffTransportista);
         cargarLabelCantidad();
-
+        cargarLbael();
 
         btnDropOffTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
