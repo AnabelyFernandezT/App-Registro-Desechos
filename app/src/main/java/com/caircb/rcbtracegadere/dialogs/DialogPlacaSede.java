@@ -192,15 +192,15 @@ public class DialogPlacaSede extends MyDialog {
         lnlFinLote.setVisibility(View.VISIBLE);
         btnListaAsignadaSede.setEnabled(true);
         btnSincManifiestos.setEnabled(true);
-        //regionBuscar.setEnabled(false);
+        regionBuscar.setEnabled(false);
 
         btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
         btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
         txtManifiesto.setTextColor(Color.WHITE);
         txtSincronizar.setTextColor(Color.WHITE);
 
-        //regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
-        //txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
 
     }
 
