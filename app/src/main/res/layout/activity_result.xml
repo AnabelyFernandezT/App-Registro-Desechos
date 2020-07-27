@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".ResultActivity">
 
     <TextView
@@ -16,4 +17,50 @@
         android:textSize="20dp"
         android:fontFamily="@font/quicksand_bold"
         />
+    <!--<LinearLayout
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="120dp"
+        android:orientation="horizontal">
+    <LinearLayout
+        android:visibility="visible"
+        android:clickable="true"
+        android:id="@+id/btnDialogNeutral"
+        android:orientation="horizontal"
+        android:background="@drawable/ic_button_skin_msg_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtBtnNeutral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="YES"
+                android:textSize="@dimen/size_dialog_text"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:clickable="false"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="11dp"
+                android:layout_marginTop="1dp"
+                android:src="@mipmap/ic_button_ok"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>
