@@ -98,7 +98,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                 if(row.isImpresion()){
 
                     dialogBuilder = new DialogBuilder(getContext());
-                    dialogBuilder.setMessage("BULTO IMPRESO: Seguro que desea eliminarlo?");
+                    dialogBuilder.setMessage("¿Seguro que desea eliminar el bulto?");
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override

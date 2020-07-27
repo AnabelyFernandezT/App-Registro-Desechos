@@ -250,7 +250,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     messageBox("Se requiere de la firma del transportista");
                     return;
                 }
-                if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
+                if(tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
                     messageBox("Se require que ingrese los datos del técnico responsable de la entrega de los residuos recolectados");
                     return;
                 }

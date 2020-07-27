@@ -663,10 +663,13 @@ public class TabManifiestoGeneral extends LinearLayout {
     }
 
     public boolean validaExisteDatosResponsableEntrega(){
-        return txtRespEntregaIdentificacion.getText().toString().length()==0?
-                (txtRespEntregaIdentificacion.getText().length()>0 && txtRespEntregaNombre.getText().toString().length()>0)
-                :true;
+        if (txtRespEntregaIdentificacion.getText().toString().length()==0 || txtRespEntregaNombre.getText().toString().length()==0 ){
+            return  true;
+        }else {
+            return false;
+        }
     }
+
 
 
     public boolean validadorDeCedula(String cedula) {
