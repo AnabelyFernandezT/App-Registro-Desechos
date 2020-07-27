@@ -30,6 +30,7 @@ import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowRutas;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
+import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
@@ -49,6 +50,7 @@ public class DialogInicioRuta extends MyDialog {
     Spinner spinnerPlacas;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     LinearLayout lnlIniciaRuta,lnlFinRuta;
+    UserConsultarCatalogosTask consultarCatalogosTask;
     TextView lblListaManifiestoAsignado, lblpickUpTransportista,lblPlaca,lblTransportistaRecolector,lblAuxiliarRecoleccion1, lblTituloAuxiliarRecoleccion2,lblAuxiliarRecoleccion2,lblRuta;
 
     String placa;
@@ -319,6 +321,7 @@ public class DialogInicioRuta extends MyDialog {
         public void onSuccessful() {
             loadCantidadManifiestoAsignado();
             loadCantidadManifiestoProcesado();
+
         }
     };
     private void loadCantidadManifiestoAsignado(){
@@ -354,5 +357,12 @@ public class DialogInicioRuta extends MyDialog {
         consultarHojaRutaTask = new UserConsultarHojaRutaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
 
+    }
+
+    private void loadCataalogos(){
+        List<Integer> listaCatalogos = new ArrayList<>();
+        listaCatalogos.add(2);
+        consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
+        consultarCatalogosTask.execute();
     }
 }
