@@ -243,17 +243,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         //bultos.clear();
         //subtotal= BigDecimal.ZERO;
-        /*
+
         MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
         item.setImpresion(true);
         listaValoresAdapter.notifyDataSetChanged();
-        */
+
         //loadData();
 
         /**************************************/
 
         //Probar con impresiora
-
+/*
         try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
@@ -277,7 +277,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
 
-
+*/
 
     }
 
