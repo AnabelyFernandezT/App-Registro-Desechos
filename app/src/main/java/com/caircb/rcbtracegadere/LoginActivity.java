@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
             //MySession.setIdDevice(telephonyManager.getDeviceId().toString());
             MySession.setIdDevice(myAndroidDeviceId);
             MySession.setIdChip(myAndroidDeviceSim);
-            if(userStr!=null && passStr!=null){ loginUser();}
+            if(userStr!=null && passStr!=null){ autorizarUsuario();}
         } else {
             focusView.requestFocus();
             cancel = false;
@@ -150,8 +150,8 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void loginUser(){
-        mAuthorization = new MyAuthorization(this);
+    private void autorizarUsuario(){
+        mAuthorization = new MyAuthorization(LoginActivity.this);
         mAuthorization.setOnSuccessfulListener(new MyAuthorization.AuthorizationListener() {
             @Override
             public void onSuccessful() {

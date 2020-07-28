@@ -46,6 +46,9 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
                 @Override
                 public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
                     if(response.isSuccessful()) {
+                        //verifica si retorna catalogos..
+
+                        //insertar catalogos obtenidos...
                         MyApp.getDBO().catalogoDao().saveOrUpdate(response.body(), catalogoID);
                     }
                     else {
