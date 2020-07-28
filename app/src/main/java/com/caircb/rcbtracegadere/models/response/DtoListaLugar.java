@@ -1,5 +1,8 @@
 package com.caircb.rcbtracegadere.models.response;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class DtoListaLugar {
@@ -7,6 +10,9 @@ public class DtoListaLugar {
     private Integer idLugar;
     private Integer idPerfil;
     private String nombre;
+
+    @SerializedName("menus")
+    @Expose
     private List<DtoListaMenu> menus;
 
     public Integer getIdAplicacion() {

@@ -1,5 +1,8 @@
 package com.caircb.rcbtracegadere.models.response;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class DtoUserCredential {
@@ -9,10 +12,13 @@ public class DtoUserCredential {
     private String mensaje;
     private String correo;
     private Integer idUsuario;
+
+    @SerializedName("listaEmpresas")
+    @Expose
     private List<DtoListaEmpresa> listaEmpresas;
 
-    public DtoUserCredential() {
-    }
+    //public DtoUserCredential() {
+    //}
 
     public boolean isActualizarVersion() {
         return actualizarVersion;

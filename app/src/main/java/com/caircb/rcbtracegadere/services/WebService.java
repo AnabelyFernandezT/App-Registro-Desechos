@@ -111,7 +111,7 @@ public class WebService {
 
     public static synchronized IServicioAutenticacion seg() {
 
-        if (singleton == null) {
+        if (singletonAutenticacion == null) {
 
             GsonBuilder builder = new GsonBuilder();
 

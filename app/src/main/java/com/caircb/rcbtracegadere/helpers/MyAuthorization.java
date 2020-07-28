@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,6 +45,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyAuthorization {
+
+    private static final String TAG = "MyAuthorization";
+
     JSONArray jsonLugares;
     JSONObject json;
 
@@ -53,6 +57,7 @@ public class MyAuthorization {
     AlertDialog.Builder messageBox;
     String userStr;
     FirebaseAuth auth;
+    RequestCredentials cr;
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     UserConsultarInformacionTransportista info;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
@@ -66,18 +71,22 @@ public class MyAuthorization {
     public MyAuthorization(@NonNull Context context){
         this.mContext = context;
 
-        progressDialog = new ProgressDialog(context);
+        initProgess();
+    }
+
+    private void initProgess(){
+        progressDialog = new ProgressDialog(this.mContext);
         progressDialog.setMessage("Ingresando...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
     }
 
-
     public void loginUser(@NonNull final String user, @NonNull String password){
         if(mOnAuthorizationListenerListener!=null) {
             userStr = user;
+            if(progressDialog==null) initProgess();
 
-            RequestCredentials cr = new RequestCredentials();
+            cr = new RequestCredentials();
             cr.setUsLogin(user);
             cr.setUsClave(password);
             cr.setUsAplicacion("AppGadere");
@@ -87,13 +96,15 @@ public class MyAuthorization {
             cr.setUsAppVersion(1);
             MySession.setUsuarioNombre(user);
 
-            progressDialog.show();
             if(cr!=null) {
+            try {
+                progressDialog.show();
                 WebService.seg().autentication(cr).enqueue(new Callback<DtoUserCredential>() {
                     @Override
                     public void onResponse(Call<DtoUserCredential> call, Response<DtoUserCredential> response) {
                         if (response.isSuccessful()) {
                             if (response.body().isExito()) {
+                                //if(progressDialog!=null && progressDialog.isShowing()){progressDialog.dismiss();progressDialog=null;}
                                 obtnerTokenAutorizacionFCM(response.body());
                             } else {
                                 if (progressDialog != null) {
@@ -112,11 +123,18 @@ public class MyAuthorization {
 
                     @Override
                     public void onFailure(Call<DtoUserCredential> call, Throwable t) {
-                        progressDialog.dismiss();
+                        if(progressDialog!=null && progressDialog.isShowing()){progressDialog.dismiss();progressDialog=null;}
                     }
                 });
+            }catch (Exception ex){
+                //manejo de log
+                Log.e(TAG,"login failure: "+ex);
+                if(progressDialog!=null && progressDialog.isShowing()){progressDialog.dismiss();progressDialog=null;}
+                message("Se presento un problema al enviar sus credenciales, por favor intente de nuevo");
+            }
+
             }else{
-                progressDialog.dismiss();
+                if(progressDialog!=null && progressDialog.isShowing()) {progressDialog.dismiss();progressDialog=null;}
             }
         }
     }
