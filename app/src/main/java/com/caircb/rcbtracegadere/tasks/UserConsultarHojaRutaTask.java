@@ -82,9 +82,9 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                             for (DtoManifiesto reg:respuesta){
                                 MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
                                 MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
-                                for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                /*for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
                                     MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
-                                }
+                                }*/
                                 //inicalizar los catalogos de recoleccion...
                                 //for (DtoCatalogo c:listaCatalogo){
                                 //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());

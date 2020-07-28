@@ -42,7 +42,7 @@ public class DtoManifiesto {
 
     private Integer idTransporte;
     private String identificacionTransportista;
-        private String razonSocialTransportista;
+    private String razonSocialTransportista;
     private String numeroLicenciaAmbientalTransportista;
     private String numeroPlacaVehiculo;
     private String modeloVehiculo;
@@ -55,10 +55,10 @@ public class DtoManifiesto {
     private Boolean eliminado;
     private Date fechaTemp;
     private Integer tipoPaquete;
-    private List<DtoManifiestoDetalle> hojaRutaDetalle;
-    private List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo;
+    //private List<DtoManifiestoDetalle> hojaRutaDetalle;
+    //private List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo;
     private String numManifiestoCliente;
-    private Double peso;
+    //private Double peso;
     private String nombreFirma;
     private String firmaImg;
     private Integer idRuta;
@@ -66,7 +66,7 @@ public class DtoManifiesto {
     private Integer estadoFinRuta;
     private String nombreDestinatario;
     private Integer idDestinatarioFinRutaCatalogo;
-    private  Integer apertura1;
+    private Integer apertura1;
     private Integer apertura2;
     private Integer cierre1;
     private Integer cierre2;
@@ -369,7 +369,7 @@ public class DtoManifiesto {
         this.fechaTemp = fechaTemp;
     }
 
-    public List<DtoManifiestoDetalle> getHojaRutaDetalle() {
+    /*public List<DtoManifiestoDetalle> getHojaRutaDetalle() {
         return hojaRutaDetalle;
     }
 
@@ -383,7 +383,7 @@ public class DtoManifiesto {
 
     public void setHojaRutaCatalogo(List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo) {
         this.hojaRutaCatalogo = hojaRutaCatalogo;
-    }
+    }*/
 
     public String getIdTecnicoGenerador() {
         return idTecnicoGenerador;
@@ -401,13 +401,13 @@ public class DtoManifiesto {
         this.tipoPaquete = tipoPaquete;
     }
 
-    public Double getPeso() {
+    /*public Double getPeso() {
         return peso;
     }
 
     public void setPeso(Double peso) {
         this.peso = peso;
-    }
+    }*/
 
     public String getNombreFirma() {
         return nombreFirma;

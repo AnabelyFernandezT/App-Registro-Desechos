@@ -276,7 +276,7 @@ public abstract class ManifiestoDao {
             entity.setFechaManifiesto(manifiesto.getFechaTemp());
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
 
-            entity.setPeso(manifiesto.getPeso());
+            //entity.setPeso(manifiesto.getPeso());
             entity.setSincronizado(false);
             //entity.setNombreFirma(manifiesto.getNombreFirma());
             //entity.setFirmaImg(manifiesto.getFirmaImg());
@@ -342,7 +342,7 @@ public abstract class ManifiestoDao {
             entity.setTipoPaquete(manifiesto.getTipoPaquete());
             entity.setCorreoAlterno(manifiesto.getCorreoAlterno());
 
-            entity.setPeso(manifiesto.getPeso());
+            //entity.setPeso(manifiesto.getPeso());
             entity.setSincronizado(false);
             //entity.setNombreFirma(manifiesto.getNombreFirma());
             //entity.setFirmaImg(manifiesto.getFirmaImg());

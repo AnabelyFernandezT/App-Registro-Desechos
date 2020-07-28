@@ -67,9 +67,9 @@ public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements Ret
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
                             for (DtoManifiesto reg:respuesta){
                                 MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
-                                for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                /*for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
                                     MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
-                                }
+                                }*/
                                 //inicalizar los catalogos de recoleccion...
                                 //for (DtoCatalogo c:listaCatalogo){
                                 //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
