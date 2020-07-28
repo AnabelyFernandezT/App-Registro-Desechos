@@ -28,10 +28,10 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     private Context mContext;
     private List<ItemManifiesto> manifiestosList ;
     UserInformacionModulosTask informacionModulosTaskl;
-    private Integer apertura1 = 0;
-    private Integer apertura2 = 0;
-    private Integer cierre1=0;
-    private Integer cierre2=0;
+    private String apertura1;
+    private String apertura2;
+    private String cierre1;
+    private String cierre2;
     private String frecuencia;
     int position=0;
     int moduloSeleccionado;

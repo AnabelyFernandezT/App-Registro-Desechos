@@ -10,10 +10,10 @@ public class ItemManifiesto {
     private String provincia;
     private String canton;
     private String numeroPlacaVehiculo;
-    private  Integer Apertura1;
-    private Integer Apertura2;
-    private Integer Cierre1;
-    private Integer Cierre2;
+    private String Apertura1;
+    private String Apertura2;
+    private String Cierre1;
+    private String Cierre2;
     private String telefono;
     private String frecuencia;
     private Integer tipoPaquete;
@@ -95,36 +95,35 @@ public class ItemManifiesto {
         this.sucursal = sucursal;
     }
 
-
-    public Integer getApertura1() {
+    public String getApertura1() {
         return Apertura1;
     }
 
-    public void setApertura1(Integer apertura1) {
+    public void setApertura1(String apertura1) {
         Apertura1 = apertura1;
     }
 
-    public Integer getApertura2() {
+    public String getApertura2() {
         return Apertura2;
     }
 
-    public void setApertura2(Integer apertura2) {
+    public void setApertura2(String apertura2) {
         Apertura2 = apertura2;
     }
 
-    public Integer getCierre1() {
+    public String getCierre1() {
         return Cierre1;
     }
 
-    public void setCierre1(Integer cierre1) {
+    public void setCierre1(String cierre1) {
         Cierre1 = cierre1;
     }
 
-    public Integer getCierre2() {
+    public String getCierre2() {
         return Cierre2;
     }
 
-    public void setCierre2(Integer cierre2) {
+    public void setCierre2(String cierre2) {
         Cierre2 = cierre2;
     }
 
