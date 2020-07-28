@@ -32,6 +32,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosNo;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
@@ -109,7 +110,14 @@ public class TabManifiestoDetalle extends LinearLayout {
         if(estadoManifiesto!= 1){mensajes.setVisibility(GONE);}
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+
+        if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("1")){
+            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresionesByIdManifiesto(idAppManifiesto, false);
+            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+        }else{
+            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+        }
+
 
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
@@ -149,7 +157,6 @@ public class TabManifiestoDetalle extends LinearLayout {
                                     for (int i=1;i<=Integer.parseInt(numeroBultos);i++){
                                         MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto,idDetalle,0.0,"",null,"", false, i);
                                     }
-                                    List<CatalogoItemValor> item=MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idAppManifiesto,idDetalle);
                                     detalles.clear();
                                     loadData();
                                     dialogBultosNo.dismiss();

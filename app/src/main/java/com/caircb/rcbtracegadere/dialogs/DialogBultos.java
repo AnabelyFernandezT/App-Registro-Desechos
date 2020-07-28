@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.generics.MyPrint;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -168,7 +169,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private void initDataOnOpen(){
-        bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
+
+        if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+MySession.getIdUsuario()).equals("1")){
+            MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresionByIdManifiestoIdDet(idManifiesto, idManifiestoDetalle, true);
+            bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
+        }else{
+            bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
+        }
+
+        //bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
         if(bultos==null) bultos = new ArrayList<>();
         cantidaBultosInitial = bultos.size();
 
@@ -422,13 +431,24 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         Integer ultimoBultoByIdDet = MyApp.getDBO().manifiestoDetallePesosDao().countNumeroBultosByIdManifiestoIdDet(idManifiesto, idManifiestoDetalle);
         ultimoBultoByIdDet = ultimoBultoByIdDet + 1;
 
-        Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
+        Long id;
+        boolean banderaImpresion;
+
+        if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("1")){
+            banderaImpresion = true;
+            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, true, ultimoBultoByIdDet);
+        }else{
+            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
+            banderaImpresion = false;
+        }
+        //Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
 
         if(tipo.length()>0){
             MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto,tipoPaquete,tipo);
         }
 
-        bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, false, ultimoBultoByIdDet));
+        bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, banderaImpresion, ultimoBultoByIdDet));
+        //bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, false, ultimoBultoByIdDet));
         listaValoresAdapter.notifyDataSetChanged();
 
         txtTotal.setText("KG "+subtotal);

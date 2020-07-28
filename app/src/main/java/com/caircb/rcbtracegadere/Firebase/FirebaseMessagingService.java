@@ -23,6 +23,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.ResultActivity;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -75,6 +76,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if(remoteMessage.getData().get("idCatalogoRespuesta").equals(6)){
             if(mOnRegisterListener!=null)mOnRegisterListener.onSiPeso();
+        }
+
+        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(10)){//si(autorizacion sin impresora)
+            MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "1");
+            MyApp.getDBO().manifiestoDetallePesosDao().updateImpresionByIdUsuarioRecolector(MySession.getIdUsuario(),true);
+        }
+        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(11)){//no
+            MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+ MySession.getIdUsuario(), "0");
         }
     }
 

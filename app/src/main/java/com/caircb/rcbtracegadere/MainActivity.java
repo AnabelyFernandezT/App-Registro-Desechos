@@ -125,6 +125,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         cargarRutas();
         validateInitFragment();
         initBorrarCache();
+        autorizacionSinImpresion();
 
         if(getIntent().getExtras()!=null){
             for (String key : getIntent().getExtras().keySet()) {
@@ -135,6 +136,9 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         }
     }
 
+    private void autorizacionSinImpresion(){
+        MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "0");
+    }
     private void validateInitFragment() {
         //if(1==1){
         //initFragment((HomeTransportistaFragment.create()));
@@ -360,7 +364,6 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(12)) listaCatalogos.add(12);//
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(14)) listaCatalogos.add(14);
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(16)) listaCatalogos.add(16);
-
 
         if (listaCatalogos.size() > 0) {
             consultarCatalogosTask = new UserConsultarCatalogosTask(this, listaCatalogos);
@@ -678,6 +681,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                     } else if (item.getNombre().equals("NOTIFICACIONES")) {
                         if (mdialog != null) {
                             mdialog.dismiss();
+                            //MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "1");
+                            System.out.println("idUsuario:" + MySession.getIdUsuario());
                             mensajes();
                         }
                     }
