@@ -133,19 +133,20 @@ public class ManifiestoEntity {
 
     private String correos;
 
-    private  Integer apertura1;
+    private  String apertura1;
 
-    private Integer apertura2;
+    private String apertura2;
 
-    private Integer cierre1;
+    private String cierre1;
 
-    private Integer cierre2;
+    private String cierre2;
 
     private String serie;
 
     private String frecuencia;
 
     private String sucursal;
+
     private String telefono;
 
     public ManifiestoEntity() {
@@ -514,38 +515,6 @@ public class ManifiestoEntity {
         this.correos = correos;
     }
 
-    public Integer getApertura1() {
-        return apertura1;
-    }
-
-    public void setApertura1(Integer apertura1) {
-        this.apertura1 = apertura1;
-    }
-
-    public Integer getApertura2() {
-        return apertura2;
-    }
-
-    public void setApertura2(Integer apertura2) {
-        this.apertura2 = apertura2;
-    }
-
-    public Integer getCierre1() {
-        return cierre1;
-    }
-
-    public void setCierre1(Integer cierre1) {
-        this.cierre1 = cierre1;
-    }
-
-    public Integer getCierre2() {
-        return cierre2;
-    }
-
-    public void setCierre2(Integer cierre2) {
-        this.cierre2 = cierre2;
-    }
-
     public String getSerie() {
         return serie;
     }
@@ -576,6 +545,38 @@ public class ManifiestoEntity {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getApertura1() {
+        return apertura1;
+    }
+
+    public void setApertura1(String apertura1) {
+        this.apertura1 = apertura1;
+    }
+
+    public String getApertura2() {
+        return apertura2;
+    }
+
+    public void setApertura2(String apertura2) {
+        this.apertura2 = apertura2;
+    }
+
+    public String getCierre1() {
+        return cierre1;
+    }
+
+    public void setCierre1(String cierre1) {
+        this.cierre1 = cierre1;
+    }
+
+    public String getCierre2() {
+        return cierre2;
+    }
+
+    public void setCierre2(String cierre2) {
+        this.cierre2 = cierre2;
     }
 }
 

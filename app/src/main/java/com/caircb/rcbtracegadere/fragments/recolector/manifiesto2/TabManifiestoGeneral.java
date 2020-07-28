@@ -491,9 +491,9 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtOperadorRecolector.setText(manifiesto.getNombreOperadorRecolector());
             txtEmpresaDestinatario.setText(manifiesto.getNombreDestinatario());
 
-            if(txtOperadorRecolector.getText().equals("")){
-                btmAgregarOperador2.setEnabled(false);
-            }
+            if(txtOperadorRecolector.getText().equals("")){btmAgregarOperador2.setEnabled(false);}
+            if(txtTransReco.getText().equals("")){btnAgregarFirmaTransportista.setEnabled(false);}
+            if(txtTransRecoAux.getText().equals("")){btnAgregarFirmaOperador1.setEnabled(false);}
 
             if(manifiesto.getIdTecnicoGenerador()!=null && manifiesto.getIdTecnicoGenerador()>0){
                 TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(manifiesto.getIdTecnicoGenerador());

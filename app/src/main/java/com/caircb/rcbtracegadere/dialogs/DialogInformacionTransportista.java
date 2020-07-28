@@ -32,10 +32,10 @@ public class DialogInformacionTransportista extends MyDialog {
     LinearLayout btnRetornarMenu,sectionCuadro,sectionEspecifica;
     TableLayout tableLayout;
     int position = 0;
-    private Integer apertura1 = 0;
-    private Integer apertura2 = 0;
-    private Integer cierre1 = 0;
-    private Integer cierre2 = 0;
+    private String apertura1;
+    private String apertura2;
+    private String cierre1;
+    private String cierre2;
     private String telefono = "";
     private Integer idManifiesto;
     private String[] header={"Descripción","Código MAE","Estado Físico Desecho","Packing","Cantidad (u)","Peso (Kg)","Tratamiento"};
@@ -43,7 +43,7 @@ public class DialogInformacionTransportista extends MyDialog {
     private List<RowItemManifiestoDetalle> detalles;
     private String frecuencia;
 
-    public DialogInformacionTransportista(@NonNull Context context, Integer apertura1, Integer apertura2, Integer cierre1, Integer cierre2, String telefono,Integer idManifiesto,String frecuencia) {
+    public DialogInformacionTransportista(@NonNull Context context, String apertura1, String apertura2, String cierre1, String cierre2, String telefono,Integer idManifiesto,String frecuencia) {
         super(context, R.layout.dialog_informacion_transportista);
         this._activity = (Activity) context;
         this.position = position;

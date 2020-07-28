@@ -42,7 +42,7 @@ public class DtoManifiesto {
 
     private Integer idTransporte;
     private String identificacionTransportista;
-    private String razonSocialTransportista;
+        private String razonSocialTransportista;
     private String numeroLicenciaAmbientalTransportista;
     private String numeroPlacaVehiculo;
     private String modeloVehiculo;
@@ -55,10 +55,10 @@ public class DtoManifiesto {
     private Boolean eliminado;
     private Date fechaTemp;
     private Integer tipoPaquete;
-    //private List<DtoManifiestoDetalle> hojaRutaDetalle;
-    //private List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo;
+    private List<DtoManifiestoDetalle> hojaRutaDetalle;
+    private List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo;
     private String numManifiestoCliente;
-    //private Double peso;
+    private Double peso;
     private String nombreFirma;
     private String firmaImg;
     private Integer idRuta;
@@ -66,10 +66,10 @@ public class DtoManifiesto {
     private Integer estadoFinRuta;
     private String nombreDestinatario;
     private Integer idDestinatarioFinRutaCatalogo;
-    private Integer apertura1;
-    private Integer apertura2;
-    private Integer cierre1;
-    private Integer cierre2;
+    private String apertura1;
+    private String apertura2;
+    private String cierre1;
+    private String cierre2;
     private String serie;
     private String frecuencia;
     private String sucursal;
@@ -369,7 +369,7 @@ public class DtoManifiesto {
         this.fechaTemp = fechaTemp;
     }
 
-    /*public List<DtoManifiestoDetalle> getHojaRutaDetalle() {
+    public List<DtoManifiestoDetalle> getHojaRutaDetalle() {
         return hojaRutaDetalle;
     }
 
@@ -383,7 +383,7 @@ public class DtoManifiesto {
 
     public void setHojaRutaCatalogo(List<DtoManifiestoObservacionFrecuente> hojaRutaCatalogo) {
         this.hojaRutaCatalogo = hojaRutaCatalogo;
-    }*/
+    }
 
     public String getIdTecnicoGenerador() {
         return idTecnicoGenerador;
@@ -401,13 +401,13 @@ public class DtoManifiesto {
         this.tipoPaquete = tipoPaquete;
     }
 
-    /*public Double getPeso() {
+    public Double getPeso() {
         return peso;
     }
 
     public void setPeso(Double peso) {
         this.peso = peso;
-    }*/
+    }
 
     public String getNombreFirma() {
         return nombreFirma;
@@ -497,35 +497,35 @@ public class DtoManifiesto {
         this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
     }
 
-    public Integer getApertura1() {
+    public String getApertura1() {
         return apertura1;
     }
 
-    public void setApertura1(Integer apertura1) {
+    public void setApertura1(String apertura1) {
         this.apertura1 = apertura1;
     }
 
-    public Integer getApertura2() {
+    public String getApertura2() {
         return apertura2;
     }
 
-    public void setApertura2(Integer apertura2) {
+    public void setApertura2(String apertura2) {
         this.apertura2 = apertura2;
     }
 
-    public Integer getCierre1() {
+    public String getCierre1() {
         return cierre1;
     }
 
-    public void setCierre1(Integer cierre1) {
+    public void setCierre1(String cierre1) {
         this.cierre1 = cierre1;
     }
 
-    public Integer getCierre2() {
+    public String getCierre2() {
         return cierre2;
     }
 
-    public void setCierre2(Integer cierre2) {
+    public void setCierre2(String cierre2) {
         this.cierre2 = cierre2;
     }
 

@@ -40,6 +40,9 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract void updateFlagFaltaImpresiones(Integer idManifiesto, Integer idManifiestoDetalle, boolean bandera);
 
+    @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto")
+    public abstract void updateFlagFaltaImpresionesByIdManifiesto(Integer idManifiesto, boolean bandera);
+
     @Query("select count(*) from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and faltaImpresiones=1")
     public abstract Integer countDetallesSinImprimirByIdManifiesto(Integer idManifiesto);
 

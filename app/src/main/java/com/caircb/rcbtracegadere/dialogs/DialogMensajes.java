@@ -128,7 +128,8 @@ public class DialogMensajes extends MyDialog {
     }
 
     private void cargarNovedades(){
-        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(1,7);
+        //catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(1,7);
+        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(7);
         loadSpinner(ltsNotificaciones,catalogos,true);
     }
 }
