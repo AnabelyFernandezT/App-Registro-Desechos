@@ -30,10 +30,10 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set tipoBalanza =:idTipoBalanza where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idDetalleManifiesto")
     public abstract  void updateTipoBalanzaByDetalleId(Integer idManifiesto, Integer idDetalleManifiesto, Integer idTipoBalanza);
 
-    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial, faltaImpresiones" +
+    @Query("select d.idAppManifiestoDetalle as id, cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial, faltaImpresiones,tipoMostrar" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
-            " where idAppManifiesto=:idManifiesto")
+            " where idAppManifiesto=:idManifiesto and tipoMostrar=1 or tipoMostrar=3")
     public abstract List<RowItemManifiesto> fetchHojaRutaDetallebyIdManifiesto(Integer idManifiesto);
 
     @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
@@ -106,6 +106,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setEstadoFisico(dt.getEstadoFisico());
             entity.setFaltaImpresiones(false);
 
+            entity.setTipoMostrar(dt.getTipoMostrar());
             entity.setCantidadRefencial(dt.getCantidadRefencial());
             entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
@@ -132,6 +133,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setTipoContenedor(dt.getTipoContenedor());
             entity.setEstadoFisico(dt.getEstadoFisico());
 
+            entity.setTipoMostrar(dt.getTipoMostrar());
             entity.setCantidadRefencial(dt.getCantidadRefencial());
             entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());

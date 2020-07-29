@@ -70,6 +70,7 @@ public class ManifiestoDetalleEntity {
     private Integer estadoPaquete;
 
     private Integer cantidadRefencial;
+    private  Integer tipoMostrar;
 
 
     public ManifiestoDetalleEntity() {
@@ -303,5 +304,13 @@ public class ManifiestoDetalleEntity {
 
     public void setCantidadRefencial(Integer cantidadRefencial) {
         this.cantidadRefencial = cantidadRefencial;
+    }
+
+    public Integer getTipoMostrar() {
+        return tipoMostrar;
+    }
+
+    public void setTipoMostrar(Integer tipoMostrar) {
+        this.tipoMostrar = tipoMostrar;
     }
 }
