@@ -38,6 +38,9 @@ public abstract class ManifiestoDetallePesosDao {
     @Query("delete from tb_manifiesto_detalle_pesos where _id=:id")
     public abstract void deleteTableValoresById(Integer id);
 
+    @Query ("update tb_manifiesto_detalle_pesos set impresion =:impresion where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
+    public abstract void updateBanderaImpresionByIdManifiestoIdDet(Integer idManifiesto, Integer idManifiestoDetalle, boolean impresion);
+
     @Query ("update tb_manifiesto_detalle_pesos set impresion =:impresion where _id=:id and idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
     public abstract void updateBanderaImpresion(Integer idManifiesto, Integer idManifiestoDetalle ,Integer id, boolean impresion);
 
@@ -49,6 +52,11 @@ public abstract class ManifiestoDetallePesosDao {
 
     @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto")
     public abstract void deleteTableValoresByIdManifiesto(Integer idManifiesto);
+
+    @Query("update tb_manifiesto_detalle_pesos set impresion =:estado where _id in (select p._id from tb_manifiestos m  \n" +
+            " inner join tb_manifiesto_detalle_pesos p on m.idAppManifiesto = p.idAppManifiesto\n" +
+            " where idChoferRecolector =:idUsuarioRecolector and m.estado=1 ) ")
+    public abstract void updateImpresionByIdUsuarioRecolector(Integer idUsuarioRecolector, boolean estado);
 
     @Query("Select sum(valor) from tb_manifiesto_detalle_pesos b where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract double sumaPesoFinal(Integer idManifiesto, Integer idManifiestoDetalle);

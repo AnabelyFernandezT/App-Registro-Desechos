@@ -148,7 +148,7 @@ public class DialogPlacas extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarVehiculos = new UserConsultarVehiculosSedeTask(getActivity());
+        consultarVehiculos = new UserConsultarVehiculosSedeTask(getActivity(),2);
         consultarVehiculos.setOnVehiculoListener(new UserConsultarVehiculosSedeTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {

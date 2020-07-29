@@ -62,6 +62,9 @@ public class DialogMensajes extends MyDialog {
                 if(position>0){
                     catalogos.get(position-1);
                     novedad = (String) ltsNotificaciones.getSelectedItem();
+                    if(position==2){
+                        position = position +2;
+                    }
                     idNotificacion=position;
 
                     btnIngresarApp.setEnabled(true);
@@ -128,7 +131,8 @@ public class DialogMensajes extends MyDialog {
     }
 
     private void cargarNovedades(){
-        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(1,7);
+        //catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(1,7);
+        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(7);
         loadSpinner(ltsNotificaciones,catalogos,true);
     }
 }

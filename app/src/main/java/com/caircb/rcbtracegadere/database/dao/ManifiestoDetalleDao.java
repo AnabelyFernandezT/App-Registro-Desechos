@@ -40,6 +40,9 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract void updateFlagFaltaImpresiones(Integer idManifiesto, Integer idManifiestoDetalle, boolean bandera);
 
+    @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto")
+    public abstract void updateFlagFaltaImpresionesByIdManifiesto(Integer idManifiesto, boolean bandera);
+
     @Query("select count(*) from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and faltaImpresiones=1")
     public abstract Integer countDetallesSinImprimirByIdManifiesto(Integer idManifiesto);
 
@@ -104,6 +107,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setEstadoFisico(dt.getEstadoFisico());
             entity.setFaltaImpresiones(false);
 
+            entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
             entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
             entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
@@ -128,6 +132,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setTipoContenedor(dt.getTipoContenedor());
             entity.setEstadoFisico(dt.getEstadoFisico());
 
+            entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
             entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
             entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
