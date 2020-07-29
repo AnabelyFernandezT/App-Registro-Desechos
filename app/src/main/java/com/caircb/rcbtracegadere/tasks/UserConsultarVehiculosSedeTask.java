@@ -22,8 +22,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements RetrofitCallbacks {
-    public UserConsultarVehiculosSedeTask(Context context) {
+    public Integer banderaSede;
+
+    public UserConsultarVehiculosSedeTask(Context context, Integer banderaSede) {
         super(context);
+        this.banderaSede=banderaSede;
     }
 
     public interface OnVehiculoListener {
@@ -79,7 +82,12 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
         rq.setFecha(new Date());
         rq.setData(String.valueOf(idDestinatario));//lugar logeado
         rq.setDataAuxi("");
-        rq.setTipo(3);
+        if (banderaSede==1){//Si recibe 1 es para validacion de consulta placas para sede
+            rq.setTipo(5);
+        }else {
+            rq.setTipo(3);
+        }
+
 
         return rq;
     }

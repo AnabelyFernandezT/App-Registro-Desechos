@@ -111,7 +111,7 @@ public class DialogPlacaSedeRecolector extends MyDialog {
 
 
     private void datosPlacasDisponibles(){
-        consultarPlacas = new UserConsultarVehiculosSedeTask(getActivity());
+        consultarPlacas = new UserConsultarVehiculosSedeTask(getActivity(),1);
         consultarPlacas.setOnVehiculoListener(new UserConsultarVehiculosSedeTask.OnVehiculoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
