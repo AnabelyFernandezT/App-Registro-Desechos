@@ -205,31 +205,40 @@ public class TabManifiestoDetalle extends LinearLayout {
             }
         });
          */
-        if (detalles.get(positionItem).getTipoPaquete() == null) {// NORMAL
-            openDialogBultos(positionItem, 0);
-        } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-            openDialogBultos(positionItem, 100);
-        } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-            openDialogBultos(positionItem, 101);
-        } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-            btnBalanzaGadere.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
-                    tipoBalanza = 1;
+
+        btnBalanzaGadere.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
+                tipoBalanza = 1;
+                if (detalles.get(positionItem).getTipoPaquete() == null) {// NORMAL
+                    openDialogBultos(positionItem, 0);
+                } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                    openDialogBultos(positionItem, 100);
+                } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                    openDialogBultos(positionItem, 101);
+                } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
                     showTipoPaquete(positionItem);
                 }
-            });
-            btnBalanzaCliente.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
-                    tipoBalanza = 2;
-                    //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
+            }
+        });
+        btnBalanzaCliente.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
+                tipoBalanza = 2;
+                //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
+                if (detalles.get(positionItem).getTipoPaquete() == null) {// NORMAL
+                    openDialogBultos(positionItem, 0);
+                } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                    openDialogBultos(positionItem, 100);
+                } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                    openDialogBultos(positionItem, 101);
+                } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
                     showTipoPaquete(positionItem);
                 }
-            });
-        }
+            }
+        });
 
 
         btnCancelar.setOnClickListener(new OnClickListener() {
