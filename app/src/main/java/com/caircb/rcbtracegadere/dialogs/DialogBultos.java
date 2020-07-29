@@ -103,7 +103,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         initBotones();
         initCategoriaPaquetes();
         initDataOnOpen();
-        detalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
+        detalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto, idManifiestoDetalle);
         vreferencial = detalle.getValidadorReferencial();
         pesoReferencial = detalle.getPesoReferencial();
     }
