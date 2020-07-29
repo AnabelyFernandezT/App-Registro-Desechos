@@ -78,11 +78,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             if(mOnRegisterListener!=null)mOnRegisterListener.onSiPeso();
         }
 
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(10)){//si(autorizacion sin impresora)
+        if(remoteMessage.getData().get("idCatalogoRespuesta").equals("10")){//si(autorizacion sin impresora)
             MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "1");
             MyApp.getDBO().manifiestoDetallePesosDao().updateImpresionByIdUsuarioRecolector(MySession.getIdUsuario(),true);
         }
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(11)){//no
+        if(remoteMessage.getData().get("idCatalogoRespuesta").equals("11")){//no
             MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+ MySession.getIdUsuario(), "0");
         }
     }

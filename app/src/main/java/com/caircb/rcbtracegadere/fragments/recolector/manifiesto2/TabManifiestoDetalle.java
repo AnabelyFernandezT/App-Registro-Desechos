@@ -106,7 +106,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     }
 
     @SuppressLint("RestrictedApi")
-    private void loadData(){
+    public void loadData(){
         if(estadoManifiesto!= 1){mensajes.setVisibility(GONE);}
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));

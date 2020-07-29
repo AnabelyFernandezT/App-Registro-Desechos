@@ -62,6 +62,9 @@ public class DialogMensajes extends MyDialog {
                 if(position>0){
                     catalogos.get(position-1);
                     novedad = (String) ltsNotificaciones.getSelectedItem();
+                    if(position==2){
+                        position = position +2;
+                    }
                     idNotificacion=position;
 
                     btnIngresarApp.setEnabled(true);
