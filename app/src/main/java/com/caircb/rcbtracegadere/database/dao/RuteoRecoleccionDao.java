@@ -32,7 +32,8 @@ public abstract  class RuteoRecoleccionDao {
     @Query("Select _id from tb_ruteo_recoleccion where puntoPartida=:puntoPartida limit 1")
     public abstract Integer selectIdByPuntoPartida (Integer puntoPartida);
 
-    @Query("Select _id from tb_ruteo_recoleccion where puntoPartida > 0 and estado = 0 order by _id desc limit 1")
+    //@Query("Select _id from tb_ruteo_recoleccion where puntoPartida > 0 and estado = 0 order by _id desc limit 1")
+    @Query("Select _id from tb_ruteo_recoleccion where puntoPartida > 0 order by _id desc limit 1")
     public abstract Integer searchRegistroPuntodePartidaMayorACero();
 
     @Query("update tb_ruteo_recoleccion set puntoLlegada = null, fechaLlegadaRuta = null  where puntoPartida > 0 and estado = 0 and _id=:id")

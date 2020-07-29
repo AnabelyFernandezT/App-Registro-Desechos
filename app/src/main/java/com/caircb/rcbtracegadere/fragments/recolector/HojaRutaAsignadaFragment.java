@@ -194,7 +194,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 if (!MyApp.getDBO().impresoraDao().existeImpresora()) {
 
                                 Date fecha = AppDatabase.getDateTime();
-                                //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                 MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
 
                                 //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
@@ -216,7 +216,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     }
 
                                 }
-                                List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                //List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
                                 if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
                                     dialogBuilder2 = new DialogBuilder(getActivity());
