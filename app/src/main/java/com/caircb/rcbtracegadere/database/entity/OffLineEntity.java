@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = (CatalogoEntity.TABLE))
+@Entity(tableName = (OffLineEntity.TABLE))
 public class OffLineEntity {
     public static final String TABLE = "tb_offline_proceso";
 

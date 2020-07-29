@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
-import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.RowItemManifiestoPrint;
