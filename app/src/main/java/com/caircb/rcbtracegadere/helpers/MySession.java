@@ -154,7 +154,7 @@ public final class MySession {
     }
     public static Integer getIdUsuario(){
         String str = get(USUARIO);
-        return str!=null? Integer.parseInt(str):-1;
+        return (str!=null && !str.isEmpty()) ? Integer.parseInt(str):-1;
     }
 
     public static void setIdAplicacion(Integer id){

@@ -67,6 +67,8 @@ public class ManifiestoDetalleEntity {
 
     private boolean faltaImpresiones;
 
+    private Integer estadoPaquete;
+
 
     public ManifiestoDetalleEntity() {
     }
@@ -283,5 +285,13 @@ public class ManifiestoDetalleEntity {
 
     public void setFaltaImpresiones(boolean faltaImpresiones) {
         this.faltaImpresiones = faltaImpresiones;
+    }
+
+    public Integer getEstadoPaquete() {
+        return estadoPaquete;
+    }
+
+    public void setEstadoPaquete(Integer estadoPaquete) {
+        this.estadoPaquete = estadoPaquete;
     }
 }
