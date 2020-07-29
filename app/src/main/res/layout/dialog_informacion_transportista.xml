@@ -263,7 +263,7 @@
 
             </LinearLayout>
 
-            <TextView
+          <!--  <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
@@ -293,9 +293,9 @@
                     android:text="NO" />
 
 
-            </LinearLayout>
+            </LinearLayout>-->
 
-            <TextView
+          <!--  <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
@@ -324,7 +324,7 @@
                     android:enabled="false"
                     android:text="NO" />
 
-            </LinearLayout>
+            </LinearLayout>-->
 
             <TextView
                 android:layout_width="match_parent"
