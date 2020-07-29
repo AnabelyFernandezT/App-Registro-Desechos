@@ -383,8 +383,9 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                             dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
                                     dialogBuilder2.dismiss();
-                                    registarDatos();
+                                    //registarDatos();
                                 }
                             });
                             dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
@@ -421,7 +422,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                         @Override
                         public void onClick(View v) {
                             dialogBuilder2.dismiss();
-                            registarDatos();
+                            setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
+                            //registarDatos();
                         }
                     });
                     dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
