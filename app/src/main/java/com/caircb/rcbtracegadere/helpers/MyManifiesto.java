@@ -36,11 +36,13 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -271,7 +273,7 @@ public class MyManifiesto {
         tb1.addCell(createCell("NO TIENE",f6));
         tb1.addCell(createCell("",f6));
         tb1.addCell(createCell(manifiesto.getSerie()+"  "+manifiesto.getNumeroManifiesto(),f6));
-        tb1.addCell(createCell_VACIO());
+        tb1.addCell(createCell("1/2",f6));
         tb1.completeRow();
 
         _cell = new PdfPCell(tb1);
@@ -401,11 +403,19 @@ public class MyManifiesto {
             para3.add(Chunk.NEWLINE);
             para3.add(new Chunk(tecnicoEntity.getTelefono() + "   " + tecnicoEntity.getCorreo(), f6));
             para3.add(Chunk.NEWLINE);
+
         }else{
+
             para3.add(new Chunk("", f6));
             para3.add(Chunk.NEWLINE);
             para3.add(new Chunk("", f6));
             para3.add(Chunk.NEWLINE);
+        }
+        if(!manifiesto.getTecnicoCorreo().equals("")){
+            para3.add(new Chunk(","+manifiesto.getTecnicoCorreo(),f6));
+        }
+        if(!manifiesto.getCorreoAlterno().equals("")){
+            para3.add(new Chunk("," + manifiesto.getCorreoAlterno(),f6));
         }
 
         //cell = new PdfPCell(new Phrase(manifiesto.getTecnicoResponsable(),f6));
@@ -702,6 +712,26 @@ public class MyManifiesto {
         _cell = new PdfPCell(tb6);
         _cell.setBorder(Rectangle.NO_BORDER);
         tb.addCell(_cell);
+
+        PdfPTable tb6_1= new PdfPTable(1);
+
+        Paragraph para6_1= new Paragraph();
+        //para5.add(new Chunk("FIRMA FIRMA:",f6));
+        para6_1.add(new Chunk("AUXILIAR DE RECOLECCIÓN                AUXILIAR DE RECOLECCIÓN          AUXILIAR DE RECOLECCIÓN",f6));
+        para6_1.add(Chunk.NEWLINE);
+        //para5.add(new Chunk(fecha,f6));
+        _cell = new PdfPCell(para6_1);
+        _cell.setBorder(Rectangle.NO_BORDER);
+
+
+        tb6_1.completeRow();
+        tb6.addCell(_cell);
+
+
+        _cell = new PdfPCell(tb6_1);
+        _cell.setBorder(Rectangle.NO_BORDER);
+        tb.addCell(_cell);
+
 
         //tabla 7
         PdfPTable tb7 = new PdfPTable(new float[] { 100});
