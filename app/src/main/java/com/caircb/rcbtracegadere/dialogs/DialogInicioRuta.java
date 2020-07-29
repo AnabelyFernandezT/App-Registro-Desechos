@@ -333,7 +333,10 @@ public class DialogInicioRuta extends MyDialog {
 
     private void loadCantidadManifiestoProcesado(){
         //dbHelper.open();
-        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasP(MySession.getIdUsuario()));
+        //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasP(MySession.getIdUsuario()));
+
+        Integer idSubruta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasByIdConductorAndRuta(MySession.getIdUsuario(),idSubruta));
         //dbHelper.close();
     }
 
@@ -355,6 +358,7 @@ public class DialogInicioRuta extends MyDialog {
 
         lnlIniciaRuta.setVisibility(View.GONE);
         lnlFinRuta.setVisibility(View.VISIBLE);
+
         consultarHojaRutaTask = new UserConsultarHojaRutaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();
 
