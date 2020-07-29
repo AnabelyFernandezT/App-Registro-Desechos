@@ -159,8 +159,8 @@ public class TabManifiestoDetalle extends LinearLayout {
                                     for (int i = 1; i <= Integer.parseInt(numeroBultos); i++) {
                                         MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto, idDetalle, 0.0, "", null, "", false, i);
                                     }
-                                    detalles.clear();
-                                    loadData();
+                                    //detalles.clear();
+                                    reloadData();
                                     dialogBultosNo.dismiss();
                                 }
                             }
@@ -180,6 +180,18 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
             }
         });
+    }
+
+    public void reloadData(){
+
+        if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("1")){
+            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresionesByIdManifiesto(idAppManifiesto, false);
+            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+        }else{
+            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+        }
+        recyclerviewAdapter.setTaskList(detalles);
+        recyclerviewAdapter.notifyDataSetChanged();
     }
 
     private void openOpcionesItems(final Integer positionItem, final Integer idDetManifiesto) {
@@ -351,8 +363,8 @@ public class TabManifiestoDetalle extends LinearLayout {
                 public void onCanceled(boolean faltaImpresos) {
                     if (dialogBultos != null) {
                         if (faltaImpresos) {
-                            detalles.clear();
-                            loadData();
+                            //detalles.clear();
+                            reloadData();
                         }
                         dialogBultos.dismiss();
                         dialogBultos = null;
