@@ -107,6 +107,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setEstadoFisico(dt.getEstadoFisico());
             entity.setFaltaImpresiones(false);
 
+            entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
             entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
             entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
@@ -131,6 +132,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setTipoContenedor(dt.getTipoContenedor());
             entity.setEstadoFisico(dt.getEstadoFisico());
 
+            entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
             entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
             entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
