@@ -166,7 +166,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 }
                 else if(s.equals("DETALLE")){
                     tabManifiestoDetalle.resetParameters();
-                    tabManifiestoDetalle.loadData();
+                    tabManifiestoDetalle.reloadData();
                 }
                 else if(s.equals("ADICIONALES")){
                     if(tabManifiestoDetalle.validaExisteCambioTotalBultos()){tabManifiestoAdicional.resetDataPaquetesPedientes();}

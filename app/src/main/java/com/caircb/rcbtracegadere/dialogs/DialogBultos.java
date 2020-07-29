@@ -338,6 +338,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 }else if (tipoGestion == 102){
                     Integer which = 2;
                     addBulto(imput, itemsCategoriaPaquete.get(which));
+                }else if (tipoGestion == 0){
+                    addBulto(imput,"");
                 }
 
                 //}

@@ -28,6 +28,7 @@ public class DtoManifiestoDetalle {
     private Integer requiereIncineracionPresenciada;
     private String observacionResiduos;
     private Integer cantidadRefencial;
+    private Integer tipoMostrar;
 
     public DtoManifiestoDetalle() {
     }
@@ -230,5 +231,13 @@ public class DtoManifiestoDetalle {
 
     public void setCantidadRefencial(Integer cantidadRefencial) {
         this.cantidadRefencial = cantidadRefencial;
+    }
+
+    public Integer getTipoMostrar() {
+        return tipoMostrar;
+    }
+
+    public void setTipoMostrar(Integer tipoMostrar) {
+        this.tipoMostrar = tipoMostrar;
     }
 }

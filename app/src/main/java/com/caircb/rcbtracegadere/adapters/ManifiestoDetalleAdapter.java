@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionPesoExtra;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.itextpdf.text.pdf.parser.Line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,14 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
         final RowItemManifiesto it = manifiestosDtList.get(position);
         //holder.txtUnidad.setText(it.getUnidad());
+
+        if (it.getTipoMostrar()==3){
+            holder.lnlManifiestoDetalle.setEnabled(false);
+            holder.chkEstado.setEnabled(false);
+        }else {
+            holder.lnlManifiestoDetalle.setEnabled(true);
+            holder.chkEstado.setEnabled(true);
+        }
         holder.txtUnidad.setText("KG");
         holder.txtPeso.setText(""+it.getPeso());
         holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
@@ -136,6 +146,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         TextView txtTipoBalanza;
         TextView txtPesoReferencial;
         ImageView imgFaltaImpresiones;
+        RelativeLayout lnlManifiestoDetalle;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -150,6 +161,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             txtTipoBalanza = itemView.findViewById(R.id.txtTipoBalanza);
             txtPesoReferencial = itemView.findViewById(R.id.txtPesoReferencial);
             imgFaltaImpresiones = itemView.findViewById(R.id.imgFaltaImpresiones);
+            lnlManifiestoDetalle = itemView.findViewById(R.id.lnlManifiestoDetalle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

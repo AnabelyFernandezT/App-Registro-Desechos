@@ -15,6 +15,7 @@ public class RowItemManifiesto {
     private int tipoBalanza;
     private double pesoReferencial;
     private boolean faltaImpresiones;
+    private Integer tipoMostrar;
 
     public RowItemManifiesto(){}
 
@@ -59,9 +60,13 @@ public class RowItemManifiesto {
         this.cantidadBulto = cantidadBulto;
     }
 
-    public boolean isEstado() {return estado;}
+    public boolean isEstado() {
+        return estado;
+    }
 
-    public void setEstado(boolean estado) {this.estado = estado; }
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
 
     public String getTratamiento() { return tratamiento; }
 
@@ -101,5 +106,13 @@ public class RowItemManifiesto {
 
     public void setFaltaImpresiones(boolean faltaImpresiones) {
         this.faltaImpresiones = faltaImpresiones;
+    }
+
+    public Integer getTipoMostrar() {
+        return tipoMostrar;
+    }
+
+    public void setTipoMostrar(Integer tipoMostrar) {
+        this.tipoMostrar = tipoMostrar;
     }
 }
