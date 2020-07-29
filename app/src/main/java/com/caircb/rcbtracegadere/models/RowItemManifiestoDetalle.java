@@ -22,6 +22,7 @@ public class RowItemManifiestoDetalle {
     private Integer tieneDisponibilidadBalanza;
     private Integer requiereIncineracionPresenciada;
     private String observacionResiduos;
+    private Integer cantidadRefencial;
 
 
     public RowItemManifiestoDetalle() {
@@ -193,5 +194,13 @@ public class RowItemManifiestoDetalle {
 
     public void setObservacionResiduos(String observacionResiduos) {
         this.observacionResiduos = observacionResiduos;
+    }
+
+    public Integer getCantidadRefencial() {
+        return cantidadRefencial;
+    }
+
+    public void setCantidadRefencial(Integer cantidadRefencial) {
+        this.cantidadRefencial = cantidadRefencial;
     }
 }

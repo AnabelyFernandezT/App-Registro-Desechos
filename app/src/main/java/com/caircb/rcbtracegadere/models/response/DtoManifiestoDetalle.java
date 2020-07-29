@@ -27,6 +27,7 @@ public class DtoManifiestoDetalle {
     private Integer tieneDisponibilidadBalanza;
     private Integer requiereIncineracionPresenciada;
     private String observacionResiduos;
+    private Integer cantidadRefencial;
 
     public DtoManifiestoDetalle() {
     }
@@ -221,5 +222,13 @@ public class DtoManifiestoDetalle {
 
     public void setObservacionResiduos(String observacionResiduos) {
         this.observacionResiduos = observacionResiduos;
+    }
+
+    public Integer getCantidadRefencial() {
+        return cantidadRefencial;
+    }
+
+    public void setCantidadRefencial(Integer cantidadRefencial) {
+        this.cantidadRefencial = cantidadRefencial;
     }
 }

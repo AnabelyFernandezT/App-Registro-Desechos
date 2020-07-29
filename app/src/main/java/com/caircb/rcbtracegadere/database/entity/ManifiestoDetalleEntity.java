@@ -69,6 +69,8 @@ public class ManifiestoDetalleEntity {
 
     private Integer estadoPaquete;
 
+    private Integer cantidadRefencial;
+
 
     public ManifiestoDetalleEntity() {
     }
@@ -293,5 +295,13 @@ public class ManifiestoDetalleEntity {
 
     public void setEstadoPaquete(Integer estadoPaquete) {
         this.estadoPaquete = estadoPaquete;
+    }
+
+    public Integer getCantidadRefencial() {
+        return cantidadRefencial;
+    }
+
+    public void setCantidadRefencial(Integer cantidadRefencial) {
+        this.cantidadRefencial = cantidadRefencial;
     }
 }
