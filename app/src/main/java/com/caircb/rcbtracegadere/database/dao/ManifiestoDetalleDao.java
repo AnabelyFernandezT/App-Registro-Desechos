@@ -48,7 +48,7 @@ public abstract class ManifiestoDetalleDao {
 
     @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae, " +
             "estadoFisico as estadoFisico, tipoContenedor as tipoContenedor," +
-            "residuoSujetoFiscalizacion,requiereDevolucionRecipientes,tieneDisponibilidadMontacarga,tieneDisponibilidadBalanza,requiereIncineracionPresenciada,observacionResiduos" +
+            "residuoSujetoFiscalizacion,requiereDevolucionRecipientes,tieneDisponibilidadMontacarga,tieneDisponibilidadBalanza,requiereIncineracionPresenciada,observacionResiduos,cantidadRefencial" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto")
@@ -107,6 +107,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setEstadoFisico(dt.getEstadoFisico());
             entity.setFaltaImpresiones(false);
 
+            entity.setCantidadRefencial(dt.getCantidadRefencial());
             entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
             entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
@@ -132,6 +133,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setTipoContenedor(dt.getTipoContenedor());
             entity.setEstadoFisico(dt.getEstadoFisico());
 
+            entity.setCantidadRefencial(dt.getCantidadRefencial());
             entity.setEstadoPaquete(dt.getEstado());
             entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
             entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());

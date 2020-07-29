@@ -411,9 +411,12 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             } else {
                                 //busco con punto de partida mayor a cer
                                 Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
-                                if (idMayor > 0) {
-                                    MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                if(idMayor!=null){
+                                    if (idMayor > 0) {
+                                        MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                    }
                                 }
+
                             }
                             dialogBuilder.dismiss();
                             setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1));
