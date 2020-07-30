@@ -255,8 +255,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 }else{
                     messageBox("No dispone de manifiestos para recolectar.!");
                 }
-
-                //setNavegate(HojaRutaAsignadaFragment.newInstance());
             }
         });
 
