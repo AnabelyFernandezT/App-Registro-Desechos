@@ -44,7 +44,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     AlertDialog.Builder alertDialog;
     AlertDialog alert;
     String valor = null;
-    ParametroEntity para;
+    ParametroEntity para,idDetalleValidacion;
     String dato = "0";
     String inputDefault = "0";
     String codigoDetalle="", vreferencial;
@@ -52,7 +52,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     BigDecimal subtotal= BigDecimal.ZERO;
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
-    Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete,autorizacion=0, idManifiestoValidacion=0;
+    Integer position;
+    Integer idManifiesto;
+    Integer idManifiestoDetalle;
+    Integer tipoPaquete;
+    Integer autorizacion=0;
+    String idManifiestoValidacion="";
     PaqueteEntity pkg;
     ManifiestoDetalleEntity detalle;
     List<String> itemsCategoriaPaquete;
@@ -110,6 +115,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void initBotones() {
         para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
+        idDetalleValidacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico("idValidacion_"+idManifiestoDetalle);
+        if(idDetalleValidacion!=null){idManifiestoValidacion = idDetalleValidacion.getValor();}
         listViewBultos = getView().findViewById(R.id.listViewBultos);
         txtpantalla = getView().findViewById(R.id.txtpantalla);
         txtTotal = getView().findViewById(R.id.txtTotal);
@@ -146,9 +153,14 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         btn_add.setOnClickListener(this);
 
         if(para!=null){
-            if(para.getValor().equals("0") && idManifiestoValidacion.equals(idManifiesto)){
+            if(para.getValor().equals("0")&& idManifiestoValidacion.equals(String.valueOf(idManifiestoDetalle))){
                 btn_add.setEnabled(false);
                 btn_ok.setEnabled(false);
+                autorizacion = 0;
+            }else if (para.getValor().equals("1")&& idManifiestoValidacion.equals(String.valueOf(idManifiestoDetalle))) {
+                autorizacion = 1;
+                btn_add.setEnabled(true);
+                btn_ok.setEnabled(true);
             }
         }
     }
@@ -429,7 +441,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             subtotal = subtotal.subtract(imput);
                             dato="0";
                             BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
-                            idManifiestoValidacion = idManifiesto;
+                            MyApp.getDBO().parametroDao().saveOrUpdate("idValidacion_"+idManifiestoDetalle,""+idManifiestoDetalle);
                             createBulto(imput);
                         }
 
@@ -446,6 +458,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             builder.setNegativeButton("NO", new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    txtpantalla.setText("0");
                     subtotal = subtotal.subtract(imput);
                     builder.dismiss();
                 }
