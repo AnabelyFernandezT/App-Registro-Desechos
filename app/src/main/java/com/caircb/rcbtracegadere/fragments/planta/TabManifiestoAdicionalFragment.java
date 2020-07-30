@@ -273,7 +273,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
             Double validacionMenor = pesoT - (pesoT * 0.03);
             Double valorIngresado = pesoRecolectado;
 
-            if (!txtPesoPlanta.getText().toString().equals(txtPesoRecolectado.getText().toString())) {
+            if (!txtPesoPlanta.getText().toString().equals(txtPesoRecolectado.getText().toString()) && pesoT>0.0) {
                 if (valorIngresado > validacion) {
                     //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
                     btnInformacion.setVisibility(View.VISIBLE);

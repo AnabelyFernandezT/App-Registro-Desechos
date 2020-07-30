@@ -153,9 +153,10 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_lote","-10");
                                 MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","false");
                                 verificarInicioLote();
-                                /*
-                                lnlIniciaLote.setVisibility(View.VISIBLE);
-                                lnlFinLote.setVisibility(View.GONE);*/
+
+                                MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
+                                MyApp.getDBO().manifiestoDetalleSede().eliminarDetalle();
+                                MyApp.getDBO().manifiestoDetalleValorSede().eliminarDetalle();
                             }
 
                             @Override

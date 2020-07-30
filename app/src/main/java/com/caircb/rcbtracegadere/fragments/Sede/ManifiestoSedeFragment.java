@@ -167,14 +167,16 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                                     @Override
                                     public void onSuccessful() {
                                         messageBox("Bultos Guardados");
-                                        consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(getActivity());
+                                        MyApp.getDBO().manifiestoSedeDao().updateEstadoManifiesto(idAppManifiesto);
+                                        setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
+                                       /* consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(getActivity());
                                         consultarHojaRutaTask.setmOnVehiculoListener(new UserConsultarManifiestosSedeTask.OnPlacaListener() {
                                             @Override
                                             public void onSuccessful(List<DtoManifiestoSede> catalogos) {
                                                 setNavegate(HojaRutaAsignadaSedeFragment.newInstance());
                                             }
                                         });
-                                        consultarHojaRutaTask.execute();
+                                        consultarHojaRutaTask.execute();*/
                                     }
 
                                     @Override
