@@ -456,6 +456,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         builder.show();
     }
 
+    /*
     private void registarDatos(){
         MyApp.getDBO().manifiestoDao().updateManifiestoFechaRecoleccion(idAppManifiesto,new Date());
         userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation());
@@ -531,6 +532,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
             }
         });
         userRegistrarRecoleccion.execute();
-    }
+    }*/
 
 }

@@ -280,20 +280,19 @@ public class DialogInicioRuta extends MyDialog {
         //CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
         RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarId(placa);
         int idVehiculo = r!=null?r.getCodigo():-1;
-
-        Integer idUsuario = MySession.getIdUsuario();
         Date fechaInicio = AppDatabase.getDateTime();
         idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
         //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
         //MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
 
-        //EMPIEZA RUTEO RECOLECCION
+        //PrimerRegistro RUTEO RECOLECCION
         MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
         Integer idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         MySession.setIdSubruta(idSubRuta);
         MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaInicio, 0, null, null, false));
         List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+        ///////////////
 
         //notificar inicia ruta al servidor...
         registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro);

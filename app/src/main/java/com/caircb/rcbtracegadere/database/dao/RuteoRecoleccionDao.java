@@ -14,10 +14,13 @@ import java.util.List;
 @Dao
 public abstract  class RuteoRecoleccionDao {
 
+    @Query("select * from tb_ruteo_recoleccion order by _id desc limit 1")
+    public abstract RuteoRecoleccionEntity searchUltimoRegistro ();
+
     @Query("select * from tb_ruteo_recoleccion")
     public abstract List<RuteoRecoleccionEntity> searchRuteoRecoleccion();
 
-    @Query("Select _id from tb_ruteo_recoleccion where puntoLlegada=:puntoLlegada and estado=0 limit 1")
+    @Query("Select _id from tb_ruteo_recoleccion where puntoLlegada=:puntoLlegada order by _id desc limit 1")
     public abstract Integer searchRegistroLlegada (Integer puntoLlegada);
 
     @Query("update tb_ruteo_recoleccion set estado = 1 where  puntoLlegada=:puntoLlegada and _id=:id ")
@@ -41,6 +44,12 @@ public abstract  class RuteoRecoleccionDao {
 
     @Query("update tb_ruteo_recoleccion set puntoLlegada=:puntoLlegada, fechaLlegadaRuta=:fechaLlegadaRuta where _id =:id")
     public abstract void updatePrimerRegistroRuteoRecoleccion (Integer id, Integer puntoLlegada, Date fechaLlegadaRuta);
+
+    @Query("update tb_ruteo_recoleccion set puntoLlegada=:puntoLlegada, fechaLlegadaRuta=:fechaLlegadaRuta where _id =:id")
+    public abstract void updatePuntoLlegadaFechaLlegada (Integer id, Integer puntoLlegada, Date fechaLlegadaRuta);
+
+    @Query("update tb_ruteo_recoleccion set puntoLlegada=:puntoLlegada, fechaLlegadaRuta=:fechaLlegadaRuta, estado =:estado where _id =:id")
+    public abstract void updatePuntoLlegadaFechaLlegadaEstado (Integer id, Integer puntoLlegada, Date fechaLlegadaRuta, boolean estado);
 
     @Query("select * from tb_ruteo_recoleccion where puntoPartida =:puntoPartida and estado=0 limit 1")
     public abstract RuteoRecoleccionEntity fectchConsultarRutaById(Integer puntoPartida);

@@ -107,7 +107,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     private void init() {
         consultarInicioFinRuta();
-        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+        //MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
         lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
         btnSincManifiestos = getView().findViewById(R.id.btnSincManifiestos);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);

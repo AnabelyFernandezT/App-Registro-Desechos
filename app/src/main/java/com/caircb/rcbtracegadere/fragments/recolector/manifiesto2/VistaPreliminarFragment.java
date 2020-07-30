@@ -175,23 +175,36 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
         userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
             @Override
             public void onSuccessful(final Date fechaRecol) {
-                //setNavegate(HojaRutaAsignadaFragment.newInstance());
 
                 //Registro el ruteo en estado en 1
-                Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
-                RuteoRecoleccionEntity dtoSendServicio = MyApp.getDBO().ruteoRecoleccion().dtoSendServicio(_id, idAppManifiesto);
+                //Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
+                //RuteoRecoleccionEntity dtoSendServicio = MyApp.getDBO().ruteoRecoleccion().dtoSendServicio(_id, idAppManifiesto);
 
-                userRegistrarRuteoRecoleccion = new UserRegistrarRuteoRecoleccion(getActivity(), dtoSendServicio);
+                RuteoRecoleccionEntity dto;
+                dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                if(dto!=null){
+                    MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegadaEstado(dto.get_id(),idAppManifiesto, fechaRecol, true);
+                    //MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegada(dto.get_id(),idAppManifiesto, fechaRecol);
+                }else{
+                    MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,  idAppManifiesto,null,null,true));
+                    dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                }
+
+                //userRegistrarRuteoRecoleccion = new UserRegistrarRuteoRecoleccion(getActivity(), dtoSendServicio);
+                userRegistrarRuteoRecoleccion = new UserRegistrarRuteoRecoleccion(getActivity(), dto);
                 userRegistrarRuteoRecoleccion.setOnRegisterRuteoRecollecionListenner(new UserRegistrarRuteoRecoleccion.OnRegisterRuteroRecoleecionListener() {
                     @Override
                     public void onSuccessful() {
 
                         //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                        /*
                         Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
                         if(_id !=null && _id >=0){
                             MyApp.getDBO().ruteoRecoleccion().updateEstadoByPuntoLLegada(_id, idAppManifiesto);
                         }
+                         */
                         //List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); ///////////
+                        //Inserto el nuevo registro para el ruteo con el ultimo idManifiesto recolectado
 
                         if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() >0 ){
 
@@ -203,8 +216,15 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                                 public void onClick(View v) {
                                     dialogBuilder.dismiss();
                                     //Guardo la nueva fecha de inicio y puntoParitda;
-                                    MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
-                                    //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                                    //MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                                    RuteoRecoleccionEntity dto;
+                                    dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                    if(dto!=null){
+                                        //MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegadaEstado(dto.get_id(),idAppManifiesto, fechaRecol, true);
+                                        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,dto.getPuntoLlegada(),null,null,false));
+                                    }
+                                    List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
                                     setNavegate(HojaRutaAsignadaFragment.newInstance());
                                 }
                             });
@@ -214,9 +234,13 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                                     dialogBuilder.dismiss();
                                     //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
                                     MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                                    MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
-                                    //setNavegate(HojaRutaAsignadaFragment.newInstance());
-                                    //Se envia al home ya que el usuario No desea recolectar
+                                    //MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
+                                    RuteoRecoleccionEntity dto;
+                                    dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                    if(dto!=null){
+                                        //MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegadaEstado(dto.get_id(),idAppManifiesto, fechaRecol, true);
+                                        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,dto.getPuntoLlegada(),null,null,false));
+                                    }
                                     setNavegate(HomeTransportistaFragment.create());
 
                                 }
@@ -224,7 +248,13 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                             dialogBuilder.show();
                         }else{
                             MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
+                            //MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
+                            RuteoRecoleccionEntity dto;
+                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                            if(dto!=null){
+                                //MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegadaEstado(dto.get_id(),idAppManifiesto, fechaRecol, true);
+                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,dto.getPuntoLlegada(),null,null,false));
+                            }
                             setNavegate(HomeTransportistaFragment.create());
                         }
                     }

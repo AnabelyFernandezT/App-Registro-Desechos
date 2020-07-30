@@ -197,27 +197,37 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                 MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
 
-                                //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                ///////////////////////////////////
+                                List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                //Verifico el estado del primer registro para saber si
+                                RuteoRecoleccionEntity dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                if(dto!=null){
+                                    //si esta en falso es por que solo hay un registro, actualizo el punto de llegada del manifiesto seleccionado
+                                    MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegada(dto.get_id(), rowItems.get(position).getIdAppManifiesto(), fecha);
+                                }else{
+                                    MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fecha,  rowItems.get(position).getIdAppManifiesto(),null,null,false));
+                                }
+                                List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
+                                /*
                                 Boolean estado = MyApp.getDBO().ruteoRecoleccion().verificaEstadoPrimerRegistro(0);
                                 if (!estado) {
                                     //actualizaria el primer registro
                                     Integer _id = MyApp.getDBO().ruteoRecoleccion().selectIdByPuntoPartida(0);
                                     if (_id != null) {
-                                        MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
+                                        MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegada(_id, rowItems.get(position).getIdAppManifiesto(), fecha);
                                     }
                                 } else {
-                                    //busco con punto de partida mayor a cer
+                                    //Ingresa cuando ya hay un segundo registro en ruteoRecoleccion
                                     Integer idMayor = MyApp.getDBO().ruteoRecoleccion().searchRegistroPuntodePartidaMayorACero();
                                     if (idMayor!=null) {
                                         if (idMayor > 0) {
                                             MyApp.getDBO().ruteoRecoleccion().updatePrimerRegistroRuteoRecoleccion(idMayor, rowItems.get(position).getIdAppManifiesto(), fecha);
                                         }
                                     }
-
                                 }
-                                //List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
-
+                                 */
+                                ///////////////////////////////////
                                 if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
                                     dialogBuilder2 = new DialogBuilder(getActivity());
                                     dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
@@ -280,6 +290,16 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         dialogBuilder.show();
 
                     } else {
+                        Date fecha = AppDatabase.getDateTime();
+                        RuteoRecoleccionEntity dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                        if(dto!=null){
+                            //si esta en falso es por que solo hay un registro, actualizo el punto de llegada del manifiesto seleccionado
+                            MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegada(dto.get_id(), rowItems.get(position).getIdAppManifiesto(), fecha);
+                        }else{
+                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fecha,  rowItems.get(position).getIdAppManifiesto(),null,null,false));
+                        }
+                        List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
                         if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
                             dialogBuilder2 = new DialogBuilder(getActivity());
                             dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
@@ -365,6 +385,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             dialogBuilder2.show();
 
                         } else {
+
                             dialogBuilder2 = new DialogBuilder(getActivity());
                             dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
                             dialogBuilder2.setCancelable(false);
@@ -374,6 +395,17 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 public void onClick(View v) {
                                     dialogBuilder2.dismiss();
                                     //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+
+                                    Date fecha = AppDatabase.getDateTime();
+                                    RuteoRecoleccionEntity dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                    if(dto!=null){
+                                        //si esta en falso es por que solo hay un registro, actualizo el punto de llegada del manifiesto seleccionado
+                                        MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegada(dto.get_id(), rowItems.get(position).getIdAppManifiesto(), fecha);
+                                    }else{
+                                        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fecha,  rowItems.get(position).getIdAppManifiesto(),null,null,false));
+                                    }
+                                    List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
                                     setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
                                 }
                             });

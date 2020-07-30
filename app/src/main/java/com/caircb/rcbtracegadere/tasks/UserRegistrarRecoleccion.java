@@ -11,6 +11,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.database.entity.TecnicoEntity;
 import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
@@ -128,11 +129,9 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         if(response.body().getExito()) {
                             //imprimirEtiquetas();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+
                             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
                             progressHide();
-                            //ejecutar el proceso de imprecion..
-
-                            // se debe enviar el registro de la ruta al servicio
 
                         }else{
                             progressHide();
