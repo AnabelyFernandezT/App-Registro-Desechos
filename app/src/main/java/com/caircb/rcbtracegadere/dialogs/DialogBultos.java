@@ -44,7 +44,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     AlertDialog.Builder alertDialog;
     AlertDialog alert;
     String valor = null;
-
+    ParametroEntity para;
     String dato = "0";
     String inputDefault = "0";
     String codigoDetalle="", vreferencial;
@@ -52,7 +52,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     BigDecimal subtotal= BigDecimal.ZERO;
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
-    Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete,autorizacion=0;
+    Integer position,idManifiesto,idManifiestoDetalle,tipoPaquete,autorizacion=0, idManifiestoValidacion=0;
     PaqueteEntity pkg;
     ManifiestoDetalleEntity detalle;
     List<String> itemsCategoriaPaquete;
@@ -109,6 +109,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private void initBotones() {
+        para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
         listViewBultos = getView().findViewById(R.id.listViewBultos);
         txtpantalla = getView().findViewById(R.id.txtpantalla);
         txtTotal = getView().findViewById(R.id.txtTotal);
@@ -143,6 +144,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         btn_delete.setOnClickListener(this);
         btn_decimal.setOnClickListener(this);
         btn_add.setOnClickListener(this);
+
+        if(para!=null){
+            if(para.getValor().equals("0") && idManifiestoValidacion.equals(idManifiesto)){
+                btn_add.setEnabled(false);
+                btn_ok.setEnabled(false);
+            }
+        }
     }
 
     private void initCategoriaPaquetes(){
@@ -414,7 +422,24 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     pesoExtra.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     pesoExtra.setCancelable(false);
                     pesoExtra.show();
+                    pesoExtra.setOnRegisterListener(new DialogNotificacionPesoExtra.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            txtpantalla.setText("0");
+                            subtotal = subtotal.subtract(imput);
+                            dato="0";
+                            BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+                            idManifiestoValidacion = idManifiesto;
+                            createBulto(imput);
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+                    });
                     btn_add.setEnabled(false);
+                    btn_ok.setEnabled(false);
                     builder.dismiss();
                 }
             });
@@ -543,15 +568,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                 break;
             case R.id.btn_add:
-                ParametroEntity para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
                 if(para!=null){
                     valor = para.getValor();
-
                     if(valor.equals("5")){
                         autorizacion = 1;
                         btn_add.setEnabled(true);
-                    }else {
-                        btn_add.setEnabled(true);
+                        btn_ok.setEnabled(true);
                     }
 
                 }
@@ -570,7 +592,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 if (mOnBultoListener != null) {
                     mOnBultoListener.onCanceled(faltaImpresos);
                 }
-                aplicar();
+                if(btn_add.isEnabled() && btn_ok.isEnabled()){
+                    aplicar();
+                }
+
                 break;
             case R.id.btn_decimal:
                 setDato(".");

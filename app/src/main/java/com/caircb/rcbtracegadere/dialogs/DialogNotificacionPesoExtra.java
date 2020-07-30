@@ -19,6 +19,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,11 @@ public class DialogNotificacionPesoExtra extends MyDialog {
         this.numeroManifiesto= numeroManifiesto;
         this.pesoExtra= pesoExtra;
     }
+    public interface OnRegisterListener {
+        public void onSuccessful();
+        public void onFailure();
+    }
+    private OnRegisterListener mOnRegisterListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,7 @@ public class DialogNotificacionPesoExtra extends MyDialog {
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mOnRegisterListener!=null)mOnRegisterListener.onFailure();
                 dismiss();
             }
         });
@@ -93,9 +100,12 @@ public class DialogNotificacionPesoExtra extends MyDialog {
                     @Override
                     public void onSuccessful() {
                         DialogNotificacionPesoExtra.this.dismiss();
+                        MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                     }
                 });
                 notificacionTask.execute();
+
             }
         });
 
@@ -126,5 +136,9 @@ public class DialogNotificacionPesoExtra extends MyDialog {
         catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(3,7);
 
         loadSpinner(ltsNotificaciones,catalogos,true);
+    }
+
+    public void setOnRegisterListener(@NonNull OnRegisterListener l){
+        mOnRegisterListener =l;
     }
 }

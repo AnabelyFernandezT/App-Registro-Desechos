@@ -223,7 +223,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             public void onClick(View v) {
                 MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
                 tipoBalanza = 1;
-                if (detalles.get(positionItem).getTipoPaquete() == null) {// NORMAL
+                if (detalles.get(positionItem).getTipoPaquete() == null||detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
                     openDialogBultos(positionItem, 0);
                 } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
                     openDialogBultos(positionItem, 100);
@@ -240,7 +240,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                 MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
                 tipoBalanza = 2;
                 //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
-                if (detalles.get(positionItem).getTipoPaquete() == null) {// NORMAL
+                if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
                     openDialogBultos(positionItem, 0);
                 } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
                     openDialogBultos(positionItem, 100);

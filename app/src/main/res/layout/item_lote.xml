@@ -96,7 +96,7 @@
         android:background="@drawable/shape_card_border"
         android:id="@+id/rowFGL"
         android:layout_width="match_parent"
-        android:layout_height="330dp"
+        android:layout_height="350dp"
         android:clickable="true"
         android:elevation="4dp"
         android:focusable="true"
