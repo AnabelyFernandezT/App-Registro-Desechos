@@ -68,7 +68,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Data: " + remoteMessage.getData());
+            String name = "notif_value_"+remoteMessage.getData().get("idManifiestoDetalle");
             MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+remoteMessage.getData().get("idCatalogoRespuesta"));
+            MyApp.getDBO().parametroDao().saveOrUpdate(name,""+remoteMessage.getData().get("idManifiestoDetalleRespuesta"));
         }
         if(remoteMessage.getData().get("idCatalogoRespuesta").equals(5)){
             if(mOnRegisterListener!=null)mOnRegisterListener.onNoPeso();
