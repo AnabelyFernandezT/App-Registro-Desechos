@@ -443,6 +443,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
                             MyApp.getDBO().parametroDao().saveOrUpdate("idValidacion_"+idManifiestoDetalle,""+idManifiestoDetalle);
                             createBulto(imput);
+                            btn_add.setEnabled(false);
+                            btn_ok.setEnabled(false);
                         }
 
                         @Override
@@ -450,8 +452,6 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                         }
                     });
-                    btn_add.setEnabled(false);
-                    btn_ok.setEnabled(false);
                     builder.dismiss();
                 }
             });
@@ -460,6 +460,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 public void onClick(View v) {
                     txtpantalla.setText("0");
                     subtotal = subtotal.subtract(imput);
+                    dato="0";
                     builder.dismiss();
                 }
             });

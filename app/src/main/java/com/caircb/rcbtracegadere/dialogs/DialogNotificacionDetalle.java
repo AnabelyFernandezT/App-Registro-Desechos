@@ -83,17 +83,21 @@ public class DialogNotificacionDetalle extends MyDialog {
             @Override
             public void onClick(View v) {
 
-                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),idAppManifiesto,
-                                                            txtMensaje.getText().toString(),
-                                                            idNotificacion,
-                                                            "1",0.0);
-                notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
-                    @Override
-                    public void onSuccessful() {
-                        DialogNotificacionDetalle.this.dismiss();
-                    }
-                });
-                notificacionTask.execute();
+                if(txtMensaje.getText().toString().equals("")){
+                    messageBox("Debe ingresar la descripción del nuevo desecho");
+                }else {
+                    UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(), idAppManifiesto,
+                            txtMensaje.getText().toString(),
+                            idNotificacion,
+                            "1", 0.0);
+                    notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
+                        @Override
+                        public void onSuccessful() {
+                            DialogNotificacionDetalle.this.dismiss();
+                        }
+                    });
+                    notificacionTask.execute();
+                }
             }
         });
 
