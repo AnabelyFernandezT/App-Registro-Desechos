@@ -191,7 +191,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             public void onClick(View v) {
                                 dialogBuilder.dismiss();
 
-                                if (MyApp.getDBO().impresoraDao().existeImpresora()) {
+                                if (!MyApp.getDBO().impresoraDao().existeImpresora()) {
 
                                 Date fecha = AppDatabase.getDateTime();
                                 ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
