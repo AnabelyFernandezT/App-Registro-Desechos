@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -55,8 +56,10 @@ public class DialogManifiestoCliente extends MyDialog {
     }
 
     private void init() {
+        int type = InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS| InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
         txtManifiestoCliente = getView().findViewById(R.id.txtManifiestoCliente);
+        txtManifiestoCliente.setInputType(type);
         txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
         btnIniciaRutaAplicar = getView().findViewById(R.id.btnIniciaRutaAplicar);
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);

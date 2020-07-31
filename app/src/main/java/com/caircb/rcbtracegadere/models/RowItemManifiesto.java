@@ -16,6 +16,7 @@ public class RowItemManifiesto {
     private double pesoReferencial;
     private boolean faltaImpresiones;
     private Integer tipoMostrar;
+    private String codigoMAE;
 
     public RowItemManifiesto(){}
 
@@ -114,5 +115,13 @@ public class RowItemManifiesto {
 
     public void setTipoMostrar(Integer tipoMostrar) {
         this.tipoMostrar = tipoMostrar;
+    }
+
+    public String getCodigoMAE() {
+        return codigoMAE;
+    }
+
+    public void setCodigoMAE(String codigoMAE) {
+        this.codigoMAE = codigoMAE;
     }
 }
