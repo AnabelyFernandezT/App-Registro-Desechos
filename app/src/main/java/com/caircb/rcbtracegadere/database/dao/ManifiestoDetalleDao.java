@@ -119,7 +119,7 @@ public abstract class ManifiestoDetalleDao {
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
             entity.setIdTipoUnidad(dt.getIdTipoUnidad());
-            entity.setPesoUnidad(dt.getPesoUnidad());
+            //entity.setPesoUnidad(dt.getPesoUnidad());
             entity.setCantidadDesecho(dt.getCantidadDesecho());
             entity.setTipoItem(dt.getPesajeBultoFlag());
             entity.setTipoPaquete(dt.getTipoPaquete());

@@ -74,6 +74,7 @@ public class DtoManifiesto {
     private String frecuencia;
     private String sucursal;
     private String fechaModificacion;
+    private String referencia;
 
 
     public DtoManifiesto() {
@@ -559,5 +560,13 @@ public class DtoManifiesto {
 
     public void setFechaModificacion(String fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 }
