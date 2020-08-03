@@ -303,7 +303,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     }
 
     public void reloadDataPaquetes(){
-        //loadDataPaquetes();
+       // loadDataPaquetes();
 
         if(listaPaquetes!=null && listaPaquetes.size()>0) {
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, idAppTipoPaquete);
