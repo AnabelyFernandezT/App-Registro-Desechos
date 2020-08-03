@@ -146,7 +146,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                     public void onSuccessfull() {
 
                         dialogConfirmarCierreLote.dismiss();
-                        //verificarInicioLote();
+                        verificarInicioLote();
                     }
                 });
                 dialogConfirmarCierreLote.show();
