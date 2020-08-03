@@ -17,6 +17,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogConfirmarCierreLote;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
@@ -43,6 +44,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
     TextView txtMovilizar , txtSincronizar, txtManifiesto;
+    DialogConfirmarCierreLote dialogConfirmarCierreLote;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,6 +138,20 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v) {
 
+                dialogConfirmarCierreLote = new DialogConfirmarCierreLote(getActivity());
+                dialogConfirmarCierreLote.setCancelable(false);
+                dialogConfirmarCierreLote.setTitle("CERRAR LOTE");
+                dialogConfirmarCierreLote.setmOnRegisterCerrarLoteTask(new DialogConfirmarCierreLote.onRegisterCerrarLoteTask() {
+                    @Override
+                    public void onSuccessfull() {
+
+                        dialogConfirmarCierreLote.dismiss();
+                        //verificarInicioLote();
+                    }
+                });
+                dialogConfirmarCierreLote.show();
+
+                /*
                 final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
                 dialogBuilder.setCancelable(false);
                 dialogBuilder.setMessage("¿Esta seguro de continuar ?");
@@ -174,6 +190,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                     }
                 });
                 dialogBuilder.show();
+                */
             }
         });
     }

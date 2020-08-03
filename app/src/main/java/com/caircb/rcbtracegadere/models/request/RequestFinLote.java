@@ -7,6 +7,8 @@ public class RequestFinLote {
     private Integer tipo;
     private Integer idLoteContenedor;
     private Date fecha;
+    private Integer idTransporteVehiculoLote;
+
 
     public Integer getIdDestinatarioFinRutaCat() {
         return idDestinatarioFinRutaCat;
@@ -38,5 +40,13 @@ public class RequestFinLote {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Integer getIdTransporteVehiculoLote() {
+        return idTransporteVehiculoLote;
+    }
+
+    public void setIdTransporteVehiculoLote(Integer idTransporteVehiculoLote) {
+        this.idTransporteVehiculoLote = idTransporteVehiculoLote;
     }
 }
