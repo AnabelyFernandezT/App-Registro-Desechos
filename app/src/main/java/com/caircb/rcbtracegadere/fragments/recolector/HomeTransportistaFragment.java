@@ -359,6 +359,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
         regionBuscar.setEnabled(true);
         btnSincManifiestos.setEnabled(true);
+        btnSincManifiestos.setEnabled(true);
         btnListaAsignadaTransportista.setEnabled(true);
         btnPickUpTransportista.setEnabled(true);
         btnDropOffTransportista.setEnabled(true);

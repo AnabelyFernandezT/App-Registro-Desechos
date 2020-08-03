@@ -1,36 +1,33 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.app.Fragment;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
-import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
+import com.caircb.rcbtracegadere.dialogs.DialogNotificacionCapacidadCamion;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
-import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHospitalesTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +42,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     private static final String ARG_PARAM3 = "param3";
     DialogBuilder builder;
 
+    UserRegistrarFinLoteHospitalesTask registroFinLote;
     Integer idAppManifiesto,idAppTipoPaquete;
     LinearLayout btnVistaPreviaCancelar,btnVistaPreviaGuardar;
     ProgressDialog dialog;
@@ -193,28 +191,99 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                         if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() >0 ){
 
                             dialogBuilder = new DialogBuilder(getActivity());
-                            dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
+                            dialogBuilder.setMessage("¿El camión llegó a su máxima capacidad?");
                             dialogBuilder.setCancelable(false);
                             dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    dialogBuilder.dismiss();
-                                    //Guardo la nueva fecha de inicio y puntoParitda;
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
-                                    RuteoRecoleccionEntity dto;
-                                    dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                    if(dto!=null){
-                                        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,dto.getPuntoLlegada(),null,null,false));
-                                    }
-                                    //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
-                                    setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                    //dialogBuilder.dismiss();
+                                    DialogNotificacionCapacidadCamion capacidadCamion = new DialogNotificacionCapacidadCamion(getActivity(),idAppManifiesto);
+                                    capacidadCamion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    capacidadCamion.setCancelable(false);
+                                    capacidadCamion.show();
+                                    capacidadCamion.setOnRegisterListener(new DialogNotificacionCapacidadCamion.OnRegisterListener() {
+                                        @Override
+                                        public void onSuccessful() {
+                                          dialogBuilder.dismiss();
+                                          setNavegate(HomeTransportistaFragment.create());
+                                        }
+                                        @Override
+                                        public void onFailure() {
+
+                                        }
+                                    });
                                 }
                             });
                             dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     dialogBuilder.dismiss();
-                                    //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
+                                    dialogBuilder = new DialogBuilder(getActivity());
+                                    dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
+                                    dialogBuilder.setCancelable(false);
+                                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder.dismiss();
+                                            //Guardo la nueva fecha de inicio y puntoParitda;
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                                            RuteoRecoleccionEntity dto;
+                                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                            if(dto!=null){
+                                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,dto.getPuntoLlegada(),null,null,false));
+                                            }
+                                            //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                        }
+                                    });
+                                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder.dismiss();
+                                            //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+                                            RuteoRecoleccionEntity dto;
+                                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                            if(dto!=null){
+                                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,dto.getPuntoLlegada(),null,null,false));
+                                            }
+                                            setNavegate(HomeTransportistaFragment.create());
+                                        }
+                                    });
+                                    dialogBuilder.show();
+                                }
+                            });
+                            dialogBuilder.show();
+
+                        }else{//Finalizo de recolectar todos los manifiestos
+
+                            dialogBuilder = new DialogBuilder(getActivity());
+                            dialogBuilder.setMessage("¿El camión llegó a su máxima capacidad?");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //dialogBuilder.dismiss();
+                                    DialogNotificacionCapacidadCamion capacidadCamion = new DialogNotificacionCapacidadCamion(getActivity(),idAppManifiesto);
+                                    capacidadCamion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    capacidadCamion.setCancelable(false);
+                                    capacidadCamion.show();
+                                    capacidadCamion.setOnRegisterListener(new DialogNotificacionCapacidadCamion.OnRegisterListener() {
+                                        @Override
+                                        public void onSuccessful() {
+                                            dialogBuilder.dismiss();
+                                            setNavegate(HomeTransportistaFragment.create());
+                                        }
+                                        @Override
+                                        public void onFailure() {
+
+                                        }
+                                    });
+                                }
+                            });
+                            dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
                                     MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
                                     RuteoRecoleccionEntity dto;
                                     dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
@@ -225,14 +294,6 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                                 }
                             });
                             dialogBuilder.show();
-                        }else{
-                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                            RuteoRecoleccionEntity dto;
-                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                            if(dto!=null){
-                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,dto.getPuntoLlegada(),null,null,false));
-                            }
-                            setNavegate(HomeTransportistaFragment.create());
                         }
                     }
 

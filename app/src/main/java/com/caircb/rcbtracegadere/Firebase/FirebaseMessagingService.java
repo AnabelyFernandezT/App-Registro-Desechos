@@ -38,6 +38,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     private LocalBroadcastManager broadcaster;
 
     public static final String TAG = "Noticias";
+
     @Override
     public void onCreate() {
 
@@ -45,6 +46,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     public interface OnRegisterListener {
         public void onNoPeso();
+
         public void onSiPeso();
     }
 
@@ -55,7 +57,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         super.onMessageReceived(remoteMessage);
 
         String from = remoteMessage.getFrom();
-        Log.d(TAG,"mensaje de: " + from);
+        Log.d(TAG, "mensaje de: " + from);
 
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Notificación: " + remoteMessage.getNotification().getBody());
@@ -68,28 +70,28 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Data: " + remoteMessage.getData());
-            MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+remoteMessage.getData().get("idCatalogoRespuesta"));
+            MyApp.getDBO().parametroDao().saveOrUpdate("notif_value", "" + remoteMessage.getData().get("idCatalogoRespuesta"));
         }
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(5)){
-            if(mOnRegisterListener!=null)mOnRegisterListener.onNoPeso();
-        }
-
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(6)){
-            if(mOnRegisterListener!=null)mOnRegisterListener.onSiPeso();
+        if (remoteMessage.getData().get("idCatalogoRespuesta").equals(5)) {
+            if (mOnRegisterListener != null) mOnRegisterListener.onNoPeso();
         }
 
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals("10")){//si(autorizacion sin impresora)
-            MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "1");
-            MyApp.getDBO().manifiestoDetallePesosDao().updateImpresionByIdUsuarioRecolector(MySession.getIdUsuario(),true);
+        if (remoteMessage.getData().get("idCatalogoRespuesta").equals(6)) {
+            if (mOnRegisterListener != null) mOnRegisterListener.onSiPeso();
         }
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals("11")){//no
-            MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+ MySession.getIdUsuario(), "0");
+
+        if (remoteMessage.getData().get("idCatalogoRespuesta").equals("10")) {//si(autorizacion sin impresora)
+            MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion" + MySession.getIdUsuario(), "1");
+            MyApp.getDBO().manifiestoDetallePesosDao().updateImpresionByIdUsuarioRecolector(MySession.getIdUsuario(), true);
+        }
+        if (remoteMessage.getData().get("idCatalogoRespuesta").equals("11")) {//no
+            MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion" + MySession.getIdUsuario(), "0");
         }
     }
 
     private void showNotification(String title, String body) {
         Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
-        intent.putExtra("notification_data",body);
+        intent.putExtra("notification_data", body);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -124,7 +126,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     private void showNotificationAutoPesos(String title, String body) {
         Intent intent = new Intent(this, TabManifiestoDetalle.class);
-        intent.putExtra("notification_data",body);
+        intent.putExtra("notification_data", body);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(MyApp.getsInstance().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -154,8 +156,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    public void setOnRegisterListener(@NonNull OnRegisterListener l){
-        mOnRegisterListener =l;
+    public void setOnRegisterListener(@NonNull OnRegisterListener l) {
+        mOnRegisterListener = l;
     }
 
 }
