@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.tasks.UserEnviarCorreoComercialTask;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 
@@ -35,6 +36,7 @@ public class DialogNotificacionPesoExtra extends MyDialog {
     Integer idManifiestoDetalle;
     Integer numeroManifiesto;
     Double pesoExtra;
+    UserEnviarCorreoComercialTask enviarCorreoComercial;
 
     public DialogNotificacionPesoExtra(@NonNull Context context,Integer idManifiestoDetalle, Integer numeroManifiesto, Double pesoExtra) {
         super(context, R.layout.dialog_mensajes);
@@ -101,6 +103,7 @@ public class DialogNotificacionPesoExtra extends MyDialog {
                     public void onSuccessful() {
                         DialogNotificacionPesoExtra.this.dismiss();
                         MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                        enviarCorreoComercial();
                         if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                     }
                 });
@@ -136,6 +139,11 @@ public class DialogNotificacionPesoExtra extends MyDialog {
         catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(3,7);
 
         loadSpinner(ltsNotificaciones,catalogos,true);
+    }
+
+    private void enviarCorreoComercial(){
+        enviarCorreoComercial = new UserEnviarCorreoComercialTask(getContext(),numeroManifiesto,idManifiestoDetalle,String.valueOf(pesoExtra));
+        enviarCorreoComercial.execute();
     }
 
     public void setOnRegisterListener(@NonNull OnRegisterListener l){

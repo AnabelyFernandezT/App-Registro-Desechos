@@ -212,6 +212,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
                     android:text="REFERENCIA"
+                    android:visibility="gone"
                     style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
                     />
@@ -220,6 +221,7 @@
                     android:id="@+id/itm_Referencia"
                     android:layout_width="match_parent"
                     android:textColor="#737373"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:paddingBottom="3dp"
                     />
