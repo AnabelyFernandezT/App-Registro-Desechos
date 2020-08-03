@@ -86,7 +86,7 @@
         android:background="@drawable/shape_card_border"
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="wrap_content"
         android:clickable="false"
         android:elevation="4dp"
         android:focusable="true"
@@ -211,6 +211,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
+                    android:text="REFERENCIA"
+                    android:visibility="gone"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/itm_Referencia"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
                     android:text="PROVINCIA"
                     style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
@@ -252,10 +270,9 @@
                 <TextView
                     android:id="@+id/itm_Estado"
                     android:layout_width="match_parent"
-                    android:textColor="#737373"
                     android:layout_height="wrap_content"
                     android:paddingBottom="3dp"
-                    />
+                    android:textColor="#737373" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

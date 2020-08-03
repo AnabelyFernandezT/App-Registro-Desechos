@@ -256,7 +256,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     return;
                 }
                 if(tabManifiestoGeneral.validaExisteFirmaTecnicoGenerador() && !aplicaNoRecoleccion){
-                    messageBox("Se requiere de la firma del técnico generador");
+                    messageBox("Se requiere de la firma del responsable de entrega");
                     return;
                 }
 

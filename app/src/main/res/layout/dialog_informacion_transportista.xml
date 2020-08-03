@@ -113,16 +113,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Referencia:"
+                android:textColor="@color/app_gadere"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:id="@+id/txtReferencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Teléfono Cliente: "
                 android:textColor="@color/app_gadere"
-                android:textSize="12dp"></TextView>
+                android:textSize="12dp"/>
 
             <TextView
                 android:id="@+id/lblTelefonoCliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="12dp"></TextView>
+                android:textSize="12dp"/>
 
 
         </LinearLayout>

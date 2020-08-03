@@ -17,6 +17,7 @@ public class ItemManifiesto {
     private String telefono;
     private String frecuencia;
     private Integer tipoPaquete;
+    private String referencia;
 
 
 
@@ -149,5 +150,13 @@ public class ItemManifiesto {
 
     public void setTipoPaquete(Integer tipoPaquete) {
         this.tipoPaquete = tipoPaquete;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 }
