@@ -26,7 +26,7 @@ import java.util.List;
 
 public class DialogInformacionTransportista extends MyDialog {
     Activity _activity;
-    TextView lblApertura1, lblApertura2, lblCierre1, lblCierre2, lblTelefonoCliente, lblObservaciones;
+    TextView lblApertura1, lblApertura2, lblCierre1, lblCierre2, lblTelefonoCliente, lblObservaciones,txtReferencia;
     CheckBox chkFiscalizacionNo, chkFiscalizacionSi, chkFiscalizacionArcsa, chkFiscalizacionMi, chkDevolucionRecipienteSi, chkDevolucionRecipienteNo, chkMontacargasSi, chkMontacargasNo, chkBalanzaSi,
             chkBalanzaNo, chkPresenciadoSi, chkPresenciadoNo;
     LinearLayout btnRetornarMenu,sectionCuadro,sectionEspecifica;
@@ -38,12 +38,15 @@ public class DialogInformacionTransportista extends MyDialog {
     private String cierre2;
     private String telefono = "";
     private Integer idManifiesto;
+    private String referencia;
     private String[] header={"Descripción","Código MAE","Estado Físico Desecho","Packing","Cantidad (u)","Peso (Kg)","Tratamiento","Tiene disponibilidad de montacargas","Tiene disponibilidad de balanza"};
     private ArrayList<String[]>rows=new ArrayList<>();
     private List<RowItemManifiestoDetalle> detalles;
     private String frecuencia;
 
-    public DialogInformacionTransportista(@NonNull Context context, String apertura1, String apertura2, String cierre1, String cierre2, String telefono,Integer idManifiesto,String frecuencia) {
+    public DialogInformacionTransportista(@NonNull Context context,
+                                          String apertura1, String apertura2, String cierre1,
+                                          String cierre2, String telefono,Integer idManifiesto,String frecuencia, String referencia) {
         super(context, R.layout.dialog_informacion_transportista);
         this._activity = (Activity) context;
         this.position = position;
@@ -54,6 +57,7 @@ public class DialogInformacionTransportista extends MyDialog {
         this.telefono =telefono;
         this.idManifiesto=idManifiesto;
         this.frecuencia=frecuencia;
+        this.referencia = referencia;
     }
 
     @Override
@@ -89,7 +93,7 @@ public class DialogInformacionTransportista extends MyDialog {
         lblObservaciones = getView().findViewById(R.id.lblObservaciones);
         sectionCuadro = getView().findViewById(R.id.sectionCuadro);
         sectionEspecifica = getView().findViewById(R.id.sectionEspecifica);
-
+        txtReferencia = getView().findViewById(R.id.txtReferencia);
 
 
         datosCabecera();
@@ -113,6 +117,7 @@ public class DialogInformacionTransportista extends MyDialog {
         lblCierre1.setText(cierre1==null?"":cierre1.toString());
         lblCierre2.setText(cierre2==null?"":cierre2.toString());
         lblTelefonoCliente.setText(telefono==null?"":telefono.toString());
+        txtReferencia.setText(referencia);
     }
 
     private  void datosTabla(){
