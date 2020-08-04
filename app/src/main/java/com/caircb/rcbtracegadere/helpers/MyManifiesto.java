@@ -1372,9 +1372,15 @@ public class MyManifiesto {
                 det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
                 det.addCell(createCell_VACIO());
                 det.addCell(createCell_VACIO());
-                det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
 
-                det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6,Element.ALIGN_CENTER));
+                if(reg.getTipoMostrar().toString().equals("3")){
+                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
+                }else {
+                    det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6, Element.ALIGN_CENTER));
+
+                }
                 det.completeRow();
             }
         }
