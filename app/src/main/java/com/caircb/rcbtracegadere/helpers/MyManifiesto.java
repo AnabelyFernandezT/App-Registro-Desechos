@@ -1166,10 +1166,6 @@ public class MyManifiesto {
         return _cell;
     }
     private PdfPTable regionAdicionales(Font f3)  {
-        ManifiestoPaquetesEntity manifiestoPkg =  MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-        if(pkg!=null)manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-
 
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
 
@@ -1197,9 +1193,6 @@ public class MyManifiesto {
         return det;
     }
     private PdfPTable regionAdicionales2(Font f3)  {
-
-        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-        ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
 
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
 
