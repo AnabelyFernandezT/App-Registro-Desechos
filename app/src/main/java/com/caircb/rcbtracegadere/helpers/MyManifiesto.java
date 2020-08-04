@@ -1170,7 +1170,7 @@ public class MyManifiesto {
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
 
         if(listaPaquetes!=null && listaPaquetes.size()>0){
-            det.addCell(new PdfPCell(new Phrase("Funda 50x50", f3)));
+            det.addCell(new PdfPCell(new Phrase("Funda 55x50", f3)));
             det.addCell(createCell_NO_BORDER_SINGLE(fundas50, f3, null));
 
             det.addCell(new PdfPCell(new Phrase("", f3)));
@@ -1179,7 +1179,7 @@ public class MyManifiesto {
             det.addCell(createCell_NO_BORDER_SINGLE(paquetes1, f3, null));
         }else {
 
-            det.addCell(new PdfPCell(new Phrase("Funda 50x50", f3)));
+            det.addCell(new PdfPCell(new Phrase("Funda 55x50", f3)));
             det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
 
             det.addCell(new PdfPCell(new Phrase("", f3)));
@@ -1429,7 +1429,7 @@ public class MyManifiesto {
 
             for (RowItemPaquete it : listaPaquetes) {
                 listaPaquetes.get(0);
-                if (it.getNombre().equals("50x50")) {
+                if (it.getNombre().equals("55x50")) {
                     fundas50 = it.getDiferencia().toString();
                     pf = it.getPendiente().toString();
                 }
