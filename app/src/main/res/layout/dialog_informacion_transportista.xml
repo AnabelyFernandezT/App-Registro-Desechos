@@ -113,27 +113,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="Referencia:"
-                android:textColor="@color/app_gadere"
-                android:textSize="12dp"/>
-
-            <TextView
-                android:id="@+id/txtReferencia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="12dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
                 android:text="Teléfono Cliente: "
                 android:textColor="@color/app_gadere"
                 android:textSize="12dp"/>
 
             <TextView
                 android:id="@+id/lblTelefonoCliente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Referencia"
+                android:textColor="@color/app_gadere"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:id="@+id/lblReferencia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
@@ -199,36 +199,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="¿Residuo sujeto a fiscalización?:"
+                android:text="¿Tiene disponibilidad de montacargas?:"
                 android:textColor="@color/app_gadere"
                 android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@+id/chkFiscalizacionNo"
+                    android:id="@+id/chkMontacargaSi"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:paddingRight="5dp"
+                    android:text="SI" />
+
+                <CheckBox
+                    android:id="@+id/chkMontacargaNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:text="NO" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <CheckBox
-                        android:id="@+id/chkFiscalizacionSi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:paddingRight="5dp"
-                        android:text="SI" />
 
-                    <CheckBox
+                    <!-- <CheckBox
                         android:id="@+id/chkFiscalizacionArcsa"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -241,8 +238,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:enabled="false"
-                        android:text="Ministerio del Interior" />
-                </LinearLayout>
+                        android:text="Ministerio del Interior" />-->
+
 
             </LinearLayout>
 
@@ -250,7 +247,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="¿Requiere devolución de recipientes?:"
+                android:text="¿Tiene disponibilidad de balanza?:"
                 android:textColor="@color/app_gadere"
                 android:textSize="12dp" />
 
@@ -260,7 +257,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@+id/chkDevolucionRecipienteSi"
+                    android:id="@+id/chkBalanzaSi"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -268,7 +265,7 @@
                     android:text="SI" />
 
                 <CheckBox
-                    android:id="@+id/chkDevolucionRecipienteNo"
+                    android:id="@+id/chkBalanzaNo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
