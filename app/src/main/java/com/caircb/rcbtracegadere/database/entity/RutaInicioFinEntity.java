@@ -42,7 +42,9 @@ public class RutaInicioFinEntity {
     @NonNull
     private Boolean sincronizadoFin;
 
-    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado) {
+    private Integer tiposubruta;
+
+    public RutaInicioFinEntity(@NonNull Integer idRutaInicioFin, @NonNull Integer idTransporteRecolector, @NonNull Integer idSubRuta, @NonNull Date fechaInicio, Date fechaFin, @NonNull String kilometrajeInicio, String kilometrajeFin, @NonNull Integer estado, int tiposubruta) {
         this.idRutaInicioFin = idRutaInicioFin;
         this.idTransporteRecolector = idTransporteRecolector;
         this.idSubRuta = idSubRuta;
@@ -53,6 +55,7 @@ public class RutaInicioFinEntity {
         this.estado = estado;
         this.sincronizado=false;
         this.sincronizadoFin=false;
+        this.tiposubruta=tiposubruta;
     }
 
 
@@ -146,5 +149,11 @@ public class RutaInicioFinEntity {
         this.sincronizadoFin = sincronizadoFin;
     }
 
+    public Integer getTiposubruta() {
+        return tiposubruta;
+    }
 
+    public void setTiposubruta(Integer tiposubruta) {
+        this.tiposubruta = tiposubruta;
+    }
 }

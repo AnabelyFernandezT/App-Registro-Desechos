@@ -1,16 +1,20 @@
-package com.caircb.rcbtracegadere.dialogs;
+package com.caircb.rcbtracegadere;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -19,26 +23,29 @@ import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
-import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserObtenerLotePadreHotelTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHospitalesTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioFinLoteHotelTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DialogFinLoteHospitales extends MyDialog {
+public class CierreLoteActivity extends AppCompatActivity {
+
     Activity _activity;
     Spinner listaDestino, listaDestinoParticular;
     LinearLayout btnFinApp, btnCancelarApp;
     TextView txt_placa;
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
-    UserObtenerLotePadreHotelTask lotePadreHotelTask;
-    UserRegistrarInicioFinLoteHotelTask inicioFinLoteHotelTask;
+    UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
+
     DialogBuilder builder;
     HotelLotePadreEntity lotePadre;
     List<DtoCatalogo> listaDestinos, destinosEspecificos;
@@ -46,19 +53,16 @@ public class DialogFinLoteHospitales extends MyDialog {
     int idDestino;
     Integer finHotel = 3, idRuta;
     ParametroEntity parametro;
-
-    public DialogFinLoteHospitales(@NonNull Context context) {
-        super(context, R.layout.dialog_fin_lote_hospitales);
-        this._activity = (Activity) context;
-    }
+    Integer idSubtura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(getView());
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_fin_lote_hospitales);
+        this._activity = this;
+        this.setFinishOnTouchOutside(false);
         init();
-        initButton();
-        cancelButton();
+
     }
 
     private void init() {
@@ -67,10 +71,48 @@ public class DialogFinLoteHospitales extends MyDialog {
             inicioHotel = parametro.getValor();
         }*/
         //lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
-        btnFinApp = (LinearLayout) getView().findViewById(R.id.btnFinalizarRuta);
-        txt_placa = (TextView) getView().findViewById(R.id.Txt_placa);
-        listaDestino = getView().findViewById(R.id.lista_destino);
-        listaDestinoParticular = getView().findViewById(R.id.lista_destino_particular);
+        btnFinApp = (LinearLayout) findViewById(R.id.btnFinalizarLoteHospital);
+        btnFinApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (destinos.equals("")) {
+                    final DialogBuilder dialogBuilder;
+                    dialogBuilder = new DialogBuilder(_activity);
+                    dialogBuilder.setMessage("Debe seleccionar el destino");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+                    //message("Seleccione Destino");
+                    return;
+                } else {
+                    if (destino.equals("") && parametro == null) {
+                        final DialogBuilder dialogBuilder;
+                        dialogBuilder = new DialogBuilder(_activity);
+                        dialogBuilder.setMessage("Debe seleccionar el destino");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
+                        return;
+                    }
+                    guardarDatos();
+                    //messageBox("guardado");
+                }
+            }
+        });
+
+        txt_placa = (TextView) findViewById(R.id.Txt_placa);
+        listaDestino = findViewById(R.id.lista_destino);
+        listaDestinoParticular = findViewById(R.id.lista_destino_particular);
         listaDestino.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -119,16 +161,16 @@ public class DialogFinLoteHospitales extends MyDialog {
         traerDestinos();
     }
 
-    public void initButton() {
+   /* public void initButton() {
         btnFinApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (destinos.equals("")) {
-                    messageBox("Seleccione Destino");
+                    //message("Seleccione Destino");
                     return;
                 } else {
                     if (destino.equals("") && parametro == null) {
-                        messageBox("Seleccione Destino");
+                        //messageBox("Seleccione Destino");
                         return;
                     }
                     guardarDatos();
@@ -141,13 +183,13 @@ public class DialogFinLoteHospitales extends MyDialog {
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+
             }
         });
-    }
+    }*/
 
     private void traerDestinos() {
-        consultarDetino = new UserConsultarDestinosTask(getActivity());
+        consultarDetino = new UserConsultarDestinosTask(_activity);
         consultarDetino.setOnDestinoListener(new UserConsultarDestinosTask.OnDestinoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos) {
@@ -171,7 +213,7 @@ public class DialogFinLoteHospitales extends MyDialog {
             }
         }
 
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.textview_spinner, listaData);
+        adapter = new ArrayAdapter<String>(_activity, R.layout.textview_spinner, listaData);
         defaulSpiner.setAdapter(adapter);
         defaulSpiner.setEnabled(bhabilitar);
 
@@ -179,7 +221,7 @@ public class DialogFinLoteHospitales extends MyDialog {
     }
 
     private void traerDestinoEspecifico() {
-        consultaDestinoEspecifico = new UserDestinoEspecificoTask(getActivity());
+        consultaDestinoEspecifico = new UserDestinoEspecificoTask(_activity);
         consultaDestinoEspecifico.setOnDestinoListener(new UserDestinoEspecificoTask.OnDestinoListener() {
             @Override
             public void onSuccessful(List<DtoCatalogo> catalogos, Integer idDestinoX) {
@@ -207,91 +249,44 @@ public class DialogFinLoteHospitales extends MyDialog {
 
         RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarNombre(idRuta);
         String subRuta = r != null ? r.getNombre() : "";
+        idSubtura = rut != null ? rut.getIdSubRuta() : -1;
         txt_placa.setText(subRuta);
     }
 
     private void guardarDatos() {
-       /* userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitales(getActivity(),id);
-        userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinRutaTask.OnIniciaRutaListener() {
+        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(_activity, idSubtura, idDestino);
+        userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
             @Override
             public void onSuccessful() {
-
-               *//* if(finHotel.equals(0)){
-                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
-                    inicioFinLoteHotelTask.execute();
-                }*//*
-
-                // MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
-                lblpickUpTransportista.setText("0");
-                lblListaManifiestoAsignado.setText("0");
-                DialogFinRuta.this.dismiss();
+                final DialogBuilder dialogBuilder;
+                dialogBuilder = new DialogBuilder(_activity);
+                dialogBuilder.setMessage("Lote finalizado correctamente!");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        finish();
+                    }
+                });
+                dialogBuilder.show();
             }
-
-
-
             @Override
             public void onFailure() {
-                DialogFinRuta.this.dismiss();
-            }
-        });
-
-        registroFinRuta.execute();*/
-    }
-
-/*    private void inicioFinLote(){
-        inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
-        inicioFinLoteHotelTask.execute();
-    }*/
-
-   /* private void loteHotelPadre(){
-        if(lotePadre!=null){
-            validarHoteles();
-
-        }else {
-            lotePadreHotelTask = new UserObtenerLotePadreHotelTask(getActivity());
-            lotePadreHotelTask.setmOnLoteHotelPadreListener(new UserObtenerLotePadreHotelTask.OnLoteHotelPadreListener() {
-                @Override
-                public void onSuccessful() {
-                    if(finHotel.equals(0)){
-                        inicioFinLote();
+                final DialogBuilder dialogBuilder;
+                dialogBuilder = new DialogBuilder(_activity);
+                dialogBuilder.setMessage("Falló el registro de lote!");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
                     }
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_hotel",""+1);
-                }
-            });
-            lotePadreHotelTask.execute();
-        }
-
+                });
+                dialogBuilder.show();
+            }
+        });
+        userRegistrarFinLoteHospitales.execute();
     }
-
-    private void validarHoteles (){
-
-        builder = new DialogBuilder(getActivity());
-        builder.setMessage("¿Es su último día de recolección?");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Si", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                listaDestinoParticular.setEnabled(false);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
-                finHotel=0;
-                builder.dismiss();
-            }
-        });
-        builder.setNegativeButton("No", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finHotel = 1;
-                //inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
-                //inicioFinLoteHotelTask.execute();
-
-                builder.dismiss();
-            }
-        });
-        builder.show();
-
-
-    }*/
 
 }

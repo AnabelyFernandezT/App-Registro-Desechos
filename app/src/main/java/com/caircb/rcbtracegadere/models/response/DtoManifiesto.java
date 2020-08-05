@@ -74,6 +74,9 @@ public class DtoManifiesto {
     private String frecuencia;
     private String sucursal;
     private String fechaModificacion;
+    private String firmaChoferRecolector;
+    private String firmaAuxiliarRecolector;
+    private String firmaOperadorRecolector;
 
 
     public DtoManifiesto() {
@@ -559,5 +562,29 @@ public class DtoManifiesto {
 
     public void setFechaModificacion(String fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public String getFirmaChoferRecolector() {
+        return firmaChoferRecolector;
+    }
+
+    public void setFirmaChoferRecolector(String firmaChoferRecolector) {
+        this.firmaChoferRecolector = firmaChoferRecolector;
+    }
+
+    public String getFirmaAuxiliarRecolector() {
+        return firmaAuxiliarRecolector;
+    }
+
+    public void setFirmaAuxiliarRecolector(String firmaAuxiliarRecolector) {
+        this.firmaAuxiliarRecolector = firmaAuxiliarRecolector;
+    }
+
+    public String getFirmaOperadorRecolector() {
+        return firmaOperadorRecolector;
+    }
+
+    public void setFirmaOperadorRecolector(String firmaOperadorRecolector) {
+        this.firmaOperadorRecolector = firmaOperadorRecolector;
     }
 }

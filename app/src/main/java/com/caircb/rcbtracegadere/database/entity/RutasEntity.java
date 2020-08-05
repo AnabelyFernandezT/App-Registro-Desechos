@@ -14,12 +14,13 @@ public class RutasEntity {
     private Integer codigo;
 
     private String nombre;
+    private Integer tiposubruta;
 
 
-
-    public RutasEntity(Integer codigo, String nombre) {
+    public RutasEntity(Integer codigo, String nombre, Integer tiposubruta) {
         this.codigo = codigo;
         this.nombre = nombre;
+        this.tiposubruta=tiposubruta;
     }
 
     public Integer get_id() {
@@ -46,4 +47,11 @@ public class RutasEntity {
         this.nombre = nombre;
     }
 
+    public Integer getTiposubruta() {
+        return tiposubruta;
+    }
+
+    public void setTiposubruta(Integer tiposubruta) {
+        this.tiposubruta = tiposubruta;
+    }
 }

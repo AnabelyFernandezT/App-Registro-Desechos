@@ -298,6 +298,9 @@ public abstract class ManifiestoDao {
             entity.setFrecuencia(manifiesto.getFrecuencia());
             entity.setSucursal(manifiesto.getSucursal());
             entity.setTelefono(manifiesto.getTelefono());
+            entity.setFirmaChoferRecolector(manifiesto.getFirmaChoferRecolector());
+            entity.setFirmaAuxiliarRecolector(manifiesto.getFirmaAuxiliarRecolector());
+            entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -368,6 +371,9 @@ public abstract class ManifiestoDao {
             entity.setFrecuencia(manifiesto.getFrecuencia());
             entity.setSucursal(manifiesto.getSucursal());
             entity.setTelefono(manifiesto.getTelefono());
+            entity.setFirmaChoferRecolector(manifiesto.getFirmaChoferRecolector());
+            entity.setFirmaAuxiliarRecolector(manifiesto.getFirmaAuxiliarRecolector());
+            entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
         }
 
         if (entity!=null) createManifiesto(entity);

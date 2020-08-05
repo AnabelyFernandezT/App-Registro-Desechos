@@ -82,7 +82,7 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
         rq.setIdSubRuta(idSubtura);
         rq.setFechaDispositivo(new Date());
         rq.setKilometraje("");
-        rq.setTipo(0);
+        rq.setTipo(2);
         rq.setIdDestinatarioFinRutaCatalogo(idDestinatarioFinLote);
         return rq;
     }

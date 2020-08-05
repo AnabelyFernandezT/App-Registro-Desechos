@@ -13,21 +13,18 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationBuilderWithBuilderAccessor;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.ResultActivity;
-import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
 import com.caircb.rcbtracegadere.helpers.MySession;
-import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
+import com.caircb.rcbtracegadere.CierreLoteActivity;
 import com.google.firebase.messaging.RemoteMessage;
 
-;import java.util.Date;
+;
 
 /**
  * Created by jlsuarez on 03/08/2017.
@@ -65,7 +62,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
            /* if(remoteMessage.getNotification().getTitle().equals("NOTIFICACIÓN DE PESO EXTRA")){
                 showNotificationAutoPesos(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
             }*/
-            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(),remoteMessage);
+
         }
 
         if (remoteMessage.getData().size() > 0) {
@@ -80,6 +78,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             if (mOnRegisterListener != null) mOnRegisterListener.onSiPeso();
         }
 
+
         if (remoteMessage.getData().get("idCatalogoRespuesta").equals("10")) {//si(autorizacion sin impresora)
             MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion" + MySession.getIdUsuario(), "1");
             MyApp.getDBO().manifiestoDetallePesosDao().updateImpresionByIdUsuarioRecolector(MySession.getIdUsuario(), true);
@@ -89,8 +88,15 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
     }
 
-    private void showNotification(String title, String body) {
-        Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+    private void showNotification(String title, String body,RemoteMessage remoteMessage) {
+        Intent intent;
+        if (remoteMessage.getData().get("idCatalogoRespuesta").equals("12")){
+            intent= new Intent(getApplicationContext(), CierreLoteActivity.class);
+
+        }else {
+            intent = new Intent(getApplicationContext(), ResultActivity.class);
+        }
+
         intent.putExtra("notification_data", body);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -56,6 +56,7 @@ public class DialogInicioRuta extends MyDialog {
     String placa;
     String placaInfoModulos;
     long idRegistro;
+    int idTipoSubruta;
 
     UserRegistrarInicioRutaTask registroInicioRuta;
     UserConsultarRutasTask consultarPlacasInicioRutaDisponible;
@@ -147,6 +148,8 @@ public class DialogInicioRuta extends MyDialog {
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
                     lblTransportistaRecolector.setText(listaPlacasDisponibles.get(position-1).getNombreChofer());
                     lblAuxiliarRecoleccion1.setText(listaPlacasDisponibles.get(position-1).getNombreAuxiliar());
+                    idTipoSubruta=listaPlacasDisponibles.get(position-1).getTiposubruta();
+                    MyApp.getDBO().parametroDao().saveOrUpdate("tipoSubRuta",""+idTipoSubruta);
                     if (listaPlacasDisponibles.get(position-1).getNombreConductor()!=null){
                         lblTituloAuxiliarRecoleccion2.setVisibility(View.VISIBLE);
                         lblAuxiliarRecoleccion2.setVisibility(View.VISIBLE);
@@ -281,7 +284,7 @@ public class DialogInicioRuta extends MyDialog {
         RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarId(placa);
         int idVehiculo = r!=null?r.getCodigo():-1;
         Date fechaInicio = AppDatabase.getDateTime();
-        idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1);
+        idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1,idTipoSubruta);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
         //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
         //MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
