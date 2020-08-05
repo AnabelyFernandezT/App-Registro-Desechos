@@ -1268,7 +1268,7 @@ public class MyManifiesto {
 
         String novedadesEncontradas = manifiesto.getNovedadEncontrada();
 
-        PdfPTable det = new PdfPTable(new float[]{10,80});
+        PdfPTable det = new PdfPTable(1);
         det.setWidthPercentage(100);
 
         if(manifiesto.getNovedadEncontrada()!= null){
