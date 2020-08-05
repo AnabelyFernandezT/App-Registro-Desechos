@@ -1430,18 +1430,18 @@ public class MyManifiesto {
             for (RowItemPaquete it : listaPaquetes) {
                 listaPaquetes.get(0);
                 if (it.getNombre().equals("55x50")) {
-                    fundas50 = it.getDiferencia().toString();
+                    fundas50 = String.valueOf(it.getCantidad() - it.getPendiente());
                     pf = it.getPendiente().toString();
                 }
                 if (it.getNombre().equals("63x76")){
-                    fundas63 = it.getDiferencia().toString();
+                    fundas63 = String.valueOf(it.getCantidad() - it.getPendiente());
                     pf = it.getPendiente().toString();
                 }
                 if(it.getNombre().equals("PC 1")){
-                    paquetes1 = it.getDiferencia().toString();
+                    paquetes1 = String.valueOf(it.getCantidad() - it.getPendiente());
                     pg = it.getPendiente().toString();
                 }else if(it.getNombre().equals("PC 2")) {
-                    paquete2 = it.getDiferencia().toString();
+                    paquete2 = String.valueOf(it.getCantidad() - it.getPendiente());
                     pg = it.getPendiente().toString();
                 }
             }
