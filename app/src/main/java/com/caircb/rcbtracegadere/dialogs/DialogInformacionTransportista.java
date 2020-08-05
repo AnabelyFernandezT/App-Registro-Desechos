@@ -26,9 +26,9 @@ import java.util.List;
 
 public class DialogInformacionTransportista extends MyDialog {
     Activity _activity;
-    TextView lblApertura1, lblApertura2, lblCierre1, lblCierre2, lblTelefonoCliente, lblObservaciones,txtReferencia;
-    CheckBox chkFiscalizacionNo, chkFiscalizacionSi, chkFiscalizacionArcsa, chkFiscalizacionMi, chkDevolucionRecipienteSi, chkDevolucionRecipienteNo, chkMontacargasSi, chkMontacargasNo, chkBalanzaSi,
-            chkBalanzaNo, chkPresenciadoSi, chkPresenciadoNo;
+    TextView lblApertura1, lblApertura2, lblCierre1, lblCierre2, lblTelefonoCliente, lblObservaciones,lblReferencia;
+    CheckBox chkMontacargaNo, chkMontacargaSi, chkFiscalizacionArcsa, chkFiscalizacionMi, chkBalanzaSi, chkBalanzaNo, chkMontacargasSi, chkMontacargasNo
+            , chkPresenciadoSi, chkPresenciadoNo;
     LinearLayout btnRetornarMenu,sectionCuadro,sectionEspecifica;
     TableLayout tableLayout;
     int position = 0;
@@ -38,15 +38,12 @@ public class DialogInformacionTransportista extends MyDialog {
     private String cierre2;
     private String telefono = "";
     private Integer idManifiesto;
-    private String referencia;
-    private String[] header={"Descripción","Código MAE","Estado Físico Desecho","Packing","Cantidad (u)","Peso (Kg)","Tratamiento","Tiene disponibilidad de montacargas","Tiene disponibilidad de balanza"};
+    private String[] header={"Descripción","Código MAE","Estado Físico Desecho","Packing","Cantidad (u)","Peso (Kg)","Tratamiento","Residuo sujeto a fiscalización","Requiere devolución de recipientes"};
     private ArrayList<String[]>rows=new ArrayList<>();
     private List<RowItemManifiestoDetalle> detalles;
-    private String frecuencia;
+    private String frecuencia, referencia;
 
-    public DialogInformacionTransportista(@NonNull Context context,
-                                          String apertura1, String apertura2, String cierre1,
-                                          String cierre2, String telefono,Integer idManifiesto,String frecuencia, String referencia) {
+    public DialogInformacionTransportista(@NonNull Context context, String apertura1, String apertura2, String cierre1, String cierre2, String telefono,Integer idManifiesto,String frecuencia, String referencia) {
         super(context, R.layout.dialog_informacion_transportista);
         this._activity = (Activity) context;
         this.position = position;
@@ -78,12 +75,11 @@ public class DialogInformacionTransportista extends MyDialog {
         btnRetornarMenu = getView().findViewById(R.id.btnRetornarMenu);
         tableLayout = getView().findViewById(R.id.tableDatos);
 
-        chkFiscalizacionNo = getView().findViewById(R.id.chkFiscalizacionNo);
-        chkFiscalizacionSi = getView().findViewById(R.id.chkFiscalizacionSi);
-        chkFiscalizacionArcsa = getView().findViewById(R.id.chkFiscalizacionArcsa);
-        chkFiscalizacionMi = getView().findViewById(R.id.chkFiscalizacionMi);
-        chkDevolucionRecipienteSi = getView().findViewById(R.id.chkDevolucionRecipienteSi);
-        chkDevolucionRecipienteNo = getView().findViewById(R.id.chkDevolucionRecipienteNo);
+        chkMontacargaNo = getView().findViewById(R.id.chkMontacargaNo);
+        chkMontacargaSi = getView().findViewById(R.id.chkMontacargaSi);
+
+        chkBalanzaSi = getView().findViewById(R.id.chkBalanzaSi);
+        chkBalanzaNo = getView().findViewById(R.id.chkBalanzaNo);
 /*        chkMontacargasSi = getView().findViewById(R.id.chkMontacargasSi);
         chkMontacargasNo = getView().findViewById(R.id.chkMontacargasNo);
         chkBalanzaSi = getView().findViewById(R.id.chkBalanzaSi);
@@ -93,7 +89,7 @@ public class DialogInformacionTransportista extends MyDialog {
         lblObservaciones = getView().findViewById(R.id.lblObservaciones);
         sectionCuadro = getView().findViewById(R.id.sectionCuadro);
         sectionEspecifica = getView().findViewById(R.id.sectionEspecifica);
-        txtReferencia = getView().findViewById(R.id.txtReferencia);
+        lblReferencia = getView().findViewById(R.id.lblReferencia);
 
 
         datosCabecera();
@@ -117,7 +113,7 @@ public class DialogInformacionTransportista extends MyDialog {
         lblCierre1.setText(cierre1==null?"":cierre1.toString());
         lblCierre2.setText(cierre2==null?"":cierre2.toString());
         lblTelefonoCliente.setText(telefono==null?"":telefono.toString());
-        txtReferencia.setText(referencia);
+        lblReferencia.setText(referencia);
     }
 
     private  void datosTabla(){
@@ -128,7 +124,11 @@ public class DialogInformacionTransportista extends MyDialog {
 
     private ArrayList<String[]> getDatos(){
         for (int i=0; i<detalles.size(); i++){
-            rows.add(new String[]{detalles.get(i).getDescripcion(),detalles.get(i).getCodigoMae(),detalles.get(i).getEstadoFisico(),detalles.get(i).getTipoContenedor(),detalles.get(i).getCantidadRefencial()+"",detalles.get(i).getPesoReferencial()+"",detalles.get(i).getTratamiento(),detalles.get(i).getTieneDisponibilidadMontacarga()==1?"SI":"NO",detalles.get(i).getTieneDisponibilidadBalanza()==1?"SI":"NO"});
+            rows.add(new String[]{detalles.get(i).getDescripcion(),detalles.get(i).getCodigoMae(),
+                    detalles.get(i).getEstadoFisico(),detalles.get(i).getTipoContenedor(),
+                    detalles.get(i).getCantidadRefencial()+"",detalles.get(i).getPesoReferencial()+"",
+                    detalles.get(i).getTratamiento(), sujetoFiscalizacion(i),
+                    detalles.get(i).getRequiereDevolucionRecipientes()==1?"SI":"NO"});
         }
         return rows;
     }
@@ -143,30 +143,33 @@ public class DialogInformacionTransportista extends MyDialog {
 
             int contSi=0;
             for (int i=0;i<detalles.size();i++){
-                if (detalles.get(i).getResiduoSujetoFiscalizacion() == 1){
+                if (detalles.get(i).getTieneDisponibilidadMontacarga().equals(1)){
                     contSi++;
                 }
             }
             if (contSi==0){
-                chkFiscalizacionSi.setChecked(false);
-                chkFiscalizacionNo.setChecked(true);
+                chkMontacargaSi.setChecked(false);
+                chkMontacargaNo.setChecked(true);
             }else {
-                chkFiscalizacionSi.setChecked(true);
-                chkFiscalizacionNo.setChecked(false);
-            }
-            for (int i=0;i<detalles.size();i++){
-                if (detalles.get(i).getResiduoSujetoFiscalizacion()==3){
-                    chkFiscalizacionArcsa.setChecked(true);
-                }
-                if (detalles.get(i).getResiduoSujetoFiscalizacion()==4){
-                    chkFiscalizacionMi.setChecked(true);
-                }
-                if (detalles.get(i).getObservacionResiduos().equals("")) {
-                } else {
-                    lblObservaciones.setText(detalles.get(i).getObservacionResiduos()+", ");
-                }
+                chkMontacargaSi.setChecked(true);
+                chkMontacargaNo.setChecked(false);
             }
 
+            int contBSi=0;
+
+            for (int i=0;i<detalles.size();i++){
+                if (detalles.get(i).getTieneDisponibilidadBalanza().equals(1)){
+                    contBSi++;
+                }
+            }
+            if (contBSi==0){
+                chkBalanzaSi.setChecked(false);
+                chkBalanzaNo.setChecked(true);
+            }else {
+                chkBalanzaSi.setChecked(true);
+                chkBalanzaNo.setChecked(false);
+            }
+            
           /*  if (detalles.get(0).getResiduoSujetoFiscalizacion() == 0) {
                 chkFiscalizacionNo.setChecked(false);
                 chkFiscalizacionSi.setSelected(false);
@@ -196,7 +199,7 @@ public class DialogInformacionTransportista extends MyDialog {
 */
 
 
-
+/*
             if (detalles.get(0).getRequiereDevolucionRecipientes() == 0) {
                 chkDevolucionRecipienteSi.setChecked(false);
                 chkDevolucionRecipienteNo.setChecked(false);
@@ -209,7 +212,7 @@ public class DialogInformacionTransportista extends MyDialog {
                 chkDevolucionRecipienteSi.setChecked(false);
                 chkDevolucionRecipienteNo.setChecked(true);
             }
-
+*/
 
 
   /*          if (detalles.get(0).getTieneDisponibilidadMontacarga() == 0) {
@@ -259,8 +262,28 @@ public class DialogInformacionTransportista extends MyDialog {
             sectionEspecifica.setVisibility(View.GONE);
         }
 
-
-
-
     }
+
+    private String sujetoFiscalizacion(Integer i){
+        String respuesta="";
+
+            if (detalles.get(i).getResiduoSujetoFiscalizacion().equals(1)){
+                respuesta = "SI";
+            }
+            if (detalles.get(i).getResiduoSujetoFiscalizacion().equals(2)){
+                respuesta = "NO";
+            }
+            if (detalles.get(i).getResiduoSujetoFiscalizacion().equals(3)){
+                respuesta = "ARCSA";
+            }
+            if (detalles.get(i).getResiduoSujetoFiscalizacion().equals(4)){
+                respuesta = "Ministerio del Interior";
+            }
+            if(detalles.get(i).getResiduoSujetoFiscalizacion().equals(6)){
+                respuesta = "OTROS";
+            }
+
+        return respuesta;
+    }
+
 }
