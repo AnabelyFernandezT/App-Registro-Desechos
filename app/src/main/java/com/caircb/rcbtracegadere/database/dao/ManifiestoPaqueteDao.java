@@ -33,6 +33,9 @@ public abstract class ManifiestoPaqueteDao {
     @Query("update tb_manifiestos_paquete set datosGuardianesPendientes =:datosGuardianesPendientes, datosGuardianesDiferencia =:datosGuardianesDiferencia where  idPaquete =:idPaquete")
     abstract void updatePendientesGuardianes (Integer idPaquete,  Integer datosGuardianesPendientes, Integer datosGuardianesDiferencia);
 
+    @Query("delete from tb_manifiestos_paquete")
+    public abstract void deleteTablePaquetes();
+
     public void UpdatePaquetesPendientesFundas (Integer idPaquete, Integer datosFundasPendientes, Integer datosfundasDiferencia){
         updatePendientesFundas(idPaquete,datosFundasPendientes, datosfundasDiferencia);
     }

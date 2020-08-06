@@ -149,6 +149,8 @@ public class ManifiestoEntity {
 
     private String telefono;
 
+    private String referencia;
+
     public ManifiestoEntity() {
     }
 
@@ -577,6 +579,14 @@ public class ManifiestoEntity {
 
     public void setCierre2(String cierre2) {
         this.cierre2 = cierre2;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 }
 

@@ -33,8 +33,7 @@ public abstract class ManifiestoDetalleDao {
     @Query("select d.idAppManifiestoDetalle as id, cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial, faltaImpresiones,tipoMostrar , codigoMAE" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
-           // " where idAppManifiesto=:idManifiesto and (tipoMostrar=1 or tipoMostrar=3) ")
-            " where idAppManifiesto=:idManifiesto")
+            " where idAppManifiesto=:idManifiesto and (tipoMostrar=1 or tipoMostrar=3) ")
     public abstract List<RowItemManifiesto> fetchHojaRutaDetallebyIdManifiesto(Integer idManifiesto);
 
     @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
@@ -42,6 +41,9 @@ public abstract class ManifiestoDetalleDao {
 
     @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto")
     public abstract void updateFlagFaltaImpresionesByIdManifiesto(Integer idManifiesto, boolean bandera);
+
+    @Query("update tb_manifiestos_detalle set pesoUnidad=:pesoU, cantidadBulto=:cantidadB where idAppManifiesto =:idManifiesto")
+    public abstract void updateNoRecolectado(Integer idManifiesto,Double pesoU, Double cantidadB);
 
     @Query("select count(*) from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and faltaImpresiones=1")
     public abstract Integer countDetallesSinImprimirByIdManifiesto(Integer idManifiesto);
@@ -120,7 +122,7 @@ public abstract class ManifiestoDetalleDao {
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
             entity.setIdTipoUnidad(dt.getIdTipoUnidad());
-            entity.setPesoUnidad(dt.getPesoUnidad());
+            //entity.setPesoUnidad(dt.getPesoUnidad());
             entity.setCantidadDesecho(dt.getCantidadDesecho());
             entity.setTipoItem(dt.getPesajeBultoFlag());
             entity.setTipoPaquete(dt.getTipoPaquete());

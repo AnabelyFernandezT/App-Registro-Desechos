@@ -67,6 +67,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
         holder.txtCiudad.setText(it.getCanton());
+        holder.txtReferencia.setText(it.getReferencia());
         String estadoString = "";
         switch (it.getEstado()){
             case 1 :
@@ -109,6 +110,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         TextView txtProvincia;
         TextView txtCiudad;
         TextView txtEstado;
+        TextView txtReferencia;
         LinearLayout btnInfoCardTransporte;
         LinearLayout btnViewPdfManifiesto;
 
@@ -121,6 +123,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             txtProvincia = itemView.findViewById(R.id.itm_Provincia);
             txtCiudad = itemView.findViewById(R.id.itm_Ciudad);
             txtEstado = itemView.findViewById(R.id.itm_Estado);
+            txtReferencia = itemView.findViewById(R.id.itm_Referencia);
             btnInfoCardTransporte = itemView.findViewById(R.id.btnInfoCardTransporte);
             btnViewPdfManifiesto = itemView.findViewById(R.id.btnViewPdfManifiesto);
 
@@ -132,7 +135,9 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
                     public void onClick(View v) {
                         int positionSelected= MyViewHolder.this.getPosition();
                         ItemManifiesto it = manifiestosList.get(positionSelected);
-                        DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),it.getIdAppManifiesto(),it.getFrecuencia());
+                        DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext,
+                                it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),
+                                it.getIdAppManifiesto(),it.getFrecuencia(),it.getReferencia());
                         dialogInformacionTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         //informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
                         //informacionModulosTaskl.execute();

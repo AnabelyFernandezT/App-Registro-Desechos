@@ -30,6 +30,7 @@ import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -237,8 +238,10 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     dialogBuilder2.show();
 
                                 } else {
+                                    Integer idPaquete = rowItems.get(position).getTipoPaquete();
+                                    PaqueteEntity paquetes = MyApp.getDBO().paqueteDao().fechConsultaPaquete(idPaquete);
                                     dialogBuilder2 = new DialogBuilder(getActivity());
-                                    dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
+                                    dialogBuilder2.setMessage("El manifiesto es de tipo paquete " + paquetes.getDescripcion());
                                     dialogBuilder2.setCancelable(false);
                                     dialogBuilder2.setTitle("CONFIRMACIÓN");
                                     dialogBuilder2.setPositiveButton("Ok", new View.OnClickListener() {
@@ -367,9 +370,10 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             dialogBuilder2.show();
 
                         } else {
-
+                            Integer idPaquete = rowItems.get(position).getTipoPaquete();
+                            PaqueteEntity paquetes = MyApp.getDBO().paqueteDao().fechConsultaPaquete(idPaquete);
                             dialogBuilder2 = new DialogBuilder(getActivity());
-                            dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
+                            dialogBuilder2.setMessage("El manifiesto es de tipo paquete " + paquetes.getDescripcion());
                             dialogBuilder2.setCancelable(false);
                             dialogBuilder2.setTitle("CONFIRMACIÓN");
                             dialogBuilder2.setPositiveButton("Continuar", new View.OnClickListener() {

@@ -49,7 +49,7 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
     public void onBindViewHolder(final @NonNull MyViewHolder holder, final int position) {
         final RowItemPaquete it = paquetesList.get(position);
         holder.txtPkgNombre.setText(it.getNombre());
-        holder.txtPkgCantidad.setText(""+(it.getCantidad() - it.getDiferencia()));//- it.getDiferencia()
+        holder.txtPkgCantidad.setText(""+(it.getCantidad() - it.getPendiente()));//- it.getDiferencia()
         holder.txtPkgPendiente.setText(""+it.getPendiente());
 
 

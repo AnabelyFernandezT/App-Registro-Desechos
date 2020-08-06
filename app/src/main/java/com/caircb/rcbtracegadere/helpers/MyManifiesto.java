@@ -66,6 +66,7 @@ public class MyManifiesto {
     Context context;
     Integer idManifiesto,idAppTipoPaquete;
     ManifiestoEntity manifiesto;
+    String fundas50 = "0",fundas63="0", paquetes1="0", paquete2="0", pg = "0" , pf = "0" ;
     TecnicoEntity tecnicoEntity;
     Bitmap logoMAE;
     Bitmap imagenCheck;
@@ -77,6 +78,9 @@ public class MyManifiesto {
     SimpleDateFormat simpleDate = new SimpleDateFormat("dd//MM/yyyy");
     CatalogoEntity catalogo;
     String identificacion;
+    List<RowItemPaquete> listaPaquetes;
+    ManifiestoPaquetesEntity manifiestoPkg;
+    PaqueteEntity pkg;
 
     private String getPath() { return simpleDate.format(new Date());}
     String fecha = getPath();
@@ -87,6 +91,7 @@ public class MyManifiesto {
         this.idManifiesto = idManifiesto;
         this.idAppTipoPaquete = idAppTipoPaquete;
         this.identificacion = identificacion;
+
     }
 
     public void create(){
@@ -125,6 +130,8 @@ public class MyManifiesto {
             ItemFile fileFirmaTransporte = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA,MyConstant.STATUS_RECOLECCION);
             if(fileFirmaTransporte!=null) firmaTransportista = Utils.StringToBitMap(fileFirmaTransporte.getFile());
 
+
+            loadDataPaquetes();
 
             if(manifiesto!=null) createReport();
         }
@@ -962,7 +969,7 @@ public class MyManifiesto {
         PdfPTable tb = new PdfPTable(1);
         //tabla 1
         PdfPTable tb1 = new PdfPTable(new float[] { 100});
-        tb1.addCell(new PdfPCell(new Phrase("ESPACIO ESCLUSIVO PARA MANIFIESTOS DE\n" +
+        tb1.addCell(new PdfPCell(new Phrase("ESPACIO EXCLUSIVO PARA MANIFIESTOS DE\n" +
                 "RECOLECCION DE RESIDUOS\n"+
                 "BIOLOGICOS INFECCIOSOS",f3)));
         tb1.completeRow();
@@ -1032,8 +1039,14 @@ public class MyManifiesto {
         Image jpg = null;
 
 
+
+
         tb5.addCell(new PdfPCell(new Phrase(" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+
                 " \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+" \n"+"\n",f3)));
+        if(listaPaquetes!=null && listaPaquetes.size()>0) {
+            tb5.addCell(new Phrase("PENDIENTES GUARDIANES  "+ pg + "\n"
+                                        +"PENDIENTES FUNDA  "+ pf,f3));
+        }
         if(fileFirmaTecnico!=null){
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -1153,33 +1166,27 @@ public class MyManifiesto {
         return _cell;
     }
     private PdfPTable regionAdicionales(Font f3)  {
-        ManifiestoPaquetesEntity manifiestoPkg =  MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-        if(pkg!=null)manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-
 
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
-        det.addCell(new PdfPCell(new Phrase("Funda", f3)));
 
-            if(pkg!=null ) {
-                det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3, null));
-            }else {
-                det.addCell(new PdfPCell(new Phrase(" ", f3)));
-            }
+        if(listaPaquetes!=null && listaPaquetes.size()>0){
+            det.addCell(new PdfPCell(new Phrase("Funda 55x50", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(fundas50, f3, null));
 
-            if (manifiestoPkg != null ) {
-                det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosFundas().toString(), f3, null));
-            } else {
-                det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
-            }
+            det.addCell(new PdfPCell(new Phrase("", f3)));
 
             det.addCell(new PdfPCell(new Phrase("PC-1", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(paquetes1, f3, null));
+        }else {
 
-            if (manifiestoPkg != null) {
-                det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdFundas().toString(), f3, null));
-            } else {
-                det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
-            }
+            det.addCell(new PdfPCell(new Phrase("Funda 55x50", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
+
+            det.addCell(new PdfPCell(new Phrase("", f3)));
+
+            det.addCell(new PdfPCell(new Phrase("PC-1", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
+        }
 
         det.completeRow();
 
@@ -1187,31 +1194,27 @@ public class MyManifiesto {
     }
     private PdfPTable regionAdicionales2(Font f3)  {
 
-        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-        ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
-        det.addCell(new PdfPCell(new Phrase("Funda", f3)));
 
-        if(pkg!=null ) {
-            det.addCell(createCell_NO_BORDER_SINGLE(pkg.getGuardian(), f3, null));
+        if(listaPaquetes!=null && listaPaquetes.size()>0){
+            det.addCell(new PdfPCell(new Phrase("Funda 63x76", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(fundas63, f3, null));
+
+            det.addCell(new PdfPCell(new Phrase("", f3)));
+
+            det.addCell(new PdfPCell(new Phrase("PC-2", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(paquete2, f3, null));
         }else {
-            det.addCell(new PdfPCell(new Phrase(" ", f3)));
-        }
-
-        if (manifiestoPkg != null ) {
-            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosGuardianes().toString(), f3, null));
-        } else {
+            det.addCell(new PdfPCell(new Phrase("Funda 63x76", f3)));
             det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
-        }
 
-        det.addCell(new PdfPCell(new Phrase("PC-2", f3)));
+            det.addCell(new PdfPCell(new Phrase("", f3)));
 
-        if (manifiestoPkg != null) {
-            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdGuardianes().toString(), f3, null));
-        } else {
+            det.addCell(new PdfPCell(new Phrase("PC-2", f3)));
             det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
+
         }
+        det.completeRow();
 
         return det;
     }
@@ -1265,7 +1268,7 @@ public class MyManifiesto {
 
         String novedadesEncontradas = manifiesto.getNovedadEncontrada();
 
-        PdfPTable det = new PdfPTable(new float[]{10,80});
+        PdfPTable det = new PdfPTable(1);
         det.setWidthPercentage(100);
 
         if(manifiesto.getNovedadEncontrada()!= null){
@@ -1362,9 +1365,15 @@ public class MyManifiesto {
                 det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
                 det.addCell(createCell_VACIO());
                 det.addCell(createCell_VACIO());
-                det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
 
-                det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6,Element.ALIGN_CENTER));
+                if(reg.getTipoMostrar().toString().equals("3")){
+                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
+                }else {
+                    det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6, Element.ALIGN_CENTER));
+
+                }
                 det.completeRow();
             }
         }
@@ -1394,6 +1403,51 @@ public class MyManifiesto {
         return  new FileOutputStream(pdfFile);
     }
 
+    private void loadDataPaquetes(){
+        if(idAppTipoPaquete!=null) {
+            pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
+            manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto, idAppTipoPaquete);
+            listaPaquetes = new ArrayList<>();
+            if(pkg!=null && manifiestoPkg!=null) {
+                if (pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(),
+                        manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0,
+                        manifiestoPkg != null ? (manifiestoPkg.getDatosFundasPendientes() != null ? manifiestoPkg.getDatosFundasPendientes() : 0) : 0,
+                        manifiestoPkg != null ? manifiestoPkg.getDatosFundasPendientes() : null,
+                        manifiestoPkg != null ? (manifiestoPkg.getDatosFundasDiferencia() != null ? manifiestoPkg.getDatosFundasDiferencia() : 0) : 0,
+                        1));
+
+                if (pkg.getEntregaSoloGuardianes())
+                    listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(),
+                            manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0,
+                            manifiestoPkg != null ? (manifiestoPkg.getDatosGuardianesPendientes() != null ? manifiestoPkg.getDatosGuardianesPendientes() : 0) : 0,
+                            manifiestoPkg != null ? manifiestoPkg.getDatosGuardianesPendientes() : null,
+                            manifiestoPkg != null ? (manifiestoPkg.getDatosGuardianesDiferencia() != null ? manifiestoPkg.getDatosGuardianesDiferencia() : 0) : 0,
+                            2));
+            }
+        }
+        if(listaPaquetes!=null && listaPaquetes.size()>0) {
+
+            for (RowItemPaquete it : listaPaquetes) {
+                listaPaquetes.get(0);
+                if (it.getNombre().equals("55x50")) {
+                    fundas50 = String.valueOf(it.getCantidad() - it.getPendiente());
+                    pf = it.getPendiente().toString();
+                }
+                if (it.getNombre().equals("63x76")){
+                    fundas63 = String.valueOf(it.getCantidad() - it.getPendiente());
+                    pf = it.getPendiente().toString();
+                }
+                if(it.getNombre().equals("PC 1")){
+                    paquetes1 = String.valueOf(it.getCantidad() - it.getPendiente());
+                    pg = it.getPendiente().toString();
+                }else if(it.getNombre().equals("PC 2")) {
+                    paquete2 = String.valueOf(it.getCantidad() - it.getPendiente());
+                    pg = it.getPendiente().toString();
+                }
+            }
+
+        }
+        }
 
 
 }
