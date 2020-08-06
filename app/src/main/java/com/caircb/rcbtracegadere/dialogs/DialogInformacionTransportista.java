@@ -169,7 +169,7 @@ public class DialogInformacionTransportista extends MyDialog {
                 chkBalanzaSi.setChecked(true);
                 chkBalanzaNo.setChecked(false);
             }
-            
+
           /*  if (detalles.get(0).getResiduoSujetoFiscalizacion() == 0) {
                 chkFiscalizacionNo.setChecked(false);
                 chkFiscalizacionSi.setSelected(false);
