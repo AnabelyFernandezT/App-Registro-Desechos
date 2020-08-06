@@ -60,7 +60,7 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
         rq.setNombreCliente(entity.getNombreCliente());
         rq.setManifiesto(entity.getNumeroManifiesto());
         rq.setPesoReferencial(String.valueOf(detalle.getPesoReferencial()));
-        rq.setPesoReferencial(pesoExtra);
+        rq.setPesoSolicitado(pesoExtra);
         Integer tpk = entity.getTipoPaquete();
         if(tpk==null|| tpk.toString().equals("")){
             rq.setFlagTipoPKG(0);
