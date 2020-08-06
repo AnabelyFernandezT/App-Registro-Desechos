@@ -101,7 +101,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
     private void init() {
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),1);
+        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),1,0);
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);

@@ -28,6 +28,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2FragmentProcesada;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VisorManifiestoFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -83,7 +84,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),1);
+        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),1,1);
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);
@@ -118,7 +119,13 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
     private void adapterList(){
         recyclerviewAdapter.setTaskList(rowItems);
         recyclerView.setAdapter(recyclerviewAdapter);
-
+        recyclerviewAdapter.setmOnViewManifiestPdfListenner(new ManifiestoAdapter.onViewManifiestoPdfListener() {
+            @Override
+            public void onSusscessfull(Integer idManifiesto) {
+                System.out.println(idManifiesto);
+                setNavegate(VisorManifiestoFragment.newInstance(idManifiesto));
+            }
+        });
         touchListener = new OnRecyclerTouchListener(getActivity(),recyclerView);
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
@@ -130,7 +137,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
             public void onIndependentViewClicked(int independentViewID, int position) {
 
             }
-        }).setSwipeOptionViews(R.id.btn_manifiesto_view/*, R.id.btn_manifiesto_more*/).setSwipeable(R.id.rowFG, R.id.rowBG, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
+        }).setSwipeOptionViews(R.id.btn_manifiesto_view /*R.id.btn_manifiesto_more*/).setSwipeable(R.id.rowFG, R.id.rowBG, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
             @Override
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
@@ -147,8 +154,9 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
                                 break;
                         }
                         break;
-                    /*case R.id.btn_manifiesto_more:
-                        break;*/
+                    case R.id.btn_manifiesto_more:
+                            setNavegate(VisorManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        break;
                 }
             }
         });

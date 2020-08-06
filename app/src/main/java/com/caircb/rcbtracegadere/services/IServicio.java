@@ -29,6 +29,7 @@ import com.caircb.rcbtracegadere.models.request.RequestRegisterPlantaDetalle;
 import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.request.RequestRegistroGenerador;
 import com.caircb.rcbtracegadere.models.request.RequestRuteoRecoleccion;
+import com.caircb.rcbtracegadere.models.request.RequestVisorManifiestoPdf;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
@@ -157,4 +158,7 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerInformacionTransportista")
     Call<DtoInformacionTransportista>informacionTransportista(@Body RequestInformacionTransportista model);
+
+    @POST("HojaRuta/obtenerUrlNombrePdfByIdManifiesto")
+    Call<DtoInfo> obtenerUrlNombrePdfByIdManifiesto(@Body RequestVisorManifiestoPdf model);
 }
