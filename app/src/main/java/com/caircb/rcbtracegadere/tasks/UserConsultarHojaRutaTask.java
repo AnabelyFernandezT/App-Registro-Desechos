@@ -56,7 +56,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         String valor = entity == null ?(rut.getIdSubRuta()!=null?String.valueOf(rut.getIdSubRuta()):null) : entity.getValor();
-        Integer idRuta = valor==null?-1:Integer.parseInt(valor);
+        final Integer idRuta = valor==null?-1:Integer.parseInt(valor);
         if(fechaActualiza!=null){fechaSincronizacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion).getValor();
         }else fechaSincronizacion = null;
         Date fecha = deserialize(fechaSincronizacion);
@@ -79,20 +79,25 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
-                            for (DtoManifiesto reg:respuesta){
-                                MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
-                                MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
-                                for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
-                                    MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
-                                }
-                                //inicalizar los catalogos de recoleccion...
-                                //for (DtoCatalogo c:listaCatalogo){
-                                //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
-                                //}
-                                pos++;
-                                if(cont>1)publishProgress(pos);
+                            if ((respuesta == null) || respuesta.size() == 0)
+                            {
+                                MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestos(idRuta);
                             }
-
+                            else {
+                                for (DtoManifiesto reg:respuesta){
+                                    MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                    for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                        MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+                                    }
+                                    //inicalizar los catalogos de recoleccion...
+                                    //for (DtoCatalogo c:listaCatalogo){
+                                    //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                    //}
+                                    pos++;
+                                    if(cont>1)publishProgress(pos);
+                                }
+                            }
                             return null;
                         }
 

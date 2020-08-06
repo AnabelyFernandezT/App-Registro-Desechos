@@ -56,6 +56,8 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
         ManifiestoDetalleEntity detalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto,idManifiestoDetalle);
         ManifiestoEntity entity = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
 
+        rq.setIdentificacion(entity.getIdentificacionCliente());
+        rq.setNombreCliente(entity.getNombreCliente());
         rq.setManifiesto(entity.getNumeroManifiesto());
         rq.setPesoReferencial(String.valueOf(detalle.getPesoReferencial()));
         rq.setPesoReferencial(pesoExtra);

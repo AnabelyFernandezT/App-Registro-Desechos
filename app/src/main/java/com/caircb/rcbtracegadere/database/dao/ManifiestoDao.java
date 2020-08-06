@@ -223,6 +223,9 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set fechaInicioRecorrecion =:fechaInicioRecoleccion where idAppManifiesto =:idManifiesto")
     public abstract void saveOrUpdateFechaInicioRecoleccion(Integer idManifiesto, Date fechaInicioRecoleccion);
 
+    @Query("delete from tb_manifiestos where estado < 2 and idSubRuta = :idRuta")
+    public abstract void deleteNonSyncronizedManifiestos(Integer idRuta);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoEntity entity);
 

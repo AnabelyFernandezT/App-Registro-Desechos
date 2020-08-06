@@ -1,6 +1,8 @@
 package com.caircb.rcbtracegadere.models.request;
 
 public class RequestNotificacionComercial {
+    private String identificacion;
+    private String nombreCliente;
     private String manifiesto;
     private String pesoReferencial;
     private String pesoSolicitado;
@@ -39,5 +41,21 @@ public class RequestNotificacionComercial {
 
     public void setFlagTipoPKG(Integer flagTipoPKG) {
         this.flagTipoPKG = flagTipoPKG;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
     }
 }

@@ -291,8 +291,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     StringBuilder sb = new StringBuilder();
                     for(RowItemPaquete row:listaPaquetes){
                         pendientes += row.getPendiente();
-                        if(row.getTipo()==1) sb.append(""+row.getPendiente()+"  "+row.getNombre()).append(System.getProperty("line.separator"));
-                        if(row.getTipo()==2) sb.append(""+row.getPendiente()+ "  "+row.getNombre()).append(System.getProperty("line.separator"));
+                        if(row.getTipo()==1) sb.append("F "+row.getNombre()).append(": "+row.getPendiente()+System.getProperty("line.separator"));
+                        if(row.getTipo()==2) sb.append(""+row.getNombre()).append(": "+row.getPendiente());
                     }
 
                     if(pendientes==0){
