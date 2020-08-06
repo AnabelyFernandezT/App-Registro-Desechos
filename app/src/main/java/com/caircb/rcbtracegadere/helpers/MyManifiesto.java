@@ -1357,22 +1357,25 @@ public class MyManifiesto {
             for (RowItemManifiesto reg:detalles){
                 nombre = reg.getDescripcion();
                 pos = nombre.indexOf("-");
-                if(pos>9){
-                    det.addCell(createCell_NO_BORDER_SINGLE(reg.getDescripcion(), f6, null));
-                }else {
-                    det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos + 1, nombre.length()), f6, null));
-                }
-                det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
-                det.addCell(createCell_VACIO());
-                det.addCell(createCell_VACIO());
+                if(reg.getCantidadBulto()!=0 || reg.getTipoMostrar().toString().equals("3")) {
+                    if (pos > 9) {
+                        det.addCell(createCell_NO_BORDER_SINGLE(reg.getDescripcion(), f6, null));
+                    } else {
+                        det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos + 1, nombre.length()), f6, null));
+                    }
 
-                if(reg.getTipoMostrar().toString().equals("3")){
-                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
-                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
-                }else {
-                    det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
-                    det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6, Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6, Element.ALIGN_CENTER));
+                    det.addCell(createCell_VACIO());
+                    det.addCell(createCell_VACIO());
 
+                    if (reg.getTipoMostrar().toString().equals("3")) {
+                        det.addCell(createCell_NO_BORDER("", f6, Element.ALIGN_CENTER));
+                        det.addCell(createCell_NO_BORDER("", f6, Element.ALIGN_CENTER));
+                    } else {
+                        det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6, Element.ALIGN_CENTER));
+                        det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6, Element.ALIGN_CENTER));
+
+                    }
                 }
                 det.completeRow();
             }
