@@ -44,7 +44,7 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     ImageView imgFirmaPlanta;
     LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
     EditText txtPeso,txtNovedad,txtotraNovedad;
-    TextView txtFirmaPlanta, txtPesoRecolectado;
+    TextView txtFirmaPlanta, txtPesoRecolectado,txtBultosRecolectados;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
     Window window;
@@ -54,7 +54,7 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogBuilder builder;
-    double pesoT=0;
+    double pesoT=0,cantidadBultos=0;
     private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
     TextView txtCountPhoto;
@@ -86,6 +86,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         btnEvidenciaObservacion = this.findViewById(R.id.btnEvidenciaObservacion);
         lnlCountPhoto = this.findViewById(R.id.lnlCountPhoto);
         txtCountPhoto = this.findViewById(R.id.txtCountPhoto);
+        txtBultosRecolectados = this.findViewById(R.id.txtBultosRecolectados);
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
@@ -270,10 +271,12 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         if(bultos.size()>0){
             for (RowItemManifiestoDetalle p:bultos){
                 pesoT= pesoT+ p.getPeso();
+                cantidadBultos = cantidadBultos + p.getCantidadBulto();
             }
         }
 
         txtPesoRecolectado.setText(String.valueOf(pesoT));
+        txtBultosRecolectados.setText(String.valueOf(cantidadBultos));
     }
 
     public void setMakePhoto(Integer code) {
