@@ -732,11 +732,10 @@ public class TabManifiestoGeneral extends LinearLayout {
         dialogBuilder.show();
     }
 
-    private boolean validarCorreo(){
-        String email = txtGenTecCorreo.getText().toString().trim();
+    public boolean validarCorreo(){
+        String email = txtRespEntregaCorreo.getText().toString().trim();
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            txtGenTecCorreo.setError("Ingrese un correo válido");
             return false;
         }
         return true;

@@ -238,6 +238,10 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
                 int i=tabs.getCurrentTab();
                 if (i==0){
+                    if(!tabManifiestoGeneral.validarCorreo()){
+                        messageBox("Ingrese un correo válido");
+                        return;
+                    }
                     tabs.setCurrentTab(tabs.getCurrentTab()+1);
                 }
                 if (i==1){
