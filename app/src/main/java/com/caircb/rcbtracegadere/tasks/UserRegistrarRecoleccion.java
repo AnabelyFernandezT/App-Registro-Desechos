@@ -45,7 +45,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     Integer idAppManifiesto;
 
     ManifiestoEntity model;
-    String path ="recoleccion";
+    String path = "recoleccion";
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
     private List<DtoFile> listaFileDefauld;
     UserUploadFileTask userUploadFileTask;
@@ -59,6 +59,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
     public interface OnRegisterListener {
         public void onSuccessful(Date fechaRecoleccion);
+
         public void onFail();
     }
 
@@ -68,36 +69,42 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                                     Integer idAppManifiesto,
                                     Location location) {
         super(context);
-        this.idAppManifiesto=idAppManifiesto;
-        this.location=location;
+        this.idAppManifiesto = idAppManifiesto;
+        this.location = location;
     }
 
     @Override
     public void execute() {
         //Subir Fotos
         progressShow("registrando ...");
-        model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
+        model = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         //images por defecto
         listaFileDefauld = new ArrayList<>();
 
         firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_RECOLECCION);
-        if(firmaTransportista!=null && !firmaTransportista.isSincronizado())listaFileDefauld.add(firmaTransportista);
-
-        firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_RECOLECCION);
-        if(firmaTecnicoGenerador!=null && !firmaTecnicoGenerador.isSincronizado())listaFileDefauld.add(firmaTecnicoGenerador);
+        if (firmaTransportista != null && !firmaTransportista.isSincronizado())
+            listaFileDefauld.add(firmaTransportista);
 
         firmaAuxiliarRecolector = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1, MyConstant.STATUS_RECOLECCION);
-        if(firmaAuxiliarRecolector!=null && !firmaAuxiliarRecolector.isSincronizado())listaFileDefauld.add(firmaAuxiliarRecolector);
+        if (firmaAuxiliarRecolector != null && !firmaAuxiliarRecolector.isSincronizado())
+            listaFileDefauld.add(firmaAuxiliarRecolector);
 
         firmaConductorRecolector = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2, MyConstant.STATUS_RECOLECCION);
-        if(firmaConductorRecolector!=null && !firmaConductorRecolector.isSincronizado())listaFileDefauld.add(firmaConductorRecolector);
+        if (firmaConductorRecolector != null && !firmaConductorRecolector.isSincronizado())
+            listaFileDefauld.add(firmaConductorRecolector);
+
+
+        firmaTecnicoGenerador = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR, MyConstant.STATUS_RECOLECCION);
+        if (firmaTecnicoGenerador != null && !firmaTecnicoGenerador.isSincronizado())
+            listaFileDefauld.add(firmaTecnicoGenerador);
 
         audioNovedadCliente = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.AUDIO_RECOLECCION, MyConstant.STATUS_RECOLECCION);
-        if(audioNovedadCliente!=null && !audioNovedadCliente.isSincronizado())listaFileDefauld.add(audioNovedadCliente);
+        if (audioNovedadCliente != null && !audioNovedadCliente.isSincronizado())
+            listaFileDefauld.add(audioNovedadCliente);
 
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
-        userUploadFileTask= new UserUploadFileTask(getActivity(),path);
+        userUploadFileTask = new UserUploadFileTask(getActivity(), path);
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
             @Override
             public void onSuccessful() {
@@ -112,33 +119,35 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 message(message);
             }
         });
-        userUploadFileTask.uploadRecoleccion(listaFileDefauld,idAppManifiesto);
+        userUploadFileTask.uploadRecoleccion(listaFileDefauld, idAppManifiesto);
     }
 
-    private void register(){
+    private void register() {
         final RequestManifiesto request = createRequestManifiesto();
-        if(request!=null){
+        if (request != null) {
             Gson g = new Gson();
             String f = g.toJson(request);
+            System.out.println(f);
 
             WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         //actualizar el estado a recibido del manifiesto...
-                        if(response.body().getExito()) {
+                        if (response.body().getExito()) {
                             //imprimirEtiquetas();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
 
-                            if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
+                            if (mOnRegisterListener != null)
+                                mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
                             progressHide();
 
-                        }else{
+                        } else {
                             progressHide();
                             message(response.body().getMensaje());
                         }
 
-                    }else{
+                    } else {
                         progressHide();
                         message("No existe acceso al servidor");
                     }
@@ -153,29 +162,50 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         }
     }
 
-    private RequestManifiesto createRequestManifiesto(){
+    private RequestManifiesto createRequestManifiesto() {
         RequestManifiesto rq = null;
         TecnicoEntity tec = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(model.getIdTecnicoGenerador());
-        if(model!=null) {
+        int estadotransportista = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaTransportista"));
+        int estadoAuxiliar = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaAuxiliar"));
+        int estadoOperador = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaOperador"));
+
+        if (model != null) {
             rq = new RequestManifiesto();
             rq.setIdAppManifiesto(idAppManifiesto);
             rq.setNumeroManifiesto(model.getNumeroManifiesto());
             rq.setNumeroManifiestoCliente(model.getNumManifiestoCliente());
-            rq.setUrlFirmaTransportista(firmaTransportista!=null? (path+"/"+firmaTransportista.getUrl()):"");
+         /*   if (estadotransportista == 1) {
+                rq.setUrlFirmaTransportista(firmaTransportista != null ? firmaTransportista.getFile() : null);
+            } else {
+                rq.setUrlFirmaTransportista(null);
+            }*/
+            rq.setUrlFirmaTransportista(firmaTransportista != null ? (path + "/" +firmaTransportista.getUrl()) : null);
             rq.setResponsableEntregaIdentificacion(tec.getIdentificacion());
             rq.setResponsableEntregaNombre(tec.getNombre());
             rq.setResponsableEntregaCorreo(tec.getCorreo());
             rq.setResponsableEntregaTelefono(tec.getTelefono());
-            rq.setUrlFirmaResponsableEntrega(firmaTecnicoGenerador!=null?(path+"/"+firmaTecnicoGenerador.getUrl()):"");
-            rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector!=null?(path+"/"+firmaAuxiliarRecolector.getUrl()):"");
-            rq.setUrlFirmaConductorRecolector(firmaConductorRecolector!=null?(path+"/"+firmaConductorRecolector.getUrl()):"");
+
+           /* rq.setUrlFirmaResponsableEntrega(firmaTecnicoGenerador != null ? (path + "/" + firmaTecnicoGenerador.getUrl()) : "");
+            if (estadoAuxiliar == 1) {
+                rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector != null ? firmaAuxiliarRecolector.getFile() : null);
+            } else {
+                rq.setUrlFirmaAuxiliarRecolector(null);
+            }
+
+            if (estadoOperador == 1) {
+                rq.setUrlFirmaConductorRecolector(firmaConductorRecolector != null ? firmaConductorRecolector.getFile() : null);
+            } else {
+                rq.setUrlFirmaConductorRecolector(null);
+            }*/
+            rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector != null ? (path + "/" +firmaAuxiliarRecolector.getUrl()) : "");
+            rq.setUrlFirmaConductorRecolector(firmaConductorRecolector != null ? (path + "/" +firmaConductorRecolector.getUrl()) : "");
             rq.setUsuarioResponsable(MySession.getIdUsuario());
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
-            rq.setUrlAudioNovedadCliente(audioNovedadCliente!=null?( path+"/"+audioNovedadCliente.getUrl()):"");
+            rq.setUrlAudioNovedadCliente(audioNovedadCliente != null ? (path + "/" + audioNovedadCliente.getUrl()) : "");
             rq.setFechaRecoleccion(model.getFechaRecoleccion());
-            rq.setLatitude(location!=null?location.getLatitude():null);
-            rq.setLongitude(location!=null?location.getLongitude():null);
-            rq.setPaquete(createRequestPaquete(model.getTipoPaquete()!=null?(model.getTipoPaquete()>0?model.getTipoPaquete():null):null));
+            rq.setLatitude(location != null ? location.getLatitude() : null);
+            rq.setLongitude(location != null ? location.getLongitude() : null);
+            rq.setPaquete(createRequestPaquete(model.getTipoPaquete() != null ? (model.getTipoPaquete() > 0 ? model.getTipoPaquete() : null) : null));
             rq.setDetalles(createRequestDet());
             rq.setNovedadFrecuente(createRequestNovedadFrecuente());
             rq.setNovedadNoRecoleccion(createRequestNoRecoleccion());
@@ -183,32 +213,32 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setFechaInicioRecoleccion(model.getFechaInicioRecorrecion());
             rq.setCorreos(model.getCorreos());
         }
-        return  rq;
+        return rq;
     }
 
-    private List<RequestManifiestoDet> createRequestDet(){
-        List<RequestManifiestoDet> resp= new ArrayList<>();
+    private List<RequestManifiestoDet> createRequestDet() {
+        List<RequestManifiestoDet> resp = new ArrayList<>();
         List<ManifiestoDetalleEntity> det = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleSeleccionados(idAppManifiesto);
-        if(det.size()>0){
-            for (ManifiestoDetalleEntity d:det){
-                resp.add( new RequestManifiestoDet(
+        if (det.size() > 0) {
+            for (ManifiestoDetalleEntity d : det) {
+                resp.add(new RequestManifiestoDet(
                         d.getIdAppManifiestoDetalle(),
                         d.getPesoUnidad(),
                         d.getCantidadBulto(),
                         createRequestBultos(d.getIdAppManifiestoDetalle()),
-                        (d.getTipoBalanza() == null)? 0: d.getTipoBalanza()
+                        (d.getTipoBalanza() == null) ? 0 : d.getTipoBalanza()
                 ));
             }
         }
         return resp;
     }
 
-    private List<RequestManifiestoDetBultos> createRequestBultos(Integer idAppManifiestoDetalle){
+    private List<RequestManifiestoDetBultos> createRequestBultos(Integer idAppManifiestoDetalle) {
         List<RequestManifiestoDetBultos> resp = new ArrayList<>();
         List<ManifiestoDetallePesosEntity> bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idAppManifiestoDetalle);
-        if(bultos.size()>0){
-            int i=1;
-            for (ManifiestoDetallePesosEntity p:bultos){
+        if (bultos.size() > 0) {
+            int i = 1;
+            for (ManifiestoDetallePesosEntity p : bultos) {
                 resp.add(new RequestManifiestoDetBultos(
                         i,
                         p.getValor(),
@@ -221,45 +251,45 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         return resp;
     }
 
-    private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente(){
+    private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente() {
         List<RequestManifiestoNovedadFrecuente> resp = new ArrayList<>();
         List<Integer> novedad = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchConsultarNovedadFrecuente(idAppManifiesto);
-        if(novedad.size()>0){
-            for (Integer id:novedad) {
+        if (novedad.size() > 0) {
+            for (Integer id : novedad) {
                 resp.add(new RequestManifiestoNovedadFrecuente(
                         id,
-                        createFotografia(id,1),
-                        path+"/"+"novedadfrecuente"
+                        createFotografia(id, 1),
+                        path + "/" + "novedadfrecuente"
                 ));
             }
         }
         return resp;
     }
 
-    private List<RequestManifiestoNovedadNoRecoleccion> createRequestNoRecoleccion(){
+    private List<RequestManifiestoNovedadNoRecoleccion> createRequestNoRecoleccion() {
         List<RequestManifiestoNovedadNoRecoleccion> resp = new ArrayList<>();
         List<Integer> novedad = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchConsultarMotivoNoRecoleccion(idAppManifiesto);
-        if(novedad.size()>0){
-            for (Integer id:novedad) {
+        if (novedad.size() > 0) {
+            for (Integer id : novedad) {
                 resp.add(new RequestManifiestoNovedadNoRecoleccion(
                         id,
-                        createFotografia(id,2),
-                        path+"/"+"notivonorecoleccion"
+                        createFotografia(id, 2),
+                        path + "/" + "notivonorecoleccion"
                 ));
             }
         }
         return resp;
     }
 
-    private List<RequestNovedadFoto> createFotografia(Integer idCatalogo,Integer tipo) {
-        return MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto,idCatalogo,tipo);
+    private List<RequestNovedadFoto> createFotografia(Integer idCatalogo, Integer tipo) {
+        return MyApp.getDBO().manifiestoFileDao().consultarFotografias(idAppManifiesto, idCatalogo, tipo);
     }
 
-    private RequestManifiestoPaquete createRequestPaquete(Integer idPaquete){
-        RequestManifiestoPaquete resp=null;
-        if(idPaquete!=null) {
+    private RequestManifiestoPaquete createRequestPaquete(Integer idPaquete) {
+        RequestManifiestoPaquete resp = null;
+        if (idPaquete != null) {
             ManifiestoPaquetesEntity p = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, idPaquete);
-            if(p!=null){
+            if (p != null) {
                 resp = new RequestManifiestoPaquete();
                 resp.setAdicionalFunda(p.getAdFundas());
                 resp.setAdicionalGuardian(p.getAdGuardianes());
@@ -274,7 +304,9 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         return resp;
     }
 
-    private String getPath() { return simpleDate.format(new Date());}
+    private String getPath() {
+        return simpleDate.format(new Date());
+    }
 
     /*+++*******************/
     /*
@@ -302,7 +334,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     }
     */
 
-    public void setOnRegisterListener(@NonNull OnRegisterListener l){
-        mOnRegisterListener =l;
+    public void setOnRegisterListener(@NonNull OnRegisterListener l) {
+        mOnRegisterListener = l;
     }
 }
