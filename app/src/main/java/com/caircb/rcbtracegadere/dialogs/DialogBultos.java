@@ -445,6 +445,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             createBulto(imput);
                             btn_add.setEnabled(false);
                             btn_ok.setEnabled(false);
+                           // DialogBultos.this.dismiss();
+                            if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos);}
                         }
 
                         @Override
@@ -603,9 +605,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 }else{
                     MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                 }
-                if (mOnBultoListener != null) {
-                    mOnBultoListener.onCanceled(faltaImpresos);
-                }
+                if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos);}
                 if(btn_add.isEnabled() && btn_ok.isEnabled()){
                     aplicar();
                 }

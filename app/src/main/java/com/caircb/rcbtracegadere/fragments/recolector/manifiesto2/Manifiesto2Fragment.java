@@ -238,10 +238,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
                 int i=tabs.getCurrentTab();
                 if (i==0){
-                    if(!tabManifiestoGeneral.validarCorreo()){
-                        messageBox("Ingrese un correo válido");
-                        return;
-                    }
                     tabs.setCurrentTab(tabs.getCurrentTab()+1);
                 }
                 if (i==1){
@@ -265,9 +261,14 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 }
 
                 if(tabManifiestoGeneral.validarCorreos()&& !aplicaNoRecoleccion){
-                    messageBox("Se requiere que ingrese un correo electrónico");
+                    messageBox("Correo electrónico faltante");
                     return;
                 }
+                    if(!tabManifiestoGeneral.validarCorreo()){
+                        messageBox("El correo ingresado no es válido");
+                        tabs.setCurrentTab(0);
+                        return;
+                    }
 
                 if(MyApp.getDBO().manifiestoDetalleDao().countDetallesSinImprimirByIdManifiesto(idAppManifiesto)>0){
                     messageBox("Existen bultos sin imprimir, Favor verificarlos para continuar");
