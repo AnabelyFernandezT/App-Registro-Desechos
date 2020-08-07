@@ -283,6 +283,10 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     messageBox("Las novedades frecuentes seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }
+                if (tabManifiestoDetalle.validaPesoReferencial()==true){
+                    messageBox("Debe ingresar fotografías en el detalle del manifiesto");
+                    return;
+                }
 
                 //validacion de lista de paquetes... con sus pendientes..
                 listaPaquetes = tabManifiestoAdicional.validaDataListaPaquetes();
@@ -446,7 +450,12 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         if(tabManifiestoAdicional!=null && ((requestCode>=101 && requestCode<=104) ||(requestCode>=201 && requestCode<=204))){
             tabManifiestoAdicional.setMakePhoto(requestCode);
         }
+
+            tabManifiestoDetalle.setMakePhoto(requestCode);
+
     }
+
+
 
     private void selectImage(final Integer index) {
 

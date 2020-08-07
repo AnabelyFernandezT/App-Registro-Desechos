@@ -28,6 +28,8 @@ public class RequestManifiesto {
     private Integer estado;
     private Date fechaInicioRecoleccion;
     private String correos;
+    private List<RequestNovedadPesoPromedio> fotosManifiestoPromedio;
+    private String textoEvidenciaPromedio;
 
     public Integer getIdAppManifiesto() {
         return idAppManifiesto;
@@ -219,5 +221,21 @@ public class RequestManifiesto {
 
     public void setCorreos(String correos) {
         this.correos = correos;
+    }
+
+    public List<RequestNovedadPesoPromedio> getFotosManifiestoPromedio() {
+        return fotosManifiestoPromedio;
+    }
+
+    public void setFotosManifiestoPromedio(List<RequestNovedadPesoPromedio> fotosManifiestoPromedio) {
+        this.fotosManifiestoPromedio = fotosManifiestoPromedio;
+    }
+
+    public String getTextoEvidenciaPromedio() {
+        return textoEvidenciaPromedio;
+    }
+
+    public void setTextoEvidenciaPromedio(String textoEvidenciaPromedio) {
+        this.textoEvidenciaPromedio = textoEvidenciaPromedio;
     }
 }

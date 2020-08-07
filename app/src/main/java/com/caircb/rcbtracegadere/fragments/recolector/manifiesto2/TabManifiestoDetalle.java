@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.strictmode.UnbufferedIoViolation;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,18 +26,23 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoDetalleAdapter;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarBultos;
+import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosNo;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -47,16 +55,19 @@ public class TabManifiestoDetalle extends LinearLayout {
 
     private List<RowItemManifiesto> detalles;
     private RecyclerView recyclerView;
-
     ManifiestoDetalleAdapter recyclerviewAdapter;
-
+    private List<ManifiestoDetallePesosEntity> itemManifiestoDetalleBultos;
     Integer idAppManifiesto, tipoPaquete, estadoManifiesto;
     String numeroManifiesto;
     Window window;
     //ListView mDialogMenuItems;
-
+    private List<ManifiestoDetallePesosEntity> listManifiestoBultos;
     Dialog dialogOpcioneItem;
     DialogBultos dialogBultos;
+    LinearLayout novedadPesoPromedio, btnEvidenciaNovedadFrecuente, lnlCountPhoto;
+    RelativeLayout btnEliminarFotos;
+    DialogAgregarFotografias dialogAgregarFotografias;
+    TextView txtPesoPromedio, txtCountPhoto;
     //DialogMenuBaseAdapter dialogMenuBaseAdapter;
     MyCalculoPaquetes calculoPaquetes;
     FloatingActionButton mensajes;
@@ -100,9 +111,69 @@ public class TabManifiestoDetalle extends LinearLayout {
             }
         });
 
+
         calculoPaquetes = new MyCalculoPaquetes(idAppManifiesto, tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
+        novedadPesoPromedio = this.findViewById(R.id.sectionNovedadPesoPromedio);
+        txtPesoPromedio = this.findViewById(R.id.txtPesoPromedio);
         recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(), numeroManifiesto, estadoManifiesto, idAppManifiesto, tipoRecoleccion);
+        lnlCountPhoto = this.findViewById(R.id.lnlCountPhoto);
+        txtCountPhoto = this.findViewById(R.id.txtCountPhoto);
+        int countFotos=MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, 101, 19);
+        if (countFotos>0){
+            lnlCountPhoto.setVisibility(VISIBLE);
+            txtCountPhoto.setText(countFotos+"");
+        }else {
+            lnlCountPhoto.setVisibility(GONE);
+            txtCountPhoto.setText("");
+        }
+
+        btnEliminarFotos=this.findViewById(R.id.btnEliminarFotos);
+        btnEliminarFotos.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idAppManifiesto,101);
+                int countFotos=MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, 101, 19);
+                if (countFotos>0){
+                    lnlCountPhoto.setVisibility(VISIBLE);
+                    txtCountPhoto.setText(countFotos+"");
+                }else {
+                    lnlCountPhoto.setVisibility(GONE);
+                    txtCountPhoto.setText("");
+                }
+            }
+        });
+
+        btnEvidenciaNovedadFrecuente = this.findViewById(R.id.btnEvidenciaNovedadFrecuente);
+        btnEvidenciaNovedadFrecuente.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idAppManifiesto, 101, ManifiestoFileDao.FOTO_NOVEDAD_PESO_PROMEDIO, MyConstant.STATUS_RECOLECCION);
+                dialogAgregarFotografias.setCancelable(false);
+                dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAgregarFotografias.setOnAgregarFotosListener(new DialogAgregarFotografias.OnAgregarFotosListener() {
+                    @Override
+                    public void onSuccessful(Integer cantidad) {
+                           /* if(dialogAgregarFotografias!=null && dialogAgregarFotografias.isShowing()){
+                                dialogAgregarFotografias.dismiss();
+                                dialogAgregarFotografias=null;
+                            }*/
+                        lnlCountPhoto.setVisibility(View.VISIBLE);
+                        txtCountPhoto.setText(String.valueOf(cantidad));
+                    }
+                });
+                dialogAgregarFotografias.show();
+                window = dialogAgregarFotografias.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        });
+
+    }
+
+    public void setMakePhoto(Integer code) {
+        if (dialogAgregarFotografias != null) {
+            dialogAgregarFotografias.setMakePhoto(code);
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -180,14 +251,36 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
             }
         });
+
+        double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
+        double pesoTotal = 0.0;
+        for (int i = 0; i < detalles.size(); i++) {
+            itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
+            for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
+                pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+            }
+        }
+        if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+            txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
+            MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
+            if (pesoTotal == 0.0) {
+                novedadPesoPromedio.setVisibility(GONE);
+                txtPesoPromedio.setText("");
+            } else {
+                novedadPesoPromedio.setVisibility(VISIBLE);
+            }
+        } else {
+            novedadPesoPromedio.setVisibility(GONE);
+            txtPesoPromedio.setText("");
+        }
     }
 
-    public void reloadData(){
+    public void reloadData() {
 
-        if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("1")){
+        if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresionesByIdManifiesto(idAppManifiesto, false);
             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
-        }else{
+        } else {
             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
         }
         recyclerviewAdapter.setTaskList(detalles);
@@ -223,7 +316,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             public void onClick(View v) {
                 MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
                 tipoBalanza = 1;
-                if (detalles.get(positionItem).getTipoPaquete() == null||detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
+                if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
                     openDialogBultos(positionItem, 0);
                 } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
                     openDialogBultos(positionItem, 100);
@@ -351,6 +444,29 @@ public class TabManifiestoDetalle extends LinearLayout {
                     //actualizar datos en dbo local...
                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), row.getCantidadBulto(), row.getPeso(), cantidad, row.isEstado());
 
+                    double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
+                    double pesoTotal = 0.0;
+                    for (int i = 0; i < detalles.size(); i++) {
+                        itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
+                        for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
+                            pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+                        }
+                    }
+                    if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+                        txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
+                        MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
+                        if (pesoTotal == 0.0) {
+                            novedadPesoPromedio.setVisibility(GONE);
+                            txtPesoPromedio.setText("");
+                        } else {
+                            novedadPesoPromedio.setVisibility(VISIBLE);
+                        }
+                    } else {
+                        novedadPesoPromedio.setVisibility(GONE);
+                        txtPesoPromedio.setText("");
+                    }
+
+
                     //si cambia los item(add/remove) de la calculadora se resetea los valores pendientes ingresados por el usuario...
                     isChangeTotalCreateBultos = isChangeTotalBultos;
                     //calculo de paquetes...
@@ -365,6 +481,30 @@ public class TabManifiestoDetalle extends LinearLayout {
                         if (faltaImpresos) {
                             //detalles.clear();
                             reloadData();
+
+                            double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
+                            double pesoTotal = 0.0;
+                            for (int i = 0; i < detalles.size(); i++) {
+                                itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
+                                for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
+                                    pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+                                }
+                            }
+                            if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+                                txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
+                                MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
+                                if (pesoTotal == 0.0) {
+                                    novedadPesoPromedio.setVisibility(GONE);
+                                    txtPesoPromedio.setText("");
+                                } else {
+                                    novedadPesoPromedio.setVisibility(VISIBLE);
+                                }
+                            } else {
+                                novedadPesoPromedio.setVisibility(GONE);
+                                txtPesoPromedio.setText("");
+                            }
+
+
                         }
                         dialogBultos.dismiss();
                         dialogBultos = null;
@@ -380,6 +520,19 @@ public class TabManifiestoDetalle extends LinearLayout {
 
     public boolean validaExisteDetallesSeleccionados() {
         return MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleSeleccionados(idAppManifiesto).size() > 0;
+    }
+
+    public boolean validaPesoReferencial() {
+        if (novedadPesoPromedio.getVisibility() == VISIBLE) {
+            int cantidadFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, 101, 19);
+            if (cantidadFotos == 0) {
+                return true;//Debe ingresar fotos
+            } else {
+                return false;//Ya ingresó fotos
+            }
+        } else {
+            return false;//No debe ingresar fotos
+        }
     }
 
     public boolean validaExisteCambioTotalBultos() {

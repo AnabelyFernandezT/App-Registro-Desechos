@@ -53,6 +53,7 @@ public abstract class ManifiestoDetallePesosDao {
     @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto")
     public abstract void deleteTableValoresByIdManifiesto(Integer idManifiesto);
 
+
     @Query("update tb_manifiesto_detalle_pesos set impresion =:estado where _id in (select p._id from tb_manifiestos m  \n" +
             " inner join tb_manifiesto_detalle_pesos p on m.idAppManifiesto = p.idAppManifiesto\n" +
             " where idChoferRecolector =:idUsuarioRecolector and m.estado=1 ) ")

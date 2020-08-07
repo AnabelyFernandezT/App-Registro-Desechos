@@ -6,10 +6,72 @@
     android:padding="5dp"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:id="@+id/sectionNovedadPesoPromedio"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/customborder">
+        <TextView
+            android:id="@+id/txtPesoPromedio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="gravity"
+            android:textSize="13dp"
+            android:layout_weight="1">
+        </TextView>
+        <LinearLayout
+            android:id="@+id/btnEvidenciaNovedadFrecuente"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingRight="0dp"
+            android:layout_margin="1dp">
+
+            <RelativeLayout
+                android:background="@mipmap/ic_camara"
+                android:scaleType="center"
+                android:layout_width="35dp"
+                android:layout_height="35dp" >
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/lnlCountPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_circle"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp">
+
+                    <TextView
+                        android:id="@+id/txtCountPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:background="@null"
+                        android:padding="0dp"
+                        android:text="0"
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/btnEliminarFotos"
+            android:background="@drawable/rcb_btn_elminar_valor"
+            android:scaleType="center"
+            android:layout_width="30dp"
+            android:layout_height="30dp" ></RelativeLayout>
+    </LinearLayout>
+
     <FrameLayout
         android:id="@android:id/tabcontent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
     <ScrollView
         android:layout_width="match_parent"

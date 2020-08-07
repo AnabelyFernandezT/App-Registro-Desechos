@@ -27,6 +27,7 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoNovedadFrecuent
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoNovedadNoRecoleccion;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPaquete;
 import com.caircb.rcbtracegadere.models.request.RequestNovedadFoto;
+import com.caircb.rcbtracegadere.models.request.RequestNovedadPesoPromedio;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
 import com.google.gson.Gson;
@@ -48,14 +49,17 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     String path = "recoleccion";
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
     private List<DtoFile> listaFileDefauld;
+    private List<DtoFile> listaFileDefauld2;
     UserUploadFileTask userUploadFileTask;
     DtoFile firmaTransportista;
     DtoFile firmaTecnicoGenerador;
     DtoFile audioNovedadCliente;
     DtoFile firmaAuxiliarRecolector;
     DtoFile firmaConductorRecolector;
+    DtoFile fotosPesoPRomedio;
     Location location;
     MyPrint print;
+    String txtEvidenciaPromedio;
 
     public interface OnRegisterListener {
         public void onSuccessful(Date fechaRecoleccion);
@@ -81,6 +85,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
         //images por defecto
         listaFileDefauld = new ArrayList<>();
+        listaFileDefauld2 = new ArrayList<>();
+
 
         firmaTransportista = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_TRANSPORTISTA, MyConstant.STATUS_RECOLECCION);
         if (firmaTransportista != null && !firmaTransportista.isSincronizado())
@@ -103,6 +109,10 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         if (audioNovedadCliente != null && !audioNovedadCliente.isSincronizado())
             listaFileDefauld.add(audioNovedadCliente);
 
+        for (int i=0;i<4;i++){
+
+        }
+
         path = path + "/" + getPath() + "/" + model.getNumeroManifiesto();
         userUploadFileTask = new UserUploadFileTask(getActivity(), path);
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
@@ -120,6 +130,11 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             }
         });
         userUploadFileTask.uploadRecoleccion(listaFileDefauld, idAppManifiesto);
+
+
+        /*listaFileDefauld2=MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauldAllFotos(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_PESO_PROMEDIO, MyConstant.STATUS_RECOLECCION);
+        userUploadFileTask.uploadFotosPesoPromedio(listaFileDefauld2,idAppManifiesto);*/
+
     }
 
     private void register() {
@@ -212,6 +227,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setEstado(2);
             rq.setFechaInicioRecoleccion(model.getFechaInicioRecorrecion());
             rq.setCorreos(model.getCorreos());
+            rq.setFotosManifiestoPromedio(createRequestNovedadPesoPromedio());
+            rq.setTextoEvidenciaPromedio(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio")!=null?MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio"):"");
         }
         return rq;
     }
@@ -247,6 +264,20 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 ));
                 i++;
             }
+        }
+        return resp;
+    }
+    private List<RequestNovedadPesoPromedio> createRequestNovedadPesoPromedio() {
+        List<RequestNovedadPesoPromedio> resp = new ArrayList<>();
+        int contFotos=MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, 101, 19);
+        for (int i=0;i<contFotos;i++){
+            resp.add(new RequestNovedadPesoPromedio(
+                    createFotografia(101,19).get(i).getUrlImagen(),
+                    path + "/" + "novedad" +
+                            "pesopromedio",
+                    1,
+                    i
+            ));
         }
         return resp;
     }

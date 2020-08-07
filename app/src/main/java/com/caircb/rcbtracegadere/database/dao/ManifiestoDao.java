@@ -64,11 +64,14 @@ public abstract class ManifiestoDao {
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero, estado from tb_manifiestos where estado=1 order by nombreCliente")
     public abstract List<RowItemHojaRuta> fetchHojaRutaAsigando();
 
+    @Query("select pesoPromedio from tb_manifiestos where idAppManifiesto=:idManifiesto")
+    public abstract int selectPesoPromediobyIdManifiesto(Integer idManifiesto);
+
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=1 order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigando();
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete, pesoPromedio from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
@@ -301,7 +304,8 @@ public abstract class ManifiestoDao {
             entity.setFirmaChoferRecolector(manifiesto.getFirmaChoferRecolector());
             entity.setFirmaAuxiliarRecolector(manifiesto.getFirmaAuxiliarRecolector());
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
-
+            entity.setPesoPromedio(manifiesto.getPesoPromedio());
+            System.out.println("");
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
@@ -374,6 +378,7 @@ public abstract class ManifiestoDao {
             entity.setFirmaChoferRecolector(manifiesto.getFirmaChoferRecolector());
             entity.setFirmaAuxiliarRecolector(manifiesto.getFirmaAuxiliarRecolector());
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
+            entity.setPesoPromedio(manifiesto.getPesoPromedio());
         }
 
         if (entity!=null) createManifiesto(entity);

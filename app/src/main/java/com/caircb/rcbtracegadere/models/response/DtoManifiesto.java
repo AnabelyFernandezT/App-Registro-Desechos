@@ -77,6 +77,7 @@ public class DtoManifiesto {
     private String firmaChoferRecolector;
     private String firmaAuxiliarRecolector;
     private String firmaOperadorRecolector;
+    private Double pesoPromedio;
 
 
     public DtoManifiesto() {
@@ -586,5 +587,13 @@ public class DtoManifiesto {
 
     public void setFirmaOperadorRecolector(String firmaOperadorRecolector) {
         this.firmaOperadorRecolector = firmaOperadorRecolector;
+    }
+
+    public Double getPesoPromedio() {
+        return pesoPromedio;
+    }
+
+    public void setPesoPromedio(Double pesoPromedio) {
+        this.pesoPromedio = pesoPromedio;
     }
 }

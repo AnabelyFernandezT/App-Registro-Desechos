@@ -151,6 +151,8 @@ public class ManifiestoEntity {
     private String firmaChoferRecolector;
     private String firmaAuxiliarRecolector;
     private String firmaOperadorRecolector;
+    private Double pesoPromedio;
+
 
     public ManifiestoEntity() {
     }
@@ -604,6 +606,14 @@ public class ManifiestoEntity {
 
     public void setFirmaOperadorRecolector(String firmaOperadorRecolector) {
         this.firmaOperadorRecolector = firmaOperadorRecolector;
+    }
+
+    public Double getPesoPromedio() {
+        return pesoPromedio;
+    }
+
+    public void setPesoPromedio(Double pesoPromedio) {
+        this.pesoPromedio = pesoPromedio;
     }
 }
 

@@ -49,6 +49,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     UserRegistrarRecoleccion userRegistrarRecoleccion;
     UserRegistrarRuteoRecoleccion userRegistrarRuteoRecoleccion;
     DialogBuilder dialogBuilder;
+    DialogBuilder dialogBuilder2;
     String identifiacion;
 
     public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
@@ -217,12 +218,13 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                                     @Override
                                     public void onClick(View v) {
                                         dialogBuilder.dismiss();
-                                        dialogBuilder = new DialogBuilder(getActivity());
-                                        dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
-                                        dialogBuilder.setCancelable(false);
-                                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                        dialogBuilder2 = new DialogBuilder(getActivity());
+                                        dialogBuilder2.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
+                                        dialogBuilder2.setCancelable(false);
+                                        dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                dialogBuilder2.dismiss();
                                                 dialogBuilder.dismiss();
                                                 //Guardo la nueva fecha de inicio y puntoParitda;
                                                 MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
@@ -235,9 +237,10 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                                                 setNavegate(HojaRutaAsignadaFragment.newInstance());
                                             }
                                         });
-                                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                        dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                dialogBuilder2.dismiss();
                                                 dialogBuilder.dismiss();
                                                 //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
                                                 MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
@@ -249,7 +252,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
                                                 setNavegate(HomeTransportistaFragment.create());
                                             }
                                         });
-                                        dialogBuilder.show();
+                                        dialogBuilder2.show();
                                     }
                                 });
                                 dialogBuilder.show();
