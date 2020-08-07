@@ -456,7 +456,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             btn_add.setEnabled(false);
                             btn_ok.setEnabled(false);
                            // DialogBultos.this.dismiss();
-                            addBulto(imput,tipo);
+                            //addBulto(imput,tipo);
                             if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos);}
                         }
 
