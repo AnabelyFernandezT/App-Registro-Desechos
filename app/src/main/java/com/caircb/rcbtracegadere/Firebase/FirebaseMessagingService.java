@@ -68,16 +68,26 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Data: " + remoteMessage.getData());
-            String name = "notif_value_"+remoteMessage.getData().get("idManifiestoDetalle");
+            /*String name = "notif_value_"+remoteMessage.getData().get("idManifiestoDetalle");
             MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+remoteMessage.getData().get("idCatalogoRespuesta"));
-            MyApp.getDBO().parametroDao().saveOrUpdate(name,""+remoteMessage.getData().get("idManifiestoDetalleRespuesta"));
-        }
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(5)){
-            if(mOnRegisterListener!=null)mOnRegisterListener.onNoPeso();
-        }
+            MyApp.getDBO().parametroDao().saveOrUpdate(name,""+remoteMessage.getData().get("idManifiestoDetalleRespuesta"));*/
+            if(remoteMessage.getData().get("idCatalogoRespuesta").equals("5")){
+                MyApp.getDBO().pesoExtraDao().saveOrUpdate(Integer.parseInt(remoteMessage.getData().get("idManifiesto")),
+                                                           Integer.parseInt(remoteMessage.getData().get("idManifiestoDetalle")),
+                                                           Double.parseDouble(remoteMessage.getData().get("pesoAprobado")),
+                                                           1);
 
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals(6)){
-            if(mOnRegisterListener!=null)mOnRegisterListener.onSiPeso();
+                MyApp.getDBO().manifiestoDetalleDao().updatePesoReferncial(Integer.parseInt(remoteMessage.getData().get("idManifiestoDetalle")),
+                                                                               (Double.parseDouble(remoteMessage.getData().get("pesoAprobado"))));
+            }
+
+            if(remoteMessage.getData().get("idCatalogoRespuesta").equals("6")){
+                MyApp.getDBO().pesoExtraDao().saveOrUpdate(Integer.parseInt(remoteMessage.getData().get("idManifiesto")),
+                        Integer.parseInt(remoteMessage.getData().get("idManifiestoDetalle")),
+                        Double.parseDouble(remoteMessage.getData().get("pesoAprobado")),
+                        3);
+
+            }
         }
 
         if(remoteMessage.getData().get("idCatalogoRespuesta").equals("10")){//si(autorizacion sin impresora)

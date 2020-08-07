@@ -21,6 +21,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.NotificacionPesoExtraEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
@@ -45,6 +46,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     AlertDialog alert;
     String valor = null;
     ParametroEntity para,idDetalleValidacion;
+    NotificacionPesoExtraEntity pesoExtraEntity;
     String dato = "0";
     String inputDefault = "0";
     String codigoDetalle="", vreferencial;
@@ -115,6 +117,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void initBotones() {
         para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
+        pesoExtraEntity = MyApp.getDBO().pesoExtraDao().fetchPesoExtra(idManifiesto,idManifiestoDetalle);
         idDetalleValidacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico("idValidacion_"+idManifiestoDetalle);
         if(idDetalleValidacion!=null){idManifiestoValidacion = idDetalleValidacion.getValor();}
         listViewBultos = getView().findViewById(R.id.listViewBultos);
@@ -152,13 +155,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         btn_decimal.setOnClickListener(this);
         btn_add.setOnClickListener(this);
 
-        if(para!=null){
-            if(para.getValor().equals("0")&& idManifiestoValidacion.equals(String.valueOf(idManifiestoDetalle))){
+        if(pesoExtraEntity!=null){
+            if(pesoExtraEntity.getAutorizacion().toString().equals("0")){
                 btn_add.setEnabled(false);
                 btn_ok.setEnabled(false);
                 autorizacion = 0;
-            }else if (para.getValor().equals("1")&& idManifiestoValidacion.equals(String.valueOf(idManifiestoDetalle))) {
+            }else if (pesoExtraEntity.getAutorizacion().toString().equals("1")) {
                 autorizacion = 1;
+                btn_add.setEnabled(true);
+                btn_ok.setEnabled(true);
+            }else if(pesoExtraEntity.getAutorizacion().toString().equals("3")){
                 btn_add.setEnabled(true);
                 btn_ok.setEnabled(true);
             }
@@ -418,9 +424,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         return  MyApp.getDBO().manifiestoDetallePesosDao().existeBultoCategoriaPaquete(idManifiesto,idManifiestoDetalle,categoria);
     }
 
-    public void addBulto(final BigDecimal imput, String tipo){
+    public void addBulto(final BigDecimal imput, final String tipo){
 
         subtotal = subtotal.add(imput);
+
+        if(subtotal.doubleValue()>pesoReferencial){
+            autorizacion = 0;
+        }
 
         if( vreferencial.equals("SI") && subtotal.doubleValue() > pesoReferencial && autorizacion.equals(0)){
 
@@ -441,11 +451,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             subtotal = subtotal.subtract(imput);
                             dato="0";
                             BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
-                            MyApp.getDBO().parametroDao().saveOrUpdate("idValidacion_"+idManifiestoDetalle,""+idManifiestoDetalle);
+                            MyApp.getDBO().pesoExtraDao().saveOrUpdate(idManifiesto,idManifiestoDetalle,0.0,0);
                             createBulto(imput);
                             btn_add.setEnabled(false);
                             btn_ok.setEnabled(false);
                            // DialogBultos.this.dismiss();
+                            addBulto(imput,tipo);
                             if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos);}
                         }
 
@@ -460,10 +471,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             builder.setNegativeButton("NO", new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    builder.dismiss();
                     txtpantalla.setText("0");
                     subtotal = subtotal.subtract(imput);
                     dato="0";
-                    builder.dismiss();
                 }
             });
             builder.show();
@@ -575,8 +586,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                     if(mOnBultoListener!=null){
                         aplicar();
-                        autorizacion=0;
-                        MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                        //autorizacion=0;
+
                     }
                 }else{
                     messageBox("Debe imprimir todos los bultos para continuar...!");
@@ -584,7 +595,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                 break;
             case R.id.btn_add:
-                if(para!=null){
+                /*if(para!=null){
                     valor = para.getValor();
                     if(valor.equals("5")){
                         autorizacion = 1;
@@ -592,7 +603,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         btn_ok.setEnabled(true);
                     }
 
-                }
+                }*/
 
                 BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
                 createBulto(imput);
