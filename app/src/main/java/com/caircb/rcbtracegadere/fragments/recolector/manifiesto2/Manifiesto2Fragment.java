@@ -261,7 +261,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 }
 
                 if(tabManifiestoGeneral.validarCorreos()&& !aplicaNoRecoleccion){
-                    messageBox("Correo electrónico faltante");
+                    messageBox("Se requiere al menos un correo electrónico");
+                    tabs.setCurrentTab(0);
                     return;
                 }
                     if(!tabManifiestoGeneral.validarCorreo()){

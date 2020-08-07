@@ -656,7 +656,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             return true;
         }
         if(!txtGenTecCorreo.getText().toString().equals("") || !txtCorreoAlterno.getText().toString().equals("")){
-            if(!chkCorreoPrincipal.isChecked() && !chkCorreoAlterno.isChecked()){
+            if((!chkCorreoPrincipal.isChecked() && !chkCorreoAlterno.isChecked()) && txtRespEntregaCorreo.getText().toString().equals("") ){
                 return true;
             }
         }

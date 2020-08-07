@@ -70,6 +70,4 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
 
         return rq;
     }
-
-
 }
