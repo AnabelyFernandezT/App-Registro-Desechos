@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
+import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -328,6 +329,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         dialogFinRuta = new DialogFinRuta(getActivity()) ;
         dialogFinRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogFinRuta.setCancelable(false);
+        dialogFinRuta.setmOnFinLotePadreListener(new DialogFinRuta.OnFinLoteHotel() {
+            @Override
+            public void onSuccessful() {
+                setNavegate(HomeHotelFragment.create());
+            }
+        });
         dialogFinRuta.show();
     }
 
