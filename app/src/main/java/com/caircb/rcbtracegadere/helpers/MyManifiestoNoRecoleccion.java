@@ -254,7 +254,11 @@ public class MyManifiestoNoRecoleccion {
         tb1.addCell(new PdfPCell(new Phrase("2. NÚM.. DE LICENCIA AMBIENTAL.",f6)));
         tb1.addCell(new PdfPCell(new Phrase("3. No. DE MANIFIESTO",f6)));
         tb1.addCell(new PdfPCell(new Phrase("4. PÁGINA",f6)));
-        tb1.addCell(createCell("NO TIENE",f6));
+        if(manifiesto.getNumeroGeneradorDesecho()!=null||manifiesto.getNumeroGeneradorDesecho().isEmpty()){
+            tb1.addCell(createCell(manifiesto.getNumeroGeneradorDesecho(),f6));
+        }else {
+            tb1.addCell(createCell("",f6));
+        }
         tb1.addCell(createCell("",f6));
         tb1.addCell(createCell(manifiesto.getSerie()+"  "+manifiesto.getNumeroManifiesto(),f6));
         tb1.addCell(createCell("1/2",f6));
