@@ -305,7 +305,6 @@ public abstract class ManifiestoDao {
             entity.setFirmaAuxiliarRecolector(manifiesto.getFirmaAuxiliarRecolector());
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
             entity.setPesoPromedio(manifiesto.getPesoPromedio());
-            System.out.println("");
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
             entity.setNumeroManifiesto(manifiesto.getNumeroManifiesto());

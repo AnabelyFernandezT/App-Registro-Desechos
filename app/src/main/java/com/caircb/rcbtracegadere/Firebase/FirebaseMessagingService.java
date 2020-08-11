@@ -112,6 +112,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(soundUri)
+                .setOngoing(true)
                 .setContentIntent(notifyPendingIntent);
 
         String channelId = getString(R.string.default_notification_channel_name);

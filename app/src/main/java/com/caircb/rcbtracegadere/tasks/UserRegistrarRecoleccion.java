@@ -109,7 +109,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         if (audioNovedadCliente != null && !audioNovedadCliente.isSincronizado())
             listaFileDefauld.add(audioNovedadCliente);
 
-        for (int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
 
         }
 
@@ -194,7 +194,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             } else {
                 rq.setUrlFirmaTransportista(null);
             }*/
-            rq.setUrlFirmaTransportista(firmaTransportista != null ? (path + "/" +firmaTransportista.getUrl()) : null);
+            rq.setUrlFirmaTransportista(firmaTransportista != null ? (path + "/" + firmaTransportista.getUrl()) : null);
             rq.setResponsableEntregaIdentificacion(tec.getIdentificacion());
             rq.setResponsableEntregaNombre(tec.getNombre());
             rq.setResponsableEntregaCorreo(tec.getCorreo());
@@ -212,8 +212,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             } else {
                 rq.setUrlFirmaConductorRecolector(null);
             }*/
-            rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector != null ? (path + "/" +firmaAuxiliarRecolector.getUrl()) : "");
-            rq.setUrlFirmaConductorRecolector(firmaConductorRecolector != null ? (path + "/" +firmaConductorRecolector.getUrl()) : "");
+            rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector != null ? (path + "/" + firmaAuxiliarRecolector.getUrl()) : "");
+            rq.setUrlFirmaConductorRecolector(firmaConductorRecolector != null ? (path + "/" + firmaConductorRecolector.getUrl()) : "");
             rq.setUsuarioResponsable(MySession.getIdUsuario());
             rq.setNovedadReportadaCliente(model.getNovedadEncontrada());
             rq.setUrlAudioNovedadCliente(audioNovedadCliente != null ? (path + "/" + audioNovedadCliente.getUrl()) : "");
@@ -228,7 +228,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setFechaInicioRecoleccion(model.getFechaInicioRecorrecion());
             rq.setCorreos(model.getCorreos());
             rq.setFotosManifiestoPromedio(createRequestNovedadPesoPromedio());
-            rq.setTextoEvidenciaPromedio(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio")!=null?MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio"):"");
+            rq.setTextoEvidenciaPromedio(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio") != null ? MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio") : "");
         }
         return rq;
     }
@@ -267,17 +267,20 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
         }
         return resp;
     }
+
     private List<RequestNovedadPesoPromedio> createRequestNovedadPesoPromedio() {
         List<RequestNovedadPesoPromedio> resp = new ArrayList<>();
-        int contFotos=MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, 101, 19);
-        for (int i=0;i<contFotos;i++){
-            resp.add(new RequestNovedadPesoPromedio(
-                    createFotografia(101,19).get(i).getUrlImagen(),
-                    path + "/" + "novedad" +
-                            "pesopromedio",
-                    1,
-                    i
-            ));
+        int contFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, 101, 19);
+        if (contFotos > 0) {
+            for (int i = 0; i < contFotos; i++) {
+                resp.add(new RequestNovedadPesoPromedio(
+                        createFotografia(101, 19).get(i).getUrlImagen(),
+                        path + "/" + "novedad" +
+                                "pesopromedio",
+                        1,
+                        i
+                ));
+            }
         }
         return resp;
     }

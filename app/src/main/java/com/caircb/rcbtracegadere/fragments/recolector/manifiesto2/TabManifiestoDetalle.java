@@ -115,6 +115,13 @@ public class TabManifiestoDetalle extends LinearLayout {
         calculoPaquetes = new MyCalculoPaquetes(idAppManifiesto, tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
         novedadPesoPromedio = this.findViewById(R.id.sectionNovedadPesoPromedio);
+        String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        if (tipoSubruta.equals("2")){
+            novedadPesoPromedio.setVisibility(VISIBLE);
+        }else {
+            novedadPesoPromedio.setVisibility(GONE);
+        }
+
         txtPesoPromedio = this.findViewById(R.id.txtPesoPromedio);
         recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(), numeroManifiesto, estadoManifiesto, idAppManifiesto, tipoRecoleccion);
         lnlCountPhoto = this.findViewById(R.id.lnlCountPhoto);
@@ -252,27 +259,34 @@ public class TabManifiestoDetalle extends LinearLayout {
             }
         });
 
-        double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
-        double pesoTotal = 0.0;
-        for (int i = 0; i < detalles.size(); i++) {
-            itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
-            for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
-                pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+        String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        if (tipoSubruta.equals("2")){
+            double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
+            double pesoTotal = 0.0;
+            for (int i = 0; i < detalles.size(); i++) {
+                itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
+                for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
+                    pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+                }
             }
-        }
-        if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
-            txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
-            MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
-            if (pesoTotal == 0.0) {
+            if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+                txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
+                MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
+                if (pesoTotal == 0.0) {
+                    novedadPesoPromedio.setVisibility(GONE);
+                    txtPesoPromedio.setText("");
+                } else {
+                    novedadPesoPromedio.setVisibility(VISIBLE);
+                }
+            } else {
                 novedadPesoPromedio.setVisibility(GONE);
                 txtPesoPromedio.setText("");
-            } else {
-                novedadPesoPromedio.setVisibility(VISIBLE);
             }
-        } else {
+        }else {
             novedadPesoPromedio.setVisibility(GONE);
-            txtPesoPromedio.setText("");
         }
+
+
     }
 
     public void reloadData() {
@@ -444,28 +458,33 @@ public class TabManifiestoDetalle extends LinearLayout {
                     //actualizar datos en dbo local...
                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), row.getCantidadBulto(), row.getPeso(), cantidad, row.isEstado());
 
-                    double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
-                    double pesoTotal = 0.0;
-                    for (int i = 0; i < detalles.size(); i++) {
-                        itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
-                        for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
-                            pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+
+                    String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+                    if (tipoSubruta.equals("2")){
+                        double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
+                        double pesoTotal = 0.0;
+                        for (int i = 0; i < detalles.size(); i++) {
+                            itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
+                            for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
+                                pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+                            }
                         }
-                    }
-                    if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
-                        txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
-                        MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
-                        if (pesoTotal == 0.0) {
+                        if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+                            txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
+                            MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
+                            if (pesoTotal == 0.0) {
+                                novedadPesoPromedio.setVisibility(GONE);
+                                txtPesoPromedio.setText("");
+                            } else {
+                                novedadPesoPromedio.setVisibility(VISIBLE);
+                            }
+                        } else {
                             novedadPesoPromedio.setVisibility(GONE);
                             txtPesoPromedio.setText("");
-                        } else {
-                            novedadPesoPromedio.setVisibility(VISIBLE);
                         }
-                    } else {
+                    }else {
                         novedadPesoPromedio.setVisibility(GONE);
-                        txtPesoPromedio.setText("");
                     }
-
 
                     //si cambia los item(add/remove) de la calculadora se resetea los valores pendientes ingresados por el usuario...
                     isChangeTotalCreateBultos = isChangeTotalBultos;
@@ -482,28 +501,33 @@ public class TabManifiestoDetalle extends LinearLayout {
                             //detalles.clear();
                             reloadData();
 
-                            double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
-                            double pesoTotal = 0.0;
-                            for (int i = 0; i < detalles.size(); i++) {
-                                itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
-                                for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
-                                    pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+
+                            String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+                            if (tipoSubruta.equals("2")){
+                                double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
+                                double pesoTotal = 0.0;
+                                for (int i = 0; i < detalles.size(); i++) {
+                                    itemManifiestoDetalleBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(detalles.get(i).getId());
+                                    for (int j = 0; j < itemManifiestoDetalleBultos.size(); j++) {
+                                        pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
+                                    }
                                 }
-                            }
-                            if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
-                                txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
-                                MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
-                                if (pesoTotal == 0.0) {
+                                if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+                                    txtPesoPromedio.setText("EXISTE DIFERENCIA DE " + (pesoPromedio - pesoTotal) + " KG DEL PESO PROMEDIO");
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio",""+txtPesoPromedio.getText());
+                                    if (pesoTotal == 0.0) {
+                                        novedadPesoPromedio.setVisibility(GONE);
+                                        txtPesoPromedio.setText("");
+                                    } else {
+                                        novedadPesoPromedio.setVisibility(VISIBLE);
+                                    }
+                                } else {
                                     novedadPesoPromedio.setVisibility(GONE);
                                     txtPesoPromedio.setText("");
-                                } else {
-                                    novedadPesoPromedio.setVisibility(VISIBLE);
                                 }
-                            } else {
+                            }else {
                                 novedadPesoPromedio.setVisibility(GONE);
-                                txtPesoPromedio.setText("");
                             }
-
 
                         }
                         dialogBultos.dismiss();
