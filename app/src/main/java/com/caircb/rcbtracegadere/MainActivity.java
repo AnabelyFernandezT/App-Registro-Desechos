@@ -137,7 +137,11 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     }
 
     private void autorizacionSinImpresion(){
-        MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "0");
+        String nombreImpresion = "auto_impresion"+MySession.getIdUsuario().toString();
+        if(MyApp.getDBO().parametroDao().fetchParametroEspecifico(nombreImpresion)==null){
+            MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "0");
+        }
+
     }
     private void validateInitFragment() {
         //if(1==1){

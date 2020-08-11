@@ -40,6 +40,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     Context context;
     AlertDialog.Builder builder;
     DialogBuilder dialogBuilder;
+    Integer autorizacion;
 
     public interface OnItemBultoListener {
         public void onEliminar(Integer position);
@@ -51,11 +52,12 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     private OnItemBultoListener mOnItemBultoListener;
     private OnItemBultoImpresionListener mOnImtemBultoImpresionListener;
 
-    public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo){
+    public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo, Integer autorizacion){
         super(context, R.layout.lista_items_calculadora, listaCatalogo);
         mInflater= LayoutInflater.from(context);
         this.listaItems = listaCatalogo;
         this.context = context;
+        this.autorizacion = autorizacion;
     }
 
     public static class ViewHolder{
@@ -91,6 +93,11 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         }
         holder.txtItem.setText("Bulto "+row.getNumeroBulto()+":           "+row.getValor());
         if(row.getTipo().length()>0){holder.txtItemTipo.setVisibility(View.VISIBLE);holder.txtItemTipo.setText(row.getTipo());}
+        if(autorizacion.toString().equals("0")){
+            holder.btnEliminar.setEnabled(false);
+        }else {
+            holder.btnEliminar.setEnabled(true);
+        }
 
         holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +179,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         holder.btnImpresionOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("no hace nada");
+
             }
         });
 

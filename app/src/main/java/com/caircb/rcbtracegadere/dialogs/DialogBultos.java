@@ -58,7 +58,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     Integer idManifiesto;
     Integer idManifiestoDetalle;
     Integer tipoPaquete;
-    Integer autorizacion=0;
+    Integer  autorizacion=0;
     String idManifiestoValidacion="";
     PaqueteEntity pkg;
     ManifiestoDetalleEntity detalle;
@@ -219,7 +219,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private void initAdapterBultos(){
-        listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos);
+        if(pesoExtraEntity!=null){
+            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,pesoExtraEntity.getAutorizacion() );
+        }else {
+            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,3);
+        }
+
         listaValoresAdapter.setOnItemBultoImpresion(new ListaValoresAdapter.OnItemBultoImpresionListener() {
             @Override
             public void onSendImpresion(Integer pos) {
