@@ -13,6 +13,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.util.Date;
 
@@ -46,8 +47,10 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
 
     private void register() {
         progressShow("Sincronizando con servidor el final de ruta");
-
         RequestFinRuta requestFinRuta = createRequestFin();
+        Gson g = new Gson();
+        String f = g.toJson(requestFinRuta);
+        System.out.println(f);
         if (requestFinRuta != null) {
             if (mOnFinLoteListener != null) mOnFinLoteListener.onSuccessful();
             WebService.api().putFinLoteHospitales(requestFinRuta).enqueue(new Callback<DtoInfo>() {

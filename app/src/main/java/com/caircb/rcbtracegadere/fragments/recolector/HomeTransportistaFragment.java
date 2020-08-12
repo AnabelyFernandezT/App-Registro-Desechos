@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
+import com.caircb.rcbtracegadere.dialogs.DialogQrLoteTransportista;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -47,8 +48,9 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogInicioRuta dialogInicioRuta;
+    DialogQrLoteTransportista dialogQrLoteTransportista;
     DialogFinRuta dialogFinRuta;
-    LinearLayout lnlIniciaRuta,lnlFinRuta;
+    LinearLayout lnlIniciaRuta,lnlFinRuta,sectionQrLote;
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
     Integer idSubRuta;
@@ -125,6 +127,17 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         txtBuscar = getView().findViewById(R.id.txtBuscar);
         txtSincronizar = getView().findViewById(R.id.txtSincronizar);
         txtManifiestos = getView().findViewById(R.id.txtManifiestos);
+
+        sectionQrLote = getView().findViewById(R.id.sectionQrLote);
+        sectionQrLote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogQrLoteTransportista = new DialogQrLoteTransportista(getActivity());
+                dialogQrLoteTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogQrLoteTransportista.setCancelable(false);
+                dialogQrLoteTransportista.show();
+            }
+        });
 
         //txtinicioRuta = (TextView)getView().findViewById(R.id.txtIniciarRuta);
         //txtFinRuta = (TextView)getView().findViewById(R.id.txtFinRuta);
