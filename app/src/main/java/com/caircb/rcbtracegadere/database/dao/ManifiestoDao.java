@@ -89,6 +89,10 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosProcesados(Integer Subruta, Integer idChoferRecolector);
 
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, referencia,direccionCliente as direccion,provincia as provincia, canton as canton, estado,apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado in(0,1) and idSubRuta=:Subruta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosNoProcesados(Integer Subruta, Integer idChoferRecolector);
+
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=1 and idTransporteVehiculo =:idPlaca order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandoByPlaca(Integer idPlaca);
@@ -223,8 +227,12 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set fechaInicioRecorrecion =:fechaInicioRecoleccion where idAppManifiesto =:idManifiesto")
     public abstract void saveOrUpdateFechaInicioRecoleccion(Integer idManifiesto, Date fechaInicioRecoleccion);
 
-    @Query("delete from tb_manifiestos where estado < 2 and idSubRuta = :idRuta")
-    public abstract void deleteNonSyncronizedManifiestos(Integer idRuta);
+    @Query("delete from tb_manifiestos where idAppManifiesto = :idManifiesto and estado in (0,1)")
+    public abstract void deleteNonSyncronizedManifiestos(Integer idManifiesto);
+
+    @Query("delete from tb_manifiestos_detalle where idAppManifiesto = :idManifiesto and" +
+            "(select estado from tb_manifiestos tm where tm.idAppManifiesto = :idManifiesto) not in (0,1)")
+    public abstract void deleteNonSyncronizedManifiestosDet(Integer idManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoEntity entity);

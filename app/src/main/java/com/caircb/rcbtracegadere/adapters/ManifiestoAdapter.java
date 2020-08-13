@@ -146,7 +146,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             }
 
             if(modProcesada == 1){
-                //btnViewPdfManifiesto.setVisibility(View.GONE);
+                btnViewPdfManifiesto.setVisibility(View.GONE);
                 btnViewPdfManifiesto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

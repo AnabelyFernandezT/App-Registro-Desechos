@@ -227,7 +227,7 @@ public final class MySession {
     }
     public static Integer getIdSubRuta(){
         String str = get(ID_SUBRUTA);
-        return str!=null? Integer.parseInt(str):-1;
+        return (str!=null && (!str.isEmpty()))? Integer.parseInt(str):-1;
     }
 
     public static void setDestinoEspecifico(String destinoEspecifico){

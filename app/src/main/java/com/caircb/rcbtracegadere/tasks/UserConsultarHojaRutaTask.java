@@ -8,7 +8,9 @@ import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
@@ -79,24 +81,39 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
-                            if ((respuesta == null) || respuesta.size() == 0)
-                            {
-                                MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestos(idRuta);
-                            }
-                            else {
-                                for (DtoManifiesto reg:respuesta){
-                                    MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
-                                    for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
-                                        MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+
+                            if(respuesta != null && respuesta.size() > 0){
+                                List<ItemManifiesto> checkItems = MyApp.getDBO().manifiestoDao().fetchManifiestosNoProcesados(idRuta, MySession.getIdUsuario());
+
+                                for (ItemManifiesto it: checkItems){
+                                    int flag = 0;
+                                    for (DtoManifiesto reg:respuesta){
+                                        if(it.getIdAppManifiesto() == reg.getIdAppManifiesto()){
+                                            flag = 1;
+                                            break;
+                                        }
                                     }
-                                    //inicalizar los catalogos de recoleccion...
-                                    //for (DtoCatalogo c:listaCatalogo){
-                                    //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
-                                    //}
-                                    pos++;
-                                    if(cont>1)publishProgress(pos);
+
+                                    if (flag == 0)
+                                    {
+                                        MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestosDet(it.getIdAppManifiesto());
+                                        MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestos(it.getIdAppManifiesto());
+                                    }
                                 }
+                            }
+
+                            for (DtoManifiesto reg:respuesta){
+                                MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                    MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+                                }
+                                //inicalizar los catalogos de recoleccion...
+                                //for (DtoCatalogo c:listaCatalogo){
+                                //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                //}
+                                pos++;
+                                if(cont>1)publishProgress(pos);
                             }
                             return null;
                         }

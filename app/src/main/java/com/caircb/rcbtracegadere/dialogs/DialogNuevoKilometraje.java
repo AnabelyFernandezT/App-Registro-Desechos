@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.ResultKilometraje;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.tasks.UserRutaTransladoInicioFinKTask;
@@ -59,6 +60,8 @@ public class DialogNuevoKilometraje extends MyDialog {
                         public void onSuccessful() {
                             MyApp.getDBO().rutaInicioFinDao().actualizarKilometraje(MySession.getIdUsuario(),nuevoKilometraje);
                             DialogNuevoKilometraje.this.dismiss();
+
+                            ((ResultKilometraje)_activity).initMain();
                         }
                     });
                     registro.execute();
