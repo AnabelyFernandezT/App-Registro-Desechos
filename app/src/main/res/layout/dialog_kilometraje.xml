@@ -22,10 +22,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textColor="@color/app_gadere"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="Kilometraje inicial:"/>
+                android:text="Kilometraje inicial Vehículo Anterior:"
+                android:textColor="@color/app_gadere"
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/txt_kilometraje_inicio"
@@ -49,10 +49,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textColor="@color/app_gadere"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="Kilometraje final:"/>
+                android:text="Kilometraje final Vehículo Anterior:"
+                android:textColor="@color/app_gadere"
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/kilometrajeFinal"
