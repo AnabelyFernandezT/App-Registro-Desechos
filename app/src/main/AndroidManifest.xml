@@ -56,6 +56,12 @@
             android:excludeFromRecents="true">
         </activity>
 
+        <activity android:name=".ResultKilometraje"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
+
         <receiver android:name=".processes.ConnectivityService">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

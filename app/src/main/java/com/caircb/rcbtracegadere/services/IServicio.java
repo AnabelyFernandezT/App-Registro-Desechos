@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacionComercial;
+import com.caircb.rcbtracegadere.models.request.RequestNuevoKilometraje;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
 import com.caircb.rcbtracegadere.models.request.RequestRegistarLotePadreHotel;
 import com.caircb.rcbtracegadere.models.request.RequestRegisterPlantaDetalle;
@@ -165,4 +166,7 @@ public interface IServicio {
 
     @POST("Notificacion/enviarCorreoComercial")
     Call<DtoInfo>enviarCorreoComercial(@Body RequestNotificacionComercial model);
+
+    @PUT("Registro/registroRutaTrasladoInicioFinKilometraje")
+    Call<DtoInfo> registroReasignacionVehiculo (@Body RequestNuevoKilometraje model);
 }

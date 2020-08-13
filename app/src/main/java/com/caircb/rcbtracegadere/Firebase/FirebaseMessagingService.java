@@ -21,6 +21,7 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.ResultActivity;
+import com.caircb.rcbtracegadere.ResultKilometraje;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -88,6 +89,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                         3);
 
             }
+
+            if(remoteMessage.getData().get("idCatalogoRespuesta").equals("2")||remoteMessage.getData().get("idCatalogoRespuesta").equals("15")){
+                showNotificationPlacas(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            }
         }
 
         if(remoteMessage.getData().get("idCatalogoRespuesta").equals("10")){//si(autorizacion sin impresora)
@@ -116,6 +121,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(soundUri)
+                .setOngoing(true)
                 .setContentIntent(notifyPendingIntent);
 
         String channelId = getString(R.string.default_notification_channel_name);
@@ -134,8 +140,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    private void showNotificationAutoPesos(String title, String body) {
-        Intent intent = new Intent(this, TabManifiestoDetalle.class);
+    private void showNotificationPlacas(String title, String body) {
+        Intent intent = new Intent(this, ResultKilometraje.class);
         intent.putExtra("notification_data",body);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(MyApp.getsInstance().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -148,6 +154,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(soundUri)
+                .setOngoing(true)
                 .setContentIntent(pendingIntent);
 
         String channelId = getString(R.string.default_notification_channel_name);
@@ -166,8 +173,5 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    public void setOnRegisterListener(@NonNull OnRegisterListener l){
-        mOnRegisterListener =l;
-    }
 
 }

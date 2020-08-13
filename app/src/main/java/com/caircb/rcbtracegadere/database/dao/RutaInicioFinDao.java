@@ -20,6 +20,9 @@ public abstract class RutaInicioFinDao {
     @Query("update tb_rutaInicioFin set sincronizadoFin=1 where _id=:idRegistro")
     public abstract void actualizarFinRutaToSincronizado(Integer idRegistro);
 
+    @Query("update tb_rutaInicioFin set kilometrajeInicio=:nuevoKilometraje where idTransporteRecolector=:idRecolector")
+    public abstract void actualizarKilometraje(Integer idRecolector, String nuevoKilometraje);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long createRegistro(RutaInicioFinEntity entity);
 
