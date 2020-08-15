@@ -19,6 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.Notificaciones.ResultCambioChoferActivity;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.ResultActivity;
 import com.caircb.rcbtracegadere.ResultKilometraje;
@@ -44,12 +45,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    public interface OnRegisterListener {
-        public void onNoPeso();
-        public void onSiPeso();
-    }
-
-    private OnRegisterListener mOnRegisterListener;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -64,7 +59,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
            /* if(remoteMessage.getNotification().getTitle().equals("NOTIFICACIÓN DE PESO EXTRA")){
                 showNotificationAutoPesos(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
             }*/
-            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(),remoteMessage);
         }
 
         if (remoteMessage.getData().size() > 0) {
@@ -104,8 +99,16 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
     }
 
-    private void showNotification(String title, String body) {
-        Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+    private void showNotification(String title, String body, RemoteMessage remoteMessage) {
+        Intent intent;
+        if(remoteMessage.getData().get("idCatalogoRespuesta").equals("2")||remoteMessage.getData().get("idCatalogoRespuesta").equals("15")){
+            intent = new Intent(getApplicationContext(), ResultKilometraje.class);
+        }else if(remoteMessage.getData().get("idCatalogoRespuesta").equals("7")){
+            intent = new Intent(getApplicationContext(), ResultCambioChoferActivity.class);
+        }else{
+            intent = new Intent(getApplicationContext(), ResultActivity.class);
+        }
+
         intent.putExtra("notification_data",body);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);

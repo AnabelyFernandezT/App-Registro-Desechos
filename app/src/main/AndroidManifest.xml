@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <application
         android:name=".MyApp"
@@ -57,6 +58,12 @@
         </activity>
 
         <activity android:name=".ResultKilometraje"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
+
+        <activity android:name=".Notificaciones.ResultCambioChoferActivity"
             android:launchMode="singleTask"
             android:taskAffinity=""
             android:excludeFromRecents="true">

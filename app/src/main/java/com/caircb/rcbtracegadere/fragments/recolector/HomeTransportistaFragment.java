@@ -44,13 +44,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
-    ImageView btnPickUpTransportista, btnDropOffTransportista;
+    ImageView btnPickUpTransportista, btnDropOffTransportista, btnScanQr;
     DialogInicioRuta dialogInicioRuta;
     DialogFinRuta dialogFinRuta;
-    LinearLayout lnlIniciaRuta,lnlFinRuta;
+    LinearLayout lnlIniciaRuta,lnlFinRuta,txtQr;
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
-    Integer idSubRuta;
+    Integer idSubRuta, flag=0;
     UserConsultarCatalogosTask consultarCatalogosTask;
 
     //public Context mContext;
@@ -121,6 +121,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lnlIniciaRuta = getView().findViewById(R.id.LnlIniciaRuta);
         lnlFinRuta = getView().findViewById(R.id.LnlFinRuta);
+        btnScanQr = getView().findViewById(R.id.btnScanQr);
+        txtQr = getView().findViewById(R.id.txtQr);
 
         txtBuscar = getView().findViewById(R.id.txtBuscar);
         txtSincronizar = getView().findViewById(R.id.txtSincronizar);
@@ -306,6 +308,23 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             }
         });
 
+        btnScanQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(flag.equals(1)){
+                    desbloque_botones();
+                    txtQr.setVisibility(View.GONE);
+                    flag = 0;
+                }else{
+                    bloqueo_botones();
+                    txtQr.setVisibility(View.VISIBLE);
+                    btnFinRuta.setEnabled(false);
+                    flag=1;
+                }
+
+            }
+        });
     }
 
     private void loadCantidadManifiestoAsignado(){

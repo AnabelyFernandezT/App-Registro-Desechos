@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -20,7 +21,7 @@ public class DialogKilometraje extends MyDialog {
     Activity _activity;
 
     EditText txtKilometrajeFinal;
-    TextView txtKilometrajeInicio;
+    TextView txtKilometrajeInicio, txtPlaca, txtPlaca1;
 
     LinearLayout btnCancelar,btnSiguiente;
 
@@ -29,6 +30,7 @@ public class DialogKilometraje extends MyDialog {
     String kilometrajeFinalAnterior, kilometrajeinicial;
 
     RutaInicioFinEntity entity;
+    ManifiestoEntity manifiesto;
 
     public DialogKilometraje(@NonNull Context context) {
         super(context, R.layout.dialog_kilometraje);
@@ -49,8 +51,14 @@ public class DialogKilometraje extends MyDialog {
         }
         txtKilometrajeFinal = getView().findViewById(R.id.kilometrajeFinal);
         txtKilometrajeInicio = getView().findViewById(R.id.txt_kilometraje_inicio);
+        txtPlaca = getView().findViewById(R.id.txtPlaca);
+        txtPlaca1 = getView().findViewById(R.id.txtPlaca1);
         btnCancelar =  getView().findViewById(R.id.btnCancelar);
         btnSiguiente = getView().findViewById(R.id.btnSiguiente);
+        if(manifiesto!=null){
+            txtPlaca.setText(manifiesto.getNumeroPlacaVehiculo());
+            txtPlaca1.setText(manifiesto.getNumeroPlacaVehiculo());
+        }
 
         txtKilometrajeInicio.setText(kilometrajeinicial);
 

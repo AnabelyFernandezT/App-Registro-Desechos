@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -61,8 +62,15 @@ public class UserRegistrarLoteInicioTask extends MyRetrofitApi implements Retrof
     }
 
     public RequestInicioLoteSede requestInicioLoteSede(){
-       RequestInicioLoteSede rq = new RequestInicioLoteSede();
-       Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
+        Integer idVehiculo;
+        RequestInicioLoteSede rq = new RequestInicioLoteSede();
+        ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote");
+        if(parametro!=null){
+            idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
+        }else {
+            idVehiculo = null;
+        }
+
        Integer idDestinatarioFinRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
 
 
