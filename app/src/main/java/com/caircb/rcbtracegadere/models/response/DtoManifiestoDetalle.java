@@ -1,5 +1,7 @@
 package com.caircb.rcbtracegadere.models.response;
 
+import java.util.List;
+
 public class DtoManifiestoDetalle {
 
     private Integer idAppManifiestoDetalle;
@@ -29,6 +31,7 @@ public class DtoManifiestoDetalle {
     private String observacionResiduos;
     private Integer cantidadRefencial;
     private Integer tipoMostrar;
+    private List<DtoHojaRutaDetalleBulto> bultos;
 
     public DtoManifiestoDetalle() {
     }
@@ -239,5 +242,13 @@ public class DtoManifiestoDetalle {
 
     public void setTipoMostrar(Integer tipoMostrar) {
         this.tipoMostrar = tipoMostrar;
+    }
+
+    public List<DtoHojaRutaDetalleBulto> getBultos() {
+        return bultos;
+    }
+
+    public void setBultos(List<DtoHojaRutaDetalleBulto> bultos) {
+        this.bultos = bultos;
     }
 }

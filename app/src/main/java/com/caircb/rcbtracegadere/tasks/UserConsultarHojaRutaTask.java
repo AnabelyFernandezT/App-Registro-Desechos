@@ -38,6 +38,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
 
     String fechaSincronizacion;
     String obfechaActualizacion = "fecha_actualizacion_"+MySession.getIdUsuario().toString()+"_"+MySession.getLugarNombre();
+    Integer idManifiesto, lote;
 
     public interface TaskListener {
         public void onSuccessful();
@@ -48,12 +49,21 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     public UserConsultarHojaRutaTask(Context context, TaskListener listener) {
         super(context);
         this.taskListener=listener;
+        this.idManifiesto = null;
+        this.lote = null;
+        progressShow("Consultando...");
+    }
+
+    public UserConsultarHojaRutaTask(Context context, Integer idManifiesto, Integer idLote, TaskListener listener) {
+        super(context);
+        this.taskListener=listener;
+        this.idManifiesto = idManifiesto;
+        this.lote = idLote;
         progressShow("Consultando...");
     }
 
     @Override
     public void execute() throws ParseException {
-
         ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
         ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
@@ -63,8 +73,9 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         }else fechaSincronizacion = null;
         Date fecha = deserialize(fechaSincronizacion);
 
+        RequestHojaRuta req = new RequestHojaRuta(new Date(),fecha,0,idRuta, idManifiesto, lote);
         //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),fecha,0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(req).enqueue(new Callback<List<DtoManifiesto>>() {
 
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {

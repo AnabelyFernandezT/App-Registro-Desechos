@@ -321,7 +321,7 @@ public class MyPrint {
                                 //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                                 //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
                                 "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
-                                "^FS^FO60,530^AD^FD NO. BULTOS:" + numeroBulto +
+                                "^FS^FO60,530^AD^FD NO. BULTO:" + numeroBulto +
                                 "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
 
                                  "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
@@ -338,7 +338,7 @@ public class MyPrint {
                                 //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                                 //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
                                 "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
-                                "^FS^FO60,530^AD^FD NO. BULTOS:" + numeroBulto +
+                                "^FS^FO60,530^AD^FD NO. BULTO:" + numeroBulto +
                                 "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
 
                                 "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
@@ -387,7 +387,7 @@ public class MyPrint {
                     //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                     //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
                     "^FS^FO60,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+
-                    "^FS^FO60,530^AD^FD NO. BULTOS:"+ numeroBulto +
+                    "^FS^FO60,530^AD^FD NO. BULTO:"+ numeroBulto +
                     "^FS^FO60,560^AD^FD TRATAMIENTO:"+tratamiento +
                     "^FS^FO60,590^AD^FD DESTINATARIO:"+ destinatario.toUpperCase() +
                     "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:"+ (aplicaDevolucion?"SI":"NO") +

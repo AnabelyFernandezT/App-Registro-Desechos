@@ -26,9 +26,11 @@ import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
@@ -40,7 +42,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeTransportistaFragment extends MyFragment implements OnHome {
+public class HomeTransportistaFragment extends MyFragment implements OnHome, OnBarcodeListener {
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
@@ -314,13 +316,16 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
                 if(flag.equals(1)){
                     desbloque_botones();
-                    txtQr.setVisibility(View.GONE);
+                    txtQr.setVisibility(View.INVISIBLE);
                     flag = 0;
                 }else{
                     bloqueo_botones();
                     txtQr.setVisibility(View.VISIBLE);
                     btnFinRuta.setEnabled(false);
                     flag=1;
+
+                    //Quitar cuando se active desde Lector
+                    asociarLoteManifiesto(377);
                 }
 
             }
@@ -378,6 +383,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         txtManifiestos.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
         txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
+        btnPickUpTransportista.setAlpha(0.3f);
+        btnDropOffTransportista.setAlpha(0.3f);
     }
 
 
@@ -401,6 +408,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         txtManifiestos.setTextColor(Color.WHITE);
         txtSincronizar.setTextColor(Color.WHITE);
 
+        btnPickUpTransportista.setAlpha(1.0f);
+        btnDropOffTransportista.setAlpha(1.0f);
     }
 
     private void consultarInicioFinRuta(){
@@ -417,4 +426,34 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         verificarInicioRutaTask.execute();
     }
 
+    @Override
+    public void reciveData(String data) {
+        try {
+            asociarLoteManifiesto(Integer.parseInt(data));
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getStackTrace());
+            messageBox("El código escaneado no es de tipo Lote.");
+        }
+    }
+
+    private void asociarLoteManifiesto(Integer lote){
+        try{
+            List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
+
+            if (rowItems.size() > 0){
+                //Se toma el primer manifiesto. Se debe evaluar si tiene mas manifiestos asignados para listar y permitir seleccionar el indicado
+                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),rowItems.get(0).getIdAppManifiesto(), lote, listenerHojaRuta);
+                try {
+                    consultarHojaRutaTask.execute();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getStackTrace());
+        }
+    }
 }
