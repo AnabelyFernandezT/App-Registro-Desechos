@@ -155,6 +155,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 case 2:
                     inicioRuta = false;
                     bloqueo_botones();
+                    btnScanQr.setEnabled(false);
                     lnlIniciaRuta.setVisibility(View.VISIBLE);
                     lnlFinRuta.setVisibility(View.GONE);
                     break;
@@ -162,6 +163,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
 
         }else{
             bloqueo_botones();
+            btnScanQr.setEnabled(false);
         }
         
 
@@ -325,7 +327,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     flag=1;
 
                     //Quitar cuando se active desde Lector
-                    asociarLoteManifiesto(377);
+                    asociarLoteManifiesto(379);
                 }
 
             }
@@ -440,6 +442,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
 
     private void asociarLoteManifiesto(Integer lote){
         try{
+            MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote",""+lote);
             List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
 
             if (rowItems.size() > 0){

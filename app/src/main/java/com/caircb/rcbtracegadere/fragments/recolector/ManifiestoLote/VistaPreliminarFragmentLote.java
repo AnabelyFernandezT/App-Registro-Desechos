@@ -1,43 +1,37 @@
-package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
+package com.caircb.rcbtracegadere.fragments.recolector.ManifiestoLote;
 
-import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.app.Fragment;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
-import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
-import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link VistaPreliminarFragment#newInstance} factory method to
+ * Use the {@link VistaPreliminarFragmentLote#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VistaPreliminarFragment extends MyFragment implements View.OnClickListener {
+public class VistaPreliminarFragmentLote extends MyFragment implements View.OnClickListener {
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -55,8 +49,8 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     DialogBuilder dialogBuilder;
     String identifiacion;
 
-    public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
-        VistaPreliminarFragment fragment = new VistaPreliminarFragment();
+    public static VistaPreliminarFragmentLote newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
+        VistaPreliminarFragmentLote fragment = new VistaPreliminarFragmentLote();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
         args.putString(ARG_PARAM3,identificacion);
@@ -146,7 +140,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnVistaPreviaCancelar:
-                setNavegate(Manifiesto2Fragment.newInstance(idAppManifiesto,2,1));
+                setNavegate(ManifiestoLoteFragment.newInstance(idAppManifiesto,2,2));
                 break;
             case R.id.btnVistaPreviaGuardar:
                builder = new DialogBuilder(getActivity());
@@ -171,7 +165,7 @@ public class VistaPreliminarFragment extends MyFragment implements View.OnClickL
     }
 
     private void registarDatos(){
-        userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation(),null);
+        userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation(),1);
         userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
             @Override
             public void onSuccessful(final Date fechaRecol) {

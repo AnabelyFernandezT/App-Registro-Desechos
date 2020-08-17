@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
+import android.icu.math.BigDecimal;
 import android.os.AsyncTask;
 
 import com.caircb.rcbtracegadere.MyApp;
@@ -13,6 +14,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoHojaRutaDetalleBulto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
@@ -39,9 +41,11 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     String fechaSincronizacion;
     String obfechaActualizacion = "fecha_actualizacion_"+MySession.getIdUsuario().toString()+"_"+MySession.getLugarNombre();
     Integer idManifiesto, lote;
+    ParametroEntity parametroLote;
 
     public interface TaskListener {
         public void onSuccessful();
+       // public void onFail(String Mensaje);
     }
     private final TaskListener taskListener;
 
@@ -65,6 +69,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     @Override
     public void execute() throws ParseException {
         ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
+        parametroLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote");
         ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         String valor = entity == null ?(rut.getIdSubRuta()!=null?String.valueOf(rut.getIdSubRuta()):null) : entity.getValor();
@@ -95,6 +100,9 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
 
                             if(respuesta != null && respuesta.size() > 0){
                                 List<ItemManifiesto> checkItems = MyApp.getDBO().manifiestoDao().fetchManifiestosNoProcesados(idRuta, MySession.getIdUsuario());
+                                if(!respuesta.get(0).getMensaje().equals("")){
+
+                                }
 
                                 for (ItemManifiesto it: checkItems){
                                     int flag = 0;
@@ -113,19 +121,43 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                                 }
                             }
 
-                            for (DtoManifiesto reg:respuesta){
-                                MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
-                                MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
-                                for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
-                                    MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+                            if(parametroLote!=null){
+                                for (DtoManifiesto reg:respuesta){
+                                    MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                    MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(reg.getIdAppManifiesto());
+                                    for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                        MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt,true);
+                                        for (DtoHojaRutaDetalleBulto db:dt.getBultos()){
+                                            MyApp.getDBO().manifiestoDetallePesosDao().saveValores(reg.getIdAppManifiesto(),dt.getIdAppManifiestoDetalle(), db.getPeso().doubleValue(),db.getDescripcion(),null,db.getCodigoQr(),true,db.getIndex());
+                                        }
+                                    }
+
+                                    //inicalizar los catalogos de recoleccion...
+                                    //for (DtoCatalogo c:listaCatalogo){
+                                    //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                    //}
+                                    pos++;
+                                    if(cont>1)publishProgress(pos);
                                 }
-                                //inicalizar los catalogos de recoleccion...
-                                //for (DtoCatalogo c:listaCatalogo){
-                                //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
-                                //}
-                                pos++;
-                                if(cont>1)publishProgress(pos);
+                            }else{
+                                for (DtoManifiesto reg:respuesta){
+                                    MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                    for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                        MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+                                    }
+
+                                    //inicalizar los catalogos de recoleccion...
+                                    //for (DtoCatalogo c:listaCatalogo){
+                                    //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                    //}
+                                    pos++;
+                                    if(cont>1)publishProgress(pos);
+                                }
                             }
+
+
                             return null;
                         }
 

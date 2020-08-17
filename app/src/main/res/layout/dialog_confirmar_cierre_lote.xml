@@ -41,20 +41,28 @@
 
         </LinearLayout>
 
-        <TextView
-            android:textSize="20dp"
-            android:textColor="@color/app_gadere"
-            android:fontFamily="@font/quicksand_bold"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Placa:" />
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <Spinner
-            android:id="@+id/lista_placas"
-            android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:spinnerMode="dialog"
-            android:gravity="center_vertical" />
+            <TextView
+                android:textSize="20dp"
+                android:textColor="@color/app_gadere"
+                android:fontFamily="@font/quicksand_bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Placa:" />
+
+            <Spinner
+                android:id="@+id/lista_placas"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:spinnerMode="dialog"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

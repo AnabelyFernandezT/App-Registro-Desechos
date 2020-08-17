@@ -28,13 +28,16 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.dao.ParametroDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.ManifiestoLote.ManifiestoLoteFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -73,6 +76,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     DialogBuilder dialogBuilder, dialogBuilder2;
     RutaInicioFinEntity rut;
     Integer idSubRuta;
+    ParametroEntity parametros;
 
     /**
      * Use this factory method to create a new instance of
@@ -116,6 +120,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
         idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+        parametros = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote");
     }
 
     private void filtro(String texto) {
@@ -158,7 +163,11 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                        menu(position);
+                        if(parametros!=null){
+                            setNavegate(ManifiestoLoteFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1,2));
+                        }else {
+                            menu(position);
+                        }
                         break;
                     /*case R.id.btn_manifiesto_more:
                         break;*/

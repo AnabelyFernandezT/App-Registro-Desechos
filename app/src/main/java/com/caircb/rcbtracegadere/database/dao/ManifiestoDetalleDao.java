@@ -154,4 +154,76 @@ public abstract class ManifiestoDetalleDao {
 
     }
 
+    public void saveOrUpdate(DtoManifiestoDetalle dt, boolean estadoCheck){
+        ManifiestoDetalleEntity entity;
+
+        entity = fetchHojaRutaDetbyIdManifiestoDet(dt.getIdAppManifiesto(),dt.getIdAppManifiestoDetalle());
+        if(entity==null){
+
+            entity = new ManifiestoDetalleEntity();
+            entity.setIdAppManifiesto(dt.getIdAppManifiesto());
+            entity.setIdAppManifiestoDetalle(dt.getIdAppManifiestoDetalle());
+            entity.setIdTipoDesecho(dt.getIdTipoDesecho());
+            entity.setIdTipoUnidad(dt.getIdTipoUnidad());
+            entity.setPesoUnidad(dt.getPesoUnidad());
+            entity.setCantidadDesecho(dt.getCantidadDesecho());
+            entity.setEstadoChek(estadoCheck);
+            entity.setCantidadBulto(0);
+            entity.setTipoItem(dt.getPesajeBultoFlag());
+            entity.setTipoPaquete(dt.getTipoPaquete());
+            entity.setCantidadTotalEtiqueta(0);
+            entity.setIdDestinatario(dt.getIdDestinatario());
+            entity.setCodigoMAE(dt.getCodigoMAE());
+            entity.setNombreDesecho(dt.getNombreDesecho());
+            entity.setNombreDestinatario(dt.getNombreDestinatario());
+            entity.setPesoReferencial(dt.getPesoReferencial());
+            entity.setTipoBalanza(0);
+            entity.setTratamiento(dt.getTratamiento());
+            entity.setValidadorReferencial(dt.getValidadorReferencial());
+            entity.setTipoContenedor(dt.getTipoContenedor());
+            entity.setEstadoFisico(dt.getEstadoFisico());
+            entity.setFaltaImpresiones(false);
+
+            entity.setTipoMostrar(dt.getTipoMostrar());
+            entity.setCantidadRefencial(dt.getCantidadRefencial());
+            entity.setEstadoPaquete(dt.getEstado());
+            entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
+            entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
+            entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
+            entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
+            entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
+            entity.setObservacionResiduos(dt.getObservacionResiduos());
+
+        }else{
+            entity.setIdTipoDesecho(dt.getIdTipoDesecho());
+            entity.setIdTipoUnidad(dt.getIdTipoUnidad());
+            entity.setPesoUnidad(dt.getPesoUnidad());
+            entity.setCantidadDesecho(dt.getCantidadDesecho());
+            entity.setTipoItem(dt.getPesajeBultoFlag());
+            entity.setTipoPaquete(dt.getTipoPaquete());
+            entity.setIdDestinatario(dt.getIdDestinatario());
+            entity.setEstadoChek(estadoCheck);
+            entity.setCantidadBulto(dt.getCantidadDesecho());
+            entity.setCodigoMAE(dt.getCodigoMAE());
+            entity.setNombreDesecho(dt.getNombreDesecho());
+            entity.setNombreDestinatario(dt.getNombreDestinatario());
+            entity.setValidadorReferencial(dt.getValidadorReferencial());
+            entity.setTipoContenedor(dt.getTipoContenedor());
+            entity.setEstadoFisico(dt.getEstadoFisico());
+
+            entity.setTipoMostrar(dt.getTipoMostrar());
+            entity.setCantidadRefencial(dt.getCantidadRefencial());
+            entity.setEstadoPaquete(dt.getEstado());
+            entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
+            entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
+            entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
+            entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
+            entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
+            entity.setObservacionResiduos(dt.getObservacionResiduos());
+        }
+
+        createManifiestoDetalle(entity);
+
+    }
+
 }

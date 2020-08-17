@@ -28,6 +28,7 @@ public class RequestManifiesto {
     private Integer estado;
     private Date fechaInicioRecoleccion;
     private String correos;
+    private Integer flagManifiestoSede;
 
     public Integer getIdAppManifiesto() {
         return idAppManifiesto;
@@ -219,5 +220,13 @@ public class RequestManifiesto {
 
     public void setCorreos(String correos) {
         this.correos = correos;
+    }
+
+    public Integer getFlagManifiestoSede() {
+        return flagManifiestoSede;
+    }
+
+    public void setFlagManifiestoSede(Integer flagManifiestoSede) {
+        this.flagManifiestoSede = flagManifiestoSede;
     }
 }
