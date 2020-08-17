@@ -1,18 +1,14 @@
-package com.caircb.rcbtracegadere.models.request;
+package com.caircb.rcbtracegadere.models.response;
 
 import java.math.BigDecimal;
 
-public class RequestManifiestoDetBultos {
+public class DtoHojaRutaDetalleBulto {
     private Integer index;
-    private double peso;
+    private BigDecimal peso;
     private String descripcion;
     private String codigoQr;
 
-    public RequestManifiestoDetBultos(Integer index, double peso, String descripcion, String codigoQr) {
-        this.index = index;
-        this.peso = peso;
-        this.descripcion = descripcion;
-        this.codigoQr = codigoQr;
+    public DtoHojaRutaDetalleBulto() {
     }
 
     public Integer getIndex() {
@@ -23,11 +19,11 @@ public class RequestManifiestoDetBultos {
         this.index = index;
     }
 
-    public double getPeso() {
+    public BigDecimal getPeso() {
         return peso;
     }
 
-    public void setPeso(double peso) {
+    public void setPeso(BigDecimal peso) {
         this.peso = peso;
     }
 
