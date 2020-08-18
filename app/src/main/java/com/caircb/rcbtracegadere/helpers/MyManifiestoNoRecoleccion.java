@@ -457,9 +457,9 @@ public class MyManifiestoNoRecoleccion {
         //tabla 2
         PdfPTable tb2 = new PdfPTable(new float[] { 10,90});
         tb2.addCell(new PdfPCell(new Phrase("DOMICILIO:",f6)));
-        tb2.addCell(new PdfPCell(new Phrase("GUAYAQUIL: Cdla la Garzola Mz. 150 Solar B, Av. de las Américas\n"+
-                "QUITO: Av. Naciones Unidas 1014 y Av. Amazonas Edif. La Previsora, Torre B 4to piso Of. 408\n"+
-                "CUENCA: Av. Agustín Cueva 7-35 y Av.Julio Matovelle",f6)));
+        tb2.addCell(new PdfPCell(new Phrase("GUAYAQUIL: Cdla. Santa Leonor Mz. 5 Solar 17 - Av. Benjamín Rosales\n"+
+                "QUITO  : Av. Naciones Unidas y Amazonas - Edif. La Previsora, Torre B Of. 408\n"+
+                "CUENCA   : Parque Industrial. Calle Primera y Carlos Tosi",f6)));
         tb2.completeRow();
 
         _cell = new PdfPCell(tb2);
