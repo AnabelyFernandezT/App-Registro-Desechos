@@ -105,6 +105,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             intent = new Intent(getApplicationContext(), ResultKilometraje.class);
         }else if(remoteMessage.getData().get("idCatalogoRespuesta").equals("7")){
             intent = new Intent(getApplicationContext(), ResultCambioChoferActivity.class);
+        }else if(remoteMessage.getData().get("idCatalogoRespuesta").equals("8")) {
+            intent = new Intent(getApplicationContext(),MainActivity.class);
         }else{
             intent = new Intent(getApplicationContext(), ResultActivity.class);
         }

@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.Notificaciones;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -33,15 +34,19 @@ public class ResultCambioChoferActivity extends AppCompatActivity {
     private void onCloseApp() {
         final DialogBuilder dialogBuilder = new DialogBuilder(ResultCambioChoferActivity.this);
         dialogBuilder.setCancelable(false);
-        dialogBuilder.setMessage(mensaje+" su sesion se cerrara ");
+        dialogBuilder.setMessage(mensaje+" SU SESION SE CERRARA ");
         dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApp.getDBO().rutaInicioFinDao().eliminarInicioFin();
                 dialogBuilder.dismiss();
-                ResultCambioChoferActivity.this.getSharedPreferences(MyConstant.SEG_SP, ResultCambioChoferActivity.this.MODE_PRIVATE).edit().clear().apply();
+                MyApp.getDBO().rutaInicioFinDao().eliminarInicioFin();
                 FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
+                System.exit(0);
             }
         });
         dialogBuilder.show();
