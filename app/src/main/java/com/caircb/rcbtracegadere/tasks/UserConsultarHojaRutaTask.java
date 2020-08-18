@@ -45,7 +45,6 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
 
     public interface TaskListener {
         public void onSuccessful();
-       // public void onFail(String Mensaje);
     }
     private final TaskListener taskListener;
 
@@ -101,7 +100,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                             if(respuesta != null && respuesta.size() > 0){
                                 List<ItemManifiesto> checkItems = MyApp.getDBO().manifiestoDao().fetchManifiestosNoProcesados(idRuta, MySession.getIdUsuario());
                                 if(!respuesta.get(0).getMensaje().equals("")){
-
+                                    message("Se han agregado los desechos faltantes " + respuesta.get(0).getMensaje());
                                 }
 
                                 for (ItemManifiesto it: checkItems){

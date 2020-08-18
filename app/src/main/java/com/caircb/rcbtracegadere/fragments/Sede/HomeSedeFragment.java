@@ -47,6 +47,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     TextView txtMovilizar , txtSincronizar, txtManifiesto;
     DialogConfirmarCierreLote dialogConfirmarCierreLote;
     UserRegistrarLoteInicioTask registrarLoteInicioTask;
+    DialogBuilder builder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,7 +108,25 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacas.setCancelable(false);
                 dialogPlacas.setTitle("INICIAR LOTE");
                 dialogPlacas.show();*/
-                registrarLote();
+                builder = new DialogBuilder(getActivity());
+                builder.setCancelable(false);
+                builder.setMessage("Se va a iniciar un lote");
+                builder.setPositiveButton("SI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+                        registrarLote();
+                    }
+                });
+                builder.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+                    }
+                });
+
+                builder.show();
+
             }
         });
 
