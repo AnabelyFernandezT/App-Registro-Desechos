@@ -289,6 +289,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="13dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Número de Lote:"
+                android:textColor="@color/app_gadere"
+                android:textSize="13dp" />
+            <TextView
+                android:id="@+id/lblLoteTransportista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
 
         </LinearLayout>
 

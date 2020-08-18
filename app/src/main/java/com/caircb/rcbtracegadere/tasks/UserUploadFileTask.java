@@ -30,21 +30,24 @@ public class UserUploadFileTask {
     private StorageReference storageRef;
     private StorageReference uploadeRef;
     private List<DtoFile> listaFileDefauld;
+    private List<DtoFile> listaFileDefauld2;
     private List<Long> listaFotoNovedadFrecuente;
+    private List<Long> listaFotoPesoPromedio;
     private List<Long> novedadesGestores;
     private List<Long> listaFotoMotivoNoRecoleccion;
     private ItemFile file;
 
     public interface OnUploadFileListener {
         public void onSuccessful();
+
         public void onFailure(String message);
     }
 
     private OnUploadFileListener mOnUploadFileListener;
 
-    public UserUploadFileTask(Context context,String path){
-            this.mContext=context;
-            this.path=path;
+    public UserUploadFileTask(Context context, String path) {
+        this.mContext = context;
+        this.path = path;
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageRef = firebaseStorage.getReference();
@@ -54,7 +57,7 @@ public class UserUploadFileTask {
     public void uploadRecoleccion(
             List<DtoFile> listaFileDefauld,
             Integer idAppManifiesto
-    ){
+    ) {
         try {
             this.listaFileDefauld = listaFileDefauld;
             //fotos novedades frecuente...
@@ -62,74 +65,107 @@ public class UserUploadFileTask {
             //fotos motivos no recoleccion...
             listaFotoMotivoNoRecoleccion = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NO_RECOLECCION);
 
+            listaFotoPesoPromedio = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_PESO_PROMEDIO);
+
             sendFileDefauld(0);
-        }catch (Exception e){
-            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+        } catch (Exception e) {
+            if (mOnUploadFileListener != null) mOnUploadFileListener.onFailure(e.getMessage());
         }
     }
 
     public void uploadRecoleccionPlanta(
             List<DtoFile> listaFileDefauld,
             Integer idAppManifiesto
-    ){
+    ) {
         try {
             this.listaFileDefauld = listaFileDefauld;
 
             listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA);
 
             sendFileDefauld(0);
-        }catch (Exception e){
-            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+        } catch (Exception e) {
+            if (mOnUploadFileListener != null) mOnUploadFileListener.onFailure(e.getMessage());
         }
     }
 
     public void uploadPlantaAdicionales(
             List<DtoFile> listaFileDefauld,
             Integer idAppManifiesto
-    ){
+    ) {
         try {
             this.listaFileDefauld = listaFileDefauld;
 
             listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA);
 
             sendFileDefauld(0);
-        }catch (Exception e){
-            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+        } catch (Exception e) {
+            if (mOnUploadFileListener != null) mOnUploadFileListener.onFailure(e.getMessage());
+        }
+    }
+
+    public void uploadFotosPesoPromedio(
+            List<DtoFile> listaFileDefauld2,
+            Integer idAppManifiesto
+    ) {
+        try {
+            this.listaFileDefauld = listaFileDefauld2;
+
+            listaFotoPesoPromedio = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_PESO_PROMEDIO);
+
+            sendFilePesoPromedio(0);
+        } catch (Exception e) {
+            if (mOnUploadFileListener != null) mOnUploadFileListener.onFailure(e.getMessage());
+        }
+    }
+
+    private void sendFilePesoPromedio(Integer position) {
+        try {
+            if (listaFotoPesoPromedio != null && position < listaFotoPesoPromedio.size()) {
+                file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(listaFotoPesoPromedio.get(position));
+                uploadeRef = storageRef.child(this.path + "/novedadpesopromedio/" + file.getUrl());
+                sendToStorage(Utils.decodeBase64toByte(file.getFile()), position, 101, listaFotoPesoPromedio.get(position));
+            }else {
+                finalizar();
+            }
+        } catch (Exception e) {
+            if (mOnUploadFileListener != null) mOnUploadFileListener.onFailure(e.getMessage());
         }
     }
 
     public void uploadGestoresAlternos(
             List<DtoFile> listaFileDefauld,
             Integer idAppManifiesto
-    ){
+    ) {
         try {
             this.listaFileDefauld = listaFileDefauld;
 
             listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUpload(idAppManifiesto, ManifiestoFileDao.FOTO_NOVEDAD_GESTOR);
 
             sendFileDefauld(0);
-        }catch (Exception e){
-            if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+        } catch (Exception e) {
+            if (mOnUploadFileListener != null) mOnUploadFileListener.onFailure(e.getMessage());
         }
     }
 
-    private void sendFileDefauld(Integer position){
+    private void sendFileDefauld(Integer position) {
         try {
-            if (listaFileDefauld!=null && position < listaFileDefauld.size()) {
+            if (listaFileDefauld != null && position < listaFileDefauld.size()) {
                 uploadeRef = storageRef.child(this.path + "/" + listaFileDefauld.get(position).getUrl());
                 sendToStorage(Utils.decodeBase64toByte(listaFileDefauld.get(position).getFile()), position, 1l, listaFileDefauld.get(position).getId());
             } else {
                 sendFileNovedadFrecuente(0);
             }
-        }catch (Exception e){if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());}
+        } catch (Exception e) {
+            if (mOnUploadFileListener != null) mOnUploadFileListener.onFailure(e.getMessage());
+        }
     }
 
-    private void sendFileNovedadFrecuente(Integer position){
-        if(listaFotoNovedadFrecuente != null &&position < listaFotoNovedadFrecuente.size()){
+    private void sendFileNovedadFrecuente(Integer position) {
+        if (listaFotoNovedadFrecuente != null && position < listaFotoNovedadFrecuente.size()) {
             file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(listaFotoNovedadFrecuente.get(position));
-            uploadeRef = storageRef.child(this.path+"/novedadfrecuente/"+file.getUrl());
-            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,2l,listaFotoNovedadFrecuente.get(position));
-        }else{
+            uploadeRef = storageRef.child(this.path + "/novedadfrecuente/" + file.getUrl());
+            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position, 2l, listaFotoNovedadFrecuente.get(position));
+        } else {
             file = null;
             sendFileMotivoNoRecoleccion(0);
         }
@@ -143,68 +179,70 @@ public class UserUploadFileTask {
         }*/
     }
 
-    private void sendFileMotivoNoRecoleccion(Integer position){
-        if(listaFotoMotivoNoRecoleccion!=null && position < listaFotoMotivoNoRecoleccion.size()){
+    private void sendFileMotivoNoRecoleccion(Integer position) {
+        if (listaFotoMotivoNoRecoleccion != null && position < listaFotoMotivoNoRecoleccion.size()) {
             file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(listaFotoMotivoNoRecoleccion.get(position));
-            uploadeRef = storageRef.child(this.path+"/motivonorecoleccion/"+file.getUrl());
-            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,3l,listaFotoMotivoNoRecoleccion.get(position));
-        }else{
-            finalizar();
+            uploadeRef = storageRef.child(this.path + "/motivonorecoleccion/" + file.getUrl());
+            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position, 3l, listaFotoMotivoNoRecoleccion.get(position));
+        } else {
+            file = null;
+            sendFilePesoPromedio(0);
         }
     }
 
-    private void sendFileNovedades(Integer position){
-        if(novedadesGestores!=null && position < novedadesGestores.size()){
+
+    private void sendFileNovedades(Integer position) {
+        if (novedadesGestores != null && position < novedadesGestores.size()) {
             file = MyApp.getDBO().manifiestoFileDao().obtenerFotosById(novedadesGestores.get(position));
-            uploadeRef = storageRef.child(this.path+"/NovedadesExtras/"+file.getUrl());
-            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position,41,novedadesGestores.get(position));
-        }else{
+            uploadeRef = storageRef.child(this.path + "/NovedadesExtras/" + file.getUrl());
+            sendToStorage(Utils.decodeBase64toByte(file.getFile()), position, 41, novedadesGestores.get(position));
+        } else {
             finalizar();
         }
     }
 
-    private void finalizar(){
-        if(mOnUploadFileListener!=null){
+    private void finalizar() {
+        if (mOnUploadFileListener != null) {
             mOnUploadFileListener.onSuccessful();
         }
     }
 
-    private void sendToStorage(byte[] imagen, final Integer index,final long tipo, final long id) {
-        if(uploadeRef != null){
+    private void sendToStorage(byte[] imagen, final Integer index, final long tipo, final long id) {
+        if (uploadeRef != null) {
             uploadeRef.putBytes(imagen).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(Exception e) {
-                    if(mOnUploadFileListener!=null)mOnUploadFileListener.onFailure(e.getMessage());
+                    if (mOnUploadFileListener != null)
+                        mOnUploadFileListener.onFailure(e.getMessage());
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //send next file...
-                    if(tipo==1l){
-                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
+                    if (tipo == 1l) {
+                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id, true);
                         sendFileDefauld(index + 1);
-                    }
-                    else if(tipo==2l){
-                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
+                    } else if (tipo == 2l) {
+                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id, true);
                         sendFileNovedadFrecuente(index + 1);
-                    }
-                    else if (tipo==3l){
-                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
+                    } else if (tipo == 3l) {
+                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id, true);
                         sendFileMotivoNoRecoleccion(index + 1);
-                    }
-                    else if (tipo==41){
-                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id,true);
+                    } else if (tipo == 41) {
+                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id, true);
                         sendFileNovedades(index + 1);
+                    } else if (tipo == 101) {
+                        MyApp.getDBO().manifiestoFileDao().actualizarToSincronizado(id, true);
+                        sendFilePesoPromedio(index + 1);
                     }
                 }
             });
         }
     }
 
-    public void setOnUploadFileListener(@NonNull OnUploadFileListener l){
+    public void setOnUploadFileListener(@NonNull OnUploadFileListener l) {
         mOnUploadFileListener = l;
     }
-
 
 
 }

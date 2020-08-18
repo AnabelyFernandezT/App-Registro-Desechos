@@ -10,7 +10,7 @@ public class DtoInicioRuta {
     private String fechaFin;
     private String kilometrajeInicio;
     private String kilometrajeFin;
-
+    private Integer tiposubruta;
 
 
     public DtoInicioRuta() {
@@ -86,5 +86,13 @@ public class DtoInicioRuta {
 
     public void setIdRuta(Integer idRuta) {
         this.idRuta = idRuta;
+    }
+
+    public Integer getTiposubruta() {
+        return tiposubruta;
+    }
+
+    public void setTiposubruta(Integer tiposubruta) {
+        this.tiposubruta = tiposubruta;
     }
 }

@@ -47,6 +47,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                 if(response.isSuccessful()){
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().getPlaca());
                     MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte",""+response.body().getEstado());
+                    MyApp.getDBO().parametroDao().saveOrUpdate("tipoSubRuta",""+response.body().getTiposubruta());
                     if (!verificarInicioRuta()){
                         if(response.body().getEstado()){
                             MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
@@ -56,7 +57,8 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                     null,
                                     response.body().getKilometrajeInicio(),
                                     response.body().getKilometrajeFin(),
-                                    1);
+                                    1,
+                                    response.body().getTiposubruta());
 
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
                             MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");

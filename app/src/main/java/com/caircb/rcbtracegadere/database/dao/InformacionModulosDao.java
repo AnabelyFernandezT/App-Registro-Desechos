@@ -20,7 +20,7 @@ public abstract class InformacionModulosDao {
     public abstract InformacionModulosEntity fetchInformacionModulos();
 
     @Query("select ruta, subruta, placa, chofer, auxiliarRecoleccion1,auxiliarRecoleccion2,kilometrajeInicio,residuoSujetoFiscalizacion,requiereDevolucionRecipientes" +
-            ",tieneDisponibilidadMontacarga,tieneDisponibilidadBalanza,requiereIncineracionPresenciada,observacionResiduos from tb_informacionModulos")
+            ",tieneDisponibilidadMontacarga,tieneDisponibilidadBalanza,requiereIncineracionPresenciada,observacionResiduos,idLoteProceso from tb_informacionModulos")
     @Transaction
     public abstract InformacionModulosEntity fetchInformacionModulos2();
 
@@ -46,6 +46,7 @@ public abstract class InformacionModulosDao {
                 informacionModulosEntity.setTieneDisponibilidadBalanza(informacionModulos.get(0).getTieneDisponibilidadBalanza());
                 informacionModulosEntity.setRequiereIncineracionPresenciada(informacionModulos.get(0).getRequiereIncineracionPresenciada());
                 informacionModulosEntity.setObservacionResiduos(informacionModulos.get(0).getObservacionResiduos());
+                informacionModulosEntity.setIdLoteProceso(informacionModulos.get(0).getIdLoteProceso());
             } else {
                 informacionModulosEntity.setIdInformacionModulos(0);
                 informacionModulosEntity.setRuta(informacionModulos.get(0).getRuta());
@@ -61,6 +62,7 @@ public abstract class InformacionModulosDao {
                 informacionModulosEntity.setTieneDisponibilidadBalanza(informacionModulos.get(0).getTieneDisponibilidadBalanza());
                 informacionModulosEntity.setRequiereIncineracionPresenciada(informacionModulos.get(0).getRequiereIncineracionPresenciada());
                 informacionModulosEntity.setObservacionResiduos(informacionModulos.get(0).getObservacionResiduos());
+                informacionModulosEntity.setIdLoteProceso(informacionModulos.get(0).getIdLoteProceso());
             }
         if (informacionModulosEntity!=null) createInformacionModulos(informacionModulosEntity);
     }

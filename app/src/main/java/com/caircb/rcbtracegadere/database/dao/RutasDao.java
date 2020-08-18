@@ -43,11 +43,11 @@ public abstract class RutasDao {
         RutasEntity catalogo = fetchConsultarCatalogoEspecifico(catalogos.getIdSubRuta());
 
             if (catalogo == null) {
-                catalogo = new RutasEntity(catalogos.getIdSubRuta(),catalogos.getNombreRuta());
+                catalogo = new RutasEntity(catalogos.getIdSubRuta(),catalogos.getNombreRuta(),catalogos.getTiposubruta());
             } else {
                 catalogo.setCodigo(catalogos.getIdSubRuta());
                 catalogo.setNombre(catalogos.getNombreRuta());
-
+                catalogo.setTiposubruta(catalogos.getTiposubruta());
             }
 
             createRuta(catalogo);

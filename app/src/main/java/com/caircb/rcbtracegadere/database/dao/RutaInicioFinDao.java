@@ -23,7 +23,7 @@ public abstract class RutaInicioFinDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long createRegistro(RutaInicioFinEntity entity);
 
-    public long saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado ){
+    public long saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado, int tiposubruta ){
         RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutas(idRutaInicioFin);
         if(registroInicio==null) {
             registroInicio = new RutaInicioFinEntity(
@@ -34,12 +34,14 @@ public abstract class RutaInicioFinDao {
                     fechaFin,
                     kilometrajeInicio,
                     kilometrajeFin,
-                    estado);
+                    estado,
+                    tiposubruta);
         }else{
             registroInicio.setIdRutaInicioFin(idRutaInicioFin);
             registroInicio.setFechaFin(fechaFin);
             registroInicio.setKilometrajeFin(kilometrajeFin);
             registroInicio.setEstado(estado);
+            registroInicio.setTiposubruta(tiposubruta);
 
         }
 

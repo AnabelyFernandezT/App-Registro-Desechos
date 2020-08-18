@@ -10,6 +10,7 @@
 <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
     -->
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -55,7 +56,22 @@
             android:taskAffinity=""
             android:excludeFromRecents="true">
         </activity>
-
+        <activity android:name=".CierreLoteActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
+     <!--   <activity android:name=".dialogs.DialogFinLoteHospitales"
+            android:configChanges="orientation"
+            android:screenOrientation="sensor"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_1" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+-->
         <receiver android:name=".processes.ConnectivityService">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

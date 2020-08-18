@@ -44,29 +44,25 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     AlertDialog.Builder alertDialog;
     AlertDialog alert;
     String valor = null;
-    ParametroEntity para,idDetalleValidacion;
+    ParametroEntity para;
     String dato = "0";
     String inputDefault = "0";
-    String codigoDetalle="", vreferencial;
+    String codigoDetalle = "", vreferencial;
     Double pesoReferencial;
-    BigDecimal subtotal= BigDecimal.ZERO;
+    BigDecimal subtotal = BigDecimal.ZERO;
     ListaValoresAdapter listaValoresAdapter;
     List<CatalogoItemValor> bultos;
-    Integer position;
-    Integer idManifiesto;
-    Integer idManifiestoDetalle;
-    Integer tipoPaquete;
-    Integer autorizacion=0;
-    String idManifiestoValidacion="";
+    Integer position, idManifiesto, idManifiestoDetalle, tipoPaquete, autorizacion = 0, idManifiestoValidacion = 0;
     PaqueteEntity pkg;
     ManifiestoDetalleEntity detalle;
     List<String> itemsCategoriaPaquete;
-    Boolean closable=false;
+    Boolean closable = false;
     MyPrint print;
     Integer tipoGestion;
     Integer cantidaBultosInitial;
     DialogBuilder builder;
-    boolean faltaImpresos=false;
+    boolean faltaImpresos = false;
+    Integer registraTara;
 
     public interface OnBultoListener {
         public void onSuccessful(
@@ -90,15 +86,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             @NonNull Integer idManifiestoDetalle,
             @NonNull Integer tipoPaquete,
             @NonNull String codigoDetalle,
-            Integer tipoGestion) {
+            Integer tipoGestion,
+            Integer registraTara) {
         super(context, R.layout.dialog_bultos);
 
-        this.position=position;
-        this.idManifiesto=idManifiesto;
-        this.idManifiestoDetalle=idManifiestoDetalle;
+        this.position = position;
+        this.idManifiesto = idManifiesto;
+        this.idManifiestoDetalle = idManifiestoDetalle;
         this.tipoPaquete = tipoPaquete;
         this.codigoDetalle = codigoDetalle;
         this.tipoGestion = tipoGestion;
+        this.registraTara=registraTara;
     }
 
     @Override
@@ -115,8 +113,6 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void initBotones() {
         para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
-        idDetalleValidacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico("idValidacion_"+idManifiestoDetalle);
-        if(idDetalleValidacion!=null){idManifiestoValidacion = idDetalleValidacion.getValor();}
         listViewBultos = getView().findViewById(R.id.listViewBultos);
         txtpantalla = getView().findViewById(R.id.txtpantalla);
         txtTotal = getView().findViewById(R.id.txtTotal);
@@ -152,29 +148,26 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         btn_decimal.setOnClickListener(this);
         btn_add.setOnClickListener(this);
 
-        if(para!=null){
-            if(para.getValor().equals("0")&& idManifiestoValidacion.equals(String.valueOf(idManifiestoDetalle))){
+        if (para != null) {
+            if (para.getValor().equals("0") && idManifiestoValidacion.equals(idManifiesto)) {
                 btn_add.setEnabled(false);
                 btn_ok.setEnabled(false);
-                autorizacion = 0;
-            }else if (para.getValor().equals("1")&& idManifiestoValidacion.equals(String.valueOf(idManifiestoDetalle))) {
-                autorizacion = 1;
-                btn_add.setEnabled(true);
-                btn_ok.setEnabled(true);
             }
         }
     }
 
-    private void initCategoriaPaquetes(){
+    private void initCategoriaPaquetes() {
 
         itemsCategoriaPaquete = new ArrayList<>();
 
 
-        if(tipoPaquete!=null){
+        if (tipoPaquete != null) {
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(tipoPaquete);
 
-            if(pkg.getEntregaSoloFundas())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
-            if(pkg.getEntregaSoloGuardianes())itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
+            if (pkg.getEntregaSoloFundas())
+                itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
+            if (pkg.getEntregaSoloGuardianes())
+                itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
 
             System.out.println("nombre");
 
@@ -188,38 +181,39 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         }
     }
 
-    private void initDataOnOpen(){
+    private void initDataOnOpen() {
 
-        if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+MySession.getIdUsuario()).equals("1")){
+        if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
             MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresionByIdManifiestoIdDet(idManifiesto, idManifiestoDetalle, true);
-            bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
-        }else{
-            bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
+            bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
+        } else {
+            bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
         }
 
         //bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
-        if(bultos==null) bultos = new ArrayList<>();
+        if (bultos == null) bultos = new ArrayList<>();
         cantidaBultosInitial = bultos.size();
 
-        if(bultos.size()>0){
-            for (CatalogoItemValor r:bultos){
-                subtotal =  subtotal.add(new BigDecimal(r.getValor()));
+        if (bultos.size() > 0) {
+            for (CatalogoItemValor r : bultos) {
+                subtotal = subtotal.add(new BigDecimal(r.getValor()));
             }
-            txtTotal.setText("KG "+subtotal);
+            txtTotal.setText("KG " + subtotal);
         }
 
         initAdapterBultos();
 
     }
 
-    private void initAdapterBultos(){
-        listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos);
+    private void initAdapterBultos() {
+        listaValoresAdapter = new ListaValoresAdapter(getActivity(), bultos, idManifiesto, idManifiestoDetalle,registraTara);
         listaValoresAdapter.setOnItemBultoImpresion(new ListaValoresAdapter.OnItemBultoImpresionListener() {
             @Override
-            public void onSendImpresion(Integer pos) {
+            public void onSendImpresion(Integer pos, double pesoTaraBulto) {
                 CatalogoItemValor item = bultos.get(pos);
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
-                imprimirEtiquetaIndividual(idManifiesto,idManifiestoDetalle, item);
+                imprimirEtiquetaIndividual(idManifiesto, idManifiestoDetalle, item);
+                MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), pesoTaraBulto);
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -228,20 +222,22 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 CatalogoItemValor item = bultos.get(pos);
                 MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresById(item.getIdCatalogo());
 
-                if(item.getTipo().length()>0)MyApp.getDBO().manifiestoPaqueteDao().quitarPaquete(idManifiesto,tipoPaquete,item.getTipo());
+                if (item.getTipo().length() > 0)
+                    MyApp.getDBO().manifiestoPaqueteDao().quitarPaquete(idManifiesto, tipoPaquete, item.getTipo());
 
                 subtotal = subtotal.subtract(new BigDecimal(item.getValor()));
                 bultos.remove(item);
 
                 listaValoresAdapter.filterList(bultos);
                 listaValoresAdapter.notifyDataSetChanged();
-                txtTotal.setText("KG "+subtotal);
+                txtTotal.setText("KG " + subtotal);
 
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
                         // Code here will run in UI thread
-                        if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal,position,bultos.size(),pkg,false, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
+                        if (mOnBultoListener != null)
+                            mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg, false, faltaImpresos, cantidaBultosInitial > 0 ? (cantidaBultosInitial != bultos.size() ? true : false) : false);
                     }
                 });
             }
@@ -250,22 +246,22 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         listViewBultos.setAdapter(listaValoresAdapter);
     }
 
-    private void loadData(){
+    private void loadData() {
         //bultos = new ArrayList<>();
 
-        if(bultos.size()>0){
-            for (CatalogoItemValor r:bultos){
-                subtotal =  subtotal.add(new BigDecimal(r.getValor()));
+        if (bultos.size() > 0) {
+            for (CatalogoItemValor r : bultos) {
+                subtotal = subtotal.add(new BigDecimal(r.getValor()));
             }
-            txtTotal.setText("KG "+subtotal);
+            txtTotal.setText("KG " + subtotal);
         }
 
-        bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
+        bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
         initAdapterBultos();
 
     }
 
-    private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item){
+    private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
 
         //Probar sin impresiora
         /************************************/
@@ -276,7 +272,6 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
         item.setImpresion(true);
         listaValoresAdapter.notifyDataSetChanged();
-
         //loadData();
 
         /**************************************/
@@ -327,44 +322,44 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         txtpantalla.setText(dato);
     }
 
-    private void createBulto(BigDecimal imput){
-        if(imput.doubleValue()>0) {
+    private void createBulto(BigDecimal imput) {
+        if (imput.doubleValue() > 0) {
             //si es tipo paquete .. solicitar escoger un tipo...
-            if(tipoPaquete!=null) {
+            if (tipoPaquete != null) {
 
                 //if (!pkg.getFlagAdicionales() && pkg.getPaquetePorRecolccion().toString().equals("1") && bultos.size()>0){
-                    //messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
-                    //return;
+                //messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
+                //return;
                 //}else {
 
                 // showTipoPaquete(imput);  //ANTES
 
-                if(tipoGestion == 100){
+                if (tipoGestion == 100) {
                     Integer which = 0;
-                    if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalFunda() && pkg.getPaquetePorRecolccion().toString().equals("1")){
+                    if (existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalFunda() && pkg.getPaquetePorRecolccion().toString().equals("1")) {
                         //alert.dismiss();
-                        messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
-                        return;
-                    }
-                    addBulto(imput,itemsCategoriaPaquete.get(which));
-                }else if (tipoGestion == 101){
-                    Integer which = 1;
-                    if(existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalGuardian() && pkg.getPaquetePorRecolccion().toString().equals("1")){
-                        //alert.dismiss();
-                        messageBox("Usted no puede agregar otro bulto de la categoria "+itemsCategoriaPaquete.get(which));
+                        messageBox("Usted no puede agregar otro bulto de la categoria " + itemsCategoriaPaquete.get(which));
                         return;
                     }
                     addBulto(imput, itemsCategoriaPaquete.get(which));
-                }else if (tipoGestion == 102){
+                } else if (tipoGestion == 101) {
+                    Integer which = 1;
+                    if (existeBultoCategoria(itemsCategoriaPaquete.get(which)) && !pkg.getFlagAdicionales() && !pkg.getFlagAdicionalGuardian() && pkg.getPaquetePorRecolccion().toString().equals("1")) {
+                        //alert.dismiss();
+                        messageBox("Usted no puede agregar otro bulto de la categoria " + itemsCategoriaPaquete.get(which));
+                        return;
+                    }
+                    addBulto(imput, itemsCategoriaPaquete.get(which));
+                } else if (tipoGestion == 102) {
                     Integer which = 2;
                     addBulto(imput, itemsCategoriaPaquete.get(which));
-                }else if (tipoGestion == 0){
-                    addBulto(imput,"");
+                } else if (tipoGestion == 0) {
+                    addBulto(imput, "");
                 }
 
                 //}
-            }else{
-                addBulto(imput,"");
+            } else {
+                addBulto(imput, "");
             }
         }
     }
@@ -414,15 +409,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 */
 
-    private boolean existeBultoCategoria(String categoria){
-        return  MyApp.getDBO().manifiestoDetallePesosDao().existeBultoCategoriaPaquete(idManifiesto,idManifiestoDetalle,categoria);
+    private boolean existeBultoCategoria(String categoria) {
+        return MyApp.getDBO().manifiestoDetallePesosDao().existeBultoCategoriaPaquete(idManifiesto, idManifiestoDetalle, categoria);
     }
 
-    public void addBulto(final BigDecimal imput, String tipo){
+    public void addBulto(final BigDecimal imput, String tipo) {
 
         subtotal = subtotal.add(imput);
 
-        if( vreferencial.equals("SI") && subtotal.doubleValue() > pesoReferencial && autorizacion.equals(0)){
+        if (vreferencial.equals("SI") && subtotal.doubleValue() > pesoReferencial && autorizacion.equals(0)) {
 
             builder = new DialogBuilder(getActivity());
             builder.setMessage("¿Necesita autorización porque el peso excede el peso referencial?");
@@ -430,7 +425,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             builder.setPositiveButton("SI", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(),idManifiestoDetalle,idManifiesto,subtotal.doubleValue());
+                    DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(), idManifiestoDetalle, idManifiesto, subtotal.doubleValue());
                     pesoExtra.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     pesoExtra.setCancelable(false);
                     pesoExtra.show();
@@ -439,12 +434,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         public void onSuccessful() {
                             txtpantalla.setText("0");
                             subtotal = subtotal.subtract(imput);
-                            dato="0";
+                            dato = "0";
                             BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
-                            MyApp.getDBO().parametroDao().saveOrUpdate("idValidacion_"+idManifiestoDetalle,""+idManifiestoDetalle);
+                            idManifiestoValidacion = idManifiesto;
                             createBulto(imput);
-                            btn_add.setEnabled(false);
-                            btn_ok.setEnabled(false);
                         }
 
                         @Override
@@ -452,15 +445,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                         }
                     });
+                    btn_add.setEnabled(false);
+                    btn_ok.setEnabled(false);
                     builder.dismiss();
                 }
             });
-            builder.setNegativeButton("NO", new View.OnClickListener(){
+            builder.setNegativeButton("NO", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    txtpantalla.setText("0");
                     subtotal = subtotal.subtract(imput);
-                    dato="0";
                     builder.dismiss();
                 }
             });
@@ -475,41 +468,45 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         Long id;
         boolean banderaImpresion;
 
-        if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("1")){
+        if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
             banderaImpresion = true;
-            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, true, ultimoBultoByIdDet);
-        }else{
-            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
+            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, true, ultimoBultoByIdDet, 0.0);
+        } else {
+            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, false, ultimoBultoByIdDet, 0.0);
             banderaImpresion = false;
         }
         //Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
 
-        if(tipo.length()>0){
-            MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto,tipoPaquete,tipo);
+        if (tipo.length() > 0) {
+            MyApp.getDBO().manifiestoPaqueteDao().saveOrUpdate(idManifiesto, tipoPaquete, tipo);
         }
 
-        bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, banderaImpresion, ultimoBultoByIdDet));
+        bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(), tipo, banderaImpresion, ultimoBultoByIdDet));
         //bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, false, ultimoBultoByIdDet));
         listaValoresAdapter.notifyDataSetChanged();
 
-        txtTotal.setText("KG "+subtotal);
-        dato="0";
+        txtTotal.setText("KG " + subtotal);
+        dato = "0";
         txtpantalla.setText("0");
 
-        if(closable && mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), pkg,true, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
+        if (closable && mOnBultoListener != null)
+            mOnBultoListener.onSuccessful(subtotal, position, bultos.size() == 0 ? 1 : bultos.size(), pkg, true, faltaImpresos, cantidaBultosInitial > 0 ? (cantidaBultosInitial != bultos.size() ? true : false) : false);
     }
-/////////////////////////
-    private void aplicar(){
+
+    /////////////////////////
+    private void aplicar() {
         BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
-        if(imput.doubleValue()==0d && subtotal.doubleValue()>0d){
-            if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg,true, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
-        }else if(imput.doubleValue()>0d){
-            if(bultos.size()>=0d && pkg ==null){
+        if (imput.doubleValue() == 0d && subtotal.doubleValue() > 0d) {
+            if (mOnBultoListener != null)
+                mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg, true, faltaImpresos, cantidaBultosInitial > 0 ? (cantidaBultosInitial != bultos.size() ? true : false) : false);
+        } else if (imput.doubleValue() > 0d) {
+            if (bultos.size() >= 0d && pkg == null) {
                 createBulto(imput);
-                if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(subtotal, position, bultos.size()==0?1:bultos.size(), null,true, faltaImpresos,cantidaBultosInitial>0?(cantidaBultosInitial!=bultos.size()?true:false):false);
-            }else if(bultos.size()>=0d && pkg!=null){
+                if (mOnBultoListener != null)
+                    mOnBultoListener.onSuccessful(subtotal, position, bultos.size() == 0 ? 1 : bultos.size(), null, true, faltaImpresos, cantidaBultosInitial > 0 ? (cantidaBultosInitial != bultos.size() ? true : false) : false);
+            } else if (bultos.size() >= 0d && pkg != null) {
                 //region para paquetes...
-                closable=true;
+                closable = true;
                 createBulto(imput);
             }
         }
@@ -528,8 +525,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         }*/
     }
 
-    public void setOnBultoListener(@NonNull OnBultoListener l){
-        mOnBultoListener =l;
+    public void setOnBultoListener(@NonNull OnBultoListener l) {
+        mOnBultoListener = l;
     }
 
     @Override
@@ -566,50 +563,50 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 setDato("9");
                 break;
             case R.id.btn_ok:
+
                 BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
                 createBulto(imputValor);
                 faltaImpresos = verificarTodosBultosImpresos();
-                if(!faltaImpresos){
+
+                if (!faltaImpresos) {
                     MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                    if(mOnBultoListener!=null){
+                    if (mOnBultoListener != null) {
                         aplicar();
-                        autorizacion=0;
-                        MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                        autorizacion = 0;
+                        MyApp.getDBO().parametroDao().saveOrUpdate("notif_value", "" + "0");
                     }
-                }else{
+                } else {
                     messageBox("Debe imprimir todos los bultos para continuar...!");
                 }
-
                 break;
+
             case R.id.btn_add:
-                if(para!=null){
+                if (para != null) {
                     valor = para.getValor();
-                    if(valor.equals("5")){
+                    if (valor.equals("5")) {
                         autorizacion = 1;
                         btn_add.setEnabled(true);
                         btn_ok.setEnabled(true);
                     }
 
                 }
-
                 BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
                 createBulto(imput);
                 break;
             case R.id.btn_cancel:
                 //limpiarBultosNoConfirmados();
                 faltaImpresos = verificarTodosBultosImpresos();
-                if(faltaImpresos){
+                if (faltaImpresos) {
                     MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
-                }else{
+                } else {
                     MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                 }
                 if (mOnBultoListener != null) {
                     mOnBultoListener.onCanceled(faltaImpresos);
                 }
-                if(btn_add.isEnabled() && btn_ok.isEnabled()){
+                //if (btn_add.isEnabled() && btn_ok.isEnabled()) {
                     aplicar();
-                }
-
+               // }
                 break;
             case R.id.btn_decimal:
                 setDato(".");
@@ -631,11 +628,11 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         if(mOnBultoListener!=null)mOnBultoListener.onSuccessful(BigDecimal.valueOf(nuevoSubtotal),position,bultostTotal.size(),pkg,false);
     }
      */
-    private boolean verificarTodosBultosImpresos(){
+    private boolean verificarTodosBultosImpresos() {
         boolean resul = false;
-        if(bultos != null && bultos.size()>0){
-            for(CatalogoItemValor item : bultos){
-                if(item.isImpresion() == false){
+        if (bultos != null && bultos.size() > 0) {
+            for (CatalogoItemValor item : bultos) {
+                if (item.isImpresion() == false) {
                     resul = true;
                 }
             }

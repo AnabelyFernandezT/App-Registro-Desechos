@@ -6,10 +6,40 @@
     android:padding="5dp"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:id="@+id/sectionRegistrarTara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/customborder">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:text="¿REGISTRAR TARA?">
+        </TextView>
+        <CheckBox
+            android:id="@+id/chkRegistrarTara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="1.7"
+            android:scaleX="1.7"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingRight="0dp"
+            android:layout_margin="1dp">
+        </CheckBox>
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@android:id/tabcontent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
     <ScrollView
         android:layout_width="match_parent"

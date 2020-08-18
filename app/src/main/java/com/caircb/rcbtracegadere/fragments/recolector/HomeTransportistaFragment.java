@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
+import com.caircb.rcbtracegadere.dialogs.DialogQrLoteTransportista;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -31,6 +32,8 @@ import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -45,8 +48,9 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogInicioRuta dialogInicioRuta;
+    DialogQrLoteTransportista dialogQrLoteTransportista;
     DialogFinRuta dialogFinRuta;
-    LinearLayout lnlIniciaRuta,lnlFinRuta;
+    LinearLayout lnlIniciaRuta,lnlFinRuta,sectionQrLote;
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
     Integer idSubRuta;
@@ -82,7 +86,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_home_transportista, container, false));
-
 
         initBuscador();
         init();
@@ -124,6 +127,17 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         txtBuscar = getView().findViewById(R.id.txtBuscar);
         txtSincronizar = getView().findViewById(R.id.txtSincronizar);
         txtManifiestos = getView().findViewById(R.id.txtManifiestos);
+
+        sectionQrLote = getView().findViewById(R.id.sectionQrLote);
+        sectionQrLote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogQrLoteTransportista = new DialogQrLoteTransportista(getActivity());
+                dialogQrLoteTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogQrLoteTransportista.setCancelable(false);
+                dialogQrLoteTransportista.show();
+            }
+        });
 
         //txtinicioRuta = (TextView)getView().findViewById(R.id.txtIniciarRuta);
         //txtFinRuta = (TextView)getView().findViewById(R.id.txtFinRuta);
@@ -358,6 +372,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     public void desbloque_botones(){
 
         regionBuscar.setEnabled(true);
+        btnSincManifiestos.setEnabled(true);
         btnSincManifiestos.setEnabled(true);
         btnListaAsignadaTransportista.setEnabled(true);
         btnPickUpTransportista.setEnabled(true);

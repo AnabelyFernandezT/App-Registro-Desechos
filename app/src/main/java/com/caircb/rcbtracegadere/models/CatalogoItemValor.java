@@ -6,6 +6,7 @@ public class CatalogoItemValor {
     private String tipo;
     private boolean impresion;
     private int numeroBulto;
+    private double pesoTaraBulto;
 
     public CatalogoItemValor(int idCatalogo, String valor, String tipo, boolean impresion, int numeroBulto) { //
         this.idCatalogo = idCatalogo;
@@ -52,4 +53,11 @@ public class CatalogoItemValor {
         this.numeroBulto = numeroBulto;
     }
 
+    public double getPesoTaraBulto() {
+        return pesoTaraBulto;
+    }
+
+    public void setPesoTaraBulto(double pesoTaraBulto) {
+        this.pesoTaraBulto = pesoTaraBulto;
+    }
 }

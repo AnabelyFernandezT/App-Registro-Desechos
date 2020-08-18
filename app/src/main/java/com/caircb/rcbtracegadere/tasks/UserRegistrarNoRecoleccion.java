@@ -200,7 +200,8 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
                         i,
                         0.0,
                         p.getDescripcion(),
-                        p.getCodeQr()
+                        p.getCodeQr(),
+                        0.0
                 ));
                 i++;
             }

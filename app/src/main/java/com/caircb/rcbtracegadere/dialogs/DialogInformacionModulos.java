@@ -44,7 +44,7 @@ public class DialogInformacionModulos extends MyDialog {
     Activity _activity;
     UserInformacionModulosTask informacionModulosTaskl;
     TextView lblRutaInfo,lblSubrutaInfo,lblPlacaInfo,lblChoferInfo,lblAuxiliarRecoleccion1Info,lblAuxiliarRecoleccion2Info,lblKilometrajeInfo,lblObservaciones,lblTituloRuta
-            ,lblTituloRecoleccion,lblPlacaLote,lblPlacaSincronizada,lblNombreChoferSede, lblNombreChoferPlanta,lblPlacaPlanta,lblRutaPlanta,lblSubrutaPlanta,lblChoferPlanta,lblAuxiliarPlanta1;
+            ,lblTituloRecoleccion,lblPlacaLote,lblPlacaSincronizada,lblNombreChoferSede, lblNombreChoferPlanta,lblPlacaPlanta,lblRutaPlanta,lblSubrutaPlanta,lblChoferPlanta,lblAuxiliarPlanta1,lblLoteTransportista;
     CheckBox chkFiscalizacionNo,chkFiscalizacionSi,chkFiscalizacionArcsa,chkFiscalizacionMi,chkDevolucionRecipienteSi,chkDevolucionRecipienteNo,chkMontacargasSi,chkMontacargasNo
             ,chkBalanzaSi,chkBalanzaNo,chkPresenciadoSi,chkPresenciadoNo;
     LinearLayout btnRetornarMenu,sectionGeneral,sectionSede,sectionPlanta;
@@ -73,6 +73,7 @@ public class DialogInformacionModulos extends MyDialog {
         lblAuxiliarRecoleccion1Info = getView().findViewById(R.id.lblAuxiliarRecoleccion1Info);
         lblAuxiliarRecoleccion2Info = getView().findViewById(R.id.lblAuxiliarRecoleccion2Info);
         lblKilometrajeInfo = getView().findViewById(R.id.lblKilometrajeInfo);
+        lblLoteTransportista = getView().findViewById(R.id.lblLoteTransportista);
 /*        chkFiscalizacionNo = getView().findViewById(R.id.chkFiscalizacionNo);
         chkFiscalizacionSi = getView().findViewById(R.id.chkFiscalizacionSi);
         chkFiscalizacionArcsa = getView().findViewById(R.id.chkFiscalizacionArcsa);
@@ -119,7 +120,7 @@ public class DialogInformacionModulos extends MyDialog {
         InformacionModulosEntity informacionModulos = MyApp.getDBO().informacionModulosDao().fetchInformacionModulos2();
         int idTipoEspiecifico = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info"));
 
-        if (idTipoEspiecifico==1||idTipoEspiecifico==0){
+        if (idTipoEspiecifico==1||idTipoEspiecifico==0){ //Transportista
                 lblTituloRecoleccion.setVisibility(View.VISIBLE);
                 lblTituloRuta.setVisibility(View.GONE);
                 sectionGeneral.setVisibility(View.VISIBLE);
@@ -133,6 +134,13 @@ public class DialogInformacionModulos extends MyDialog {
                 lblAuxiliarRecoleccion1Info.setText(informacionModulos.getAuxiliarRecoleccion1());
                 lblAuxiliarRecoleccion2Info.setText(informacionModulos.getAuxiliarRecoleccion2());
                 lblKilometrajeInfo.setText(informacionModulos.getKilometrajeInicio().toString());
+                int idLote=informacionModulos.getIdLoteProceso()==null?0:informacionModulos.getIdLoteProceso();
+                if (idLote==0){
+                    lblLoteTransportista.setVisibility(View.GONE);
+                }else {
+                    lblLoteTransportista.setVisibility(View.VISIBLE);
+                    lblLoteTransportista.setText(informacionModulos.getIdLoteProceso().toString());
+                }
         /*    if (informacionModulos.getObservacionResiduos().equals(null)){
                 lblObservaciones.setText("");
             }else {
@@ -176,7 +184,7 @@ public class DialogInformacionModulos extends MyDialog {
                     chkPresenciadoNo.setChecked(false);
                 }*/
 
-        }else if(idTipoEspiecifico>=3 && idTipoEspiecifico<=5) {
+        }else if(idTipoEspiecifico>=3 && idTipoEspiecifico<=5) { //Planta o Sede
             lblTituloRecoleccion.setVisibility(View.GONE);
             lblTituloRuta.setVisibility(View.VISIBLE);
             sectionGeneral.setVisibility(View.GONE);

@@ -179,6 +179,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
             public void onClick(final DialogInterface dialog, int item) {
                 if (options[item].equals("INICIAR RECOLECCIÓN")) {
 
+                    MyApp.getDBO().parametroDao().saveOrUpdate("seleccionMenuRecoleccion","1"); // Inicia Recoleccion
                     listManifiestoBultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiesto(rowItems.get(position).getIdAppManifiesto());
                     if (listManifiestoBultos.size() == 0) {
 
@@ -409,6 +410,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                     dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            MyApp.getDBO().parametroDao().saveOrUpdate("seleccionMenuRecoleccion","2"); // No recoleccion
                             //Guardo la fecha de inicio recoleccion
                             Date fecha = AppDatabase.getDateTime();
                             //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -474,6 +476,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
  dialogConfirmacion.show();
  ***/
                 } else if (options[item].equals("CANCELAR")) {
+                    MyApp.getDBO().parametroDao().saveOrUpdate("seleccionMenuRecoleccion",""); // Cancelar
                     dialog.dismiss();
                 }
 

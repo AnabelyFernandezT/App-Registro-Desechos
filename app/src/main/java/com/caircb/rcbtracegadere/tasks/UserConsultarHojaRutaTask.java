@@ -68,7 +68,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
                 if(response.isSuccessful()){
                     final List<DtoManifiesto> respuesta = response.body();
-                    final Integer cont =respuesta.size();
+                     final Integer cont =respuesta.size();
                      new AsyncTask<Void, Integer, Boolean>() {
                         @Override
                         protected void onProgressUpdate(Integer... values) {

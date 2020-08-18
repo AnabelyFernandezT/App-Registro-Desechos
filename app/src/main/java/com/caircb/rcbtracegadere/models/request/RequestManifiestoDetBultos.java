@@ -7,12 +7,14 @@ public class RequestManifiestoDetBultos {
     private double peso;
     private String descripcion;
     private String codigoQr;
+    private double pesoTara;
 
-    public RequestManifiestoDetBultos(Integer index, double peso, String descripcion, String codigoQr) {
+    public RequestManifiestoDetBultos(Integer index, double peso, String descripcion, String codigoQr, double pesoTara) {
         this.index = index;
         this.peso = peso;
         this.descripcion = descripcion;
         this.codigoQr = codigoQr;
+        this.pesoTara = pesoTara;
     }
 
     public Integer getIndex() {
@@ -45,5 +47,13 @@ public class RequestManifiestoDetBultos {
 
     public void setCodigoQr(String codigoQr) {
         this.codigoQr = codigoQr;
+    }
+
+    public double getPesoTara() {
+        return pesoTara;
+    }
+
+    public void setPesoTara(double pesoTara) {
+        this.pesoTara = pesoTara;
     }
 }

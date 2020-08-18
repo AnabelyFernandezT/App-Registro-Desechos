@@ -20,7 +20,7 @@ public abstract class ManifiestoDetallePesosDao {
     @Query("select numeroBulto from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle order by numeroBulto desc limit 1")
     public abstract int countNumeroBultosByIdManifiestoIdDet (Integer idManifiesto, Integer idManifiestoDetalle);
 
-    @Query("select _id as idCatalogo, valor,descripcion as tipo, impresion, numeroBulto from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle ")
+    @Query("select _id as idCatalogo, valor,descripcion as tipo, impresion, numeroBulto, pesoTaraBulto from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract List<CatalogoItemValor> fecthConsultarValores(Integer idManifiesto, Integer idManifiestoDetalle);
 
     @Query("select count(*) from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle and descripcion=:categoria limit 1")
@@ -44,6 +44,13 @@ public abstract class ManifiestoDetallePesosDao {
     @Query ("update tb_manifiesto_detalle_pesos set impresion =:impresion where _id=:id and idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
     public abstract void updateBanderaImpresion(Integer idManifiesto, Integer idManifiestoDetalle ,Integer id, boolean impresion);
 
+    @Query ("update tb_manifiesto_detalle_pesos set pesoTaraBulto =:pesoTaraBulto where _id=:id and idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
+    public abstract void updatePesoTara(Integer idManifiesto, Integer idManifiestoDetalle ,Integer id, double pesoTaraBulto);
+
+    @Query ("update tb_manifiesto_detalle_pesos set pesoTaraBulto =:pesoTaraBulto where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
+    public abstract void updatePesoTaraXManifiestoDetalle(Integer idManifiesto, Integer idManifiestoDetalle , double pesoTaraBulto);
+
+
     @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle and impresion=0")
     public abstract void deleteTableValoresNoConfirmados(Integer idManifiesto, Integer idManifiestoDetalle);
 
@@ -52,6 +59,7 @@ public abstract class ManifiestoDetallePesosDao {
 
     @Query("delete from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto")
     public abstract void deleteTableValoresByIdManifiesto(Integer idManifiesto);
+
 
     @Query("update tb_manifiesto_detalle_pesos set impresion =:estado where _id in (select p._id from tb_manifiestos m  \n" +
             " inner join tb_manifiesto_detalle_pesos p on m.idAppManifiesto = p.idAppManifiesto\n" +
@@ -83,8 +91,8 @@ public abstract class ManifiestoDetallePesosDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long insertValores(ManifiestoDetallePesosEntity entity);
 
-    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion, Integer numeroBulto){
-        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion, numeroBulto);
+    public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion, Integer numeroBulto, double pesoTaraBulto){
+        ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion, numeroBulto,pesoTaraBulto);
         return insertValores(r);
     }
 

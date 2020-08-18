@@ -32,7 +32,9 @@ public class ManifiestoDetallePesosEntity {
 
     private int numeroBulto;
 
-    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion, Integer tipoPaquete, @NonNull String codeQr, boolean impresion, Integer numeroBulto) {
+    private double pesoTaraBulto;
+
+    public ManifiestoDetallePesosEntity(double valor, @NonNull Integer idAppManifiesto, @NonNull Integer idAppManifiestoDetalle, String descripcion, Integer tipoPaquete, @NonNull String codeQr, boolean impresion, Integer numeroBulto, double pesoTaraBulto) {
         this.valor = valor;
         this.idAppManifiesto = idAppManifiesto;
         this.idAppManifiestoDetalle = idAppManifiestoDetalle;
@@ -41,6 +43,7 @@ public class ManifiestoDetallePesosEntity {
         this.codeQr = codeQr;
         this.impresion = impresion;
         this.numeroBulto = numeroBulto;
+        this.pesoTaraBulto = pesoTaraBulto;
     }
 
     public Integer get_id() {
@@ -116,5 +119,13 @@ public class ManifiestoDetallePesosEntity {
 
     public void setNumeroBulto(int numeroBulto) {
         this.numeroBulto = numeroBulto;
+    }
+
+    public double getPesoTaraBulto() {
+        return pesoTaraBulto;
+    }
+
+    public void setPesoTaraBulto(double pesoTaraBulto) {
+        this.pesoTaraBulto = pesoTaraBulto;
     }
 }

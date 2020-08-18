@@ -9,6 +9,7 @@ public class DtoFindRutas {
     private String nombreAuxiliar;
     private String nombreConductor;
     private String nombreRuta;
+    private  Integer tiposubruta;
 
     public DtoFindRutas() {
     }
@@ -49,5 +50,11 @@ public class DtoFindRutas {
 
     public void setNombreConductor(String nombreConductor) { this.nombreConductor = nombreConductor; }
 
+    public Integer getTiposubruta() {
+        return tiposubruta;
+    }
 
+    public void setTiposubruta(Integer tiposubruta) {
+        this.tiposubruta = tiposubruta;
+    }
 }

@@ -157,4 +157,7 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerInformacionTransportista")
     Call<DtoInformacionTransportista>informacionTransportista(@Body RequestInformacionTransportista model);
+
+    @PUT("Registro/saveFinLoteProceso")
+    Call<DtoInfo> putFinLoteHospitales(@Body RequestFinRuta model);
 }

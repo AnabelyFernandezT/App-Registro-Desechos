@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
     <LinearLayout
         android:id="@+id/fragment_body"
         android:layout_width="match_parent"
@@ -14,11 +14,11 @@
         android:weightSum="3">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginTop="-50dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="-50dp"
+            android:gravity="center"
+            android:orientation="vertical">
             <!--LOGO-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,86 +37,40 @@
             <!--FIN LOGO-->
 
             <LinearLayout
-                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
+
                 <LinearLayout
-                    android:background="@drawable/shape_card_border"
-                    android:orientation="vertical"
-                    android:layout_marginRight="7dp"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content">
+                    android:background="@drawable/shape_card_border"
+                    android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:orientation="vertical"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                         <ImageView
                             android:id="@+id/btnPickUpTransportista"
-                            android:layout_gravity="center"
                             android:layout_width="130dp"
                             android:layout_height="130dp"
+                            android:layout_gravity="center"
                             android:src="@mipmap/pickup_camion" />
 
                         <TextView
                             android:id="@+id/lblpickUpTransportista"
-                            android:layout_marginTop="-120dp"
-                            android:padding="4dp"
-                            android:background="@drawable/badge_item_count"
-                            android:layout_marginRight="38dp"
-                            android:layout_width="wrap_content"
-                            android:textColor="#fff"
-                            android:textStyle="bold"
-                            android:layout_gravity="top|right"
-                            android:textSize="11dp"
-                            android:text="0"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_marginBottom="10dp"
-                        android:layout_height="25dp">
-                        <TextView
-                            android:textColor="#333"
-                            android:textSize="18dp"
-                            android:fontFamily="@font/quicksand_bold"
-                            android:text="PICK UP"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:background="@drawable/shape_card_border"
-                    android:layout_marginLeft="7dp"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="vertical"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:id="@+id/btnDropOffTransportista"
-                            android:layout_gravity="center"
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:src="@mipmap/dropoff_camion"/>
-
-                        <TextView
-                            android:id="@+id/lblDropOffTransportista"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top|right"
-                            android:layout_marginRight="38dp"
                             android:layout_marginTop="-120dp"
+                            android:layout_marginRight="38dp"
                             android:background="@drawable/badge_item_count"
                             android:padding="4dp"
                             android:text="0"
@@ -125,20 +79,105 @@
                             android:textSize="11dp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginBottom="10dp"
-                        android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="25dp">
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center">
+
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/quicksand_bold"
+                            android:text="PICK UP"
                             android:textColor="#333"
-                            android:textSize="18dp"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_card_border"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/btnDropOffTransportista"
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/dropoff_camion" />
+
+                        <TextView
+                            android:id="@+id/lblDropOffTransportista"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|right"
+                            android:layout_marginTop="-120dp"
+                            android:layout_marginRight="38dp"
+                            android:background="@drawable/badge_item_count"
+                            android:padding="4dp"
+                            android:text="0"
+                            android:textColor="#fff"
+                            android:textIsSelectable="false"
+                            android:textSize="11dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:fontFamily="@font/quicksand_bold"
                             android:text="DROP OFF"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:textColor="#333"
+                            android:textSize="18dp" />
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/sectionQrLote"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/shape_card_border"
+                android:clickable="true"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:src="@mipmap/qrcode64"></ImageView>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#333"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="CÓDIGO QR LOTE">
+                </TextView>
             </LinearLayout>
 
         </LinearLayout>
@@ -151,16 +190,16 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:background="@color/app_header">
+        android:background="@color/app_header"
+        android:orientation="horizontal">
 
         <!--MENU-->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:clickable="true"
             android:layout_weight="1"
+            android:clickable="true"
             android:onClick="ButtonOnClick"
             android:orientation="vertical">
 
@@ -176,13 +215,14 @@
                 android:paddingBottom="14dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/rcb_btn_menu" />
+
             <TextView
+                style="@style/title_footer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                style="@style/title_footer"
-                android:text="MENU"
                 android:layout_marginTop="-15dp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:text="MENU" />
         </LinearLayout>
 
         <!--BUSCAR-->
@@ -190,8 +230,8 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:clickable="true"
             android:layout_weight="1"
+            android:clickable="true"
             android:orientation="vertical">
 
             <ImageButton
@@ -199,23 +239,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#00000000"
+                android:clickable="false"
+                android:focusable="false"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="14dp"
                 android:scaleType="fitCenter"
-                android:focusable="false"
-                android:clickable="false"
 
                 android:src="@drawable/rcb_btn_manifiesto_search" />
+
             <TextView
-                style="@style/title_footer"
                 android:id="@+id/txtBuscar"
+                style="@style/title_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="BUSCAR"
                 android:layout_marginTop="-15dp"
                 android:gravity="center"
+                android:text="BUSCAR"
                 android:textIsSelectable="false" />
 
         </LinearLayout>
@@ -224,8 +265,8 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:clickable="true"
             android:layout_weight="1"
+            android:clickable="true"
             android:orientation="vertical">
 
             <ImageButton
@@ -239,14 +280,15 @@
                 android:paddingBottom="14dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/rcb_btn_sincronizar" />
+
             <TextView
-                android:layout_width="match_parent"
                 android:id="@+id/txtSincronizar"
-                android:layout_height="wrap_content"
                 style="@style/title_footer"
-                android:text="SINCRONIZAR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="-15dp"
                 android:gravity="center"
+                android:text="SINCRONIZAR"
                 android:textIsSelectable="false" />
 
         </LinearLayout>
@@ -272,8 +314,8 @@
                 android:src="@drawable/rcb_btn_manifiesto" />
 
             <TextView
-                style="@style/title_footer"
                 android:id="@+id/txtManifiestos"
+                style="@style/title_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-15dp"
@@ -321,13 +363,13 @@
 
 
             <TextView
+                style="@style/title_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-15dp"
                 android:gravity="center"
-                style="@style/title_footer"
                 android:text="INICIA RUTA"
-                android:textIsSelectable="false"/>
+                android:textIsSelectable="false" />
 
 
         </LinearLayout>
@@ -335,13 +377,13 @@
         <!--Fin de ruta-->
         <LinearLayout
             android:id="@+id/LnlFinRuta"
-            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:clickable="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/btnFinRuta"
@@ -357,21 +399,19 @@
 
 
             <TextView
+                style="@style/title_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-15dp"
                 android:gravity="center"
-                style="@style/title_footer"
                 android:text="FIN RUTA"
-                android:textIsSelectable="false"/>
+                android:textIsSelectable="false" />
 
 
         </LinearLayout>
 
 
-
-        </LinearLayout>
-
+    </LinearLayout>
 
 
 </LinearLayout>

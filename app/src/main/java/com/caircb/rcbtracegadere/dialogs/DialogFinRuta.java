@@ -56,7 +56,7 @@ public class DialogFinRuta extends MyDialog {
     LinearLayout lnlIniciaRuta,lnlFinRuta;
 
     String kilometrajeInicio;
-    Integer placaInicio, idInicioFin ,idRuta, finHotel=3;
+    Integer placaInicio, idInicioFin ,idRuta, finHotel=3,tiposubruta;
     Date diaAnterior;
     Spinner listaDestino, listaDestinoParticular;
     String destino = "", destinos="",inicioHotel;
@@ -238,7 +238,7 @@ public class DialogFinRuta extends MyDialog {
 
 
 
-        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(idInicioFin, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2);
+        idRegistro = MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(idInicioFin, MySession.getIdUsuario(),placaInicio,diaAnterior,dia,kilometrajeInicio,kilometrajeFinal.getText().toString(),2,tiposubruta);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+placaInicio);
 
         registroFinRuta = new UserRegistrarFinRutaTask(getActivity(),idRegistro);
@@ -296,7 +296,7 @@ public class DialogFinRuta extends MyDialog {
             diaAnterior = rut.getFechaInicio();
             idInicioFin = rut.getIdRutaInicioFin();
             idRuta = rut.getIdSubRuta();
-
+            tiposubruta=rut.getTiposubruta();
         }
 
         //traer placa

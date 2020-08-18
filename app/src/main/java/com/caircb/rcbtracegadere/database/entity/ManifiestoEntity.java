@@ -148,6 +148,11 @@ public class ManifiestoEntity {
     private String sucursal;
 
     private String telefono;
+    private String firmaChoferRecolector;
+    private String firmaAuxiliarRecolector;
+    private String firmaOperadorRecolector;
+    private Double pesoPromedio;
+
 
     public ManifiestoEntity() {
     }
@@ -577,6 +582,38 @@ public class ManifiestoEntity {
 
     public void setCierre2(String cierre2) {
         this.cierre2 = cierre2;
+    }
+
+    public String getFirmaChoferRecolector() {
+        return firmaChoferRecolector;
+    }
+
+    public void setFirmaChoferRecolector(String firmaChoferRecolector) {
+        this.firmaChoferRecolector = firmaChoferRecolector;
+    }
+
+    public String getFirmaAuxiliarRecolector() {
+        return firmaAuxiliarRecolector;
+    }
+
+    public void setFirmaAuxiliarRecolector(String firmaAuxiliarRecolector) {
+        this.firmaAuxiliarRecolector = firmaAuxiliarRecolector;
+    }
+
+    public String getFirmaOperadorRecolector() {
+        return firmaOperadorRecolector;
+    }
+
+    public void setFirmaOperadorRecolector(String firmaOperadorRecolector) {
+        this.firmaOperadorRecolector = firmaOperadorRecolector;
+    }
+
+    public Double getPesoPromedio() {
+        return pesoPromedio;
+    }
+
+    public void setPesoPromedio(Double pesoPromedio) {
+        this.pesoPromedio = pesoPromedio;
     }
 }
 
