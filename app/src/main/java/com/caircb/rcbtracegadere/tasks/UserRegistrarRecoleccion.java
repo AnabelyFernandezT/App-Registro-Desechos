@@ -260,7 +260,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         i,
                         p.getValor(),
                         p.getDescripcion(),
-                        p.getCodeQr()
+                        p.getCodeQr(),
+                        p.getPesoTaraBulto()
                 ));
                 i++;
             }

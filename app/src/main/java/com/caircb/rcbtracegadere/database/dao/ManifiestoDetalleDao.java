@@ -27,6 +27,9 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto, pesoUnidad=:peso, estadoChek=:estadoChek,cantidadTotalEtiqueta=:cantidad where idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, double cantidadBulto, double peso,Integer cantidad,boolean estadoChek);
 
+    @Query("update tb_manifiestos_detalle set pesoUnidad=:peso where idAppManifiestoDetalle=:idManifiestoDetalle")
+    public abstract void updatePesoTotal(Integer idManifiestoDetalle,double peso);
+
     @Query("update tb_manifiestos_detalle set tipoBalanza =:idTipoBalanza where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idDetalleManifiesto")
     public abstract  void updateTipoBalanzaByDetalleId(Integer idManifiesto, Integer idDetalleManifiesto, Integer idTipoBalanza);
 
@@ -70,6 +73,10 @@ public abstract class ManifiestoDetalleDao {
 
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and estadoChek=1")
     public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetalleSeleccionados(Integer idManifiesto);
+
+    @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto")
+    public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetalleByIdManifiesto(Integer idManifiesto);
+
 
 
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDt")

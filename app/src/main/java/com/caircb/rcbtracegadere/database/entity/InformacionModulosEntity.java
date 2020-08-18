@@ -24,6 +24,7 @@ public class InformacionModulosEntity {
     private Integer tieneDisponibilidadBalanza;
     private Integer requiereIncineracionPresenciada;
     private String observacionResiduos;
+    private Integer idLoteProceso;
 
     public InformacionModulosEntity(){
 
@@ -139,5 +140,13 @@ public class InformacionModulosEntity {
 
     public void setObservacionResiduos(String observacionResiduos) {
         this.observacionResiduos = observacionResiduos;
+    }
+
+    public Integer getIdLoteProceso() {
+        return idLoteProceso;
+    }
+
+    public void setIdLoteProceso(Integer idLoteProceso) {
+        this.idLoteProceso = idLoteProceso;
     }
 }
