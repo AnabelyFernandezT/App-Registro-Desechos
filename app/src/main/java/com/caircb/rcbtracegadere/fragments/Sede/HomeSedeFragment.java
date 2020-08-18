@@ -110,7 +110,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 dialogPlacas.show();*/
                 builder = new DialogBuilder(getActivity());
                 builder.setCancelable(false);
-                builder.setMessage("Se va a iniciar un lote");
+                builder.setMessage("Se va a abrir un nuevo lote");
                 builder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
