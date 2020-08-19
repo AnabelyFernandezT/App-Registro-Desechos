@@ -212,31 +212,36 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
                                 ///////////////////////////////////
                                 if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
-                                    dialogBuilder2 = new DialogBuilder(getActivity());
-                                    dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
-                                    dialogBuilder2.setCancelable(false);
-                                    dialogBuilder2.setTitle("CONFIRMACIÓN");
-                                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuilder2.dismiss();
-                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                            MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
-                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
-                                        }
-                                    });
-                                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuilder2.dismiss();
-                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                            MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
-                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
+                                    int tipoSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta"));
+                                    if(tipoSubRuta == 1){ //Industrial
+                                        dialogBuilder2 = new DialogBuilder(getActivity());
+                                        dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                                        dialogBuilder2.setCancelable(false);
+                                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                        dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder2.dismiss();
+                                                //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                            }
+                                        });
+                                        dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder2.dismiss();
+                                                //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
+                                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
 
-                                        }
-                                    });
-                                    dialogBuilder2.show();
-
+                                            }
+                                        });
+                                        dialogBuilder2.show();
+                                    }else{
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                    }
                                 } else {
                                     dialogBuilder2 = new DialogBuilder(getActivity());
                                     dialogBuilder2.setMessage("El manifiesto es de tipo paquete!");
@@ -284,89 +289,94 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         //List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
 
                         if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
-                            dialogBuilder2 = new DialogBuilder(getActivity());
-                            dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
-                            dialogBuilder2.setCancelable(false);
-                            dialogBuilder2.setTitle("CONFIRMACIÓN");
-                            dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder2.dismiss();
-                                    int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
-                                    System.out.println(tipoRecoleccion+" SI");
-                                    if (tipoRecoleccion==1){
-                                        //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
-                                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
-                                    }else if (tipoRecoleccion==2){
-                                        dialogBuilder = new DialogBuilder(getActivity());
-                                        dialogBuilder.setMessage("Usted seleccionó anteriormente, NO recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
-                                        dialogBuilder.setCancelable(false);
-                                        dialogBuilder.setTitle("CONFIRMACIÓN");
-                                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogBuilder.dismiss();
-                                                MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
-                                                rowItemsManifiestoDetalle =  MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                                for (int i=0;i<rowItemsManifiestoDetalle.size();i++){
-                                                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(rowItemsManifiestoDetalle.get(i).getId(),0,0,0,true);
+                            int tipoSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta"));
+                            if(tipoSubRuta == 1){ //Industrial
+                                dialogBuilder2 = new DialogBuilder(getActivity());
+                                dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                                dialogBuilder2.setCancelable(false);
+                                dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
+                                        System.out.println(tipoRecoleccion+" SI");
+                                        if (tipoRecoleccion==1){
+                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                        }else if (tipoRecoleccion==2){
+                                            dialogBuilder = new DialogBuilder(getActivity());
+                                            dialogBuilder.setMessage("Usted seleccionó anteriormente, NO recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
+                                            dialogBuilder.setCancelable(false);
+                                            dialogBuilder.setTitle("CONFIRMACIÓN");
+                                            dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogBuilder.dismiss();
+                                                    MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                                    rowItemsManifiestoDetalle =  MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                    for (int i=0;i<rowItemsManifiestoDetalle.size();i++){
+                                                        MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(rowItemsManifiestoDetalle.get(i).getId(),0,0,0,true);
+                                                    }
+                                                    MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
                                                 }
-                                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
-                                            }
-                                        });
-                                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogBuilder.dismiss();
-                                            }
-                                        });
-                                        dialogBuilder.show();
-                                    }
-                                }
-                            });
-                            dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder2.dismiss();
-                                    int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
-                                    System.out.println(tipoRecoleccion+" NO");
-                                    if (tipoRecoleccion==2){
-                                        //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
-                                        setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                    }else if(tipoRecoleccion==1) {
-                                        dialogBuilder = new DialogBuilder(getActivity());
-                                        dialogBuilder.setMessage("Usted seleccionó anteriormente, SI recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
-                                        dialogBuilder.setCancelable(false);
-                                        dialogBuilder.setTitle("CONFIRMACIÓN");
-                                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogBuilder.dismiss();
-                                                MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
-                                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                                rowItemsManifiestoDetalle =  MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
-                                                for (int i=0;i<rowItemsManifiestoDetalle.size();i++){
-                                                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(rowItemsManifiestoDetalle.get(i).getId(),0,0,0,false);
+                                            });
+                                            dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogBuilder.dismiss();
                                                 }
-                                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                            }
-                                        });
-                                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogBuilder.dismiss();
-                                            }
-                                        });
-                                        dialogBuilder.show();
+                                            });
+                                            dialogBuilder.show();
+                                        }
                                     }
+                                });
+                                dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
+                                        System.out.println(tipoRecoleccion+" NO");
+                                        if (tipoRecoleccion==2){
+                                            //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
+                                        }else if(tipoRecoleccion==1) {
+                                            dialogBuilder = new DialogBuilder(getActivity());
+                                            dialogBuilder.setMessage("Usted seleccionó anteriormente, SI recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
+                                            dialogBuilder.setCancelable(false);
+                                            dialogBuilder.setTitle("CONFIRMACIÓN");
+                                            dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogBuilder.dismiss();
+                                                    MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
+                                                    MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                    rowItemsManifiestoDetalle =  MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                    for (int i=0;i<rowItemsManifiestoDetalle.size();i++){
+                                                        MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(rowItemsManifiestoDetalle.get(i).getId(),0,0,0,false);
+                                                    }
+                                                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
+                                                }
+                                            });
+                                            dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogBuilder.dismiss();
+                                                }
+                                            });
+                                            dialogBuilder.show();
+                                        }
 
-                                }
-                            });
-                            dialogBuilder2.show();
-
+                                    }
+                                });
+                                dialogBuilder2.show();
+                            }else{
+                                MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                            }
                         } else {
 
                             dialogBuilder2 = new DialogBuilder(getActivity());
