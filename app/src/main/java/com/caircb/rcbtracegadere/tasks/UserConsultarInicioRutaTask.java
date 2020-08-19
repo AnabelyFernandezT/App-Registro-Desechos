@@ -61,6 +61,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                     response.body().getTiposubruta());
 
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
+                            MySession.setIdSubruta(response.body().getIdSubRuta());
                             //MySession.setIdSubruta(response.body().getIdSubRuta());
                             //MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(response.body().getIdSubRuta(), fechaInicio, 0, null, null, false));
                             message("Ha iniciado previamente sesion, SINCRONICE manifiestos pendientes de recolección");

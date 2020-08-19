@@ -29,6 +29,7 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
@@ -135,7 +136,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 dialogQrLoteTransportista = new DialogQrLoteTransportista(getActivity());
                 dialogQrLoteTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogQrLoteTransportista.setCancelable(false);
-                dialogQrLoteTransportista.show();
+                UserConsultaCodigoQrTask consultaCodigoQrTask=new UserConsultaCodigoQrTask(getActivity(),dialogQrLoteTransportista);
+                consultaCodigoQrTask.execute();
             }
         });
 
@@ -404,6 +406,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             }
         });
         verificarInicioRutaTask.execute();
+    }
+
+    public void bloqueoBotonManifiesto(){
+        btnListaAsignadaTransportista.setEnabled(false);
+    }
+    public void desbloqueoBotonManifiesto(){
+        btnListaAsignadaTransportista.setEnabled(true);
     }
 
 }

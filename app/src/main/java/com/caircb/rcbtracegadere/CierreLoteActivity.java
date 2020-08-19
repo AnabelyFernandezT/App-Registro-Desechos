@@ -45,6 +45,7 @@ public class CierreLoteActivity extends AppCompatActivity {
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
     UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
+    HomeTransportistaFragment homeTransportistaFragment;
 
     DialogBuilder builder;
     HotelLotePadreEntity lotePadre;
@@ -266,6 +267,7 @@ public class CierreLoteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
+                        homeTransportistaFragment.bloqueoBotonManifiesto();
                         finish();
                     }
                 });
@@ -281,6 +283,7 @@ public class CierreLoteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
+                        homeTransportistaFragment.desbloqueoBotonManifiesto();
                     }
                 });
                 dialogBuilder.show();

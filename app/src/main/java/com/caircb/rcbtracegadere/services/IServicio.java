@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.services;
 
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
+import com.caircb.rcbtracegadere.models.request.RequestCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinLotePadreHotelTask;
@@ -30,6 +31,7 @@ import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
 import com.caircb.rcbtracegadere.models.request.RequestRegistroGenerador;
 import com.caircb.rcbtracegadere.models.request.RequestRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
@@ -160,4 +162,7 @@ public interface IServicio {
 
     @PUT("Registro/saveFinLoteProceso")
     Call<DtoInfo> putFinLoteHospitales(@Body RequestFinRuta model);
+
+    @POST("HojaRuta/obtenerCodigoQRLoteProceso")
+    Call<DtoCodigoQrTransportista> traerCodigoQrTransportista(@Body RequestCodigoQrTransportista model);
 }

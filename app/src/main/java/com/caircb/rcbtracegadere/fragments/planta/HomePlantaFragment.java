@@ -1,7 +1,9 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
@@ -21,6 +25,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
@@ -28,13 +33,16 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPendientesPesarTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
+import com.google.zxing.client.android.BeepManager;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePlantaFragment extends MyFragment implements OnHome {
+public class HomePlantaFragment extends MyFragment implements OnCameraListener, OnHome {
     ImageButton btnSincManifiestosPlanta, btnListaAsignadaTransportista, btnMenu, btnInicioRuta, btnFinRuta;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
@@ -43,6 +51,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     TextView lblDropOffTransportista;
     public Context mContext;
     private Integer controlDropOff = 0;
+    LinearLayout sectionQrLotePlanta;
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
         @Override
@@ -79,6 +88,7 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lblDropOffTransportista = getView().findViewById(R.id.lblDropOffTransportista);
+        sectionQrLotePlanta = (LinearLayout) getView().findViewById(R.id.sectionQrLotePlanta);
         cargarLabelCantidad();
         cargarLbael();
 
@@ -163,7 +173,36 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
             }
         });
 
+
+        sectionQrLotePlanta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(getActivity());
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setPrompt("Lectura de Código QR");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(true);
+                integrator.setBarcodeImageEnabled(false);
+                integrator.setOrientationLocked(false);
+                integrator.initiateScan();
+            }
+        });
     }
+
+    @Override
+    public void onCameraResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if (result!=null){
+            if (result.getContents()==null){
+                Toast.makeText(getActivity(),"Escaneo Cancelado",Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getActivity(), result.getContents(),Toast.LENGTH_LONG).show();
+            }
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 
     private void cargarLbael() {
         userConsultarManifiestosPendientesPesarTask = new UserConsultarManifiestosPendientesPesarTask(getActivity());
@@ -200,5 +239,6 @@ public class HomePlantaFragment extends MyFragment implements OnHome {
     private void loadCantidadManifiestoAsignadoNO(Integer idVehiculo) {
         lblListaManifiestoAsignadoPlanta.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo));
     }
+
 
 }
