@@ -34,6 +34,7 @@ import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -72,6 +73,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         public void onSuccessful() {
             loadCantidadManifiestoAsignado();
             loadCantidadManifiestoProcesado();
+            notificacionDetalleExtra();
         }
     };
 
@@ -327,7 +329,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     flag=1;
 
                     //Quitar cuando se active desde Lector
-                    asociarLoteManifiesto(379);
+                    asociarLoteManifiesto(383);
                 }
 
             }
@@ -458,5 +460,24 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         catch (Exception e){
             System.out.println(e.getStackTrace());
         }
+    }
+
+    private void notificacionDetalleExtra(){
+        final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRuta();
+        if(!manifiesto.getMensaje().equals("")){
+            UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(),manifiesto.getIdAppManifiesto(),
+                                                                        manifiesto.getMensaje(),
+                                                                        2,
+                                                                        "1",0.0);
+            notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
+                @Override
+                public void onSuccessful() {
+                    messageBox("Se notificara "+manifiesto.getMensaje());
+                }
+            });
+            notificaion.execute();
+
+        }
+
     }
 }

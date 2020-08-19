@@ -310,6 +310,7 @@ public abstract class ManifiestoDao {
             entity.setSucursal(manifiesto.getSucursal());
             entity.setTelefono(manifiesto.getTelefono());
             entity.setReferencia(manifiesto.getReferencia());
+            entity.setMensaje(manifiesto.getMensaje());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -381,6 +382,7 @@ public abstract class ManifiestoDao {
             entity.setSucursal(manifiesto.getSucursal());
             entity.setTelefono(manifiesto.getTelefono());
             entity.setReferencia(manifiesto.getReferencia());
+            entity.setMensaje(manifiesto.getMensaje());
         }
 
         if (entity!=null) createManifiesto(entity);

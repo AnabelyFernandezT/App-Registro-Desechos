@@ -321,8 +321,8 @@ public class DialogInicioRuta extends MyDialog {
             loadCantidadManifiestoAsignado();
             loadCantidadManifiestoProcesado();
             loadCataalogos();
-
         }
+
     };
     private void loadCantidadManifiestoAsignado(){
         //dbHelper.open();
