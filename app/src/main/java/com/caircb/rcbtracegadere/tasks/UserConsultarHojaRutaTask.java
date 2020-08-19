@@ -96,13 +96,8 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
-
                             if(respuesta != null && respuesta.size() > 0){
                                 List<ItemManifiesto> checkItems = MyApp.getDBO().manifiestoDao().fetchManifiestosNoProcesados(idRuta, MySession.getIdUsuario());
-                                if(!respuesta.get(0).getMensaje().equals("")){
-                                 //message("Se han agregado los desechos faltantes " + respuesta.get(0).getMensaje());
-                                }
-
                                 for (ItemManifiesto it: checkItems){
                                     int flag = 0;
                                     for (DtoManifiesto reg:respuesta){
