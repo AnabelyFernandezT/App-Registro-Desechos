@@ -120,7 +120,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
         idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-        parametros = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote");
+
     }
 
     private void filtro(String texto) {
@@ -163,6 +163,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        parametros = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote_"+rowItems.get(position).getIdAppManifiesto());
                         if(parametros!=null){
                             setNavegate(ManifiestoLoteFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1,2));
                         }else {
@@ -238,6 +239,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                             MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
                                             setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+
                                         }
                                     });
                                     dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
@@ -247,7 +249,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                             MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
                                             setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-
+                                            MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
                                         }
                                     });
                                     dialogBuilder2.show();
@@ -353,6 +355,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                         //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                         MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
                                         setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
+                                        MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
                                     }else if(tipoRecoleccion==1) {
                                         dialogBuilder = new DialogBuilder(getActivity());
                                         dialogBuilder.setMessage("Usted seleccionó anteriormente, SI recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");

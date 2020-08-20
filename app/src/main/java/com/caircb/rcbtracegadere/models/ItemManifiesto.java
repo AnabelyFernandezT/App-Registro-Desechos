@@ -18,6 +18,7 @@ public class ItemManifiesto {
     private String frecuencia;
     private Integer tipoPaquete;
     private String referencia;
+    private String identificacion;
 
 
 
@@ -158,5 +159,13 @@ public class ItemManifiesto {
 
     public void setReferencia(String referencia) {
         this.referencia = referencia;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 }

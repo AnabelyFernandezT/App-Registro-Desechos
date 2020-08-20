@@ -62,13 +62,15 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         this.taskListener=listener;
         this.idManifiesto = idManifiesto;
         this.lote = idLote;
+        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote_"+idManifiesto,""+idLote);
+        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote",""+idLote);
         progressShow("Consultando...");
     }
 
     @Override
     public void execute() throws ParseException {
         ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
-        parametroLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote");
+        parametroLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote_"+idManifiesto);
         ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         String valor = entity == null ?(rut.getIdSubRuta()!=null?String.valueOf(rut.getIdSubRuta()):null) : entity.getValor();

@@ -59,6 +59,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
                         MyApp.getDBO().rutaInicioFinDao().actualizarFinRutaToSincronizado(
                                 idRegistro.intValue());
                         MyApp.getDBO().rutaInicioFinDao().eliminarInicioFin();
+                        MyApp.getDBO().parametroDao().eliminarLotes("manifiesto_lote");
                         progressHide();
                         if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onSuccessful();
                     }else{

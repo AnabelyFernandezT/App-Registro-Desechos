@@ -9,6 +9,7 @@ public final class MyConstant {
     public static final int DBO_VERSION=1;
     public static final String DBO_NAME="TraceGadereDev.db";
     public static final String DEFAULD_SELECCIONE="SELECCIONE";
+    public static final String ID_GADERE = "0992294272001";
 
 
     public static final Integer STATUS_RECOLECCION=10;

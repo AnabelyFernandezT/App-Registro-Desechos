@@ -28,6 +28,7 @@ import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
@@ -55,6 +56,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     UserConsultarInicioRutaTask verificarInicioRutaTask;
     Integer idSubRuta, flag=0;
     UserConsultarCatalogosTask consultarCatalogosTask;
+    Integer cont=0;
+
 
     //public Context mContext;
 
@@ -333,7 +336,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     flag=1;
 
                     //Quitar cuando se active desde Lector
-                    asociarLoteManifiesto(383);
+                    asociarLoteManifiesto(385);
                 }
 
             }
@@ -447,18 +450,29 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     }
 
     private void asociarLoteManifiesto(Integer lote){
+        List<Integer> listaManifiesto = new ArrayList<>();
+
         try{
-            MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote",""+lote);
             List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
 
-            if (rowItems.size() > 0){
+            if(rowItems.size()>0) {
+                for (int i=0; i<rowItems.size();i++) {
+                    if(rowItems.get(i).getIdentificacion().equals(MyConstant.ID_GADERE)){
+                        listaManifiesto.add(rowItems.get(i).getIdAppManifiesto());
+                        cont=i;
+                    }
+                }
+            }
+            if (listaManifiesto.size()>0){
                 //Se toma el primer manifiesto. Se debe evaluar si tiene mas manifiestos asignados para listar y permitir seleccionar el indicado
-                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),rowItems.get(0).getIdAppManifiesto(), lote, listenerHojaRuta);
+                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),rowItems.get(cont).getIdAppManifiesto(), lote, listenerHojaRuta);
                 try {
                     consultarHojaRutaTask.execute();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+            }else{
+
             }
         }
         catch (Exception e){
@@ -467,7 +481,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     }
 
     private void notificacionDetalleExtra(){
-        final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRuta();
+        Integer idManifiesto=0;
+        List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
+        if(rowItems.size()>0){
+            idManifiesto = rowItems.get(cont).getIdAppManifiesto();
+        }
+        final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
         if(!manifiesto.getMensaje().equals("")){
             UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(),manifiesto.getIdAppManifiesto(),
                                                                         manifiesto.getMensaje(),
