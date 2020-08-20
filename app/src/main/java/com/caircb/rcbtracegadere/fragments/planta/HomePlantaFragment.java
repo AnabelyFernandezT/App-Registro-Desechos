@@ -210,6 +210,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 String codigoQr=result.getContents();
                 String[] array= codigoQr.split("\\$");
                 System.out.println(array[4]);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+array[6]);
