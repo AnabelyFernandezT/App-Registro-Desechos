@@ -51,7 +51,7 @@ public abstract class ManifiestoDetalleDao {
     @Query("select count(*) from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and faltaImpresiones=1")
     public abstract Integer countDetallesSinImprimirByIdManifiesto(Integer idManifiesto);
 
-    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae, " +
+    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadDesecho as cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae, " +
             "estadoFisico as estadoFisico, tipoContenedor as tipoContenedor," +
             "residuoSujetoFiscalizacion,requiereDevolucionRecipientes,tieneDisponibilidadMontacarga,tieneDisponibilidadBalanza,requiereIncineracionPresenciada,observacionResiduos,cantidadRefencial" +
             " from tb_manifiestos_detalle d" +

@@ -180,7 +180,7 @@ public class MyManifiestoNoRecoleccion {
             cell.setBorder(Rectangle.NO_BORDER);
             header.addCell(cell);
 
-            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO",f3));
+            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"           OP-RE-01",f3));
             cell.setBorder(Rectangle.NO_BORDER);
 
             header.addCell(cell);

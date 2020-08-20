@@ -140,6 +140,18 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
 
     private void  menu(final int position){
 
+        movilizacion = new DialogInicioMovilizacion(getActivity(),rowItems.get(position).getIdLoteContenedor());
+        movilizacion.setOnRegisterMovilizarListener(new DialogInicioMovilizacion.onRegisterMOvilizacionListenner() {
+            @Override
+            public void onSuccessful() {
+                rowItems = MyApp.getDBO().loteDao().fetchLote();
+                recyclerviewAdapter.setTaskList(rowItems);
+            }
+        });
+        movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        movilizacion.setCancelable(false);
+        movilizacion.show();
+        /*
         final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
         dialogBuilder.setCancelable(false);
         dialogBuilder.setMessage("¿Esta seguro de movilizar el lote?");
@@ -148,17 +160,6 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
             public void onClick(View v) {
                 dialogBuilder.dismiss();
 
-                movilizacion = new DialogInicioMovilizacion(getActivity(),rowItems.get(position).getIdLoteContenedor());
-                movilizacion.setOnRegisterMovilizarListener(new DialogInicioMovilizacion.onRegisterMOvilizacionListenner() {
-                    @Override
-                    public void onSuccessful() {
-                        rowItems = MyApp.getDBO().loteDao().fetchLote();
-                        recyclerviewAdapter.setTaskList(rowItems);
-                    }
-                });
-                movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                movilizacion.setCancelable(false);
-                movilizacion.show();
             }
         });
         dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
@@ -167,29 +168,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                 dialogBuilder.dismiss();
             }
         });
-        dialogBuilder.show();
-
-          /*
-        final CharSequence[] options = {"MOVILIZAR", "CANCELAR"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("MOVILIZAR"))
-                {
-                    //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-
-                }
-                else if (options[item].equals("CANCELAR")) {
-                    dialog.dismiss();
-                }
-
-            }
-        });
-        builder.show();
-           */
+        dialogBuilder.show();*/
     }
 
     /*private void datosLotesDisponibles(){

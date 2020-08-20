@@ -81,6 +81,7 @@ public class MyManifiesto {
     List<RowItemPaquete> listaPaquetes;
     ManifiestoPaquetesEntity manifiestoPkg;
     PaqueteEntity pkg;
+    //OP-RE-01
 
     private String getPath() { return simpleDate.format(new Date());}
     String fecha = getPath();
@@ -203,7 +204,7 @@ public class MyManifiesto {
             cell.setBorder(Rectangle.NO_BORDER);
             header.addCell(cell);
 
-            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO",f3));
+            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"           OP-RE-01",f3));
             cell.setBorder(Rectangle.NO_BORDER);
 
             header.addCell(cell);

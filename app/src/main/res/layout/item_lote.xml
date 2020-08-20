@@ -40,7 +40,7 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/ic_btn_ver_manifiesto"
+                        android:src="@mipmap/icon_qr_p"
                         android:tint="@android:color/white" />
 
                 </LinearLayout>

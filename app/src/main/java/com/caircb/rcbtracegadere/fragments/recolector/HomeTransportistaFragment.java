@@ -158,6 +158,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     inicioRuta = false;
                     bloqueo_botones();
                     btnScanQr.setEnabled(false);
+                    btnScanQr.setAlpha(0.3f);
                     lnlIniciaRuta.setVisibility(View.VISIBLE);
                     lnlFinRuta.setVisibility(View.GONE);
                     break;
@@ -166,6 +167,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         }else{
             bloqueo_botones();
             btnScanQr.setEnabled(false);
+            btnScanQr.setAlpha(0.3f);
         }
         
 
@@ -321,11 +323,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 if(flag.equals(1)){
                     desbloque_botones();
                     txtQr.setVisibility(View.INVISIBLE);
+                    btnScanQr.setAlpha(1.0f);
                     flag = 0;
                 }else{
                     bloqueo_botones();
                     txtQr.setVisibility(View.VISIBLE);
                     btnFinRuta.setEnabled(false);
+                    btnScanQr.setAlpha(0.3f);
                     flag=1;
 
                     //Quitar cuando se active desde Lector
