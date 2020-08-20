@@ -109,7 +109,7 @@ public class DialogPlacas extends MyDialog {
                 String valor = parametro == null ? "-1" : parametro.getValor();
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-
+                System.out.println(bandera);
                 if(bandera.equals("1")){
                     cargarXNOManifiesto();
                     dismiss();

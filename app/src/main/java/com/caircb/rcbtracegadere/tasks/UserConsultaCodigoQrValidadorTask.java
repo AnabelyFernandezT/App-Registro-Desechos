@@ -2,32 +2,34 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.dialogs.DialogQrLoteTransportista;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.request.RequestCodigoQrTransportista;
-import com.caircb.rcbtracegadere.models.request.RequestLote;
 import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
-import com.caircb.rcbtracegadere.models.response.DtoLote;
 import com.caircb.rcbtracegadere.services.WebService;
-
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitCallbacks {
+public class UserConsultaCodigoQrValidadorTask  extends MyRetrofitApi implements RetrofitCallbacks {
 
-    DialogQrLoteTransportista dialogQrLoteTransportista;
 
-    public UserConsultaCodigoQrTask(Context context, DialogQrLoteTransportista dialogQrLoteTransportista) {
+    public interface OnCodigoQrListener {
+        public void onSuccessful();
+
+        public void onFailure();
+    }
+
+    private UserConsultaCodigoQrValidadorTask.OnCodigoQrListener mOnCodigoQrListener;
+
+    public UserConsultaCodigoQrValidadorTask(Context context) {
         super(context);
-        this.dialogQrLoteTransportista = dialogQrLoteTransportista;
     }
 
     @Override
@@ -43,28 +45,34 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
                     if (response.isSuccessful()) {
                         if (response.body().getCogigoQr() != "") {
                             MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(response.body());
-                            dialogQrLoteTransportista.show();
                             progressHide();
+                            if (mOnCodigoQrListener != null) mOnCodigoQrListener.onSuccessful();
                         } else {
                             progressHide();
-                            message("No existen lotes cerrados...");
+                            if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
+                            //message("No existen lotes cerrados...");
                         }
                     } else {
                         progressHide();
-                        message("No existen lotes cerrados...");
+                        if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
+                        //message("No existen lotes cerrados...");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoCodigoQrTransportista> call, Throwable t) {
                     progressHide();
-
+                    if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
                 }
             });
         } else {
-            message("No ha iniciado una ruta, o si ya ha iniciado ruta por favor sincronice...");
+            //message("No ha iniciado una Ruta...");
+            if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
         }
 
+    }
+    public void setOnCodigoQrListener(@NonNull UserConsultaCodigoQrValidadorTask.OnCodigoQrListener l) {
+        mOnCodigoQrListener = l;
     }
 
 }
