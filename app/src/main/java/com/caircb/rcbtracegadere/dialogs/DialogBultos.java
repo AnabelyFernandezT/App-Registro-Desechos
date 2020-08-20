@@ -485,7 +485,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         //bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, false, ultimoBultoByIdDet));
         listaValoresAdapter.notifyDataSetChanged();
 
-        txtTotal.setText("KG " + subtotal);
+        txtTotal.setText("Peso Neto " + subtotal + " KG");
         dato = "0";
         txtpantalla.setText("0");
 
