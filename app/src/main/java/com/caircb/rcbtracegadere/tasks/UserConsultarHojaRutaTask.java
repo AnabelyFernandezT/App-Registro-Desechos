@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
+import android.icu.math.BigDecimal;
 import android.os.AsyncTask;
 
 import com.caircb.rcbtracegadere.MyApp;
@@ -8,9 +9,12 @@ import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.models.response.DtoHojaRutaDetalleBulto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoObservacionFrecuente;
@@ -36,6 +40,8 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
 
     String fechaSincronizacion;
     String obfechaActualizacion = "fecha_actualizacion_"+MySession.getIdUsuario().toString()+"_"+MySession.getLugarNombre();
+    Integer idManifiesto, lote;
+    ParametroEntity parametroLote;
 
     public interface TaskListener {
         public void onSuccessful();
@@ -46,13 +52,25 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
     public UserConsultarHojaRutaTask(Context context, TaskListener listener) {
         super(context);
         this.taskListener=listener;
+        this.idManifiesto = null;
+        this.lote = null;
+        progressShow("Consultando...");
+    }
+
+    public UserConsultarHojaRutaTask(Context context, Integer idManifiesto, Integer idLote, TaskListener listener) {
+        super(context);
+        this.taskListener=listener;
+        this.idManifiesto = idManifiesto;
+        this.lote = idLote;
+        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote_"+idManifiesto,""+idLote);
+        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote",""+idLote);
         progressShow("Consultando...");
     }
 
     @Override
     public void execute() throws ParseException {
-
         ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
+        parametroLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote_"+idManifiesto);
         ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         MySession.setIdSubruta(rut.getIdSubRuta());
@@ -62,8 +80,9 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         }else fechaSincronizacion = null;
         Date fecha = deserialize(fechaSincronizacion);
 
+        RequestHojaRuta req = new RequestHojaRuta(new Date(),fecha,0,idRuta, idManifiesto, lote);
         //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-        WebService.api().getHojaRuta(new RequestHojaRuta(new Date(),fecha,0,idRuta)).enqueue(new Callback<List<DtoManifiesto>>() {
+        WebService.api().getHojaRuta(req).enqueue(new Callback<List<DtoManifiesto>>() {
 
             @Override
             public void onResponse(Call<List<DtoManifiesto>> call, final Response<List<DtoManifiesto>> response) {
@@ -80,17 +99,52 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
-                            if ((respuesta == null) || respuesta.size() == 0)
-                            {
-                                MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestos(idRuta);
+                            if(respuesta != null && respuesta.size() > 0){
+                                List<ItemManifiesto> checkItems = MyApp.getDBO().manifiestoDao().fetchManifiestosNoProcesados(idRuta, MySession.getIdUsuario());
+                                for (ItemManifiesto it: checkItems){
+                                    int flag = 0;
+                                    for (DtoManifiesto reg:respuesta){
+                                        if(it.getIdAppManifiesto() == reg.getIdAppManifiesto()){
+                                            flag = 1;
+                                            break;
+                                        }
+                                    }
+
+                                    if (flag == 0)
+                                    {
+                                        MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestosDet(it.getIdAppManifiesto());
+                                        MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestos(it.getIdAppManifiesto());
+                                    }
+                                }
                             }
-                            else {
+
+                            if(parametroLote!=null){
+                                for (DtoManifiesto reg:respuesta){
+                                    MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                    MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                    MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(reg.getIdAppManifiesto());
+                                    for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                        MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt,true);
+                                        for (DtoHojaRutaDetalleBulto db:dt.getBultos()){
+                                            MyApp.getDBO().manifiestoDetallePesosDao().saveValores(reg.getIdAppManifiesto(),dt.getIdAppManifiestoDetalle(), db.getPeso().doubleValue(),db.getDescripcion(),null,db.getCodigoQr(),true,db.getIndex());
+                                        }
+                                    }
+
+                                    //inicalizar los catalogos de recoleccion...
+                                    //for (DtoCatalogo c:listaCatalogo){
+                                    //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                    //}
+                                    pos++;
+                                    if(cont>1)publishProgress(pos);
+                                }
+                            }else{
                                 for (DtoManifiesto reg:respuesta){
                                     MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
                                     MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
                                     for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
                                         MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
                                     }
+
                                     //inicalizar los catalogos de recoleccion...
                                     //for (DtoCatalogo c:listaCatalogo){
                                     //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
@@ -99,6 +153,8 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                                     if(cont>1)publishProgress(pos);
                                 }
                             }
+
+
                             return null;
                         }
 

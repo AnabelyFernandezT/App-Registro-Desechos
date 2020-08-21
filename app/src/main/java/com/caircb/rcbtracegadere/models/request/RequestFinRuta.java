@@ -9,6 +9,7 @@ public class RequestFinRuta {
     private String kilometraje;
     private Integer tipo;
     private Integer idDestinatarioFinRutaCatalogo;
+    private Integer idLote;
 
     public Integer getIdSubRuta() {
         return idSubRuta;
@@ -56,5 +57,13 @@ public class RequestFinRuta {
 
     public void setIdDestinatarioFinRutaCatalogo(Integer idDestinatarioFinRutaCatalogo) {
         this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
+    }
+
+    public Integer getIdLote() {
+        return idLote;
+    }
+
+    public void setIdLote(Integer idLote) {
+        this.idLote = idLote;
     }
 }

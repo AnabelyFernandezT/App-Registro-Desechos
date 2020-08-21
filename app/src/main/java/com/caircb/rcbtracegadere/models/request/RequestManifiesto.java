@@ -30,6 +30,7 @@ public class RequestManifiesto {
     private String correos;
     private List<RequestNovedadPesoPromedio> fotosManifiestoPromedio;
     private String textoEvidenciaPromedio;
+    private Integer flagManifiestoSede;
 
     public Integer getIdAppManifiesto() {
         return idAppManifiesto;
@@ -237,5 +238,13 @@ public class RequestManifiesto {
 
     public void setTextoEvidenciaPromedio(String textoEvidenciaPromedio) {
         this.textoEvidenciaPromedio = textoEvidenciaPromedio;
+    }
+
+    public Integer getFlagManifiestoSede() {
+        return flagManifiestoSede;
+    }
+
+    public void setFlagManifiestoSede(Integer flagManifiestoSede) {
+        this.flagManifiestoSede = flagManifiestoSede;
     }
 }

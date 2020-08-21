@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogInformacionTransportista;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
@@ -20,8 +18,6 @@ import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fra
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VisorManifiestoFragment;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
-
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +34,19 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     int position=0;
     int moduloSeleccionado;
     Integer modProcesada;
+    Integer modProcesada;
 
     public interface onViewManifiestoPdfListener{
         public void onSusscessfull(Integer idManifiesto);
     }
     public onViewManifiestoPdfListener mOnViewManifiestPdfListenner;
+
+    public ManifiestoAdapter(Context context, int modulo){
+        mContext = context;
+        manifiestosList = new ArrayList<>();
+        modProcesada = 0;
+        this.moduloSeleccionado=modulo;
+    }
 
     public ManifiestoAdapter(Context context, int modulo, Integer modProcesada){
         mContext = context;
@@ -145,6 +149,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
                     }
                 });
             }
+
             if(modProcesada == 1){
                 btnViewPdfManifiesto.setVisibility(View.GONE);
                 btnViewPdfManifiesto.setOnClickListener(new View.OnClickListener() {

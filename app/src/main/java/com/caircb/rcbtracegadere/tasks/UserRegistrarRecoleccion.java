@@ -43,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitCallbacks {
-    Integer idAppManifiesto;
+    Integer idAppManifiesto,flagManifiestoSede;
 
     ManifiestoEntity model;
     String path = "recoleccion";
@@ -71,10 +71,12 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
 
     public UserRegistrarRecoleccion(Context context,
                                     Integer idAppManifiesto,
-                                    Location location) {
+                                    Location location,
+                                    Integer flagManifiestoSede) {
         super(context);
-        this.idAppManifiesto = idAppManifiesto;
-        this.location = location;
+        this.idAppManifiesto=idAppManifiesto;
+        this.location=location;
+        this.flagManifiestoSede = flagManifiestoSede;
     }
 
     @Override
@@ -229,6 +231,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             rq.setCorreos(model.getCorreos());
             rq.setFotosManifiestoPromedio(createRequestNovedadPesoPromedio());
             rq.setTextoEvidenciaPromedio(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio") != null ? MyApp.getDBO().parametroDao().fecthParametroValorByNombre("textoPesoPromedio") : "");
+            rq.setFlagManifiestoSede(flagManifiestoSede);
         }
         return rq;
     }

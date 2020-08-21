@@ -2,6 +2,8 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
@@ -25,6 +27,11 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
         super(context);
         this.loteContenedorPadre = loteContenedorPadre;
     }
+    public interface OnRegisterListener {
+        public void onSuccessful();
+    }
+
+    private OnRegisterListener mOnRegisterListener;
 
     @Override
     public void execute() {
@@ -34,8 +41,9 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
-
-
+                        if (response.body().getExito()) {
+                            if (mOnRegisterListener != null) mOnRegisterListener.onSuccessful();
+                        }
                     }
                 }
 
@@ -63,6 +71,8 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
 
 
         return rq;
+    }
+    public void setOnRegisterListener(@NonNull OnRegisterListener l){mOnRegisterListener =l;
     }
 
 }

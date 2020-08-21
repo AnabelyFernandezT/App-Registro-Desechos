@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
@@ -16,9 +14,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaProcesadaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.tasks.UserConsultarNombreManifiestoTask;
 import com.joanzapata.pdfview.PDFView;
-
 import java.io.File;
-
 import es.voghdev.pdfviewpager.library.PDFViewPager;
 import es.voghdev.pdfviewpager.library.RemotePDFViewPager;
 import es.voghdev.pdfviewpager.library.adapter.PDFPagerAdapter;
@@ -35,7 +31,6 @@ public class VisorManifiestoFragment extends MyFragment implements View.OnClickL
 
     RemotePDFViewPager remotePDFViewPager;
     PDFPagerAdapter adapter;
-    String url = "https://www.fdi.ucm.es/profesor/jpavon/web/26-Bootstrap.pdf";
     PDFView pdfView;
 
     public VisorManifiestoFragment(){
@@ -113,6 +108,7 @@ public class VisorManifiestoFragment extends MyFragment implements View.OnClickL
 
     @Override
     public void onFailure(Exception e) {
+        pdfView.fromAsset("not-found.pdf").load();
         userConsultarNombreManifiestoTask.progressHide();
     }
 
@@ -122,6 +118,7 @@ public class VisorManifiestoFragment extends MyFragment implements View.OnClickL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        adapter.close();
+        if(adapter != null)
+            adapter.close();
     }
 }

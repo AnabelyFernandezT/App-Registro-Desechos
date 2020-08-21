@@ -36,6 +36,7 @@ import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHotelTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioFinLoteHotelTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,6 +81,11 @@ public class DialogFinRuta extends MyDialog {
         super(context, R.layout.dialog_final_ruta);
         this._activity = (Activity)context;
     }
+    public interface OnFinLoteHotel {
+        public void onSuccessful();
+    }
+
+    private OnFinLoteHotel mOnFinLotePadreListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +147,7 @@ public class DialogFinRuta extends MyDialog {
                     destinos = (String) listaDestino.getSelectedItem();
                     traerDestinoEspecifico();
                     //validarHoteles();
-                    if(destinos.equals("HOTEL")&& parametro==null){finHotel=0;}
+                    //if(destinos.equals("HOTEL")&& parametro==null){finHotel=0;}else{finHotel=3;}
                     if(parametro!=null){
                         if(inicioHotel.equals("1") && destinos.equals("HOTEL")){
                             loteHotelPadre();
@@ -279,6 +285,12 @@ public class DialogFinRuta extends MyDialog {
                 @Override
                 public void onSuccessful() {
                     finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
+                    finLotePadreHotelTask.setOnRegisterListener(new UserRegistrarFinLoteHotelTask.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            if (mOnFinLotePadreListener != null) mOnFinLotePadreListener.onSuccessful();
+                        }
+                    });
                     finLotePadreHotelTask.execute();
                 }
             });
@@ -383,6 +395,7 @@ public class DialogFinRuta extends MyDialog {
             validarHoteles();
 
         }else {
+            finHotel = 0;
             lotePadreHotelTask = new UserObtenerLotePadreHotelTask(getActivity());
             lotePadreHotelTask.setmOnLoteHotelPadreListener(new UserObtenerLotePadreHotelTask.OnLoteHotelPadreListener() {
                 @Override
@@ -429,8 +442,8 @@ public class DialogFinRuta extends MyDialog {
                 }
             });
             builder.show();
-
-
+    }
+    public void setmOnFinLotePadreListener(@NonNull OnFinLoteHotel l){mOnFinLotePadreListener =l;
     }
 
 }

@@ -41,6 +41,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     Context context;
     AlertDialog.Builder builder;
     DialogBuilder dialogBuilder;
+    Integer autorizacion;
     private Integer idManifiesto;
     private Integer idManifiestoDetalle;
     private  Integer registraTara;
@@ -56,7 +57,15 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     private OnItemBultoListener mOnItemBultoListener;
     private OnItemBultoImpresionListener mOnImtemBultoImpresionListener;
 
-    public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo, Integer idManifiesto, Integer idManifiestoDetalle, Integer registraTara) {
+    /*public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo, Integer autorizacion){
+        super(context, R.layout.lista_items_calculadora, listaCatalogo);
+        mInflater= LayoutInflater.from(context);
+        this.listaItems = listaCatalogo;
+        this.context = context;
+        this.autorizacion = autorizacion;
+    }*/
+
+    public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo, Integer idManifiesto, Integer idManifiestoDetalle, Integer registraTara,Integer autorizacion) {
         super(context, R.layout.lista_items_calculadora, listaCatalogo);
         mInflater = LayoutInflater.from(context);
         this.listaItems = listaCatalogo;
@@ -64,6 +73,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         this.idManifiesto = idManifiesto;
         this.idManifiestoDetalle = idManifiestoDetalle;
         this.registraTara=registraTara;
+        this.autorizacion = autorizacion;
     }
 
     public static class ViewHolder {
@@ -107,7 +117,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         } else {
             holder = (ListaValoresAdapter.ViewHolder) convertView.getTag();
         }
-        holder.txtItem.setText("#  " + row.getNumeroBulto() + ":       " + row.getValor());
+        holder.txtItem.setText("# "+row.getNumeroBulto()+":           "+row.getValor());
         if (row.getPesoTaraBulto()==0.0){
             holder.txtPesoTara.setText("");
             holder.txtPesoTara.setEnabled(true);
@@ -115,12 +125,17 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             holder.txtPesoTara.setText(row.getPesoTaraBulto() + "");
             holder.txtPesoTara.setEnabled(false);
         }
-
         final ViewHolder finalHolder = holder;
 
-        if (row.getTipo().length() > 0) {
+        if(row.getTipo().length()>0){
             holder.txtItemTipo.setVisibility(View.VISIBLE);
             holder.txtItemTipo.setText(row.getTipo());
+        }
+
+        if(autorizacion.toString().equals("0")){
+            holder.btnEliminar.setEnabled(false);
+        }else {
+            holder.btnEliminar.setEnabled(true);
         }
 
         holder.btnEliminar.setOnClickListener(new View.OnClickListener() {

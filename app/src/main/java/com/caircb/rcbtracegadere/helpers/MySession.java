@@ -227,7 +227,7 @@ public final class MySession {
     }
     public static Integer getIdSubRuta(){
         String str = get(ID_SUBRUTA);
-        if (str!=null && !str.equals("")){
+        if (str!=null && (!str.isEmpty())){
             return Integer.parseInt(str);
         }else {
             return -1;

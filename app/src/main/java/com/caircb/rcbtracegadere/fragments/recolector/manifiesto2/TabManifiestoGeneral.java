@@ -183,7 +183,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                                 txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
                                     @Override
                                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                                        if (!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()) {
+                                        if (txtRespEntregaCorreo.getText().length()>1 &&!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()) {
                                             txtRespEntregaCorreo.setError("Ingrese un correo válido");
                                         }
                                     }
@@ -383,7 +383,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
-                    if(!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
+                    if(!txtRespEntregaCorreo.getText().toString().equals("")&&!Patterns.EMAIL_ADDRESS.matcher(txtRespEntregaCorreo.getText().toString()).matches()){
                         txtRespEntregaCorreo.setError("Ingrese un correo válido");
                     }
 
@@ -513,7 +513,7 @@ public class TabManifiestoGeneral extends LinearLayout {
                     correo = txtRespEntregaCorreo.getText().toString();
                     txtRespEntregaCorreo.setError(null);
                     if(!correo.isEmpty()){
-                        if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                        if(!txtRespEntregaCorreo.getText().toString().equals("")&&!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
                             txtRespEntregaCorreo.setError("Ingrese un correo válido");
                             txtRespEntregaCorreo.setEnabled(true);
 
@@ -725,6 +725,12 @@ public class TabManifiestoGeneral extends LinearLayout {
         if(txtGenTecCorreo.getText().toString().equals("") && txtCorreoAlterno.getText().toString().equals("") && txtRespEntregaCorreo.getText().toString().equals("")){
             return true;
         }
+        if(!txtGenTecCorreo.getText().toString().equals("") || !txtCorreoAlterno.getText().toString().equals("")){
+            if((!chkCorreoPrincipal.isChecked() && !chkCorreoAlterno.isChecked()) && txtRespEntregaCorreo.getText().toString().equals("") ){
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -802,11 +808,10 @@ public class TabManifiestoGeneral extends LinearLayout {
         dialogBuilder.show();
     }
 
-    private boolean validarCorreo(){
-        String email = txtGenTecCorreo.getText().toString().trim();
+    public boolean validarCorreo(){
+        String email = txtRespEntregaCorreo.getText().toString().trim();
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            txtGenTecCorreo.setError("Ingrese un correo válido");
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()&& !email.equals("")){
             return false;
         }
         return true;

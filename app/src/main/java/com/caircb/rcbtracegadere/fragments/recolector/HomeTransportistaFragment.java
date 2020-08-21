@@ -25,16 +25,21 @@ import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
+import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.dialogs.DialogQrLoteTransportista;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrValidadorTask;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -45,19 +50,21 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeTransportistaFragment extends MyFragment implements OnHome {
-    ImageButton btnSincManifiestos, btnListaAsignadaTransportista, btnMenu, btnInicioRuta, btnFinRuta;
+public class HomeTransportistaFragment extends MyFragment implements OnHome, OnBarcodeListener {
+    ImageButton btnSincManifiestos,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
-    ImageView btnPickUpTransportista, btnDropOffTransportista;
+    ImageView btnPickUpTransportista, btnDropOffTransportista, btnScanQr;
     DialogInicioRuta dialogInicioRuta;
     DialogQrLoteTransportista dialogQrLoteTransportista;
     DialogFinRuta dialogFinRuta;
-    LinearLayout lnlIniciaRuta, lnlFinRuta, sectionQrLote;
+    LinearLayout lnlIniciaRuta,lnlFinRuta,txtQr,sectionQrLote;
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
-    Integer idSubRuta;
+    Integer idSubRuta, flag=0;
     UserConsultarCatalogosTask consultarCatalogosTask;
+    Integer cont=0;
+
 
     //public Context mContext;
 
@@ -76,6 +83,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         public void onSuccessful() {
             loadCantidadManifiestoAsignado();
             loadCantidadManifiestoProcesado();
+            notificacionDetalleExtra();
         }
     };
 
@@ -125,6 +133,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lnlIniciaRuta = getView().findViewById(R.id.LnlIniciaRuta);
         lnlFinRuta = getView().findViewById(R.id.LnlFinRuta);
+        btnScanQr = getView().findViewById(R.id.btnScanQr);
+        txtQr = getView().findViewById(R.id.txtQr);
 
         txtBuscar = getView().findViewById(R.id.txtBuscar);
         txtSincronizar = getView().findViewById(R.id.txtSincronizar);
@@ -169,6 +179,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 case 2:
                     inicioRuta = false;
                     bloqueo_botones();
+                    btnScanQr.setEnabled(false);
+                    btnScanQr.setAlpha(0.3f);
                     lnlIniciaRuta.setVisibility(View.VISIBLE);
                     lnlFinRuta.setVisibility(View.GONE);
                     break;
@@ -176,6 +188,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
         } else {
             bloqueo_botones();
+            btnScanQr.setEnabled(false);
+            btnScanQr.setAlpha(0.3f);
         }
         
 
@@ -347,6 +361,28 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
             }
         });
 
+        btnScanQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(flag.equals(1)){
+                    desbloque_botones();
+                    txtQr.setVisibility(View.INVISIBLE);
+                    btnScanQr.setAlpha(1.0f);
+                    flag = 0;
+                }else{
+                    bloqueo_botones();
+                    txtQr.setVisibility(View.VISIBLE);
+                    btnFinRuta.setEnabled(false);
+                    btnScanQr.setAlpha(0.3f);
+                    flag=1;
+
+                    //Quitar cuando se active desde Lector
+                    asociarLoteManifiesto(385);
+                }
+
+            }
+        });
     }
 
 
@@ -372,6 +408,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         dialogFinRuta = new DialogFinRuta(getActivity());
         dialogFinRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogFinRuta.setCancelable(false);
+        dialogFinRuta.setmOnFinLotePadreListener(new DialogFinRuta.OnFinLoteHotel() {
+            @Override
+            public void onSuccessful() {
+                setNavegate(HomeHotelFragment.create());
+            }
+        });
         dialogFinRuta.show();
     }
 
@@ -396,6 +438,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         txtManifiestos.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
         txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
+        btnPickUpTransportista.setAlpha(0.3f);
+        btnDropOffTransportista.setAlpha(0.3f);
     }
 
 
@@ -420,6 +464,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         txtManifiestos.setTextColor(Color.WHITE);
         txtSincronizar.setTextColor(Color.WHITE);
 
+        btnPickUpTransportista.setAlpha(1.0f);
+        btnDropOffTransportista.setAlpha(1.0f);
     }
 
     private void consultarInicioFinRuta() {
@@ -448,4 +494,71 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         txtManifiestos.setTextColor(Color.WHITE);
     }
 
+}
+    @Override
+    public void reciveData(String data) {
+        try {
+            asociarLoteManifiesto(Integer.parseInt(data));
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getStackTrace());
+            messageBox("El código escaneado no es de tipo Lote.");
+        }
+    }
+
+    private void asociarLoteManifiesto(Integer lote){
+        List<Integer> listaManifiesto = new ArrayList<>();
+
+        try{
+            List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
+
+            if(rowItems.size()>0) {
+                for (int i=0; i<rowItems.size();i++) {
+                    if(rowItems.get(i).getIdentificacion().equals(MyConstant.ID_GADERE)){
+                        listaManifiesto.add(rowItems.get(i).getIdAppManifiesto());
+                        cont=i;
+                    }
+                }
+            }
+            if (listaManifiesto.size()>0){
+                //Se toma el primer manifiesto. Se debe evaluar si tiene mas manifiestos asignados para listar y permitir seleccionar el indicado
+                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),rowItems.get(cont).getIdAppManifiesto(), lote, listenerHojaRuta);
+                try {
+                    consultarHojaRutaTask.execute();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else{
+
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getStackTrace());
+        }
+    }
+
+    private void notificacionDetalleExtra(){
+        Integer idManifiesto=0;
+        List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
+        if(rowItems.size()>0){
+            idManifiesto = rowItems.get(cont).getIdAppManifiesto();
+        }
+        final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
+        if(!manifiesto.getMensaje().equals("")){
+            UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(),manifiesto.getIdAppManifiesto(),
+                                                                        manifiesto.getMensaje(),
+                                                                        2,
+                                                                        "1",0.0);
+            notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
+                @Override
+                public void onSuccessful() {
+                    messageBox("Se notificara "+manifiesto.getMensaje());
+                }
+            });
+            notificaion.execute();
+
+        }
+
+    }
 }

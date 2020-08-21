@@ -84,7 +84,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
 
     private void init(){
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),1,1);
+        recyclerviewAdapter = new ManifiestoAdapter(getActivity(),1, 1);
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);
@@ -122,7 +122,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
         recyclerviewAdapter.setmOnViewManifiestPdfListenner(new ManifiestoAdapter.onViewManifiestoPdfListener() {
             @Override
             public void onSusscessfull(Integer idManifiesto) {
-                System.out.println(idManifiesto);
+                //System.out.println(idManifiesto);
                 setNavegate(VisorManifiestoFragment.newInstance(idManifiesto));
             }
         });
@@ -155,7 +155,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
                         }
                         break;
                     case R.id.btn_manifiesto_more:
-                            setNavegate(VisorManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        setNavegate(VisorManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         break;
                 }
             }
@@ -165,6 +165,49 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
         //recyclerView.addItemDecoration(divider);
     }
 
+    /*private void  menu(final int position){
+        final CharSequence[] options = {"INICIAR RECOLECCION", "INGRESAR MOTIVO NO RECOLECCION", "CANCELAR"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("INICIAR RECOLECCION"))
+                {
+                    dialogBuilder2 = new DialogBuilder(getActivity());
+                    dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                    dialogBuilder2.setCancelable(false);
+                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2,1));
+                        }
+                    });
+                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),2,2));
+                        }
+                    });
+                    dialogBuilder2.show();
+                }
+                else if (options[item].equals("INGRESAR MOTIVO NO RECOLECCION"))
+                {
+                    setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
+                }
+                else if (options[item].equals("CANCELAR")) {
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        builder.show();
+    }
+*/
     @Override
     public void onClick(View v) {
         switch (v.getId()){

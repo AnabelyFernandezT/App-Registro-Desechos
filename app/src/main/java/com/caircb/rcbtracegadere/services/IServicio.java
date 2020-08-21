@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacionComercial;
+import com.caircb.rcbtracegadere.models.request.RequestNuevoKilometraje;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
 import com.caircb.rcbtracegadere.models.request.RequestRegistarLotePadreHotel;
 import com.caircb.rcbtracegadere.models.request.RequestRegisterPlantaDetalle;
@@ -165,8 +166,14 @@ public interface IServicio {
     @PUT("Registro/saveFinLoteProceso")
     Call<DtoInfo> putFinLoteHospitales(@Body RequestFinRuta model);
 
+    @POST("HojaRuta/obtenerUrlNombrePdfByIdManifiesto")
+    Call<DtoInfo> obtenerUrlNombrePdfByIdManifiesto(@Body RequestVisorManifiestoPdf model);
+
     @POST("Notificacion/enviarCorreoComercial")
     Call<DtoInfo>enviarCorreoComercial(@Body RequestNotificacionComercial model);
+
+    @PUT("Registro/registroRutaTrasladoInicioFinKilometraje")
+    Call<DtoInfo> registroReasignacionVehiculo (@Body RequestNuevoKilometraje model);
 
     @POST("HojaRuta/obtenerUrlNombrePdfByIdManifiesto")
     Call<DtoInfo> obtenerUrlNombrePdfByIdManifiesto(@Body RequestVisorManifiestoPdf model);

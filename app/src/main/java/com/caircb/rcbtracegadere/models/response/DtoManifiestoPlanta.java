@@ -10,6 +10,7 @@ public class DtoManifiestoPlanta {
     private Integer bultosRegistrados;
     private Integer bultosTotal;
     private Integer estado;
+    private Integer idLoteContenedor;
     private List<DtoManifiestoDetalleSede> hojaRutaDetallePlanta;
 
     public DtoManifiestoPlanta() {
@@ -77,5 +78,13 @@ public class DtoManifiestoPlanta {
 
     public void setHojaRutaDetallePlanta(List<DtoManifiestoDetalleSede> hojaRutaDetallePlanta) {
         this.hojaRutaDetallePlanta = hojaRutaDetallePlanta;
+    }
+
+    public Integer getIdLoteContenedor() {
+        return idLoteContenedor;
+    }
+
+    public void setIdLoteContenedor(Integer idLoteContenedor) {
+        this.idLoteContenedor = idLoteContenedor;
     }
 }

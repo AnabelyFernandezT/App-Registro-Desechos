@@ -95,16 +95,6 @@ public class DialogConfirmarCierreLote extends MyDialog {
                 dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!spinnerPlacas.getSelectedItem().toString().equals("SELECCIONE")){
-                            if(spinnerPlacas.getSelectedItem().toString().equals(MyApp.getDBO().parametroDao().fecthParametroValor("current_placa_lote")==null?"0":MyApp.getDBO().parametroDao().fecthParametroValor("current_placa_lote"))){
-                                idTrasposteVehiLote = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo_inicio_lote").getValor());
-                            }else{
-                                for(DtoCatalogo reg : listaPlacasDisponibles) {
-                                    if(reg.getNombre().equals(spinnerPlacas.getSelectedItem().toString())){
-                                        idTrasposteVehiLote = reg.getId();
-                                    }
-                                }
-                            }
 
                             registarFinLoteTask = new UserRegistarFinLoteTask(getActivity(),idTrasposteVehiLote);
                             registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
@@ -129,9 +119,6 @@ public class DialogConfirmarCierreLote extends MyDialog {
                                 }
                             });
                             registarFinLoteTask.execute();
-                        }else{
-                            messageBox("Debe seleccionar una placa!");
-                        }
                         dialogBuilder.dismiss();
                     }
                 });

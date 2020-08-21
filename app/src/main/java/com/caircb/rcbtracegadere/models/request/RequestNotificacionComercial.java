@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.models.request;
 public class RequestNotificacionComercial {
     private String identificacion;
     private String nombreCliente;
+    private String sucursal;
     private String manifiesto;
     private String pesoReferencial;
     private String pesoSolicitado;
@@ -57,5 +58,13 @@ public class RequestNotificacionComercial {
 
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
     }
 }

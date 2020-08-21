@@ -31,6 +31,7 @@ import com.caircb.rcbtracegadere.models.ItemLote;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioMovilizacion;
+import com.caircb.rcbtracegadere.tasks.UserReAbrirLoteTask;
 
 
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
             public void onIndependentViewClicked(int independentViewID, int position) {
 
             }
-        }).setSwipeOptionViews(R.id.btn_lote_view, R.id.btn_lote_more).setSwipeable(R.id.rowFGL, R.id.rowBGL, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
+        }).setSwipeOptionViews(R.id.btn_lote_view, R.id.btn_lote_openAgain).setSwipeable(R.id.rowFGL, R.id.rowBGL, new OnRecyclerTouchListener.OnSwipeOptionsClickListener() {
             @Override
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
@@ -126,8 +127,8 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                         //Toast.makeText(getActivity(),rowItems.get(position).getIdLoteContenedor(), Toast.LENGTH_SHORT).show();
                         menu(position);
                         break;
-                    case R.id.btn_lote_more:
-                        String nombre = "";
+                    case R.id.btn_lote_openAgain:
+                        reAbrirLote(position);
                         break;
                 }
             }
@@ -139,6 +140,18 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
 
     private void  menu(final int position){
 
+        movilizacion = new DialogInicioMovilizacion(getActivity(),rowItems.get(position).getIdLoteContenedor());
+        movilizacion.setOnRegisterMovilizarListener(new DialogInicioMovilizacion.onRegisterMOvilizacionListenner() {
+            @Override
+            public void onSuccessful() {
+                rowItems = MyApp.getDBO().loteDao().fetchLote();
+                recyclerviewAdapter.setTaskList(rowItems);
+            }
+        });
+        movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        movilizacion.setCancelable(false);
+        movilizacion.show();
+        /*
         final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
         dialogBuilder.setCancelable(false);
         dialogBuilder.setMessage("¿Esta seguro de movilizar el lote?");
@@ -147,17 +160,6 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
             public void onClick(View v) {
                 dialogBuilder.dismiss();
 
-                movilizacion = new DialogInicioMovilizacion(getActivity(),rowItems.get(position).getIdLoteContenedor());
-                movilizacion.setOnRegisterMovilizarListener(new DialogInicioMovilizacion.onRegisterMOvilizacionListenner() {
-                    @Override
-                    public void onSuccessful() {
-                        rowItems = MyApp.getDBO().loteDao().fetchLote();
-                        recyclerviewAdapter.setTaskList(rowItems);
-                    }
-                });
-                movilizacion.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                movilizacion.setCancelable(false);
-                movilizacion.show();
             }
         });
         dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
@@ -166,29 +168,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
                 dialogBuilder.dismiss();
             }
         });
-        dialogBuilder.show();
-
-          /*
-        final CharSequence[] options = {"MOVILIZAR", "CANCELAR"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("MOVILIZAR"))
-                {
-                    //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1));
-
-                }
-                else if (options[item].equals("CANCELAR")) {
-                    dialog.dismiss();
-                }
-
-            }
-        });
-        builder.show();
-           */
+        dialogBuilder.show();*/
     }
 
     /*private void datosLotesDisponibles(){
@@ -198,6 +178,38 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
     }
 */
 
+    private void reAbrirLote(final Integer position){
+        final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setMessage("¿Esta seguro de volver a abrir el lote?");
+        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+                UserReAbrirLoteTask reAbrirLoteTask = new UserReAbrirLoteTask(getActivity(),rowItems.get(position).getIdLoteContenedor());
+                reAbrirLoteTask.setOnRegisterListener(new UserReAbrirLoteTask.OnRegisterListener() {
+                    @Override
+                    public void onSuccessful() {
+                        setNavegate(HomeSedeFragment.create());
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                    }
+                });
+                reAbrirLoteTask.execute();
+
+            }
+        });
+        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.show();
+    }
 
     @Override
     public void onClick(View v) {

@@ -6,11 +6,13 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.caircb.rcbtracegadere.database.AppDatabase;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.ItemEtiqueta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoDetBultos;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 
 import java.util.List;
 
@@ -87,6 +89,9 @@ public abstract class ManifiestoDetallePesosDao {
             " order by m.idAppManifiesto,dt.idAppManifiestoDetalle,b._id")
     public  abstract ItemEtiqueta consultaBultoIndividual(Integer idAppManifiesto, Integer idManifiestoDetalle, Integer idCatalogo);
 
+    @Query("select * from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
+    public abstract ManifiestoDetallePesosEntity fetchPesoManifiestoPesos(Integer idManifiesto, Integer idManifiestoDetalle);
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long insertValores(ManifiestoDetallePesosEntity entity);
@@ -94,6 +99,23 @@ public abstract class ManifiestoDetallePesosDao {
     public long saveValores (int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion, Integer numeroBulto, double pesoTaraBulto){
         ManifiestoDetallePesosEntity r = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion, numeroBulto,pesoTaraBulto);
         return insertValores(r);
+    }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract void createValor(ManifiestoDetallePesosEntity entity);
+
+    public void saveOrUpdate(int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion, Integer numeroBulto){
+        ManifiestoDetallePesosEntity entity = fetchPesoManifiestoPesos(idManifiesto,idManifiestoDetalle);
+        if(entity==null){
+            entity = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion, numeroBulto);
+        }else {
+            entity.setValor(valor);
+            entity.setNumeroBulto(numeroBulto);
+
+        }
+
+
+        createValor(entity);
     }
 
 

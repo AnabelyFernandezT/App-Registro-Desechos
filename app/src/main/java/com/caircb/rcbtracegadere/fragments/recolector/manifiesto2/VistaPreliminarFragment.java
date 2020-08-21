@@ -274,7 +274,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             case R.id.btnVistaPreviaGuardar:
                 builder = new DialogBuilder(getActivity());
                 builder.setMessage("¿Esta seguro que desea continuar?");
-                builder.setCancelable(true);
+                builder.setCancelable(false);
                 builder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

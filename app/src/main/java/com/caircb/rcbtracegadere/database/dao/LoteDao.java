@@ -40,6 +40,9 @@ public abstract  class LoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createLote(LoteEntity entity);
 
+    @Query("Delete from tb_lotes ")
+    public abstract void deleteTableLote();
+
     public void saveOrUpdate(DtoLote lotes){
         LoteEntity lote = fetchLotesCompletosE(lotes.getIdLoteContenedor());
 

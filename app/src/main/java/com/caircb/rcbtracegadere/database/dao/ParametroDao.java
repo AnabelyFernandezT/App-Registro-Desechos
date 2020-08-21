@@ -20,6 +20,15 @@ public abstract class ParametroDao {
     @Query("select * from tb_parametros where nombre=:parametro")
     public abstract ParametroEntity fetchParametroEspecifico(String parametro);
 
+    /*@Query("select * from tb_parametros where nombre LIKE '% parametro %' ")
+    public abstract ParametroEntity fetchParametroEspecificoLike(String parametro);*/
+
+    @Query("delete from tb_parametros where nombre=:parametro")
+    public abstract void eliminarLotes(String parametro);
+
+    @Query("delete from tb_parametros")
+    public abstract void eliminar();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createParametro(ParametroEntity entity);
 

@@ -56,6 +56,7 @@ public class UserConsultaLotes extends MyRetrofitApi implements RetrofitCallback
             public void onResponse(Call<List<DtoLote>> call, Response<List<DtoLote>> response) {
                 if (response.isSuccessful()){
                     if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                    MyApp.getDBO().loteDao().deleteTableLote();
                     for(DtoLote reg:response.body()){
                         MyApp.getDBO().loteDao().saveOrUpdate(reg);
 

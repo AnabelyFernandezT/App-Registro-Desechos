@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.dao.ParametroDao;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -30,6 +32,8 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
     private OnIniciaRutaListener mOnIniciaRutaListener;
     private Long idRegistro;
     private RutaInicioFinEntity model;
+    private ParametroEntity parametro;
+    Integer idLote;
 
 
     public UserRegistrarFinRutaTask(Context context, long idRegistro) {
@@ -55,6 +59,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
                         MyApp.getDBO().rutaInicioFinDao().actualizarFinRutaToSincronizado(
                                 idRegistro.intValue());
                         MyApp.getDBO().rutaInicioFinDao().eliminarInicioFin();
+                        MyApp.getDBO().parametroDao().eliminarLotes("manifiesto_lote");
                         progressHide();
                         if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onSuccessful();
                     }else{
@@ -80,6 +85,9 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
         RequestFinRuta rq=null;
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
+        parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote");
+        if(parametro!=null){idLote =Integer.parseInt(parametro.getValor());}else{idLote=0;}
+
         if (model!=null){
             rq =new RequestFinRuta();
             rq.setId(model.getIdRutaInicioFin());
@@ -88,6 +96,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
             rq.setKilometraje(model.getKilometrajeFin());
             rq.setTipo(2);
             rq.setIdDestinatarioFinRutaCatalogo(idDestino);
+            rq.setIdLote(idLote);
         }
         return rq;
     }

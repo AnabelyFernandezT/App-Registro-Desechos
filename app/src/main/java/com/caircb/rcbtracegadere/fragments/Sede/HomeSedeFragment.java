@@ -28,6 +28,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarLoteInicioTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarPlanta;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -45,6 +46,8 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
     DialogPlacaSedeRecolector dialogPlacasRecolector;
     TextView txtMovilizar , txtSincronizar, txtManifiesto;
     DialogConfirmarCierreLote dialogConfirmarCierreLote;
+    UserRegistrarLoteInicioTask registrarLoteInicioTask;
+    DialogBuilder builder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,10 +104,29 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             @Override
             public void onClick(View v){
 
-                dialogPlacas = new DialogPlacaSede(getActivity());
+                /*dialogPlacas = new DialogPlacaSede(getActivity());
                 dialogPlacas.setCancelable(false);
                 dialogPlacas.setTitle("INICIAR LOTE");
-                dialogPlacas.show();
+                dialogPlacas.show();*/
+                builder = new DialogBuilder(getActivity());
+                builder.setCancelable(false);
+                builder.setMessage("Se va a abrir un nuevo lote");
+                builder.setPositiveButton("SI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+                        registrarLote();
+                    }
+                });
+                builder.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+                    }
+                });
+
+                builder.show();
+
             }
         });
 
@@ -150,47 +172,6 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                     }
                 });
                 dialogConfirmarCierreLote.show();
-
-                /*
-                final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
-                dialogBuilder.setCancelable(false);
-                dialogBuilder.setMessage("¿Esta seguro de continuar ?");
-                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
-                        registarFinLoteTask = new UserRegistarFinLoteTask(getActivity());
-                        registarFinLoteTask.setOnRegisterListener(new UserRegistarFinLoteTask.OnRegisterListener() {
-                            @Override
-                            public void onSuccessful(String numLote) {
-                                MyApp.getDBO().parametroDao().saveOrUpdate("loteBandera_sedes","false");
-
-                                messageBox("Lote # " + numLote + " se ha cerrado correctamente.");
-                                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_lote","-10");
-                                MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","false");
-                                verificarInicioLote();
-
-                                MyApp.getDBO().manifiestoSedeDao().eliminarManifiestos();
-                                MyApp.getDBO().manifiestoDetalleSede().eliminarDetalle();
-                                MyApp.getDBO().manifiestoDetalleValorSede().eliminarDetalle();
-                            }
-
-                            @Override
-                            public void onFail() {
-                                messageBox("Lote no finalizado");
-                            }
-                        });
-                        registarFinLoteTask.execute();
-                    }
-                });
-                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
-                    }
-                });
-                dialogBuilder.show();
-                */
             }
         });
     }
@@ -265,6 +246,44 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
 
                 regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
             }
+
+    }
+
+    private void registrarLote(){
+
+        registrarLoteInicioTask = new UserRegistrarLoteInicioTask(getActivity());
+        registrarLoteInicioTask.setOnRegisterListener(new UserRegistrarLoteInicioTask.OnRegisterListener() {
+            @Override
+            public void onSuccessful() {
+                messageBox("Lote Registrado");
+                MyApp.getDBO().parametroDao().saveOrUpdate("loteBandera_sedes","true");
+
+                activarFinLote();
+            }
+
+            @Override
+            public void onFail() {
+                messageBox("Lote no registrado");
+
+            }
+        });
+        registrarLoteInicioTask.execute();
+    }
+
+    private void activarFinLote(){
+        lnlIniciaLote.setVisibility(View.GONE);
+        lnlFinLote.setVisibility(View.VISIBLE);
+        btnListaAsignadaSede.setEnabled(true);
+        btnSincManifiestos.setEnabled(true);
+        regionBuscar.setEnabled(false);
+
+        btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
+        btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
+        txtManifiesto.setTextColor(Color.WHITE);
+        txtSincronizar.setTextColor(Color.WHITE);
+
+        regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
+        txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
 
     }
 

@@ -32,6 +32,7 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
+import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogAudio;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -199,7 +200,6 @@ public class TabManifiestoAdicional extends LinearLayout {
                 progressAudio.setVisibility(View.GONE);
             }
         });
-
 
 
         txtNovedadEncontrada.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -482,6 +482,8 @@ public class TabManifiestoAdicional extends LinearLayout {
             }
         });
         recyclerViewLtsMotivoNoRecoleccion.setAdapter(recyclerAdapterNoRecolecciones);*/
+
+
     }
 
     private void preLoadAudio(String tiempo){

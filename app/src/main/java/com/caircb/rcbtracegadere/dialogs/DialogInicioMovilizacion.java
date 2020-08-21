@@ -6,10 +6,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -25,6 +27,11 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarConductoresTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarLoteSedeTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +48,7 @@ public class DialogInicioMovilizacion extends MyDialog {
     String destino = "", destinos="",conductor,operador,operadorAuxiliar;
     UserRegistrarLoteSedeTask registrarLoteSedeTask;
     Integer idLoteContenedor;
+    ImageView imgQr;
     boolean cancel =false;
 
     public interface onRegisterMOvilizacionListenner{
@@ -59,6 +67,11 @@ public class DialogInicioMovilizacion extends MyDialog {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(getView());
         init();
+        try {
+            generarQr(String.valueOf(idLoteContenedor));
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
     }
 
     private void init() {
@@ -69,6 +82,7 @@ public class DialogInicioMovilizacion extends MyDialog {
         listaDestinoParticular = getView().findViewById(R.id.lista_destino_particular);
         btnCancelar = getView().findViewById(R.id.btnCancelarApp);
         btnMovilizar = getView().findViewById(R.id.btnMovilizarLote);
+        imgQr = (ImageView) findViewById(R.id.imgQr);
 
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,19 +304,27 @@ public class DialogInicioMovilizacion extends MyDialog {
             public void onSuccessful() {
 
                 MyApp.getDBO().loteDao().updataMovilizado(idLoteContenedor);
-                messageBox("Datos enviados a: " + destino);
+                messageBox("Lote enviado a: " + destino);
                 if(mOnRegisterMovilizacionListener != null)mOnRegisterMovilizacionListener.onSuccessful();
                 DialogInicioMovilizacion.this.dismiss();
 
             }
             @Override
             public void onFail() {
-                messageBox("Datos no enviados a: " + destino);
+                messageBox("Lote no enviado a: " + destino);
                 DialogInicioMovilizacion.this.dismiss();
             }
         });
         registrarLoteSedeTask.execute();
 
+    }
+
+    private void generarQr (String qr) throws WriterException {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+        BitMatrix bitMatrix=multiFormatWriter.encode(qr+"", BarcodeFormat.QR_CODE,600,600,null);
+        Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+        imgQr.setImageBitmap(bitmap);
     }
 
     public void setOnRegisterMovilizarListener(@Nullable onRegisterMOvilizacionListenner l){ mOnRegisterMovilizacionListener = l;}

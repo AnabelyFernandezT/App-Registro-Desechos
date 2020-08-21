@@ -81,6 +81,7 @@ public class MyManifiesto {
     List<RowItemPaquete> listaPaquetes;
     ManifiestoPaquetesEntity manifiestoPkg;
     PaqueteEntity pkg;
+    //OP-RE-01
 
     private String getPath() { return simpleDate.format(new Date());}
     String fecha = getPath();
@@ -203,7 +204,7 @@ public class MyManifiesto {
             cell.setBorder(Rectangle.NO_BORDER);
             header.addCell(cell);
 
-            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO",f3));
+            cell =  new PdfPCell(new Phrase("CLAVE DEL MANIFIESTO"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"           OP-RE-01",f3));
             cell.setBorder(Rectangle.NO_BORDER);
 
             header.addCell(cell);
@@ -277,7 +278,12 @@ public class MyManifiesto {
         tb1.addCell(new PdfPCell(new Phrase("2. NÚM.. DE LICENCIA AMBIENTAL.",f6)));
         tb1.addCell(new PdfPCell(new Phrase("3. No. DE MANIFIESTO",f6)));
         tb1.addCell(new PdfPCell(new Phrase("4. PÁGINA",f6)));
-        tb1.addCell(createCell("NO TIENE",f6));
+        if(manifiesto.getNumeroGeneradorDesecho()!=null||manifiesto.getNumeroGeneradorDesecho().isEmpty()){
+            tb1.addCell(createCell(manifiesto.getNumeroGeneradorDesecho(),f6));
+        }else {
+            tb1.addCell(createCell("",f6));
+        }
+
         tb1.addCell(createCell("",f6));
         tb1.addCell(createCell(manifiesto.getSerie()+"  "+manifiesto.getNumeroManifiesto(),f6));
         tb1.addCell(createCell("1/2",f6));
@@ -488,9 +494,9 @@ public class MyManifiesto {
         //tabla 2
         PdfPTable tb2 = new PdfPTable(new float[] { 10,90});
         tb2.addCell(new PdfPCell(new Phrase("DOMICILIO:",f6)));
-        tb2.addCell(new PdfPCell(new Phrase("GUAYAQUIL: Cdla la Garzola Mz. 150 Solar B, Av. de las Américas\n"+
-                "QUITO: Av. Naciones Unidas 1014 y Av. Amazonas Edif. La Previsora, Torre B 4to piso Of. 408\n"+
-                "CUENCA: Av. Agustín Cueva 7-35 y Av.Julio Matovelle",f6)));
+        tb2.addCell(new PdfPCell(new Phrase("GUAYAQUIL: Cdla. Santa Leonor Mz. 5 Solar 17 - Av. Benjamín Rosales\n"+
+                "QUITO  : Av. Naciones Unidas y Amazonas - Edif. La Previsora, Torre B Of. 408\n"+
+                "CUENCA   : Parque Industrial. Calle Primera y Carlos Tosi",f6)));
         tb2.completeRow();
 
         _cell = new PdfPCell(tb2);
@@ -1357,22 +1363,25 @@ public class MyManifiesto {
             for (RowItemManifiesto reg:detalles){
                 nombre = reg.getDescripcion();
                 pos = nombre.indexOf("-");
-                if(pos>9){
-                    det.addCell(createCell_NO_BORDER_SINGLE(reg.getDescripcion(), f6, null));
-                }else {
-                    det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos + 1, nombre.length()), f6, null));
-                }
-                det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
-                det.addCell(createCell_VACIO());
-                det.addCell(createCell_VACIO());
+                if(reg.getCantidadBulto()!=0 || reg.getTipoMostrar().toString().equals("3")) {
+                    if (pos > 9) {
+                        det.addCell(createCell_NO_BORDER_SINGLE(reg.getDescripcion(), f6, null));
+                    } else {
+                        det.addCell(createCell_NO_BORDER_SINGLE(nombre.substring(pos + 1, nombre.length()), f6, null));
+                    }
 
-                if(reg.getTipoMostrar().toString().equals("3")){
-                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
-                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
-                }else {
-                    det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
-                    det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6, Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6, Element.ALIGN_CENTER));
+                    det.addCell(createCell_VACIO());
+                    det.addCell(createCell_VACIO());
 
+                    if (reg.getTipoMostrar().toString().equals("3")) {
+                        det.addCell(createCell_NO_BORDER("", f6, Element.ALIGN_CENTER));
+                        det.addCell(createCell_NO_BORDER("", f6, Element.ALIGN_CENTER));
+                    } else {
+                        det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6, Element.ALIGN_CENTER));
+                        det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6, Element.ALIGN_CENTER));
+
+                    }
                 }
                 det.completeRow();
             }

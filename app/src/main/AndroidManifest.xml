@@ -62,16 +62,19 @@
             android:taskAffinity=""
             android:excludeFromRecents="true">
         </activity>
-     <!--   <activity android:name=".dialogs.DialogFinLoteHospitales"
-            android:configChanges="orientation"
-            android:screenOrientation="sensor"
-            tools:ignore="Instantiatable">
-            <intent-filter>
-                <action android:name="OPEN_ACTIVITY_1" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+
+        <activity android:name=".ResultKilometraje"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
         </activity>
--->
+
+        <activity android:name=".Notificaciones.ResultCambioChoferActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
+
         <receiver android:name=".processes.ConnectivityService">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

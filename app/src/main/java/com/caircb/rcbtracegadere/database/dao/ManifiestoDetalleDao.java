@@ -24,6 +24,9 @@ public abstract class ManifiestoDetalleDao {
     @Query("update tb_manifiestos_detalle set estadoChek=:check, codeQr=:codigo where idAppManifiestoDetalle=:idManifiestoDetalle ")
     public abstract void updateManifiestoDetallebyId(Integer idManifiestoDetalle, boolean check, String codigo);
 
+    @Query("update tb_manifiestos_detalle set pesoReferencial=:pesoReferencial where idAppManifiestoDetalle=:idManifiestoDetalle ")
+    public abstract void updatePesoReferncial(Integer idManifiestoDetalle, Double pesoReferencial);
+
     @Query("update tb_manifiestos_detalle set cantidadBulto=:cantidadBulto, pesoUnidad=:peso, estadoChek=:estadoChek,cantidadTotalEtiqueta=:cantidad where idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract void updateCantidadBultoManifiestoDetalle(Integer idManifiestoDetalle, double cantidadBulto, double peso,Integer cantidad,boolean estadoChek);
 
@@ -56,7 +59,7 @@ public abstract class ManifiestoDetalleDao {
     @Query("select idAppManifiestoDetalle from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto")
     public abstract Integer selectIdsManifiestosDetalles(Integer idManifiesto);
 
-    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae, " +
+    @Query("select d.idAppManifiestoDetalle as id,cd.nombre as descripcion,'' as unidad,cd.codigo, d.pesoUnidad as peso, d.cantidadDesecho as cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial,codigoMAE as codigoMae, " +
             "estadoFisico as estadoFisico, tipoContenedor as tipoContenedor," +
             "residuoSujetoFiscalizacion,requiereDevolucionRecipientes,tieneDisponibilidadMontacarga,tieneDisponibilidadBalanza,requiereIncineracionPresenciada,observacionResiduos,cantidadRefencial" +
             " from tb_manifiestos_detalle d" +
@@ -141,6 +144,78 @@ public abstract class ManifiestoDetalleDao {
             entity.setIdDestinatario(dt.getIdDestinatario());
             //entity.setEstadoChek(false);
             //entity.setCantidadBulto(0);
+            entity.setCodigoMAE(dt.getCodigoMAE());
+            entity.setNombreDesecho(dt.getNombreDesecho());
+            entity.setNombreDestinatario(dt.getNombreDestinatario());
+            entity.setValidadorReferencial(dt.getValidadorReferencial());
+            entity.setTipoContenedor(dt.getTipoContenedor());
+            entity.setEstadoFisico(dt.getEstadoFisico());
+
+            entity.setTipoMostrar(dt.getTipoMostrar());
+            entity.setCantidadRefencial(dt.getCantidadRefencial());
+            entity.setEstadoPaquete(dt.getEstado());
+            entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
+            entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
+            entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
+            entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
+            entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
+            entity.setObservacionResiduos(dt.getObservacionResiduos());
+        }
+
+        createManifiestoDetalle(entity);
+
+    }
+
+    public void saveOrUpdate(DtoManifiestoDetalle dt, boolean estadoCheck){
+        ManifiestoDetalleEntity entity;
+
+        entity = fetchHojaRutaDetbyIdManifiestoDet(dt.getIdAppManifiesto(),dt.getIdAppManifiestoDetalle());
+        if(entity==null){
+
+            entity = new ManifiestoDetalleEntity();
+            entity.setIdAppManifiesto(dt.getIdAppManifiesto());
+            entity.setIdAppManifiestoDetalle(dt.getIdAppManifiestoDetalle());
+            entity.setIdTipoDesecho(dt.getIdTipoDesecho());
+            entity.setIdTipoUnidad(dt.getIdTipoUnidad());
+            entity.setPesoUnidad(dt.getPesoUnidad());
+            entity.setCantidadDesecho(dt.getCantidadDesecho());
+            entity.setEstadoChek(estadoCheck);
+            entity.setCantidadBulto(0);
+            entity.setTipoItem(dt.getPesajeBultoFlag());
+            entity.setTipoPaquete(dt.getTipoPaquete());
+            entity.setCantidadTotalEtiqueta(0);
+            entity.setIdDestinatario(dt.getIdDestinatario());
+            entity.setCodigoMAE(dt.getCodigoMAE());
+            entity.setNombreDesecho(dt.getNombreDesecho());
+            entity.setNombreDestinatario(dt.getNombreDestinatario());
+            entity.setPesoReferencial(dt.getPesoReferencial());
+            entity.setTipoBalanza(0);
+            entity.setTratamiento(dt.getTratamiento());
+            entity.setValidadorReferencial(dt.getValidadorReferencial());
+            entity.setTipoContenedor(dt.getTipoContenedor());
+            entity.setEstadoFisico(dt.getEstadoFisico());
+            entity.setFaltaImpresiones(false);
+
+            entity.setTipoMostrar(dt.getTipoMostrar());
+            entity.setCantidadRefencial(dt.getCantidadRefencial());
+            entity.setEstadoPaquete(dt.getEstado());
+            entity.setResiduoSujetoFiscalizacion(dt.getResiduoSujetoFiscalizacion());
+            entity.setRequiereDevolucionRecipientes(dt.getRequiereDevolucionRecipientes());
+            entity.setTieneDisponibilidadMontacarga(dt.getTieneDisponibilidadMontacarga());
+            entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
+            entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
+            entity.setObservacionResiduos(dt.getObservacionResiduos());
+
+        }else{
+            entity.setIdTipoDesecho(dt.getIdTipoDesecho());
+            entity.setIdTipoUnidad(dt.getIdTipoUnidad());
+            entity.setPesoUnidad(dt.getPesoUnidad());
+            entity.setCantidadDesecho(dt.getCantidadDesecho());
+            entity.setTipoItem(dt.getPesajeBultoFlag());
+            entity.setTipoPaquete(dt.getTipoPaquete());
+            entity.setIdDestinatario(dt.getIdDestinatario());
+            entity.setEstadoChek(estadoCheck);
+            entity.setCantidadBulto(dt.getCantidadDesecho());
             entity.setCodigoMAE(dt.getCodigoMAE());
             entity.setNombreDesecho(dt.getNombreDesecho());
             entity.setNombreDestinatario(dt.getNombreDestinatario());

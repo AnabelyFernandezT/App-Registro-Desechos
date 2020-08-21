@@ -7,12 +7,23 @@ public class RequestHojaRuta {
     private Date fechaSincronizacion;
     private Integer idVehiculo;
     private Integer idSubRuta;
+    private Integer idManifiesto;
+    private Integer lote;
 
     public RequestHojaRuta(Date fecha, Date fechaSincronizacion, Integer idVehiculo, Integer idSubRuta) {
         this.fecha = fecha;
         this.fechaSincronizacion = fechaSincronizacion;
         this.idVehiculo = idVehiculo;
         this.idSubRuta = idSubRuta;
+    }
+
+    public RequestHojaRuta(Date fecha, Date fechaSincronizacion, Integer idVehiculo, Integer idSubRuta, Integer idManifiesto, Integer lote) {
+        this.fecha = fecha;
+        this.fechaSincronizacion = fechaSincronizacion;
+        this.idVehiculo = idVehiculo;
+        this.idSubRuta = idSubRuta;
+        this.idManifiesto = idManifiesto;
+        this.lote = lote;
     }
 
     public Date getFecha() {
@@ -45,5 +56,21 @@ public class RequestHojaRuta {
 
     public void setFechaSincronizacion(Date fechaSincronizacion) {
         this.fechaSincronizacion = fechaSincronizacion;
+    }
+
+    public Integer getIdManifiesto() {
+        return idManifiesto;
+    }
+
+    public void setIdManifiesto(Integer idManifiesto) {
+        this.idManifiesto = idManifiesto;
+    }
+
+    public Integer getLote() {
+        return lote;
+    }
+
+    public void setLote(Integer lote) {
+        this.lote = lote;
     }
 }
