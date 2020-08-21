@@ -169,6 +169,7 @@ public abstract class ManifiestoPlantaDao {
             entity.setEstado(manifiesto.getEstado());
             entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
             entity.setBultosTotal(manifiesto.getBultosTotal());
+            entity.setIdLoteContenedor(manifiesto.getIdLoteContenedor());
         }
         else if(entity!=null  ){
             entity.setIdAppManifiesto(manifiesto.getIdManifiesto());
@@ -178,6 +179,7 @@ public abstract class ManifiestoPlantaDao {
             entity.setEstado(manifiesto.getEstado());
             entity.setBultosRegistrados(manifiesto.getBultosRegistrados());
             entity.setBultosTotal(manifiesto.getBultosTotal());
+            entity.setIdLoteContenedor(manifiesto.getIdLoteContenedor());
         }
 
 

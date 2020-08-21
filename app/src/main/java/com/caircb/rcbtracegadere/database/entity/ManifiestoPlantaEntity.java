@@ -26,6 +26,8 @@ public class ManifiestoPlantaEntity {
 
     private Integer bultosTotal;
 
+    private Integer idLoteContenedor;
+
     public Integer getBultosRegistrados() {
         return bultosRegistrados;
     }
@@ -92,6 +94,14 @@ public class ManifiestoPlantaEntity {
 
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
+    }
+
+    public Integer getIdLoteContenedor() {
+        return idLoteContenedor;
+    }
+
+    public void setIdLoteContenedor(Integer idLoteContenedor) {
+        this.idLoteContenedor = idLoteContenedor;
     }
 }
 
