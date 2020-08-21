@@ -54,6 +54,7 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
         if(request!= null){
             Gson g = new Gson();
             String f = g.toJson(request);
+            System.out.println(f);
             WebService.api().registrarNotificacion(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -69,6 +70,7 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
                         progressHide();
                     }else {
                         progressHide();
+
                     }
                 }
 

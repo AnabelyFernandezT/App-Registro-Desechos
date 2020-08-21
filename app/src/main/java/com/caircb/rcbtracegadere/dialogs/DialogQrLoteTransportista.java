@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.CodigoQrTransportistaEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -61,7 +63,16 @@ public class DialogQrLoteTransportista extends MyDialog {
 
     private void onInit() throws IOException, WriterException {
         imgQrLoteTransportista = (ImageView) findViewById(R.id.imgQrLoteTransportista);
-        String qr="15";
+        String qr="";
+        CodigoQrTransportistaEntity codigoQrTransportistaEntity= MyApp.getDBO().codigoQrTransportistaDao().fetchCodigoQr2();
+        if (codigoQrTransportistaEntity.getCodigoQr()!=""){
+            qr=codigoQrTransportistaEntity.getCodigoQr();
+            imgQrLoteTransportista.setVisibility(View.VISIBLE);
+        }else {
+            qr="";
+            imgQrLoteTransportista.setVisibility(View.GONE);
+        }
+
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();

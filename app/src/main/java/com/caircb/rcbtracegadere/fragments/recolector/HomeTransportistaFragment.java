@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.caircb.rcbtracegadere.CierreLoteActivity;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -29,6 +30,8 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrValidadorTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
@@ -43,14 +46,14 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class HomeTransportistaFragment extends MyFragment implements OnHome {
-    ImageButton btnSincManifiestos,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
+    ImageButton btnSincManifiestos, btnListaAsignadaTransportista, btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
     DialogInicioRuta dialogInicioRuta;
     DialogQrLoteTransportista dialogQrLoteTransportista;
     DialogFinRuta dialogFinRuta;
-    LinearLayout lnlIniciaRuta,lnlFinRuta,sectionQrLote;
+    LinearLayout lnlIniciaRuta, lnlFinRuta, sectionQrLote;
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
     Integer idSubRuta;
@@ -91,13 +94,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         init();
 
 
-
         return getView();
 
     }
 
-    private void initBuscador(){
-        regionBuscar = (ImageButton)getView().findViewById(R.id.regionBuscar);
+    private void initBuscador() {
+        regionBuscar = (ImageButton) getView().findViewById(R.id.regionBuscar);
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +120,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
         btnPickUpTransportista = getView().findViewById(R.id.btnPickUpTransportista);
         lblpickUpTransportista = getView().findViewById(R.id.lblpickUpTransportista);
         btnDropOffTransportista = getView().findViewById(R.id.btnDropOffTransportista);
-        lblDropOffTransportista =  getView().findViewById(R.id.lblDropOffTransportista);
+        lblDropOffTransportista = getView().findViewById(R.id.lblDropOffTransportista);
         btnInicioRuta = getView().findViewById(R.id.btnInciaRuta);
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lnlIniciaRuta = getView().findViewById(R.id.LnlIniciaRuta);
@@ -135,7 +137,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 dialogQrLoteTransportista = new DialogQrLoteTransportista(getActivity());
                 dialogQrLoteTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogQrLoteTransportista.setCancelable(false);
-                dialogQrLoteTransportista.show();
+                UserConsultaCodigoQrTask consultaCodigoQrTask = new UserConsultaCodigoQrTask(getActivity(), dialogQrLoteTransportista);
+                consultaCodigoQrTask.execute();
             }
         });
 
@@ -147,16 +150,18 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
         //btnCalculadora = (ImageButton)getView().findViewById(R.id.btnCalculadora);
 
-        int x= MySession.getIdUsuario();
+        int x = MySession.getIdUsuario();
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-        if(rut!=null){
+        System.out.println(rut);
+        if (rut != null) {
             inicioFinRuta = rut.getEstado();
             IdTransporteRecolector = MySession.getIdUsuario();
 
-            switch (inicioFinRuta){
+            switch (inicioFinRuta) {
                 case 1:
                     inicioRuta = true;
                     desbloque_botones();
+                    MySession.setIdSubruta(rut.getIdSubRuta());
                     lnlIniciaRuta.setVisibility(View.GONE);
                     lnlFinRuta.setVisibility(View.VISIBLE);
                     break;
@@ -169,7 +174,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                     break;
             }
 
-        }else{
+        } else {
             bloqueo_botones();
         }
         
@@ -188,12 +193,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
         }*/
 
-       // btnInicioRuta.setEnabled(!getMain().getInicioSesion());
+        // btnInicioRuta.setEnabled(!getMain().getInicioSesion());
 
 
         //if (inicioSesion || sesion =="0") {
 
-       //     bloqueo_botones();
+        //     bloqueo_botones();
         //}
 
         //------------------------------------------------------------------------------------------
@@ -218,7 +223,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 List<Integer> listaCatalogos = new ArrayList<>();
                 listaCatalogos.add(2);
 
-                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),listenerHojaRuta);
+                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(), listenerHojaRuta);
                 try {
                     consultarHojaRutaTask.execute();
                 } catch (ParseException e) {
@@ -236,47 +241,70 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
                 ParametroEntity entity = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta");
                 RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-                String valor = entity == null ?String.valueOf(rut.getIdSubRuta()) : entity.getValor();
+                String valor = entity == null ? String.valueOf(rut.getIdSubRuta()) : entity.getValor();
                 //Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
 
-               // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-                if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) >0 ){
-                    List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
-                    if(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")){
-
+                UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(getActivity());
+                consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
+                    @Override
+                    public void onSuccessful() {
+                        final DialogBuilder dialogBuilder;
                         dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("Lote cerrado, no ha descargado en el destino!!");
                         dialogBuilder.setCancelable(false);
-                        dialogBuilder.setMessage("¿Iniciar traslado al próximo punto de recolección?");
-                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                                MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
-                                setNavegate(HojaRutaAsignadaFragment.newInstance());
-                            }
-                        });
-                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 dialogBuilder.dismiss();
                             }
                         });
                         dialogBuilder.show();
-
-                    }else{
-                        setNavegate(HojaRutaAsignadaFragment.newInstance());
                     }
-                }else{
-                    messageBox("No dispone de manifiestos para recolectar.!");
-                }
+                    @Override
+                    public void onFailure() {
+                        // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+                        if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) > 0) {
+                            List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                            if (MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")) {
+
+                                dialogBuilder = new DialogBuilder(getActivity());
+                                dialogBuilder.setCancelable(false);
+                                dialogBuilder.setMessage("¿Iniciar traslado al próximo punto de recolección?");
+                                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder.dismiss();
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                    }
+                                });
+                                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder.dismiss();
+                                    }
+                                });
+                                dialogBuilder.show();
+
+                            } else {
+                                setNavegate(HojaRutaAsignadaFragment.newInstance());
+                            }
+                        } else {
+                            messageBox("No dispone de manifiestos para recolectar.!");
+                        }
+                    }
+                });
+                consultaCodigoQrValidadorTask.execute();
+
+
             }
         });
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity() instanceof MainActivity){
-                    ((MainActivity)getActivity()).openMenuOpcion();
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).openMenuOpcion();
                 }
             }
         });
@@ -296,7 +324,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 dialogInicioRuta.setCancelable(false);
                 dialogInicioRuta.show();
             }
-               // openDialog_InicioApp(getMain().getInicioSesion());
+            // openDialog_InicioApp(getMain().getInicioSesion());
                 /*
                 btnInicioRuta.setVisibility(View.GONE);
                 txtinicioRuta.setVisibility(View.GONE);
@@ -311,9 +339,9 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
                 int conteoManifiestos;
                 conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario());
                 //conteoManifiestos = MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas();
-                if(conteoManifiestos>0){
+                if (conteoManifiestos > 0) {
                     messageBox("Existen manifiestos pendientes por recolectar");
-                }else{
+                } else {
                     openDialog_Fin_App();
                 }
             }
@@ -321,32 +349,34 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     }
 
-    private void loadCantidadManifiestoAsignado(){
+
+
+    private void loadCantidadManifiestoAsignado() {
         //dbHelper.open();
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()));
+        lblListaManifiestoAsignado.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()));
         //lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas());
         //dbHelper.close();
     }
 
-    public void loadCantidadManifiestoProcesado(){
+    public void loadCantidadManifiestoProcesado() {
         //dbHelper.open();
         //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPara(idSubRuta == null ? 0:idSubRuta,MySession.getIdUsuario()));
         //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasP(MySession.getIdUsuario()));
         Integer idSubruta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-        lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasByIdConductorAndRuta(MySession.getIdUsuario(),idSubruta));
+        lblpickUpTransportista.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasByIdConductorAndRuta(MySession.getIdUsuario(), idSubruta));
         //dbHelper.close();
     }
 
 
-    private void openDialog_Fin_App(){
-        dialogFinRuta = new DialogFinRuta(getActivity()) ;
+    private void openDialog_Fin_App() {
+        dialogFinRuta = new DialogFinRuta(getActivity());
         dialogFinRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogFinRuta.setCancelable(false);
         dialogFinRuta.show();
     }
 
 
-    private void bloqueo_botones(){
+    private void bloqueo_botones() {
 
         regionBuscar.setEnabled(false);
         btnSincManifiestos.setEnabled(false);
@@ -369,7 +399,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
     }
 
 
-    public void desbloque_botones(){
+    public void desbloque_botones() {
 
         regionBuscar.setEnabled(true);
         btnSincManifiestos.setEnabled(true);
@@ -392,18 +422,30 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome {
 
     }
 
-    private void consultarInicioFinRuta(){
+    private void consultarInicioFinRuta() {
         verificarInicioRutaTask = new UserConsultarInicioRutaTask(getActivity());
         verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
             @Override
             public void onSuccessful() {
-               // messageBox("Ha iniciado previamente sesion");
-               setNavegate(HomeTransportistaFragment.create());
-             //  loadCantidadManifiestoAsignado();
-              // loadCantidadManifiestoProcesado();
+                // messageBox("Ha iniciado previamente sesion");
+                setNavegate(HomeTransportistaFragment.create());
+                //  loadCantidadManifiestoAsignado();
+                // loadCantidadManifiestoProcesado();
             }
         });
         verificarInicioRutaTask.execute();
+    }
+
+    public void bloqueoBotonManifiesto() {
+        btnListaAsignadaTransportista.setEnabled(false);
+        btnListaAsignadaTransportista.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        txtManifiestos.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+    }
+
+    public void desbloqueoBotonManifiesto() {
+        btnListaAsignadaTransportista.setEnabled(true);
+        btnListaAsignadaTransportista.setColorFilter(Color.TRANSPARENT);
+        txtManifiestos.setTextColor(Color.WHITE);
     }
 
 }

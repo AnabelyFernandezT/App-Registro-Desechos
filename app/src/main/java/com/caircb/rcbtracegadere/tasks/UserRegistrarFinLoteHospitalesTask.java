@@ -33,11 +33,13 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
     private OnFinLoteListener mOnFinLoteListener;
     private Integer idSubtura;
     private Integer idDestinatarioFinLote;
+    private Integer tipoFinLote;
 
-    public UserRegistrarFinLoteHospitalesTask(Context context, Integer idSubruta, Integer idDestinatarioFinLote) {
+    public UserRegistrarFinLoteHospitalesTask(Context context, Integer idSubruta, Integer idDestinatarioFinLote, Integer tipoFinLote) {
         super(context);
         this.idSubtura = idSubruta;
         this.idDestinatarioFinLote = idDestinatarioFinLote;
+        this.tipoFinLote = tipoFinLote;
     }
 
     @Override
@@ -85,7 +87,7 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
         rq.setIdSubRuta(idSubtura);
         rq.setFechaDispositivo(new Date());
         rq.setKilometraje("");
-        rq.setTipo(2);
+        rq.setTipo(tipoFinLote);
         rq.setIdDestinatarioFinRutaCatalogo(idDestinatarioFinLote);
         return rq;
     }

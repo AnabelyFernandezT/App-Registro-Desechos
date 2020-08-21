@@ -44,7 +44,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
     private static final String ARG_PARAM2 = "param2";
 
     Integer idAppManifiesto,idAppTipoPaquete;
-    LinearLayout btnVistaPreviaCancelar,btnVistaPreviaGuardar;
+    LinearLayout btnVistaPreviaCancelar,btnVistaPreviaGuardar,sectionNovedadPesoPromedio;
     ProgressDialog dialog;
     PDFView pdfView;
     MyManifiestoNoRecoleccion myManifiesto;
@@ -87,7 +87,8 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
 
         btnVistaPreviaCancelar = getView().findViewById(R.id.btnVistaPreviaCancelar);
         btnVistaPreviaGuardar = getView().findViewById(R.id.btnVistaPreviaGuardar);
-
+        sectionNovedadPesoPromedio = getView().findViewById(R.id.sectionNovedadPesoPromedio);
+        sectionNovedadPesoPromedio.setVisibility(View.GONE);
         btnVistaPreviaCancelar.setOnClickListener(this);
         btnVistaPreviaGuardar.setOnClickListener(this);
 

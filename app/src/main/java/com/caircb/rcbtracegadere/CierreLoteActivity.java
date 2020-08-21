@@ -1,11 +1,11 @@
 package com.caircb.rcbtracegadere;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
@@ -40,11 +41,12 @@ public class CierreLoteActivity extends AppCompatActivity {
 
     Activity _activity;
     Spinner listaDestino, listaDestinoParticular;
-    LinearLayout btnFinApp, btnCancelarApp;
+    LinearLayout btnFinApp, btnCancelarApp, btnCerrarDialog;
     TextView txt_placa;
     UserConsultarDestinosTask consultarDetino;
     UserDestinoEspecificoTask consultaDestinoEspecifico;
     UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
+    HomeTransportistaFragment homeTransportistaFragment;
 
     DialogBuilder builder;
     HotelLotePadreEntity lotePadre;
@@ -54,6 +56,10 @@ public class CierreLoteActivity extends AppCompatActivity {
     Integer finHotel = 3, idRuta;
     ParametroEntity parametro;
     Integer idSubtura;
+
+    public Fragment fragment;
+    FragmentTransaction fragmentTransaction;
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,7 @@ public class CierreLoteActivity extends AppCompatActivity {
             inicioHotel = parametro.getValor();
         }*/
         //lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
+
         btnFinApp = (LinearLayout) findViewById(R.id.btnFinalizarLoteHospital);
         btnFinApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,10 +261,13 @@ public class CierreLoteActivity extends AppCompatActivity {
     }
 
     private void guardarDatos() {
-        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(_activity, idSubtura, idDestino);
+
+
+        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(_activity, idSubtura, idDestino,2);
         userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
             @Override
             public void onSuccessful() {
+
                 final DialogBuilder dialogBuilder;
                 dialogBuilder = new DialogBuilder(_activity);
                 dialogBuilder.setMessage("Lote finalizado correctamente!");
@@ -266,11 +276,13 @@ public class CierreLoteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
-                        finish();
+                        onBackPressed();
                     }
                 });
                 dialogBuilder.show();
+
             }
+
             @Override
             public void onFailure() {
                 final DialogBuilder dialogBuilder;
@@ -287,6 +299,12 @@ public class CierreLoteActivity extends AppCompatActivity {
             }
         });
         userRegistrarFinLoteHospitales.execute();
+
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
