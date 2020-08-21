@@ -494,7 +494,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         txtManifiestos.setTextColor(Color.WHITE);
     }
 
-}
     @Override
     public void reciveData(String data) {
         try {

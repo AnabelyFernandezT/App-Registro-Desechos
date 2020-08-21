@@ -270,7 +270,8 @@ public class TabManifiestoDetalleLote extends LinearLayout {
                     detalles.get(position).getId(),
                     tipoPaquete,
                     numeroManifiesto + "$" + detalles.get(position).getCodigo(),
-                    tipoGestion
+                    tipoGestion,
+                    0
             );
             dialogBultos.setCancelable(false);
             dialogBultos.requestWindowFeature(Window.FEATURE_NO_TITLE);

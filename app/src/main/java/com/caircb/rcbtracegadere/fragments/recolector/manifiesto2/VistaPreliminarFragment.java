@@ -298,7 +298,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             messageBox("Debe ingresar fotografías, justificando Peso Promedio");
             return;
         } else {
-            userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation());
+            userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(),null);
             userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
                 @Override
                 public void onSuccessful(final Date fechaRecol) {

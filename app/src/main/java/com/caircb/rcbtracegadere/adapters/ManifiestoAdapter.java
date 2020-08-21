@@ -34,7 +34,6 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     int position=0;
     int moduloSeleccionado;
     Integer modProcesada;
-    Integer modProcesada;
 
     public interface onViewManifiestoPdfListener{
         public void onSusscessfull(Integer idManifiesto);

@@ -175,9 +175,6 @@ public interface IServicio {
     @PUT("Registro/registroRutaTrasladoInicioFinKilometraje")
     Call<DtoInfo> registroReasignacionVehiculo (@Body RequestNuevoKilometraje model);
 
-    @POST("HojaRuta/obtenerUrlNombrePdfByIdManifiesto")
-    Call<DtoInfo> obtenerUrlNombrePdfByIdManifiesto(@Body RequestVisorManifiestoPdf model);
-
     @POST("HojaRuta/obtenerCodigoQRLoteProceso")
     Call<DtoCodigoQrTransportista> traerCodigoQrTransportista(@Body RequestCodigoQrTransportista model);
 }

@@ -104,10 +104,10 @@ public abstract class ManifiestoDetallePesosDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createValor(ManifiestoDetallePesosEntity entity);
 
-    public void saveOrUpdate(int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion, Integer numeroBulto){
+    public void saveOrUpdate(int idManifiesto, int idManifiestoDetalle, double valor, String descricpion,Integer tipoPaquete,String codigo, boolean impresion, Integer numeroBulto,double pesoTaraBulto){
         ManifiestoDetallePesosEntity entity = fetchPesoManifiestoPesos(idManifiesto,idManifiestoDetalle);
         if(entity==null){
-            entity = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion, numeroBulto);
+            entity = new ManifiestoDetallePesosEntity(valor,idManifiesto,idManifiestoDetalle,descricpion,tipoPaquete, AppDatabase.getUUID(codigo), impresion, numeroBulto,pesoTaraBulto);
         }else {
             entity.setValor(valor);
             entity.setNumeroBulto(numeroBulto);

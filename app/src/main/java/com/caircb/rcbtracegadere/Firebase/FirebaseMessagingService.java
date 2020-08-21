@@ -191,8 +191,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    public void setOnRegisterListener(@NonNull OnRegisterListener l){
-        mOnRegisterListener =l;
-    }
+
 
 }

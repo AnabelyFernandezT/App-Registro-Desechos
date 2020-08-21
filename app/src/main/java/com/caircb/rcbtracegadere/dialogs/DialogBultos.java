@@ -227,7 +227,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         if(pesoExtraEntity!=null){
             listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,pesoExtraEntity.getAutorizacion());
         }else {
-            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,3);
+            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,3);
         }
 
         listaValoresAdapter.setOnItemBultoImpresion(new ListaValoresAdapter.OnItemBultoImpresionListener() {
