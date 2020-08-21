@@ -256,7 +256,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     return;
                 }
                 if(tabManifiestoGeneral.validaExisteFirmaTecnicoGenerador() && !aplicaNoRecoleccion){
-                    messageBox("Se requiere de la firma del técnico generador");
+                    messageBox("Se requiere de la firma del responsable de entrega");
                     return;
                 }
 
@@ -295,8 +295,8 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     StringBuilder sb = new StringBuilder();
                     for(RowItemPaquete row:listaPaquetes){
                         pendientes += row.getPendiente();
-                        if(row.getTipo()==1) sb.append(""+row.getPendiente()+" infeccioso").append(System.getProperty("line.separator"));
-                        if(row.getTipo()==2) sb.append(""+row.getPendiente()+" cortopunzante").append(System.getProperty("line.separator"));
+                        if(row.getTipo()==1) sb.append("F "+row.getNombre()).append(": "+row.getPendiente()+System.getProperty("line.separator"));
+                        if(row.getTipo()==2) sb.append(""+row.getNombre()).append(": "+row.getPendiente());
                     }
 
                     if(pendientes==0){

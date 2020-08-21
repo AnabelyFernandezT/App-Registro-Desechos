@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.R;
@@ -16,6 +17,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogInformacionTransportista;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2FragmentProcesada;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VisorManifiestoFragment;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserInformacionModulosTask;
 
@@ -35,11 +37,18 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
     private String frecuencia;
     int position=0;
     int moduloSeleccionado;
+    Integer modProcesada;
 
-    public ManifiestoAdapter(Context context, int modulo){
+    public interface onViewManifiestoPdfListener{
+        public void onSusscessfull(Integer idManifiesto);
+    }
+    public onViewManifiestoPdfListener mOnViewManifiestPdfListenner;
+
+    public ManifiestoAdapter(Context context, int modulo, Integer modProcesada){
         mContext = context;
         manifiestosList = new ArrayList<>();
         this.moduloSeleccionado=modulo;
+        this.modProcesada = modProcesada;
     }
 
     @NonNull
@@ -58,6 +67,7 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         holder.txtDireccion.setText(it.getDireccion());
         holder.txtProvincia.setText(it.getProvincia());
         holder.txtCiudad.setText(it.getCanton());
+        holder.txtReferencia.setText(it.getReferencia());
         String estadoString = "";
         switch (it.getEstado()){
             case 1 :
@@ -100,7 +110,9 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
         TextView txtProvincia;
         TextView txtCiudad;
         TextView txtEstado;
+        TextView txtReferencia;
         LinearLayout btnInfoCardTransporte;
+        LinearLayout btnViewPdfManifiesto;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
@@ -111,7 +123,10 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
             txtProvincia = itemView.findViewById(R.id.itm_Provincia);
             txtCiudad = itemView.findViewById(R.id.itm_Ciudad);
             txtEstado = itemView.findViewById(R.id.itm_Estado);
+            txtReferencia = itemView.findViewById(R.id.itm_Referencia);
             btnInfoCardTransporte = itemView.findViewById(R.id.btnInfoCardTransporte);
+            btnViewPdfManifiesto = itemView.findViewById(R.id.btnViewPdfManifiesto);
+
             if (moduloSeleccionado==2){
                 btnInfoCardTransporte.setVisibility(View.GONE);
             }else {
@@ -120,7 +135,9 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
                     public void onClick(View v) {
                         int positionSelected= MyViewHolder.this.getPosition();
                         ItemManifiesto it = manifiestosList.get(positionSelected);
-                        DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext, it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),it.getIdAppManifiesto(),it.getFrecuencia());
+                        DialogInformacionTransportista dialogInformacionTransportista = new DialogInformacionTransportista(mContext,
+                                it.getApertura1(),it.getApertura2(),it.getCierre1(),it.getCierre2(),it.getTelefono(),
+                                it.getIdAppManifiesto(),it.getFrecuencia(),it.getReferencia());
                         dialogInformacionTransportista.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         //informacionModulosTaskl = new UserInformacionModulosTask(mContext, dialogInformacionTransportista);
                         //informacionModulosTaskl.execute();
@@ -128,6 +145,26 @@ public class ManifiestoAdapter extends RecyclerView.Adapter<ManifiestoAdapter.My
                     }
                 });
             }
+            if(modProcesada == 1){
+                btnViewPdfManifiesto.setVisibility(View.GONE);
+                btnViewPdfManifiesto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //setNavegate(VisorManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
+                        if(mOnViewManifiestPdfListenner!=null){
+                            int positionSelected= MyViewHolder.this.getPosition();
+                            ItemManifiesto it = manifiestosList.get(positionSelected);
+                            mOnViewManifiestPdfListenner.onSusscessfull(it.getIdAppManifiesto());
+                        }
+                    }
+                });
+            }else{
+                btnViewPdfManifiesto.setVisibility(View.GONE);
+            }
         }
+    }
+
+    public void setmOnViewManifiestPdfListenner(@Nullable onViewManifiestoPdfListener l) {
+        mOnViewManifiestPdfListenner = l;
     }
 }

@@ -71,7 +71,7 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigando();
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete, pesoPromedio from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,referencia,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete,pesoPromedio from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
@@ -226,6 +226,9 @@ public abstract class ManifiestoDao {
     @Query("update tb_manifiestos set fechaInicioRecorrecion =:fechaInicioRecoleccion where idAppManifiesto =:idManifiesto")
     public abstract void saveOrUpdateFechaInicioRecoleccion(Integer idManifiesto, Date fechaInicioRecoleccion);
 
+    @Query("delete from tb_manifiestos where estado < 2 and idSubRuta = :idRuta")
+    public abstract void deleteNonSyncronizedManifiestos(Integer idRuta);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiesto(ManifiestoEntity entity);
 
@@ -301,6 +304,7 @@ public abstract class ManifiestoDao {
             entity.setFrecuencia(manifiesto.getFrecuencia());
             entity.setSucursal(manifiesto.getSucursal());
             entity.setTelefono(manifiesto.getTelefono());
+            entity.setReferencia(manifiesto.getReferencia());
             entity.setFirmaChoferRecolector(manifiesto.getFirmaChoferRecolector());
             entity.setFirmaAuxiliarRecolector(manifiesto.getFirmaAuxiliarRecolector());
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
@@ -374,6 +378,7 @@ public abstract class ManifiestoDao {
             entity.setFrecuencia(manifiesto.getFrecuencia());
             entity.setSucursal(manifiesto.getSucursal());
             entity.setTelefono(manifiesto.getTelefono());
+            entity.setReferencia(manifiesto.getReferencia());
             entity.setFirmaChoferRecolector(manifiesto.getFirmaChoferRecolector());
             entity.setFirmaAuxiliarRecolector(manifiesto.getFirmaAuxiliarRecolector());
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());

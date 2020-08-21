@@ -38,6 +38,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
     TabManifiestoAdicionalNoRecoleccion tabManifiestoAdicional;
 
     Integer idAppManifiesto,pantallaEstado;
+    TabHost tabs;
 
 
 
@@ -132,15 +133,30 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
 
     @Override
     public void onClick(View view) {
+        tabs=(TabHost)getView().findViewById(android.R.id.tabhost);
         switch (view.getId()){
             case R.id.btnManifiestoCancel:
                 switch (pantallaEstado){
                     case 1:
-                        setNavegate(HojaRutaAsignadaFragment.newInstance());
-                        break;
+                        int i= tabs.getCurrentTab();
+                        if (i==0) {
+                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                            break;
+                        }
+                        if (i==1){
+                            tabs.setCurrentTab(tabs.getCurrentTab()-1);
+                            break;
+                        }
                     case 2:
-                        setNavegate(HojaRutaBuscarFragment.newInstance());
-                        break;
+                        int j= tabs.getCurrentTab();
+                        if (j==0){
+                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                            break;
+                        }
+                        if (j==1){
+                            tabs.setCurrentTab(tabs.getCurrentTab()-1);
+                            break;
+                        }
                     case 3:
                         setNavegate(HojaRutaProcesadaFragment.newInstance());
                         break;
@@ -149,32 +165,41 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                 break;
             case R.id.btnManifiestoNext:
                 //tab genearl...
+                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(idAppManifiesto);
+                MyApp.getDBO().manifiestoDetalleDao().updateNoRecolectado(idAppManifiesto,0.0,0.0);
+                MyApp.getDBO().manifiestoPaqueteDao().deleteTablePaquetes();
                 boolean aplicaNoRecoleccion= tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion();
-                Integer estadoCheck;
-                estadoCheck = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccionEstado(idAppManifiesto);
+                int i=tabs.getCurrentTab();
+                if (i==0){
+                    tabs.setCurrentTab(tabs.getCurrentTab()+1);
+                }
 
-               if(estadoCheck>0){
+                if (i==1) {
+                    Integer estadoCheck;
+                    estadoCheck = MyApp.getDBO().manifiestoMotivosNoRecoleccionDao().fetchHojaRutaMotivoNoRecoleccionEstado(idAppManifiesto);
 
-                   if(!tabManifiestoGeneral.validaExisteFirmaTransportista()){
-                       messageBox("Se requiere de la firma del transportista");
-                       return;
-                   }
+                    if (estadoCheck > 0) {
+
+                        if (!tabManifiestoGeneral.validaExisteFirmaTransportista()) {
+                            messageBox("Se requiere de la firma del transportista");
+                            return;
+                        }
                    /*
                     if(tabManifiestoGeneral.validaExisteFirmaTransportista() && !aplicaNoRecoleccion){
                         messageBox("Se requiere de la firma del transportista");
                         return;
                     }*/
-                    if(tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()){
-                        messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
-                        return;
+                        if (tabManifiestoAdicional.validaNovedadNoRecoleccionPendicenteFotos()) {
+                            messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
+                            return;
+                        }
+                        setNavegate(VistaPreliminarNoRecolectadoFragment.newInstance(
+                                idAppManifiesto,
+                                tabManifiestoGeneral.getTipoPaquete()
+                        ));
+                    } else {
+                        messageBox("Ingrese motivo de NO RECOLECCIÓN");
                     }
-                    setNavegate(VistaPreliminarNoRecolectadoFragment.newInstance(
-                            idAppManifiesto,
-                            tabManifiestoGeneral.getTipoPaquete()
-                    ));
-                }else{
-                 messageBox("Ingrese motivo de NO RECOLECCIÓN");
-                }
  /*               if(!tabManifiestoGeneral.validaExisteDatosResponsableEntrega() && !aplicaNoRecoleccion){
                     messageBox("Se require que ingrese los datos del tecnico responsable de la entrega de los residuos recolectados");
                     return;
@@ -185,7 +210,8 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                 }
 **/
 
-                break;
+                    break;
+                }
         }
     }
 

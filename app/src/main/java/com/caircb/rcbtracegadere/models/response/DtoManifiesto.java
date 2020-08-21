@@ -78,6 +78,7 @@ public class DtoManifiesto {
     private String firmaAuxiliarRecolector;
     private String firmaOperadorRecolector;
     private Double pesoPromedio;
+    private String referencia;
 
 
     public DtoManifiesto() {
@@ -595,5 +596,13 @@ public class DtoManifiesto {
 
     public void setPesoPromedio(Double pesoPromedio) {
         this.pesoPromedio = pesoPromedio;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 }

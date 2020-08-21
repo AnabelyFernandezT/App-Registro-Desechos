@@ -206,11 +206,27 @@ public class TabManifiestoAdicional extends LinearLayout {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idAppManifiesto, txtNovedadEncontrada.getText().toString());
+                   // MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idAppManifiesto, txtNovedadEncontrada.getText().toString());
                 }
             }
         });
 
+        txtNovedadEncontrada.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idAppManifiesto, txtNovedadEncontrada.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         if (manifiesto!=null){
             txtNovedadEncontrada.setText(manifiesto.getNovedadEncontrada());
@@ -303,7 +319,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     }
 
     public void reloadDataPaquetes(){
-        //loadDataPaquetes();
+       // loadDataPaquetes();
 
         if(listaPaquetes!=null && listaPaquetes.size()>0) {
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, idAppTipoPaquete);

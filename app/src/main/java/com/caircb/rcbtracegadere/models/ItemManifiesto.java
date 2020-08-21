@@ -18,6 +18,7 @@ public class ItemManifiesto {
     private String frecuencia;
     private Integer tipoPaquete;
     private Double pesoPromedio;
+    private String referencia;
 
 
 
@@ -158,5 +159,13 @@ public class ItemManifiesto {
 
     public void setPesoPromedio(Double pesoPromedio) {
         this.pesoPromedio = pesoPromedio;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 }

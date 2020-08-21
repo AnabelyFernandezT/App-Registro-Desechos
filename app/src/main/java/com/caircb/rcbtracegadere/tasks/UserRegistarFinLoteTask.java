@@ -22,8 +22,10 @@ import retrofit2.Response;
 public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCallbacks {
     Integer loteContenedor;
     Integer idDestino;
-    public UserRegistarFinLoteTask(Context context) {
+    Integer idTrasposteVehiLote;
+    public UserRegistarFinLoteTask(Context context, Integer idTrasposteVehiLote) {
         super(context);
+        this.idTrasposteVehiLote = idTrasposteVehiLote;
     }
     public interface OnRegisterListener {
         public void onSuccessful(String numeroLoteFin);
@@ -57,10 +59,7 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
 
                 }
             });
-
         }
-
-
     }
 
     private RequestFinLote requestFinLote(){
@@ -85,6 +84,7 @@ public class UserRegistarFinLoteTask extends MyRetrofitApi implements RetrofitCa
         rq.setFecha(new Date());
         rq.setIdDestinatarioFinRutaCat(idDestino);//donde estoy
         rq.setIdLoteContenedor(loteContenedor);
+        rq.setIdTransporteVehiculoLote(idTrasposteVehiLote);
         rq.setTipo(1);
         return rq;
     }

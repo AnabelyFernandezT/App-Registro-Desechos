@@ -1095,33 +1095,14 @@ public class MyManifiestoNoRecoleccion {
         return _cell;
     }
     private PdfPTable regionAdicionales(Font f3)  {
-        ManifiestoPaquetesEntity manifiestoPkg =  MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-        if(pkg!=null)manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-
-
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
-        det.addCell(new PdfPCell(new Phrase("Funda", f3)));
+        det.addCell(new PdfPCell(new Phrase("Funda 50x50", f3)));
+        det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
 
-            if(pkg!=null ) {
-                det.addCell(createCell_NO_BORDER_SINGLE(pkg.getFunda(), f3, null));
-            }else {
-                det.addCell(new PdfPCell(new Phrase(" ", f3)));
-            }
+        det.addCell(new PdfPCell(new Phrase("", f3)));
 
-            if (manifiestoPkg != null ) {
-                det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosFundas().toString(), f3, null));
-            } else {
-                det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
-            }
-
-            det.addCell(new PdfPCell(new Phrase("PC-1", f3)));
-
-            if (manifiestoPkg != null) {
-                det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdFundas().toString(), f3, null));
-            } else {
-                det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
-            }
+        det.addCell(new PdfPCell(new Phrase("PC-1", f3)));
+        det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
 
         det.completeRow();
 
@@ -1129,31 +1110,17 @@ public class MyManifiestoNoRecoleccion {
     }
     private PdfPTable regionAdicionales2(Font f3)  {
 
-        PaqueteEntity pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
-        ManifiestoPaquetesEntity manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idManifiesto,idAppTipoPaquete);
-
         PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
-        det.addCell(new PdfPCell(new Phrase("Funda", f3)));
 
-        if(pkg!=null ) {
-            det.addCell(createCell_NO_BORDER_SINGLE(pkg.getGuardian(), f3, null));
-        }else {
-            det.addCell(new PdfPCell(new Phrase(" ", f3)));
-        }
+        det.addCell(new PdfPCell(new Phrase("Funda 63x76", f3)));
+        det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
 
-        if (manifiestoPkg != null ) {
-            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getDatosGuardianes().toString(), f3, null));
-        } else {
-            det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
-        }
+        det.addCell(new PdfPCell(new Phrase("", f3)));
 
         det.addCell(new PdfPCell(new Phrase("PC-2", f3)));
+        det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
 
-        if (manifiestoPkg != null) {
-            det.addCell(createCell_NO_BORDER_SINGLE(manifiestoPkg.getAdGuardianes().toString(), f3, null));
-        } else {
-            det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
-        }
+        det.completeRow();
 
         return det;
     }
@@ -1304,9 +1271,14 @@ public class MyManifiestoNoRecoleccion {
                 det.addCell(createCell_NO_BORDER_SINGLE(reg.getCodigo(), f6,Element.ALIGN_CENTER));
                 det.addCell(createCell_VACIO());
                 det.addCell(createCell_VACIO());
-                det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
+                if(reg.getTipoMostrar().toString().equals("3")){
+                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER("", f6,Element.ALIGN_CENTER));
+                }else {
+                    det.addCell(createCellD_NO_BORDER(reg.getCantidadBulto(), f6,Element.ALIGN_CENTER));
+                    det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6, Element.ALIGN_CENTER));
 
-                det.addCell(createCell_NO_BORDER(String.valueOf(reg.getPeso()), f6,Element.ALIGN_CENTER));
+                }
                 det.completeRow();
             }
         }

@@ -26,8 +26,8 @@ public abstract class PaqueteDao {
     @Query("select paquetePorRecolccion from tb_paquetes where idPAquete=:idPaquete limit 1")
     public abstract Integer fechConsultaPaqueteRecoleccionPaqueteEspecifico(Integer idPaquete);
 
-    @Query("select * from tb_paquetes")
-    public abstract PaqueteEntity fechConsultaPaquete();
+    @Query("select * from tb_paquetes where idPAquete=:idPaquete")
+    public abstract PaqueteEntity fechConsultaPaquete(Integer idPaquete);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createPaquete(PaqueteEntity entity);
