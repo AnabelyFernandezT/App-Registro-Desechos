@@ -10,23 +10,31 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
+import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrValidadorTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHospitalesTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapterSede.MyViewHolder>  {
+public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapterSede.MyViewHolder> {
 
     private Context mContext;
     int cRojo;
     int cVerde;
     int cNaranja;
-    private List<ItemManifiestoSede> manifiestosList ;
+    private List<ItemManifiestoSede> manifiestosList;
     private LinearLayout borderVerificacion;
+    UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
 
-    public ManifiestoAdapterSede(Context context){
+    public ManifiestoAdapterSede(Context context) {
         mContext = context;
         manifiestosList = new ArrayList<>();
     }
@@ -34,9 +42,9 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manifiesto_sede,parent,false);
-        cRojo=R.drawable.shape_card_border_red;
-        cNaranja=R.drawable.shape_card_border_naranja;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manifiesto_sede, parent, false);
+        cRojo = R.drawable.shape_card_border_red;
+        cNaranja = R.drawable.shape_card_border_naranja;
         cVerde = R.drawable.shape_card_border;
         return new MyViewHolder(view);
     }
@@ -46,14 +54,73 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
         final ItemManifiestoSede it = manifiestosList.get(position);
         holder.txtNumManifiesto.setText(it.getNumeroManifiesto());
         holder.txtCliente.setText(it.getNombreCliente());
-        if(it.getBultosSelecionado()>0) {
-            if(it.getEstado().equals(3)) {
+        if (it.getBultosSelecionado() > 0) {
+            if (it.getEstado().equals(3)) {
                 holder.borderVerificacion.setBackgroundResource(cVerde);
-            }else{
+            } else {
                 holder.borderVerificacion.setBackgroundResource(cNaranja);
             }
-        }else{
+        } else {
             holder.borderVerificacion.setBackgroundResource(cRojo);
+        }
+
+        String estadoCodigoQr = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr");
+        System.out.println(estadoCodigoQr);
+        if (estadoCodigoQr.equals("1")) {
+            String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
+            System.out.println(idSubRuta);
+            MySession.setIdSubruta(Integer.parseInt(idSubRuta));
+            UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(mContext);
+            consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
+                @Override
+                public void onSuccessful() {
+                    int contManifiestosCerrados = 0;
+                    for (int i = 0; i < manifiestosList.size(); i++) {
+                        if (manifiestosList.get(i).getEstado().equals(3)) {
+                            contManifiestosCerrados++;
+                        }
+                    }
+                    if (contManifiestosCerrados == manifiestosList.size()) {
+                        String placaSinvronizada = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta");
+                        final DialogBuilder dialogBuilder;
+                        dialogBuilder = new DialogBuilder(mContext);
+                        dialogBuilder.setMessage("Ha finalizado la Recolección del vehiculo " + placaSinvronizada);
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
+                                System.out.println(idSubRuta);
+                                if (!idSubRuta.equals("0")) {
+                                    int idSubRutaEnviar = Integer.parseInt(idSubRuta);
+                                    userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(mContext, idSubRutaEnviar, 0, 4);
+                                    userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
+                                        @Override
+                                        public void onSuccessful() {
+
+                                        }
+
+                                        @Override
+                                        public void onFailure() {
+
+                                        }
+                                    });
+                                    userRegistrarFinLoteHospitales.execute();
+                                }
+                            }
+                        });
+                        dialogBuilder.show();
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+            consultaCodigoQrValidadorTask.execute();
+
         }
     }
 
@@ -77,7 +144,7 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
             super(itemView);
             txtNumManifiesto = itemView.findViewById(R.id.itm_num_manifiesto);
             txtCliente = itemView.findViewById(R.id.itm_cliente);
-            borderVerificacion= (LinearLayout) itemView.findViewById(R.id.rowFG);
+            borderVerificacion = (LinearLayout) itemView.findViewById(R.id.rowFG);
         }
     }
 }

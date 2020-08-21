@@ -263,7 +263,7 @@ public class CierreLoteActivity extends AppCompatActivity {
     private void guardarDatos() {
 
 
-        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(_activity, idSubtura, idDestino);
+        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(_activity, idSubtura, idDestino,2);
         userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
             @Override
             public void onSuccessful() {

@@ -53,7 +53,7 @@ public abstract class ManifiestoPlantaDao {
     public abstract List<ItemManifiestoSede> fetchManifiestosPendientesXpesar();
 
     /*******************/
-    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo, " +
+    @Query("select MC.estado,MC.idAppManifiesto,MC.numeroManifiesto ,MC.nombreCliente,idTransporteVehiculo," +
             "(SELECT COUNT(idManifiestoDetalleValor) " +
             "FROM tb_manifiestos_planta M INNER JOIN TB_MANIFIESTOS_PLANTA_DETALLE DT ON M.idAppManifiesto=DT.idAppManifiesto " +
             "                           INNER JOIN  tb_manifiestos_planta_det_valor DTV ON DT.idManifiestoDetalle = DTV.idManifiestoDetalle " +

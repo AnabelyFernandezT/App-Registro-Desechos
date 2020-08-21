@@ -159,6 +159,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 Integer banderaUno = MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo);
                 Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada(idVehiculo);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
+                System.out.println(bandera);
                 if (bandera != null) {
                     if (bandera.equals("1")) {
                         if (banderaDos > 0) {
@@ -214,6 +215,8 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+array[6]);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
                 placa=array[6];
                 menuSeleccionCargaManifiestos();
             }
