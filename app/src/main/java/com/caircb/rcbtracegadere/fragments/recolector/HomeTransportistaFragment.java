@@ -544,19 +544,21 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
             idManifiesto = rowItems.get(cont).getIdAppManifiesto();
         }
         final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        if(!manifiesto.getMensaje().equals("")){
-            UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(),manifiesto.getIdAppManifiesto(),
-                                                                        manifiesto.getMensaje(),
-                                                                        2,
-                                                                        "1",0.0);
-            notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
-                @Override
-                public void onSuccessful() {
-                    messageBox("Se notificara "+manifiesto.getMensaje());
-                }
-            });
-            notificaion.execute();
+        if(manifiesto.getMensaje()!=null) {
+            if (!manifiesto.getMensaje().equals("")) {
+                UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(), manifiesto.getIdAppManifiesto(),
+                        manifiesto.getMensaje(),
+                        2,
+                        "1", 0.0);
+                notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
+                    @Override
+                    public void onSuccessful() {
+                        messageBox("Se notificara " + manifiesto.getMensaje());
+                    }
+                });
+                notificaion.execute();
 
+            }
         }
 
     }

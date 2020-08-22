@@ -240,6 +240,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             @Override
             public void onClick(View v) {
                 dialogBuilder.dismiss();
+                MyApp.getDBO().parametroDao().eliminar();
                 MainActivity.this.getSharedPreferences(MyConstant.SEG_SP, MainActivity.this.MODE_PRIVATE).edit().clear().apply();
                 FirebaseAuth.getInstance().signOut();
                 finish();
