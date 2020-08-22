@@ -1,8 +1,10 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -60,7 +62,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
 
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     UserConsultarHojaRutaPlacaXNoTask consultarHojaRutaTaskXNO;
-    DialogBuilder builder;
+    AlertDialog.Builder builder;
     String placa;
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
@@ -300,12 +302,12 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     };
 
     private void dialogoConfirmacion(){
-        builder = new DialogBuilder(getActivity());
+        builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("¿Realizara revisión de pesajes por desecho?");
         builder.setCancelable(true);
-        builder.setPositiveButton("SI", new View.OnClickListener() {
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface builder, int id) {
                 //cargarManifiesto();
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
@@ -319,9 +321,9 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 //dismiss();
             }
         });
-        builder.setNegativeButton("NO", new View.OnClickListener(){
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface builder, int id) {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
