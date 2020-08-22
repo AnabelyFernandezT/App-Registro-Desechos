@@ -31,11 +31,15 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.processes.GPSService;
 import com.caircb.rcbtracegadere.processes.OffLineWorker;
 import com.caircb.rcbtracegadere.utils.Utils;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.honeywell.aidc.AidcManager;
+import com.honeywell.aidc.BarcodeFailureEvent;
+import com.honeywell.aidc.BarcodeReadEvent;
+import com.honeywell.aidc.BarcodeReader;
+import com.honeywell.aidc.ScannerUnavailableException;
 
 import java.util.concurrent.TimeUnit;
 
-public class MyAppCompatActivity extends AppCompatActivity {
+public class MyAppCompatActivity extends AppCompatActivity implements BarcodeReader.BarcodeListener {
     private AlertDialog.Builder messageBox;
     private Context mContext;
     public Fragment fragment;
@@ -43,6 +47,10 @@ public class MyAppCompatActivity extends AppCompatActivity {
     private SoundPool soundpool = null;
     private int soundid;
     private ScanManager mScanManager;
+
+    //Barcode Honeywell
+    private static BarcodeReader barcodeReader;
+    private AidcManager manager;
 
     private final static String SCAN_ACTION = ScanManager.ACTION_DECODE;
 
@@ -123,9 +131,25 @@ public class MyAppCompatActivity extends AppCompatActivity {
 
     }
 
+    private void initBarcodeScan(){
+        if(MySession.getDispositivoManufacturer().equals("Honeywell")){
+            initListenerScanHoneywell();
+        }else if (MySession.getDispositivoManufacturer().equals("UBX")){
+            initListenerScan();
 
+            //CONFIGURACION DEL SCANNER DE CODIGO DE BARRAS
+            IntentFilter filter = new IntentFilter();
+            int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
+            String[] value_buf = mScanManager.getParameterString(idbuf);
+            if (value_buf != null && value_buf[0] != null && !value_buf[0].equals("")) {
+                filter.addAction(value_buf[0]);
+            } else {
+                filter.addAction(SCAN_ACTION);
+            }
 
-
+            registerReceiver(mScanReceiver, filter);
+        }
+    }
 
     public void hideKeyboard(){
         View view = this.getCurrentFocus();
@@ -176,21 +200,7 @@ public class MyAppCompatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initConnectivity();
-        /***Cometado para dispositivos emulador**
-
-       IntentFilter filter = new IntentFilter();
-
-        int[] idbuf = new int[]{PropertyID.WEDGE_INTENT_ACTION_NAME, PropertyID.WEDGE_INTENT_DATA_STRING_TAG};
-        String[] value_buf = mScanManager.getParameterString(idbuf);
-        if (value_buf != null && value_buf[0] != null && !value_buf[0].equals("")) {
-            filter.addAction(value_buf[0]);
-        } else {
-            filter.addAction(SCAN_ACTION);
-        }
-
-        registerReceiver(mScanReceiver, filter);
-
-        /**********/
+        initBarcodeScan();
     }
 
     private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
@@ -216,13 +226,19 @@ public class MyAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mScanManager != null) {
-            mScanManager.stopDecode();
+
+       if (MySession.getDispositivoManufacturer().equals("UBX")){
+            try {
+                if (mScanManager != null) {
+                    mScanManager.stopDecode();
+                }
+                unregisterReceiver(mScanReceiver);
+            }
+            catch(Exception ex){
+
+            }
         }
 
-        /***Cometado para dispositivos emulador**
-        unregisterReceiver(mScanReceiver);
-        /**********/
     }
 
     private void initListenerScan() {
@@ -234,5 +250,52 @@ public class MyAppCompatActivity extends AppCompatActivity {
         soundid = soundpool.load("/etc/Scan_new.ogg", 1);
     }
 
+    private void initListenerScanHoneywell(){
+        try {
+            AidcManager.create(this, new AidcManager.CreatedCallback() {
+                @Override
+                public void onCreated(AidcManager aidcManager) {
+                    manager = aidcManager;
+                    try {
+                        barcodeReader = manager.createBarcodeReader();
 
+                        if(barcodeReader!=null) {
+                            //Log.d("honeywellscanner: ", "barcodereader not claimed in OnCreate()");
+                            barcodeReader.claim();
+                        }
+                    }
+                    catch (ScannerUnavailableException e) {
+                        Toast.makeText(MyAppCompatActivity.this, "Failed to claim scanner",
+                                Toast.LENGTH_SHORT).show();
+                        //e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // register bar code event listener
+                    barcodeReader.addBarcodeListener(MyAppCompatActivity.this);
+                }
+            });
+        }
+        catch(Exception ex){
+
+        }
+    }
+
+    @Override
+    public void onBarcodeEvent(final  BarcodeReadEvent barcodeReadEvent) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (fragment instanceof OnBarcodeListener) {
+                    ((OnBarcodeListener) fragment).reciveData(barcodeReadEvent.getBarcodeData());
+                    //Toast.makeText(MyActivity.this, barcodeReadEvent.getBarcodeData(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onFailureEvent(BarcodeFailureEvent barcodeFailureEvent) {
+
+    }
 }

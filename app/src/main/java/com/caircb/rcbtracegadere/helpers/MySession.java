@@ -31,6 +31,7 @@ public final class MySession {
     final static String PERFIL="perfil";
     final static String MENUS = "lstMenus";
     final static String CONNECTICITY = "connecticity";
+    final static String DISPOSITIVO_MANUFACTURER = "manufacturer";
 
     final static String DESTROY="isDestroy";
     final static String STOP="isStop";
@@ -241,4 +242,14 @@ public final class MySession {
         String str = get(DESTINO_ESPECIFICO);
         return str!=null? str : "";
     }
+
+    public static String getDispositivoManufacturer(){
+        String str = get(DISPOSITIVO_MANUFACTURER);
+        return str!=null?str:"";
+    }
+
+    public static void setDispositivoManufacturer(String chip){
+        set(DISPOSITIVO_MANUFACTURER,chip);
+    }
+
 }
