@@ -112,16 +112,16 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             if (checkTara.equals("1")) {
                 holder.sectionTaraBulto.setVisibility(View.VISIBLE);
 
-                if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
+               /* if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
                     holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
                     holder.btnImpresion.setVisibility(View.GONE);
                     holder.btnImpresionOk.setVisibility(View.GONE);
                 }else {
                     holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
-                }
+                }*/
             } else if (checkTara.equals("2")) {
                 holder.sectionTaraBulto.setVisibility(View.GONE);
-                if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
+              /*  if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
                     holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
                     holder.btnImpresion.setVisibility(View.GONE);
                     holder.btnImpresionOk.setVisibility(View.GONE);
@@ -129,7 +129,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                     holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
                     holder.btnImpresion.setVisibility(View.VISIBLE);
                     holder.btnImpresionOk.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
             convertView.setTag(holder);
         } else {
