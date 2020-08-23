@@ -49,6 +49,12 @@ public class DialogNotificacionDetalle extends MyDialog {
         this.numeroManifiesto=numeroManifiesto;
     }
 
+    public DialogNotificacionDetalle(@NonNull Context context, Integer idAppManifiesto) {
+        super(context, R.layout.dialog_mensajes);
+        this._activity = (Activity)context;
+        this.idAppManifiesto = idAppManifiesto;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(getView());
