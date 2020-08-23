@@ -214,6 +214,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             } else {
                 rq.setUrlFirmaConductorRecolector(null);
             }*/
+            rq.setUrlFirmaResponsableEntrega(firmaTecnicoGenerador != null ? (path + "/" + firmaTecnicoGenerador.getUrl()) : "");
             rq.setUrlFirmaAuxiliarRecolector(firmaAuxiliarRecolector != null ? (path + "/" + firmaAuxiliarRecolector.getUrl()) : "");
             rq.setUrlFirmaConductorRecolector(firmaConductorRecolector != null ? (path + "/" + firmaConductorRecolector.getUrl()) : "");
             rq.setUsuarioResponsable(MySession.getIdUsuario());
