@@ -43,7 +43,7 @@ public class UserConsultaCodigoQrValidadorTask  extends MyRetrofitApi implements
                 public void onResponse(Call<DtoCodigoQrTransportista> call, Response<DtoCodigoQrTransportista> response) {
                     progressShow("Cargando datos...");
                     if (response.isSuccessful()) {
-                        if (response.body().getCogigoQr() != "") {
+                        if (!response.body().getCogigoQr().equals("")) {
                             MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(response.body());
                             progressHide();
                             if (mOnCodigoQrListener != null) mOnCodigoQrListener.onSuccessful();

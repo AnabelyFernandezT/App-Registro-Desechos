@@ -66,6 +66,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     String identificacion, nombre, correo, telefono,correoPrincipal ="" ,correoAlterno = "",correoEnvio="";
     UserConsultarCedulaTask userConsultarCedulaTask;
     private FloatingActionButton fab;
+    private String sucursal;
 
     public TabManifiestoGeneral(Context context,Integer idAppManifiesto,Integer estado) {
         super(context);
@@ -471,6 +472,7 @@ public class TabManifiestoGeneral extends LinearLayout {
             txtClienteProvincia.setText(manifiesto.getProvincia());
             txtClienteCanton.setText(manifiesto.getCanton());
             txtCorreoAlterno.setText(manifiesto.getCorreoAlterno());
+            sucursal=manifiesto.getSucursal();
             if(manifiesto.getCorreoAlterno().equals(""))
                 chkCorreoAlterno.setEnabled(false);
             if(manifiesto.getCorreos()!=null){
@@ -813,5 +815,7 @@ public class TabManifiestoGeneral extends LinearLayout {
     }
 
     public String getIdentificacion(){ return txtRespEntregaIdentificacion.getText().toString();}
+    public String getNombreCliente(){return txtClienteNombre.getText().toString();}
+    public String getSucursal(){return sucursal;}
 
 }

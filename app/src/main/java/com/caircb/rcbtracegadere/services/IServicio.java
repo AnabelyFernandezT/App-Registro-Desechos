@@ -5,10 +5,12 @@ import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
 import com.caircb.rcbtracegadere.models.request.RequestCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
+import com.caircb.rcbtracegadere.models.request.RequestEnviarCorreoNuevoDesecho;
 import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinLotePadreHotelTask;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
+import com.caircb.rcbtracegadere.models.request.RequestFirmaUsuario;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestHotelPadre;
 import com.caircb.rcbtracegadere.models.request.RequestInformacionModulos;
@@ -33,6 +35,7 @@ import com.caircb.rcbtracegadere.models.request.RequestRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
+import com.caircb.rcbtracegadere.models.response.DtoFirmaUsuario;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
@@ -165,4 +168,10 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerCodigoQRLoteProceso")
     Call<DtoCodigoQrTransportista> traerCodigoQrTransportista(@Body RequestCodigoQrTransportista model);
+
+    @POST ("Notificacion/enviarCorreoComercialDesecho")
+    Call<DtoInfo> enviarCorreo(@Body RequestEnviarCorreoNuevoDesecho model);
+
+    @POST ("HojaRuta/obtenerFirmaBase64")
+    Call<DtoFirmaUsuario> obtenerFirmaUsuario(@Body RequestFirmaUsuario model);
 }

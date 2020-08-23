@@ -18,6 +18,8 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrTask;
+import com.caircb.rcbtracegadere.tasks.UserEnviarCorreoNuevoDesecho;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 
 import java.util.ArrayList;
@@ -32,11 +34,19 @@ public class DialogNotificacionDetalle extends MyDialog {
     List<DtoCatalogo> catalogos;
     String novedad;
     Integer idAppManifiesto;
+    String identificacion;
+    String nombreCliente;
+    String sucursal;
+    String numeroManifiesto;
 
-    public DialogNotificacionDetalle(@NonNull Context context, Integer idAppManifiesto) {
+    public DialogNotificacionDetalle(@NonNull Context context, Integer idAppManifiesto,String identificacion,String nombreCliente,String sucursal,String numeroManifiesto) {
         super(context, R.layout.dialog_mensajes);
         this._activity = (Activity)context;
         this.idAppManifiesto = idAppManifiesto;
+        this.identificacion=identificacion;
+        this.nombreCliente=nombreCliente;
+        this.sucursal=sucursal;
+        this.numeroManifiesto=numeroManifiesto;
     }
 
     @Override
@@ -91,6 +101,10 @@ public class DialogNotificacionDetalle extends MyDialog {
                     @Override
                     public void onSuccessful() {
                         DialogNotificacionDetalle.this.dismiss();
+
+                        UserEnviarCorreoNuevoDesecho userEnviarCorreoNuevoDesecho = new UserEnviarCorreoNuevoDesecho(getContext(), identificacion, nombreCliente, sucursal, numeroManifiesto,txtMensaje.getText().toString());
+                        userEnviarCorreoNuevoDesecho.execute();
+
                     }
                 });
                 notificacionTask.execute();
