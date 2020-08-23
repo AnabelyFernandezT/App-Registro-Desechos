@@ -41,7 +41,7 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
                 public void onResponse(Call<DtoCodigoQrTransportista> call, Response<DtoCodigoQrTransportista> response) {
                     progressShow("Cargando datos...");
                     if (response.isSuccessful()) {
-                        if (response.body().getCogigoQr() != "") {
+                        if (!response.body().getCogigoQr().equals("")) {
                             MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(response.body());
                             dialogQrLoteTransportista.show();
                             progressHide();

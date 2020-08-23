@@ -1,9 +1,12 @@
 package com.caircb.rcbtracegadere.fragments.planta;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,8 @@ import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.CodigoQrTransportistaEntity;
+import com.caircb.rcbtracegadere.database.entity.ConsultarFirmaUsuarioEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
@@ -28,8 +33,11 @@ import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
+import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultaFirmaUsuarioTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaXNoTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
@@ -80,7 +88,9 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_home_planta, container, false));
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mContext=getContext();
+        }
         init();
         //cargarLbael();
         return getView();
@@ -89,6 +99,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     private DialogBultosPlanta.onclickSedeListener mOnclickSedeListener;
 
     private void init() {
+        consultarFirma();
         lblListaManifiestoAsignadoPlanta = (TextView) getView().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnSincManifiestosPlanta = (ImageButton) getView().findViewById(R.id.btnSincManifiestosPlanta);
         btnListaAsignadaTransportista = (ImageButton) getView().findViewById(R.id.btnListaAsignadaTransportistaPlanta);
@@ -266,7 +277,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 mOnclickSedeListener.onSucefull();
             }
             final DialogBuilder dialogBuilder;
-            dialogBuilder = new DialogBuilder(getActivity());
+            dialogBuilder = new DialogBuilder(mContext);
             dialogBuilder.setMessage("Manifiestos sincronizados!");
             dialogBuilder.setCancelable(false);
             dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
@@ -286,7 +297,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 mOnclickSedeListener.onSucefull();
             }
             final DialogBuilder dialogBuilder;
-            dialogBuilder = new DialogBuilder(getActivity());
+            dialogBuilder = new DialogBuilder(mContext);
             dialogBuilder.setMessage("Manifiestos sincronizados!");
             dialogBuilder.setCancelable(false);
             dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
@@ -300,7 +311,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     };
 
     private void dialogoConfirmacion(){
-        builder = new DialogBuilder(getActivity());
+        builder = new DialogBuilder(mContext);
         builder.setMessage("¿Realizara revisión de pesajes por desecho?");
         builder.setCancelable(true);
         builder.setPositiveButton("SI", new View.OnClickListener() {
@@ -375,6 +386,15 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
 
     private void loadCantidadManifiestoAsignadoNO(Integer idVehiculo) {
         lblListaManifiestoAsignadoPlanta.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo));
+    }
+
+    private void consultarFirma(){
+        UserConsultaFirmaUsuarioTask consultaFirmaUsuarioTask = new UserConsultaFirmaUsuarioTask(getActivity(), MySession.getIdUsuario());
+        consultaFirmaUsuarioTask.execute();
+        ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity= MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
+        String firmaUsuario=consultarFirmaUsuarioEntity==null?"":(consultarFirmaUsuarioEntity.getFirmaBase64()==null?"":consultarFirmaUsuarioEntity.getFirmaBase64());
+        System.out.println(firmaUsuario);
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario",firmaUsuario);
     }
 
 
