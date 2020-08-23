@@ -39,11 +39,11 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
-public class RecepcionPlantaFragment extends LinearLayout  {
+public class RecepcionPlantaFragment extends LinearLayout {
 
     ImageView imgFirmaPlanta;
     LinearLayout btnAgregarFirma, btnCancelar, btnGuardar;
-    EditText txtPeso,txtNovedad,txtotraNovedad;
+    EditText txtPeso, txtNovedad, txtotraNovedad;
     TextView txtFirmaPlanta, txtPesoRecolectado;
     DialogFirma dialogFirma;
     private Integer idManifiesto;
@@ -54,21 +54,20 @@ public class RecepcionPlantaFragment extends LinearLayout  {
     ManifiestoNovedadBaseAdapterRecepcionR recyclerAdapterNovedades;
     DialogAgregarFotografias dialogAgregarFotografias;
     DialogBuilder builder;
-    double pesoT=0;
+    double pesoT = 0;
     private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
     TextView txtCountPhoto;
 
 
+    public RecepcionPlantaFragment(Context context, Integer idAppManifiesto) {
+        super(context);
+        this.idManifiesto = idAppManifiesto;
+        View.inflate(context, R.layout.fragment_recoleccion_planta, this);
+        init();
+        load();
 
-public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
-    super(context);
-    this.idManifiesto = idAppManifiesto;
-    View.inflate(context, R.layout.fragment_recoleccion_planta, this);
-    init();
-    load();
-
-}
+    }
 
     private void init() {
         recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
@@ -89,8 +88,8 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
-        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -2, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA );
-        if(numeroFotos != null && numeroFotos > 0){
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idManifiesto, -2, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA);
+        if (numeroFotos != null && numeroFotos > 0) {
             lnlCountPhoto.setVisibility(View.VISIBLE);
             txtCountPhoto.setText(String.valueOf(numeroFotos));
             btnEvidenciaObservacion.setVisibility(View.VISIBLE);
@@ -99,7 +98,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialogFirma==null) {
+                if (dialogFirma == null) {
                     dialogFirma = new DialogFirma(getContext());
                     dialogFirma.setTitle("SU FIRMA");
                     dialogFirma.setCancelable(false);
@@ -107,27 +106,27 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
                         @Override
                         public void onSuccessful(Bitmap bitmap) {
                             dialogFirma.dismiss();
-                            dialogFirma=null;
-                            if(bitmap!=null){
+                            dialogFirma = null;
+                            if (bitmap != null) {
                                 txtFirmaPlanta.setVisibility(View.GONE);
                                 imgFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
-                                firma=true;
+                                firma = true;
                                 MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
 
-                            }else{
+                            } else {
                                 txtFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setVisibility(View.GONE);
-                                firma=false;
-                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null,MyConstant.STATUS_RECEPCION_PLANTA);
+                                firma = false;
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, null, MyConstant.STATUS_RECEPCION_PLANTA);
                             }
                         }
 
                         @Override
                         public void onCanceled() {
                             dialogFirma.dismiss();
-                            dialogFirma=null;
+                            dialogFirma = null;
 
                         }
                     });
@@ -136,7 +135,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
             }
         });
 
-        btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener(){
+        btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idManifiesto, -2, ManifiestoFileDao.FOTO_FOTO_RECOLECCION_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
@@ -157,16 +156,18 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
 
         txtotraNovedad.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!editable.toString().equals("")){
+                if (!editable.toString().equals("")) {
                     btnEvidenciaObservacion.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     btnEvidenciaObservacion.setVisibility(View.GONE);
                 }
             }
@@ -227,7 +228,7 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         txtotraNovedad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
+                if (!hasFocus) {
                     guardarObservaciones();
                 }
             }
@@ -235,41 +236,53 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
         obtenerObservaciones();
     }
 
-    public  boolean validarNovedad (){
+    public boolean validarNovedad() {
         String txtObservacion = txtotraNovedad.getText().toString();
         String numeroFotos = txtCountPhoto.getText().toString();
-        if(txtObservacion.equals("")){
-            observacion=true;
-        }else{
-            if(numeroFotos.equals("0")){
+        if (txtObservacion.equals("")) {
+            observacion = true;
+        } else {
+            if (numeroFotos.equals("0")) {
                 observacion = false;
-            }else{
+            } else {
                 observacion = true;
             }
         }
-        return  observacion;
+        return observacion;
     }
 
-    private void load(){
+    private void load() {
 
-        ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA,MyConstant.STATUS_RECEPCION_PLANTA);
-        if(f != null){
-            Bitmap imagen = Utils.StringToBitMap(f.getFile());
+        String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
+        System.out.println(firmaUsuario);
+        if (!firmaUsuario.equals("")) {
+            Bitmap imagen = Utils.StringToBitMap(firmaUsuario);
             txtFirmaPlanta.setVisibility(View.GONE);
             imgFirmaPlanta.setVisibility(View.VISIBLE);
             imgFirmaPlanta.setImageBitmap(imagen);
             firmaConfirmada = imagen;
-            firma=true;
-
+            btnAgregarFirma.setEnabled(false);
+            firma = true;
+        } else {
+            ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, MyConstant.STATUS_RECEPCION_PLANTA);
+            if (f != null) {
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
+                txtFirmaPlanta.setVisibility(View.GONE);
+                imgFirmaPlanta.setVisibility(View.VISIBLE);
+                imgFirmaPlanta.setImageBitmap(imagen);
+                firmaConfirmada = imagen;
+                firma = true;
+            }
         }
+
 
         List<RowItemManifiestoDetalle> bultos = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto2(idManifiesto);
 
-       // ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
+        // ManifiestoDetalleEntity bultos = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idManifiesto);
 
-        if(bultos.size()>0){
-            for (RowItemManifiestoDetalle p:bultos){
-                pesoT= pesoT+ p.getPeso();
+        if (bultos.size() > 0) {
+            for (RowItemManifiestoDetalle p : bultos) {
+                pesoT = pesoT + p.getPeso();
             }
         }
 
@@ -277,12 +290,13 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
 
     public void setMakePhoto(Integer code) {
-        if(dialogAgregarFotografias!=null){
+        if (dialogAgregarFotografias != null) {
             dialogAgregarFotografias.setMakePhoto(code);
         }
     }
-    public boolean validaNovedadesFrecuentesPendienteFotos(){
-        return MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFotoPlanta(idManifiesto)>0;
+
+    public boolean validaNovedadesFrecuentesPendienteFotos() {
+        return MyApp.getDBO().manifiestoObservacionFrecuenteDao().existeNovedadFrecuentePendienteFotoPlanta(idManifiesto) > 0;
     }
 
     /*
@@ -316,51 +330,52 @@ public RecepcionPlantaFragment(Context context,Integer idAppManifiesto){
     }
      */
 
-    public boolean validaExisteFirma(){
+    public boolean validaExisteFirma() {
         return !firma;
     }
 
     private boolean validarPeso = false;
-    public boolean validaPeso(){
-        if(txtPeso.getText().toString().equals("")){
+
+    public boolean validaPeso() {
+        if (txtPeso.getText().toString().equals("")) {
             return validarPeso = true;
-        }else{
+        } else {
             validarPeso = false;
         }
-        return  validarPeso;
+        return validarPeso;
     }
 
 
-    public double guardar(){
-        MyApp.getDBO().manifiestoDao().updateManifiestoFechaPlanta(idManifiesto,new Date());
+    public double guardar() {
+        MyApp.getDBO().manifiestoDao().updateManifiestoFechaPlanta(idManifiesto, new Date());
         return Double.parseDouble(txtPeso.getText().toString());
     }
 
-    public String obtenerNovedad(){
-        return (txtNovedad.getText().toString()==null?"":txtNovedad.getText().toString());
+    public String obtenerNovedad() {
+        return (txtNovedad.getText().toString() == null ? "" : txtNovedad.getText().toString());
     }
 
-    public String obtenerOtraNovedad(){
-        return (txtotraNovedad.getText().toString()==null? "": txtotraNovedad.getText().toString());
+    public String obtenerOtraNovedad() {
+        return (txtotraNovedad.getText().toString() == null ? "" : txtotraNovedad.getText().toString());
     }
 
-    public void obtenerObservaciones(){
+    public void obtenerObservaciones() {
         DtoManifiestoPlantaObservacion d;
         d = MyApp.getDBO().manifiestoPlantaObservacionesDao().obtenerObservaciones(idManifiesto);
-        if(d!=null){
-            txtPeso.setText(""+d.getPesoPlanta());
+        if (d != null) {
+            txtPeso.setText("" + d.getPesoPlanta());
             txtNovedad.setText(d.getObservacionPeso());
             txtotraNovedad.setText(d.getObservacionOtra());
         }
     }
 
 
-    public void guardarObservaciones(){
-            DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
-            p.setIdManifiesto(idManifiesto);
-            p.setPesoPlanta(0.0);
-            p.setObservacionPeso(txtNovedad.getText().toString());
-            p.setObservacionOtra(txtotraNovedad.getText().toString());
-            MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
+    public void guardarObservaciones() {
+        DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
+        p.setIdManifiesto(idManifiesto);
+        p.setPesoPlanta(0.0);
+        p.setObservacionPeso(txtNovedad.getText().toString());
+        p.setObservacionOtra(txtotraNovedad.getText().toString());
+        MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
     }
 }

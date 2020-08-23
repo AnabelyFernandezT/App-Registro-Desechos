@@ -68,7 +68,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
 
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     UserConsultarHojaRutaPlacaXNoTask consultarHojaRutaTaskXNO;
-    AlertDialog.Builder builder;
+    DialogBuilder builder;
     String placa;
 
     UserConsultarHojaRutaPlacaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaPlacaTask.TaskListener() {
@@ -311,12 +311,12 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     };
 
     private void dialogoConfirmacion(){
-        builder = new AlertDialog.Builder(mContext);
+        builder = new DialogBuilder(mContext);
         builder.setMessage("¿Realizara revisión de pesajes por desecho?");
         builder.setCancelable(true);
-        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface builder, int id) {
+            public void onClick(View v) {
                 //cargarManifiesto();
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
@@ -330,9 +330,9 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 //dismiss();
             }
         });
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener(){
+        builder.setNegativeButton("NO", new View.OnClickListener(){
             @Override
-            public void onClick(DialogInterface builder, int id) {
+            public void onClick(View v) {
                 CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(placa,4);
                 int idVehiculo = c!=null?c.getIdSistema():-1;
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+idVehiculo);
@@ -389,13 +389,12 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     }
 
     private void consultarFirma(){
-        int idUsuario=MySession.getIdUsuario();
-        int idPerfil=MySession.getIdPerfil();
-        System.out.println(idPerfil);
         UserConsultaFirmaUsuarioTask consultaFirmaUsuarioTask = new UserConsultaFirmaUsuarioTask(getActivity(), MySession.getIdUsuario());
         consultaFirmaUsuarioTask.execute();
         ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity= MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
-        System.out.println(consultarFirmaUsuarioEntity.getFirmaBase64());
+        String firmaUsuario=consultarFirmaUsuarioEntity==null?"":(consultarFirmaUsuarioEntity.getFirmaBase64()==null?"":consultarFirmaUsuarioEntity.getFirmaBase64());
+        System.out.println(firmaUsuario);
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario",firmaUsuario);
     }
 
 
