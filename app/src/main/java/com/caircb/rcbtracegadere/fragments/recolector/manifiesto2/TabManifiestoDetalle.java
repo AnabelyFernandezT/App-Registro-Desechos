@@ -540,7 +540,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                         contManifiestosConTara++;
                     }
                 }
-                String checkTaraGeneral=MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara").equals(null)?"":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara");;
+                String checkTaraGeneral=MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara") == null?"":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara");
                 if (checkTaraGeneral.equals("1")){
                     if (contManifiestosConTara>0){
                         MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
