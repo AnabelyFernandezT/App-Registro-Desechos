@@ -16,7 +16,7 @@ public class DtoInformacionModulos {
     private Integer tieneDisponibilidadBalanza;
     private Integer requiereIncineracionPresenciada;
     private String observacionResiduos;
-    private Integer idLoteProceso;
+    private String idLoteProceso;
 
     public DtoInformacionModulos(){
 
@@ -127,11 +127,11 @@ public class DtoInformacionModulos {
         this.observacionResiduos = observacionResiduos;
     }
 
-    public Integer getIdLoteProceso() {
+    public String getIdLoteProceso() {
         return idLoteProceso;
     }
 
-    public void setIdLoteProceso(Integer idLoteProceso) {
+    public void setIdLoteProceso(String idLoteProceso) {
         this.idLoteProceso = idLoteProceso;
     }
 }

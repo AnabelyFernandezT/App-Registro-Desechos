@@ -134,8 +134,8 @@ public class DialogInformacionModulos extends MyDialog {
                 lblAuxiliarRecoleccion1Info.setText(informacionModulos.getAuxiliarRecoleccion1());
                 lblAuxiliarRecoleccion2Info.setText(informacionModulos.getAuxiliarRecoleccion2());
                 lblKilometrajeInfo.setText(informacionModulos.getKilometrajeInicio().toString());
-                int idLote=informacionModulos.getIdLoteProceso()==null?0:informacionModulos.getIdLoteProceso();
-                if (idLote==0){
+                String idLote=informacionModulos.getIdLoteProceso()==null ? "0":informacionModulos.getIdLoteProceso();
+                if (idLote.equals("0")){
                     lblLoteTransportista.setVisibility(View.GONE);
                 }else {
                     lblLoteTransportista.setVisibility(View.VISIBLE);
