@@ -59,14 +59,14 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
     Integer idAppManifiesto;
     RecyclerView recyclerViewLtsManifiestoObservaciones;
     ImageView imgFirmaPlanta;
-    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar,btnInformacion;
-    EditText txtPeso,txtNovedad,txtotraNovedad;
+    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar, btnInformacion;
+    EditText txtPeso, txtNovedad, txtotraNovedad;
     TextView txtFirmaPlanta, txtPesoRecolectado, txtObservacionPeso;
     DialogFirma dialogFirma;
     Window window;
     Bitmap firmaConfirmada;
     DialogBuilder builder;
-    double pesoT, pesoRecolectado=0;
+    double pesoT, pesoRecolectado = 0;
     private boolean firma = false, observacion = false;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
     TextView txtCountPhoto, txtPesoPlanta;
@@ -75,7 +75,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
     List<ItemManifiestoDetalleValorSede> bultos = new ArrayList<>();
 
 
-    public TabManifiestoAdicionalFragment(Context context, Integer manifiestoID, String pesajePendiente){
+    public TabManifiestoAdicionalFragment(Context context, Integer manifiestoID, String pesajePendiente) {
         super(context);
         View.inflate(context, R.layout.fragment_recoleccion_planta_adicional, this);
         this.idAppManifiesto = manifiestoID;
@@ -86,7 +86,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
         bloquerAdiciona();
     }
 
-    private void init(){
+    private void init() {
         recyclerViewLtsManifiestoObservaciones = this.findViewById(R.id.LtsManifiestoObservaciones);
         txtPeso = this.findViewById(R.id.txtPeso);
         btnGuardar = this.findViewById(R.id.btnGuardar);
@@ -108,14 +108,14 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
-        if(pesajePendiente.equals("SI")){
+        if (pesajePendiente.equals("SI")) {
             btnAgregarFirma.setVisibility(GONE);
-        }else{
+        } else {
             btnAgregarFirma.setVisibility(VISIBLE);
         }
 
-        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA );
-        if(numeroFotos != null && numeroFotos > 0){
+        Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA);
+        if (numeroFotos != null && numeroFotos > 0) {
             lnlCountPhoto.setVisibility(View.VISIBLE);
             txtCountPhoto.setText(String.valueOf(numeroFotos));
             btnEvidenciaObservacion.setVisibility(View.VISIBLE);
@@ -124,7 +124,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
         btnAgregarFirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialogFirma==null) {
+                if (dialogFirma == null) {
                     dialogFirma = new DialogFirma(getContext());
                     dialogFirma.setTitle("SU FIRMA");
                     dialogFirma.setCancelable(false);
@@ -132,27 +132,27 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
                         @Override
                         public void onSuccessful(Bitmap bitmap) {
                             dialogFirma.dismiss();
-                            dialogFirma=null;
-                            if(bitmap!=null){
+                            dialogFirma = null;
+                            if (bitmap != null) {
                                 txtFirmaPlanta.setVisibility(View.GONE);
                                 imgFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setImageBitmap(bitmap);
                                 firmaConfirmada = bitmap;
-                                firma=true;
+                                firma = true;
                                 MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, Utils.encodeTobase64(bitmap), MyConstant.STATUS_RECEPCION_PLANTA);
 
-                            }else{
+                            } else {
                                 txtFirmaPlanta.setVisibility(View.VISIBLE);
                                 imgFirmaPlanta.setVisibility(View.GONE);
-                                firma=false;
-                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, null,MyConstant.STATUS_RECEPCION_PLANTA);
+                                firma = false;
+                                MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, null, MyConstant.STATUS_RECEPCION_PLANTA);
                             }
                         }
 
                         @Override
                         public void onCanceled() {
                             dialogFirma.dismiss();
-                            dialogFirma=null;
+                            dialogFirma = null;
 
                         }
                     });
@@ -186,14 +186,16 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!editable.toString().equals("")){
+                if (!editable.toString().equals("")) {
                     btnEvidenciaObservacion.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     btnEvidenciaObservacion.setVisibility(View.GONE);
                 }
             }
@@ -208,64 +210,78 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
         obtenerObservaciones();
     }
 
-    public String sendObservacion(){
+    public String sendObservacion() {
         return txtotraNovedad.getText().toString();
     }
 
-    public  boolean validarNovedad (){
+    public boolean validarNovedad() {
         String txtObservacion = txtotraNovedad.getText().toString();
         String numeroFotos = txtCountPhoto.getText().toString();
-        if(txtObservacion.equals("")){
-           observacion=true;
-        }else{
-            if(numeroFotos.equals("0")){
+        if (txtObservacion.equals("")) {
+            observacion = true;
+        } else {
+            if (numeroFotos.equals("0")) {
                 observacion = false;
-            }else{
+            } else {
                 observacion = true;
             }
         }
-        return  observacion;
+        return observacion;
     }
 
-    public boolean validarInformacion(){
-        if(firma){
+    public boolean validarInformacion() {
+        if (firma) {
             info = true;
         }
         return info;
     }
-    private void loadData(){
-        ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA,MyConstant.STATUS_RECEPCION_PLANTA);
-        if(f != null){
-            Bitmap imagen = Utils.StringToBitMap(f.getFile());
+
+    private void loadData() {
+        String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
+        System.out.println(firmaUsuario);
+        if (!firmaUsuario.equals("")) {
+            Bitmap imagen = Utils.StringToBitMap(firmaUsuario);
             txtFirmaPlanta.setVisibility(View.GONE);
             imgFirmaPlanta.setVisibility(View.VISIBLE);
             imgFirmaPlanta.setImageBitmap(imagen);
             firmaConfirmada = imagen;
-            firma=true;
+            btnAgregarFirma.setEnabled(false);
+            firma = true;
+        } else {
+            ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
+            if (f != null) {
+                Bitmap imagen = Utils.StringToBitMap(f.getFile());
+                txtFirmaPlanta.setVisibility(View.GONE);
+                imgFirmaPlanta.setVisibility(View.VISIBLE);
+                imgFirmaPlanta.setImageBitmap(imagen);
+                firmaConfirmada = imagen;
+                firma = true;
+            }
         }
+
     }
 
-    private String obtieneDosDecimales(double valor){
+    private String obtieneDosDecimales(double valor) {
         DecimalFormat format = new DecimalFormat();
         format.setMaximumFractionDigits(2); //Define 2 decimales.
         return format.format(valor);
     }
 
-    public void validarPesoExtra(){
+    public void validarPesoExtra() {
         bultos.clear();
         pesoT = 0.0;
         pesoRecolectado = 0;
         bultos = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManif(idAppManifiesto);
-        if(bultos.size()>0){
-            for (ItemManifiestoDetalleValorSede p:bultos){
-                pesoT= pesoT+ p.getPeso();
-                if(p.getNuevoPeso()!=null){
+        if (bultos.size() > 0) {
+            for (ItemManifiestoDetalleValorSede p : bultos) {
+                pesoT = pesoT + p.getPeso();
+                if (p.getNuevoPeso() != null) {
                     pesoRecolectado = pesoRecolectado + p.getNuevoPeso();
                 }
             }
         }
 
-        if (txtPesoRecolectado!=null) {
+        if (txtPesoRecolectado != null) {
             txtPesoRecolectado.setText(obtieneDosDecimales(pesoT));
             txtPesoPlanta.setText(obtieneDosDecimales(pesoRecolectado));
 
@@ -273,7 +289,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
             Double validacionMenor = pesoT - (pesoT * 0.03);
             Double valorIngresado = pesoRecolectado;
 
-            if (!txtPesoPlanta.getText().toString().equals(txtPesoRecolectado.getText().toString()) && pesoT>0.0) {
+            if (!txtPesoPlanta.getText().toString().equals(txtPesoRecolectado.getText().toString()) && pesoT > 0.0) {
                 if (valorIngresado > validacion) {
                     //Toast.makeText(getContext(), "El peso es mayor al recolectado", Toast.LENGTH_SHORT).show();
                     btnInformacion.setVisibility(View.VISIBLE);
@@ -318,8 +334,8 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
                     txtObservacionPeso.setText("");
 
                 } else {
-                    Double diferencia = Math.abs(pesoRecolectado-pesoT);
-                    txtObservacionPeso.setText("EXISTE DIFERENCIA DE "+ obtieneDosDecimales(diferencia) + " KG");
+                    Double diferencia = Math.abs(pesoRecolectado - pesoT);
+                    txtObservacionPeso.setText("EXISTE DIFERENCIA DE " + obtieneDosDecimales(diferencia) + " KG");
                     txtObservacionPeso.setVisibility(View.VISIBLE);
                     btnInformacion.setVisibility(View.GONE);
                 }
@@ -333,30 +349,30 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
 
 
     public void setMakePhoto(Integer code) {
-        if(dialogAgregarFotografias!=null){
+        if (dialogAgregarFotografias != null) {
             dialogAgregarFotografias.setMakePhoto(code);
         }
     }
 
-    public void obtenerObservaciones(){
+    public void obtenerObservaciones() {
         DtoManifiestoPlantaObservacion d;
         d = MyApp.getDBO().manifiestoPlantaObservacionesDao().obtenerObservaciones(idAppManifiesto);
-        if(d!=null){
+        if (d != null) {
             txtotraNovedad.setText(d.getObservacionOtra());
         }
     }
 
 
-    public void guardarObservaciones(){
+    public void guardarObservaciones() {
         DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
         p.setIdManifiesto(idAppManifiesto);
         p.setObservacionOtra(txtotraNovedad.getText().toString());
         MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
     }
 
-    public void bloquerAdiciona(){
+    public void bloquerAdiciona() {
         Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(idAppManifiesto);
-        if(estadoManifiesto == 3){
+        if (estadoManifiesto == 3) {
             txtotraNovedad.setEnabled(false);
             btnAgregarFirma.setEnabled(false);
             btnEvidenciaObservacion.setEnabled(false);

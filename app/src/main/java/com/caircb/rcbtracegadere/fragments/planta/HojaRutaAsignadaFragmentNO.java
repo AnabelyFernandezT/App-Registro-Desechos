@@ -37,6 +37,8 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrValidadorTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHospitalesTask;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +60,8 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
     RutaInicioFinEntity rut;
     ManifiestoEntity entity;
     Integer idFinRuta;
+    UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -96,10 +100,70 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
                 filtro(data);
             }
         });
-        Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        final Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
         idFinRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         entity = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdTransporte(idVehiculo);
+
+
+
+
+
+
+        String estadoCodigoQr = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr");
+        System.out.println(estadoCodigoQr);
+        if (estadoCodigoQr.equals("1")) {
+            String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
+            System.out.println(idSubRuta);
+            MySession.setIdSubruta(Integer.parseInt(idSubRuta));
+            UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(getActivity());
+            consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
+                @Override
+                public void onSuccessful() {
+                    int contadorManifiestos=MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo);
+                    System.out.println(contadorManifiestos);
+                    if (contadorManifiestos==0){
+                        String placaSinvronizada = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta");
+                        final DialogBuilder dialogBuilder;
+                        dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("Ha finalizado la Recepción del vehiculo " + placaSinvronizada);
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
+                                System.out.println(idSubRuta);
+                                if (!idSubRuta.equals("0")) {
+                                    int idSubRutaEnviar = Integer.parseInt(idSubRuta);
+                                    userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(getActivity(), idSubRutaEnviar, 0, 4);
+                                    userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
+                                        @Override
+                                        public void onSuccessful() {
+                                            setNavegate(HomePlantaFragment.create());
+                                        }
+                                        @Override
+                                        public void onFailure() {
+
+                                        }
+                                    });
+                                    userRegistrarFinLoteHospitales.execute();
+                                }
+                            }
+                        });
+                        dialogBuilder.show();
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+            consultaCodigoQrValidadorTask.execute();
+
+        }
+
 
     }
 

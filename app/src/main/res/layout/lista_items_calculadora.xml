@@ -29,7 +29,7 @@
                     android:layout_marginBottom="2dp"
                     android:layout_weight="1"
                     android:text="hhhhh"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:textStyle="normal" />
 
                 <LinearLayout
@@ -45,16 +45,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
                         android:text="Tara:"
-                        android:textSize="20dp"></TextView>
+                        android:textSize="15dp"></TextView>
 
                     <EditText
                         android:id="@+id/txtPesoTara"
                         android:inputType="numberDecimal"
-                        android:layout_width="50dp"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:textSize="20dp"></EditText>
+                        android:textSize="15dp"></EditText>
                 </LinearLayout>
 
             </LinearLayout>
@@ -113,6 +113,21 @@
             </RelativeLayout>
 
         </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/chkRegistrarTaraBulto"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="1.7"
+            android:scaleX="1.7"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingRight="0dp"
+            android:layout_margin="1dp">
+        </CheckBox>
 
         <LinearLayout
             android:id="@+id/btnEliminar"

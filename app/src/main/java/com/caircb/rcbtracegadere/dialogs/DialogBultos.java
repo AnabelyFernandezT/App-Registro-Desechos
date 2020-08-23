@@ -22,6 +22,7 @@ import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoPaqueteDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.NotificacionPesoExtraEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
@@ -212,11 +213,20 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         if (bultos == null) bultos = new ArrayList<>();
         cantidaBultosInitial = bultos.size();
 
+
         if (bultos.size() > 0) {
+            List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+            double totalPesoTaraManifiestoDetalle=0.0;
+            for (int i=0;i<listaPesos.size();i++){
+                totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
+            }
+
             for (CatalogoItemValor r : bultos) {
                 subtotal = subtotal.add(new BigDecimal(r.getValor()));
             }
-            txtTotal.setText("KG " + subtotal);
+
+            double pesoTotal=subtotal.doubleValue()-totalPesoTaraManifiestoDetalle;
+            txtTotal.setText("Peso Neto " + pesoTotal + " KG");
         }
 
         initAdapterBultos();
@@ -237,6 +247,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
                 imprimirEtiquetaIndividual(idManifiesto, idManifiestoDetalle, item);
                 MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), pesoTaraBulto);
+
+                List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+                double totalPesoTaraManifiestoDetalle=0.0;
+                double pesoTotalValor=0.0;
+                for (int i=0;i<listaPesos.size();i++){
+                    totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
+                    pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
+                }
+                double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
+                txtTotal.setText("Peso Neto " + pesoTotal + " KG");
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -248,12 +268,22 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 if (item.getTipo().length() > 0)
                     MyApp.getDBO().manifiestoPaqueteDao().quitarPaquete(idManifiesto, tipoPaquete, item.getTipo());
 
+                List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+                double totalPesoTaraManifiestoDetalle=0.0;
+                double pesoTotalValor=0.0;
+                for (int i=0;i<listaPesos.size();i++){
+                    totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
+                    pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
+                }
+                double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
+
+
                 subtotal = subtotal.subtract(new BigDecimal(item.getValor()));
                 bultos.remove(item);
 
                 listaValoresAdapter.filterList(bultos);
                 listaValoresAdapter.notifyDataSetChanged();
-                txtTotal.setText("KG " + subtotal);
+                txtTotal.setText("Peso Neto " + pesoTotal + " KG");
 
                 new Handler().post(new Runnable() {
                     @Override
@@ -276,7 +306,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             for (CatalogoItemValor r : bultos) {
                 subtotal = subtotal.add(new BigDecimal(r.getValor()));
             }
-            txtTotal.setText("KG " + subtotal);
+            txtTotal.setText("Peso Neto " + subtotal + " KG");
         }
 
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
@@ -485,6 +515,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             builder.setNegativeButton("NO", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //subtotal = subtotal.subtract(imput);
                     builder.dismiss();
                     txtpantalla.setText("0");
                     subtotal = subtotal.subtract(imput);
@@ -519,7 +550,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         //bultos.add(new CatalogoItemValor(id.intValue(), imput.toString(),tipo, false, ultimoBultoByIdDet));
         listaValoresAdapter.notifyDataSetChanged();
 
-        txtTotal.setText("Peso Neto " + subtotal + " KG");
+        List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+        double totalPesoTaraManifiestoDetalle=0.0;
+        double pesoTotalValor=0.0;
+        for (int i=0;i<listaPesos.size();i++){
+            totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
+            pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
+        }
+        double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
+
+        txtTotal.setText("Peso Neto " + pesoTotal + " KG");
         dato = "0";
         txtpantalla.setText("0");
 

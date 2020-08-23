@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
@@ -84,6 +89,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         RelativeLayout btnImpresionOk;
         LinearLayout sectionTaraBulto;
         EditText txtPesoTara;
+        CheckBox chkRegistrarTaraBulto;
     }
 
     @Override
@@ -100,6 +106,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             convertView = minflater.inflate(R.layout.lista_items_calculadora, null);
             holder = new ListaValoresAdapter.ViewHolder();
 
+            holder.chkRegistrarTaraBulto = (CheckBox)convertView.findViewById(R.id.chkRegistrarTaraBulto);
             holder.txtItem = (TextView) convertView.findViewById(R.id.txtItem);
             holder.txtItemTipo = (TextView) convertView.findViewById(R.id.txtItemTipo);
             holder.btnEliminar = (LinearLayout) convertView.findViewById(R.id.btnEliminar);
@@ -107,17 +114,39 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             holder.btnImpresionOk = (RelativeLayout) convertView.findViewById(R.id.btnImpresionOk);
             holder.sectionTaraBulto = (LinearLayout) convertView.findViewById(R.id.sectionTaraBulto);
             holder.txtPesoTara = (EditText) convertView.findViewById(R.id.txtPesoTara);
+            //holder.txtPesoTara.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
+            holder.txtPesoTara.setFilters(new InputFilter[]{filter});
+
+            String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
             String checkTara = registraTara.toString();
             if (checkTara.equals("1")) {
                 holder.sectionTaraBulto.setVisibility(View.VISIBLE);
+
+               /* if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
+                    holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
+                    holder.btnImpresion.setVisibility(View.GONE);
+                    holder.btnImpresionOk.setVisibility(View.GONE);
+                }else {
+                    holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
+                }*/
             } else if (checkTara.equals("2")) {
                 holder.sectionTaraBulto.setVisibility(View.GONE);
+              /*  if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
+                    holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
+                    holder.btnImpresion.setVisibility(View.GONE);
+                    holder.btnImpresionOk.setVisibility(View.GONE);
+                }else {
+                    holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
+                    holder.btnImpresion.setVisibility(View.VISIBLE);
+                    holder.btnImpresionOk.setVisibility(View.VISIBLE);
+                }*/
             }
             convertView.setTag(holder);
         } else {
             holder = (ListaValoresAdapter.ViewHolder) convertView.getTag();
         }
-        holder.txtItem.setText("# "+row.getNumeroBulto()+":           "+row.getValor());
+        double valorItem=Double.parseDouble(row.getValor());
+        holder.txtItem.setText("#  " + row.getNumeroBulto() + ":     " + valorItem);
         if (row.getPesoTaraBulto()==0.0){
             holder.txtPesoTara.setText("");
             holder.txtPesoTara.setEnabled(true);
@@ -296,5 +325,41 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         notifyDataSetChanged();
     }
 
+    class DecimalDigitsInputFilter implements InputFilter {
+        private Pattern mPattern;
+        DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
+            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
+        }
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Matcher matcher = mPattern.matcher(dest);
+            if (!matcher.matches())
+                return "";
+            return null;
+        }
+    }
+    InputFilter filter = new InputFilter() {
+        final int maxDigitsBeforeDecimalPoint=4;
+        final int maxDigitsAfterDecimalPoint=2;
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            StringBuilder builder = new StringBuilder(dest);
+            builder.replace(dstart, dend, source
+                    .subSequence(start, end).toString());
+            if (!builder.toString().matches(
+                    "(([1-9]{1})([0-9]{0,"+(maxDigitsBeforeDecimalPoint-1)+"})?)?(\\.[0-9]{0,"+maxDigitsAfterDecimalPoint+"})?"
+
+            )) {
+                if(source.length()==0)
+                    return dest.subSequence(dstart, dend);
+                return "";
+            }
+
+            return null;
+
+        }
+    };
 
 }
