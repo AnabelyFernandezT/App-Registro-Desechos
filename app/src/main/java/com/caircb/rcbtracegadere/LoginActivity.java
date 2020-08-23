@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         user = findViewById(R.id.username);
         pass = findViewById(R.id.password);
         btnlogin = findViewById(R.id.btnlogin);
-
     }
 
     private void initBotones() {
@@ -131,7 +130,10 @@ public class LoginActivity extends AppCompatActivity {
             //MySession.setIdDevice(telephonyManager.getDeviceId().toString());
             MySession.setIdDevice(myAndroidDeviceId);
             MySession.setIdChip(myAndroidDeviceSim);
+            MySession.setDispositivoManufacturer(Build.MANUFACTURER);
+
             if(userStr!=null && passStr!=null){ autorizarUsuario();}
+
         } else {
             focusView.requestFocus();
             cancel = false;
