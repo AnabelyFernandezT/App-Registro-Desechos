@@ -264,6 +264,7 @@ public class RecepcionPlantaFragment extends LinearLayout {
             firmaConfirmada = imagen;
             btnAgregarFirma.setEnabled(false);
             firma = true;
+            MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(imagen), MyConstant.STATUS_RECEPCION_PLANTA);
         } else {
             ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, MyConstant.STATUS_RECEPCION_PLANTA);
             if (f != null) {

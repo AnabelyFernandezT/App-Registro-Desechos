@@ -64,6 +64,9 @@ public class UserConsultarHojaRutaPlacaTask extends MyRetrofitApi implements Ret
                         @Override
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
+                            if (respuesta.size()>1){
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_bandera_validacion", "0");
+                            }
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
                             for (DtoManifiesto reg:respuesta){
                                 MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
