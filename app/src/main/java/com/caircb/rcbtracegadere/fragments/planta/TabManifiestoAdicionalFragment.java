@@ -247,6 +247,7 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
             firmaConfirmada = imagen;
             btnAgregarFirma.setEnabled(false);
             firma = true;
+            MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, Utils.encodeTobase64(imagen), MyConstant.STATUS_RECEPCION_PLANTA);
         } else {
             ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_ADICIONAL_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
             if (f != null) {

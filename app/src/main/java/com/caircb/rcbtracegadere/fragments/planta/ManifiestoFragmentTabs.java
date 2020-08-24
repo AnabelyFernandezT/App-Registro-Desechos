@@ -19,14 +19,17 @@ import androidx.viewpager.widget.ViewPager;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.ConsultarFirmaUsuarioEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoAdicionalFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoDetalleFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
+import com.caircb.rcbtracegadere.tasks.UserConsultaFirmaUsuarioTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.google.android.material.tabs.TabLayout;
@@ -217,6 +220,10 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                         }else{
                             setNavegate(HojaRutaPlantaPendientesPesoFragment.create());
                         }
+                        String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
+                        if (firmaUsuario.equals("")){
+                            consultarFirma();
+                        }
 
                     }
                 });
@@ -247,4 +254,14 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
             tab3.setMakePhoto(requestCode);
         }
     }
+
+    private void consultarFirma(){
+        UserConsultaFirmaUsuarioTask consultaFirmaUsuarioTask = new UserConsultaFirmaUsuarioTask(getActivity(), MySession.getIdUsuario());
+        consultaFirmaUsuarioTask.execute();
+        ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity= MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
+        String firmaUsuario=consultarFirmaUsuarioEntity==null?"":(consultarFirmaUsuarioEntity.getFirmaBase64()==null?"":consultarFirmaUsuarioEntity.getFirmaBase64());
+        System.out.println(firmaUsuario);
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario",firmaUsuario);
+    }
+
 }

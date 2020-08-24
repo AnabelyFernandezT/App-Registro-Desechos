@@ -63,65 +63,68 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
         } else {
             holder.borderVerificacion.setBackgroundResource(cRojo);
         }
+        String banderaValidacion = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion");
+        if (banderaValidacion.equals("0")) {
+            String estadoCodigoQr = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr");
+            System.out.println(estadoCodigoQr);
+            if (estadoCodigoQr.equals("1")) {
+                String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
+                System.out.println(idSubRuta);
+                MySession.setIdSubruta(Integer.parseInt(idSubRuta));
+                UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(mContext);
+                consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
+                    @Override
+                    public void onSuccessful() {
+                        int contManifiestosCerrados = 0;
+                        for (int i = 0; i < manifiestosList.size(); i++) {
+                            if (manifiestosList.get(i).getEstado().equals(3)) {
+                                contManifiestosCerrados++;
+                            }
+                        }
+                        if (contManifiestosCerrados == manifiestosList.size()) {
+                            String placaSinvronizada = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta");
+                            final DialogBuilder dialogBuilder;
+                            dialogBuilder = new DialogBuilder(mContext);
+                            dialogBuilder.setMessage("Ha finalizado la Recolección del vehiculo " + placaSinvronizada);
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
+                                    System.out.println(idSubRuta);
+                                    if (!idSubRuta.equals("0")) {
+                                        int idSubRutaEnviar = Integer.parseInt(idSubRuta);
+                                        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(mContext, idSubRutaEnviar, 0, 4);
+                                        userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
+                                            @Override
+                                            public void onSuccessful() {
+                                                MyApp.getDBO().parametroDao().saveOrUpdate("current_bandera_validacion", "1");
+                                            }
 
-        String estadoCodigoQr = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr");
-        System.out.println(estadoCodigoQr);
-        if (estadoCodigoQr.equals("1")) {
-            String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
-            System.out.println(idSubRuta);
-            MySession.setIdSubruta(Integer.parseInt(idSubRuta));
-            UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(mContext);
-            consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
-                @Override
-                public void onSuccessful() {
-                    int contManifiestosCerrados = 0;
-                    for (int i = 0; i < manifiestosList.size(); i++) {
-                        if (manifiestosList.get(i).getEstado().equals(3)) {
-                            contManifiestosCerrados++;
+                                            @Override
+                                            public void onFailure() {
+
+                                            }
+                                        });
+                                        userRegistrarFinLoteHospitales.execute();
+                                    }
+                                }
+                            });
+                            dialogBuilder.show();
                         }
                     }
-                    if (contManifiestosCerrados == manifiestosList.size()) {
-                        String placaSinvronizada = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_Planta");
-                        final DialogBuilder dialogBuilder;
-                        dialogBuilder = new DialogBuilder(mContext);
-                        dialogBuilder.setMessage("Ha finalizado la Recolección del vehiculo " + placaSinvronizada);
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                                String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
-                                System.out.println(idSubRuta);
-                                if (!idSubRuta.equals("0")) {
-                                    int idSubRutaEnviar = Integer.parseInt(idSubRuta);
-                                    userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(mContext, idSubRutaEnviar, 0, 4);
-                                    userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
-                                        @Override
-                                        public void onSuccessful() {
 
-                                        }
+                    @Override
+                    public void onFailure() {
 
-                                        @Override
-                                        public void onFailure() {
-
-                                        }
-                                    });
-                                    userRegistrarFinLoteHospitales.execute();
-                                }
-                            }
-                        });
-                        dialogBuilder.show();
                     }
-                }
+                });
+                consultaCodigoQrValidadorTask.execute();
 
-                @Override
-                public void onFailure() {
-
-                }
-            });
-            consultaCodigoQrValidadorTask.execute();
-
+            }
         }
+
     }
 
     @Override

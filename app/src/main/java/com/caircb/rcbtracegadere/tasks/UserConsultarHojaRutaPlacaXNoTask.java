@@ -60,6 +60,9 @@ public class UserConsultarHojaRutaPlacaXNoTask extends MyRetrofitApi implements 
                         protected Boolean doInBackground(Void... voids) {
                             Integer pos=0;
                             //List<DtoCatalogo> listaCatalogo =  MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(1);
+                            if (respuesta.size()>0){
+                                MyApp.getDBO().parametroDao().saveOrUpdate("current_bandera_validacion", "0");
+                            }
                             for (DtoManifiestoPlanta reg:respuesta){
                                 MyApp.getDBO().manifiestoPlantaDao().saveOrUpdate(reg);
                                 for (DtoManifiestoDetalleSede mdet:reg.getHojaRutaDetallePlanta()){
