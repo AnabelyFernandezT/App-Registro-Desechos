@@ -378,7 +378,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     flag=1;
 
                     //Quitar cuando se active desde Lector
-                    asociarLoteManifiesto(385);
+                    //asociarLoteManifiesto(385);
                 }
 
             }
@@ -508,6 +508,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
 
     private void asociarLoteManifiesto(Integer lote){
         List<Integer> listaManifiesto = new ArrayList<>();
+
+        desbloque_botones();
 
         try{
             List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
