@@ -201,7 +201,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
             public void onClick(View v) {
                 IntentIntegrator integrator = new IntentIntegrator(getActivity());
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Lectura de Código QR");
+                integrator.setPrompt("LECTURA CÓDIGO QR PLANTA");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(true);
                 integrator.setBarcodeImageEnabled(false);
