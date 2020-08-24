@@ -203,6 +203,15 @@ public class MyPrint {
         }
     }
 
+    private void doConnectionTestHospitalario() {
+        printer = connect();
+        if (printer != null) {
+            sendTestLabelHospitalario();
+        } else {
+            disconnect("No existe conexion con la impresora");
+        }
+    }
+
     private void sendTestLabelIndividual(ItemEtiqueta etiquetas, Integer numeroBulto) {
         boolean complete=false;
         ItemEtiqueta row = etiquetas;
@@ -237,6 +246,42 @@ public class MyPrint {
             else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
         }
     }
+
+    private void sendTestLabelHospitalario() {
+        boolean complete=false;
+        //ItemEtiqueta row = etiquetas;
+        try {
+            byte[] configLabel;
+            configLabel = getTramaHospitalario(
+                    printer
+                   // row.getNumeroManifiesto(),
+                    //row.getCodigoQr(),
+                    //row.getCliente(),
+                    //(new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecoleccion()),
+                    //row.getPeso(),
+                    //row.getResiduo(),
+                    //String.valueOf(numeroBulto),
+                    //row.getTratamiento(),
+                    //row.getDestinatario(),
+                    //false
+            );
+            zebraPrinterConnection.write(configLabel);
+            MyThread.sleep(50);
+
+            complete=true;
+        }catch (ZebraPrinterConnectionException e) {
+            //setStatus(e.getMessage(), Color.RED);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }finally {
+            if(complete)finalized();
+            if(complete){
+                if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+            }
+            else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
+        }
+    }
+
 
     private void sendTestLabel(List<ItemEtiqueta> etiquetas) {
         boolean complete=false;
@@ -353,6 +398,58 @@ public class MyPrint {
 
     }
 
+    private byte[] getTramaHospitalario(
+            ZebraPrinter printer
+            /*String manifiesto,
+            String codigoQr,
+            String cliente,
+            String fecha,
+            double peso,
+            String residuo,
+            String numeroBulto,
+            String tratamiento,
+            String destinatario,
+            boolean aplicaDevolucion*/) {
+
+        PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
+        String cpclConfigLabel="";
+        byte[] configLabel = null;
+        //tratamiento = tratamiento == null ? "" : recorreString(tratamiento, 19, "590");
+        //String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "710":"680");
+
+        if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
+           // cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
+        }else{
+            //String descripcion = row.getDescripcion().substring(10, 33);
+
+            if(!saltoLinea) {
+                cpclConfigLabel =
+                        "^XA^CFD ^POI" +
+                                "^FO50,190^A0,30,18^FD Nombre del generador: " + "TALMA ECUADOR SERVICIOS AEROPORTUARIOS S.A " +
+                                "^FS^FO50,240^A0,30,18^FD Punto de recolecion: " + "1791807162001" +
+                                "^FS^FO50,290^A0,30,18^FD RUC del generador: " + "1791807162001" +
+                                "^FS^FO430,290^A0,30,18^FD Fecha de recolecion:" + "2020-08-06" +
+                                "^FS^FO50,340^A0,30,18^FD No. clave de Manifiesto SAP: " + "600033747" +
+                                "^FS^FO430,340^A0,30,18^FD No. clave de Manifiesto:" + "1234567891" +
+                                "^FS^FO50,390^A0,30,18^FD Direccion de recoleccion:" + "AV. DE LAS AMERICAS No.2000" +
+
+                                "^FS^FO50,440^A0,35,23^FD Detalle de recolecion:" +
+                                "^FS^FO50,500^A0,30,18^FD " +"Productos farmaceuticos"+
+                                "^FS^FO400,500^A0,30,18^FD " + "GA-TDQP-31" +
+                                "^FS^FO400,500^A0,30,18^FD " + "GA-TDQP-31" +
+                                "^FS^FO550,500^A0,30,18^FD " + "0111" +
+                                "^FS^FO650,500^A0,30,18^FD " + "500.450" +
+                                "^FS^FO50,1050^A0,30,18^FD "+ "G&M TRATAMIENTO INTEGRAL DE DESECHOS"+
+                                "^FS ^XZ";
+            }else{
+                cpclConfigLabel = "";
+            }
+        }
+
+        configLabel = cpclConfigLabel.getBytes();
+        return configLabel;
+
+    }
 
 
     private byte[] getConfigLabel(
@@ -483,4 +580,64 @@ public class MyPrint {
             disconnect("Impresora no encontrada");
         }
     }
+
+
+    private byte[] printerEtiquetaHospitalario(
+            ZebraPrinter printer
+    ){
+
+        PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
+        String cpclConfigLabel="";
+        byte[] configLabel = null;
+        //String ItemDescripcion = recorreString(residuo, 27, "680");
+
+        if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
+           // cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
+        }else{
+            //String descripcion = row.getDescripcion().substring(10, 33);
+            cpclConfigLabel =
+                    "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+//codigoQr.trim()+
+                            "^FS^FO60,60^AD^FD "+ //(cliente.length()> 32 ? cliente.substring(0,32):cliente) +
+                            "^FS^FO60,90^AD^FD #M.U.E: "+//manifiesto.trim()+
+                            "^FS^FO60,120^AD^FD FECHA: "+//fecha+
+                            "^FS^FO60,150^AD^FD PESO:"+//peso+
+
+                            "^FS ^XZ";
+        }
+
+        configLabel = cpclConfigLabel.getBytes();
+        return configLabel;
+    }
+
+
+    public void printerHospitalario(){
+        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+            //final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividual(idManifiesto, idManifiestoDetalle, idCatalogo);
+            //if(printEtiqueta != null){
+                dialog.show();
+
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (Looper.myLooper() == null)
+                        {
+                            Looper.prepare();
+                        }
+                        doConnectionTestHospitalario();
+                        Looper.loop();
+                        Looper.myLooper().quit();
+                    }
+                });
+
+            } else {
+                //mensaje...
+                Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+                disconnect("Impresora no encontrada");
+            }
+       /* }else {
+            Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+            disconnect("Impresora no encontrada");
+        }*/
+    }
+
+
 }

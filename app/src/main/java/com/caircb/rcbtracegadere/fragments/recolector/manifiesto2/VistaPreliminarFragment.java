@@ -184,16 +184,22 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
                 }
             }
-            if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
-                txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + (pesoPromedio - pesoTotal) + " KG)");
-                MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio", "" + txtPesoPromedio.getText());
-                if (pesoTotal == 0.0) {
+            if(pesoPromedio > 0)
+            {
+                if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+                    txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + (pesoPromedio - pesoTotal) + " KG)");
+                    MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio", "" + txtPesoPromedio.getText());
+                    if (pesoTotal == 0.0) {
+                        novedadPesoPromedio.setVisibility(View.GONE);
+                        txtPesoPromedio.setText("");
+                    } else {
+                        novedadPesoPromedio.setVisibility(View.VISIBLE);
+                    }
+                } else {
                     novedadPesoPromedio.setVisibility(View.GONE);
                     txtPesoPromedio.setText("");
-                } else {
-                    novedadPesoPromedio.setVisibility(View.VISIBLE);
                 }
-            } else {
+            }else{
                 novedadPesoPromedio.setVisibility(View.GONE);
                 txtPesoPromedio.setText("");
             }
