@@ -49,7 +49,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     Integer autorizacion;
     private Integer idManifiesto;
     private Integer idManifiestoDetalle;
-    private  Integer registraTara;
+    private Integer registraTara;
 
     public interface OnItemBultoListener {
         public void onEliminar(Integer position);
@@ -70,14 +70,14 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         this.autorizacion = autorizacion;
     }*/
 
-    public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo, Integer idManifiesto, Integer idManifiestoDetalle, Integer registraTara,Integer autorizacion) {
+    public ListaValoresAdapter(Context context, List<CatalogoItemValor> listaCatalogo, Integer idManifiesto, Integer idManifiestoDetalle, Integer registraTara, Integer autorizacion) {
         super(context, R.layout.lista_items_calculadora, listaCatalogo);
         mInflater = LayoutInflater.from(context);
         this.listaItems = listaCatalogo;
         this.context = context;
         this.idManifiesto = idManifiesto;
         this.idManifiestoDetalle = idManifiestoDetalle;
-        this.registraTara=registraTara;
+        this.registraTara = registraTara;
         this.autorizacion = autorizacion;
     }
 
@@ -98,6 +98,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         //final CatalogoItemValor row = getItem(position);
         listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
         final CatalogoItemValor row = listaItems.get(position);
+        String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
 
         int cont = position + 1;
         LayoutInflater minflater = (LayoutInflater) context
@@ -106,7 +107,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             convertView = minflater.inflate(R.layout.lista_items_calculadora, null);
             holder = new ListaValoresAdapter.ViewHolder();
 
-            holder.chkRegistrarTaraBulto = (CheckBox)convertView.findViewById(R.id.chkRegistrarTaraBulto);
+            holder.chkRegistrarTaraBulto = (CheckBox) convertView.findViewById(R.id.chkRegistrarTaraBulto);
             holder.txtItem = (TextView) convertView.findViewById(R.id.txtItem);
             holder.txtItemTipo = (TextView) convertView.findViewById(R.id.txtItemTipo);
             holder.btnEliminar = (LinearLayout) convertView.findViewById(R.id.btnEliminar);
@@ -117,53 +118,51 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             //holder.txtPesoTara.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
             holder.txtPesoTara.setFilters(new InputFilter[]{filter});
 
-            String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
+            if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
+                holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
+                holder.btnImpresion.setVisibility(View.GONE);
+                holder.btnImpresionOk.setVisibility(View.GONE);
+            } else {
+                holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
+                holder.btnImpresion.setVisibility(View.VISIBLE);
+                holder.btnImpresionOk.setVisibility(View.VISIBLE);
+            }
+
             String checkTara = registraTara.toString();
             if (checkTara.equals("1")) {
                 holder.sectionTaraBulto.setVisibility(View.VISIBLE);
-
-               /* if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
-                    holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
-                    holder.btnImpresion.setVisibility(View.GONE);
-                    holder.btnImpresionOk.setVisibility(View.GONE);
-                }else {
-                    holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
-                }*/
+                holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
             } else if (checkTara.equals("2")) {
                 holder.sectionTaraBulto.setVisibility(View.GONE);
-              /*  if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
-                    holder.chkRegistrarTaraBulto.setVisibility(View.VISIBLE);
-                    holder.btnImpresion.setVisibility(View.GONE);
-                    holder.btnImpresionOk.setVisibility(View.GONE);
-                }else {
-                    holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
-                    holder.btnImpresion.setVisibility(View.VISIBLE);
-                    holder.btnImpresionOk.setVisibility(View.VISIBLE);
-                }*/
+                holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
             }
             convertView.setTag(holder);
         } else {
             holder = (ListaValoresAdapter.ViewHolder) convertView.getTag();
         }
-        double valorItem=Double.parseDouble(row.getValor());
+        double valorItem = Double.parseDouble(row.getValor());
         holder.txtItem.setText("#  " + row.getNumeroBulto() + ":     " + valorItem);
-        if (row.getPesoTaraBulto()==0.0){
+        if (row.getPesoTaraBulto() == 0.0) {
             holder.txtPesoTara.setText("");
             holder.txtPesoTara.setEnabled(true);
-        }else {
+            holder.chkRegistrarTaraBulto.setEnabled(true);
+            holder.chkRegistrarTaraBulto.setChecked(false);
+        } else {
             holder.txtPesoTara.setText(row.getPesoTaraBulto() + "");
             holder.txtPesoTara.setEnabled(false);
+            holder.chkRegistrarTaraBulto.setEnabled(false);
+            holder.chkRegistrarTaraBulto.setChecked(true);
         }
         final ViewHolder finalHolder = holder;
 
-        if(row.getTipo().length()>0){
+        if (row.getTipo().length() > 0) {
             holder.txtItemTipo.setVisibility(View.VISIBLE);
             holder.txtItemTipo.setText(row.getTipo());
         }
 
-        if(autorizacion.toString().equals("0")){
+        if (autorizacion.toString().equals("0")) {
             holder.btnEliminar.setEnabled(false);
-        }else {
+        } else {
             holder.btnEliminar.setEnabled(true);
         }
 
@@ -216,90 +215,107 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
             }
         });
-
-        if (row.isImpresion()) {
-            holder.btnImpresionOk.setVisibility(View.VISIBLE);
-            holder.btnImpresion.setVisibility(View.GONE);
-        } else {
-            holder.btnImpresion.setVisibility(View.VISIBLE);
-            holder.btnImpresionOk.setVisibility(View.GONE);
+        if (!tipoSubRuta.equals("2")) {
+            if (row.isImpresion()) {
+                holder.btnImpresionOk.setVisibility(View.VISIBLE);
+                holder.btnImpresion.setVisibility(View.GONE);
+            } else {
+                holder.btnImpresion.setVisibility(View.VISIBLE);
+                holder.btnImpresionOk.setVisibility(View.GONE);
+            }
         }
+
+
+        holder.chkRegistrarTaraBulto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (finalHolder.chkRegistrarTaraBulto.isChecked()) {
+                    final String peroT=finalHolder.txtPesoTara.getText().toString().equals("")?"0.0":finalHolder.txtPesoTara.getText().toString();
+                    final double pesoTara = Double.parseDouble(peroT);
+                    final double pesoBulto = Double.parseDouble(row.getValor());
+                    String checkTara = registraTara.toString();
+                    if (checkTara.equals("1")) {//Si esta checkeado ingreso de pesos tara
+                        if (pesoTara == 0.0) {
+                            dialogBuilder = new DialogBuilder(getContext());
+                            dialogBuilder.setMessage("Debe ingresar peso tara!");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("Ok", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    finalHolder.chkRegistrarTaraBulto.setChecked(false);
+                                }
+                            });
+                            dialogBuilder.show();
+                        } else if (pesoTara < pesoBulto) {
+                            dialogBuilder = new DialogBuilder(getContext());
+                            dialogBuilder.setMessage("Desea guardar el peso de tara?");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    if (mOnImtemBultoImpresionListener != null) {
+                                        mOnImtemBultoImpresionListener.onSendImpresion(position, pesoTara);
+                                    }
+                                    listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
+                                    finalHolder.chkRegistrarTaraBulto.setEnabled(false);
+                                }
+                            });
+                            dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    finalHolder.chkRegistrarTaraBulto.setChecked(false);
+                                }
+                            });
+                            dialogBuilder.show();
+                        } else {
+                            dialogBuilder = new DialogBuilder(getContext());
+                            dialogBuilder.setMessage("El peso de la tara no puede sobrepasar el peso del bulto!");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("Ok", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    finalHolder.chkRegistrarTaraBulto.setChecked(false);
+                                }
+                            });
+                            dialogBuilder.show();
+                        }
+                    }
+                } else {
+
+                }
+            }
+        });
 
         holder.btnImpresion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //System.out.println("iniciando impresion");
-                final String peroT=finalHolder.txtPesoTara.getText().toString().equals("")?"0.0":finalHolder.txtPesoTara.getText().toString();
-                final double pesoTara = Double.parseDouble(peroT);
-                final double pesoBulto = Double.parseDouble(row.getValor());
-                String checkTara = registraTara.toString();
-                if (checkTara.equals("1")) {//Si esta checkeado ingreso de pesos tara
-                    if (pesoTara == 0.0) {
-                        dialogBuilder = new DialogBuilder(getContext());
-                        dialogBuilder.setMessage("Debe ingresar peso tara!");
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setPositiveButton("Ok", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                            }
-                        });
-                        dialogBuilder.show();
-                    } else if (pesoTara < pesoBulto) {
-                        dialogBuilder = new DialogBuilder(getContext());
-                        dialogBuilder.setMessage("Desea imprimir etiqueta para este bulto?");
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                                if (mOnImtemBultoImpresionListener != null) {
-                                    mOnImtemBultoImpresionListener.onSendImpresion(position, pesoTara);
-                                }
-                                listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
-                            }
-                        });
-                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                            }
-                        });
-                        dialogBuilder.show();
-                    } else {
-                        dialogBuilder = new DialogBuilder(getContext());
-                        dialogBuilder.setMessage("El peso de la tara no puede sobrepasar el peso del bulto!");
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setPositiveButton("Ok", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                            }
-                        });
-                        dialogBuilder.show();
+
+                dialogBuilder = new DialogBuilder(getContext());
+                dialogBuilder.setMessage("Desea imprimir etiqueta para este bulto?");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        if (mOnImtemBultoImpresionListener != null) {
+                            mOnImtemBultoImpresionListener.onSendImpresion(position, 0.0);
+                        }
+                        listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
                     }
-                } else {
-                    dialogBuilder = new DialogBuilder(getContext());
-                    dialogBuilder.setMessage("Desea imprimir etiqueta para este bulto?");
-                    dialogBuilder.setCancelable(false);
-                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                            if (mOnImtemBultoImpresionListener != null) {
-                                mOnImtemBultoImpresionListener.onSendImpresion(position, 0.0);
-                            }
-                            listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
-                        }
-                    });
-                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                        }
-                    });
-                    dialogBuilder.show();
-                }
+                });
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+                dialogBuilder.show();
+
             }
         });
         holder.btnImpresionOk.setOnClickListener(new View.OnClickListener() {
@@ -327,9 +343,11 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
     class DecimalDigitsInputFilter implements InputFilter {
         private Pattern mPattern;
+
         DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
             mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
         }
+
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher matcher = mPattern.matcher(dest);
@@ -338,9 +356,10 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             return null;
         }
     }
+
     InputFilter filter = new InputFilter() {
-        final int maxDigitsBeforeDecimalPoint=4;
-        final int maxDigitsAfterDecimalPoint=2;
+        final int maxDigitsBeforeDecimalPoint = 4;
+        final int maxDigitsAfterDecimalPoint = 2;
 
         @Override
         public CharSequence filter(CharSequence source, int start, int end,
@@ -349,10 +368,10 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             builder.replace(dstart, dend, source
                     .subSequence(start, end).toString());
             if (!builder.toString().matches(
-                    "(([1-9]{1})([0-9]{0,"+(maxDigitsBeforeDecimalPoint-1)+"})?)?(\\.[0-9]{0,"+maxDigitsAfterDecimalPoint+"})?"
+                    "(([0-9]{1})([0-9]{0," + (maxDigitsBeforeDecimalPoint - 1) + "})?)?(\\.[0-9]{0," + maxDigitsAfterDecimalPoint + "})?"
 
             )) {
-                if(source.length()==0)
+                if (source.length() == 0)
                     return dest.subSequence(dstart, dend);
                 return "";
             }

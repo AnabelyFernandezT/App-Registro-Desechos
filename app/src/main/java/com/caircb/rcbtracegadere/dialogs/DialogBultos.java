@@ -245,8 +245,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             public void onSendImpresion(Integer pos, double pesoTaraBulto) {
                 CatalogoItemValor item = bultos.get(pos);
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
-                imprimirEtiquetaIndividual(idManifiesto, idManifiestoDetalle, item);
-                MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), pesoTaraBulto);
+                String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
+                if (tipoSubRuta.equals("2")){
+                    checkEtiquetaTara(idManifiesto, idManifiestoDetalle, item);
+                    MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), pesoTaraBulto);
+                }else {
+                    imprimirEtiquetaIndividual(idManifiesto, idManifiestoDetalle, item);
+                }
+
+
 
                 List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                 double totalPesoTaraManifiestoDetalle=0.0;
@@ -313,7 +320,11 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         initAdapterBultos();
 
     }
-
+    private void checkEtiquetaTara(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
+        MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
+        item.setImpresion(true);
+        listaValoresAdapter.notifyDataSetChanged();
+    }
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
 
         //Probar sin impresiora
@@ -533,13 +544,31 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         Long id;
         boolean banderaImpresion;
 
-        if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
-            banderaImpresion = true;
-            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, true, ultimoBultoByIdDet, 0.0);
-        } else {
-            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, false, ultimoBultoByIdDet, 0.0);
-            banderaImpresion = false;
+        String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
+        if (tipoSubRuta.equals("2")) {
+            String checkTara = registraTara.toString();
+            if (checkTara.equals("1")) {
+                if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
+                    banderaImpresion = true;
+                    id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, true, ultimoBultoByIdDet, 0.0);
+                } else {
+                    id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, false, ultimoBultoByIdDet, 0.0);
+                    banderaImpresion = false;
+                }
+            }else {
+                banderaImpresion = true;
+                id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, true, ultimoBultoByIdDet, 0.0);
+            }
+        }else {
+            if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
+                banderaImpresion = true;
+                id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, true, ultimoBultoByIdDet, 0.0);
+            } else {
+                id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, false, ultimoBultoByIdDet, 0.0);
+                banderaImpresion = false;
+            }
         }
+
         //Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
 
         if (tipo.length() > 0) {
@@ -637,22 +666,73 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 setDato("9");
                 break;
             case R.id.btn_ok:
+                String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
+                if (tipoSubRuta.equals("2")){
+                    String checkTara = registraTara.toString();
+                    if (checkTara.equals("1")){
+                        List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+                        int contPesosTara=0;
+                        for (int i=0;i<listaPesos.size();i++){
+                            if (listaPesos.get(i).getPesoTaraBulto()==0){
+                                contPesosTara++;
+                            }
+                        }
+                        if (contPesosTara==0){
+                            BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                            createBulto(imputValor);
+                            faltaImpresos = verificarTodosBultosImpresos();
 
-                BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
-                createBulto(imputValor);
-                faltaImpresos = verificarTodosBultosImpresos();
+                            if (!faltaImpresos) {
+                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                                if (mOnBultoListener != null) {
+                                    aplicar();
+                                    //autorizacion=0;
+                                    //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                                }
+                            } else {
+                                messageBox("Debe imprimir todos los bultos para continuar...!");
+                            }
+                            break;
+                        }else {
+                            messageBox("Debe registrar todas las taras!!!");
+                        }
+                    }else {
+                        BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                        createBulto(imputValor);
+                        faltaImpresos = verificarTodosBultosImpresos();
 
-                if (!faltaImpresos) {
-                    MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                    if (mOnBultoListener != null) {
-                        aplicar();
-                        //autorizacion=0;
-                        //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                        if (!faltaImpresos) {
+                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                            if (mOnBultoListener != null) {
+                                aplicar();
+                                //autorizacion=0;
+                                //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                            }
+                        } else {
+                            messageBox("Debe imprimir todos los bultos para continuar...!");
+                        }
+                        break;
                     }
-                } else {
-                    messageBox("Debe imprimir todos los bultos para continuar...!");
+                }else {
+                    BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                    createBulto(imputValor);
+                    faltaImpresos = verificarTodosBultosImpresos();
+
+                    if (!faltaImpresos) {
+                        MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                        if (mOnBultoListener != null) {
+                            aplicar();
+                            //autorizacion=0;
+                            //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                        }
+                    } else {
+                        messageBox("Debe imprimir todos los bultos para continuar...!");
+                    }
+                    break;
                 }
-                break;
+
+
+
             case R.id.btn_add:
                 /*if(para!=null){
                     valor = para.getValor();
@@ -667,20 +747,71 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 createBulto(imput);
                 break;
             case R.id.btn_cancel:
-                //limpiarBultosNoConfirmados();
-                faltaImpresos = verificarTodosBultosImpresos();
-                if (faltaImpresos) {
-                    MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
-                } else {
-                    MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                }
-                if (mOnBultoListener != null) {
-                    mOnBultoListener.onCanceled(faltaImpresos);
-                }
-                //if(btn_add.isEnabled() && btn_ok.isEnabled()){
+                String tipoSubRuta2 = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
+                if (tipoSubRuta2.equals("2")) {
+                    String checkTara = registraTara.toString();
+                    if (checkTara.equals("1")) {
+                        List<ManifiestoDetallePesosEntity> listaPesos2 = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+                        int contPesosTara2=0;
+                        for (int i=0;i<listaPesos2.size();i++){
+                            if (listaPesos2.get(i).getPesoTaraBulto()==0){
+                                contPesosTara2++;
+                            }
+                        }
+                        if (contPesosTara2==0){
+                            //limpiarBultosNoConfirmados();
+                            faltaImpresos = verificarTodosBultosImpresos();
+                            if (faltaImpresos) {
+                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                            } else {
+                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                            }
+                            if (mOnBultoListener != null) {
+                                mOnBultoListener.onCanceled(faltaImpresos);
+                            }
+                            //if(btn_add.isEnabled() && btn_ok.isEnabled()){
+                            aplicar();
+                            //}
+                            break;
+                        }else {
+                            messageBox("Debe registrar todas las taras!!!");
+                            break;
+                        }
+                    }else {
+                        //limpiarBultosNoConfirmados();
+                        faltaImpresos = verificarTodosBultosImpresos();
+                        if (faltaImpresos) {
+                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                        } else {
+                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                        }
+                        if (mOnBultoListener != null) {
+                            mOnBultoListener.onCanceled(faltaImpresos);
+                        }
+                        //if(btn_add.isEnabled() && btn_ok.isEnabled()){
+                        aplicar();
+                        //}
+                        break;
+                    }
+                }else {
+                    //limpiarBultosNoConfirmados();
+                    faltaImpresos = verificarTodosBultosImpresos();
+                    if (faltaImpresos) {
+                        MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                    } else {
+                        MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                    }
+                    if (mOnBultoListener != null) {
+                        mOnBultoListener.onCanceled(faltaImpresos);
+                    }
+                    //if(btn_add.isEnabled() && btn_ok.isEnabled()){
                     aplicar();
-                //}
-                break;
+                    //}
+                    break;
+                }
+
+
+
             case R.id.btn_decimal:
                 setDato(".");
                 break;
