@@ -150,7 +150,7 @@ public class Manifiesto2FragmentProcesada extends MyFragment implements OnCamera
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
                 tabManifiestoGeneral.getTiempoAudio(),
-                estado);
+                estado,1);
     }
 
     @Override

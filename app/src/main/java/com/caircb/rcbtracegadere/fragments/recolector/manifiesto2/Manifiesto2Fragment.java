@@ -192,7 +192,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 idAppManifiesto,
                 tabManifiestoGeneral.getTipoPaquete(),
                 tabManifiestoGeneral.getTiempoAudio(),
-                1);
+                1,tipoRecoleccion);
     }
 
     @Override
