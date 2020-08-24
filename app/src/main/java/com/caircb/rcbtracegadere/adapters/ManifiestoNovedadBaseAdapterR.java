@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoAdicional;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 
 import java.util.List;
@@ -29,6 +32,12 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     Integer idManifiesto,estadoManifiesto;
     DialogBuilder builder;
     boolean resp = false;
+    boolean checkOtros=false;
+    int contCheckeados=0;
+    EditText novedades;
+    int entrada=0;
+    int tipoRecoleccion=0;
+
 
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer position);
@@ -48,6 +57,18 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         //this.tipoUsuario = tipoUusario;
         this.estadoManifiesto= estadoManifiesto;
         this.idManifiesto = idManifiesto;
+    }
+    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items,
+                                         boolean desactivarComp,Integer idManifiesto, Integer estadoManifiesto,EditText novedades,Integer tipoRecoleccion){
+        mContext = context;
+        listItems = items;
+        this.desactivaComp = desactivarComp;
+        //this.tipoUsuario = tipoUusario;
+        this.estadoManifiesto= estadoManifiesto;
+        this.idManifiesto = idManifiesto;
+        this.novedades=novedades;
+        this.entrada=1;
+        this.tipoRecoleccion=tipoRecoleccion;
     }
 
     @NonNull
@@ -78,6 +99,18 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         if(estadoManifiesto !=1) {
         holder.chkEstado.setClickable(false);
         }
+        if  (entrada==1){
+            if (item.getCatalogo().equals("POO31  OTROS")){
+                if (item.isEstadoChek()==true){
+                    checkOtros=true;
+                    novedades.setEnabled(true);
+                }else {
+                    novedades.setEnabled(false);
+                }
+            }
+        }
+
+
 
         if(estadoManifiesto == 1) {
             holder.chkEstado.setOnClickListener(new View.OnClickListener() {
@@ -92,11 +125,29 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                             item.setEstadoChek(true);
                             holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
                             registarCheckItemCatalogo(idManifiesto, item.getId(), true);
+                            if  (entrada==1){
+                                if (item.getCatalogo().equals("POO31  OTROS")){
+                                    checkOtros=true;
+                                    novedades.setEnabled(true);
+                                }
+                            }
                         } else {
                             v.setSelected(false);
                             item.setEstadoChek(false);
                             holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
                             registarCheckItemCatalogo(idManifiesto, item.getId(), false);
+                            if  (entrada==1){
+                                if (item.getCatalogo().equals("POO31  OTROS")){
+                                    checkOtros=false;
+                                    novedades.setEnabled(false);
+                                    if (tipoRecoleccion==2){
+                                        MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idManifiesto, "Pesaje en planta");
+                                        novedades.setText("Pesaje en planta");
+                                    }else {
+                                        novedades.setText("");
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -160,6 +211,9 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
 
     public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
         MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
+    }
+    public boolean checkOtros(){
+        return checkOtros;
     }
 
 }

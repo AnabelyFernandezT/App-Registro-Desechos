@@ -79,17 +79,21 @@ public class TabManifiestoAdicional extends LinearLayout {
     DialogBuilder builder;
     LinearLayout lnyTipoManifiestoPaquete;
 
+    int tipoRecoleccion=0;
+
     View focusView;
 
     public TabManifiestoAdicional(Context context,
                                   Integer idAppManifiesto,
                                   Integer tipoPaquete,
                                   String tiempoAudio,
-                                  Integer estadoManifiesto) {
+                                  Integer estadoManifiesto,
+                                  Integer tipoRecoleccion) {
         super(context);
         this.idAppManifiesto = idAppManifiesto;
         this.idAppTipoPaquete = tipoPaquete;
         this.estadoManifiesto = estadoManifiesto;
+        this.tipoRecoleccion=tipoRecoleccion;
         View.inflate(context, R.layout.tab_manifiesto_adicional, this);
         init();
         //initData();
@@ -100,6 +104,7 @@ public class TabManifiestoAdicional extends LinearLayout {
 
     private void init(){
         txtNovedadEncontrada = this.findViewById(R.id.txtNovedadEncontrada);
+
 
         recyclerLtsPaquetes = this.findViewById(R.id.LtsPaquetes);
         recyclerViewLtsMotivoNoRecoleccion = this.findViewById(R.id.LtsMotivoNoRecoleccion);
@@ -351,7 +356,8 @@ public class TabManifiestoAdicional extends LinearLayout {
     private void loadData(){
        novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto,estadoManifiesto);
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto,estadoManifiesto,txtNovedadEncontrada,tipoRecoleccion);
+
 
         recyclerAdapterNovedades.setOnClickReaload(new ManifiestoNovedadBaseAdapterR.OnReloadAdater() {
             @Override
@@ -369,10 +375,16 @@ public class TabManifiestoAdicional extends LinearLayout {
 
                         novedadfrecuentes.get(position).setNumFotos(0);
                         novedadfrecuentes.get(position).setEstadoChek(false);
-
+                        if (tipoRecoleccion==2){
+                            MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idAppManifiesto, "Pesaje en planta");
+                            txtNovedadEncontrada.setText("Pesaje en planta");
+                        }else {
+                            txtNovedadEncontrada.setText("");
+                        }
                         recyclerAdapterNovedades.notifyDataSetChanged();
                         recyclerViewLtsManifiestoObservaciones.setAdapter(recyclerAdapterNovedades);
                         builder.dismiss();
+
                     }
                 });
                 builder.setNegativeButton("NO", new View.OnClickListener(){
@@ -556,5 +568,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     public List<RowItemPaquete> validaDataListaPaquetes(){
         return listaPaquetes;
     }
+
+
 
 }
