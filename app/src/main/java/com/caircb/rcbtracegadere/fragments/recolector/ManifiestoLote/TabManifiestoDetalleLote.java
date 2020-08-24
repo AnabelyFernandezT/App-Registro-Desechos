@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -38,6 +39,9 @@ public class TabManifiestoDetalleLote extends LinearLayout {
 
     private List<RowItemManifiesto> detalles;
     private RecyclerView recyclerView;
+
+    LinearLayout sectionRegistrarTara;
+    CheckBox chkRegistrarTara;
 
     ManifiestoDetalleAdapter recyclerviewAdapter;
 
@@ -95,6 +99,9 @@ public class TabManifiestoDetalleLote extends LinearLayout {
         calculoPaquetes = new MyCalculoPaquetes(idAppManifiesto, tipoPaquete);
         recyclerView = this.findViewById(R.id.recyclerManifiestoDetalle);
         recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(), numeroManifiesto, estadoManifiesto, idAppManifiesto, tipoRecoleccion);
+        sectionRegistrarTara = this.findViewById(R.id.sectionRegistrarTara);
+        chkRegistrarTara = this.findViewById(R.id.chkRegistrarTara);
+        sectionRegistrarTara.setVisibility(GONE);
     }
 
     @SuppressLint("RestrictedApi")
