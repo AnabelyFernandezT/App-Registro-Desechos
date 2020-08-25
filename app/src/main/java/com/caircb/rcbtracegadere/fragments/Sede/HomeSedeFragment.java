@@ -204,7 +204,9 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
             }else {
                 Toast.makeText(getActivity(), result.getContents(),Toast.LENGTH_LONG).show();
                 String codigoQr=result.getContents();
-                //String[] array= codigoQr.split("\\$");
+                /*String[] array= codigoQr.split("\\$");
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo*/
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
