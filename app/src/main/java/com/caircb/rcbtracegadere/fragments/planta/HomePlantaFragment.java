@@ -88,9 +88,9 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_home_planta, container, false));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+  /*      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mContext=getContext();
-        }
+        }*/
         init();
         //cargarLbael();
         return getView();
@@ -277,7 +277,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 mOnclickSedeListener.onSucefull();
             }
             final DialogBuilder dialogBuilder;
-            dialogBuilder = new DialogBuilder(mContext);
+            dialogBuilder = new DialogBuilder(getActivity());
             dialogBuilder.setMessage("Manifiestos sincronizados!");
             dialogBuilder.setCancelable(false);
             dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
@@ -297,7 +297,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 mOnclickSedeListener.onSucefull();
             }
             final DialogBuilder dialogBuilder;
-            dialogBuilder = new DialogBuilder(mContext);
+            dialogBuilder = new DialogBuilder(getActivity());
             dialogBuilder.setMessage("Manifiestos sincronizados!");
             dialogBuilder.setCancelable(false);
             dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
@@ -311,7 +311,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     };
 
     private void dialogoConfirmacion(){
-        builder = new DialogBuilder(mContext);
+        builder = new DialogBuilder(getActivity());
         builder.setMessage("¿Realizara revisión de pesajes por desecho?");
         builder.setCancelable(true);
         builder.setPositiveButton("SI", new View.OnClickListener() {
