@@ -701,7 +701,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                                     //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
                                 }
                             } else {
-                                messageBox("Debe imprimir todos los bultos para continuar...!");
+                                messageBox("Debe registrar todas las taras!!!");
                             }
                             break;
                         }else {
