@@ -31,6 +31,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -55,7 +56,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePlantaFragment extends MyFragment implements OnCameraListener, OnHome {
+public class HomePlantaFragment extends MyFragment implements OnCameraListener, OnHome, OnBarcodeListener {
     ImageButton btnSincManifiestosPlanta, btnListaAsignadaTransportista, btnMenu, btnInicioRuta, btnFinRuta;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
@@ -209,6 +210,18 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 integrator.initiateScan();
             }
         });
+    }
+
+    @Override
+    public void reciveData(String data) {
+        try {
+            Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getStackTrace());
+            messageBox("El código escaneado no es de tipo Lote.");
+        }
     }
 
     @Override

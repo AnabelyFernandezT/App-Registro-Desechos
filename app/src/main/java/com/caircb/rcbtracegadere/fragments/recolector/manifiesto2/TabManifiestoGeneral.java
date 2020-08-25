@@ -560,8 +560,9 @@ public class TabManifiestoGeneral extends LinearLayout {
                     imgFirmaTecnicoTrasnsportista.setVisibility(View.VISIBLE);
                     imgFirmaTecnicoTrasnsportista.setImageBitmap(imagen);
                     firmaTransportista = true;
+                }else {
+                    MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaTransportista",""+1);//ESTADO  SIN FIRMA
                 }
-                MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaTransportista",""+1);//ESTADO  SIN FIRMA
             }
 //OPERADOR 1
            /* f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR1,MyConstant.STATUS_RECOLECCION);
@@ -590,8 +591,9 @@ public class TabManifiestoGeneral extends LinearLayout {
                     imgFirmaOperador1.setVisibility(View.VISIBLE);
                     imgFirmaOperador1.setImageBitmap(imagen);
                     //firmaTransportista=true;
+                }else{
+                    MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaAuxiliar",""+1);//ESTADO  SIN FIRMA
                 }
-                MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaAuxiliar",""+1);//ESTADO  SIN FIRMA
             }
 //OPERADOR 2
            /* f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_OPERADOR2,MyConstant.STATUS_RECOLECCION);
@@ -620,8 +622,10 @@ public class TabManifiestoGeneral extends LinearLayout {
                     imgFirmaOperadorRecolector.setVisibility(View.VISIBLE);
                     imgFirmaOperadorRecolector.setImageBitmap(imagen);
                     //firmaTransportista=true;
+                }else {
+                    MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaOperador",""+1);//ESTADO  SIN FIRMA
                 }
-                MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaOperador",""+1);//ESTADO  SIN FIRMA
+
             }
 
             tipoPaquete = manifiesto.getTipoPaquete();

@@ -24,6 +24,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
@@ -36,7 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class HomeSedeFragment extends MyFragment implements OnHome {
+public class HomeSedeFragment extends MyFragment implements OnHome, OnBarcodeListener {
     UserConsultaLotes consultarLotes;
     ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
 
@@ -194,6 +195,18 @@ public class HomeSedeFragment extends MyFragment implements OnHome {
                 integrator.initiateScan();
             }
         });
+    }
+
+    @Override
+    public void reciveData(String data) {
+        try {
+            Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getStackTrace());
+            messageBox("El código escaneado no es de tipo Lote.");
+        }
     }
 
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
