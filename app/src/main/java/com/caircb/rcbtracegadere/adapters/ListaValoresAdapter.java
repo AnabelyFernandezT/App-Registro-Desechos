@@ -163,8 +163,8 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             holder = (ListaValoresAdapter.ViewHolder) convertView.getTag();
         }*/
         double valorItem = Double.parseDouble(row.getValor());
-        holder.txtPesoTara = (EditText) convertView.findViewById(R.id.txtPesoTara);
-        holder.txtPesoTara.setFilters(new InputFilter[]{filter});
+        /*holder.txtPesoTara = (EditText) convertView.findViewById(R.id.txtPesoTara);
+        holder.txtPesoTara.setFilters(new InputFilter[]{filter});*/
         holder.txtItem.setText("#  " + row.getNumeroBulto() + ":     " + valorItem);
         if (row.getPesoTaraBulto() == 0.0) {
             holder.txtPesoTara.setText("");
