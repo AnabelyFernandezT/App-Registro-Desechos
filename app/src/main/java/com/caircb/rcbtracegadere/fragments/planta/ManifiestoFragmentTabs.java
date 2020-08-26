@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
@@ -20,7 +21,9 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.ConsultarFirmaUsuarioEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogManifiestoPendienteSede;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoAdicionalFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoDetalleFragment;
@@ -30,6 +33,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaFirmaUsuarioTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestoSedeLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.google.android.material.tabs.TabLayout;
@@ -51,7 +55,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     private static final String ARG_PARAM4 = "pesajePendiente";
 
     private Integer manifiestoID;
-    private LinearLayout btnManifiestoCancel,btnManifiestoNext;
+    private LinearLayout btnManifiestoCancel,btnManifiestoNext, btnOtro;
     private FragmentActivity myContext;
     UserRegisterPlantaDetalleTask userRegisterPlantaDetalleTask;
     TabManifiestoDetalleFragment tab2;
@@ -62,6 +66,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     String numeroManifiesto;
     String pesajePendiente;
     DialogBuilder builder;
+    ManifiestoPlantaEntity manifiestoPlanta;
+    Integer idLoteSede;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -140,15 +146,28 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     }
 
     private void init(){
-
+        manifiestoPlanta = MyApp.getDBO().manifiestoPlantaDao().fetchHojaRutabyIdManifiesto(manifiestoID);
+        idLoteSede = manifiestoPlanta.getIdLoteContenedor();
         btnManifiestoCancel= getView().findViewById(R.id.btnManifiestoCancel);
         btnManifiestoNext=getView().findViewById(R.id.btnManifiestoNext);
         btnManifiestoCancel.setOnClickListener(this);
         btnManifiestoNext.setOnClickListener(this);
+        btnOtro = getView().findViewById(R.id.btnOtro);
         Integer estadoManifiesto = MyApp.getDBO().manifiestoPlantaDao().obtenerEstadoManifiesto(manifiestoID);
         if(estadoManifiesto.equals(3)){
             btnManifiestoNext.setEnabled(false);
         }
+
+        btnOtro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(idLoteSede == null){
+                    messageBox("No es manifiesto Lote");
+                }else {
+                    manifiestoPendienteSede();
+                }
+            }
+        });
 
     }
     @Override
@@ -215,16 +234,20 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                 userRegisterPlantaDetalleTask.setmOnRegisterPlantaDetalleListener(new UserRegisterPlantaDetalleTask.onRegisterPlantaDetalleListenner() {
                     @Override
                     public void OnSucessfull() {
-                        if(pesajePendiente.equals("NO")){
-                            setNavegate(HojaRutaAsignadaPlantaFragment.create());
+                        if (idLoteSede==null) {
+                            if (pesajePendiente.equals("NO")) {
+                                setNavegate(HojaRutaAsignadaPlantaFragment.create());
+                            } else {
+                                setNavegate(HojaRutaPlantaPendientesPesoFragment.create());
+                            }
+                            String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
+                            if (firmaUsuario.equals("")) {
+                                consultarFirma();
+                            }
+                            messageBox("Documento procesado");
                         }else{
-                            setNavegate(HojaRutaPlantaPendientesPesoFragment.create());
+                            manifiestoPendienteSede();
                         }
-                        String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
-                        if (firmaUsuario.equals("")){
-                            consultarFirma();
-                        }
-
                     }
                 });
                 userRegisterPlantaDetalleTask.execute();
@@ -262,6 +285,38 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         String firmaUsuario=consultarFirmaUsuarioEntity==null?"":(consultarFirmaUsuarioEntity.getFirmaBase64()==null?"":consultarFirmaUsuarioEntity.getFirmaBase64());
         System.out.println(firmaUsuario);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario",firmaUsuario);
+    }
+
+    private void manifiestoPendienteSede(){
+        UserConsultarManifiestoSedeLoteTask manifiestoSedeLoteTask = new UserConsultarManifiestoSedeLoteTask(getActivity(),idLoteSede,manifiestoID);
+        manifiestoSedeLoteTask.setmOnRegistro(new UserConsultarManifiestoSedeLoteTask.OnRegistro() {
+            @Override
+            public void onSuccessful() {
+
+                DialogManifiestoPendienteSede dialogManifiestoPendienteSede = new DialogManifiestoPendienteSede(getActivity(),manifiestoID, idLoteSede);
+                dialogManifiestoPendienteSede.setCancelable(false);
+                dialogManifiestoPendienteSede.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogManifiestoPendienteSede.setOnRegisterListener(new DialogManifiestoPendienteSede.onRegister() {
+                    @Override
+                    public void onSuccessful() {
+                        if (pesajePendiente.equals("NO")) {
+                            setNavegate(HojaRutaAsignadaPlantaFragment.create());
+                        } else {
+                            setNavegate(HojaRutaPlantaPendientesPesoFragment.create());
+                        }
+                        String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
+                        if (firmaUsuario.equals("")) {
+                            consultarFirma();
+                        }
+
+                        messageBox("Documento procesado");
+                    }
+                });
+                dialogManifiestoPendienteSede.show();
+
+            }
+        });
+        manifiestoSedeLoteTask.execute();
     }
 
 }
