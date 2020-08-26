@@ -108,6 +108,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         this.registraTara=registraTara;
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(getView());
@@ -127,7 +129,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         if(idDetalleValidacion!=null){idManifiestoValidacion = idDetalleValidacion.getValor();}
         listViewBultos = getView().findViewById(R.id.listViewBultos);
         txtpantalla = getView().findViewById(R.id.txtpantalla);
-        txtTotal = getView().findViewById(R.id.txtTotal);
+        txtTotal = (TextView) getView().findViewById(R.id.txtTotal);
         btn_0 = getView().findViewById(R.id.btn_0);
         btn_1 = getView().findViewById(R.id.btn_1);
         btn_2 = getView().findViewById(R.id.btn_2);
@@ -238,15 +240,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void initAdapterBultos(){
         if(pesoExtraEntity!=null){
-            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,pesoExtraEntity.getAutorizacion());
+            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,pesoExtraEntity.getAutorizacion(),txtTotal);
         }else {
-            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,3);
+            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,3,txtTotal);
         }
 
         listaValoresAdapter.setOnItemBultoImpresion(new ListaValoresAdapter.OnItemBultoImpresionListener() {
             @Override
             public void onSendImpresion(Integer pos, double pesoTaraBulto) {
-                CatalogoItemValor item = bultos.get(pos);
+                /*CatalogoItemValor item = bultos.get(pos);
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
                 String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
                 if (tipoSubRuta.equals("2")){
@@ -268,7 +270,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
                 DecimalFormat df = new DecimalFormat("#.00");
                 double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
-                txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
+                txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");*/
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -677,6 +679,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 setDato("9");
                 break;
             case R.id.btn_ok:
+                bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
                 String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
                 if (tipoSubRuta.equals("2")){
                     String checkTara = registraTara.toString();
@@ -693,7 +696,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             createBulto(imputValor);
                             faltaImpresos = verificarTodosBultosImpresos();
 
-                            if (!faltaImpresos) {
+                            if (!faltaImpresos){
                                 MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                                 if (mOnBultoListener != null) {
                                     aplicar();
@@ -758,6 +761,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 createBulto(imput);
                 break;
             case R.id.btn_cancel:
+                bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
                 String tipoSubRuta2 = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
                 if (tipoSubRuta2.equals("2")) {
                     String checkTara = registraTara.toString();
@@ -854,6 +858,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         }
         return resul;
     }
+
 
 
 }
