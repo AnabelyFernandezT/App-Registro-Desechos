@@ -74,7 +74,7 @@ public class DialogFinRuta extends MyDialog {
 
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
-    ImageView btnPickUpTransportista, btnDropOffTransportista;
+    ImageView btnPickUpTransportista, btnDropOffTransportista,btnScanQr;
     TextView txtBuscar, txtSincronizar, txtManifiestos, lblpickUpTransportista,lblListaManifiestoAsignado;
 
     public DialogFinRuta(@NonNull Context context) {
@@ -96,6 +96,7 @@ public class DialogFinRuta extends MyDialog {
     }
 
     private void init(){
+        btnScanQr = getActivity().findViewById(R.id.btnScanQr);
         lblpickUpTransportista = getActivity().findViewById(R.id.lblpickUpTransportista);
         lblListaManifiestoAsignado = getActivity().findViewById(R.id.lblListaManifiestoAsignado);
         parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_hotel");
@@ -373,6 +374,7 @@ public class DialogFinRuta extends MyDialog {
         btnListaAsignadaTransportista.setEnabled(false);
         btnPickUpTransportista.setEnabled(false);
         btnDropOffTransportista.setEnabled(false);
+        btnScanQr.setEnabled(false);
 
 
         regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1)), Integer.valueOf(getActivity().getString(R.string.btnDisabled1))));
@@ -386,7 +388,9 @@ public class DialogFinRuta extends MyDialog {
         MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+0);
         lnlIniciaRuta.setVisibility(View.VISIBLE);
         lnlFinRuta.setVisibility(View.GONE);
-
+        btnPickUpTransportista.setAlpha(0.3f);
+        btnDropOffTransportista.setAlpha(0.3f);
+        btnScanQr.setAlpha(0.3f);
 
     }
 

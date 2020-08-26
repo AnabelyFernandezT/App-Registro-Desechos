@@ -41,6 +41,7 @@ public class UserConsultarManifiestoSedeLoteTask extends MyRetrofitApi implement
         RequestManifiestoPendienteSede request = requestManifiestoPendienteSede();
 
         if(request!=null) {
+            progressShow("Consultando manifiestos faltantes");
 
             WebService.api().obtenerManifiestosPendientesSede(request).enqueue(new Callback<List<DtoManifiestoPendienteSede>>() {
                 @Override
@@ -48,11 +49,13 @@ public class UserConsultarManifiestoSedeLoteTask extends MyRetrofitApi implement
                     if (response.isSuccessful()) {
                         if (response.body().size()>0) {
                             for (DtoManifiestoPendienteSede reg : response.body()) {
+                                progressHide();
                                 MyApp.getDBO().manifiestoSedePlantaDao().saveOrUpdate(idManifiesto, reg);
                             }
 
                             if (mOnRegistro != null) mOnRegistro.onSuccessful();
                         }else {
+                            progressHide();
                             message("No se encontraron datos");
                         }
                     }
@@ -60,7 +63,7 @@ public class UserConsultarManifiestoSedeLoteTask extends MyRetrofitApi implement
 
                 @Override
                 public void onFailure(Call<List<DtoManifiestoPendienteSede>> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

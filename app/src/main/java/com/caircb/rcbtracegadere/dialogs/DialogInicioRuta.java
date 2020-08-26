@@ -63,7 +63,7 @@ public class DialogInicioRuta extends MyDialog {
 
     //Botones Inicio
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista, btnFinRuta,regionBuscar;
-    ImageView btnPickUpTransportista, btnDropOffTransportista;
+    ImageView btnPickUpTransportista, btnDropOffTransportista,btnScanQr;
 
     List<DtoFindRutas> listaPlacasDisponibles;
     List<RowRutas> listaRutas;
@@ -113,6 +113,7 @@ public class DialogInicioRuta extends MyDialog {
         lblAuxiliarRecoleccion2 = (TextView)getView().findViewById(R.id.lblAuxiliarRecoleccion2);
         lblRuta = (TextView)getView().findViewById(R.id.lblRuta);
         //txtKilometraje.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        btnScanQr = getActivity().findViewById(R.id.btnScanQr);
 
 
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
@@ -346,9 +347,12 @@ public class DialogInicioRuta extends MyDialog {
 
         regionBuscar.setEnabled(true);
         btnSincManifiestos.setEnabled(true);
+        btnSincManifiestos.setEnabled(true);
         btnListaAsignadaTransportista.setEnabled(true);
         btnPickUpTransportista.setEnabled(true);
         btnDropOffTransportista.setEnabled(true);
+        btnScanQr.setEnabled(true);
+
 
         regionBuscar.setColorFilter(Color.TRANSPARENT);
         btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
@@ -358,8 +362,10 @@ public class DialogInicioRuta extends MyDialog {
         txtManifiestos.setTextColor(Color.WHITE);
         txtSincronizar.setTextColor(Color.WHITE);
 
-        lnlIniciaRuta.setVisibility(View.GONE);
-        lnlFinRuta.setVisibility(View.VISIBLE);
+        btnPickUpTransportista.setAlpha(1.0f);
+        btnDropOffTransportista.setAlpha(1.0f);
+        btnScanQr.setAlpha(1.0f);
+
 
         consultarHojaRutaTask = new UserConsultarHojaRutaTask(_activity,listenerHojaRuta);
         consultarHojaRutaTask.execute();

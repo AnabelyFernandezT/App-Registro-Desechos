@@ -38,17 +38,20 @@ public class UserRegistrarManifiestosPendientesSedeTask extends MyRetrofitApi im
     public void execute(){
         final RequestManifiestoPendienteSede request = requestManifiestoPendienteSede();
         if (request!=null){
+            progressShow("Enviando documento");
             WebService.api().registrarManifiestoSedePlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
+                        progressHide();
                         if (mOnRegistro != null) mOnRegistro.onSuccessful();
                     }
+                    progressHide();
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
 
