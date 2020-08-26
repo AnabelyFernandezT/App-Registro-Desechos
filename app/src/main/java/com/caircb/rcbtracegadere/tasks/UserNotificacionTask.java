@@ -102,7 +102,6 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
 
     public void setOnRegisterListener(@NonNull OnNotificacionListener l){
         mOnNotificacionListener =l;
-
     }
 
 

@@ -136,6 +136,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:clickable="true"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btnOtro"
+            android:orientation="horizontal"
+            android:background="@drawable/ic_button_skin_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="REGISTRAR"
+                    android:textColor="#fff"
+                    android:textSize="14dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:clickable="false"
+                    android:src="@mipmap/ic_button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
