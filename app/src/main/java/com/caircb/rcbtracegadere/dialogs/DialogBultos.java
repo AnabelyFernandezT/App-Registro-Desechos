@@ -34,6 +34,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -226,7 +227,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             }
 
             double pesoTotal=subtotal.doubleValue()-totalPesoTaraManifiestoDetalle;
-            txtTotal.setText("Peso Neto " + pesoTotal + " KG");
+            DecimalFormat df = new DecimalFormat("#.00");
+            double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
+            txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
         }
 
         initAdapterBultos();
@@ -263,7 +266,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
                 }
                 double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
-                txtTotal.setText("Peso Neto " + pesoTotal + " KG");
+                DecimalFormat df = new DecimalFormat("#.00");
+                double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
+                txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -290,7 +295,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                 listaValoresAdapter.filterList(bultos);
                 listaValoresAdapter.notifyDataSetChanged();
-                txtTotal.setText("Peso Neto " + pesoTotal + " KG");
+                DecimalFormat df = new DecimalFormat("#.00");
+                double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
+                txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
 
                 new Handler().post(new Runnable() {
                     @Override
@@ -313,7 +320,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             for (CatalogoItemValor r : bultos) {
                 subtotal = subtotal.add(new BigDecimal(r.getValor()));
             }
-            txtTotal.setText("Peso Neto " + subtotal + " KG");
+            DecimalFormat df = new DecimalFormat("#.00");
+            double pesoTotalMostrar = Double.parseDouble(df.format(subtotal));
+            txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
         }
 
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
@@ -588,7 +597,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         }
         double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
 
-        txtTotal.setText("Peso Neto " + pesoTotal + " KG");
+        DecimalFormat df = new DecimalFormat("#.00");
+        double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
+        txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
         dato = "0";
         txtpantalla.setText("0");
 
@@ -690,7 +701,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                                     //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
                                 }
                             } else {
-                                messageBox("Debe imprimir todos los bultos para continuar...!");
+                                messageBox("Debe registrar todas las taras!!!");
                             }
                             break;
                         }else {

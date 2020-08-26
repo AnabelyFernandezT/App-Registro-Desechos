@@ -49,6 +49,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -750,8 +751,9 @@ public class TabManifiestoDetalle extends LinearLayout {
                         totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
                     }
                     double pesoTotalMenosTara = (valor.doubleValue()) - totalPesoTaraManifiestoDetalle;
-
-                    row.setPeso(pesoTotalMenosTara);
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    double pesoTotalMostrar=Double.parseDouble(df.format(pesoTotalMenosTara));
+                    row.setPeso(pesoTotalMostrar);
                     row.setTipoBalanza(tipoBalanza);
 
 
