@@ -41,7 +41,7 @@ public class MyPrint {
     private Activity activity;
     private boolean connected=false;
     private boolean saltoLinea = false;
-
+    private int totalNumeroEtiquetas = 10; //25 para una sola linea y 10 para doble linea en la descripcion
 
     public interface OnPrinterListener {
         public void onSuccessful();
@@ -260,8 +260,8 @@ public class MyPrint {
             byte[] configLabel;
             for (int i = 1; i <= numeEtiquetas; i++) {
                 totalLista = listaDetalle.size();
-                inicioList= (i ==1 ? 0: inicioList +25);
-                finList= finList +25;
+                inicioList= (i ==1 ? 0: inicioList +totalNumeroEtiquetas);
+                finList= finList +totalNumeroEtiquetas;
                 finList=(finList<totalLista? finList :totalLista);
 
                 List<ItemEtiquetaHospitalarioDetalleRecolecion> listNew = listaDetalle.subList(inicioList,finList);
@@ -284,7 +284,7 @@ public class MyPrint {
                         listNew
                 );
                 zebraPrinterConnection.write(configLabel);
-                MyThread.sleep(50);
+                MyThread.sleep(500);
 
                 complete=true;
             }
@@ -420,7 +420,7 @@ public class MyPrint {
 
     public String getDetalleRecoleccion (List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle){
         /**  Codigo para imprimir en dos lineas el la descripcion solo entran 10 items en la etiqueta **/
-        /**
+
          String detalle ="";
          int valor =620;
          int valorDescripcion1=600;
@@ -432,13 +432,15 @@ public class MyPrint {
          detalle= detalle +
          "^FS^FO50,"+valorDescripcion1+"^A0,30,18^FD " + eliminarAcentos(descripcion1)+
          "^FS^FO50,"+(valorDescripcion1+30)+"^A0,30,18^FD " + eliminarAcentos(descripcion2)+
-         "^FS^FO420,"+valor+"^A0,30,18^FD " + eliminarAcentos(item.getCodigoMai())+
+         "^FS^FO440,"+valor+"^A0,30,18^FD " + recorreStringHospitalario(eliminarAcentos(item.getCodigoMai()),0,13)+
          "^FS^FO590,"+valor+"^A0,30,18^FD " + item.getNumeroBultos() +
          "^FS^FO700,"+valor+"^A0,30,18^FD " + item.getPeso() ;
          }
          return detalle;
-         **/
 
+
+        /**Imprime el detalle en un alinea **/
+        /**
         String detalle ="";
         int valor =620;
         for(ItemEtiquetaHospitalarioDetalleRecolecion item : listaDetalle){
@@ -452,6 +454,7 @@ public class MyPrint {
         }
 
         return detalle;
+         **/
     }
 
 
@@ -474,7 +477,6 @@ public class MyPrint {
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
         byte[] configLabel = null;
-        //tratamiento = tratamiento == null ? "" : recorreString(tratamiento, 19, "590");
         String DescripcionItem1 = recorreStringHospitalario(eliminarAcentos(direccion),0,67 );
         String DescripcionItem2 = recorreStringHospitalario(eliminarAcentos(direccion),67,135 );
         String DescripcionItem3 = recorreStringHospitalario(eliminarAcentos(direccion),135,201 );
@@ -484,28 +486,28 @@ public class MyPrint {
         }else {
                 cpclConfigLabel =
                         "^XA^CFD ^POI" +
-                                "^FO45,173^A0,32,20^FD Nombre del generador: " +
-                                "^FS^FO242,175^A0,30,18^FD " + eliminarAcentos(nombreGenerador).toUpperCase() +
-                                "^FS^FO45,228^A0,32,20^FD Punto de recolecion: " +
-                                "^FS^FO222,230^A0,30,18^FD " + puntoRecoleccion.toUpperCase() +
-                                "^FS^FO45,283^A0,32,20^FD RUC del generador: " +
-                                "^FS^FO210,285^A0,30,18^FD " + rucGenerador.toUpperCase() +
-                                "^FS^FO430,283^A0,32,20^FD Fecha de recolecion:" +
-                                "^FS^FO610,285^A0,30,18^FD " + fechaRecolecion.toUpperCase() +
-                                "^FS^FO45,338^A0,32,20^FD No. clave de Manifiesto SAP: " +
-                                "^FS^FO290,340^A0,30,18^FD " + claveManifiestoSap.toUpperCase() +
-                                "^FS^FO430,338^A0,32,20^FD No. clave de Manifiesto:" +
-                                "^FS^FO635,340^A0,30,18^FD " + claveManifiesto.toUpperCase() +
-                                "^FS^FO45,393^A0,32,20^FD Direccion de recoleccion:" +
-                                "^FS^FO260,395^A0,28,16^FD " + DescripcionItem1.toUpperCase() +
-                                "^FS^FO260,425^A0,28,16^FD " + DescripcionItem2.toUpperCase() +
-                                "^FS^FO260,455^A0,28,16^FD " + DescripcionItem3.toUpperCase() +
+                                "^FO45,177^A0,32,20^FD Nombre del generador: " +
+                                "^FS^FO242,179^A0,30,18^FD " + eliminarAcentos(nombreGenerador).toUpperCase() +
+                                "^FS^FO45,232^A0,32,20^FD Punto de recolecion: " +
+                                "^FS^FO222,234^A0,30,18^FD " + puntoRecoleccion.toUpperCase() +
+                                "^FS^FO45,287^A0,32,20^FD RUC del generador: " +
+                                "^FS^FO210,289^A0,30,18^FD " + rucGenerador.toUpperCase() +
+                                "^FS^FO430,287^A0,32,20^FD Fecha de recolecion:" +
+                                "^FS^FO610,289^A0,30,18^FD " + fechaRecolecion.toUpperCase() +
+                                "^FS^FO45,342^A0,32,20^FD No. clave de Manifiesto SAP: " +
+                                "^FS^FO290,344^A0,30,18^FD " + claveManifiestoSap.toUpperCase() +
+                                "^FS^FO430,342^A0,32,20^FD No. clave de Manifiesto:" +
+                                "^FS^FO635,344^A0,30,18^FD " + claveManifiesto.toUpperCase() +
+                                "^FS^FO45,397^A0,32,20^FD Direccion de recoleccion:" +
+                                "^FS^FO260,399^A0,28,16^FD " + DescripcionItem1.toUpperCase() +
+                                "^FS^FO260,429^A0,28,16^FD " + DescripcionItem2.toUpperCase() +
+                                "^FS^FO260,459^A0,28,16^FD " + DescripcionItem3.toUpperCase() +
                                 detalle +
-                                "^FS^FO60,1485^A0,32,20^FD " + destinatario +
-                                "^FS^FO100,1703^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreGenerador +
-                                "^FS^FO450,1703^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreTransportista +
-                                "^FS^FO100,1733^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaGenerador +
-                                "^FS^FO450,1733^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaTransportista +
+                                "^FS^FO60,1487^A0,32,20^FD " + destinatario +
+                                "^FS^FO100,1712^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreGenerador +
+                                "^FS^FO450,1712^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreTransportista +
+                                "^FS^FO100,1742^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaGenerador +
+                                "^FS^FO450,1742^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaTransportista +
                                 "^FS ^XZ";
             }
 
@@ -709,7 +711,7 @@ public class MyPrint {
     public int dividirEtiquetas (int total){
         int numeroEtiquetas=0;
         int reciduoDivision=0;
-        int numeroDetalle=25;
+        int numeroDetalle=totalNumeroEtiquetas;
         reciduoDivision= total % numeroDetalle;
         numeroEtiquetas= total / numeroDetalle;
 
@@ -734,7 +736,7 @@ public class MyPrint {
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Farmacos caducados o fuera de especificaciones","FA(PQH)",540,456));
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Aceites minerales usados o gastados","GA-PC1N (PQH)",360,724));
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Baterias usadas plomo-acido","10200",760,534));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
+            /*listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("2logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("3logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("4logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
@@ -770,7 +772,7 @@ public class MyPrint {
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("21logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("22logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
             listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("23logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-
+*/
 
             final ItemEtiquetaHospitalario printEtiqueta = new ItemEtiquetaHospitalario("TALMA ECUADOR SERVICIOS AEROPORTUARIOS S.A ",
                     "","1791807162001","2020-08-06",
