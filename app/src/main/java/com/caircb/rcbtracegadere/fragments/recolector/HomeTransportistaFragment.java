@@ -390,6 +390,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 if(flag.equals(1)){
                     desbloque_botones();
                     txtQr.setVisibility(View.INVISIBLE);
+                    btnFinRuta.setEnabled(true);
                     btnScanQr.setAlpha(1.0f);
                     flag = 0;
                 }else{
@@ -568,7 +569,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
             idManifiesto = rowItems.get(cont).getIdAppManifiesto();
         }
         final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        if(manifiesto.getMensaje()!=null) {
+        if(manifiesto!=null && manifiesto.getMensaje()!=null) {
             if (!manifiesto.getMensaje().equals("")) {
                 UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(), manifiesto.getIdAppManifiesto(),
                         manifiesto.getMensaje(),
