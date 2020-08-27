@@ -421,7 +421,9 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         //dbHelper.open();
         //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPara(idSubRuta == null ? 0:idSubRuta,MySession.getIdUsuario()));
         //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasP(MySession.getIdUsuario()));
-        Integer idSubruta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        //Integer idSubruta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        Integer idSubruta = MySession.getIdSubRuta();
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",idSubruta+"");
         lblpickUpTransportista.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasByIdConductorAndRuta(MySession.getIdUsuario(), idSubruta));
         //dbHelper.close();
     }
