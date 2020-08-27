@@ -318,6 +318,7 @@ public abstract class ManifiestoDao {
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
             entity.setPesoPromedio(manifiesto.getPesoPromedio());
             entity.setMensaje(manifiesto.getMensaje());
+            entity.setCategoria(manifiesto.getCategoria());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -394,6 +395,7 @@ public abstract class ManifiestoDao {
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
             entity.setPesoPromedio(manifiesto.getPesoPromedio());
             entity.setMensaje(manifiesto.getMensaje());
+            entity.setCategoria(manifiesto.getCategoria());
         }
 
         if (entity!=null) createManifiesto(entity);

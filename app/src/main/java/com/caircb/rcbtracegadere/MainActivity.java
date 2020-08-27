@@ -457,7 +457,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 3);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
-                                    traerDestinoEspecifico();
+                                    //traerDestinoEspecifico();
                                     navegate(HomeGestorAlternoFragment.create());
                                 }
                             }

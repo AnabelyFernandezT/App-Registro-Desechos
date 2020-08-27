@@ -356,7 +356,8 @@ public class TabManifiestoAdicional extends LinearLayout {
     private void loadData(){
        novedadfrecuentes = MyApp.getDBO().manifiestoObservacionFrecuenteDao().fetchHojaRutaCatalogoNovedaFrecuente(idAppManifiesto);
         recyclerViewLtsManifiestoObservaciones.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto,estadoManifiesto,txtNovedadEncontrada,tipoRecoleccion);
+        recyclerAdapterNovedades = new ManifiestoNovedadBaseAdapterR(getContext(), novedadfrecuentes, bloquear,idAppManifiesto,estadoManifiesto,txtNovedadEncontrada,tipoRecoleccion,btnAgregarAudio,
+                btnEliminarAudio,btnReproducirAudio,progressAudio,txtTimeGrabacion,mAudio);
 
 
         recyclerAdapterNovedades.setOnClickReaload(new ManifiestoNovedadBaseAdapterR.OnReloadAdater() {
