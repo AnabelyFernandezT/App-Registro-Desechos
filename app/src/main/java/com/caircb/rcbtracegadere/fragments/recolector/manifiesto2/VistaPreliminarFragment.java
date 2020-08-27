@@ -197,10 +197,11 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                 }
             }
             pesoTotal=Double.parseDouble(obtieneDosDecimales(pesoTotal));
+            double pesoMostrarMensaje=pesoTotal - pesoPromedio;
             if(pesoPromedio > 0)
             {
                 if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
-                    txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + (pesoTotal - pesoPromedio) + " KG)");
+                    txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + obtieneDosDecimales(pesoMostrarMensaje) + " KG)");
                     MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio", "" + txtPesoPromedio.getText());
                     if (pesoTotal == 0.0) {
                         novedadPesoPromedio.setVisibility(View.GONE);
