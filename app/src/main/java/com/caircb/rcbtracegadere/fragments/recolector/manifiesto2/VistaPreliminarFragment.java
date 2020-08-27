@@ -187,7 +187,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
         String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
         if (tipoSubruta.equals("2") && menuRecoleccion.equals("1")) {//Tipo de ruta es Hospitalario y selección menú recolección es recoleccion normal
-            DecimalFormat df = new DecimalFormat("#.00");
+
             double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
             double pesoTotal = 0.0;
             for (int i = 0; i < detalles.size(); i++) {
@@ -196,7 +196,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
                 }
             }
-            pesoTotal=Double.parseDouble(df.format(pesoTotal));
+            pesoTotal=Double.parseDouble(obtieneDosDecimales(pesoTotal));
             if(pesoPromedio > 0)
             {
                 if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
@@ -504,5 +504,10 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
 
         }
     };
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
+    }
 
 }
