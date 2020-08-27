@@ -1,6 +1,7 @@
 
 package com.caircb.rcbtracegadere.fragments.Sede;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -25,8 +28,11 @@ import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
+import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
+import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
@@ -37,7 +43,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class HomeSedeFragment extends MyFragment implements OnHome, OnBarcodeListener {
+import org.w3c.dom.ls.LSOutput;
+
+import java.util.List;
+
+public class HomeSedeFragment extends MyFragment implements OnCameraListener, OnHome, OnBarcodeListener {
     UserConsultaLotes consultarLotes;
     ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
 
@@ -54,6 +64,9 @@ public class HomeSedeFragment extends MyFragment implements OnHome, OnBarcodeLis
     UserRegistrarLoteInicioTask registrarLoteInicioTask;
     DialogBuilder builder;
     LinearLayout sectionQrLoteSede;
+    UserConsultarManifiestosSedeTask consultarHojaRutaTask;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -201,6 +214,14 @@ public class HomeSedeFragment extends MyFragment implements OnHome, OnBarcodeLis
     public void reciveData(String data) {
         try {
             Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
+            // CODIGO PARA LECTURA DISPOSITIVO HONEYWELL
+           /* String codigoQr=data;
+            String[] array= codigoQr.split("\\$");
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
+            cargarManifiesto();*/
         }
         catch (Exception e)
         {
@@ -209,6 +230,7 @@ public class HomeSedeFragment extends MyFragment implements OnHome, OnBarcodeLis
         }
     }
 
+    @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         if (result!=null){
@@ -216,10 +238,43 @@ public class HomeSedeFragment extends MyFragment implements OnHome, OnBarcodeLis
                 Toast.makeText(getActivity(),"Escaneo Cancelado",Toast.LENGTH_LONG).show();
             }else {
                 Toast.makeText(getActivity(), result.getContents(),Toast.LENGTH_LONG).show();
-                String codigoQr=result.getContents();
-                /*String[] array= codigoQr.split("\\$");
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo*/
+                ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
+                ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
+                if (iniciLote!=null){
+                    String codigoQr=result.getContents();
+                    String[] array= codigoQr.split("\\$");
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
+                   // MySession.setDestinoEspecifico();
+                    /*if (array[4].equals(MySession.getDestinoEspecifico())){*/
+                        cargarManifiesto();
+                   /* }else {
+                        final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setMessage("Los manifiestos no pertenecen a este destino!!!");
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
+                    }*/
+                }else{
+                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setMessage("Antes de sincronizar debe iniciar un lote!!!");
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+                }
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -337,7 +392,22 @@ public class HomeSedeFragment extends MyFragment implements OnHome, OnBarcodeLis
 
     }
 
+    @SuppressLint("SetTextI18n")
+    private void cargarManifiesto(){
+        consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(getActivity());
+        consultarHojaRutaTask.setmOnVehiculoListener(new UserConsultarManifiestosSedeTask.OnPlacaListener() {
+            @Override
+            public void onSuccessful(List<DtoManifiestoSede> catalogos) {
+                Integer num = MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas();
+                lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+            }
+        });
+        consultarHojaRutaTask.execute();
+        //lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+    }
+
     public static HomeSedeFragment create(){
         return new HomeSedeFragment();
     }
+
 }

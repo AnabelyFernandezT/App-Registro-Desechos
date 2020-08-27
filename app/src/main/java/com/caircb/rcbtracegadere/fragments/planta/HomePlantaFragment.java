@@ -216,6 +216,18 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     public void reciveData(String data) {
         try {
             Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
+            // CODIGO PARA LECTURA DISPOSITIVO HONEYWELL
+           /* String codigoQr=data;
+            String[] array= codigoQr.split("\\$");
+            System.out.println(array[4]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+array[6]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
+            placa=array[6];
+            menuSeleccionCargaManifiestos();*/
         }
         catch (Exception e)
         {
@@ -235,14 +247,27 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 String codigoQr=result.getContents();
                 String[] array= codigoQr.split("\\$");
                 System.out.println(array[4]);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+array[4]);//destino
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+array[6]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
                 placa=array[6];
-                menuSeleccionCargaManifiestos();
+               /* if (array[4].equals(MySession.getDestinoEspecifico())){*/
+                    menuSeleccionCargaManifiestos();
+               /* }else {
+                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setMessage("Los manifiestos no pertenecen a este destino!!!");
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+                }*/
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
