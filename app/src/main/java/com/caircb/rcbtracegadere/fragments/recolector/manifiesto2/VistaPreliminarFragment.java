@@ -41,6 +41,7 @@ import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -186,6 +187,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
         String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
         if (tipoSubruta.equals("2") && menuRecoleccion.equals("1")) {//Tipo de ruta es Hospitalario y selección menú recolección es recoleccion normal
+            DecimalFormat df = new DecimalFormat("#.00");
             double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
             double pesoTotal = 0.0;
             for (int i = 0; i < detalles.size(); i++) {
@@ -194,10 +196,11 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
                 }
             }
+            pesoTotal=Double.parseDouble(df.format(pesoTotal));
             if(pesoPromedio > 0)
             {
                 if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
-                    txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + (pesoPromedio - pesoTotal) + " KG)");
+                    txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + (pesoTotal - pesoPromedio) + " KG)");
                     MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio", "" + txtPesoPromedio.getText());
                     if (pesoTotal == 0.0) {
                         novedadPesoPromedio.setVisibility(View.GONE);
