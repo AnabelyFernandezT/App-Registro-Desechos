@@ -501,8 +501,7 @@ public class MyPrint {
                                 "^FS^FO45,397^A0,32,20^FD Direccion de recoleccion:" +
                                 "^FS^FO260,399^A0,28,16^FD " + DescripcionItem1.toUpperCase() +
                                 "^FS^FO260,429^A0,28,16^FD " + DescripcionItem2.toUpperCase() +
-                                "^FS^FO260,459^A0,28,16^FD " + DescripcionItem3.toUpperCase() +
-                                detalle +
+                                "^FS^FO260,459^A0,28,16^FD " + DescripcionItem3.toUpperCase() + detalle +
                                 "^FS^FO60,1487^A0,32,20^FD " + destinatario +
                                 "^FS^FO100,1712^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreGenerador +
                                 "^FS^FO450,1712^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreTransportista +
