@@ -187,7 +187,7 @@
                             android:paddingBottom="3dp" />
                     </LinearLayout>
                     <LinearLayout
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:id="@+id/btnViewPdfManifiesto"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
