@@ -260,8 +260,8 @@ public class MyPrint {
             byte[] configLabel;
             for (int i = 1; i <= numeEtiquetas; i++) {
                 totalLista = listaDetalle.size();
-                inicioList= (i ==1 ? 0: inicioList +20);
-                finList= finList +20;
+                inicioList= (i ==1 ? 0: inicioList +25);
+                finList= finList +25;
                 finList=(finList<totalLista? finList :totalLista);
 
                 List<ItemEtiquetaHospitalarioDetalleRecolecion> listNew = listaDetalle.subList(inicioList,finList);
@@ -419,6 +419,26 @@ public class MyPrint {
     }
 
     public String getDetalleRecoleccion (List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle){
+        /**  Codigo para imprimir en dos lineas el la descripcion solo entran 10 items en la etiqueta **/
+        /**
+         String detalle ="";
+         int valor =620;
+         int valorDescripcion1=600;
+         for(ItemEtiquetaHospitalarioDetalleRecolecion item : listaDetalle){
+         String descripcion1 = recorreStringHospitalario(item.getDescripcionDesecho(),0,45 );
+         String descripcion2 = recorreStringHospitalario(item.getDescripcionDesecho(),45,91 );
+         valor =valor+75;
+         valorDescripcion1=valorDescripcion1+75;
+         detalle= detalle +
+         "^FS^FO50,"+valorDescripcion1+"^A0,30,18^FD " + eliminarAcentos(descripcion1)+
+         "^FS^FO50,"+(valorDescripcion1+30)+"^A0,30,18^FD " + eliminarAcentos(descripcion2)+
+         "^FS^FO420,"+valor+"^A0,30,18^FD " + eliminarAcentos(item.getCodigoMai())+
+         "^FS^FO590,"+valor+"^A0,30,18^FD " + item.getNumeroBultos() +
+         "^FS^FO700,"+valor+"^A0,30,18^FD " + item.getPeso() ;
+         }
+         return detalle;
+         **/
+
         String detalle ="";
         int valor =620;
         for(ItemEtiquetaHospitalarioDetalleRecolecion item : listaDetalle){
@@ -689,7 +709,7 @@ public class MyPrint {
     public int dividirEtiquetas (int total){
         int numeroEtiquetas=0;
         int reciduoDivision=0;
-        int numeroDetalle=20;
+        int numeroDetalle=25;
         reciduoDivision= total % numeroDetalle;
         numeroEtiquetas= total / numeroDetalle;
 
