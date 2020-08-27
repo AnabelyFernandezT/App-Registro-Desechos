@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoAdicional;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 
 import java.util.List;
@@ -26,55 +30,69 @@ import java.util.List;
 public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<ManifiestoNovedadBaseAdapterR.MyViewHolder> {
 
     private Context mContext;
-    private boolean desactivaComp,activarCamara;
+    private boolean desactivaComp, activarCamara;
     List<RowItemHojaRutaCatalogo> listItems;
     //private Integer tipoUsuario ;
-    Integer idManifiesto,estadoManifiesto;
+    Integer idManifiesto, estadoManifiesto;
     DialogBuilder builder;
     boolean resp = false;
-    boolean checkOtros=false;
-    int contCheckeados=0;
+    boolean checkOtros = false;
+    int contCheckeados = 0;
     EditText novedades;
-    int entrada=0;
-    int tipoRecoleccion=0;
-
+    int entrada = 0;
+    int tipoRecoleccion = 0;
+    TextView btnAudio;
+    TextView btnEliminarAudio;
+    ImageButton btnReproducirAudio;
+    ProgressBar progressAudio;
+    TextView txtTimeGrabacion;
+    String mAudio;
 
     public interface OnClickOpenFotografias {
         public void onShow(Integer catalogoID, Integer position);
     }
-    public interface OnReloadAdater{
+
+    public interface OnReloadAdater {
         public void onShowM(Integer catalogoID, Integer position);
     }
 
     private ManifiestoNovedadBaseAdapterR.OnClickOpenFotografias mOnClickOpenFotografias;
     private ManifiestoNovedadBaseAdapterR.OnReloadAdater mOnReloadAdaptador;
 
-    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items,
-                                         boolean desactivarComp,Integer idManifiesto, Integer estadoManifiesto){
+    public ManifiestoNovedadBaseAdapterR(Context context, List<RowItemHojaRutaCatalogo> items,
+                                         boolean desactivarComp, Integer idManifiesto, Integer estadoManifiesto) {
         mContext = context;
         listItems = items;
         this.desactivaComp = desactivarComp;
         //this.tipoUsuario = tipoUusario;
-        this.estadoManifiesto= estadoManifiesto;
+        this.estadoManifiesto = estadoManifiesto;
         this.idManifiesto = idManifiesto;
     }
-    public ManifiestoNovedadBaseAdapterR(Context context,List<RowItemHojaRutaCatalogo> items,
-                                         boolean desactivarComp,Integer idManifiesto, Integer estadoManifiesto,EditText novedades,Integer tipoRecoleccion){
+
+    public ManifiestoNovedadBaseAdapterR(Context context, List<RowItemHojaRutaCatalogo> items,
+                                         boolean desactivarComp, Integer idManifiesto, Integer estadoManifiesto, EditText novedades, Integer tipoRecoleccion, TextView btnAudio,
+                                         TextView btnEliminarAudio, ImageButton btnReproducirAudio, ProgressBar progressAudio, TextView txtTimeGrabacion, String mAudio) {
         mContext = context;
         listItems = items;
         this.desactivaComp = desactivarComp;
         //this.tipoUsuario = tipoUusario;
-        this.estadoManifiesto= estadoManifiesto;
+        this.estadoManifiesto = estadoManifiesto;
         this.idManifiesto = idManifiesto;
-        this.novedades=novedades;
-        this.entrada=1;
-        this.tipoRecoleccion=tipoRecoleccion;
+        this.novedades = novedades;
+        this.entrada = 1;
+        this.tipoRecoleccion = tipoRecoleccion;
+        this.btnAudio = btnAudio;
+        this.btnEliminarAudio = btnEliminarAudio;
+        this.btnReproducirAudio = btnReproducirAudio;
+        this.progressAudio = progressAudio;
+        this.txtTimeGrabacion = txtTimeGrabacion;
+        this.mAudio = mAudio;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_hoja_ruta_novedad,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_hoja_ruta_novedad, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -83,36 +101,37 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         final RowItemHojaRutaCatalogo item = listItems.get(position);
 
         holder.txtCatalogo.setText(item.getCatalogo());
-        holder.lnlBadge.setVisibility(item.getNumFotos() > 0? View.VISIBLE : View.GONE);
-        holder.txtCountPhoto.setText(""+item.getNumFotos());
+        holder.lnlBadge.setVisibility(item.getNumFotos() > 0 ? View.VISIBLE : View.GONE);
+        holder.txtCountPhoto.setText("" + item.getNumFotos());
         holder.chkEstado.setChecked(item.isEstadoChek());
 
-        if(item.isEstadoChek()){
+        if (item.isEstadoChek()) {
             holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
         }
 
-        if(desactivaComp == true){
+        if (desactivaComp == true) {
             holder.chkEstado.setEnabled(false);
         }
-        if(estadoManifiesto !=1) {
-        holder.chkEstado.setClickable(false);
+        if (estadoManifiesto != 1) {
+            holder.chkEstado.setClickable(false);
         }
-        if  (entrada==1){
-            if (item.getCatalogo().equals("POO31  OTROS")){
-                if (item.isEstadoChek()==true){
-                    checkOtros=true;
+        if (entrada == 1) {
+            if (item.getCatalogo().equals("POO31  OTROS")) {
+                if (item.isEstadoChek() == true) {
+                    checkOtros = true;
                     novedades.setEnabled(true);
-                }else {
+                    btnAudio.setEnabled(true);
+                } else {
                     novedades.setEnabled(false);
+                    btnAudio.setEnabled(false);
                 }
             }
         }
 
 
-
-        if(estadoManifiesto == 1) {
+        if (estadoManifiesto == 1) {
             holder.chkEstado.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -125,10 +144,11 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                             item.setEstadoChek(true);
                             holder.btnEvidenciaNovedadFrecuente.setVisibility(View.VISIBLE);
                             registarCheckItemCatalogo(idManifiesto, item.getId(), true);
-                            if  (entrada==1){
-                                if (item.getCatalogo().equals("POO31  OTROS")){
-                                    checkOtros=true;
+                            if (entrada == 1) {
+                                if (item.getCatalogo().equals("POO31  OTROS")) {
+                                    checkOtros = true;
                                     novedades.setEnabled(true);
+                                    btnAudio.setEnabled(true);
                                 }
                             }
                         } else {
@@ -136,14 +156,29 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                             item.setEstadoChek(false);
                             holder.btnEvidenciaNovedadFrecuente.setVisibility(View.INVISIBLE);
                             registarCheckItemCatalogo(idManifiesto, item.getId(), false);
-                            if  (entrada==1){
-                                if (item.getCatalogo().equals("POO31  OTROS")){
-                                    checkOtros=false;
+                            if (entrada == 1) {
+                                if (item.getCatalogo().equals("POO31  OTROS")) {
+                                    checkOtros = false;
                                     novedades.setEnabled(false);
-                                    if (tipoRecoleccion==2){
+                                    btnAudio.setEnabled(false);
+
+                                    /**  BORRA EL AUDIO DE LA GRABACIÓN**/
+                                    if (btnReproducirAudio.getVisibility()==View.VISIBLE){
+                                        MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiesto,  ManifiestoFileDao.AUDIO_RECOLECCION,"",null,"00:00", MyConstant.STATUS_RECOLECCION);
+                                        mAudio="";
+                                        txtTimeGrabacion.setText("00:00");
+                                        btnAudio.setVisibility(View.VISIBLE);
+                                        btnEliminarAudio.setVisibility(View.GONE);
+                                        btnReproducirAudio.setVisibility(View.GONE);
+                                        progressAudio.setProgress(0);
+                                        progressAudio.setVisibility(View.GONE);
+                                    }
+                                    /**  BORRA EL AUDIO DE LA GRABACIÓN**/
+
+                                    if (tipoRecoleccion == 2) {
                                         MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idManifiesto, "Pesaje en planta");
                                         novedades.setText("Pesaje en planta");
-                                    }else {
+                                    } else {
                                         novedades.setText("");
                                     }
                                 }
@@ -167,25 +202,28 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
     }
 
     @Override
-    public int getItemCount (){return  listItems.size();}
-    public void setTaskList(List<RowItemHojaRutaCatalogo> taskList){
+    public int getItemCount() {
+        return listItems.size();
+    }
+
+    public void setTaskList(List<RowItemHojaRutaCatalogo> taskList) {
         this.listItems = taskList;
         notifyDataSetChanged();
     }
 
-    public void registarCheckItemCatalogo(Integer idManifiesto,Integer idCatalogo, boolean check){
+    public void registarCheckItemCatalogo(Integer idManifiesto, Integer idCatalogo, boolean check) {
         //dbHelper.open();
         ///
         //if (tipoUsuario.equals(1)){
 
         //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().updateManifiestoObservacionRecepcionbyId(idManifiesto,id,check);
         //}else{
-            MyApp.getDBO().manifiestoObservacionFrecuenteDao().saveOrUpdateManifiestoNovedadFrecuente(idManifiesto,idCatalogo,check);
+        MyApp.getDBO().manifiestoObservacionFrecuenteDao().saveOrUpdateManifiestoNovedadFrecuente(idManifiesto, idCatalogo, check);
         //}
         //dbHelper.close();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView txtCatalogo;
         CheckBox chkEstado;
         LinearLayout lnlBadge;
@@ -202,17 +240,19 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
         }
     }
 
-    public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l){
+    public void setOnClickOpenFotografias(@Nullable OnClickOpenFotografias l) {
         mOnClickOpenFotografias = l;
     }
-    public void setOnClickReaload(@Nullable OnReloadAdater l){
+
+    public void setOnClickReaload(@Nullable OnReloadAdater l) {
         mOnReloadAdaptador = l;
     }
 
-    public void deleteFotosByItem (final Integer idManifiesto, final Integer idItem, final Integer position){
+    public void deleteFotosByItem(final Integer idManifiesto, final Integer idItem, final Integer position) {
         MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiesto, idItem);
     }
-    public boolean checkOtros(){
+
+    public boolean checkOtros() {
         return checkOtros;
     }
 

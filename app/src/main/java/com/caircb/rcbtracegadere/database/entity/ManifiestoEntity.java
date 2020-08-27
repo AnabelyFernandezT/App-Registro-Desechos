@@ -148,13 +148,20 @@ public class ManifiestoEntity {
     private String sucursal;
 
     private String telefono;
+
     private String firmaChoferRecolector;
+
     private String firmaAuxiliarRecolector;
+
     private String firmaOperadorRecolector;
+
     private Double pesoPromedio;
+
     private String referencia;
 
     private String mensaje;
+
+    private Integer categoria;
 
     public ManifiestoEntity() {
     }
@@ -632,6 +639,14 @@ public class ManifiestoEntity {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+    public Integer getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Integer categoria) {
+        this.categoria = categoria;
     }
 }
 

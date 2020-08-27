@@ -65,7 +65,7 @@ public abstract class ManifiestoDao {
     public abstract List<RowItemHojaRuta> fetchHojaRutaAsigando();
 
     @Query("select pesoPromedio from tb_manifiestos where idAppManifiesto=:idManifiesto")
-    public abstract int selectPesoPromediobyIdManifiesto(Integer idManifiesto);
+    public abstract double selectPesoPromediobyIdManifiesto(Integer idManifiesto);
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado from tb_manifiestos where estado=1 order by nombreCliente")
     @Transaction
@@ -318,6 +318,7 @@ public abstract class ManifiestoDao {
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
             entity.setPesoPromedio(manifiesto.getPesoPromedio());
             entity.setMensaje(manifiesto.getMensaje());
+            entity.setCategoria(manifiesto.getCategoria());
 
         }else if(entity!=null && !manifiesto.getEliminado() ){
 
@@ -394,6 +395,7 @@ public abstract class ManifiestoDao {
             entity.setFirmaOperadorRecolector(manifiesto.getFirmaOperadorRecolector());
             entity.setPesoPromedio(manifiesto.getPesoPromedio());
             entity.setMensaje(manifiesto.getMensaje());
+            entity.setCategoria(manifiesto.getCategoria());
         }
 
         if (entity!=null) createManifiesto(entity);

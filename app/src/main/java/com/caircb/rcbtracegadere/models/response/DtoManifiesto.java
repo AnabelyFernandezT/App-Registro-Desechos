@@ -80,6 +80,7 @@ public class DtoManifiesto {
     private Double pesoPromedio;
     private String referencia;
     private String mensaje;
+    private Integer categoria;
 
     public DtoManifiesto() {
     }
@@ -612,5 +613,13 @@ public class DtoManifiesto {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+    public Integer getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Integer categoria) {
+        this.categoria = categoria;
     }
 }

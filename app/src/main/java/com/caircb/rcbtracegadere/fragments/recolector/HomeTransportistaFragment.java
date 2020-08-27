@@ -333,10 +333,32 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         btnInicioRuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogInicioRuta = new DialogInicioRuta(getActivity());
-                dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialogInicioRuta.setCancelable(false);
-                dialogInicioRuta.show();
+                UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(getActivity());
+                consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
+                    @Override
+                    public void onSuccessful() {
+                        final DialogBuilder dialogBuilder;
+                        dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("Lote cerrado, no ha descargado en el destino!!");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
+                    }
+                    @Override
+                    public void onFailure() {
+                        dialogInicioRuta = new DialogInicioRuta(getActivity());
+                        dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialogInicioRuta.setCancelable(false);
+                        dialogInicioRuta.show();
+                    }
+                });
+                consultaCodigoQrValidadorTask.execute();
+
             }
             // openDialog_InicioApp(getMain().getInicioSesion());
                 /*

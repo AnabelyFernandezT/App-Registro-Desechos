@@ -38,6 +38,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegisterPlantaDetalleTask;
 import com.google.android.material.tabs.TabLayout;
 
+import java.sql.SQLTransactionRollbackException;
 import java.util.List;
 
 /**

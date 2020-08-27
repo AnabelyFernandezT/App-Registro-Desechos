@@ -494,9 +494,10 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                 int contManifiestosConTara = 0;
                 List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
-                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(positionItem).getIdAppManifiestoDetalle());
+                int idManifiestoDetalle = manifiestosDetalle.get(positionItem).getIdAppManifiestoDetalle();
+                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                 for (int j = 0; j < pesosDetalle.size(); j++) {
-                    if (pesosDetalle.get(j).getPesoTaraBulto() != 0.0) {
+                    if (pesosDetalle.get(j).getPesoTaraBulto() > 0.0) {
                         contManifiestosConTara++;
                     }
                 }
@@ -580,7 +581,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                 List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
                 List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(positionItem).getIdAppManifiestoDetalle());
                 for (int j = 0; j < pesosDetalle.size(); j++) {
-                    if (pesosDetalle.get(j).getPesoTaraBulto() != 0.0) {
+                    if (pesosDetalle.get(j).getPesoTaraBulto() > 0.0) {
                         contManifiestosConTara++;
                     }
                 }

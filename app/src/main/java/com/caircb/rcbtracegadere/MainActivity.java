@@ -34,6 +34,7 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilderFirebase;
 import com.caircb.rcbtracegadere.dialogs.DialogInformacionModulos;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
@@ -130,7 +131,18 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         if(getIntent().getExtras()!=null){
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
-                message(value);
+                //message(value);
+                final DialogBuilderFirebase dialogBuilder = new DialogBuilderFirebase(this);
+                dialogBuilder.setMessage(value);
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+
+                    }
+                });
+                dialogBuilder.show();
             }
 
         }
@@ -445,7 +457,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", "" + 0);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino", "" + 3);
                                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info", "" + 0);
-                                    traerDestinoEspecifico();
+                                    //traerDestinoEspecifico();
                                     navegate(HomeGestorAlternoFragment.create());
                                 }
                             }
