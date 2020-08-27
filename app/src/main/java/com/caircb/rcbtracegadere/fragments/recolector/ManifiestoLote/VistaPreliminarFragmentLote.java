@@ -40,7 +40,7 @@ public class VistaPreliminarFragmentLote extends MyFragment implements View.OnCl
     DialogBuilder builder;
 
     Integer idAppManifiesto,idAppTipoPaquete;
-    LinearLayout btnVistaPreviaCancelar,btnVistaPreviaGuardar;
+    LinearLayout btnVistaPreviaCancelar,btnVistaPreviaGuardar, sectionNovedadPesoPromedio;
     ProgressDialog dialog;
     PDFView pdfView;
     MyManifiesto myManifiesto;
@@ -90,6 +90,9 @@ public class VistaPreliminarFragmentLote extends MyFragment implements View.OnCl
 
         btnVistaPreviaCancelar.setOnClickListener(this);
         btnVistaPreviaGuardar.setOnClickListener(this);
+
+        sectionNovedadPesoPromedio = getView().findViewById(R.id.sectionNovedadPesoPromedio);
+        sectionNovedadPesoPromedio.setVisibility(View.GONE);
 
     }
 

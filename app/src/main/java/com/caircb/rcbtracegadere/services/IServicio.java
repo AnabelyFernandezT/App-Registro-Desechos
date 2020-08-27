@@ -22,6 +22,7 @@ import com.caircb.rcbtracegadere.models.request.RequestLotePadre;
 import com.caircb.rcbtracegadere.models.request.RequestLotesHoteles;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
+import com.caircb.rcbtracegadere.models.request.RequestManifiestoPendienteSede;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
@@ -49,6 +50,7 @@ import com.caircb.rcbtracegadere.models.response.DtoLotePadreGestor;
 import com.caircb.rcbtracegadere.models.response.DtoLotePadreHotel;
 import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.models.response.DtoManifiesto;
+import com.caircb.rcbtracegadere.models.response.DtoManifiestoPendienteSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
@@ -186,4 +188,12 @@ public interface IServicio {
 
     @POST ("HojaRuta/obtenerFirmaBase64")
     Call<DtoFirmaUsuario> obtenerFirmaUsuario(@Body RequestFirmaUsuario model);
+
+    @POST ("HojaRuta/obtenerManifiestosPendientesSede")
+    Call<List<DtoManifiestoPendienteSede>> obtenerManifiestosPendientesSede (@Body RequestManifiestoPendienteSede model);
+
+    @POST ("Registro/registroManifiestoSedePlantaFin")
+    Call<DtoInfo> registrarManifiestoSedePlanta (@Body RequestManifiestoPendienteSede model);
+
+
 }

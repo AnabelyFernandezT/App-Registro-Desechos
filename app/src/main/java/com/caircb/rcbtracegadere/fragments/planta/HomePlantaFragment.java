@@ -31,6 +31,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacas;
 import com.caircb.rcbtracegadere.fragments.Sede.HojaRutaAsignadaSedeFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -55,7 +56,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePlantaFragment extends MyFragment implements OnCameraListener, OnHome {
+public class HomePlantaFragment extends MyFragment implements OnCameraListener, OnHome, OnBarcodeListener {
     ImageButton btnSincManifiestosPlanta, btnListaAsignadaTransportista, btnMenu, btnInicioRuta, btnFinRuta;
     TextView lblListaManifiestoAsignadoPlanta;
     ImageView btnPickUpTransportista, btnDropOffTransportista;
@@ -88,9 +89,9 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setView(inflater.inflate(R.layout.fragment_home_planta, container, false));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+  /*      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mContext=getContext();
-        }
+        }*/
         init();
         //cargarLbael();
         return getView();
@@ -201,7 +202,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
             public void onClick(View v) {
                 IntentIntegrator integrator = new IntentIntegrator(getActivity());
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Lectura de Código QR");
+                integrator.setPrompt("LECTURA CÓDIGO QR PLANTA");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(true);
                 integrator.setBarcodeImageEnabled(false);
@@ -209,6 +210,30 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 integrator.initiateScan();
             }
         });
+    }
+
+    @Override
+    public void reciveData(String data) {
+        try {
+            Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
+            // CODIGO PARA LECTURA DISPOSITIVO HONEYWELL
+           /* String codigoQr=data;
+            String[] array= codigoQr.split("\\$");
+            System.out.println(array[4]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+array[6]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
+            placa=array[6];
+            menuSeleccionCargaManifiestos();*/
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getStackTrace());
+            messageBox("El código escaneado no es de tipo Lote.");
+        }
     }
 
     @Override
@@ -222,14 +247,27 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 String codigoQr=result.getContents();
                 String[] array= codigoQr.split("\\$");
                 System.out.println(array[4]);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);
-                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+array[4]);//destino
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+array[6]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
                 placa=array[6];
-                menuSeleccionCargaManifiestos();
+               /* if (array[4].equals(MySession.getDestinoEspecifico())){*/
+                    menuSeleccionCargaManifiestos();
+               /* }else {
+                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setMessage("Los manifiestos no pertenecen a este destino!!!");
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+                }*/
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -277,7 +315,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 mOnclickSedeListener.onSucefull();
             }
             final DialogBuilder dialogBuilder;
-            dialogBuilder = new DialogBuilder(mContext);
+            dialogBuilder = new DialogBuilder(getActivity());
             dialogBuilder.setMessage("Manifiestos sincronizados!");
             dialogBuilder.setCancelable(false);
             dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
@@ -297,7 +335,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 mOnclickSedeListener.onSucefull();
             }
             final DialogBuilder dialogBuilder;
-            dialogBuilder = new DialogBuilder(mContext);
+            dialogBuilder = new DialogBuilder(getActivity());
             dialogBuilder.setMessage("Manifiestos sincronizados!");
             dialogBuilder.setCancelable(false);
             dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
@@ -311,7 +349,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     };
 
     private void dialogoConfirmacion(){
-        builder = new DialogBuilder(mContext);
+        builder = new DialogBuilder(getActivity());
         builder.setMessage("¿Realizara revisión de pesajes por desecho?");
         builder.setCancelable(true);
         builder.setPositiveButton("SI", new View.OnClickListener() {

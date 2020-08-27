@@ -12,11 +12,13 @@ import android.widget.LinearLayout;
 import android.app.Fragment;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
@@ -28,13 +30,20 @@ import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +77,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     RelativeLayout btnEliminarFotos;
     DialogAgregarFotografias dialogAgregarFotografias;
     Window window;
+    UserConsultarHojaRutaTask consultarHojaRutaTask;
+    UserConsultarCatalogosTask consultarCatalogosTask;
 
     public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
         VistaPreliminarFragment fragment = new VistaPreliminarFragment();
@@ -176,6 +187,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
         String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
         if (tipoSubruta.equals("2") && menuRecoleccion.equals("1")) {//Tipo de ruta es Hospitalario y selección menú recolección es recoleccion normal
+            DecimalFormat df = new DecimalFormat("#.00");
             double pesoPromedio = MyApp.getDBO().manifiestoDao().selectPesoPromediobyIdManifiesto(idAppManifiesto);
             double pesoTotal = 0.0;
             for (int i = 0; i < detalles.size(); i++) {
@@ -184,16 +196,23 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
                 }
             }
-            if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
-                txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + (pesoPromedio - pesoTotal) + " KG)");
-                MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio", "" + txtPesoPromedio.getText());
-                if (pesoTotal == 0.0) {
+            pesoTotal=Double.parseDouble(df.format(pesoTotal));
+            if(pesoPromedio > 0)
+            {
+                if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
+                    txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + (pesoTotal - pesoPromedio) + " KG)");
+                    MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio", "" + txtPesoPromedio.getText());
+                    if (pesoTotal == 0.0) {
+                        novedadPesoPromedio.setVisibility(View.GONE);
+                        txtPesoPromedio.setText("");
+                    } else {
+                        novedadPesoPromedio.setVisibility(View.VISIBLE);
+                    }
+                } else {
                     novedadPesoPromedio.setVisibility(View.GONE);
                     txtPesoPromedio.setText("");
-                } else {
-                    novedadPesoPromedio.setVisibility(View.VISIBLE);
                 }
-            } else {
+            }else{
                 novedadPesoPromedio.setVisibility(View.GONE);
                 txtPesoPromedio.setText("");
             }
@@ -445,6 +464,14 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         }
                     });
                     userRegistrarRuteoRecoleccion.execute();
+
+                    String estadotransportista = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaTransportista");
+                    String estadoAuxiliar = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaAuxiliar");
+                    String estadoOperador = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaOperador");
+
+                    if (estadotransportista.equals("1") || estadoAuxiliar.equals("1") || estadoOperador.equals("1")){
+                        sincronizarManifiestos();
+                    }
                 }
 
                 @Override
@@ -456,4 +483,26 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             userRegistrarRecoleccion.execute();
         }
     }
+
+    private void sincronizarManifiestos(){
+        List<Integer> listaCatalogos = new ArrayList<>();
+        listaCatalogos.add(2);
+
+        consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(), listenerHojaRuta);
+        try {
+            consultarHojaRutaTask.execute();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
+        consultarCatalogosTask.execute();
+    }
+
+    UserConsultarHojaRutaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaTask.TaskListener() {
+        @Override
+        public void onSuccessful() {
+
+        }
+    };
+
 }

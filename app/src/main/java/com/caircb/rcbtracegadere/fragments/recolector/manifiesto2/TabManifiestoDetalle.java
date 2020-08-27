@@ -49,6 +49,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -493,9 +494,10 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                 int contManifiestosConTara = 0;
                 List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
-                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(positionItem).getIdAppManifiestoDetalle());
+                int idManifiestoDetalle = manifiestosDetalle.get(positionItem).getIdAppManifiestoDetalle();
+                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                 for (int j = 0; j < pesosDetalle.size(); j++) {
-                    if (pesosDetalle.get(j).getPesoTaraBulto() != 0.0) {
+                    if (pesosDetalle.get(j).getPesoTaraBulto() > 0.0) {
                         contManifiestosConTara++;
                     }
                 }
@@ -579,7 +581,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                 List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
                 List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(positionItem).getIdAppManifiestoDetalle());
                 for (int j = 0; j < pesosDetalle.size(); j++) {
-                    if (pesosDetalle.get(j).getPesoTaraBulto() != 0.0) {
+                    if (pesosDetalle.get(j).getPesoTaraBulto() > 0.0) {
                         contManifiestosConTara++;
                     }
                 }
@@ -750,8 +752,9 @@ public class TabManifiestoDetalle extends LinearLayout {
                         totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
                     }
                     double pesoTotalMenosTara = (valor.doubleValue()) - totalPesoTaraManifiestoDetalle;
-
-                    row.setPeso(pesoTotalMenosTara);
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    double pesoTotalMostrar=Double.parseDouble(df.format(pesoTotalMenosTara));
+                    row.setPeso(pesoTotalMostrar);
                     row.setTipoBalanza(tipoBalanza);
 
 

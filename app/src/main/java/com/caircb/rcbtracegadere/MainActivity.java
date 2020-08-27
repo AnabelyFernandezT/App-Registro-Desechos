@@ -34,6 +34,7 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.MenuBaseAdapter;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogBuilderFirebase;
 import com.caircb.rcbtracegadere.dialogs.DialogInformacionModulos;
 import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
@@ -130,7 +131,18 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         if(getIntent().getExtras()!=null){
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
-                message(value);
+                //message(value);
+                final DialogBuilderFirebase dialogBuilder = new DialogBuilderFirebase(this);
+                dialogBuilder.setMessage(value);
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+
+                    }
+                });
+                dialogBuilder.show();
             }
 
         }
@@ -369,6 +381,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(12)) listaCatalogos.add(12);//
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(14)) listaCatalogos.add(14);
         if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(16)) listaCatalogos.add(16);
+        if (!MyApp.getDBO().catalogoDao().existeCatalogosEspecifico(17)) listaCatalogos.add(17);
 
         if (listaCatalogos.size() > 0) {
             consultarCatalogosTask = new UserConsultarCatalogosTask(this, listaCatalogos);

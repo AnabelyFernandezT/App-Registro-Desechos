@@ -45,7 +45,7 @@ public abstract class ManifiestoFileDao {
     abstract ManifiestoFileEntity obtenerFotografiaEspecifica(Integer idAppManifiesto, Integer idCatalogo, Integer code, Integer tipo, Integer status);
 
     @Query("select * from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto and status=:status and tipo=:tipo limit 1")
-    abstract ManifiestoFileEntity obtenerFotografiaEspecifica(Integer idAppManifiesto, Integer tipo, Integer status);
+    public abstract ManifiestoFileEntity obtenerFotografiaEspecifica(Integer idAppManifiesto, Integer tipo, Integer status);
 
 
     @Query("Select code, file as foto, tipo, fileUrl as fotoUrl from tb_manifiestos_file where idAppManifiesto=:idAppManifiesto")
@@ -90,8 +90,9 @@ public abstract class ManifiestoFileDao {
     @Query("update tb_manifiestos_file set sincronizado=:sincronizado where _id=:id")
     public abstract void actualizarToSincronizado(Long id,Boolean sincronizado);
 
-    @Query("Delete from tb_manifiestos_file where idAppManifiesto =:idAppManifiesto and idCatalogo=:idCatalogo")
-    public abstract void deleteFotoByIdAppManifistoCatalogoRecepcion( Integer idAppManifiesto, Integer idCatalogo);
+    @Query("Delete from tb_manifiestos_file where idAppManifiesto =:idAppManifiesto  and tipo=:tipo and status=:status")
+    public abstract void deleteFotoByIdAppManifistoCatalogoRecepcion( Integer idAppManifiesto,  Integer tipo,Integer status);
+
 
     @Delete
     abstract void deleteFile(ManifiestoFileEntity model);
@@ -122,7 +123,7 @@ public abstract class ManifiestoFileDao {
     public void saveOrUpdate(Integer idAppManifiesto, Integer tipo, String src,Integer status){
         ManifiestoFileEntity foto = obtenerFotografiaEspecifica(idAppManifiesto,tipo,status);
         if(src==null && foto!=null){
-               //deleteFile(foto);
+           //deleteFile(foto);
         }else {
             if (foto == null) {
                 foto = new ManifiestoFileEntity();
