@@ -341,25 +341,28 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         @Override
                         public void onSuccessful() {
                             final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
-
-                            builder = new DialogBuilder(getActivity());
-                            builder.setMessage("¿Desea volver a imprimir la etiqueta?");
-                            builder.setCancelable(false);
-                            builder.setPositiveButton("SI", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    imprimirEtiquetaHospitalario(idAppManifiesto);
-                                }
-                            });
-                            builder.setNegativeButton("NO", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    builder.dismiss();
-                                    registrarDatos(fechaRecol,tipoSubruta);
-                                }
-                            });
-                            builder.show();
-                            imprimirEtiquetaHospitalario(idAppManifiesto);
+                            if (tipoSubruta.equals("2")) {
+                                builder = new DialogBuilder(getActivity());
+                                builder.setMessage("¿Desea volver a imprimir la etiqueta?");
+                                builder.setCancelable(false);
+                                builder.setPositiveButton("SI", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        imprimirEtiquetaHospitalario(idAppManifiesto);
+                                    }
+                                });
+                                builder.setNegativeButton("NO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        builder.dismiss();
+                                        registrarDatos(fechaRecol, tipoSubruta);
+                                    }
+                                });
+                                builder.show();
+                                imprimirEtiquetaHospitalario(idAppManifiesto);
+                            }else{
+                                registrarDatos(fechaRecol, tipoSubruta);
+                            }
                         }
                         @Override
                         public void onFail() {
