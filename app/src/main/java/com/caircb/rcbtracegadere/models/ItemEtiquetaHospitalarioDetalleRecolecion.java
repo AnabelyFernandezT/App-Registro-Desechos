@@ -4,9 +4,9 @@ public class ItemEtiquetaHospitalarioDetalleRecolecion {
     private String descripcionDesecho;
     private String codigoMai;
     private int numeroBultos;
-    private float peso;
+    private double peso;
 
-    public ItemEtiquetaHospitalarioDetalleRecolecion(String descripcionDesecho, String codigoMai, int numeroBultos, float peso) {
+    public ItemEtiquetaHospitalarioDetalleRecolecion(String descripcionDesecho, String codigoMai, int numeroBultos, double peso) {
         this.descripcionDesecho = descripcionDesecho;
         this.codigoMai = codigoMai;
         this.numeroBultos = numeroBultos;
@@ -37,11 +37,11 @@ public class ItemEtiquetaHospitalarioDetalleRecolecion {
         this.numeroBultos = numeroBultos;
     }
 
-    public float getPeso() {
+    public double getPeso() {
         return peso;
     }
 
-    public void setPeso(float peso) {
+    public void setPeso(double peso) {
         this.peso = peso;
     }
 }
