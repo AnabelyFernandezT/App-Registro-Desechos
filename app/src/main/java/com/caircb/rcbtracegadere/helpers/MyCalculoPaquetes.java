@@ -36,8 +36,9 @@ public class MyCalculoPaquetes {
                 } else {
                     if (adicionales == true && guardian == true) {
                         if(contabilizaGuardianAdicional){
-                             resp.setPqh(0);
-                             resp.setAdicionalGuardian(m);
+                            resp.setPqh(0);
+                            resp.setAdicionalGuardian(m);
+                            resp.setAdicionalFunda(0);
                         }
                         else {
                             resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
