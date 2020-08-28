@@ -9,6 +9,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiestoDetalle;
 import com.caircb.rcbtracegadere.models.RowItemManifiestoPrint;
+import com.caircb.rcbtracegadere.models.RowItemManifiestosDetalleGestores;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
 
 import java.util.List;
@@ -42,6 +43,9 @@ public abstract class ManifiestoDetalleDao {
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto and (tipoMostrar=1 or tipoMostrar=3) ")
     public abstract List<RowItemManifiesto> fetchHojaRutaDetallebyIdManifiesto(Integer idManifiesto);
+
+    @Query("select numeroManifiesto as numeroManifiesto, nombreCliente as cliente from tb_manifiestos where idChoferRecolector=:idUsuario")
+    public abstract List<RowItemManifiestosDetalleGestores> fetchHojaRutaDetalleGestores(Integer idUsuario);
 
     @Query("update tb_manifiestos_detalle set faltaImpresiones=:bandera where idAppManifiesto =:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract void updateFlagFaltaImpresiones(Integer idManifiesto, Integer idManifiestoDetalle, boolean bandera);

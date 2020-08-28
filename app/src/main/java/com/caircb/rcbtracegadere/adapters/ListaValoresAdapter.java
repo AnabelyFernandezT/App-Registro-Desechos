@@ -466,8 +466,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         }
 
         double pesoTotal=totalPesoValor-totalPesoTaraManifiestoDetalle;
-        DecimalFormat df = new DecimalFormat("#.00");
-        double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
+        double pesoTotalMostrar = Double.parseDouble(obtieneDosDecimales(pesoTotal));
         return pesoTotalMostrar;
     }
 
@@ -537,5 +536,11 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                     dialogBuilder.show();
             }
         }
+    }
+
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
     }
 }

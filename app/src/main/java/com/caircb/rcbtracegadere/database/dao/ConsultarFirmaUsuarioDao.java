@@ -17,7 +17,7 @@ public abstract class ConsultarFirmaUsuarioDao {
     @Query("select * from tb_firma_usuario")
     public abstract ConsultarFirmaUsuarioEntity fetchFirmaUsuario();
 
-    @Query("select idFirma,firmaBase64 from tb_firma_usuario")
+    @Query("select idFirma,firmaBase64,idFinRutaCatalogo from tb_firma_usuario")
     @Transaction
     public abstract ConsultarFirmaUsuarioEntity fetchFirmaUsuario2();
 
@@ -31,10 +31,12 @@ public abstract class ConsultarFirmaUsuarioDao {
             consultarFirmaUsuarioEntity = new ConsultarFirmaUsuarioEntity();
             consultarFirmaUsuarioEntity.setIdFirma(0);
             consultarFirmaUsuarioEntity.setFirmaBase64(dtoFirmaUsuario.getFirmaBase64());
+            consultarFirmaUsuarioEntity.setIdFinRutaCatalogo(dtoFirmaUsuario.getIdFinRutaCatalogo());
 
         } else {
             consultarFirmaUsuarioEntity.setIdFirma(0);
             consultarFirmaUsuarioEntity.setFirmaBase64(dtoFirmaUsuario.getFirmaBase64());
+            consultarFirmaUsuarioEntity.setIdFinRutaCatalogo(dtoFirmaUsuario.getIdFinRutaCatalogo());
 
         }
         if (consultarFirmaUsuarioEntity!=null) createFirmaUsuario(consultarFirmaUsuarioEntity);

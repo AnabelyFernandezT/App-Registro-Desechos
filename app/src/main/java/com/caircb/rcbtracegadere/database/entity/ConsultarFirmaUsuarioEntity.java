@@ -10,6 +10,7 @@ public class ConsultarFirmaUsuarioEntity {
     @PrimaryKey(autoGenerate = true)
     private Integer idFirma;
     private String firmaBase64;
+    private Integer idFinRutaCatalogo;
 
     public ConsultarFirmaUsuarioEntity(){
 
@@ -29,5 +30,13 @@ public class ConsultarFirmaUsuarioEntity {
 
     public void setFirmaBase64(String firmaBase64) {
         this.firmaBase64 = firmaBase64;
+    }
+
+    public Integer getIdFinRutaCatalogo() {
+        return idFinRutaCatalogo;
+    }
+
+    public void setIdFinRutaCatalogo(Integer idFinRutaCatalogo) {
+        this.idFinRutaCatalogo = idFinRutaCatalogo;
     }
 }

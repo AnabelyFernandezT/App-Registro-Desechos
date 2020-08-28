@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.adapters.DialogMenuBaseAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoAdapter;
 import com.caircb.rcbtracegadere.adapters.ManifiestoGestorAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.fragments.GestorAlterno.ManifiestoG.ManifiestoGestoresFragment;
 import com.caircb.rcbtracegadere.fragments.planta.ManifiestoPlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
@@ -32,6 +33,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fra
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemLotePadre;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 
@@ -51,8 +53,9 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
     private ManifiestoGestorAdapter recyclerviewAdapter;
 
     private OnRecyclerTouchListener touchListener;
-    private List<ItemLotePadre> rowItems;
+    private List<ItemManifiesto> rowItems;
     private SearchView searchView;
+    Integer idSubRuta;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -84,7 +87,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         btnRetornarListHojaRuta = getView().findViewById(R.id.btnRetornarListHojaRuta);
         btnRetornarListHojaRuta.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewManifiestos);
-
+        idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         searchView.setOnSearchListener(new SearchView.OnSearchListener() {
             @Override
             public void onSearch(String data) {
@@ -106,7 +109,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().lotePadreDao().fetchLote();
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(idSubRuta, MySession.getIdUsuario());
         adapterList();
 
     }
@@ -119,7 +122,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                Toast.makeText(getActivity(),rowItems.get(position).getNumeroManifiestoPadre(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),rowItems.get(position).getNumeroManifiestoPadre(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -131,7 +134,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
             public void onSwipeOptionClicked(int viewID, final int position) {
                 switch (viewID){
                     case R.id.btn_manifiesto_view:
-                        setNavegate(ManifiestoGestorFragment.newInstance(rowItems.get(position).getIdManifiestoPadre()));
+                        setNavegate(ManifiestoGestoresFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1,1));
                         break;
                     case R.id.btn_manifiesto_more:
                         break;

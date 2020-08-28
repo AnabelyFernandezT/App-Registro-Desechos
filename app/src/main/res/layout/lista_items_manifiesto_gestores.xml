@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:id="@+id/lnlManifiestoDetalleGestor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewTitleItem"
+                    android:text="NUMERO MANIFIESTO"/>
+                <TextView
+                    android:id="@+id/txtItemNumManifiesto"
+                    android:textSize="18dp"
+                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewTitleItem"
+                    android:text="CLIENTE"/>
+                <TextView
+                    android:id="@+id/txtItemCliente"
+                    android:textSize="18dp"
+                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/btnItem"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="48dp"
+            android:layout_height="match_parent">
+            <CheckBox
+                android:scaleY="1.7"
+                android:scaleX="1.7"
+                android:id="@+id/chkEstadoItemDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:gravity="center"
+                android:focusableInTouchMode="false"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/btnNotificador"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_notificacion"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
