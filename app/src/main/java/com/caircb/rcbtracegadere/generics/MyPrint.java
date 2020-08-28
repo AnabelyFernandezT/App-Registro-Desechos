@@ -268,19 +268,20 @@ public class MyPrint {
                 System.out.print(listNew);
                 configLabel = getTramaHospitalario(
                         printer,
-                        row.getNombreGenerador(),
-                        row.getPuntoRecoleccion(),
-                        row.getRucGenerador(),
+                        eliminarNulos(row.getNombreGenerador()) ,
+                        eliminarNulos(row.getPuntoRecoleccion()),
+                        eliminarNulos(row.getRucGenerador()),
                         //(new SimpleDateFormat("dd/MM/yyyy")).format(row.()),
-                        (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),//row.getFechaRecolecion(),
-                        row.getClaveManifiestoSap(),
-                        row.getClaveManifiesto(),
-                        row.getDireccion(),
-                        row.getDestinatario(),
-                        row.getFirmaNombreGenerador(),
-                        row.getFirmaNombreTransportista(),
-                        row.getFirmaCedulaGenerador(),
-                        row.getFirmaCedulaTransportista(),
+                        //(new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),
+                        row.getFechaRecolecion(),
+                        eliminarNulos(row.getClaveManifiestoSap()),
+                        eliminarNulos(row.getClaveManifiesto()),
+                        eliminarNulos(row.getDireccion()),
+                        eliminarNulos(row.getDestinatario()),
+                        eliminarNulos(row.getFirmaNombreGenerador()),
+                        eliminarNulos(row.getFirmaNombreTransportista()),
+                        eliminarNulos(row.getFirmaCedulaGenerador()),
+                        eliminarNulos(row.getFirmaCedulaTransportista()),
                         listNew
                 );
                 zebraPrinterConnection.write(configLabel);
@@ -300,6 +301,15 @@ public class MyPrint {
             }
             else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
         }
+    }
+
+    public String eliminarNulos (String valor){
+        String caracter ="";
+        if(valor!=null){
+            caracter = valor;
+        }
+        return caracter;
+
     }
 
 

@@ -339,152 +339,27 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     userRegistrarRuteoRecoleccion.setOnRegisterRuteoRecollecionListenner(new UserRegistrarRuteoRecoleccion.OnRegisterRuteroRecoleecionListener() {
                         @Override
                         public void onSuccessful() {
+                            final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
 
-
-                            String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
-                            if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() > 0) {
-                                if (tipoSubruta.equals("2")) {//SI ES TIPO DE RUTA HOSPITALARIA
+                            builder = new DialogBuilder(getActivity());
+                            builder.setMessage("¿Desea volver a imprimir la etiqueta?");
+                            builder.setCancelable(false);
+                            builder.setPositiveButton("SI", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
                                     imprimirEtiquetaHospitalario(idAppManifiesto);
-
-                                    dialogBuilderPrint = new DialogBuilder(getActivity());
-                                    dialogBuilderPrint.setMessage("¿Desea volver a imprimir etiqueta?");
-                                    dialogBuilderPrint.setCancelable(false);
-                                    dialogBuilderPrint.setPositiveButton("SI", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            imprimirEtiquetaHospitalario(idAppManifiesto);
-                                            dialogBuilderPrint.dismiss();
-                                        }
-                                    });
-                                    dialogBuilderPrint.setNegativeButton("NO", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuilderPrint.dismiss();
-                                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
-                                            dialogBuilder = new DialogBuilder(getActivity());
-                                            dialogBuilder.setMessage("¿El camión llegó a su máxima capacidad?");
-                                            dialogBuilder.setCancelable(false);
-                                            dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    //dialogBuilder.dismiss();
-                                                    DialogNotificacionCapacidadCamion capacidadCamion = new DialogNotificacionCapacidadCamion(getActivity(), idAppManifiesto);
-                                                    capacidadCamion.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                                    capacidadCamion.setCancelable(false);
-                                                    capacidadCamion.show();
-                                                    capacidadCamion.setOnRegisterListener(new DialogNotificacionCapacidadCamion.OnRegisterListener() {
-                                                        @Override
-                                                        public void onSuccessful() {
-                                                            dialogBuilder.dismiss();
-                                                            setNavegate(HomeTransportistaFragment.create());
-
-                                                        }
-
-                                                        @Override
-                                                        public void onFailure() {
-
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                            dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    dialogBuilder.dismiss();
-                                                    dialogBuilder2 = new DialogBuilder(getActivity());
-                                                    dialogBuilder2.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
-                                                    dialogBuilder2.setCancelable(false);
-                                                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            dialogBuilder2.dismiss();
-                                                            dialogBuilder.dismiss();
-                                                            //Guardo la nueva fecha de inicio y puntoParitda;
-                                                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
-                                                            RuteoRecoleccionEntity dto;
-                                                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                                            if (dto != null) {
-                                                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
-                                                            }
-                                                            //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
-                                                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
-                                                            setNavegate(HojaRutaAsignadaFragment.newInstance());
-                                                        }
-                                                    });
-                                                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            dialogBuilder2.dismiss();
-                                                            dialogBuilder.dismiss();
-                                                            //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
-                                                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                                                            RuteoRecoleccionEntity dto;
-                                                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                                            if (dto != null) {
-                                                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
-                                                            }
-                                                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
-                                                            setNavegate(HomeTransportistaFragment.create());
-                                                        }
-                                                    });
-                                                    dialogBuilder2.show();
-                                                }
-                                            });
-                                            dialogBuilder.show();
-                                        }
-                                    });
-                                    dialogBuilderPrint.show();
-
-
-                                } else if (tipoSubruta.equals("1")) { // SI ES TIPO DE RUTA INDUSTRIAL
-                                    dialogBuilder = new DialogBuilder(getActivity());
-                                    dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
-                                    dialogBuilder.setCancelable(false);
-                                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuilder.dismiss();
-                                            //Guardo la nueva fecha de inicio y puntoParitda;
-                                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
-                                            RuteoRecoleccionEntity dto;
-                                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                            if (dto != null) {
-                                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
-                                            }
-                                            //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
-                                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
-                                            setNavegate(HojaRutaAsignadaFragment.newInstance());
-                                        }
-                                    });
-                                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuilder.dismiss();
-                                            //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
-                                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                                            RuteoRecoleccionEntity dto;
-                                            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                            if (dto != null) {
-                                                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
-                                            }
-                                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
-                                            setNavegate(HomeTransportistaFragment.create());
-                                        }
-                                    });
-                                    dialogBuilder.show();
                                 }
-
-                            } else {//Finalizo de recolectar todos los manifiestos
-                                MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                                RuteoRecoleccionEntity dto;
-                                dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                if (dto != null) {
-                                    MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+                            });
+                            builder.setNegativeButton("NO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    builder.dismiss();
+                                    registrarDatos(fechaRecol,tipoSubruta);
                                 }
-                                setNavegate(HomeTransportistaFragment.create());
-                            }
+                            });
+                            builder.show();
+                            imprimirEtiquetaHospitalario(idAppManifiesto);
                         }
-
                         @Override
                         public void onFail() {
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
@@ -492,13 +367,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     });
                     userRegistrarRuteoRecoleccion.execute();
 
-                    String estadotransportista = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaTransportista");
-                    String estadoAuxiliar = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaAuxiliar");
-                    String estadoOperador = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaOperador");
-
-                    if (estadotransportista.equals("1") || estadoAuxiliar.equals("1") || estadoOperador.equals("1")){
-                        sincronizarManifiestos();
-                    }
                 }
 
                 @Override
@@ -509,6 +377,138 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             });
             userRegistrarRecoleccion.execute();
         }
+    }
+
+    public void registrarDatos (final Date fechaRecol, final String tipoSubruta){
+
+        if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() > 0) {
+            if (tipoSubruta.equals("2")) {//SI ES TIPO DE RUTA HOSPITALARIA
+                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                        dialogBuilder = new DialogBuilder(getActivity());
+                        dialogBuilder.setMessage("¿El camión llegó a su máxima capacidad?");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //dialogBuilder.dismiss();
+                                DialogNotificacionCapacidadCamion capacidadCamion = new DialogNotificacionCapacidadCamion(getActivity(), idAppManifiesto);
+                                capacidadCamion.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                capacidadCamion.setCancelable(false);
+                                capacidadCamion.show();
+                                capacidadCamion.setOnRegisterListener(new DialogNotificacionCapacidadCamion.OnRegisterListener() {
+                                    @Override
+                                    public void onSuccessful() {
+                                        dialogBuilder.dismiss();
+                                        setNavegate(HomeTransportistaFragment.create());
+
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+
+                                    }
+                                });
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                dialogBuilder2 = new DialogBuilder(getActivity());
+                                dialogBuilder2.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
+                                dialogBuilder2.setCancelable(false);
+                                dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        dialogBuilder.dismiss();
+                                        //Guardo la nueva fecha de inicio y puntoParitda;
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                                        RuteoRecoleccionEntity dto;
+                                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                        if (dto != null) {
+                                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+                                        }
+                                        //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                    }
+                                });
+                                dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        dialogBuilder.dismiss();
+                                        //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+                                        RuteoRecoleccionEntity dto;
+                                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                        if (dto != null) {
+                                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+                                        }
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                        setNavegate(HomeTransportistaFragment.create());
+                                    }
+                                });
+                                dialogBuilder2.show();
+                            }
+                        });
+                        dialogBuilder.show();
+            } else if (tipoSubruta.equals("1")) { // SI ES TIPO DE RUTA INDUSTRIAL
+                dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        //Guardo la nueva fecha de inicio y puntoParitda;
+                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                        RuteoRecoleccionEntity dto;
+                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                        if (dto != null) {
+                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+                        }
+                        //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                    }
+                });
+                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
+                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+                        RuteoRecoleccionEntity dto;
+                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                        if (dto != null) {
+                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+                        }
+                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                        setNavegate(HomeTransportistaFragment.create());
+                    }
+                });
+                dialogBuilder.show();
+            }
+
+        } else {//Finalizo de recolectar todos los manifiestos
+            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+            RuteoRecoleccionEntity dto;
+            dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+            if (dto != null) {
+                MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+            }
+            setNavegate(HomeTransportistaFragment.create());
+        }
+        String estadotransportista = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaTransportista");
+        String estadoAuxiliar = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaAuxiliar");
+        String estadoOperador = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaOperador");
+
+        if (estadotransportista.equals("1") || estadoAuxiliar.equals("1") || estadoOperador.equals("1")){
+            sincronizarManifiestos();
+        }
+
     }
 
     private void sincronizarManifiestos(){
