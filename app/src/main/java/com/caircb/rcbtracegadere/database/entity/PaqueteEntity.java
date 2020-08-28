@@ -38,6 +38,10 @@ public class PaqueteEntity {
 
     private Boolean entregaSoloGuardianes;
 
+    private Boolean contabilizaFundaAdicional;
+
+    private Boolean contabilizaGuardianAdicional;
+
     public PaqueteEntity() {
     }
 
@@ -140,5 +144,21 @@ public class PaqueteEntity {
 
     public void setEntregaSoloGuardianes(Boolean entregaSoloGuardianes) {
         this.entregaSoloGuardianes = entregaSoloGuardianes;
+    }
+
+    public Boolean getContabilizaFundaAdicional() {
+        return contabilizaFundaAdicional;
+    }
+
+    public void setContabilizaFundaAdicional(Boolean contabilizaFundaAdicional) {
+        this.contabilizaFundaAdicional = contabilizaFundaAdicional;
+    }
+
+    public Boolean getContabilizaGuardianAdicional() {
+        return contabilizaGuardianAdicional;
+    }
+
+    public void setContabilizaGuardianAdicional(Boolean contabilizaGuardianAdicional) {
+        this.contabilizaGuardianAdicional = contabilizaGuardianAdicional;
     }
 }
