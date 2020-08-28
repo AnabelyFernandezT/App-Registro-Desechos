@@ -752,8 +752,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                         totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
                     }
                     double pesoTotalMenosTara = (valor.doubleValue()) - totalPesoTaraManifiestoDetalle;
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    double pesoTotalMostrar=Double.parseDouble(df.format(pesoTotalMenosTara));
+                    double pesoTotalMostrar=Double.parseDouble(obtieneDosDecimales(pesoTotalMenosTara));
                     row.setPeso(pesoTotalMostrar);
                     row.setTipoBalanza(tipoBalanza);
 
@@ -913,5 +912,11 @@ public class TabManifiestoDetalle extends LinearLayout {
 
     public void resetParameters() {
         isChangeTotalCreateBultos = false;
+    }
+
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
     }
 }

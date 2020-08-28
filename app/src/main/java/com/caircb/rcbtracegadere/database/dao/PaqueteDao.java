@@ -16,7 +16,6 @@ import java.util.List;
 @Dao
 public abstract class PaqueteDao {
 
-
     @Query("select count(*) from tb_paquetes  LIMIT 1")
     public abstract boolean existePaquetes();
 
@@ -48,7 +47,8 @@ public abstract class PaqueteDao {
                 paquete.setPaquetePorRecolccion(model.getPaquetePorRecoleccion());
                 paquete.setEntregaSoloFundas(model.getEntregaFundas());
                 paquete.setEntregaSoloGuardianes(model.getEntregaGuardianes());
-
+                paquete.setContabilizaFundaAdicional(model.getContabilizaFundaAdicional());
+                paquete.setContabilizaGuardianAdicional(model.getContabilizaGuardianAdicional());
             }else{
                 paquete.setIndex(model.getI());
                 paquete.setDescripcion(model.getNombrePaquete());
@@ -60,10 +60,9 @@ public abstract class PaqueteDao {
                 paquete.setPaquetePorRecolccion(model.getPaquetePorRecoleccion());
                 paquete.setEntregaSoloFundas(model.getEntregaFundas());
                 paquete.setEntregaSoloGuardianes(model.getEntregaGuardianes());
+                paquete.setContabilizaFundaAdicional(model.getContabilizaFundaAdicional());
+                paquete.setContabilizaGuardianAdicional(model.getContabilizaGuardianAdicional());
             }
             createPaquete(paquete);
-
     }
-
-
 }
