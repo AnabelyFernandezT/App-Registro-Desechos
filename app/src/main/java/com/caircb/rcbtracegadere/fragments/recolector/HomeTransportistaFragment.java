@@ -390,6 +390,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 if(flag.equals(1)){
                     desbloque_botones();
                     txtQr.setVisibility(View.INVISIBLE);
+                    btnFinRuta.setEnabled(true);
                     btnScanQr.setAlpha(1.0f);
                     flag = 0;
                 }else{
@@ -420,7 +421,9 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         //dbHelper.open();
         //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPara(idSubRuta == null ? 0:idSubRuta,MySession.getIdUsuario()));
         //lblpickUpTransportista.setText(""+ MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasP(MySession.getIdUsuario()));
-        Integer idSubruta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        //Integer idSubruta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        Integer idSubruta = MySession.getIdSubRuta();
+        MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",idSubruta+"");
         lblpickUpTransportista.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasByIdConductorAndRuta(MySession.getIdUsuario(), idSubruta));
         //dbHelper.close();
     }
@@ -568,7 +571,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
             idManifiesto = rowItems.get(cont).getIdAppManifiesto();
         }
         final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        if(manifiesto.getMensaje()!=null) {
+        if(manifiesto!=null && manifiesto.getMensaje()!=null) {
             if (!manifiesto.getMensaje().equals("")) {
                 UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(), manifiesto.getIdAppManifiesto(),
                         manifiesto.getMensaje(),
