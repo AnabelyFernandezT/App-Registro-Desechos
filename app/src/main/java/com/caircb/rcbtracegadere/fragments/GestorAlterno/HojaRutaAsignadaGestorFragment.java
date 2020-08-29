@@ -109,7 +109,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(idSubRuta, MySession.getIdUsuario());
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestoGestor(idSubRuta, MySession.getIdUsuario());
         adapterList();
 
     }

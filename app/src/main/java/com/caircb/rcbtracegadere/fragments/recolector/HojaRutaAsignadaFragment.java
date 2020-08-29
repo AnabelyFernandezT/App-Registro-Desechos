@@ -36,6 +36,7 @@ import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.fragments.GestorAlterno.HomeGestorAlternoFragment;
 import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.ManifiestoLote.ManifiestoLoteFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.ManifiestoNoRecoleccionFragment;
@@ -77,6 +78,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     RutaInicioFinEntity rut;
     Integer idSubRuta;
     ParametroEntity parametros;
+    ManifiestoEntity entity;
 
     /**
      * Use this factory method to create a new instance of
@@ -165,8 +167,11 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
                         parametros = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote_"+rowItems.get(position).getIdAppManifiesto());
+                        entity = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                         if(parametros!=null){
                             setNavegate(ManifiestoLoteFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1,2));
+                        } else if(entity.getCategoria().equals(103)) {
+                            setNavegate(HomeGestorAlternoFragment.create());
                         }else {
                             menu(position);
                         }
