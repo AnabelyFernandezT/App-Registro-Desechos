@@ -10,6 +10,8 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.ItemEtiqueta;
+import com.caircb.rcbtracegadere.models.ItemEtiquetaHospitalario;
+import com.caircb.rcbtracegadere.models.ItemEtiquetaHospitalarioDetalleRecolecion;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoDetBultos;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoDetalle;
@@ -88,6 +90,30 @@ public abstract class ManifiestoDetallePesosDao {
             " where m.idAppManifiesto=:idAppManifiesto and dt.idAppManifiestoDetalle =:idManifiestoDetalle and b._id =:idCatalogo " +
             " order by m.idAppManifiesto,dt.idAppManifiestoDetalle,b._id")
     public  abstract ItemEtiqueta consultaBultoIndividual(Integer idAppManifiesto, Integer idManifiestoDetalle, Integer idCatalogo);
+
+    @Query("select  m.nombreCliente as nombreGenerador," +
+            "       m.sucursal as puntoRecoleccion, "+
+            "       m.identificacionCliente as rucGenerador," +
+            "       m.fechaRecoleccion as fechaRecolecion," +
+            "       m.numeroManifiesto as claveManifiestoSap, "+
+            "       m.numManifiestoCliente as claveManifiesto,"+
+            "       m.direccionCliente as direccion,"+
+            "       m.nombreDestinatario as destinatario,"+
+            "       t.nombre as firmaNombreGenerador,"+
+            "       m.conductorNombre as firmaNombreTransportista,"+
+            "       t.identificacion as firmaCedulaGenerador,"+
+            "       m.conductorIdentificacion as firmaCedulaTransportista"+
+            " from  tb_manifiestos m  left join tb_tecnicos t on t.idManifiesto=m.idAppManifiesto " +
+            " where m.idAppManifiesto=:idAppManifiesto " +
+            " order by m.idAppManifiesto")
+    public  abstract ItemEtiquetaHospitalario consultaCabeceraHospitalario(Integer idAppManifiesto);
+
+
+    @Query("Select nombreDesecho as descripcionDesecho,codigoMAE as codigoMai," +
+            "cantidadBulto as numeroBultos, pesoUnidad as peso "+
+            "from tb_manifiestos_detalle mdt"+
+            " where mdt.idAppManifiesto=:idAppManifiesto and numeroBultos>0" )
+    public abstract List<ItemEtiquetaHospitalarioDetalleRecolecion> consultaDetalleHospitalario(Integer idAppManifiesto);
 
     @Query("select * from tb_manifiesto_detalle_pesos where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle")
     public abstract ManifiestoDetallePesosEntity fetchPesoManifiestoPesos(Integer idManifiesto, Integer idManifiestoDetalle);

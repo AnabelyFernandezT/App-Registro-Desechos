@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.MenuItem;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowPrinters;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -215,7 +217,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 if (imp.equals("1"))
                                     flag = true;
 
-                                if (!MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
+                                if (MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
 
                                 Date fecha = AppDatabase.getDateTime();
                                 ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
