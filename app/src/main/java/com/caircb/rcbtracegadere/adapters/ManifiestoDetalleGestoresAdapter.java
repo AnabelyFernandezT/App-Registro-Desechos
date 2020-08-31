@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.R;
-import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiestosDetalleGestores;
 
@@ -59,13 +58,15 @@ public class ManifiestoDetalleGestoresAdapter extends RecyclerView.Adapter<Manif
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtItemTratamiento, txtItemDescripcion;
+        TextView txtItemTratamiento, txtItemDescripcion,txtItemPeso,txtItemCantidadBulto;
         CheckBox chkEstadoItemDetalle;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             txtItemTratamiento = itemView.findViewById(R.id.txtItemTratamiento);
             txtItemDescripcion = itemView.findViewById(R.id.txtItemDescripcion);
             chkEstadoItemDetalle = itemView.findViewById(R.id.chkEstadoItemDetalle);
+            txtItemPeso = itemView.findViewById(R.id.txtItemPeso);
+            txtItemCantidadBulto = itemView.findViewById(R.id.txtItemCantidadBulto);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

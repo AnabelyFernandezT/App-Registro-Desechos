@@ -17,6 +17,7 @@ public class RowItemManifiesto {
     private boolean faltaImpresiones;
     private Integer tipoMostrar;
     private String codigoMAE;
+    private Integer idTipoDesecho;
 
     public RowItemManifiesto(){}
 
@@ -123,5 +124,13 @@ public class RowItemManifiesto {
 
     public void setCodigoMAE(String codigoMAE) {
         this.codigoMAE = codigoMAE;
+    }
+
+    public Integer getIdTipoDesecho() {
+        return idTipoDesecho;
+    }
+
+    public void setIdTipoDesecho(Integer idTipoDesecho) {
+        this.idTipoDesecho = idTipoDesecho;
     }
 }
