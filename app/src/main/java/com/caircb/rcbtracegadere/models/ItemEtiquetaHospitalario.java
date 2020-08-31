@@ -6,7 +6,7 @@ public class ItemEtiquetaHospitalario {
     private String nombreGenerador;
     private String puntoRecoleccion;
     private String rucGenerador;
-    private String fechaRecolecion;
+    private Date fechaRecolecion;
     private String claveManifiestoSap;
     private String claveManifiesto;
     private String direccion;
@@ -16,7 +16,7 @@ public class ItemEtiquetaHospitalario {
     private String firmaCedulaGenerador;
     private String firmaCedulaTransportista;
 
-    public ItemEtiquetaHospitalario(String nombreGenerador, String puntoRecoleccion, String rucGenerador, String fechaRecolecion, String claveManifiestoSap, String claveManifiesto, String direccion, String destinatario, String firmaNombreGenerador, String firmaNombreTransportista, String firmaCedulaGenerador, String firmaCedulaTransportista) {
+    public ItemEtiquetaHospitalario(String nombreGenerador, String puntoRecoleccion, String rucGenerador, Date fechaRecolecion, String claveManifiestoSap, String claveManifiesto, String direccion, String destinatario, String firmaNombreGenerador, String firmaNombreTransportista, String firmaCedulaGenerador, String firmaCedulaTransportista) {
         this.nombreGenerador = nombreGenerador;
         this.puntoRecoleccion = puntoRecoleccion;
         this.rucGenerador = rucGenerador;
@@ -55,11 +55,11 @@ public class ItemEtiquetaHospitalario {
         this.rucGenerador = rucGenerador;
     }
 
-    public String getFechaRecolecion() {
+    public Date getFechaRecolecion() {
         return fechaRecolecion;
     }
 
-    public void setFechaRecolecion(String fechaRecolecion) {
+    public void setFechaRecolecion(Date fechaRecolecion) {
         this.fechaRecolecion = fechaRecolecion;
     }
 

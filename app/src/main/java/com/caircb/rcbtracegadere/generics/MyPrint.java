@@ -271,9 +271,8 @@ public class MyPrint {
                         eliminarNulos(row.getNombreGenerador()) ,
                         eliminarNulos(row.getPuntoRecoleccion()),
                         eliminarNulos(row.getRucGenerador()),
-                        //(new SimpleDateFormat("dd/MM/yyyy")).format(row.()),
-                        //(new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),
-                        row.getFechaRecolecion(),
+                        (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),
+                        //row.getFechaRecolecion(),
                         eliminarNulos(row.getClaveManifiestoSap()),
                         eliminarNulos(row.getClaveManifiesto()),
                         eliminarNulos(row.getDireccion()),
@@ -742,7 +741,6 @@ public class MyPrint {
             final List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle = MyApp.getDBO().manifiestoDetallePesosDao().consultaDetalleHospitalario(idAppManifiesto);
             if(printEtiqueta != null && listaDetalle.size() > 0){
                 dialog.show();
-
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
                         if (Looper.myLooper() == null)
