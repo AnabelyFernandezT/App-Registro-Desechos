@@ -38,6 +38,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosNo;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
+import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
@@ -85,6 +86,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     String sucursal;
     private boolean isChangeTotalCreateBultos = false;
     CheckBox chkRegistrarTara;
+    MyPrint print;
 
     public TabManifiestoDetalle(Context context,
                                 Integer manifiestoID,
@@ -403,6 +405,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                                     //detalles.clear();
                                     reloadData();
                                     dialogBultosNo.dismiss();
+                                    imprimirEtiquetaIndividual(idAppManifiesto,idDetalle,Integer.parseInt(numeroBultos));
                                 }
                             }
                         });
@@ -919,4 +922,50 @@ public class TabManifiestoDetalle extends LinearLayout {
         format.setMaximumFractionDigits(2); //Define 2 decimales.
         return format.format(valor);
     }
+
+    private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer totalEtiquetas) {
+
+        try {
+            print = new MyPrint((Activity) getContext());
+            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                @Override
+                public void onSuccessful() {
+                    //Impresion finalizada
+                    MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresionLote(idAppManifiesto, idManifiestoDetalle,  true);
+                    reloadData();
+                }
+                @Override
+                public void onFailure(String message) {
+                    final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                    dialogBuilder2.setMessage(message);
+                    dialogBuilder2.setCancelable(false);
+                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                    dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                        }
+                    });
+                    dialogBuilder2.show();
+                }
+            });
+            print.printerIndividualLote(idAppManifiesto, idManifiestoDetalle, totalEtiquetas);
+
+        }catch (Exception e){
+            final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+            dialogBuilder2.setMessage("No hay conexion con la impresora");
+            dialogBuilder2.setCancelable(false);
+            dialogBuilder2.setTitle("CONFIRMACIÓN");
+            dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder2.dismiss();
+                }
+            });
+            dialogBuilder2.show();
+        }
+
+    }
+
+
 }

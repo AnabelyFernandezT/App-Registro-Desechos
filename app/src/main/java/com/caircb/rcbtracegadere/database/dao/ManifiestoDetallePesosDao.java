@@ -48,6 +48,9 @@ public abstract class ManifiestoDetallePesosDao {
     @Query ("update tb_manifiesto_detalle_pesos set impresion =:impresion where _id=:id and idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
     public abstract void updateBanderaImpresion(Integer idManifiesto, Integer idManifiestoDetalle ,Integer id, boolean impresion);
 
+    @Query ("update tb_manifiesto_detalle_pesos set impresion =:impresion where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
+    public abstract void updateBanderaImpresionLote(Integer idManifiesto, Integer idManifiestoDetalle , boolean impresion);
+
     @Query ("update tb_manifiesto_detalle_pesos set pesoTaraBulto =:pesoTaraBulto where _id=:id and idAppManifiesto=:idManifiesto and idAppManifiestoDetalle =:idManifiestoDetalle")
     public abstract void updatePesoTara(Integer idManifiesto, Integer idManifiestoDetalle ,Integer id, double pesoTaraBulto);
 
@@ -90,6 +93,18 @@ public abstract class ManifiestoDetallePesosDao {
             " where m.idAppManifiesto=:idAppManifiesto and dt.idAppManifiestoDetalle =:idManifiestoDetalle and b._id =:idCatalogo " +
             " order by m.idAppManifiesto,dt.idAppManifiestoDetalle,b._id")
     public  abstract ItemEtiqueta consultaBultoIndividual(Integer idAppManifiesto, Integer idManifiestoDetalle, Integer idCatalogo);
+
+    @Query("select dt.idAppManifiestoDetalle,m.nombreCliente as cliente,m.numeroManifiesto,rif.fechaInicio as fechaRecoleccion," +
+            "c.nombre as residuo,dt.tratamiento,valor as peso, b.codeQr as codigoQr,0 as indexEtiqueta, dt.cantidadTotalEtiqueta as totalEtiqueta, dt.nombreDestinatario as destinatario " +
+            " from tb_manifiesto_detalle_pesos b" +
+            " inner join tb_manifiestos_detalle dt on b.idAppManifiestoDetalle=dt.idAppManifiestoDetalle  " +
+            " inner join tb_manifiestos m on dt.idAppManifiesto=m.idAppManifiesto " +
+            " inner join tb_catalogos c on dt.idTipoDesecho = c.idSistema and c.tipo=2 " +
+            "inner join tb_rutaInicioFin rif on rif.idSubRuta = m.idSubRuta " +
+            " where m.idAppManifiesto=:idAppManifiesto and dt.idAppManifiestoDetalle =:idManifiestoDetalle " +
+            " order by m.idAppManifiesto,dt.idAppManifiestoDetalle,b._id")
+    public  abstract ItemEtiqueta consultaBultoIndividualLote(Integer idAppManifiesto, Integer idManifiestoDetalle);
+
 
     @Query("select  m.nombreCliente as nombreGenerador," +
             "       m.sucursal as puntoRecoleccion, "+

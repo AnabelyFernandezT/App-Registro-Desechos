@@ -94,6 +94,37 @@ public class MyPrint {
         }
     }
 
+    public void printerIndividualLote(Integer idManifiesto, Integer idManifiestoDetalle, final Integer totalNumeroEtiquetas){
+        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+            final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividualLote(idManifiesto, idManifiestoDetalle);
+            if(printEtiqueta != null){
+                System.out.println(printEtiqueta);
+                dialog.show();
+
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (Looper.myLooper() == null)
+                        {
+                            Looper.prepare();
+                        }
+                        doConnectionTestIndividualLote(printEtiqueta, totalNumeroEtiquetas);
+                        Looper.loop();
+                        Looper.myLooper().quit();
+                    }
+                });
+
+            } else {
+                //mensaje...
+                Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+                disconnect("Impresora no encontrada");
+            }
+        }else {
+            Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+            disconnect("Impresora no encontrada");
+        }
+    }
+
+
     public void pinter(Integer idAppManifiesto){
         //varificar si existe alguna impresora conectada...
         if(MyApp.getDBO().impresoraDao().existeImpresora()) {
@@ -195,10 +226,20 @@ public class MyPrint {
             disconnect("No existe conexion con la impresora");
         }
     }
+
     private void doConnectionTestIndividual(ItemEtiqueta etiqueta, Integer numeroBulto) {
         printer = connect();
         if (printer != null) {
             sendTestLabelIndividual(etiqueta, numeroBulto);
+        } else {
+            disconnect("No existe conexion con la impresora");
+        }
+    }
+
+    private void doConnectionTestIndividualLote(ItemEtiqueta etiqueta, Integer totalNumeroEtiquetas) {
+        printer = connect();
+        if (printer != null) {
+            sendTestLabelIndividualLote(etiqueta, totalNumeroEtiquetas,10);
         } else {
             disconnect("No existe conexion con la impresora");
         }
@@ -247,6 +288,54 @@ public class MyPrint {
             else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
         }
     }
+
+    private void sendTestLabelIndividualLote(ItemEtiqueta etiquetas, Integer totalNumeroEtiquetas, Integer loteValor) {
+        boolean complete=false;
+        ItemEtiqueta row = etiquetas;
+        try {
+            byte[] configLabel;
+            int contador=1;
+
+            for (int i =1 ; i<=totalNumeroEtiquetas ; i++){
+                configLabel = getTramaBultoIndividualLote(
+                        printer,
+                        row.getNumeroManifiesto(),
+                        row.getCodigoQr(),
+                        eliminarAcentos(row.getCliente()),
+                        (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecoleccion()),
+                        row.getPeso(),
+                        eliminarAcentos(row.getResiduo()),
+                        String.valueOf(i),
+                        eliminarAcentos(row.getTratamiento()),
+                        eliminarAcentos(row.getDestinatario()),
+                        false
+                );
+                if(configLabel!=null) {
+                    zebraPrinterConnection.write(configLabel);
+                    if (contador == loteValor ) {
+                        contador=1;
+                        MyThread.sleep(6000);
+                    }
+                    contador += 1;
+                    MyThread.sleep(600);
+                }
+            }
+            MyThread.sleep(500*totalNumeroEtiquetas);
+
+            complete=true;
+        }catch (ZebraPrinterConnectionException e) {
+            //setStatus(e.getMessage(), Color.RED);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }finally {
+            if(complete)finalized();
+            if(complete){
+                if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+            }
+            else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
+        }
+    }
+
 
     private void sendTestLabelHospitalario(ItemEtiquetaHospitalario etiquetas,List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle ) {
         boolean complete=false;
@@ -411,6 +500,74 @@ public class MyPrint {
                                 "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
                                 "^FS^FO60,120^AD^FD FECHA: " + fecha +
                                 "^FS^FO60,150^AD^FD PESO:" + peso +
+                                //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                                //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                                "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
+                                "^FS^FO60,530^AD^FD NO. BULTO:" + numeroBulto +
+                                "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
+
+                                "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
+                                "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS ^XZ";
+            }
+        }
+
+        configLabel = cpclConfigLabel.getBytes();
+        return configLabel;
+
+    }
+
+    private byte[] getTramaBultoIndividualLote(
+            ZebraPrinter printer,
+            String manifiesto,
+            String codigoQr,
+            String cliente,
+            String fecha,
+            double peso,
+            String residuo,
+            String numeroBulto,
+            String tratamiento,
+            String destinatario,
+            boolean aplicaDevolucion) {
+
+        PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
+        String cpclConfigLabel="";
+        byte[] configLabel = null;
+        tratamiento = tratamiento == null ? "" : recorreString(tratamiento, 19, "590");
+        String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "710":"680");
+
+        if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
+            cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
+        }else{
+            //String descripcion = row.getDescripcion().substring(10, 33);
+
+            if(!saltoLinea) {
+                cpclConfigLabel =
+                        //"^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                                "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
+                                "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
+                                "^FS^FO60,120^AD^FD FECHA: " + fecha +
+                                "^FS^FO60,150^AD^FD PESO:" +"PESO EN PLANTA"+ //peso +
+                                //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                                //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                                "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
+                                "^FS^FO60,530^AD^FD NO. BULTO:" + numeroBulto +
+                                "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
+
+                                "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
+                                "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
+                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS ^XZ";
+            }else{
+                cpclConfigLabel =
+                        //"^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                                "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
+                                "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
+                                "^FS^FO60,120^AD^FD FECHA: " + fecha +
+                                "^FS^FO60,150^AD^FD PESO:" +"PESO EN PLANTA"+ //peso +
                                 //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                                 //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
                                 "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
