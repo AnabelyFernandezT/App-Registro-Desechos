@@ -42,7 +42,7 @@ public class DialogBultosLote extends MyDialog {
         bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto,idManifiestoDetalle);
         listViewBultos = getView().findViewById(R.id.listViewBultos);
 
-        listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto,idManifiestoDetalle,0,0);
+        listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto,idManifiestoDetalle,0,-1);
         listViewBultos.setAdapter(listaValoresAdapter);
 
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);

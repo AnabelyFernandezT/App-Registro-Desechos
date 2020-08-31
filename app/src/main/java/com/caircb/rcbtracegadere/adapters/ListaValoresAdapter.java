@@ -237,6 +237,8 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
         if (autorizacion.toString().equals("0")) {
             holder.btnEliminar.setEnabled(false);
+        } else if (autorizacion.toString().equals("-1")) {
+            holder.btnEliminar.setVisibility(View.GONE);
         } else {
             holder.btnEliminar.setEnabled(true);
         }

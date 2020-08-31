@@ -279,7 +279,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                         // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
                         if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) > 0) {
                             List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
-                            if (MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")) {
+                            if (MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion") != null && MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")) {
 
                                 dialogBuilder = new DialogBuilder(getActivity());
                                 dialogBuilder.setCancelable(false);

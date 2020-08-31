@@ -210,7 +210,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 if (imp.equals("1"))
                                     flag = true;
 
-                                if (!MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
+                                if (MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
 
                                 Date fecha = AppDatabase.getDateTime();
                                 ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -320,7 +320,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 @Override
                                 public void onClick(View v) {
                                     dialogBuilder2.dismiss();
-                                    int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
+                                    String valor = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion");
+                                    int tipoRecoleccion = Integer.parseInt((valor != null) ? valor : "1");
                                     System.out.println(tipoRecoleccion+" SI");
                                     if (tipoRecoleccion==1){
                                         //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
