@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -542,8 +543,24 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     }
 
     private void imprimirEtiquetaHospitalario(final Integer idAppManifiesto) {
-        print = new MyPrint(getActivity());
-        print.printerHospitalario(idAppManifiesto);
+        try {
+            print = new MyPrint(getActivity());
+            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                @Override
+                public void onSuccessful() {
+                    //Impresion finalizada
+                    System.out.print("Compleado correctamente");
+                }
+                @Override
+                public void onFailure(String message) {
+                    messageBox(message);
+                }
+            });
+            print.printerHospitalario(idAppManifiesto);
+
+        }catch (Exception e){
+            messageBox("No hay conexion con la impresora");
+        }
     }
 
 
