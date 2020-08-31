@@ -90,7 +90,7 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     }
 
     private void manifiestosAsignados(){
-        lblListaManifiestoAsignadoGestor.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()));
+        lblListaManifiestoAsignadoGestor.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasParaGestor(MySession.getIdUsuario()));
     }
 
     public static HomeGestorAlternoFragment create(){
