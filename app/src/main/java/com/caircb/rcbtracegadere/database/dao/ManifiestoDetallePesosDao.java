@@ -118,7 +118,7 @@ public abstract class ManifiestoDetallePesosDao {
             "       m.conductorNombre as firmaNombreTransportista,"+
             "       t.identificacion as firmaCedulaGenerador,"+
             "       m.conductorIdentificacion as firmaCedulaTransportista"+
-            " from  tb_manifiestos m  left join tb_tecnicos t on t.idManifiesto=m.idAppManifiesto " +
+            " from  tb_manifiestos m  left join tb_tecnicos t on t._id=m.idTecnicoGenerador " +
             " where m.idAppManifiesto=:idAppManifiesto " +
             " order by m.idAppManifiesto")
     public  abstract ItemEtiquetaHospitalario consultaCabeceraHospitalario(Integer idAppManifiesto);
