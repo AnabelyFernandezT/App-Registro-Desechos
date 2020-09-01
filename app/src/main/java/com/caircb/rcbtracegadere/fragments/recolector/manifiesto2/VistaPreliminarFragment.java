@@ -543,9 +543,9 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     }
 
     private void imprimirEtiquetaHospitalario(final Integer idAppManifiesto) {
-        print = new MyPrint(getActivity());
-        print.printerHospitalario(idAppManifiesto);
-        /*try {
+        //print = new MyPrint(getActivity());
+        //print.printerHospitalario(idAppManifiesto);
+        try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
                 @Override
@@ -561,7 +561,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             print.printerHospitalario(idAppManifiesto);
         }catch (Exception e){
             messageBox("No hay conexion con la impresora");
-        }*/
+        }
     }
 
 

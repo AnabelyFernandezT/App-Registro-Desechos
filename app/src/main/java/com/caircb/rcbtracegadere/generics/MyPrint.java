@@ -916,7 +916,7 @@ public class MyPrint {
             } else {
                 //mensaje...
                 Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
-                disconnect("Impresora no encontrada");
+                disconnect("No cumple la estructura");
             }
         }else {
             Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
