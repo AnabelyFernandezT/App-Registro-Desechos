@@ -18,13 +18,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements RetrofitCallbacks {
-    String pesoExtra;
+    Double pesoExtra;
     Integer idManifiesto;
     Integer idManifiestoDetalle;
     public UserEnviarCorreoComercialTask(Context context,
                                          Integer idManifiesto,
                                          Integer idManifiestoDetalle,
-                                         String pesoExtra) {
+                                         Double pesoExtra) {
         super(context);
         this.pesoExtra = pesoExtra;
         this.idManifiesto = idManifiesto;
@@ -60,8 +60,16 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
         rq.setNombreCliente(entity.getNombreCliente());
         rq.setManifiesto(entity.getNumeroManifiesto());
         rq.setPesoReferencial(String.valueOf(detalle.getPesoReferencial()));
-        rq.setPesoSolicitado(pesoExtra);
         rq.setSucursal(entity.getSucursal());
+        rq.setCodigoMae(detalle.getCodigoMAE());
+
+        try {
+            rq.setPesoSolicitado(""+ Math.round (((pesoExtra - detalle.getPesoReferencial()) * 100.00)) / 100.00);
+        }
+        catch (Exception e) {
+            rq.setPesoSolicitado("" + pesoExtra);
+            System.out.println(e.getStackTrace());
+        }
 
         Integer tpk = entity.getTipoPaquete();
         if(tpk==null|| tpk.toString().equals("")){
@@ -72,6 +80,4 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
 
         return rq;
     }
-
-
 }

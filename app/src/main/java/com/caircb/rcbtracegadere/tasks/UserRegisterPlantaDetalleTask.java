@@ -123,6 +123,7 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
         rq.setUrlFima(firmaRecoleccion!=null?(path+"/"+firmaRecoleccion.getUrl()):"");
         rq.setIdPlantaRecolector(MySession.getIdUsuario());
         rq.setTipoRecoleccion(tipoRecoleccion);
+        rq.setNumeroManifiesto(numeroManifiesto);
 
         return rq;
     }

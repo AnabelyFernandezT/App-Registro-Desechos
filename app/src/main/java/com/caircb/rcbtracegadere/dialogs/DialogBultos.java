@@ -507,8 +507,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             builder.setPositiveButton("SI", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(), idManifiestoDetalle, idManifiesto, subtotal.doubleValue());
-                    DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(),idManifiestoDetalle,idManifiesto,Double.parseDouble(txtpantalla.getText().toString()));
+                    DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(), idManifiestoDetalle, idManifiesto, subtotal.doubleValue());
+                    //DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(),idManifiestoDetalle,idManifiesto,Double.parseDouble(txtpantalla.getText().toString()));
                     pesoExtra.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     pesoExtra.setCancelable(false);
                     pesoExtra.show();
