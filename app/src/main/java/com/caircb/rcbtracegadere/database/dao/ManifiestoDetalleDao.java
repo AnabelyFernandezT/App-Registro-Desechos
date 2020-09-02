@@ -38,7 +38,7 @@ public abstract class ManifiestoDetalleDao {
     public abstract  void updateTipoBalanzaByDetalleId(Integer idManifiesto, Integer idDetalleManifiesto, Integer idTipoBalanza);
 
 
-    @Query("select d.idAppManifiestoDetalle as id, cd.nombre as descripcion,'' as unidad,cd.codigo,d.codigoMAE, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial, faltaImpresiones,tipoMostrar" +
+    @Query("select d.idAppManifiestoDetalle as id, cd.nombre as descripcion,'' as unidad,cd.codigo,d.codigoMAE, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial, faltaImpresiones,tipoMostrar,nombreCortoTicket" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto and (tipoMostrar=1 or tipoMostrar=3) ")
@@ -143,6 +143,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
             entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
             entity.setObservacionResiduos(dt.getObservacionResiduos());
+            entity.setNombreCortoTicket(dt.getNombreCortoTicket());
 
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
@@ -170,6 +171,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
             entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
             entity.setObservacionResiduos(dt.getObservacionResiduos());
+            entity.setNombreCortoTicket(dt.getNombreCortoTicket());
         }
 
         createManifiestoDetalle(entity);
@@ -215,7 +217,8 @@ public abstract class ManifiestoDetalleDao {
             entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
             entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
             entity.setObservacionResiduos(dt.getObservacionResiduos());
-
+            entity.setNombreCortoTicket(dt.getNombreCortoTicket());
+            System.out.println(dt.getNombreCortoTicket());
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
             entity.setIdTipoUnidad(dt.getIdTipoUnidad());
@@ -242,6 +245,8 @@ public abstract class ManifiestoDetalleDao {
             entity.setTieneDisponibilidadBalanza(dt.getTieneDisponibilidadBalanza());
             entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
             entity.setObservacionResiduos(dt.getObservacionResiduos());
+            entity.setNombreCortoTicket(dt.getNombreCortoTicket());
+            System.out.println(dt.getNombreCortoTicket());
         }
 
         createManifiestoDetalle(entity);
