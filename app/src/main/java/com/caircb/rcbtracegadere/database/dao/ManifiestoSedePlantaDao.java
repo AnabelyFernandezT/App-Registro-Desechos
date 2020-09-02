@@ -18,7 +18,7 @@ public abstract class ManifiestoSedePlantaDao {
     @Query("select * from tb_manifiesto_sede_planta where idManifiesto=:idManifiesto")
     public abstract ManifiestoSedePlantaEntity fetchManifiestoSedePlanta(Integer idManifiesto);
 
-    @Query("Select idManifiesto, numeroManifiesto, totBultos,totPendientes, estadoCheck from tb_manifiesto_sede_planta where idManifiestoPadre=:idManifiestoP ")
+    @Query("Select idManifiesto, numeroManifiesto, totBultos,totPendientes, estadoCheck, destinatarioAlterno from tb_manifiesto_sede_planta where idManifiestoPadre=:idManifiestoP ")
     public abstract List<ItemManifiestoPendiente> fetchManifiestoPendiente (Integer idManifiestoP);
 
     @Query("Select * from tb_manifiesto_sede_planta where idManifiestoPadre=:idManifiestoP and estadoCheck = 1")
@@ -44,6 +44,7 @@ public abstract class ManifiestoSedePlantaDao {
             entity.setTotBultos(manifiesto.getTotBultos());
             entity.setTotPendientes(manifiesto.getTotPendientes());
             entity.setEstadoCheck(false);
+            entity.setDestinatarioAlterno(manifiesto.getDestinatarioAlterno());
         }else{
             entity.setIdManifiestoPadre(idManifiestoPadre);
             entity.setIdManifiesto(manifiesto.getIdManifiesto());

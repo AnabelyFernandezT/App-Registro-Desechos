@@ -19,6 +19,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 
 import com.caircb.rcbtracegadere.adapters.ManifiestoPendienteSedeAdapter;
+import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.ItemManifiestoPendiente;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
@@ -36,6 +37,9 @@ public class DialogManifiestoPendienteSede extends MyDialog {
     ManifiestoPendienteSedeAdapter recyclerviewAdapter;
     private List<ItemManifiestoPendiente> manifiesto;
     private Integer idManifiesto, idLoteSede;
+
+    List<DtoCatalogo> listaDestinos;
+    Integer idDestino;
 
     public interface onRegister{
         public void onSuccessful();
@@ -66,7 +70,9 @@ public class DialogManifiestoPendienteSede extends MyDialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position>0){
-
+                    listaDestinos.get(position - 1);
+                    idDestino = listaDestinos.get(position-1).getId();
+                    System.out.println(idDestino);
                 }
             }
 
@@ -79,7 +85,7 @@ public class DialogManifiestoPendienteSede extends MyDialog {
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserRegistrarManifiestosPendientesSedeTask registrarManifiestosPendientesSedeTask = new UserRegistrarManifiestosPendientesSedeTask(getActivity(),idManifiesto, idLoteSede);
+                UserRegistrarManifiestosPendientesSedeTask registrarManifiestosPendientesSedeTask = new UserRegistrarManifiestosPendientesSedeTask(getActivity(),idManifiesto, idLoteSede, idDestino);
                 registrarManifiestosPendientesSedeTask.setmOnRegistro(new UserRegistrarManifiestosPendientesSedeTask.OnRegistro() {
                     @Override
                     public void onSuccessful() {
@@ -124,7 +130,7 @@ public class DialogManifiestoPendienteSede extends MyDialog {
 
     private void cargarData (){
         List <DtoCatalogo> dtoCatalogo = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipo(17);
-
+        listaDestinos = dtoCatalogo;
         if(dtoCatalogo.size()>0){
             cargarSpinnerDestino(spnAutorizacion,dtoCatalogo,true);
         }

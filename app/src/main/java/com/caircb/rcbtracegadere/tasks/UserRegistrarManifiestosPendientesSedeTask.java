@@ -12,6 +12,7 @@ import com.caircb.rcbtracegadere.models.ItemManifiestoPendiente;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPendienteSede;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -20,12 +21,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserRegistrarManifiestosPendientesSedeTask extends MyRetrofitApi implements RetrofitCallbacks {
-    Integer idManifiestoPadre, idLoteSede;
+    Integer idManifiestoPadre, idLoteSede, idDestino;
 
-    public UserRegistrarManifiestosPendientesSedeTask(Context context, Integer idManifiestoPadre, Integer idLoteSede) {
+    public UserRegistrarManifiestosPendientesSedeTask(Context context, Integer idManifiestoPadre, Integer idLoteSede, Integer idDestino) {
         super(context);
         this.idManifiestoPadre = idManifiestoPadre;
         this.idLoteSede = idLoteSede;
+        this.idDestino = idDestino;
     }
 
     public interface OnRegistro{
@@ -37,6 +39,10 @@ public class UserRegistrarManifiestosPendientesSedeTask extends MyRetrofitApi im
     @Override
     public void execute(){
         final RequestManifiestoPendienteSede request = requestManifiestoPendienteSede();
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
+        System.out.println(json);
+
         if (request!=null){
             progressShow("Enviando documento");
             WebService.api().registrarManifiestoSedePlanta(request).enqueue(new Callback<DtoInfo>() {
@@ -66,7 +72,7 @@ public class UserRegistrarManifiestosPendientesSedeTask extends MyRetrofitApi im
         rq.setIdLote(idLoteSede);
         rq.setIdManifiesto(idManifiestoPadre);
         rq.setIdsManifiestosCierre(manifiestos());
-        rq.setIdAutorizacion(0);
+        rq.setIdAutorizacion(idDestino);
 
         return rq;
     }

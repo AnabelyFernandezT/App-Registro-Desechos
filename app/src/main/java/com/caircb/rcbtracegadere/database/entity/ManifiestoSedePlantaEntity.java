@@ -22,6 +22,8 @@ public class ManifiestoSedePlantaEntity {
 
     private Boolean estadoCheck;
 
+    private String destinatarioAlterno;
+
     public ManifiestoSedePlantaEntity() {
     }
 
@@ -79,5 +81,11 @@ public class ManifiestoSedePlantaEntity {
 
     public void setIdManifiestoPadre(Integer idManifiestoPadre) {
         this.idManifiestoPadre = idManifiestoPadre;
+    }
+    public String getDestinatarioAlterno() {
+        return destinatarioAlterno;
+    }
+    public void setDestinatarioAlterno(String destinatarioAlterno) {
+        this.destinatarioAlterno = destinatarioAlterno;
     }
 }
