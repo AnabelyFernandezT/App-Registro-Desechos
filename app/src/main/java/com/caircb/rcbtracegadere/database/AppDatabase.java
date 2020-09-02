@@ -118,13 +118,7 @@ import java.util.Locale;
         CodigoQrTransportistaEntity.class,
         NotificacionPesoExtraEntity.class,
         ConsultarFirmaUsuarioEntity.class,
-        ManifiestoSedePlantaEntity.class,
-<<<<<<< HEAD
-        NotificacionEntity.class
-=======
-        RecepcionQrPlantaEntity.class,
-        RecepcionQrPlantaDetalleEntity.class
->>>>>>> origin/master
+        ManifiestoSedePlantaEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -225,11 +219,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoPlantaObservacionesDao manifiestoPlantaObservacionesDao();
     public abstract NotificacionPesoExtraDao pesoExtraDao();
     public abstract ManifiestoSedePlantaDao manifiestoSedePlantaDao();
-<<<<<<< HEAD
-    public abstract NotificacionDao notificacionDao();
-=======
-    public abstract RecepcionQrPlantaDao recepcionQrPlantaDao();
-    public abstract RecepcionQrPlantaDetalleDao recepcionQrPlantaDetalleDao();
->>>>>>> origin/master
 
 }
