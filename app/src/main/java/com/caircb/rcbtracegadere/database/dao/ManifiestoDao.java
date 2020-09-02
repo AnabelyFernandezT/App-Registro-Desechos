@@ -49,7 +49,7 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idChoferRecolector ")
     public abstract int contarHojaRutaAsignadasPara(Integer idChoferRecolector);
 
-    @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idChoferRecolector and categoria=103 ")
+    @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idChoferRecolector and categoria=103")
     public abstract int contarHojaRutaAsignadasParaGestor(Integer idChoferRecolector);
 
     @Query("select count(*) from tb_manifiestos where estado<>1 ")
@@ -58,8 +58,8 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado=2 and idTransporteVehiculo =:idVehiculo") /*** se quito and estadoFinRuta=0  ****/
     public abstract int contarHojaRutaProcesadaPlanta(Integer idVehiculo);
 
-    @Query("Select m.idAppManifiesto as idManifiesto , numeroManifiesto as numeroManifiesto, nombreCliente as cliente, m.peso, d.cantidadDesecho as cantidadBulto from tb_manifiestos_detalle d "+
-           "INNER JOIN tb_manifiestos m on d.idAppManifiesto = m.idAppManifiesto and m.idAppManifiesto!=:idManifiesto where idTipoDesecho =:idTipoDesecho")
+    @Query("Select m.idAppManifiesto as idManifiesto , numeroManifiesto as numeroManifiesto, nombreCliente as cliente, d.pesoUnidad as peso, d.cantidadBulto as cantidadBulto, d.idAppManifiestoDetalle as idManifiestoDetalleHijo from tb_manifiestos_detalle d "+
+           "INNER JOIN tb_manifiestos m on d.idAppManifiesto = m.idAppManifiesto and m.idAppManifiesto!=:idManifiesto where idTipoDesecho =:idTipoDesecho and m.estado = 2")
     public abstract List<RowItemManifiestosDetalleGestores> manifiestosHijos (Integer idTipoDesecho, Integer idManifiesto);
 
     @Query("select count(*) from tb_manifiestos where estado<>1 and idSubRuta=:idSubruta and idChoferRecolector=:idChoferRecolector ")

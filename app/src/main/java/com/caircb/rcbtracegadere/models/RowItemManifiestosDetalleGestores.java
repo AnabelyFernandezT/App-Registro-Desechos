@@ -8,6 +8,7 @@ public class RowItemManifiestosDetalleGestores {
     private String cliente;
     private Double peso;
     private Double cantidadBulto;
+    private Integer idManifiestoDetalleHijo;
 
     public RowItemManifiestosDetalleGestores() {
     }
@@ -58,5 +59,13 @@ public class RowItemManifiestosDetalleGestores {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getIdManifiestoDetalleHijo() {
+        return idManifiestoDetalleHijo;
+    }
+
+    public void setIdManifiestoDetalleHijo(Integer idManifiestoDetalleHijo) {
+        this.idManifiestoDetalleHijo = idManifiestoDetalleHijo;
     }
 }
