@@ -14,15 +14,24 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.adapters.NotificationAdapter;
+import com.caircb.rcbtracegadere.adapters.TextoAdapter;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.models.ItemNotificacion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DialogManifiestoCliente extends MyDialog {
     Activity _activity;
@@ -33,7 +42,10 @@ public class DialogManifiestoCliente extends MyDialog {
     Manifiesto2Fragment principal = new Manifiesto2Fragment();
     Integer idManifiesto, tipoPaquete;
     String identificacion;
+    private RecyclerView recyclerView;
+    private TextoAdapter recyclerviewAdapter;
     private Integer tipoRecoleccion;
+    private List<String> textList = new ArrayList<>();
 
     public interface onRegisterListenner {
         public void onSucessfull();
@@ -58,12 +70,18 @@ public class DialogManifiestoCliente extends MyDialog {
     private void init() {
         int type = InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS| InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
+        recyclerView = getView().findViewById(R.id.recyclerviewNotificaciones);
+        recyclerviewAdapter = new TextoAdapter(getActivity());
         txtManifiestoCliente = getView().findViewById(R.id.txtManifiestoCliente);
         txtManifiestoCliente.setInputType(type);
         txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
         btnIniciaRutaAplicar = getView().findViewById(R.id.btnIniciaRutaAplicar);
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        recyclerviewAdapter.setTaskList(textList);
+        recyclerView.setAdapter(recyclerviewAdapter);
+        recyclerviewAdapter.addText("");
         btnIniciaRutaCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +93,8 @@ public class DialogManifiestoCliente extends MyDialog {
             @Override
             public void onClick(View v) {
 
-                if(txtManifiestoCliente.getText().toString().equals("")){
+                if(txtManifiestoCliente.getText().toString().equals(""))
+                {
                     messageBox("No ingresó un número de manifiesto cliente!");
                 }else{
                     //System.out.println("Placa transportista: "+MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista"));
