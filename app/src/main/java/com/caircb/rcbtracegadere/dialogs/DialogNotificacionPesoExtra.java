@@ -142,7 +142,8 @@ public class DialogNotificacionPesoExtra extends MyDialog {
     }
 
     private void enviarCorreoComercial(){
-        enviarCorreoComercial = new UserEnviarCorreoComercialTask(getContext(),numeroManifiesto,idManifiestoDetalle,String.valueOf(pesoExtra));
+        //enviarCorreoComercial = new UserEnviarCorreoComercialTask(getContext(),numeroManifiesto,idManifiestoDetalle,String.valueOf(pesoExtra));
+        enviarCorreoComercial = new UserEnviarCorreoComercialTask(getContext(),numeroManifiesto,idManifiestoDetalle,pesoExtra);
         enviarCorreoComercial.execute();
     }
 

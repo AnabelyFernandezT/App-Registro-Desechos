@@ -39,6 +39,7 @@ import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultaFirmaUsuarioTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultaQrPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaXNoTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
@@ -100,7 +101,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     private DialogBultosPlanta.onclickSedeListener mOnclickSedeListener;
 
     private void init() {
-        consultarFirma();
+
         lblListaManifiestoAsignadoPlanta = (TextView) getView().findViewById(R.id.lblListaManifiestoAsignadoPlanta);
         btnSincManifiestosPlanta = (ImageButton) getView().findViewById(R.id.btnSincManifiestosPlanta);
         btnListaAsignadaTransportista = (ImageButton) getView().findViewById(R.id.btnListaAsignadaTransportistaPlanta);
@@ -200,16 +201,18 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
         sectionQrLotePlanta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentIntegrator integrator = new IntentIntegrator(getActivity());
+             /*   IntentIntegrator integrator = new IntentIntegrator(getActivity());
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("LECTURA CÓDIGO QR PLANTA");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(true);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.setOrientationLocked(false);
-                integrator.initiateScan();
+                integrator.initiateScan();*/
+             //setNavegate(RecepcionLotePlantaFragment.newInstance());
             }
         });
+        consultarFirma();
     }
 
     @Override
@@ -217,7 +220,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
         try {
             Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
             // CODIGO PARA LECTURA DISPOSITIVO HONEYWELL
-           /* String codigoQr=data;
+            String codigoQr=data;
             String[] array= codigoQr.split("\\$");
             System.out.println(array[4]);
             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
@@ -227,7 +230,28 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
             MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
             MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
             placa=array[6];
-            menuSeleccionCargaManifiestos();*/
+            String destinoUsuario=MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario")==null?"":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario");
+            if (array[4].equals(destinoUsuario)){
+                UserConsultaQrPlantaTask consultaQrPlantaTask = new UserConsultaQrPlantaTask(getActivity());
+                consultaQrPlantaTask.setOnQrPlantaListener(new UserConsultaQrPlantaTask.OnQrPlantaListener() {
+                    @Override
+                    public void onSuccessful() {
+                        setNavegate(RecepcionLotePlantaFragment.newInstance());
+                    }
+                });
+                consultaQrPlantaTask.execute();
+            }else {
+                final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setMessage("Los manifiestos no pertenecen a este destino!!!");
+                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+                dialogBuilder.show();
+            }
         }
         catch (Exception e)
         {
@@ -254,9 +278,9 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
                 placa=array[6];
-               /* if (array[4].equals(MySession.getDestinoEspecifico())){*/
+                if (array[4].equals(MySession.getDestinoEspecifico())){
                     menuSeleccionCargaManifiestos();
-               /* }else {
+                }else {
                     final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setMessage("Los manifiestos no pertenecen a este destino!!!");
@@ -267,7 +291,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                         }
                     });
                     dialogBuilder.show();
-                }*/
+                }
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -428,11 +452,18 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
 
     private void consultarFirma(){
         UserConsultaFirmaUsuarioTask consultaFirmaUsuarioTask = new UserConsultaFirmaUsuarioTask(getActivity(), MySession.getIdUsuario());
+        consultaFirmaUsuarioTask.setOnFirmaListener(new UserConsultaFirmaUsuarioTask.OnFirmaListener() {
+            @Override
+            public void onSuccessful() {
+                ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity= MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
+                String firmaUsuario=consultarFirmaUsuarioEntity==null?"":(consultarFirmaUsuarioEntity.getFirmaBase64()==null?"":consultarFirmaUsuarioEntity.getFirmaBase64());
+                int idDestinoEspecifico=consultarFirmaUsuarioEntity==null?0:(consultarFirmaUsuarioEntity.getIdFinRutaCatalogo()==null?0:consultarFirmaUsuarioEntity.getIdFinRutaCatalogo());
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario",firmaUsuario);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_usuario",idDestinoEspecifico+"");
+            }
+        });
         consultaFirmaUsuarioTask.execute();
-        ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity= MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
-        String firmaUsuario=consultarFirmaUsuarioEntity==null?"":(consultarFirmaUsuarioEntity.getFirmaBase64()==null?"":consultarFirmaUsuarioEntity.getFirmaBase64());
-        System.out.println(firmaUsuario);
-        MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario",firmaUsuario);
+
     }
 
 
