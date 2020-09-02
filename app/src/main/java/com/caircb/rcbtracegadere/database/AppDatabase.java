@@ -31,6 +31,7 @@ import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDetalleDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoSedeDetalleValorDao;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoSedePlantaDao;
+import com.caircb.rcbtracegadere.database.dao.NotificacionDao;
 import com.caircb.rcbtracegadere.database.dao.NotificacionPesoExtraDao;
 import com.caircb.rcbtracegadere.database.dao.PaqueteDao;
 import com.caircb.rcbtracegadere.database.dao.ImpresoraDao;
@@ -66,6 +67,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeDetalleValorEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedeEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoSedePlantaEntity;
+import com.caircb.rcbtracegadere.database.entity.NotificacionEntity;
 import com.caircb.rcbtracegadere.database.entity.NotificacionPesoExtraEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
@@ -117,6 +119,7 @@ import java.util.Locale;
         NotificacionPesoExtraEntity.class,
         ConsultarFirmaUsuarioEntity.class,
         ManifiestoSedePlantaEntity.class,
+        NotificacionEntity.class,
         RecepcionQrPlantaEntity.class,
         RecepcionQrPlantaDetalleEntity.class
 },version = MyConstant.DBO_VERSION)
@@ -219,6 +222,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoPlantaObservacionesDao manifiestoPlantaObservacionesDao();
     public abstract NotificacionPesoExtraDao pesoExtraDao();
     public abstract ManifiestoSedePlantaDao manifiestoSedePlantaDao();
+    public abstract NotificacionDao notificacionDao();
     public abstract RecepcionQrPlantaDao recepcionQrPlantaDao();
     public abstract RecepcionQrPlantaDetalleDao recepcionQrPlantaDetalleDao();
 

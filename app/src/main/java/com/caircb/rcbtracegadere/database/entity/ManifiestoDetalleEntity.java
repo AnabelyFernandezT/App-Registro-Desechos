@@ -71,7 +71,7 @@ public class ManifiestoDetalleEntity {
 
     private Integer cantidadRefencial;
     private  Integer tipoMostrar;
-
+    private String nombreCortoTicket;
 
     public ManifiestoDetalleEntity() {
     }
@@ -312,5 +312,13 @@ public class ManifiestoDetalleEntity {
 
     public void setTipoMostrar(Integer tipoMostrar) {
         this.tipoMostrar = tipoMostrar;
+    }
+
+    public String getNombreCortoTicket() {
+        return nombreCortoTicket;
+    }
+
+    public void setNombreCortoTicket(String nombreCortoTicket) {
+        this.nombreCortoTicket = nombreCortoTicket;
     }
 }

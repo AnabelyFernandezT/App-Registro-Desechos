@@ -81,6 +81,7 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         Date fecha = deserialize(fechaSincronizacion);
 
         RequestHojaRuta req = new RequestHojaRuta(new Date(),fecha,0,idRuta, idManifiesto, lote);
+
         //Integer idRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         WebService.api().getHojaRuta(req).enqueue(new Callback<List<DtoManifiesto>>() {
 

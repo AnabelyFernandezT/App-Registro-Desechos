@@ -1,8 +1,5 @@
 package com.caircb.rcbtracegadere.fragments.Sede;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +24,6 @@ import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.models.ItemLote;
-import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioMovilizacion;
 import com.caircb.rcbtracegadere.tasks.UserReAbrirLoteTask;
@@ -79,9 +74,9 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
 
     private void init(){
 
-        recyclerView = getView().findViewById(R.id.recyclerviewLotes);
+        recyclerView = getView().findViewById(R.id.recyclerviewNotificaciones);
         recyclerviewAdapter = new LoteAdapter(getActivity());
-        btnRetornarListHojaLotes = getView().findViewById(R.id.btnRetornarListHojaLotes);
+        btnRetornarListHojaLotes = getView().findViewById(R.id.btnRetornarInicio);
         btnRetornarListHojaLotes.setOnClickListener(this);
         searchView = getView().findViewById(R.id.searchViewLotes);
         searchView.setOnSearchListener(new SearchView.OnSearchListener() {
@@ -214,7 +209,7 @@ public class HojaFragment extends MyFragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btnRetornarListHojaLotes:
+            case R.id.btnRetornarInicio:
                 setNavegate(HomeSedeFragment.create());
                 break;
         }
