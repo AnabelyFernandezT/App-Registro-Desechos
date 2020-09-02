@@ -18,6 +18,7 @@ public class RowItemManifiesto {
     private Integer tipoMostrar;
     private String codigoMAE;
     private Integer idTipoDesecho;
+    private String nombreCortoTicket;
 
     public RowItemManifiesto(){}
 
@@ -132,5 +133,13 @@ public class RowItemManifiesto {
 
     public void setIdTipoDesecho(Integer idTipoDesecho) {
         this.idTipoDesecho = idTipoDesecho;
+    }
+
+    public String getNombreCortoTicket() {
+        return nombreCortoTicket;
+    }
+
+    public void setNombreCortoTicket(String nombreCortoTicket) {
+        this.nombreCortoTicket = nombreCortoTicket;
     }
 }

@@ -40,6 +40,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogMensajes;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HomeGestorAlternoFragment;
 import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
+import com.caircb.rcbtracegadere.fragments.Notifaciones.NotificacionesFragment;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
 import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
@@ -89,6 +90,8 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     UserDestinoEspecificoTask consultaDestinoEspecifico;
     DialogInformacionModulos dialogInformacionModulos;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
+
+
 
     private DialogMenuBaseAdapter dialogMenuBaseAdapter;
     private List<RowItem> rowItems;
@@ -654,6 +657,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
             jsonLugares = null;
             json = null;
             myListOfItems.add(new MenuItem("NOTIFICACIONES"));
+            myListOfItems.add(new MenuItem("GESTIONAR NOTIFICACIONES"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -704,6 +708,13 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                             mensajes();
                         }
                     }
+                    else if (item.getNombre().equals("GESTIONAR NOTIFICACIONES")) {
+                        if (mdialog != null) {
+                            mDrawer.closeDrawers();
+                            mdialog.dismiss();
+                            navegate((NotificacionesFragment.newInstance()));
+                        }
+                    }
                 }
             }
         });
@@ -722,55 +733,55 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private void initBorrarCache() {
         File dir = this.getCacheDir();
         if (deleteDir(dir)) {
-            System.out.println("CACHE BORRADA");
-        } else {
-            System.out.println("FALLO BORRADO");
+                System.out.println("CACHE BORRADA");
+            } else {
+                System.out.println("FALLO BORRADO");
+            }
         }
-    }
 
-    public static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
+        public static boolean deleteDir(File dir) {
+            if (dir != null && dir.isDirectory()) {
+                String[] children = dir.list();
+                for (int i = 0; i < children.length; i++) {
+                    boolean success = deleteDir(new File(dir, children[i]));
+                    if (!success) {
+                        return false;
+                    }
+                }
+                return dir.delete();
+            } else if (dir != null && dir.isFile()) {
+                return dir.delete();
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public void onBackPressed() {
+            if (fragment != null) {
+                if (fragment instanceof OnBackPressed) {
+                    ((OnBackPressed) fragment).onBackPressed();
                 }
             }
-            return dir.delete();
-        } else if (dir != null && dir.isFile()) {
-            return dir.delete();
-        } else {
-            return false;
         }
-    }
 
-    @Override
-    public void onBackPressed() {
-        if (fragment != null) {
-            if (fragment instanceof OnBackPressed) {
-                ((OnBackPressed) fragment).onBackPressed();
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (fragment != null&& resultCode!=0)  {
+                if (fragment instanceof OnCameraListener) {
+                    ((OnCameraListener) fragment).onCameraResult(requestCode, resultCode, data);
+                }
             }
         }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (fragment != null&& resultCode!=0)  {
-            if (fragment instanceof OnCameraListener) {
-                ((OnCameraListener) fragment).onCameraResult(requestCode, resultCode, data);
-            }
-        }
-    }
-
-    private void consultarInicioFinRuta(){
-        verificarInicioRutaTask = new UserConsultarInicioRutaTask(MainActivity.this);
-        verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
-            @Override
-            public void onSuccessful() {
-                //message("Ha iniciado previamente sesion");
-                navegate(HomeTransportistaFragment.create());
+        private void consultarInicioFinRuta(){
+            verificarInicioRutaTask = new UserConsultarInicioRutaTask(MainActivity.this);
+            verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
+                @Override
+                public void onSuccessful() {
+                    //message("Ha iniciado previamente sesion");
+                    navegate(HomeTransportistaFragment.create());
 
             }
         });

@@ -371,6 +371,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(int position, View v) {
+
                 int x = 0;
                 if (estadoManifiesto == 1) {
                     if (tipoRecoleccion == 1) {
