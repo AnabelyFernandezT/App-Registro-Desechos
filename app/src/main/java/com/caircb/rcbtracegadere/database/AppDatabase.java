@@ -35,6 +35,8 @@ import com.caircb.rcbtracegadere.database.dao.NotificacionPesoExtraDao;
 import com.caircb.rcbtracegadere.database.dao.PaqueteDao;
 import com.caircb.rcbtracegadere.database.dao.ImpresoraDao;
 import com.caircb.rcbtracegadere.database.dao.ParametroDao;
+import com.caircb.rcbtracegadere.database.dao.RecepcionQrPlantaDao;
+import com.caircb.rcbtracegadere.database.dao.RecepcionQrPlantaDetalleDao;
 import com.caircb.rcbtracegadere.database.dao.RutaInicioFinDao;
 import com.caircb.rcbtracegadere.database.dao.RutasDao;
 import com.caircb.rcbtracegadere.database.dao.RuteoRecoleccionDao;
@@ -67,6 +69,8 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoSedePlantaEntity;
 import com.caircb.rcbtracegadere.database.entity.NotificacionPesoExtraEntity;
 import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
+import com.caircb.rcbtracegadere.database.entity.RecepcionQrPlantaDetalleEntity;
+import com.caircb.rcbtracegadere.database.entity.RecepcionQrPlantaEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
@@ -112,7 +116,9 @@ import java.util.Locale;
         CodigoQrTransportistaEntity.class,
         NotificacionPesoExtraEntity.class,
         ConsultarFirmaUsuarioEntity.class,
-        ManifiestoSedePlantaEntity.class
+        ManifiestoSedePlantaEntity.class,
+        RecepcionQrPlantaEntity.class,
+        RecepcionQrPlantaDetalleEntity.class
 },version = MyConstant.DBO_VERSION)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -213,5 +219,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ManifiestoPlantaObservacionesDao manifiestoPlantaObservacionesDao();
     public abstract NotificacionPesoExtraDao pesoExtraDao();
     public abstract ManifiestoSedePlantaDao manifiestoSedePlantaDao();
+    public abstract RecepcionQrPlantaDao recepcionQrPlantaDao();
+    public abstract RecepcionQrPlantaDetalleDao recepcionQrPlantaDetalleDao();
 
 }

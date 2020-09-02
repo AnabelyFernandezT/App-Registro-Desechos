@@ -108,8 +108,8 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
 
 
 
-
-        String banderaValidacion = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion");
+//VALIDACION HOSPITALARIO DEJAR COMENTADO
+      /*  String banderaValidacion = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion");
         if (banderaValidacion.equals("0")) {
             String estadoCodigoQr = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_estadoCodigoQr");
             System.out.println(estadoCodigoQr);
@@ -168,7 +168,7 @@ public class HojaRutaAsignadaFragmentNO extends MyFragment implements View.OnCli
                 consultaCodigoQrValidadorTask.execute();
 
             }
-        }
+        }*/
 
     }
 
