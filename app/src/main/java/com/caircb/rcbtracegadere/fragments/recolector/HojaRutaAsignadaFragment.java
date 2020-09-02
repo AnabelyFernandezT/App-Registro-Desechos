@@ -265,7 +265,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                     dialogBuilderScan.dismiss();
                                                 }
                                             });
-                                            asociarLoteManifiesto(392);
+                                            //asociarLoteManifiesto(392);
                                             dialogBuilderScan.show();
                                         }
                                     });
@@ -717,7 +717,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                 dialogBuilderScan.dismiss();
                                             }
                                         });
-                                        asociarLoteManifiesto(392);
+                                        //asociarLoteManifiesto(392);
                                         dialogBuilderScan.show();
                                     }
                                 });
