@@ -541,8 +541,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     }
 
     private String obtieneDosDecimales(double valor) {
-        DecimalFormat format = new DecimalFormat();
-        format.setMaximumFractionDigits(2); //Define 2 decimales.
-        return format.format(valor);
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(valor);
     }
 }
