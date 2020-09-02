@@ -401,7 +401,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     flag=1;
 
                     //Quitar cuando se active desde Lector
-                    //asociarLoteManifiesto(385);
+                    asociarLoteManifiesto(389);
                 }
 
             }
@@ -580,7 +580,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
                     @Override
                     public void onSuccessful() {
-                        messageBox("Se notificara " + manifiesto.getMensaje());
+                        messageBox("Se notificará " + manifiesto.getMensaje());
                     }
                 });
                 notificaion.execute();
