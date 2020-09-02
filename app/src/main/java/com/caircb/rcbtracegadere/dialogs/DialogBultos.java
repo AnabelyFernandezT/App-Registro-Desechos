@@ -337,7 +337,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
 
         //Probar sin impresiora
-        /************************************
+        /************************************/
 
         //bultos.clear();
         //subtotal= BigDecimal.ZERO;
@@ -347,10 +347,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         listaValoresAdapter.notifyDataSetChanged();
         //loadData();
 
-        **************************************/
+        /**************************************/
 
         //Probar con impresiora
-
+/*
         try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
@@ -374,7 +374,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
 
-
+*/
 
     }
 
