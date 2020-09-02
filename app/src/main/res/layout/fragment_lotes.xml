@@ -67,7 +67,7 @@
     <!--FOOTER-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewLotes"
+        android:id="@+id/recyclerviewNotificaciones"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="5dp"
@@ -92,7 +92,7 @@
 
         <LinearLayout
             android:clickable="true"
-            android:id="@+id/btnRetornarListHojaLotes"
+            android:id="@+id/btnRetornarInicio"
             android:orientation="horizontal"
             android:background="@drawable/ic_button_skin_right"
             android:layout_width="wrap_content"
