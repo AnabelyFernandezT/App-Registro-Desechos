@@ -44,6 +44,7 @@ public class ManifiestoPendienteSedeAdapter extends RecyclerView.Adapter<Manifie
         holder.txtItemBultoTotal.setText(String.valueOf(it.getTotBultos()));
         holder.txtItemCantidadBulto.setText(String.valueOf(it.getTotPendientes()));
         holder.chkEstadoItemDetalle.setChecked(it.getEstadoCheck());
+        holder.txtNombreGestorAlterno.setText(it.getDestinatarioAlterno());
 
         holder.chkEstadoItemDetalle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +73,7 @@ public class ManifiestoPendienteSedeAdapter extends RecyclerView.Adapter<Manifie
         TextView txtItemBultoTotal;
         TextView txtItemCantidadBulto;
         CheckBox chkEstadoItemDetalle;
+        TextView txtNombreGestorAlterno;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -81,6 +83,7 @@ public class ManifiestoPendienteSedeAdapter extends RecyclerView.Adapter<Manifie
             txtItemBultoTotal = itemView.findViewById(R.id.txtItemBultoTotal);
             txtItemCantidadBulto = itemView.findViewById(R.id.txtItemCantidadBulto);
             chkEstadoItemDetalle = itemView.findViewById(R.id.chkEstadoItemDetalle);
+            txtNombreGestorAlterno = itemView.findViewById(R.id.txtNombreGestorAlterno);
         }
     }
 

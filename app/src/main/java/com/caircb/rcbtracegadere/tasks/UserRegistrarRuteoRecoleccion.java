@@ -57,8 +57,8 @@ public class UserRegistrarRuteoRecoleccion extends MyRetrofitApi implements Retr
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
                         if(response.body().getExito()) {
-                            if(mOnRegisterRuteroRecoleecionListener!=null)mOnRegisterRuteroRecoleecionListener.onSuccessful();
                             progressHide();
+                            if(mOnRegisterRuteroRecoleecionListener!=null)mOnRegisterRuteroRecoleecionListener.onSuccessful();
                         }
                     }else{
                         progressHide();

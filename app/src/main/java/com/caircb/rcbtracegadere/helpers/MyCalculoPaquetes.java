@@ -25,7 +25,7 @@ public class MyCalculoPaquetes {
                 Integer n = mpkg.getDatosFundas();
                 Integer m = mpkg.getDatosGuardianes();
 
-                boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda();
+                boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda(), contabilizaGuardianAdicional = pkg.getContabilizaGuardianAdicional();
 
                 resp = new CalculoPaqueteResul();
 
@@ -35,8 +35,15 @@ public class MyCalculoPaquetes {
                     resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
                 } else {
                     if (adicionales == true && guardian == true) {
-                        resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
-                        resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                        if(contabilizaGuardianAdicional){
+                            resp.setPqh(0);
+                            resp.setAdicionalGuardian(m);
+                            resp.setAdicionalFunda(0);
+                        }
+                        else {
+                            resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                            resp.setAdicionalGuardian(calculoGuardia(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                        }
                     } else {
                         if (adicionales == true && fundas == true) {
                             resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));

@@ -6,6 +6,7 @@ public class DtoManifiestoPendienteSede {
     private String numeroManifiesto;
     private Integer totBultos;
     private Integer totPendientes;
+    private String destinatarioAlterno;
 
     public DtoManifiestoPendienteSede() {
     }
@@ -40,5 +41,13 @@ public class DtoManifiestoPendienteSede {
 
     public void setTotPendientes(Integer totPendientes) {
         this.totPendientes = totPendientes;
+    }
+
+    public String getDestinatarioAlterno() {
+        return destinatarioAlterno;
+    }
+
+    public void setDestinatarioAlterno(String destinatarioAlterno) {
+        this.destinatarioAlterno = destinatarioAlterno;
     }
 }

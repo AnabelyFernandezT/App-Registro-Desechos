@@ -13,11 +13,11 @@ public class DtoPaquetes {
     private Integer paquetePorRecoleccion;
     private Boolean entregaFundas;
     private Boolean entregaGuardianes;
-
+    private Boolean contabilizaFundaAdicional;
+    private Boolean contabilizaGuardianAdicional;
 
     public DtoPaquetes() {
     }
-
 
     public Integer getIdPaquete() {
         return idPaquete;
@@ -105,5 +105,21 @@ public class DtoPaquetes {
 
     public void setEntregaGuardianes(Boolean entregaGuardianes) {
         this.entregaGuardianes = entregaGuardianes;
+    }
+
+    public Boolean getContabilizaFundaAdicional() {
+        return contabilizaFundaAdicional;
+    }
+
+    public void setContabilizaFundaAdicional(Boolean contabilizaFundaAdicional) {
+        this.contabilizaFundaAdicional = contabilizaFundaAdicional;
+    }
+
+    public Boolean getContabilizaGuardianAdicional() {
+        return contabilizaGuardianAdicional;
+    }
+
+    public void setContabilizaGuardianAdicional(Boolean contabilizaGuardianAdicional) {
+        this.contabilizaGuardianAdicional = contabilizaGuardianAdicional;
     }
 }

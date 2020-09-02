@@ -8,9 +8,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.caircb.rcbtracegadere.MainActivity;
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarLotePadreTask;
 
@@ -18,7 +20,7 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
 
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
-    TextView lblListaManifiestoAsignado;
+    TextView lblListaManifiestoAsignadoGestor;
     ImageButton regionBuscar;
     UserConsultarLotePadreTask consultarLotePadre;
 
@@ -33,7 +35,7 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
-        lblListaManifiestoAsignado = getView().findViewById(R.id.lblListaManifiestoAsignado);
+        lblListaManifiestoAsignadoGestor = getView().findViewById(R.id.lblListaManifiestoAsignadoGestor);
         btnSincManifiestos = getView().findViewById(R.id.btnSincLotePadre);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
         btnMenu = getView().findViewById(R.id.btnMenu);
@@ -70,8 +72,10 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     }
 
     private void datosManifiestosAsignados(){
-        consultarLotePadre = new UserConsultarLotePadreTask(getActivity());
-        consultarLotePadre.execute();
+        /*consultarLotePadre = new UserConsultarLotePadreTask(getActivity());
+        consultarLotePadre.execute();*/
+
+        manifiestosAsignados();
     }
 
     private void initBuscador(){
@@ -83,6 +87,10 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
                 //setNavegate(HomeRecepcionFragment.create());
             }
         });
+    }
+
+    private void manifiestosAsignados(){
+        lblListaManifiestoAsignadoGestor.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasParaGestor(MySession.getIdUsuario()));
     }
 
     public static HomeGestorAlternoFragment create(){

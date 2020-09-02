@@ -115,7 +115,7 @@ public class DialogBuilder extends Dialog {
     private  View.OnClickListener myListener = new View.OnClickListener() {
         public void onClick(View v) {
             // do something when the button is clicked
-            dismiss();
+            DialogBuilder.this.dismiss();
         }
     };
 

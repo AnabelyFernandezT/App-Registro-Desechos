@@ -247,7 +247,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         listaValoresAdapter.setOnItemBultoImpresion(new ListaValoresAdapter.OnItemBultoImpresionListener() {
             @Override
             public void onSendImpresion(Integer pos, double pesoTaraBulto) {
-                /*CatalogoItemValor item = bultos.get(pos);
+                CatalogoItemValor item = bultos.get(pos);
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
                 String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
                 if (tipoSubRuta.equals("2")){
@@ -269,7 +269,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
                 DecimalFormat df = new DecimalFormat("#.00");
                 double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
-                txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");*/
+                txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
             }
         });
         listaValoresAdapter.setOnItemBultoListener(new ListaValoresAdapter.OnItemBultoListener() {
@@ -337,7 +337,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
 
         //Probar sin impresiora
-        /************************************/
+        /************************************
 
         //bultos.clear();
         //subtotal= BigDecimal.ZERO;
@@ -347,10 +347,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         listaValoresAdapter.notifyDataSetChanged();
         //loadData();
 
-        /**************************************/
+        **************************************/
 
         //Probar con impresiora
-/*
+
         try {
             print = new MyPrint(getActivity());
             print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
@@ -374,7 +374,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
 
-*/
+
 
     }
 
@@ -489,12 +489,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     public void addBulto(final BigDecimal imput, final String tipo){
 
         subtotal = subtotal.add(imput);
+        Double _subTmp = subtotal.doubleValue();
 
-        if(subtotal.doubleValue()>pesoReferencial){
+        if(Double.compare(_subTmp,pesoReferencial) > 0){
             autorizacion = 0;
         }
 
         if( vreferencial.equals("SI") && subtotal.doubleValue() > pesoReferencial && autorizacion.equals(0)){
+            if (builder != null) {
+                builder.dismiss();
+                builder = null;
+            }
 
             builder = new DialogBuilder(getActivity());
             builder.setMessage("¿Necesita autorización porque el peso excede el peso referencial?");
@@ -502,8 +507,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             builder.setPositiveButton("SI", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(), idManifiestoDetalle, idManifiesto, subtotal.doubleValue());
-                    DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(),idManifiestoDetalle,idManifiesto,Double.parseDouble(txtpantalla.getText().toString()));
+                    DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(), idManifiestoDetalle, idManifiesto, subtotal.doubleValue());
+                    //DialogNotificacionPesoExtra pesoExtra = new DialogNotificacionPesoExtra(getActivity(),idManifiestoDetalle,idManifiesto,Double.parseDouble(txtpantalla.getText().toString()));
                     pesoExtra.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     pesoExtra.setCancelable(false);
                     pesoExtra.show();
@@ -736,6 +741,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
                         }
                     } else {
+                        aplicar();
                         messageBox("Debe imprimir todos los bultos para continuar...!");
                     }
                     break;

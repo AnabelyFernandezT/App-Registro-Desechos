@@ -8,6 +8,7 @@ public class RequestNotificacionComercial {
     private String pesoReferencial;
     private String pesoSolicitado;
     private Integer flagTipoPKG;
+    private String codigoMae;
 
     public RequestNotificacionComercial() {
     }
@@ -66,5 +67,13 @@ public class RequestNotificacionComercial {
 
     public void setSucursal(String sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public String getCodigoMae() {
+        return codigoMae;
+    }
+
+    public void setCodigoMae(String codigoMae) {
+        this.codigoMae = codigoMae;
     }
 }

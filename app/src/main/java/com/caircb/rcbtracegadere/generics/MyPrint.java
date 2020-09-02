@@ -94,6 +94,37 @@ public class MyPrint {
         }
     }
 
+    public void printerIndividualLote(Integer idManifiesto, Integer idManifiestoDetalle, final Integer totalNumeroEtiquetas){
+        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+            final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividualLote(idManifiesto, idManifiestoDetalle);
+            if(printEtiqueta != null){
+                System.out.println(printEtiqueta);
+                dialog.show();
+
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (Looper.myLooper() == null)
+                        {
+                            Looper.prepare();
+                        }
+                        doConnectionTestIndividualLote(printEtiqueta, totalNumeroEtiquetas);
+                        Looper.loop();
+                        Looper.myLooper().quit();
+                    }
+                });
+
+            } else {
+                //mensaje...
+                Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+                disconnect("Impresora no encontrada");
+            }
+        }else {
+            Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+            disconnect("Impresora no encontrada");
+        }
+    }
+
+
     public void pinter(Integer idAppManifiesto){
         //varificar si existe alguna impresora conectada...
         if(MyApp.getDBO().impresoraDao().existeImpresora()) {
@@ -195,10 +226,20 @@ public class MyPrint {
             disconnect("No existe conexion con la impresora");
         }
     }
+
     private void doConnectionTestIndividual(ItemEtiqueta etiqueta, Integer numeroBulto) {
         printer = connect();
         if (printer != null) {
             sendTestLabelIndividual(etiqueta, numeroBulto);
+        } else {
+            disconnect("No existe conexion con la impresora");
+        }
+    }
+
+    private void doConnectionTestIndividualLote(ItemEtiqueta etiqueta, Integer totalNumeroEtiquetas) {
+        printer = connect();
+        if (printer != null) {
+            sendTestLabelIndividualLote(etiqueta, totalNumeroEtiquetas,10);
         } else {
             disconnect("No existe conexion con la impresora");
         }
@@ -248,6 +289,54 @@ public class MyPrint {
         }
     }
 
+    private void sendTestLabelIndividualLote(ItemEtiqueta etiquetas, Integer totalNumeroEtiquetas, Integer loteValor) {
+        boolean complete=false;
+        ItemEtiqueta row = etiquetas;
+        try {
+            byte[] configLabel;
+            int contador=1;
+
+            for (int i =1 ; i<=totalNumeroEtiquetas ; i++){
+                configLabel = getTramaBultoIndividualLote(
+                        printer,
+                        row.getNumeroManifiesto(),
+                        row.getCodigoQr(),
+                        eliminarAcentos(row.getCliente()),
+                        (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecoleccion()),
+                        row.getPeso(),
+                        eliminarAcentos(row.getResiduo()),
+                        String.valueOf(i),
+                        eliminarAcentos(row.getTratamiento()),
+                        eliminarAcentos(row.getDestinatario()),
+                        false
+                );
+                if(configLabel!=null) {
+                    zebraPrinterConnection.write(configLabel);
+                    if (contador == loteValor ) {
+                        contador=1;
+                        MyThread.sleep(6000);
+                    }
+                    contador += 1;
+                    MyThread.sleep(600);
+                }
+            }
+            MyThread.sleep(500*totalNumeroEtiquetas);
+
+            complete=true;
+        }catch (ZebraPrinterConnectionException e) {
+            //setStatus(e.getMessage(), Color.RED);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }finally {
+            if(complete)finalized();
+            if(complete){
+                if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+            }
+            else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
+        }
+    }
+
+
     private void sendTestLabelHospitalario(ItemEtiquetaHospitalario etiquetas,List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle ) {
         boolean complete=false;
         ItemEtiquetaHospitalario row = etiquetas;
@@ -268,19 +357,19 @@ public class MyPrint {
                 System.out.print(listNew);
                 configLabel = getTramaHospitalario(
                         printer,
-                        row.getNombreGenerador(),
-                        row.getPuntoRecoleccion(),
-                        row.getRucGenerador(),
-                        //(new SimpleDateFormat("dd/MM/yyyy")).format(row.()),
-                        row.getFechaRecolecion(),
-                        row.getClaveManifiestoSap(),
-                        row.getClaveManifiesto(),
-                        row.getDireccion(),
-                        row.getDestinatario(),
-                        row.getFirmaNombreGenerador(),
-                        row.getFirmaNombreTransportista(),
-                        row.getFirmaCedulaGenerador(),
-                        row.getFirmaCedulaTransportista(),
+                        eliminarNulos(row.getNombreGenerador()) ,
+                        eliminarNulos(row.getPuntoRecoleccion()),
+                        eliminarNulos(row.getRucGenerador()),
+                        (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),
+                        //row.getFechaRecolecion(),
+                        eliminarNulos(row.getClaveManifiestoSap()),
+                        eliminarNulos(row.getClaveManifiesto()),
+                        eliminarNulos(row.getDireccion()),
+                        eliminarNulos(row.getDestinatario()),
+                        eliminarNulos(row.getFirmaNombreGenerador()),
+                        eliminarNulos(row.getFirmaNombreTransportista()),
+                        eliminarNulos(row.getFirmaCedulaGenerador()),
+                        eliminarNulos(row.getFirmaCedulaTransportista()),
                         listNew
                 );
                 zebraPrinterConnection.write(configLabel);
@@ -300,6 +389,15 @@ public class MyPrint {
             }
             else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
         }
+    }
+
+    public String eliminarNulos (String valor){
+        String caracter ="";
+        if(valor!=null){
+            caracter = valor;
+        }
+        return caracter;
+
     }
 
 
@@ -378,7 +476,8 @@ public class MyPrint {
 
             if(!saltoLinea) {
                 cpclConfigLabel =
-                        "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        //"^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
                                 "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
                                 "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
                                 "^FS^FO60,120^AD^FD FECHA: " + fecha +
@@ -395,11 +494,80 @@ public class MyPrint {
                                 "^FS ^XZ";
             }else{
                 cpclConfigLabel =
-                        "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        //"^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
                                 "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
                                 "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
                                 "^FS^FO60,120^AD^FD FECHA: " + fecha +
                                 "^FS^FO60,150^AD^FD PESO:" + peso +
+                                //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                                //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                                "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
+                                "^FS^FO60,530^AD^FD NO. BULTO:" + numeroBulto +
+                                "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
+
+                                "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
+                                "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS ^XZ";
+            }
+        }
+
+        configLabel = cpclConfigLabel.getBytes();
+        return configLabel;
+
+    }
+
+    private byte[] getTramaBultoIndividualLote(
+            ZebraPrinter printer,
+            String manifiesto,
+            String codigoQr,
+            String cliente,
+            String fecha,
+            double peso,
+            String residuo,
+            String numeroBulto,
+            String tratamiento,
+            String destinatario,
+            boolean aplicaDevolucion) {
+
+        PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
+        String cpclConfigLabel="";
+        byte[] configLabel = null;
+        tratamiento = tratamiento == null ? "" : recorreString(tratamiento, 19, "590");
+        String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "710":"680");
+
+        if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
+            cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
+        }else{
+            //String descripcion = row.getDescripcion().substring(10, 33);
+
+            if(!saltoLinea) {
+                cpclConfigLabel =
+                        //"^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                                "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
+                                "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
+                                "^FS^FO60,120^AD^FD FECHA: " + fecha +
+                                "^FS^FO60,150^AD^FD PESO:" +"PESO EN PLANTA"+ //peso +
+                                //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
+                                //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
+                                "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
+                                "^FS^FO60,530^AD^FD NO. BULTO:" + numeroBulto +
+                                "^FS^FO60,560^AD^FD TRATAMIENTO:" + tratamiento +
+
+                                "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
+                                "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
+                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS ^XZ";
+            }else{
+                cpclConfigLabel =
+                        //"^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                        "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A" + codigoQr.trim() +
+                                "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
+                                "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
+                                "^FS^FO60,120^AD^FD FECHA: " + fecha +
+                                "^FS^FO60,150^AD^FD PESO:" +"PESO EN PLANTA"+ //peso +
                                 //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                                 //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
                                 "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
@@ -432,7 +600,8 @@ public class MyPrint {
          detalle= detalle +
          "^FS^FO50,"+valorDescripcion1+"^A0,30,18^FD " + eliminarAcentos(descripcion1)+
          "^FS^FO50,"+(valorDescripcion1+30)+"^A0,30,18^FD " + eliminarAcentos(descripcion2)+
-         "^FS^FO440,"+valor+"^A0,30,18^FD " + recorreStringHospitalario(eliminarAcentos(item.getCodigoMai()),0,13)+
+         "^FS^FO440,"+valorDescripcion1+"^A0,30,18^FD " + recorreStringHospitalario(eliminarAcentos(item.getCodigoMai()),0,13)+
+         "^FS^FO440,"+(valorDescripcion1+30)+"^A0,30,18^FD " + recorreStringHospitalario(eliminarAcentos(item.getCodigoMai()),13,27)+
          "^FS^FO590,"+valor+"^A0,30,18^FD " + item.getNumeroBultos() +
          "^FS^FO700,"+valor+"^A0,30,18^FD " + item.getPeso() ;
          }
@@ -477,36 +646,39 @@ public class MyPrint {
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
         byte[] configLabel = null;
-        String DescripcionItem1 = recorreStringHospitalario(eliminarAcentos(direccion),0,67 );
-        String DescripcionItem2 = recorreStringHospitalario(eliminarAcentos(direccion),67,135 );
-        String DescripcionItem3 = recorreStringHospitalario(eliminarAcentos(direccion),135,201 );
+        String DescripcionItem1 = recorreStringHospitalario(eliminarAcentos(direccion),0,65 );
+        String DescripcionItem2 = recorreStringHospitalario(eliminarAcentos(direccion),65,131 );
+        String DescripcionItem3 = recorreStringHospitalario(eliminarAcentos(direccion),131,196 );
         String detalle = getDetalleRecoleccion(listaDetalle);
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
            // cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
         }else {
                 cpclConfigLabel =
                         "^XA^CFD ^POI" +
-                                "^FO45,177^A0,32,20^FD Nombre del generador: " +
-                                "^FS^FO242,179^A0,30,18^FD " + eliminarAcentos(nombreGenerador).toUpperCase() +
-                                "^FS^FO45,232^A0,32,20^FD Punto de recolecion: " +
-                                "^FS^FO222,234^A0,30,18^FD " + puntoRecoleccion.toUpperCase() +
-                                "^FS^FO45,287^A0,32,20^FD RUC del generador: " +
-                                "^FS^FO210,289^A0,30,18^FD " + rucGenerador.toUpperCase() +
-                                "^FS^FO430,287^A0,32,20^FD Fecha de recolecion:" +
-                                "^FS^FO610,289^A0,30,18^FD " + fechaRecolecion.toUpperCase() +
-                                "^FS^FO45,342^A0,32,20^FD No. clave de Manifiesto SAP: " +
-                                "^FS^FO290,344^A0,30,18^FD " + claveManifiestoSap.toUpperCase() +
-                                "^FS^FO430,342^A0,32,20^FD No. clave de Manifiesto:" +
-                                "^FS^FO635,344^A0,30,18^FD " + claveManifiesto.toUpperCase() +
-                                "^FS^FO45,397^A0,32,20^FD Direccion de recoleccion:" +
-                                "^FS^FO260,399^A0,28,16^FD " + DescripcionItem1.toUpperCase() +
-                                "^FS^FO260,429^A0,28,16^FD " + DescripcionItem2.toUpperCase() +
-                                "^FS^FO260,459^A0,28,16^FD " + DescripcionItem3.toUpperCase() + detalle +
+                                "^FO45,180^A0,32,20^FD Nombre del generador: " +
+                                "^FS^FO242,182^A0,30,18^FD " + eliminarAcentos(nombreGenerador).toUpperCase() +
+                                "^FS^FO45,235^A0,32,20^FD Punto de recolecion: " +
+                                "^FS^FO222,237^A0,30,18^FD " + puntoRecoleccion.toUpperCase() +
+                                "^FS^FO45,290^A0,32,20^FD RUC del generador: " +
+                                "^FS^FO210,292^A0,30,18^FD " + rucGenerador.toUpperCase() +
+                                "^FS^FO430,290^A0,32,20^FD Fecha de recolecion:" +
+                                "^FS^FO610,292^A0,30,18^FD " + fechaRecolecion.toUpperCase() +
+                                "^FS^FO45,345^A0,32,20^FD No. clave de Manifiesto SAP: " +
+                                "^FS^FO290,347^A0,30,18^FD " + claveManifiestoSap.toUpperCase() +
+                                "^FS^FO430,345^A0,32,20^FD No. clave de Manifiesto:" +
+                                "^FS^FO635,347^A0,30,18^FD " + claveManifiesto.toUpperCase() +
+                                "^FS^FO45,400^A0,32,20^FD Direccion de recoleccion:" +
+                                "^FS^FO260,402^A0,28,16^FD " + DescripcionItem1.toUpperCase() +
+                                "^FS^FO260,432^A0,28,16^FD " + DescripcionItem2.toUpperCase() +
+                                "^FS^FO260,462^A0,28,16^FD " + DescripcionItem3.toUpperCase() +
+
+                                detalle +
+
                                 "^FS^FO60,1487^A0,32,20^FD " + destinatario +
-                                "^FS^FO100,1712^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreGenerador +
-                                "^FS^FO450,1712^A0,26,16^FB300,3,0,C,018^FD " + firmaNombreTransportista +
-                                "^FS^FO100,1742^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaGenerador +
-                                "^FS^FO450,1742^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaTransportista +
+                                "^FS^FO100,1715^A0,26,16^FB300,3,0,C,018^FD " + eliminarAcentos(firmaNombreGenerador) +
+                                "^FS^FO450,1715^A0,26,16^FB300,3,0,C,018^FD " + eliminarAcentos(firmaNombreTransportista) +
+                                "^FS^FO100,1745^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaGenerador +
+                                "^FS^FO450,1745^A0,26,16^FB300,3,0,C,0^FD " + firmaCedulaTransportista +
                                 "^FS ^XZ";
             }
 
@@ -558,7 +730,8 @@ public class MyPrint {
         }else{
             //String descripcion = row.getDescripcion().substring(10, 33);
             cpclConfigLabel =
-                    "^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
+                    //"^XA^POI^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
+                    "^XA^LH30,30^FO125,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+
                     "^FS^FO60,60^AD^FD "+ (cliente.length()> 32 ? cliente.substring(0,32):cliente) +
                     "^FS^FO60,90^AD^FD #M.U.E: "+manifiesto.trim()+
                     "^FS^FO60,120^AD^FD FECHA: "+fecha+
@@ -722,70 +895,12 @@ public class MyPrint {
     }
 
 
-    public void printerHospitalario(){
+    public void printerHospitalario(Integer idAppManifiesto){
         if(MyApp.getDBO().impresoraDao().existeImpresora()) {
-            final List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle= new ArrayList<>();
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Envasesó contaminados con materiales peligrosos","A.01.09",12,4));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Equipoñ de proteccion personal contaminado con materiales peligrosos","NE-07",19,784));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Luminarias lamparas tubos fluorescentes focos ahorradores usados que contengan mercurio","NE-27",340,734));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Equipos electricos y electronicos en desuso que no han sido desensamblados separados","NE-30",120,624));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Lodos de sistema de tratamiento de las aguas residuales domesticas que contengan materiales","Q.86.01",400,347));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Cultivos de agentes infecciosos y desechos de produccion biológica vacunas vencidas o inutilizadas","Q.86.07 PQH",100,233));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Sangre sus derivados e insumos usados para procedimientos de analisis y administracion","GA-COVID",600,254));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Farmacos caducados o fuera de especificaciones","FA(PQH)",540,456));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Aceites minerales usados o gastados","GA-PC1N (PQH)",360,724));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("Baterias usadas plomo-acido","10200",760,534));
-            /*listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("2logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("3logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("4logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("5logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("6logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("7logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("8logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("9logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("01logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("02logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("03logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("04logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Envasesó contaminados con materiales peligrosos","A.01.09",12,4));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Equipoñ de proteccion personal contaminado con materiales peligrosos","NE-07",19,784));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Luminarias lamparas tubos fluorescentes focos ahorradores usados que contengan mercurio","NE-27",340,734));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Equipos electricos y electronicos en desuso que no han sido desensamblados separados","NE-30",120,624));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Lodos de sistema de tratamiento de las aguas residuales domesticas que contengan materiales","Q.86.01",400,347));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Cultivos de agentes infecciosos y desechos de produccion biológica vacunas vencidas o inutilizadas","Q.86.07 PQH",100,233));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Sangre sus derivados e insumos usados para procedimientos de analisis y administracion","GA-COVID",600,254));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Farmacos caducados o fuera de especificaciones","FA(PQH)",540,456));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Aceites minerales usados o gastados","GA-PC1N (PQH)",360,724));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("1Baterias usadas plomo-acido","10200",760,534));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("11logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("12logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("13logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("14logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("15logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("16logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("17logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("18logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("19logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("20logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("21logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("22logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-            listaDetalle.add(new ItemEtiquetaHospitalarioDetalleRecolecion("23logica de los componentes est escrita en JavaScript y no en plantillas puedes pasar datos de forma sencilla a trav de tu aplicacion y mantener el estado fuera del DOM.","ASDVD",100,234));
-*/
-
-            final ItemEtiquetaHospitalario printEtiqueta = new ItemEtiquetaHospitalario("TALMA ECUADOR SERVICIOS AEROPORTUARIOS S.A ",
-                    "","1791807162001","2020-08-06",
-                    "600033747","1234567891",
-                    "AV. DE LAS AMERICAS N0.2000,FRENTE A PELUCAS Y POSTIZOS,JUNTO A GATE GOURMET GUAYAQUIL-GUAYAS-ECUADOR",
-                    "G&M TRATAMIENTO INTEGRAL DE DESECHOS",
-                    "VILLAMARIN MENDEZ SANDRA ELIZABETH",
-                    "JULIO MORAN ",
-                    "1234559876",
-                    "1234577789") ;
-            //= MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividual(idManifiesto, idManifiestoDetalle, idCatalogo);
-            //if(printEtiqueta != null){
-                //dialog.show();
-
+            final ItemEtiquetaHospitalario printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaCabeceraHospitalario(idAppManifiesto);
+            final List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle = MyApp.getDBO().manifiestoDetallePesosDao().consultaDetalleHospitalario(idAppManifiesto);
+            if(printEtiqueta != null && listaDetalle.size() > 0){
+                dialog.show();
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
                         if (Looper.myLooper() == null)
@@ -801,12 +916,12 @@ public class MyPrint {
             } else {
                 //mensaje...
                 Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
-                disconnect("Impresora no encontrada");
+                disconnect("No cumple la estructura");
             }
-       /* }else {
+        }else {
             Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
             disconnect("Impresora no encontrada");
-        }*/
+        }
     }
 
 
