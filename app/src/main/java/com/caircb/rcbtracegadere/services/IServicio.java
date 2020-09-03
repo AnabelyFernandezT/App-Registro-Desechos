@@ -41,6 +41,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoFirmaUsuario;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
+import com.caircb.rcbtracegadere.models.response.DtoImpresora;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionTransportista;
@@ -109,6 +110,9 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerListLoteContenedor")
     Call<List<DtoLote>> traerLotes(@Body RequestLote model);
+
+    @POST("HojaRuta/obtenerListImpresora")
+    Call<List<DtoImpresora>> traerImpresoras();
 
     @POST("HojaRuta/obtenerListHojaRutaSede")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);
