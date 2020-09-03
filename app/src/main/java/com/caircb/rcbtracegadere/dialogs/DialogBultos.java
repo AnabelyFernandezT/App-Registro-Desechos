@@ -267,7 +267,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
                 }
                 double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
-                DecimalFormat df = new DecimalFormat("#.00");
+                DecimalFormat df = new DecimalFormat("000.00");
                 double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
                 txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
             }
@@ -862,9 +862,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     }
 
     private String obtieneDosDecimales(double valor) {
-        DecimalFormat format = new DecimalFormat();
-        format.setMaximumFractionDigits(2); //Define 2 decimales.
-        return format.format(valor);
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(valor);
     }
 
 }

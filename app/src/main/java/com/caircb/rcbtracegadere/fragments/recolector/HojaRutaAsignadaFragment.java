@@ -948,7 +948,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                     @Override
                     public void onSuccessful() {
                         dialogBuilderScan.dismiss();
-                        messageBox("Se notificaron los siguientes " + manifiesto.getMensaje());
+                        messageBox("Se notificaron los siguientes " + manifiesto.getMensaje() + ". Espere respuesta de Backoffice");
                     }
                 });
                 notificaion.execute();
