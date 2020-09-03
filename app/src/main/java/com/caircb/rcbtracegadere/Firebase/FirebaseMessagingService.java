@@ -26,6 +26,7 @@ import com.caircb.rcbtracegadere.ResultKilometraje;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.TabManifiestoDetalle;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.ItemNotificacion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.CierreLoteActivity;
 import com.google.firebase.messaging.RemoteMessage;
@@ -56,12 +57,19 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Log.d(TAG, "mensaje de: " + from);
 
         if (remoteMessage.getNotification() != null) {
+            ItemNotificacion it = new ItemNotificacion();
+            it.setNombreNotificacion(remoteMessage.getNotification().getTitle());
+            it.setEstadoNotificacion(remoteMessage.getNotification().getBody());
+            it.setTipoNotificacion(remoteMessage.getData().get("idCatalogoRespuesta"));
+            it.setIdManifiesto(remoteMessage.getData().get("idManifiesto"));
+            it.setPeso(remoteMessage.getData().get("pesoAprobado"));
+            MyApp.getDBO().notificacionDao().saveOrUpdate(it);
             Log.d(TAG, "Notificación: " + remoteMessage.getNotification().getBody());
             Log.d(TAG, "TITULO " + remoteMessage.getNotification().getTitle());
            /* if(remoteMessage.getNotification().getTitle().equals("NOTIFICACIÓN DE PESO EXTRA")){
                 showNotificationAutoPesos(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
             }*/
-            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(),remoteMessage);
+            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(),remoteMessage.getData().get("idCatalogoRespuesta"), getApplicationContext());
         }
 
         if (remoteMessage.getData().size() > 0) {
@@ -109,31 +117,30 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
     }
 
-    private void showNotification(String title, String body, RemoteMessage remoteMessage) {
+    public void showNotification(String title, String body, String tipo, Context context) {
         Intent intent;
-        if(remoteMessage.getData().get("idCatalogoRespuesta").equals("2")||remoteMessage.getData().get("idCatalogoRespuesta").equals("15")){
-            intent = new Intent(getApplicationContext(), ResultKilometraje.class);
-        }else if(remoteMessage.getData().get("idCatalogoRespuesta").equals("7")){
-            intent = new Intent(getApplicationContext(), ResultCambioChoferActivity.class);
-        }else if(remoteMessage.getData().get("idCatalogoRespuesta").equals("8")) {
-            intent = new Intent(getApplicationContext(),MainActivity.class);
-        }else if (remoteMessage.getData().get("idCatalogoRespuesta").equals("12")){
-            intent= new Intent(getApplicationContext(), CierreLoteActivity.class);
-
+        if(tipo.equals("2")||tipo.equals("15")){
+            intent = new Intent(context, ResultKilometraje.class);
+        }else if(tipo.equals("7")){
+            intent = new Intent(context, ResultCambioChoferActivity.class);
+        }else if(tipo.equals("8")) {
+            intent = new Intent(context, MainActivity.class);
+        }else if (tipo.equals("12")){
+            intent= new Intent(context, CierreLoteActivity.class);
         } else{
-            intent = new Intent(getApplicationContext(), ResultActivity.class);
+            intent = new Intent(context, ResultActivity.class);
         }
 
         intent.putExtra("notification_data",body);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -158,7 +165,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    private void showNotificationPlacas(String title, String body) {
+    public void showNotificationPlacas(String title, String body) {
         Intent intent = new Intent(this, ResultKilometraje.class);
         intent.putExtra("notification_data",body);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

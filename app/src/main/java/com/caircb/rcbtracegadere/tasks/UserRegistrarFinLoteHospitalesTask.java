@@ -44,10 +44,6 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
 
     @Override
     public void execute() {
-        register();
-    }
-
-    private void register() {
         progressShow("Sincronizando con servidor el final de ruta");
         RequestFinRuta requestFinRuta = createRequestFin();
         Gson g = new Gson();
@@ -79,6 +75,7 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
             progressHide();
         }
     }
+
 
     private RequestFinRuta createRequestFin() {
         RequestFinRuta rq = null;

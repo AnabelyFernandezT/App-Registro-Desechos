@@ -371,6 +371,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(int position, View v) {
+
                 int x = 0;
                 if (estadoManifiesto == 1) {
                     if (tipoRecoleccion == 1) {
@@ -918,9 +919,8 @@ public class TabManifiestoDetalle extends LinearLayout {
     }
 
     private String obtieneDosDecimales(double valor) {
-        DecimalFormat format = new DecimalFormat();
-        format.setMaximumFractionDigits(2); //Define 2 decimales.
-        return format.format(valor);
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(valor);
     }
 
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer totalEtiquetas) {

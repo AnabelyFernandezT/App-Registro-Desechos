@@ -24,12 +24,14 @@ import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPendienteSede;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoPlanta;
+import com.caircb.rcbtracegadere.models.request.RequestManifiestoQrPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestManifiestoSede;
 import com.caircb.rcbtracegadere.models.request.RequestMovilizarLoteSede;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacion;
 import com.caircb.rcbtracegadere.models.request.RequestNotificacionComercial;
 import com.caircb.rcbtracegadere.models.request.RequestNuevoKilometraje;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
+import com.caircb.rcbtracegadere.models.request.RequestRecepcionQrPlanta;
 import com.caircb.rcbtracegadere.models.request.RequestRegistarLotePadreHotel;
 import com.caircb.rcbtracegadere.models.request.RequestRegisterPlantaDetalle;
 import com.caircb.rcbtracegadere.models.request.RequestRegistrarDetalleSede;
@@ -41,6 +43,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoFirmaUsuario;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
+import com.caircb.rcbtracegadere.models.response.DtoImpresora;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionTransportista;
@@ -54,6 +57,7 @@ import com.caircb.rcbtracegadere.models.response.DtoManifiestoPendienteSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
 import com.caircb.rcbtracegadere.models.response.DtoPaquetes;
+import com.caircb.rcbtracegadere.models.response.DtoRecepcionQrPlanta;
 
 import java.util.List;
 
@@ -74,6 +78,9 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerHojaRuta")
     Call<List<DtoManifiesto>> getHojaRuta(@Body RequestHojaRuta model);
+
+    @POST("HojaRuta/obtenerListaHojaRutaPlantaLote")
+    Call<DtoRecepcionQrPlanta> getHojaRutaQrPlanta(@Body RequestRecepcionQrPlanta model);
 
     @GET("Catalogo/ObtenerCatalogoPaquetes")
     Call<List<DtoPaquetes>> getPaquetes();
@@ -100,6 +107,8 @@ public interface IServicio {
     @POST("Registro/registroManifiestoDetallePlanta")
     Call<DtoInfo> registroManifiestoDetallePlanta(@Body RequestRegisterPlantaDetalle model);
 
+    @POST("Registro/registroManifiestoDetallePlantaLote")
+    Call<DtoInfo> registroManifiestoQrPlanta(@Body RequestManifiestoQrPlanta model);
 
     @POST("Notificacion/registrarNotificacion")
     Call<DtoInfo> registrarNotificacion(@Body RequestNotificacion model);
@@ -109,6 +118,9 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerListLoteContenedor")
     Call<List<DtoLote>> traerLotes(@Body RequestLote model);
+
+    @POST("HojaRuta/obtenerListImpresora")
+    Call<List<DtoImpresora>> traerImpresoras();
 
     @POST("HojaRuta/obtenerListHojaRutaSede")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);

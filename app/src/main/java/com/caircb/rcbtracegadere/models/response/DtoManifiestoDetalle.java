@@ -32,6 +32,7 @@ public class DtoManifiestoDetalle {
     private Integer cantidadRefencial;
     private Integer tipoMostrar;
     private List<DtoHojaRutaDetalleBulto> bultos;
+    private String nombreCortoTicket;
 
     public DtoManifiestoDetalle() {
     }
@@ -250,5 +251,13 @@ public class DtoManifiestoDetalle {
 
     public void setBultos(List<DtoHojaRutaDetalleBulto> bultos) {
         this.bultos = bultos;
+    }
+
+    public String getNombreCortoTicket() {
+        return nombreCortoTicket;
+    }
+
+    public void setNombreCortoTicket(String nombreCortoTicket) {
+        this.nombreCortoTicket = nombreCortoTicket;
     }
 }
