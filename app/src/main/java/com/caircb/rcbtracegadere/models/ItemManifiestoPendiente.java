@@ -12,6 +12,8 @@ public class ItemManifiestoPendiente {
 
     private Boolean estadoCheck;
 
+    private String destinatarioAlterno;
+
     public ItemManifiestoPendiente() {
     }
 
@@ -53,5 +55,13 @@ public class ItemManifiestoPendiente {
 
     public void setEstadoCheck(Boolean estadoCheck) {
         this.estadoCheck = estadoCheck;
+    }
+
+    public String getDestinatarioAlterno() {
+        return destinatarioAlterno;
+    }
+
+    public void setDestinatarioAlterno(String destinatarioAlterno) {
+        this.destinatarioAlterno = destinatarioAlterno;
     }
 }

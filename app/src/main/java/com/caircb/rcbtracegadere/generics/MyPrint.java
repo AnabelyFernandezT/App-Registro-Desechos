@@ -120,7 +120,9 @@ public class MyPrint {
             }
         }else {
             Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
-            disconnect("Impresora no encontrada");
+            if(!MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")){
+                disconnect("Impresora no encontrada");
+            }
         }
     }
 
