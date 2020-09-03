@@ -759,8 +759,31 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     }
                 }*/
 
-                BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
-                createBulto(imput);
+                final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+
+                if(imput.compareTo(BigDecimal.ZERO) > 0)
+                {
+                    createBulto(imput);
+                }
+                else {
+                    final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                    dialogBuilder2.setMessage("¿Desea ingresar un bulto con peso cero?");
+                    dialogBuilder2.setTitle("CONFIRMACIÓN");
+                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                            createBulto(imput);
+                        }
+                    });
+                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder2.dismiss();
+                        }
+                    });
+                    dialogBuilder2.show();
+                }
                 break;
             case R.id.btn_cancel:
                 bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
