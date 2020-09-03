@@ -14,8 +14,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MainActivity;
@@ -36,7 +34,7 @@ import java.util.List;
 public class DialogManifiestoCliente extends MyDialog {
     Activity _activity;
     EditText txtManifiestoCliente;
-    LinearLayout btnIniciaRutaCancel,btnIniciaRutaAplicar;
+    LinearLayout btnIniciaRutaCancel,btnIniciaRutaAplicar, btnNewText;
     VistaPreliminarFragment vistaPreliminarFragment;
 
     Manifiesto2Fragment principal = new Manifiesto2Fragment();
@@ -46,7 +44,6 @@ public class DialogManifiestoCliente extends MyDialog {
     private TextoAdapter recyclerviewAdapter;
     private Integer tipoRecoleccion;
     private List<String> textList = new ArrayList<>();
-
     public interface onRegisterListenner {
         public void onSucessfull();
     }
@@ -68,20 +65,27 @@ public class DialogManifiestoCliente extends MyDialog {
     }
 
     private void init() {
-        int type = InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS| InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
+
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        recyclerView = getView().findViewById(R.id.recyclerviewNotificaciones);
+        recyclerView = getView().findViewById(R.id.recyclerviewTexto);
         recyclerviewAdapter = new TextoAdapter(getActivity());
-        txtManifiestoCliente = getView().findViewById(R.id.txtManifiestoCliente);
+/*        txtManifiestoCliente = getView().findViewById(R.id.txtManifiestoCliente);
+          int type = InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS| InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
         txtManifiestoCliente.setInputType(type);
-        txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());
+        txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());*/
         btnIniciaRutaAplicar = getView().findViewById(R.id.btnIniciaRutaAplicar);
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+      //  btnNewText = getView().findViewById(R.id.btnAgregarText);
+        textList.add("");
         recyclerviewAdapter.setTaskList(textList);
         recyclerView.setAdapter(recyclerviewAdapter);
-        recyclerviewAdapter.addText("");
+
+       /* btnNewText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerviewAdapter.addText("");
+            }
+        });*/
         btnIniciaRutaCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,22 +97,13 @@ public class DialogManifiestoCliente extends MyDialog {
             @Override
             public void onClick(View v) {
 
-                if(txtManifiestoCliente.getText().toString().equals(""))
-                {
+                if(recyclerviewAdapter.totalString().equals("")){
                     messageBox("No ingresó un número de manifiesto cliente!");
                 }else{
-                    //System.out.println("Placa transportista: "+MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista"));
-                    MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,txtManifiestoCliente.getText().toString());
+                    MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,recyclerviewAdapter.totalString());
                     if (mOnRegisterListener!=null){
                         mOnRegisterListener.onSucessfull();
                     }
-                  /*  if (tipoRecoleccion==1){
-                        //((MainActivity) getActivity()).NavegationFragment(VistaPreliminarFragment.newInstance(idManifiesto,tipoPaquete,identificacion));
-                    }else {
-
-                    }*/
-                    //DialogManifiestoCliente.this.dismiss();
-
                 }
             }
         });
