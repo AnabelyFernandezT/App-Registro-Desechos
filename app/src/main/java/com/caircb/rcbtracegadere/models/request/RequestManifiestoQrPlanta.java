@@ -10,6 +10,10 @@ public class RequestManifiestoQrPlanta {
     private String observacion;
     private Integer tipoRecoleccion;
     private List<RequestManifiestoNovedadFrecuente> novedadFrecuentePlanta;
+    private Integer flagPlantaSede;
+    private Integer idLoteContenedor;
+    private Integer  idDestinatarioFinRutaCatalogo;
+
 
     public String getNumeroManifiesto() {
         return numeroManifiesto;
@@ -65,5 +69,29 @@ public class RequestManifiestoQrPlanta {
 
     public void setNovedadFrecuentePlanta(List<RequestManifiestoNovedadFrecuente> novedadFrecuentePlanta) {
         this.novedadFrecuentePlanta = novedadFrecuentePlanta;
+    }
+
+    public Integer getFlagPlantaSede() {
+        return flagPlantaSede;
+    }
+
+    public void setFlagPlantaSede(Integer flagPlantaSede) {
+        this.flagPlantaSede = flagPlantaSede;
+    }
+
+    public Integer getIdLoteContenedor() {
+        return idLoteContenedor;
+    }
+
+    public void setIdLoteContenedor(Integer idLoteContenedor) {
+        this.idLoteContenedor = idLoteContenedor;
+    }
+
+    public Integer getIdDestinatarioFinRutaCatalogo() {
+        return idDestinatarioFinRutaCatalogo;
+    }
+
+    public void setIdDestinatarioFinRutaCatalogo(Integer idDestinatarioFinRutaCatalogo) {
+        this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
     }
 }

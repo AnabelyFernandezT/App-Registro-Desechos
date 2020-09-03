@@ -20,12 +20,14 @@ import androidx.annotation.Nullable;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ConsultarFirmaUsuarioEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogConfirmarCierreLote;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSede;
 import com.caircb.rcbtracegadere.dialogs.DialogPlacaSedeRecolector;
 import com.caircb.rcbtracegadere.fragments.planta.HojaRutaAsignadaPlantaFragment;
+import com.caircb.rcbtracegadere.fragments.planta.RecepcionLotePlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
@@ -33,7 +35,9 @@ import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoSede;
+import com.caircb.rcbtracegadere.tasks.UserConsultaFirmaUsuarioTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
+import com.caircb.rcbtracegadere.tasks.UserConsultaQrPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
@@ -49,7 +53,7 @@ import java.util.List;
 
 public class HomeSedeFragment extends MyFragment implements OnCameraListener, OnHome, OnBarcodeListener {
     UserConsultaLotes consultarLotes;
-    ImageButton btnSincManifiestos,btnListaAsignadaSede,btnMenu, btnInciaLote, btnFinRuta,btnFinLote;
+    ImageButton btnSincManifiestos, btnListaAsignadaSede, btnMenu, btnInciaLote, btnFinRuta, btnFinLote;
 
     Integer inicioLote;
     Integer finLote;
@@ -59,13 +63,12 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
-    TextView txtMovilizar , txtSincronizar, txtManifiesto;
+    TextView txtMovilizar, txtSincronizar, txtManifiesto;
     DialogConfirmarCierreLote dialogConfirmarCierreLote;
     UserRegistrarLoteInicioTask registrarLoteInicioTask;
     DialogBuilder builder;
     LinearLayout sectionQrLoteSede;
     UserConsultarManifiestosSedeTask consultarHojaRutaTask;
-
 
 
     @Override
@@ -78,7 +81,7 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         return getView();
     }
 
-    private void datosManifiestosAsignados(){
+    private void datosManifiestosAsignados() {
         //consultarPlacasInicioRutaDisponible = new UserConsultarManifiestosSedeTask(getActivity());
         //consultarPlacasInicioRutaDisponible.execute();
     }
@@ -120,9 +123,9 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
             }
         });
 
-        btnInciaLote.setOnClickListener(new View.OnClickListener(){
+        btnInciaLote.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
 
                 /*dialogPlacas = new DialogPlacaSede(getActivity());
                 dialogPlacas.setCancelable(false);
@@ -150,9 +153,9 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
             }
         });
 
-        btnSincManifiestos.setOnClickListener(new View.OnClickListener(){
+        btnSincManifiestos.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 dialogPlacasRecolector = new DialogPlacaSedeRecolector(getActivity());
                 dialogPlacasRecolector.setCancelable(false);
                 dialogPlacasRecolector.setTitle("TRANSPORTE RECOLECCION");
@@ -160,7 +163,7 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
                     @Override
                     public void onSuccessfull() {
                         Integer num = MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas();
-                        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+                        lblListaManifiestoAsignado.setText("" + MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
                     }
                 });
                 dialogPlacasRecolector.show();
@@ -170,8 +173,8 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity() instanceof MainActivity){
-                    ((MainActivity)getActivity()).openMenuOpcion();
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).openMenuOpcion();
                 }
             }
         });
@@ -198,34 +201,71 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         sectionQrLoteSede.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentIntegrator integrator = new IntentIntegrator(getActivity());
+               /* IntentIntegrator integrator = new IntentIntegrator(getActivity());
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("LECTURA CÓDIGO QR SEDE");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(true);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.setOrientationLocked(false);
-                integrator.initiateScan();
+                integrator.initiateScan();*/
             }
         });
+
+        consultarFirmaAndDestinoEspecificoUsuario();
     }
 
     @Override
     public void reciveData(String data) {
         try {
-            Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
             // CODIGO PARA LECTURA DISPOSITIVO HONEYWELL
-           /* String codigoQr=data;
-            String[] array= codigoQr.split("\\$");
-            MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
-            MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
-            MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);
-            MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
-            MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
-            cargarManifiesto();*/
-        }
-        catch (Exception e)
-        {
+            ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
+            ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
+            if (iniciLote != null) {
+                String codigoQr = data;
+                String[] array = codigoQr.split("\\$");
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", array[4]);//destino
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo", "" + array[5]);//idvehiculo
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + array[6]);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta", "" + array[7]);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr", "1");
+                String destinoUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario");
+                if (array[4].equals(destinoUsuario)) {
+                    UserConsultaQrPlantaTask consultaQrPlantaTask = new UserConsultaQrPlantaTask(getActivity());
+                    consultaQrPlantaTask.setOnQrPlantaListener(new UserConsultaQrPlantaTask.OnQrPlantaListener() {
+                        @Override
+                        public void onSuccessful() {
+                            setNavegate(HojaRutaQrLoteFragment.newInstance());
+                        }
+                    });
+                    consultaQrPlantaTask.execute();
+                } else {
+                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setMessage("Los manifiestos no pertenecen a este destino!!!");
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+                }
+
+            } else {
+                final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setMessage("Antes de sincronizar debe iniciar un lote!!!");
+                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+                dialogBuilder.show();
+            }
+        } catch (Exception e) {
             System.out.println(e.getStackTrace());
             messageBox("El código escaneado no es de tipo Lote.");
         }
@@ -233,25 +273,25 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
 
     @Override
     public void onCameraResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
-        if (result!=null){
-            if (result.getContents()==null){
-                Toast.makeText(getActivity(),"Escaneo Cancelado",Toast.LENGTH_LONG).show();
-            }else {
-                Toast.makeText(getActivity(), result.getContents(),Toast.LENGTH_LONG).show();
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(getActivity(), "Escaneo Cancelado", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), result.getContents(), Toast.LENGTH_LONG).show();
                 ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
                 ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
-                if (iniciLote!=null){
-                    String codigoQr=result.getContents();
-                    String[] array= codigoQr.split("\\$");
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",array[4]);//destino
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
-                    MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
-                   // MySession.setDestinoEspecifico();
+                if (iniciLote != null) {
+                    String codigoQr = result.getContents();
+                    String[] array = codigoQr.split("\\$");
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico", array[4]);//destino
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo", "" + array[5]);//idvehiculo
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + array[6]);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta", "" + array[7]);
+                    MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr", "1");
+                    // MySession.setDestinoEspecifico();
                     /*if (array[4].equals(MySession.getDestinoEspecifico())){*/
-                        cargarManifiesto();
+                    cargarManifiesto();
                    /* }else {
                         final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
                         dialogBuilder.setCancelable(false);
@@ -264,7 +304,7 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
                         });
                         dialogBuilder.show();
                     }*/
-                }else{
+                } else {
                     final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
                     dialogBuilder.setCancelable(false);
                     dialogBuilder.setMessage("Antes de sincronizar debe iniciar un lote!!!");
@@ -277,12 +317,12 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
                     dialogBuilder.show();
                 }
             }
-        }else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void initBuscador(){
+    private void initBuscador() {
         regionBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,7 +331,7 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         });
     }
 
-    private void datosLotesDisponibles(){
+    private void datosLotesDisponibles() {
 
         consultarLotes = new UserConsultaLotes(getActivity());
         consultarLotes.setOnRegisterListener(new UserConsultaLotes.TaskListener() {
@@ -303,66 +343,66 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         consultarLotes.execute();
     }
 
-    private void verificarInicioLote(){
-        lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+    private void verificarInicioLote() {
+        lblListaManifiestoAsignado.setText("" + MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
 
         ParametroEntity iniciLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote");
         ParametroEntity finLotes = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote");
 
-       if (iniciLote!=null){
-           inicioLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
-       }else{
-           inicioLote=0;
-       }
-       if (finLotes!=null){
-           finLote= Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote").getValor());
-       }else {
-           finLote=0;
-       }
+        if (iniciLote != null) {
+            inicioLote = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_inicio_lote").getValor());
+        } else {
+            inicioLote = 0;
+        }
+        if (finLotes != null) {
+            finLote = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_fin_lote").getValor());
+        } else {
+            finLote = 0;
+        }
 
 
-            if(inicioLote.equals(finLote)) {
-                lnlIniciaLote.setVisibility(View.VISIBLE);
-                lnlFinLote.setVisibility(View.GONE);
-                btnListaAsignadaSede.setEnabled(false);
-                btnSincManifiestos.setEnabled(false);
-                regionBuscar.setEnabled(true);
+        if (inicioLote.equals(finLote)) {
+            lnlIniciaLote.setVisibility(View.VISIBLE);
+            lnlFinLote.setVisibility(View.GONE);
+            btnListaAsignadaSede.setEnabled(false);
+            btnSincManifiestos.setEnabled(false);
+            regionBuscar.setEnabled(true);
 
-                btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
-                btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+            btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+            btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
-                txtManifiesto.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
-                txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+            txtManifiesto.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+            txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
 
-                regionBuscar.setColorFilter(Color.TRANSPARENT);
-                txtMovilizar.setTextColor(Color.WHITE);
+            regionBuscar.setColorFilter(Color.TRANSPARENT);
+            txtMovilizar.setTextColor(Color.WHITE);
 
-            }else{
+        } else {
 
-                lnlIniciaLote.setVisibility(View.GONE);
-                lnlFinLote.setVisibility(View.VISIBLE);
-                btnListaAsignadaSede.setEnabled(true);
-                btnSincManifiestos.setEnabled(true);
-                regionBuscar.setEnabled(false);
+            lnlIniciaLote.setVisibility(View.GONE);
+            lnlFinLote.setVisibility(View.VISIBLE);
+            btnListaAsignadaSede.setEnabled(true);
+            btnSincManifiestos.setEnabled(true);
+            regionBuscar.setEnabled(false);
 
-                btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
-                btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
-                txtSincronizar.setTextColor(Color.WHITE);
-                txtManifiesto.setTextColor(Color.WHITE);
+            btnListaAsignadaSede.setColorFilter(Color.TRANSPARENT);
+            btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
+            txtSincronizar.setTextColor(Color.WHITE);
+            txtManifiesto.setTextColor(Color.WHITE);
 
-                regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
-            }
+            regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+        }
 
     }
 
-    private void registrarLote(){
+    private void registrarLote() {
 
         registrarLoteInicioTask = new UserRegistrarLoteInicioTask(getActivity());
         registrarLoteInicioTask.setOnRegisterListener(new UserRegistrarLoteInicioTask.OnRegisterListener() {
             @Override
             public void onSuccessful() {
                 messageBox("Lote Registrado");
-                MyApp.getDBO().parametroDao().saveOrUpdate("loteBandera_sedes","true");
+                MyApp.getDBO().parametroDao().saveOrUpdate("loteBandera_sedes", "true");
 
                 activarFinLote();
             }
@@ -376,7 +416,7 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         registrarLoteInicioTask.execute();
     }
 
-    private void activarFinLote(){
+    private void activarFinLote() {
         lnlIniciaLote.setVisibility(View.GONE);
         lnlFinLote.setVisibility(View.VISIBLE);
         btnListaAsignadaSede.setEnabled(true);
@@ -394,21 +434,37 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
     }
 
     @SuppressLint("SetTextI18n")
-    private void cargarManifiesto(){
+    private void cargarManifiesto() {
         consultarHojaRutaTask = new UserConsultarManifiestosSedeTask(getActivity());
         consultarHojaRutaTask.setmOnVehiculoListener(new UserConsultarManifiestosSedeTask.OnPlacaListener() {
             @Override
             public void onSuccessful(List<DtoManifiestoSede> catalogos) {
                 Integer num = MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas();
-                lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
+                lblListaManifiestoAsignado.setText("" + MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
             }
         });
         consultarHojaRutaTask.execute();
         //lblListaManifiestoAsignado.setText(""+ MyApp.getDBO().manifiestoDetalleSede().contarHojaRutaAsignadas());
     }
 
-    public static HomeSedeFragment create(){
+    public static HomeSedeFragment create() {
         return new HomeSedeFragment();
     }
 
+
+    private void consultarFirmaAndDestinoEspecificoUsuario() {
+        UserConsultaFirmaUsuarioTask consultaFirmaUsuarioTask = new UserConsultaFirmaUsuarioTask(getActivity(), MySession.getIdUsuario());
+        consultaFirmaUsuarioTask.setOnFirmaListener(new UserConsultaFirmaUsuarioTask.OnFirmaListener() {
+            @Override
+            public void onSuccessful() {
+                ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity = MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
+                String firmaUsuario = consultarFirmaUsuarioEntity == null ? "" : (consultarFirmaUsuarioEntity.getFirmaBase64() == null ? "" : consultarFirmaUsuarioEntity.getFirmaBase64());
+                int idDestinoEspecifico = consultarFirmaUsuarioEntity == null ? 0 : (consultarFirmaUsuarioEntity.getIdFinRutaCatalogo() == null ? 0 : consultarFirmaUsuarioEntity.getIdFinRutaCatalogo());
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario", firmaUsuario);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_usuario", idDestinoEspecifico + "");
+            }
+        });
+        consultaFirmaUsuarioTask.execute();
+
+    }
 }
