@@ -92,9 +92,9 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                     @Override
                     public void onClick(View v) {
                         try{
-                            MyApp.getDBO().impresoraDao().deleteImpresora();
-                            Toast.makeText(getActivity(),"The device has been unpaired", Toast.LENGTH_SHORT).show();
-                            initPairedPrinters();
+                            //MyApp.getDBO().impresoraDao().deleteImpresora();
+                            //Toast.makeText(getActivity(),"The device has been unpaired", Toast.LENGTH_SHORT).show();
+                            //initPairedPrinters();
                         }catch (Exception ex){}
                         builder.dismiss();
                     }

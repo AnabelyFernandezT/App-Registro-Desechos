@@ -354,6 +354,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                         dialogInicioRuta = new DialogInicioRuta(getActivity());
                         dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialogInicioRuta.setCancelable(false);
+                        dialogInicioRuta.setOnSuccessListener(new DialogInicioRuta.OnSuccessListener() {
+                            @Override
+                            public void isSuccessful() {
+                                dialogInicioRuta.dismiss();
+                                dialogInicioRuta = null;
+                            }
+                        });
                         dialogInicioRuta.show();
                     }
                 });
@@ -519,15 +526,22 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         txtManifiestos.setTextColor(Color.WHITE);
     }
 
+
+
     @Override
     public void reciveData(String data) {
-        try {
-            asociarLoteManifiesto(Integer.parseInt(data));
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getStackTrace());
-            messageBox("El código escaneado no es de tipo Lote.");
+
+        if(dialogInicioRuta!=null && dialogInicioRuta.isShowing()){
+            dialogInicioRuta.setScanCode(data);
+        }else {
+
+
+            try {
+                asociarLoteManifiesto(Integer.parseInt(data));
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+                messageBox("El código escaneado no es de tipo Lote.");
+            }
         }
     }
 
