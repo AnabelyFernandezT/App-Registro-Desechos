@@ -124,7 +124,7 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
 
         if(model!=null) {
             rq.setNovedadEncontrada(novedad);
-            rq.setPesoRecolectado(model.getTotal());
+           // rq.setPesoRecolectado(model.getTotal());
             rq.setPesoGestorAlterno(pesoGestor);
             rq.setFotoMPImagen("");
             rq.setFotoMPUrl(firmaRecoleccion != null ? (path + "/" + firmaRecoleccion.getUrl()) : "");

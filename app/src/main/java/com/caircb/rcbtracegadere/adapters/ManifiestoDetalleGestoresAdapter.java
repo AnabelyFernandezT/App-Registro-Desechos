@@ -39,8 +39,23 @@ public class ManifiestoDetalleGestoresAdapter extends RecyclerView.Adapter<Manif
 
         holder.txtItemTratamiento.setText(it.getTratamiento());
         holder.txtItemDescripcion.setText(it.getCodigoMAE()+"-"+ it.getDescripcion());
+        holder.txtItemCantidadBulto.setText(""+it.getCantidadBulto());
+        holder.txtItemPeso.setText(""+it.getPeso());
+        holder.chkEstadoItemDetalle.setChecked(it.isEstado());
 
+        holder.chkEstadoItemDetalle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckBox) v).isChecked()){
+                    v.setSelected(true);
+                    it.setEstado(true);
+                }else {
+                    v.setSelected(false);
+                    it.setEstado(false);
+                }
 
+            }
+        });
     }
 
     @Override

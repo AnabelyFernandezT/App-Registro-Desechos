@@ -261,7 +261,7 @@ public class ManifiestoGestorFragment extends MyFragment implements OnCameraList
     private void loadData(){
         LotePadreEntity manifiestoPadre = MyApp.getDBO().lotePadreDao().fetchConsultarCatalogoEspecifico(idAppManifiesto);
         if(manifiestoPadre!=null){
-            txtPesoTotal.setText(manifiestoPadre.getTotal().toString());
+            //txtPesoTotal.setText(manifiestoPadre.getTotal().toString());
             ItemFile f = MyApp.getDBO().manifiestoFileDao().consultarFile(idAppManifiesto, ManifiestoFileDao.FOTO_FIRMA_GESTORES,MyConstant.STATUS_GESTORES);
             if(f != null){
                 Bitmap imagen = Utils.StringToBitMap(f.getFile());

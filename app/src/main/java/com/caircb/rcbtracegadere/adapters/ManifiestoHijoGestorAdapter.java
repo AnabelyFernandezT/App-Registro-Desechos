@@ -13,21 +13,26 @@ import com.caircb.rcbtracegadere.R;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.models.RowItemManifiestosDetalleGestores;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManifiestoHijoGestorAdapter extends ArrayAdapter<RowItemManifiestosDetalleGestores> {
+public class ManifiestoHijoGestorAdapter extends RecyclerView.Adapter<ManifiestoHijoGestorAdapter.MyViewHolder>  {
 
     private Context mContext;
     private ClickListener mClickListener;
     private List<RowItemManifiestosDetalleGestores> manifiestosDtList;
     private Integer idManifiestoDetalle, idTipoDesecho, idManifiesto;
+    private Double cantidadBultos=0.0, pesoBulto=0.0;
+
+    public interface OnRegistrarBultoListener {
+        public void onSuccesfull(String numeroBultos, String pesoBulto);
+    }
+
+    private OnRegistrarBultoListener mOnRegistrarBultoListener;
 
     public ManifiestoHijoGestorAdapter(Context context, List<RowItemManifiestosDetalleGestores> listaDetalle, Integer idManifiestoDetalle, Integer idTipoDesecho, Integer idManifiesto) {
-        super(context,R.layout.lista_items_manifiesto_gestores,listaDetalle);
         this.mContext = context;
         this.manifiestosDtList = listaDetalle;
         this.idManifiestoDetalle = idManifiestoDetalle;
@@ -35,55 +40,70 @@ public class ManifiestoHijoGestorAdapter extends ArrayAdapter<RowItemManifiestos
         this.idManifiesto = idManifiesto;
     }
 
+    @NonNull
+    @Override
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_gestores,parent,false);
+        return new MyViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ManifiestoHijoGestorAdapter.MyViewHolder holder, int position) {
+        final RowItemManifiestosDetalleGestores it = manifiestosDtList.get(position);
+        holder.cliente.setText(it.getCliente());
+        holder.numeroManifiesto.setText(it.getNumeroManifiestoHijo());
+        holder.numBultos.setText(""+it.getBultos());
+        holder.peso.setText(""+it.getPeso());
+        holder.checkSeleccion.setChecked(it.getCheckHijo());
+
+        holder.checkSeleccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckBox) v).isChecked()){
+                    v.setSelected(true);
+                    it.setCheckHijo(true);
+                }else {
+                    v.setSelected(false);
+                    it.setCheckHijo(false);
+                }
+                MyApp.getDBO().lotePadreDao().updateCheck(it.getIdManifiestoDetalleHijo(),it.getCheckHijo());
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return manifiestosDtList.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder{
+
+        TextView peso,numBultos,numeroManifiesto,cliente;
+        CheckBox checkSeleccion;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            peso = itemView.findViewById(R.id.txtItemPeso);
+            numBultos = itemView.findViewById(R.id.txtItemCantidadBulto);
+            numeroManifiesto = itemView.findViewById(R.id.txtItemNumManifiesto);
+            cliente = itemView.findViewById(R.id.txtItemCliente);
+            checkSeleccion = itemView.findViewById(R.id.chkEstadoItemDetalle);
+        }
+    }
 
     public void setTaskList(List<RowItemManifiestosDetalleGestores> taskList) {
         this.manifiestosDtList = taskList;
         notifyDataSetChanged();
     }
 
-    public class ViewHolder {
 
-        TextView peso,numBultos,numeroManifiesto,cliente;
-        CheckBox checkSeleccion;
-        }
-
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ManifiestoHijoGestorAdapter.ViewHolder holder = null;
-        manifiestosDtList = MyApp.getDBO().manifiestoDao().manifiestosHijos(idTipoDesecho,idManifiesto);
-        final RowItemManifiestosDetalleGestores row = manifiestosDtList.get(position);
-        LayoutInflater minflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = minflater.inflate(R.layout.lista_items_manifiesto_gestores,null);
-        holder = new ManifiestoHijoGestorAdapter.ViewHolder();
-            holder.peso = convertView.findViewById(R.id.txtItemPeso);
-            holder.numBultos = convertView.findViewById(R.id.txtItemCantidadBulto);
-            holder.numeroManifiesto = convertView.findViewById(R.id.txtItemNumManifiesto);
-            holder.cliente = convertView.findViewById(R.id.txtItemCliente);
-            holder.checkSeleccion = convertView.findViewById(R.id.chkEstadoItemDetalle);
-
-            if(manifiestosDtList.get(position).getPeso()==null){
-                holder.peso.setText("0.0");
-            }else {
-                holder.peso.setText(manifiestosDtList.get(position).getPeso().toString());
-            }
-
-            if(manifiestosDtList.get(position).getCantidadBulto()==null){
-                holder.numBultos.setText("0");
-            }else{
-                holder.numBultos.setText(manifiestosDtList.get(position).getCantidadBulto().toString());
-            }
-            holder.numeroManifiesto.setText(manifiestosDtList.get(position).getNumeroManifiesto());
-            holder.cliente.setText(manifiestosDtList.get(position).getCliente());
-
-        return convertView;
-    }
-
-    public void setOnItemClickListener(@NonNull ClickListener l) {
-        mClickListener= l;
+    public void setOnItemClickListener(@NonNull OnRegistrarBultoListener l) {
+        mOnRegistrarBultoListener= l;
     }
 
     public interface ClickListener {
         void onItemClick(int position, View v);
     }
+
+
 }

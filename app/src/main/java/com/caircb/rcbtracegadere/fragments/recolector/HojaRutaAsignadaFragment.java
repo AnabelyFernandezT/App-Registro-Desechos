@@ -44,6 +44,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.MotivoNoRecoleccion.Manifi
 import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
@@ -172,7 +173,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         entity = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                         if(parametros!=null){
                             setNavegate(ManifiestoLoteFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1,2));
-                        } else if(entity.getCategoria().equals(103)) {
+                        } else if(entity.getCategoria().equals(MyConstant.ID_ENTREGA_GESTOR)) {
                             setNavegate(HomeGestorAlternoFragment.create());
                         }else {
                             menu(position);
