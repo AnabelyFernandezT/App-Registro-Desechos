@@ -212,7 +212,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
              //setNavegate(RecepcionLotePlantaFragment.newInstance());
             }
         });
-        consultarFirma();
+        consultarFirmaAndDestinoEspecificoUsuario();
     }
 
     @Override
@@ -450,7 +450,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
         lblListaManifiestoAsignadoPlanta.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo));
     }
 
-    private void consultarFirma(){
+    private void consultarFirmaAndDestinoEspecificoUsuario(){
         UserConsultaFirmaUsuarioTask consultaFirmaUsuarioTask = new UserConsultaFirmaUsuarioTask(getActivity(), MySession.getIdUsuario());
         consultaFirmaUsuarioTask.setOnFirmaListener(new UserConsultaFirmaUsuarioTask.OnFirmaListener() {
             @Override
