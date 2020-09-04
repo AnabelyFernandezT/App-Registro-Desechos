@@ -64,8 +64,15 @@ public class MyPrint {
     }
 
     /***************/
+
+    private boolean checkImpresora(){
+        String data = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        return MyApp.getDBO().impresoraDao().existeImpresora(data!=null && data.length()>0?Integer.parseInt(data):0);
+    }
+
     public void printerIndividual(Integer idManifiesto, Integer idManifiestoDetalle, Integer idCatalogo, final Integer numeroBulto){
-        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+
+        if(checkImpresora()) {
             final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividual(idManifiesto, idManifiestoDetalle, idCatalogo);
             if(printEtiqueta != null){
                 System.out.println(printEtiqueta);
@@ -95,7 +102,7 @@ public class MyPrint {
     }
 
     public void printerIndividualLote(Integer idManifiesto, Integer idManifiestoDetalle, final Integer totalNumeroEtiquetas){
-        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+        if(checkImpresora()) {
             final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividualLote(idManifiesto, idManifiestoDetalle);
             if(printEtiqueta != null){
                 System.out.println(printEtiqueta);
@@ -129,7 +136,7 @@ public class MyPrint {
 
     public void pinter(Integer idAppManifiesto){
         //varificar si existe alguna impresora conectada...
-        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+        if(checkImpresora()) {
 
             final List<ItemEtiqueta> etiquetas = MyApp.getDBO().manifiestoDetallePesosDao().consultarBultosImpresion(idAppManifiesto);
 
@@ -179,7 +186,8 @@ public class MyPrint {
     }
 
     private void onCreatePrint(){
-        DEFAULT_PRINTER_MAC = MyApp.getDBO().impresoraDao().searchMac();
+        String data = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        DEFAULT_PRINTER_MAC = MyApp.getDBO().impresoraDao().searchMac(data!=null && data.length()>0?Integer.parseInt(data):0);
     }
 
     public String getMacAddressFieldText() {
@@ -846,7 +854,7 @@ public class MyPrint {
     }
 
     public void printerVerificarImpresora(){
-        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+        if(checkImpresora()) {
 
         }else {
             Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
@@ -898,7 +906,7 @@ public class MyPrint {
 
 
     public void printerHospitalario(Integer idAppManifiesto){
-        if(MyApp.getDBO().impresoraDao().existeImpresora()) {
+        if(checkImpresora()) {
             final ItemEtiquetaHospitalario printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaCabeceraHospitalario(idAppManifiesto);
             final List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle = MyApp.getDBO().manifiestoDetallePesosDao().consultaDetalleHospitalario(idAppManifiesto);
             if(printEtiqueta != null && listaDetalle.size() > 0){

@@ -1075,7 +1075,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     }
 
     private boolean checkImpresora(){
-        return MyApp.getDBO().impresoraDao().existeImpresora();
+        String data = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        return MyApp.getDBO().impresoraDao().existeImpresora(data!=null && data.length()>0?Integer.parseInt(data):0);
     }
 
     @Override

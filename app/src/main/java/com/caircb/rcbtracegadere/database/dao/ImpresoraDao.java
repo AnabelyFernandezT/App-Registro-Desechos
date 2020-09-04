@@ -18,8 +18,8 @@ import java.util.List;
     @Query("SELECT code,address  FROM tb_impresora")
     public abstract List<RowPrinters> getListaImpresora();
 
-    @Query("select count(*) from tb_impresora limit 1")
-    public abstract Boolean existeImpresora();
+    @Query("select count(*) from tb_impresora where useActive=1 and type=:tipo limit 1")
+    public abstract Boolean existeImpresora(Integer tipo);
 
     @Query("select count(*) from tb_impresora limit 1")
     public abstract Boolean existeCatalogoImpresora();
@@ -30,8 +30,8 @@ import java.util.List;
     @Query("SELECT _id as id, code as nombre FROM tb_impresora where type =:tipo")
     public abstract List<ItemGeneric> searchListImpresorabyTipoRuta(Integer tipo);
 
-    @Query("Select address from tb_impresora ")
-    public abstract String searchMac();
+    @Query("Select address from tb_impresora where  useActive=1 and type=:tipo limit 1")
+    public abstract String searchMac(Integer tipo);
 
     @Query("Delete from tb_impresora where printID =:uuid")
     public abstract void deleteImpresoraById(String uuid);
