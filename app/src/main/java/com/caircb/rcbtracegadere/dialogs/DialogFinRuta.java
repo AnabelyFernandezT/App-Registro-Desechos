@@ -237,6 +237,9 @@ public class DialogFinRuta extends MyDialog {
         Date dia = AppDatabase.getDateTime();
         CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
         final int idDestino = c!=null?c.getIdSistema():-1;
+
+        //MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+
         if(idDestino!=-1){
             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
         }else {
@@ -262,6 +265,9 @@ public class DialogFinRuta extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
                 lblpickUpTransportista.setText("0");
                 lblListaManifiestoAsignado.setText("0");
+
+                MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+
                 DialogFinRuta.this.dismiss();
             }
 
