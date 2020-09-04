@@ -37,11 +37,10 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
     private RecepcionQrPlantaEntity recepcionQrPlantaEntity;
     private List<DtoFile> listaFileDefauld;
     DtoFile firmaPlanta;
-    String path ="planta";
+    String path = "planta";
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
     UserUploadFileTask userUploadFileTask;
     String observacion;
-
 
 
     public interface OnRegisterListener {
@@ -50,23 +49,23 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
 
     private OnRegisterListener mOnRegisterListener;
 
-    public UserRegistrarPlantaQrTask(Context context, RecepcionQrPlantaEntity recepcionQrPlantaEntity,String observacion){
+    public UserRegistrarPlantaQrTask(Context context, RecepcionQrPlantaEntity recepcionQrPlantaEntity, String observacion) {
         super(context);
         this.recepcionQrPlantaEntity = recepcionQrPlantaEntity;
         this.observacion = observacion;
     }
 
     @Override
-    public void execute()  {
+    public void execute() {
         progressShow("Registrando recoleccion...");
 
-        String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-        int idManifiestoPrimero=Integer.parseInt(array[0]);
+        String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+        int idManifiestoPrimero = Integer.parseInt(array[0]);
 
-        if (array.length>1){
+        if (array.length > 1) {
 
             for (String s : array) {
-                int idManifiestoConsulta = Integer.parseInt(s.replace(" ",""));
+                int idManifiestoConsulta = Integer.parseInt(s.replace(" ", ""));
                 listaFileDefauld = new ArrayList<>();
                 firmaPlanta = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idManifiestoConsulta, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, MyConstant.STATUS_RECEPCION_PLANTA);
                 if (firmaPlanta != null && !firmaPlanta.isSincronizado())
@@ -89,13 +88,14 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
                 userUploadFileTask.uploadRecoleccionPlanta(listaFileDefauld, idManifiestoConsulta);
             }
             register();
-        }else {
+        } else {
             listaFileDefauld = new ArrayList<>();
-            firmaPlanta =MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idManifiestoPrimero, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, MyConstant.STATUS_RECEPCION_PLANTA);
-            if(firmaPlanta!=null && !firmaPlanta.isSincronizado())listaFileDefauld.add(firmaPlanta);
+            firmaPlanta = MyApp.getDBO().manifiestoFileDao().consultarFiletoSendDefauld(idManifiestoPrimero, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, MyConstant.STATUS_RECEPCION_PLANTA);
+            if (firmaPlanta != null && !firmaPlanta.isSincronizado())
+                listaFileDefauld.add(firmaPlanta);
 
             path = path + "/" + getPath() + "/" + idManifiestoPrimero;
-            userUploadFileTask= new UserUploadFileTask(getActivity(),path);
+            userUploadFileTask = new UserUploadFileTask(getActivity(), path);
             userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
                 @Override
                 public void onSuccessful() {
@@ -108,39 +108,39 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
                     message(message);
                 }
             });
-            userUploadFileTask.uploadRecoleccionPlanta(listaFileDefauld,idManifiestoPrimero);
+            userUploadFileTask.uploadRecoleccionPlanta(listaFileDefauld, idManifiestoPrimero);
         }
     }
 
-    private void register(){
+    private void register() {
 
         final RequestManifiestoQrPlanta request = createRequestManifiestoQrPlanta();
         Gson g = new Gson();
         String f = g.toJson(request);
         System.out.println(f);
 
-        if(request!=null){
+        if (request != null) {
             WebService.api().registroManifiestoQrPlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
-                    if (response.isSuccessful()){
-                        if(response.body().getExito()){
-                            String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-                            int idManifiestoPrimero=Integer.parseInt(array[0]);
-                            if (array.length>1){
+                    if (response.isSuccessful()) {
+                        if (response.body().getExito()) {
+                            String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+                            int idManifiestoPrimero = Integer.parseInt(array[0]);
+                            if (array.length > 1) {
                                 for (String s : array) {
-                                    int idManifiestoConsulta = Integer.parseInt(s.replace(" ",""));
+                                    int idManifiestoConsulta = Integer.parseInt(s.replace(" ", ""));
                                     MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectadoPlanta(idManifiestoConsulta);
                                 }
-                            }else {
+                            } else {
                                 MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectadoPlanta(idManifiestoPrimero);
                             }
                             finalizar();
                             progressHide();
-                        }else {
+                        } else {
                             message(response.body().getMensaje());
                         }
-                    }else{
+                    } else {
                         message(response.body().getMensaje());
                         progressHide();
                     }
@@ -153,32 +153,34 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
         }
     }
 
-    private RequestManifiestoQrPlanta createRequestManifiestoQrPlanta(){
+    private RequestManifiestoQrPlanta createRequestManifiestoQrPlanta() {
         RequestManifiestoQrPlanta rq = null;
-            rq = new RequestManifiestoQrPlanta();
-            rq.setNumeroManifiesto(recepcionQrPlantaEntity.getNumerosManifiesto());
-            rq.setUrlFirmaPlanta(firmaPlanta!=null?(path+"/"+firmaPlanta.getUrl()):"");
-            rq.setFechaRecepcionPlanta(AppDatabase.getDateTime().toString());
-            rq.setIdPlantaRecolector(MySession.getIdUsuario());
-            rq.setObservacion(observacion);
-            rq.setTipoRecoleccion(3);
-            rq.setNovedadFrecuentePlanta(createRequestNovedadFrecuente());
+        rq = new RequestManifiestoQrPlanta();
+        rq.setNumeroManifiesto(recepcionQrPlantaEntity.getNumerosManifiesto());
+        rq.setUrlFirmaPlanta(firmaPlanta != null ? (path + "/" + firmaPlanta.getUrl()) : "");
+        rq.setFechaRecepcionPlanta(AppDatabase.getDateTime().toString());
+        rq.setIdPlantaRecolector(MySession.getIdUsuario());
+        rq.setObservacion(observacion);
+        rq.setTipoRecoleccion(3);
+        rq.setNovedadFrecuentePlanta(createRequestNovedadFrecuente());
+        rq.setFlagPlantaSede(1);
+        rq.setIdLoteContenedor(0);
+        rq.setIdDestinatarioFinRutaCatalogo(0);
         return rq;
     }
 
 
-
-    private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente(){
-        String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-        int idManifiestoPrimero=Integer.parseInt(array[0]);
+    private List<RequestManifiestoNovedadFrecuente> createRequestNovedadFrecuente() {
+        String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+        int idManifiestoPrimero = Integer.parseInt(array[0]);
         List<RequestManifiestoNovedadFrecuente> resp = new ArrayList<>();
         List<Long> listaFotoNovedadFrecuente = MyApp.getDBO().manifiestoFileDao().consultarFotografiasUploadQr(idManifiestoPrimero, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA);
 
-        if(listaFotoNovedadFrecuente != null && listaFotoNovedadFrecuente.size()>0){
+        if (listaFotoNovedadFrecuente != null && listaFotoNovedadFrecuente.size() > 0) {
             resp.add(new RequestManifiestoNovedadFrecuente(
                     -1,
-                    createFotografia(-1,ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA),
-                    path+"/"+"novedadfrecuente"
+                    createFotografia(-1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA),
+                    path + "/" + "novedadfrecuente"
             ));
         }
 
@@ -186,22 +188,24 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
     }
 
     private List<RequestNovedadFoto> createFotografia(Integer idCatalogo, Integer tipo) {
-        String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-        int idManifiestoPrimero=Integer.parseInt(array[0]);
-        List<RequestNovedadFoto> lista = MyApp.getDBO().manifiestoFileDao().consultarFotografias(idManifiestoPrimero,idCatalogo,tipo);
+        String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+        int idManifiestoPrimero = Integer.parseInt(array[0]);
+        List<RequestNovedadFoto> lista = MyApp.getDBO().manifiestoFileDao().consultarFotografias(idManifiestoPrimero, idCatalogo, tipo);
         return lista;
     }
 
 
-    private void finalizar(){
-        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+    private void finalizar() {
+        if (mOnRegisterListener != null) mOnRegisterListener.onSuccessful();
     }
 
-    public void setOnRegisterListener(@NonNull OnRegisterListener l){
-        mOnRegisterListener =l;
+    public void setOnRegisterListener(@NonNull OnRegisterListener l) {
+        mOnRegisterListener = l;
 
     }
 
-    private String getPath() { return simpleDate.format(new Date());}
+    private String getPath() {
+        return simpleDate.format(new Date());
+    }
 
 }

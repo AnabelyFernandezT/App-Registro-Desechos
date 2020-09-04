@@ -279,7 +279,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                             if (imp.equals("1"))
                                                 flag = true;
 
-                                            if (!MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
+                                            if (checkImpresora() || flag) {
 
                                                 Date fecha = AppDatabase.getDateTime();
                                                 ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -367,7 +367,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     if (imp.equals("1"))
                                         flag = true;
 
-                                    if (!MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
+                                    if (checkImpresora() || flag) {
 
                                         Date fecha = AppDatabase.getDateTime();
                                         ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -731,7 +731,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                         if (imp.equals("1"))
                                             flag = true;
 
-                                        if (!MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
+                                        if (checkImpresora() || flag) {
 
                                             Date fecha = AppDatabase.getDateTime();
                                             ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -811,6 +811,90 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     }
                                 });
                                 dialogBuilder.show();
+                            } else {
+                                boolean flag = false;
+                                String imp = MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+MySession.getIdUsuario());
+
+                                if (imp.equals("1"))
+                                    flag = true;
+
+                                if (checkImpresora() || flag) {
+
+                                    Date fecha = AppDatabase.getDateTime();
+                                    ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                    MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
+
+                                    ///////////////////////////////////
+                                    List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                    //Verifico el estado del primer registro para saber si
+                                    RuteoRecoleccionEntity dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                                    if(dto!=null){
+                                        //si esta en falso es por que solo hay un registro, actualizo el punto de llegada del manifiesto seleccionado
+                                        MyApp.getDBO().ruteoRecoleccion().updatePuntoLlegadaFechaLlegada(dto.get_id(), rowItems.get(position).getIdAppManifiesto(), fecha);
+                                    }else{
+                                        MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fecha,  rowItems.get(position).getIdAppManifiesto(),null,null,false));
+                                    }
+                                    List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+
+                                    ///////////////////////////////////
+                                    if (rowItems.get(position).getTipoPaquete() == null || rowItems.get(position).getTipoPaquete() == 0) {
+                                        int tipoSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta"));
+                                        if(tipoSubRuta == 1) { //Industrial
+                                            dialogBuilder2 = new DialogBuilder(getActivity());
+                                            dialogBuilder2.setMessage("¿Va a realizar el pesaje en sitio?");
+                                            dialogBuilder2.setCancelable(false);
+                                            dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                            dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogBuilder2.dismiss();
+                                                    //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                    MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "1");
+                                                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+
+                                                }
+                                            });
+                                            dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogBuilder2.dismiss();
+                                                    //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                    MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "2");
+                                                    setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
+                                                    MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
+                                                }
+                                            });
+                                            dialogBuilder2.show();
+                                        }else{
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","1");
+                                            setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                        }
+                                    } else {
+                                        Integer idPaquete = rowItems.get(position).getTipoPaquete();
+                                        PaqueteEntity paquetes = MyApp.getDBO().paqueteDao().fechConsultaPaquete(idPaquete);
+                                        dialogBuilder2 = new DialogBuilder(getActivity());
+                                        dialogBuilder2.setMessage("El manifiesto es de tipo paquete " + paquetes.getDescripcion());
+                                        dialogBuilder2.setCancelable(false);
+                                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                        dialogBuilder2.setPositiveButton("Ok", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder2.dismiss();
+                                                //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
+                                                setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
+                                            }
+                                        });
+                                        dialogBuilder2.setNegativeButton("Atras", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder2.dismiss();
+                                            }
+                                        });
+                                        dialogBuilder2.show();
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     }
@@ -988,6 +1072,10 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         }catch (Exception e){
             System.out.println(e.getStackTrace());
         }
+    }
+
+    private boolean checkImpresora(){
+        return MyApp.getDBO().impresoraDao().existeImpresora();
     }
 
     @Override
