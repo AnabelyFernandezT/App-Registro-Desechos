@@ -612,8 +612,8 @@ public class MyPrint {
          "^FS^FO50,"+(valorDescripcion1+30)+"^A0,30,18^FD " + eliminarAcentos(descripcion2)+
          "^FS^FO440,"+valorDescripcion1+"^A0,30,18^FD " + recorreStringHospitalario(eliminarAcentos(item.getCodigoMai()),0,13)+
          "^FS^FO440,"+(valorDescripcion1+30)+"^A0,30,18^FD " + recorreStringHospitalario(eliminarAcentos(item.getCodigoMai()),13,27)+
-         "^FS^FO590,"+valor+"^A0,30,18^FD " + item.getNumeroBultos() +
-         "^FS^FO700,"+valor+"^A0,30,18^FD " + item.getPeso() ;
+         "^FS^FO590,"+valorDescripcion1+"^A0,30,18^FD " + item.getNumeroBultos() +
+         "^FS^FO700,"+valorDescripcion1+"^A0,30,18^FD " + item.getPeso() ;
          }
          return detalle;
 
