@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import androidx.annotation.Nullable;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
@@ -38,6 +40,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -71,6 +74,13 @@ public class DialogInicioRuta extends MyDialog {
     List<DtoFindRutas> listaPlacasDisponibles;
     List<RowRutas> listaRutas;
     TextView txtBuscar, txtSincronizar, txtManifiestos;
+
+    private OnSuccessListener mOnSuccessListener;
+
+    public interface OnSuccessListener {
+        public void isSuccessful();
+    }
+
 
     /*
     UserConsultarPlacasInicioRutaDisponible.TaskListener listenerPlacasDisponibles= new UserConsultarPlacasInicioRutaDisponible.TaskListener() {
@@ -220,6 +230,7 @@ public class DialogInicioRuta extends MyDialog {
     }
 
     public void initButton(){
+
     btnIngresarApp.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -277,7 +288,10 @@ public class DialogInicioRuta extends MyDialog {
         consultarPlacasInicioRutaDisponible.execute();
     }
 
+    public void setScanCode(String barcode){
+        //programar metodo para consultar y setear valores de inpresora capturada por lector...
 
+    }
 
    /* public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
@@ -350,10 +364,12 @@ public class DialogInicioRuta extends MyDialog {
             public void onSuccessful() {
                 MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","true");
 
-                MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
-                MyApp.getDBO().impresoraDao().updateDefaulImpresoraWorked(impresoraID);
-
-                DialogInicioRuta.this.dismiss();
+                if(impresoraID>0) {
+                    MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+                    MyApp.getDBO().impresoraDao().updateDefaulImpresoraWorked(impresoraID);
+                }
+                //DialogInicioRuta.this.dismiss();
+                if(mOnSuccessListener!=null)mOnSuccessListener.isSuccessful();
             }
 
             @Override
@@ -421,10 +437,16 @@ public class DialogInicioRuta extends MyDialog {
 
     }
 
+
+
     private void loadCataalogos(){
         List<Integer> listaCatalogos = new ArrayList<>();
         listaCatalogos.add(2);
         consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
         consultarCatalogosTask.execute();
+    }
+
+    public void setOnSuccessListener(@Nullable OnSuccessListener l) {
+        mOnSuccessListener = l;
     }
 }
