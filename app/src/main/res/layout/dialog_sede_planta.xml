@@ -32,7 +32,7 @@
             style="@style/TextViewTitleItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AUTORIZADO POR:"
+            android:text="CIERRE AUTORIZADO POR:"
             android:textAlignment="center" />
 
        <Spinner
