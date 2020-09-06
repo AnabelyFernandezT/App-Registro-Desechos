@@ -384,7 +384,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                                 MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValores(idAppManifiesto, idDetalle);
                                 if (numeroBultos.equals("") || numeroBultos.equals("0")) {
                                     final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                                    dialogBuilder2.setMessage("Ingrese un numero válido");
+                                    dialogBuilder2.setMessage("Ingrese un número mayor a cero");
                                     dialogBuilder2.setCancelable(false);
                                     dialogBuilder2.setTitle("CONFIRMACIÓN");
                                     dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
@@ -403,7 +403,9 @@ public class TabManifiestoDetalle extends LinearLayout {
                                     //detalles.clear();
                                     reloadData();
                                     dialogBultosNo.dismiss();
-                                    imprimirEtiquetaIndividual(idAppManifiesto,idDetalle,Integer.parseInt(numeroBultos));
+                                    if (!MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
+                                        imprimirEtiquetaIndividual(idAppManifiesto, idDetalle, Integer.parseInt(numeroBultos));
+                                    }
                                 }
                             }
                         });

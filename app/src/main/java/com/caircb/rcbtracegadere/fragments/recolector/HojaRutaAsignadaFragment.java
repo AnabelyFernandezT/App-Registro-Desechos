@@ -87,7 +87,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     ParametroEntity parametros, parametro_sede_planta;
     ManifiestoEntity entity;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
-    Integer cont=0;
+    Integer cont=-1;
     DialogBuilder dialogBuilderScan;
     /**
      * Use this factory method to create a new instance of
@@ -190,9 +190,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
                         Integer idManifiesto_aux=0;
                         List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
-                        if(rowItems.size()>0){ idManifiesto_aux = rowItems.get(cont).getIdAppManifiesto(); }
+                        if(rowItems.size()>0){ idManifiesto_aux = rowItems.get(position).getIdAppManifiesto(); }
                         final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto_aux);
-                        if(manifiesto.getMensaje().equals("") && parametros!=null){
+                        if(manifiesto != null && manifiesto.getMensaje() != null && manifiesto.getMensaje().equals("") && parametros!=null){
                             MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems.get(position).getIdAppManifiesto(),"1");
                         }else{
                             MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems.get(position).getIdAppManifiesto(),"0");
@@ -258,7 +258,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
                                             dialogBuilderScan = new DialogBuilder(getActivity());
                                             dialogBuilderScan.setCancelable(false);
-                                            dialogBuilderScan.setMessage("POR FAVOR ESCANEE EL CÓDIGO QR QUE DEBE MOSTRARLE  EL RESPONSABLE EN SEDE...");
+                                            dialogBuilderScan.setMessage("Para continuar escanee el CODIGO QR que debe presentarle el responsable de la sede...");
                                             dialogBuilderScan.setNegativeButton("CANCELAR", new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
@@ -548,9 +548,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
                         Integer idManifiesto_aux=0;
                         List<ItemManifiesto> rowItems_aux = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
-                        if(rowItems_aux.size()>0){ idManifiesto_aux = rowItems_aux.get(cont).getIdAppManifiesto(); }
+                        if(rowItems_aux.size()>0){ idManifiesto_aux = rowItems_aux.get(position).getIdAppManifiesto(); }
                         final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto_aux);
-                        if(manifiesto.getMensaje().equals("") && parametros!=null){
+                        if(manifiesto != null && manifiesto.getMensaje().equals("") && parametros!=null){
                             MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems_aux.get(position).getIdAppManifiesto(),"1");
                         }else{
                             MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems_aux.get(position).getIdAppManifiesto(),"0");
@@ -710,7 +710,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
                                         dialogBuilderScan = new DialogBuilder(getActivity());
                                         dialogBuilderScan.setCancelable(false);
-                                        dialogBuilderScan.setMessage("POR FAVOR ESCANEE EL CÓDIGO QR QUE DEBE MOSTRARLE  EL RESPONSABLE EN SEDE...");
+                                        dialogBuilderScan.setMessage("Para continuar escanee el CODIGO QR que debe presentarle el responsable de la sede...");
                                         dialogBuilderScan.setNegativeButton("CANCELAR", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -1019,59 +1019,82 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         Integer idManifiesto=0;
         List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
         if(rowItems.size()>0){
-            idManifiesto = rowItems.get(cont).getIdAppManifiesto();
+            idManifiesto = (cont != -1) ? rowItems.get(cont).getIdAppManifiesto() : 0;
         }
         final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        if(manifiesto!=null && manifiesto.getMensaje()!=null) {
-            if (!manifiesto.getMensaje().equals("")) {
-                UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(), manifiesto.getIdAppManifiesto(),
-                        manifiesto.getMensaje(),
-                        2,
-                        "1", 0.0);
-                notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
-                    @Override
-                    public void onSuccessful() {
-                        dialogBuilderScan.dismiss();
-                        messageBox("Se notificaron los siguientes " + manifiesto.getMensaje() + ". Espere respuesta de Backoffice");
-                    }
-                });
-                notificaion.execute();
-
-            }
+        if(manifiesto!=null && manifiesto.getMensaje()!=null && (!manifiesto.getMensaje().equals(""))) {
+            UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(), manifiesto.getIdAppManifiesto(),
+                    manifiesto.getMensaje(),
+                    2,
+                    "1", 0.0);
+            notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
+                @Override
+                public void onSuccessful() {
+                    messageBox(manifiesto.getMensaje() + ". Espere respuesta de Back office");
+                }
+            });
+            notificaion.execute();
         }
+        else
+            setNavegate(ManifiestoLoteFragment.newInstance(idManifiesto,1,2));
 
+        cont = -1;
     }
 
-    private void asociarLoteManifiesto(Integer lote){
-        List<Integer> listaManifiesto = new ArrayList<>();
-        System.out.println(lote);
-
-        try{
-            List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
-
-            if(rowItems.size()>0) {
-                for (int i=0; i<rowItems.size();i++) {
-                    if(rowItems.get(i).getIdentificacion().equals(MyConstant.ID_GADERE)){
-                        listaManifiesto.add(rowItems.get(i).getIdAppManifiesto());
-                        cont=i;
-                    }
-                }
-            }
-            if (listaManifiesto.size()>0){
-                //Se toma el primer manifiesto. Se debe evaluar si tiene mas manifiestos asignados para listar y permitir seleccionar el indicado
-                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),rowItems.get(cont).getIdAppManifiesto(), lote, listenerHojaRuta);
-                try {
-                    consultarHojaRutaTask.execute();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-            }else{
-
-            }
-        }catch (Exception e){
-            System.out.println(e.getStackTrace());
+    private void asociarLoteManifiesto(final Integer lote){
+        if (dialogBuilder!= null)
+        {
+            dialogBuilder.dismiss();
+            dialogBuilder = null;
         }
+
+        dialogBuilder = new DialogBuilder(getActivity());
+        dialogBuilder.setMessage("¿Asociar el manifiesto seleccionado con el lote de sede N° " + lote.toString() + " ?");
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogBuilderScan!= null)
+                    dialogBuilderScan.dismiss();
+                dialogBuilder.dismiss();
+
+                List<Integer> listaManifiesto = new ArrayList<>();
+
+                try{
+                    List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
+
+                    if(rowItems.size()>0) {
+                        for (int i=0; i<rowItems.size();i++) {
+                            if(rowItems.get(i).getIdentificacion().equals(MyConstant.ID_GADERE)){
+                                listaManifiesto.add(rowItems.get(i).getIdAppManifiesto());
+                                cont=i;
+                                break;
+                            }
+                        }
+                    }
+
+                    try {
+                        if (cont != -1) {
+                            consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(), rowItems.get(cont).getIdAppManifiesto(), lote, listenerHojaRuta);
+                            consultarHojaRutaTask.execute();
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }catch (Exception e){
+                    messageBox(e.getMessage());
+                }
+            }
+        });
+        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dialogBuilderScan!= null)
+                    dialogBuilderScan.dismiss();
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.show();
     }
 
     private boolean checkImpresora(){

@@ -293,7 +293,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         manifiestoSedeLoteTask.setmOnRegistro(new UserConsultarManifiestoSedeLoteTask.OnRegistro() {
             @Override
             public void onSuccessful() {
-
+                Window window;
                 DialogManifiestoPendienteSede dialogManifiestoPendienteSede = new DialogManifiestoPendienteSede(getActivity(),manifiestoID, idLoteSede);
                 dialogManifiestoPendienteSede.setCancelable(false);
                 dialogManifiestoPendienteSede.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -314,7 +314,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                     }
                 });
                 dialogManifiestoPendienteSede.show();
-
+                window = dialogManifiestoPendienteSede.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             }
         });
         manifiestoSedeLoteTask.execute();
