@@ -54,7 +54,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     private static final String ARG_PARAM2 = "Manifiestobloqueado";
     private static final String ARG_PARAM3 = "numeroManifiesto";
     private static final String ARG_PARAM4 = "pesajePendiente";
-
+    Window window;
     private Integer manifiestoID;
     private LinearLayout btnManifiestoCancel,btnManifiestoNext, btnOtro;
     private FragmentActivity myContext;
@@ -225,7 +225,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
 
     private void  registroPlantaDetalle(){
         builder = new DialogBuilder(getActivity());
-        builder.setMessage("¿Esta seguro que desea continuar?");
+        builder.setMessage("¿Está seguro que desea continuar?");
         builder.setCancelable(true);
         builder.setPositiveButton("SI", new View.OnClickListener() {
             @Override
@@ -293,7 +293,6 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         manifiestoSedeLoteTask.setmOnRegistro(new UserConsultarManifiestoSedeLoteTask.OnRegistro() {
             @Override
             public void onSuccessful() {
-                Window window;
                 DialogManifiestoPendienteSede dialogManifiestoPendienteSede = new DialogManifiestoPendienteSede(getActivity(),manifiestoID, idLoteSede);
                 dialogManifiestoPendienteSede.setCancelable(false);
                 dialogManifiestoPendienteSede.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -315,7 +314,7 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
                 });
                 dialogManifiestoPendienteSede.show();
                 window = dialogManifiestoPendienteSede.getWindow();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         });
         manifiestoSedeLoteTask.execute();

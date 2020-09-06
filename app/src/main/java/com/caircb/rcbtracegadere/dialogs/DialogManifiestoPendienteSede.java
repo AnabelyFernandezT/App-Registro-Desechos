@@ -39,7 +39,7 @@ public class DialogManifiestoPendienteSede extends MyDialog {
     private Integer idManifiesto, idLoteSede;
 
     List<DtoCatalogo> listaDestinos;
-    Integer idDestino;
+    Integer idDestino = 0;
 
     public interface onRegister{
         public void onSuccessful();
@@ -74,6 +74,8 @@ public class DialogManifiestoPendienteSede extends MyDialog {
                     idDestino = listaDestinos.get(position-1).getId();
                     System.out.println(idDestino);
                 }
+                else
+                    idDestino = 0;
             }
 
             @Override
@@ -85,15 +87,59 @@ public class DialogManifiestoPendienteSede extends MyDialog {
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserRegistrarManifiestosPendientesSedeTask registrarManifiestosPendientesSedeTask = new UserRegistrarManifiestosPendientesSedeTask(getActivity(),idManifiesto, idLoteSede, idDestino);
-                registrarManifiestosPendientesSedeTask.setmOnRegistro(new UserRegistrarManifiestosPendientesSedeTask.OnRegistro() {
-                    @Override
-                    public void onSuccessful() {
-                        if(mOnRegister!=null)mOnRegister.onSuccessful();
+                final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                List<ItemManifiestoPendiente> manifiestos = MyApp.getDBO().manifiestoSedePlantaDao().fetchManifiestoPendienteCheck(idManifiesto);
+
+                if(manifiestos.size() > 0) {
+                    if(idDestino > 0) {
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setMessage("¿Confirma el cierre de los manifiestos seleccionados?");
+                        dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                UserRegistrarManifiestosPendientesSedeTask registrarManifiestosPendientesSedeTask = new UserRegistrarManifiestosPendientesSedeTask(getActivity(), idManifiesto, idLoteSede, idDestino);
+                                registrarManifiestosPendientesSedeTask.setmOnRegistro(new UserRegistrarManifiestosPendientesSedeTask.OnRegistro() {
+                                    @Override
+                                    public void onSuccessful() {
+                                        if (mOnRegister != null) mOnRegister.onSuccessful();
+                                    }
+                                });
+                                registrarManifiestosPendientesSedeTask.execute();
+                                dialogBuilder.dismiss();
+                                DialogManifiestoPendienteSede.this.dismiss();
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        });
+                        dialogBuilder.show();
                     }
-                });
-                registrarManifiestosPendientesSedeTask.execute();
-                DialogManifiestoPendienteSede.this.dismiss();
+                    else
+                    {
+                        messageBox("Seleccione la persona que autoriza el cierre de los manifiestos");
+                    }
+                }
+                else {
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setMessage("No ha seleccionado manifiestos para cerrar. ¿Desea continuar?");
+                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                            DialogManifiestoPendienteSede.this.dismiss();
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
+                }
             }
         });
     }
