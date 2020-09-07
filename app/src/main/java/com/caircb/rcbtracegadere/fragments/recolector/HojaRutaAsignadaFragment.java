@@ -223,8 +223,6 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 }
                             });
                             gestoresBuilder.show();
-                        } else if(entity.getCategoria().equals(MyConstant.ID_ENTREGA_GESTOR)) {
-                            setNavegate(HomeGestorAlternoFragment.create());
                         }else {
                             menu(position);
                         }
