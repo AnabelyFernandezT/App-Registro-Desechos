@@ -56,6 +56,7 @@ import com.caircb.rcbtracegadere.models.request.RequestCredentials;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.PaquetesTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultaImpresoraTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
@@ -116,6 +117,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     PaquetesTask paquetesTask;
     UserConsultarRutasTask rutasTask;
     PaquetesTask.TaskListener listener;
+    UserConsultaImpresoraTask consultaImpresoraTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         initMenuLateral();
         existeCatalogos();
         existePaquetes();
+        existeListaImpresoras();
         cargarRutas();
         validateInitFragment();
         initBorrarCache();
@@ -397,6 +400,13 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         if (!MyApp.getDBO().paqueteDao().existePaquetes()) {
             paquetesTask = new PaquetesTask(this, listener);
             paquetesTask.execute();
+        }
+    }
+
+    private void existeListaImpresoras() {
+        if (!MyApp.getDBO().impresoraDao().existeCatalogoImpresora()) {
+            consultaImpresoraTask = new UserConsultaImpresoraTask(this);
+            consultaImpresoraTask.execute();
         }
     }
 

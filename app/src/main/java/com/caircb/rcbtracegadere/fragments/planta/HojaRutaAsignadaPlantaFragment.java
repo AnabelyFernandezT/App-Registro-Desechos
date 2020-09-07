@@ -44,7 +44,7 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
 
 
     LinearLayout btnRetornarListHojaRuta;
-
+    private Window window;
     private RecyclerView recyclerView;
     private ManifiestoAdapterSede recyclerviewAdapter;
     UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
@@ -238,6 +238,8 @@ public class HojaRutaAsignadaPlantaFragment extends MyFragment implements View.O
                     }
                 });
                 dialogCodigoQR.show();
+                window = dialogCodigoQR.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         }
 

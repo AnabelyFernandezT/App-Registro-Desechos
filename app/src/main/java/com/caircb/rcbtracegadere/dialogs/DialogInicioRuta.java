@@ -2,6 +2,8 @@ package com.caircb.rcbtracegadere.dialogs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
@@ -16,17 +18,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import androidx.annotation.Nullable;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.ListaValoresAdapter;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
+import com.caircb.rcbtracegadere.database.entity.ImpresoraEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.models.ItemGeneric;
 import com.caircb.rcbtracegadere.models.RowRutas;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
@@ -35,9 +41,11 @@ import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarPlacasInicioRutaDisponible;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -47,16 +55,17 @@ public class DialogInicioRuta extends MyDialog {
     EditText txtKilometraje;
     LinearLayout btnIngresarApp, btnCancelarApp;
     Activity _activity;
-    Spinner spinnerPlacas;
+    Spinner spinnerPlacas,spinnerImpresoras;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     LinearLayout lnlIniciaRuta,lnlFinRuta;
     UserConsultarCatalogosTask consultarCatalogosTask;
-    TextView lblListaManifiestoAsignado, lblpickUpTransportista,lblPlaca,lblTransportistaRecolector,lblAuxiliarRecoleccion1, lblTituloAuxiliarRecoleccion2,lblAuxiliarRecoleccion2,lblRuta;
+    TextView lblListaManifiestoAsignado, lblpickUpTransportista,lblPlaca,lblTransportistaRecolector,lblAuxiliarRecoleccion1, lblTituloAuxiliarRecoleccion2,lblAuxiliarRecoleccion2,lblRuta,lblImpresora;
 
     String placa;
     String placaInfoModulos;
     long idRegistro;
-    int idTipoSubruta;
+    int idTipoSubruta,impresoraID=0;
+    List<ItemGeneric> listaImpresoras = new ArrayList<>();
 
     UserRegistrarInicioRutaTask registroInicioRuta;
     UserConsultarRutasTask consultarPlacasInicioRutaDisponible;
@@ -68,6 +77,13 @@ public class DialogInicioRuta extends MyDialog {
     List<DtoFindRutas> listaPlacasDisponibles;
     List<RowRutas> listaRutas;
     TextView txtBuscar, txtSincronizar, txtManifiestos;
+    Cursor cursor;
+    private OnSuccessListener mOnSuccessListener;
+
+    public interface OnSuccessListener {
+        public void isSuccessful();
+    }
+
 
     /*
     UserConsultarPlacasInicioRutaDisponible.TaskListener listenerPlacasDisponibles= new UserConsultarPlacasInicioRutaDisponible.TaskListener() {
@@ -107,6 +123,7 @@ public class DialogInicioRuta extends MyDialog {
         txtKilometraje = (EditText)getView().findViewById(R.id.txtKilometraje);
 
         lblPlaca = (TextView) getView().findViewById(R.id.lblPlaca);
+        lblImpresora = (TextView)getView().findViewById(R.id.lblImpresora);
         lblTransportistaRecolector = (TextView)getView().findViewById(R.id.lblTransportistaRecolector);
         lblAuxiliarRecoleccion1 = (TextView)getView().findViewById(R.id.lblAuxiliarRecoleccion1);
         lblTituloAuxiliarRecoleccion2 = (TextView)getView().findViewById(R.id.lblTituloAuxiliarRecoleccion2);
@@ -142,6 +159,7 @@ public class DialogInicioRuta extends MyDialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position>0){
+
                     listaPlacasDisponibles.get(position-1);
                     placa = (String) spinnerPlacas.getSelectedItem();
                     lblPlaca.setText(listaPlacasDisponibles.get(position-1).getPlaca());
@@ -150,6 +168,7 @@ public class DialogInicioRuta extends MyDialog {
                     lblTransportistaRecolector.setText(listaPlacasDisponibles.get(position-1).getNombreChofer());
                     lblAuxiliarRecoleccion1.setText(listaPlacasDisponibles.get(position-1).getNombreAuxiliar());
                     idTipoSubruta=listaPlacasDisponibles.get(position-1).getTiposubruta();
+
                     MyApp.getDBO().parametroDao().saveOrUpdate("tipoSubRuta",""+idTipoSubruta);
                     if (listaPlacasDisponibles.get(position-1).getNombreConductor()!=null){
                         lblTituloAuxiliarRecoleccion2.setVisibility(View.VISIBLE);
@@ -157,6 +176,11 @@ public class DialogInicioRuta extends MyDialog {
                         lblAuxiliarRecoleccion2.setText(listaPlacasDisponibles.get(position-1).getNombreConductor());
                         lblRuta.setText(listaPlacasDisponibles.get(position-1).getNombreRuta());
                     }
+
+                    loadImpresorabyRuta(idTipoSubruta);
+                }
+                else{
+                    loadImpresorabyRuta(null);
                 }
             }
 
@@ -166,6 +190,26 @@ public class DialogInicioRuta extends MyDialog {
             }
         });
         //spinnerPlacas.setAdapter(listaValoresAdapter);
+
+        spinnerImpresoras = (Spinner)getView().findViewById(R.id.lista_impresora);
+        spinnerImpresoras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                     cursor = (Cursor) spinnerImpresoras.getSelectedItem();
+                     Object s = spinnerImpresoras.getSelectedItem();
+                     System.out.print(s);
+                     System.out.print(cursor);
+                    if(cursor!=null && cursor.getCount()>0) {
+                        impresoraID = cursor.getInt(cursor.getColumnIndex("_id"));
+                        System.out.print(impresoraID);
+                    }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,9 +222,22 @@ public class DialogInicioRuta extends MyDialog {
        // datosPlacasDisponibles();
     }
 
-
+    private void loadImpresorabyRuta(Integer tipoSubRuta){
+        if(tipoSubRuta!=null){
+            listaImpresoras = MyApp.getDBO().impresoraDao().searchListImpresorabyTipoRuta(tipoSubRuta);
+           if(listaImpresoras.size()>0) {
+               cargarSpinner(spinnerImpresoras, listaImpresoras, true);
+               lblImpresora.setVisibility(View.VISIBLE);
+               spinnerImpresoras.setVisibility(View.VISIBLE);
+           }
+        }else {
+            lblImpresora.setVisibility(View.GONE);
+            spinnerImpresoras.setVisibility(View.GONE);
+        }
+    }
 
     public void initButton(){
+
     btnIngresarApp.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -203,6 +260,12 @@ public class DialogInicioRuta extends MyDialog {
                 if(spinnerPlacas.getSelectedItem().toString().equals("SELECCIONE")){
                     messageBox("Debe seleccionar una subRuta");
                 }else{
+
+                    if(impresoraID<=0){
+                        messageBox("Debe seleccionar una impresora para trabajar");
+                        return;
+                    }
+
                     try {
                         guardarDatos();
                     } catch (ParseException e) {
@@ -232,7 +295,32 @@ public class DialogInicioRuta extends MyDialog {
         consultarPlacasInicioRutaDisponible.execute();
     }
 
+    public void setScanCode(String barcode){
+        //programar metodo para consultar y setear valores de inpresora capturada por lector...
+        ItemGeneric item = MyApp.getDBO().impresoraDao().searchCodigoUUID(barcode);
+        System.out.print(impresoraID);
+        if(item ==null){
+            messageBox("Impresora no encontrada");
+        }else{
+            //MatrixCursor extras = new MatrixCursor(new String[] { "_id", "nombre"});
+            //extras.addRow(new String[] { item.getId().toString(), item.getNombre() });
+            //cursor = (Cursor) extras;
+            Integer id = getIndexByname(item.getNombre());
+            impresoraID = item.getId();
+            spinnerImpresoras.setSelection(id+1);
+        }
 
+    }
+
+    public int getIndexByname(String pName)
+    {
+        for(ItemGeneric _item : listaImpresoras)
+        {
+            if(_item.getNombre().equals(pName))
+                return listaImpresoras.indexOf(_item);
+        }
+        return -1;
+    }
 
    /* public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){
 
@@ -304,7 +392,13 @@ public class DialogInicioRuta extends MyDialog {
             @Override
             public void onSuccessful() {
                 MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","true");
-                DialogInicioRuta.this.dismiss();
+
+                if(impresoraID>0) {
+                    MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+                    MyApp.getDBO().impresoraDao().updateDefaulImpresoraWorked(impresoraID);
+                }
+                //DialogInicioRuta.this.dismiss();
+                if(mOnSuccessListener!=null)mOnSuccessListener.isSuccessful();
             }
 
             @Override
@@ -372,10 +466,16 @@ public class DialogInicioRuta extends MyDialog {
 
     }
 
+
+
     private void loadCataalogos(){
         List<Integer> listaCatalogos = new ArrayList<>();
         listaCatalogos.add(2);
         consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
         consultarCatalogosTask.execute();
+    }
+
+    public void setOnSuccessListener(@Nullable OnSuccessListener l) {
+        mOnSuccessListener = l;
     }
 }

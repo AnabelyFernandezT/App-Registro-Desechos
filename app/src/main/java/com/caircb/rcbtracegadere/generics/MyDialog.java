@@ -7,7 +7,10 @@ import android.app.Fragment;
 import android.app.FragmentHostCallback;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -15,16 +18,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.models.ItemGeneric;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 public class MyDialog extends Dialog {
 
@@ -84,6 +92,24 @@ public class MyDialog extends Dialog {
         return Uri.parse(path);
     }
 
+
+    public Spinner cargarSpinner(Spinner defaulSpiner, List<ItemGeneric> lista, boolean bhabilitar){
+
+        MatrixCursor extras = new MatrixCursor(new String[] { "_id", "nombre"});
+        extras.addRow(new String[] { "-1", "Seleccione..." });
+        for(ItemGeneric reg: lista){
+            extras.addRow(new String[]{reg.getId().toString(), reg.getNombre()});
+        }
+
+        SimpleCursorAdapter adapter1 = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, extras, new String[] { "nombre"}, new int[]{android.R.id.text1});
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //adapter1.setViewBinder(binding);
+        defaulSpiner.setAdapter(adapter1);
+        defaulSpiner.setEnabled(bhabilitar);
+
+        return defaulSpiner;
+    }
 
     /*
     public Spinner cargarSpinnerToArray(Spinner spinner, Cursor _cursor, boolean bhabilitar){

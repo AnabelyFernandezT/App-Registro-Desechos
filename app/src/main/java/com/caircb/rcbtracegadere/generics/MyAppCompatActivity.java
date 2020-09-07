@@ -59,9 +59,9 @@ public class MyAppCompatActivity extends AppCompatActivity implements BarcodeRea
         super.onCreate(savedInstanceState);
         mContext = this;
 
-        if(mContext instanceof MainActivity){
-            initWorked();
-        }
+        //if(mContext instanceof MainActivity){
+            //initWorked();
+        //}
     }
 
     private void initConnectivity(){
@@ -135,6 +135,7 @@ public class MyAppCompatActivity extends AppCompatActivity implements BarcodeRea
         if(MySession.getDispositivoManufacturer().equals("Honeywell")){
             initListenerScanHoneywell();
         }else if (MySession.getDispositivoManufacturer().equals("UBX")){
+            stopUnitechScan();
             initListenerScan();
 
             //CONFIGURACION DEL SCANNER DE CODIGO DE BARRAS
@@ -228,17 +229,21 @@ public class MyAppCompatActivity extends AppCompatActivity implements BarcodeRea
         super.onPause();
 
        if (MySession.getDispositivoManufacturer().equals("UBX")){
-            try {
-                if (mScanManager != null) {
-                    mScanManager.stopDecode();
-                }
-                unregisterReceiver(mScanReceiver);
-            }
-            catch(Exception ex){
-
-            }
+           stopUnitechScan();
         }
 
+    }
+
+    private void stopUnitechScan(){
+        try {
+            if (mScanManager != null) {
+                mScanManager.stopDecode();
+            }
+            unregisterReceiver(mScanReceiver);
+        }
+        catch(Exception ex){
+
+        }
     }
 
     private void initListenerScan() {

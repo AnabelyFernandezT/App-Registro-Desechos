@@ -61,7 +61,7 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
         rq.setManifiesto(entity.getNumeroManifiesto());
         rq.setPesoReferencial(String.valueOf(detalle.getPesoReferencial()));
         rq.setSucursal(entity.getSucursal());
-        rq.setCodigoMae(detalle.getCodigoMAE());
+        rq.setCodigoMae(detalle.getCodigoMAE() + ": " + detalle.getNombreDesecho());
 
         try {
             rq.setPesoSolicitado(""+ Math.round (((pesoExtra - detalle.getPesoReferencial()) * 100.00)) / 100.00);

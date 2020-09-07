@@ -15,7 +15,14 @@
         android:gravity="center"
         android:layout_weight="1"
         android:orientation="vertical">
-
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:text="MANIFIESTOS PENDIENTES:" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
@@ -30,10 +37,12 @@
 
         <TextView
             style="@style/TextViewTitleItem"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AUTORIZADO POR:"
-            android:textAlignment="center" />
+            android:text="CIERRE AUTORIZADO POR:"
+            android:textAlignment="center"
+            android:textSize="14dp"/>
 
        <Spinner
             android:id="@+id/spn_listaAutorizacion"

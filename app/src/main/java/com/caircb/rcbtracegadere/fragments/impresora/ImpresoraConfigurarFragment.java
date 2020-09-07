@@ -92,9 +92,9 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                     @Override
                     public void onClick(View v) {
                         try{
-                            MyApp.getDBO().impresoraDao().deleteImpresora();
-                            Toast.makeText(getActivity(),"The device has been unpaired", Toast.LENGTH_SHORT).show();
-                            initPairedPrinters();
+                            //MyApp.getDBO().impresoraDao().deleteImpresora();
+                            //Toast.makeText(getActivity(),"The device has been unpaired", Toast.LENGTH_SHORT).show();
+                            //initPairedPrinters();
                         }catch (Exception ex){}
                         builder.dismiss();
                     }
@@ -134,8 +134,9 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                 touchListenerAP.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
                     @Override
                     public void onRowClicked(int position) {
+                        Toast.makeText(getActivity(),"Funcionalidad bloqueda",Toast.LENGTH_SHORT);
                         //Toast.makeText(getActivity(),discoveredPrinters.get(position).getName(),Toast.LENGTH_SHORT).show();
-                        MyApp.getDBO().impresoraDao().deleteImpresora();
+                        /*MyApp.getDBO().impresoraDao().deleteImpresora();
                         final String pName = discoveredPrinters.get(position).getName();
                         final String pAddress = discoveredPrinters.get(position).getAddress();
 
@@ -164,6 +165,8 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                         });
 
                         builder.show();
+
+                         */
                     }
 
                     @Override

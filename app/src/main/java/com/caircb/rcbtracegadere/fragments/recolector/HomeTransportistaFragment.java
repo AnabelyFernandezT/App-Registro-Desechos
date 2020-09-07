@@ -83,7 +83,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         public void onSuccessful() {
             loadCantidadManifiestoAsignado();
             loadCantidadManifiestoProcesado();
-            notificacionDetalleExtra();
         }
     };
 
@@ -354,6 +353,13 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                         dialogInicioRuta = new DialogInicioRuta(getActivity());
                         dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialogInicioRuta.setCancelable(false);
+                        dialogInicioRuta.setOnSuccessListener(new DialogInicioRuta.OnSuccessListener() {
+                            @Override
+                            public void isSuccessful() {
+                                dialogInicioRuta.dismiss();
+                                dialogInicioRuta = null;
+                            }
+                        });
                         dialogInicioRuta.show();
                     }
                 });
@@ -399,9 +405,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     btnFinRuta.setEnabled(false);
                     btnScanQr.setAlpha(0.3f);
                     flag=1;
-
-                    //Quitar cuando se active desde Lector
-                    asociarLoteManifiesto(389);
                 }
 
             }
@@ -519,74 +522,12 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         txtManifiestos.setTextColor(Color.WHITE);
     }
 
+
+
     @Override
     public void reciveData(String data) {
-        try {
-            asociarLoteManifiesto(Integer.parseInt(data));
+        if(dialogInicioRuta!=null && dialogInicioRuta.isShowing()){
+            dialogInicioRuta.setScanCode(data);
         }
-        catch (Exception e)
-        {
-            System.out.println(e.getStackTrace());
-            messageBox("El código escaneado no es de tipo Lote.");
-        }
-    }
-
-    private void asociarLoteManifiesto(Integer lote){
-        List<Integer> listaManifiesto = new ArrayList<>();
-
-        desbloque_botones();
-
-        try{
-            List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
-
-            if(rowItems.size()>0) {
-                for (int i=0; i<rowItems.size();i++) {
-                    if(rowItems.get(i).getIdentificacion().equals(MyConstant.ID_GADERE)){
-                        listaManifiesto.add(rowItems.get(i).getIdAppManifiesto());
-                        cont=i;
-                    }
-                }
-            }
-            if (listaManifiesto.size()>0){
-                //Se toma el primer manifiesto. Se debe evaluar si tiene mas manifiestos asignados para listar y permitir seleccionar el indicado
-                consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(),rowItems.get(cont).getIdAppManifiesto(), lote, listenerHojaRuta);
-                try {
-                    consultarHojaRutaTask.execute();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }else{
-
-            }
-        }
-        catch (Exception e){
-            System.out.println(e.getStackTrace());
-        }
-    }
-
-    private void notificacionDetalleExtra(){
-        Integer idManifiesto=0;
-        List<ItemManifiesto> rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
-        if(rowItems.size()>0){
-            idManifiesto = rowItems.get(cont).getIdAppManifiesto();
-        }
-        final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        if(manifiesto!=null && manifiesto.getMensaje()!=null) {
-            if (!manifiesto.getMensaje().equals("")) {
-                UserNotificacionTask notificaion = new UserNotificacionTask(getActivity(), manifiesto.getIdAppManifiesto(),
-                        manifiesto.getMensaje(),
-                        2,
-                        "1", 0.0);
-                notificaion.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
-                    @Override
-                    public void onSuccessful() {
-                        messageBox("Se notificará " + manifiesto.getMensaje());
-                    }
-                });
-                notificaion.execute();
-
-            }
-        }
-
     }
 }

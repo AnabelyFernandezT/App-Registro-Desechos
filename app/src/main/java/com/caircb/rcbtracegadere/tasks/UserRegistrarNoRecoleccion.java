@@ -71,7 +71,7 @@ public class UserRegistrarNoRecoleccion extends MyRetrofitApi implements Retrofi
     @Override
     public void execute() {
         //Subir Fotos
-        progressShow("registrando no recoleccion...");
+        progressShow("registrando no recolección...");
         model =  MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         //images por defecto

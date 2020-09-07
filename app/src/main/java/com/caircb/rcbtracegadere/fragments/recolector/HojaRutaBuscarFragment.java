@@ -187,6 +187,11 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
         //recyclerView.addItemDecoration(divider);
     }
 
+    private boolean checkImpresora(){
+        String data = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        return MyApp.getDBO().impresoraDao().existeImpresora(data!=null && data.length()>0?Integer.parseInt(data):0);
+    }
+
     private void menu(final int position) {
         final CharSequence[] options = {"INICIAR RECOLECCIÓN", "NO RECOLECTAR", "CANCELAR"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -215,7 +220,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                                 if (imp.equals("1"))
                                     flag = true;
 
-                                if (!MyApp.getDBO().impresoraDao().existeImpresora() || flag) {
+                                if (!checkImpresora() || flag) {
 
                                     Date fecha = AppDatabase.getDateTime();
                                     //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());

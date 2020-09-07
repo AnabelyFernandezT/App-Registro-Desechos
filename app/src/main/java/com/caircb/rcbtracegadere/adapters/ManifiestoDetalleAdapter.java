@@ -79,9 +79,13 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         }
 
         if (tipoProceso==1){
-            if(holder.txtPeso.getText().toString().equals("0.0")){
+            if(it.getCantidadBulto() > 0)
+                holder.chkEstado.setChecked(true);
+            else
                 holder.chkEstado.setChecked(false);
-            }
+            /*if (holder.txtUnidad.getText().toString().equals("0.0")){
+                holder.chkEstado.setChecked(false);
+            }*/
         }else {
             holder.chkEstado.setChecked(it.isEstado());
         }

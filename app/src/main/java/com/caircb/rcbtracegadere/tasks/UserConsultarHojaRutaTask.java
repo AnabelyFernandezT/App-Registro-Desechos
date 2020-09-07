@@ -62,8 +62,8 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         this.taskListener=listener;
         this.idManifiesto = idManifiesto;
         this.lote = idLote;
-        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote_"+idManifiesto,""+idLote);
-        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote",""+idLote);
+        //MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote_"+idManifiesto,""+idLote);
+        //MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote",""+idLote);
         progressShow("Consultando...");
     }
 
@@ -117,55 +117,99 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
                                         MyApp.getDBO().manifiestoDao().deleteNonSyncronizedManifiestos(it.getIdAppManifiesto());
                                     }
                                 }
-                            }
 
-                            if(parametroLote!=null){
-                                for (DtoManifiesto reg:respuesta){
-                                    MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
-                                    MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(reg.getIdAppManifiesto());
-                                    for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
-                                        MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt,true);
-                                        for (DtoHojaRutaDetalleBulto db:dt.getBultos()){
-                                            MyApp.getDBO().manifiestoDetallePesosDao().saveValores(
-                                                    reg.getIdAppManifiesto(),
-                                                    dt.getIdAppManifiestoDetalle(),
-                                                    db.getPeso().doubleValue(),
-                                                    db.getDescripcion(),
-                                                    null,
-                                                    db.getCodigoQr(),
-                                                    true,
-                                                    db.getIndex(),
-                                                    0
-                                            );
+                                if((respuesta.get(0).getMensaje() != null && respuesta.get(0).getMensaje().equals("")))
+                                {
+                                    if(lote != null) {
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote_" + idManifiesto, "" + lote);
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_lote", "" + lote);
+                                    }
+
+                                    for (DtoManifiesto reg:respuesta){
+                                        MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                        MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                        MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(reg.getIdAppManifiesto());
+                                        for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                            MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt,true);
+                                            for (DtoHojaRutaDetalleBulto db:dt.getBultos()){
+                                                MyApp.getDBO().manifiestoDetallePesosDao().saveValores(
+                                                        reg.getIdAppManifiesto(),
+                                                        dt.getIdAppManifiestoDetalle(),
+                                                        db.getPeso().doubleValue(),
+                                                        db.getDescripcion(),
+                                                        null,
+                                                        db.getCodigoQr(),
+                                                        true,
+                                                        db.getIndex(),
+                                                        0
+                                                );
+                                            }
                                         }
-                                    }
 
-                                    //inicalizar los catalogos de recoleccion...
-                                    //for (DtoCatalogo c:listaCatalogo){
-                                    //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
-                                    //}
-                                    pos++;
-                                    if(cont>1)publishProgress(pos);
-                                }
-                            }else{
-                                for (DtoManifiesto reg:respuesta){
-                                    MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
-                                    for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
-                                        MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+                                        pos++;
+                                        if(cont>1)publishProgress(pos);
                                     }
-
-                                    //inicalizar los catalogos de recoleccion...
-                                    //for (DtoCatalogo c:listaCatalogo){
-                                    //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
-                                    //}
-                                    pos++;
-                                    if(cont>1)publishProgress(pos);
                                 }
+                                else{
+                                    for (DtoManifiesto reg:respuesta){
+                                        MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                        MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                        for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                            MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+                                        }
+
+                                        pos++;
+                                        if(cont>1)publishProgress(pos);
+                                    }
+                                }
+
+                                /*if(parametroLote!=null){
+                                    for (DtoManifiesto reg:respuesta){
+                                        MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                        MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                        MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(reg.getIdAppManifiesto());
+                                        for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                            MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt,true);
+                                            for (DtoHojaRutaDetalleBulto db:dt.getBultos()){
+                                                MyApp.getDBO().manifiestoDetallePesosDao().saveValores(
+                                                        reg.getIdAppManifiesto(),
+                                                        dt.getIdAppManifiestoDetalle(),
+                                                        db.getPeso().doubleValue(),
+                                                        db.getDescripcion(),
+                                                        null,
+                                                        db.getCodigoQr(),
+                                                        true,
+                                                        db.getIndex(),
+                                                        0
+                                                );
+                                            }
+                                        }
+
+                                        //inicalizar los catalogos de recoleccion...
+                                        //for (DtoCatalogo c:listaCatalogo){
+                                        //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                        //}
+                                        pos++;
+                                        if(cont>1)publishProgress(pos);
+                                    }
+                                }
+                                else{
+                                    for (DtoManifiesto reg:respuesta){
+                                        MyApp.getDBO().manifiestoDao().saveOrUpdate(reg);
+                                        MyApp.getDBO().parametroDao().saveOrUpdate(obfechaActualizacion,reg.getFechaModificacion());
+                                        for(DtoManifiestoDetalle dt:reg.getHojaRutaDetalle()) {
+                                            MyApp.getDBO().manifiestoDetalleDao().saveOrUpdate(dt);
+                                        }
+
+                                        //inicalizar los catalogos de recoleccion...
+                                        //for (DtoCatalogo c:listaCatalogo){
+                                        //    MyApp.getDBO().manifiestoObservacionFrecuenteDao().createRecoleccion(c,reg.getIdAppManifiesto());
+                                        //}
+                                        pos++;
+                                        if(cont>1)publishProgress(pos);
+                                    }
+                                }*/
                             }
-
-
                             return null;
                         }
 
