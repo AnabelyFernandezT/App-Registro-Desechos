@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,8 @@ public class DialogDetallesGestoresNo extends MyDialog {
     LinearLayout btnCancelarApp,btnRegistrar;
     Integer idManifiestoDetalle, idManifiesto;
     Boolean validar=true;
+    TextView txtDescripcion;
+    String descripcion;
 
     public interface OnRegistrarBultoListener {
         public void onSuccesfull(String numeroBultos, Integer idManifiestoDetalle, String pesoBulto);
@@ -31,11 +34,12 @@ public class DialogDetallesGestoresNo extends MyDialog {
     private OnRegistrarBultoListener mOnRegistrarBultoListener;
     private OnCancelarBultoListener mOnCancelarBultoListener;
 
-    public DialogDetallesGestoresNo(@NonNull Context context, Integer idManifiestoDetalle, Integer idManifiesto) {
+    public DialogDetallesGestoresNo(@NonNull Context context, Integer idManifiestoDetalle, Integer idManifiesto, String descripcion) {
         super(context, R.layout.dialog_detalle_gestores_no);
         this._activity = (Activity)context;
         this.idManifiestoDetalle = idManifiestoDetalle;
         this.idManifiesto = idManifiesto;
+        this.descripcion = descripcion;
     }
 
     @Override
@@ -43,6 +47,11 @@ public class DialogDetallesGestoresNo extends MyDialog {
         setContentView(getView());
 
         init();
+        loadData();
+    }
+
+    private void loadData() {
+        txtDescripcion.setText(descripcion);
     }
 
     private void init() {
@@ -51,6 +60,7 @@ public class DialogDetallesGestoresNo extends MyDialog {
         txtPesoBultos = getView().findViewById(R.id.txtPesoBultos);
         btnRegistrar = getView().findViewById(R.id.btnRegistrar);
         btnCancelarApp = getView().findViewById(R.id.btnCancelarApp);
+        txtDescripcion = getView().findViewById(R.id.txtDescripcion);
 
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override

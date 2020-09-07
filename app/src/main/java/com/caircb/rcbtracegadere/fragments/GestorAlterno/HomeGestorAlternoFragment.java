@@ -40,12 +40,12 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
-        //manifiestosAsignados();
+
         lblListaManifiestoAsignadoGestor = getView().findViewById(R.id.lblListaManifiestoAsignadoGestor);
         btnSincManifiestos = getView().findViewById(R.id.btnSincLotePadre);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
         btnMenu = getView().findViewById(R.id.btnMenu);
-
+        datosManifiestosAsignados();
         btnListaAsignadaTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

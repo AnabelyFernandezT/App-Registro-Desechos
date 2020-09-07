@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiestosDetalleGestores;
@@ -53,6 +54,9 @@ public class ManifiestoDetalleGestoresAdapter extends RecyclerView.Adapter<Manif
                     v.setSelected(false);
                     it.setEstado(false);
                 }
+
+                MyApp.getDBO().manifiestoDetalleDao().actualizarCheckGestores(it.isEstado(),it.getId());
+
 
             }
         });

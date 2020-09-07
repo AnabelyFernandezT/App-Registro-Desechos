@@ -42,12 +42,14 @@ public abstract  class LotePadreDao {
     @Query("UPDATE tb_lotes_padre set checkHijo=:check WHERE idManifiestoDetalleHijo=:idManifiestoDetalleHijo")
     public abstract void updateCheck(Integer idManifiestoDetalleHijo, boolean check);
 
-    @Query("SELECT * FROM tb_lotes_padre WHERE idDesecho=:idDesecho")
+    @Query("SELECT * FROM tb_lotes_padre WHERE idDesecho=:idDesecho and bultos>0")
     public abstract List<RowItemManifiestosDetalleGestores> fetchManifiestosRecolectadosByDetalle(Integer idDesecho);
 
     @Query("UPDATE tb_lotes_padre set idManifiestoPadre=:idManifiestoPadre, idManifiestoDetallePadre=:idManifiestoDetallePadre, numeroManifiestoPadre=:numeroManifiestoPadre WHERE idDesecho =:idDesecho")
     public abstract void asociarManifiestoPadre(Integer idManifiestoPadre, Integer idManifiestoDetallePadre, String numeroManifiestoPadre,Integer idDesecho);
 
+    @Query("select * from tb_lotes_padre where idManifiestoPadre=:idManifiesto and checkHijo=1" )
+    public abstract List<LotePadreEntity> manifiestoPadreHijos(Integer idManifiesto);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createLote(LotePadreEntity entity);

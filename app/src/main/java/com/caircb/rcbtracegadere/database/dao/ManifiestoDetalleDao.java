@@ -84,6 +84,9 @@ public abstract class ManifiestoDetalleDao {
         actualizarPesoManifiestoDetalle(idManifiestoDetalle,pesoUnidad,pesoUnidad>0);
     }
 
+    @Query("update tb_manifiestos_detalle set estadoChek=:check where idAppManifiestoDetalle=:idManifiestoDetalle")
+    public abstract void actualizarCheckGestores(Boolean check, Integer idManifiestoDetalle);
+
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle LIMIT 1")
     public abstract ManifiestoDetalleEntity fecthConsultarManifiestoDetallebyID(Integer idManifiesto, Integer idManifiestoDetalle);
 

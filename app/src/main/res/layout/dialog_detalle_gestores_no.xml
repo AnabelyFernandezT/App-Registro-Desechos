@@ -18,6 +18,33 @@
         android:weightSum="3">
 
         <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    style="@style/TextViewTitleItem"
+                    android:textColor="@color/app_gadere"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="DESCRIPCION"/>
+                <TextView
+                    android:id="@+id/txtDescripcion"
+                    android:text=""
+                    android:textSize="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -34,8 +61,8 @@
             <EditText
                 android:id="@+id/txtCantidadBultos"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
-                android:textSize="22dp"
+                android:layout_height="50dp"
+                android:textSize="20dp"
                 android:maxLines="1"
                 android:inputType="number|numberDecimal"
                 android:maxLength="7"
@@ -53,7 +80,7 @@
             <EditText
                 android:id="@+id/txtPesoBultos"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="50dp"
                 android:textSize="22dp"
                 android:maxLines="1"
                 android:inputType="number|numberDecimal"

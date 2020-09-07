@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,16 +32,18 @@ public class DialogManifiestosHijosGestores extends MyDialog {
     LinearLayout btnIniciaRutaCancel, btnAplicar;
     private RecyclerView listViewBultos;
     List<RowItemManifiestosDetalleGestores> detalles;
-    String numeroManifiesto;
+    String numeroManifiesto, descripcion;
     Double peso=0.0, cantidadBultos=0.0;
+    TextView txtDescripcion;
 
-    public DialogManifiestosHijosGestores(@NonNull Context context,Integer idManifiesto,Integer idManifiestoDetalle, Integer idTipoDesecho, String numeroManifiesto) {
+    public DialogManifiestosHijosGestores(@NonNull Context context,Integer idManifiesto,Integer idManifiestoDetalle, Integer idTipoDesecho, String numeroManifiesto, String descripcion) {
         super(context, R.layout.dialog_manifiesto_detalle_gestores_si);
         this._activity = (Activity)context;
         this.idManifiesto = idManifiesto;
         this.idManifiestoDetalle = idManifiestoDetalle;
         this.idTipoDesecho = idTipoDesecho;
         this.numeroManifiesto = numeroManifiesto;
+        this.descripcion = descripcion;
     }
 
     public interface OnRegistrarBultoListener {
@@ -63,7 +66,7 @@ public class DialogManifiestosHijosGestores extends MyDialog {
     private void init(){
         listViewBultos = getView().findViewById(R.id.recyclerview);
         //recyclerviewAdapter = new ManifiestoHijoGestorAdapter(getContext());
-
+        txtDescripcion = getView().findViewById(R.id.txtDescripcion);
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);
         btnAplicar =  getView().findViewById(R.id.btnAplicar);
         btnIniciaRutaCancel.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +87,7 @@ public class DialogManifiestosHijosGestores extends MyDialog {
     }
 
     private void loadData(){
+        txtDescripcion.setText(descripcion);
         listViewBultos.setLayoutManager(new LinearLayoutManager(getActivity()));
         listViewBultos.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         //detalles = MyApp.getDBO().manifiestoDao().manifiestosHijos(idTipoDesecho, idManifiesto);

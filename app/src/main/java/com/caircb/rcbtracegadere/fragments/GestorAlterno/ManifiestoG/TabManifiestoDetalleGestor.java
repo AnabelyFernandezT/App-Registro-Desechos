@@ -66,6 +66,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
     DialogBuilder builder;
     List<RowItemManifiestosDetalleGestores> validador, lotePadre;
     Double pesoT, cantidadB;
+    Boolean checkOff=false;
 
     public TabManifiestoDetalleGestor(Context context,
                                       Integer manifiestoID,
@@ -221,8 +222,38 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
         btnAsociarManifiesto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                asociarManifiestoPadreGrupo();
-                reloadData();
+                final DialogBuilder builder = new DialogBuilder(getContext());
+                builder.setMessage("Se va asocira manifiestos en lote");
+                builder.setCancelable(false);
+                builder.setPositiveButton("SI", new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+                        asociarManifiestoPadreGrupo();
+                        reloadData();
+                        if(checkOff) {
+                            final DialogBuilder dInfo = new DialogBuilder(getContext());
+                            dInfo.setMessage("Se han retirado los desechos no encontrados en sus manifiestos recolectados");
+                            dInfo.setCancelable(false);
+                            dInfo.setNeutralButton("OK", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    checkOff = false;
+                                    dInfo.dismiss();
+                                }
+                            });
+                            dInfo.show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("NO", new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+                    }
+                });
+                builder.show();
+
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -253,7 +284,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
                     public void onClick(View v) {
                         builder.dismiss();
                         if(validador.size()>0) {
-                            final DialogManifiestosHijosGestores dialogGestoresHijos = new DialogManifiestosHijosGestores(getContext(), idAppManifiesto, detalles.get(position).getId(), detalles.get(position).getIdTipoDesecho(),numeroManifiesto);
+                            final DialogManifiestosHijosGestores dialogGestoresHijos = new DialogManifiestosHijosGestores(getContext(), idAppManifiesto, detalles.get(position).getId(), detalles.get(position).getIdTipoDesecho(),numeroManifiesto, detalles.get(position).getCodigoMAE()+" "+detalles.get(position).getDescripcion());
                             dialogGestoresHijos.setCancelable(false);
                             dialogGestoresHijos.setmOnCancelarBultoListener(new DialogManifiestosHijosGestores.OnCancelarBultoListener() {
                                 @Override
@@ -274,7 +305,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
                             dialogGestoresHijos.show();
                         }else{
                             final DialogBuilder dialog = new DialogBuilder(getContext());
-                            dialog.setMessage("No se encontraron datos para este item");
+                            dialog.setMessage("No se encontraron manifiestos que contengan este item");
                             dialog.setCancelable(false);
                             dialog.setNeutralButton("OK", new OnClickListener() {
                                 @Override
@@ -289,7 +320,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
                  builder.setNegativeButton("NO", new OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         final DialogDetallesGestoresNo dialogDetallesGestores = new DialogDetallesGestoresNo(getContext(),detalles.get(position).getId(),idAppManifiesto);
+                         final DialogDetallesGestoresNo dialogDetallesGestores = new DialogDetallesGestoresNo(getContext(),detalles.get(position).getId(),idAppManifiesto,detalles.get(position).getCodigoMAE()+" "+detalles.get(position).getDescripcion());
                          dialogDetallesGestores.setCancelable(false);
                          dialogDetallesGestores.setmOnCancelarBultoListener(new DialogDetallesGestoresNo.OnCancelarBultoListener() {
                              @Override
@@ -341,10 +372,9 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
         isChangeTotalCreateBultos = false;
     }
 
+    //Asociar en lote manifiestos recolectados con manifiesto Padre
     private void asociarManifiestoPadreGrupo(){
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiestoPadre(idAppManifiesto);
-
-        List<Integer> idDesechos = new ArrayList<>();;
         
         if(detalles.size()>0){
             for(RowItemManifiesto reg:detalles){
@@ -357,27 +387,16 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
                                 pesoT = pesoT + lp.getPeso();
                                 cantidadB = cantidadB + lp.getBultos();
                                 MyApp.getDBO().lotePadreDao().asociarManifiestoPadre(idAppManifiesto, reg.getId(), numeroManifiesto, reg.getIdTipoDesecho());
+                                MyApp.getDBO().lotePadreDao().updateCheck(lp.getIdManifiestoDetalleHijo(),true);
                         }
                         MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(reg.getId(), cantidadB, pesoT, 0, true);
                         MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto,reg.getId(),pesoT,"",null,"",false,cantidadB.intValue(),0.0);
+                    }else{
+                        MyApp.getDBO().manifiestoDetalleDao().actualizarCheckGestores(false,reg.getId());
+                        checkOff = true;
                     }
                 }
             }
-           /* for(int i=0;i<idDesechos.size();i++){
-                pesoT=0.0; cantidadB=0.0;
-                lotePadre = MyApp.getDBO().lotePadreDao().fetchManifiestosRecolectadosByDetalle(idDesechos.get(i));
-                if(lotePadre.size()>0){
-                    for (RowItemManifiestosDetalleGestores reg:lotePadre){
-                        if(reg.getIdDesecho().toString().equals(idDesechos.get(i).toString())) {
-                            pesoT = pesoT + reg.getPeso();
-                            cantidadB = cantidadB + reg.getBultos();
-                            MyApp.getDBO().lotePadreDao().asociarManifiestoPadre(idAppManifiesto, detalles.get(i).getId(), numeroManifiesto, idDesechos.get(i));
-                        }
-                    }
-                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(detalles.get(i).getId(), cantidadB, pesoT, 0, true);
-                    MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto,detalles.get(i).getId(),pesoT,"",null,"",false,cantidadB.intValue(),0.0);
-                }
-            }*/
         }
 
 
