@@ -13,6 +13,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFindRutas;
 import com.caircb.rcbtracegadere.models.request.RequestFirmaUsuario;
 import com.caircb.rcbtracegadere.models.request.RequestHojaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestHotelPadre;
+import com.caircb.rcbtracegadere.models.request.RequestImpresora;
 import com.caircb.rcbtracegadere.models.request.RequestInformacionModulos;
 import com.caircb.rcbtracegadere.models.request.RequestInformacionTransportista;
 import com.caircb.rcbtracegadere.models.request.RequestInicioLoteHotel;
@@ -43,6 +44,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.models.response.DtoFirmaUsuario;
 import com.caircb.rcbtracegadere.models.response.DtoIdentificacion;
+import com.caircb.rcbtracegadere.models.response.DtoImpresora;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionModulos;
 import com.caircb.rcbtracegadere.models.response.DtoInformacionTransportista;
@@ -117,6 +119,9 @@ public interface IServicio {
 
     @POST("HojaRuta/obtenerListLoteContenedor")
     Call<List<DtoLote>> traerLotes(@Body RequestLote model);
+
+    @POST("Catalogo/obtenerListImpresoras")
+    Call<List<DtoImpresora>> traerImpresoras(@Body RequestImpresora model);
 
     @POST("HojaRuta/obtenerListHojaRutaSede")
     Call<List<DtoManifiestoSede>> traerManifiestos(@Body RequestManifiestoSede model);

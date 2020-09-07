@@ -259,7 +259,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         }else{
             if (estadoBulto){
                 messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
-            }else if (!estadoBulto){
+            }else {
                 //MyApp.getDBO().manifiestoDetalleValorSede().actualizarBultoEstado(data);
                 dialogCodigoQR = new DialogInfoCodigoQRSede(getActivity(),data);
                 dialogCodigoQR.requestWindowFeature(Window.FEATURE_NO_TITLE);

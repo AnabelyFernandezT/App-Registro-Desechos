@@ -121,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="7dp"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:background="@drawable/shape_card_border"
                     android:orientation="vertical">
 
@@ -167,25 +168,64 @@
                             android:textSize="18dp" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sectionQrLote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:background="@drawable/shape_card_border"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/qrcode64"></ImageView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/quicksand_bold"
+                            android:text="CÓDIGO QR LOTE"
+                            android:textColor="#333"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/sectionQrLote"
-                android:layout_width="140dp"
+           <!-- <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginLeft="7dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_card_border"
-                android:clickable="true"
                 android:orientation="vertical">
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_gravity="center"
                         android:src="@mipmap/qrcode64"></ImageView>
                 </LinearLayout>
                 <TextView
@@ -197,7 +237,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:text="CÓDIGO QR LOTE">
                 </TextView>
-            </LinearLayout>
+            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="200dp"
@@ -205,7 +245,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="50dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
                 <LinearLayout
                     android:background="@drawable/shape_card_border"
                     android:orientation="vertical"

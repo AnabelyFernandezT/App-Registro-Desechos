@@ -157,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="REGISTRAR"
+                    android:text="TEST"
                     android:textColor="#fff"
                     android:textSize="14dp"
                     android:textStyle="bold"/>

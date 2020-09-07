@@ -25,7 +25,7 @@ public class MyCalculoPaquetes {
                 Integer n = mpkg.getDatosFundas();
                 Integer m = mpkg.getDatosGuardianes();
 
-                boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda(), contabilizaGuardianAdicional = pkg.getContabilizaGuardianAdicional();
+                boolean adicionales = pkg.getFlagAdicionales(), guardian = pkg.getFlagAdicionalGuardian(), fundas = pkg.getFlagAdicionalFunda(), contabilizaGuardianAdicional = pkg.getContabilizaGuardianAdicional(), entregaFundas = pkg.getEntregaSoloFundas(), entregaGuardianes = pkg.getEntregaSoloGuardianes();
 
                 resp = new CalculoPaqueteResul();
 
@@ -35,7 +35,12 @@ public class MyCalculoPaquetes {
                     resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
                 } else {
                     if (adicionales == true && guardian == true) {
-                        if(contabilizaGuardianAdicional){
+                        if(entregaGuardianes && !entregaFundas){
+                            resp.setPqh(1);
+                            resp.setAdicionalFunda(0);
+                            resp.setAdicionalGuardian(m - resp.getPqh());
+                        }
+                        else if(contabilizaGuardianAdicional){
                             resp.setPqh(0);
                             resp.setAdicionalGuardian(m);
                             resp.setAdicionalFunda(0);
@@ -46,8 +51,15 @@ public class MyCalculoPaquetes {
                         }
                     } else {
                         if (adicionales == true && fundas == true) {
-                            resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
-                            resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                            if(!entregaGuardianes && entregaFundas){
+                                resp.setPqh(1);
+                                resp.setAdicionalFunda(n - resp.getPqh());
+                                resp.setAdicionalGuardian(0);
+                            }
+                            else {
+                                resp.setPqh(calculoPQH(n, m, adicionales, guardian, fundas));
+                                resp.setAdicionalFunda(calculoFunda(n, m, adicionales, guardian, fundas, resp.getPqh()));
+                            }
                         }
                     }
                 }

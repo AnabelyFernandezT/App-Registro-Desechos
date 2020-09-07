@@ -140,6 +140,8 @@ public class HojaRutaPlantaPendientesPesoFragment extends MyFragment implements 
                     }
                 });
                 dialogCodigoQR.show();
+                window = dialogCodigoQR.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         }
     }

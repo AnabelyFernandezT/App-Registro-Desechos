@@ -48,7 +48,7 @@ public class RecepcionLotePlantaFragment extends MyFragment implements View.OnCl
     UserRegistrarPlantaQrTask userRegistrarPlantaQrTask;
     UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
 
-    public static RecepcionLotePlantaFragment newInstance(/*Integer manifiestoID, String numeroManifiesto, String pesajePendiente*/) {
+    public static RecepcionLotePlantaFragment newInstance() {
         RecepcionLotePlantaFragment fragment = new RecepcionLotePlantaFragment();
        /* Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);

@@ -108,6 +108,21 @@
             android:inputType="number|numberDecimal"
             android:paddingRight="10dp"
             android:singleLine="true" />
+        <TextView
+            android:id="@+id/lblImpresora"
+            android:textSize="20dp"
+            android:textColor="@color/app_gadere"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Impresora:" />
+        <Spinner
+            android:visibility="gone"
+            android:id="@+id/lista_impresora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog" />
     </LinearLayout>
 
 
