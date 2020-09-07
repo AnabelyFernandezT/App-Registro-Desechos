@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.fragments.planta;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,18 +27,18 @@ import com.caircb.rcbtracegadere.models.ItemQrDetallePlanta;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlantaObservacion;
 import com.caircb.rcbtracegadere.utils.Utils;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class TabFirmaLotePlanta extends LinearLayout {
 
     DialogAgregarFotografias dialogAgregarFotografias;
-    EditText txtPeso, txtNovedad, txtotraNovedad;
+    EditText txtotraNovedad, txtPesoCamionBascula;
     LinearLayout btnEvidenciaObservacion, lnlCountPhoto;
-    LinearLayout btnAgregarFirma, btnCancelar, btnGuardar, btnInformacion;
-    TextView txtCountPhoto, txtPesoPlanta;
-    TextView txtFirmaPlanta, txtPesoRecolectado, txtObservacionPeso;
+    LinearLayout btnAgregarFirma;
+    TextView txtCountPhoto, txtNovedadPeso, txtPesoSumatoriaRutaTara;
+    TextView txtFirmaPlanta, txtObservacionPeso;
     ImageView imgFirmaPlanta;
-    private List<ItemQrDetallePlanta> rowItems;
     private RecepcionQrPlantaEntity recepcionQrPlantaEntity;
     Bitmap firmaConfirmada;
     private boolean firma = false, observacion = false;
@@ -59,7 +61,7 @@ public class TabFirmaLotePlanta extends LinearLayout {
 
     private void init() {
 
-        recepcionQrPlantaEntity=MyApp.getDBO().recepcionQrPlantaDao().fetchHojaRutaQrPlanta();
+        recepcionQrPlantaEntity = MyApp.getDBO().recepcionQrPlantaDao().fetchHojaRutaQrPlanta();
 
         txtotraNovedad = this.findViewById(R.id.txtotraNovedad);
 
@@ -70,6 +72,48 @@ public class TabFirmaLotePlanta extends LinearLayout {
         btnAgregarFirma = this.findViewById(R.id.btnAgregarFirma);
         txtFirmaPlanta = this.findViewById(R.id.txtFirmaPlanta);
         imgFirmaPlanta = this.findViewById(R.id.imgFirmaPlanta);
+
+        txtNovedadPeso = this.findViewById(R.id.txtNovedadPeso);
+        txtPesoCamionBascula = this.findViewById(R.id.txtPesoCamionBascula);
+        txtPesoCamionBascula.setFilters(new InputFilter[]{filter});
+        txtPesoSumatoriaRutaTara = this.findViewById(R.id.txtPesoSumatoriaRutaTara);
+
+
+        txtPesoCamionBascula.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                double pesoTotalManifiestos = recepcionQrPlantaEntity.getPesoTotalLote().doubleValue();
+                double pesoTaraVehiculo = recepcionQrPlantaEntity.getPesoTaraVehiculo() == 0 ? 0.0 : recepcionQrPlantaEntity.getPesoTaraVehiculo();
+                String qtyString = s.toString();
+                double pesoTotalCalculadoSN = pesoTotalManifiestos + pesoTaraVehiculo;
+                if (!qtyString.equals("")){
+                    double pesoBasculaCamionSN = Double.parseDouble(s.toString());
+                    double pesoTotalCalculado = Double.parseDouble(obtieneDosDecimales(pesoTotalCalculadoSN));
+                    double pesoBasculaCamion = Double.parseDouble(obtieneDosDecimales(pesoBasculaCamionSN));
+                    if (pesoTotalCalculado > (pesoBasculaCamion + (pesoBasculaCamion * 0.10))) {
+                        txtNovedadPeso.setText("El peso de la sumatoria del total de manifiestos y la tara del vehículo excede el margen de error del 10% del peso de báscula.");
+                    } else if (pesoTotalCalculado < (pesoBasculaCamion - (pesoBasculaCamion * 0.10))) {
+                        txtNovedadPeso.setText("El peso de la sumatoria del total de manifiestos y la tara del vehículo está por debajo del margen de error del 10% del peso de báscula.");
+                    } else {
+                        txtNovedadPeso.setText("");
+                    }
+                }else {
+                    txtNovedadPeso.setText("");
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         btnAgregarFirma.setOnClickListener(new OnClickListener() {
             @Override
@@ -83,8 +127,8 @@ public class TabFirmaLotePlanta extends LinearLayout {
                         public void onSuccessful(Bitmap bitmap) {
                             dialogFirma.dismiss();
                             dialogFirma = null;
-                            String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-                            int idManifiestoPrimero=Integer.parseInt(array[0]);
+                            String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+                            int idManifiestoPrimero = Integer.parseInt(array[0]);
                             if (bitmap != null) {
                                 txtFirmaPlanta.setVisibility(View.GONE);
                                 imgFirmaPlanta.setVisibility(View.VISIBLE);
@@ -116,8 +160,8 @@ public class TabFirmaLotePlanta extends LinearLayout {
         btnEvidenciaObservacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-                final int idManifiestoPrimero=Integer.parseInt(array[0]);
+                final String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+                final int idManifiestoPrimero = Integer.parseInt(array[0]);
                 dialogAgregarFotografias = new DialogAgregarFotografias(getContext(), idManifiestoPrimero, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
                 dialogAgregarFotografias.setCancelable(false);
                 dialogAgregarFotografias.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -126,12 +170,12 @@ public class TabFirmaLotePlanta extends LinearLayout {
                     public void onSuccessful(Integer cantidad) {
                         lnlCountPhoto.setVisibility(View.VISIBLE);
                         txtCountPhoto.setText(String.valueOf(cantidad));
-                        if (array.length>1){
-                            List<ItemFoto> fotos =  MyApp.getDBO().manifiestoFileDao().obtenerFotografiabyManifiestoCatalogo(idManifiestoPrimero,-1,ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA,MyConstant.STATUS_RECEPCION_PLANTA);
-                            for (int j=1;j<array.length;j++){
-                                int idManifiestoRecorrido=Integer.parseInt(array[j].replace(" ",""));
-                                for (int i=0;i<fotos.size();i++){
-                                    MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiestoRecorrido, -1, fotos.get(i).getCode(), fotos.get(i).getTipo(), fotos.get(i).getFoto(),MyConstant.STATUS_RECEPCION_PLANTA);
+                        if (array.length > 1) {
+                            List<ItemFoto> fotos = MyApp.getDBO().manifiestoFileDao().obtenerFotografiabyManifiestoCatalogo(idManifiestoPrimero, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA, MyConstant.STATUS_RECEPCION_PLANTA);
+                            for (int j = 1; j < array.length; j++) {
+                                int idManifiestoRecorrido = Integer.parseInt(array[j].replace(" ", ""));
+                                for (int i = 0; i < fotos.size(); i++) {
+                                    MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiestoRecorrido, -1, fotos.get(i).getCode(), fotos.get(i).getTipo(), fotos.get(i).getFoto(), MyConstant.STATUS_RECEPCION_PLANTA);
                                 }
                             }
                         }
@@ -168,11 +212,13 @@ public class TabFirmaLotePlanta extends LinearLayout {
 
 
     }
+
     private void loadData() {
         String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
         System.out.println(firmaUsuario);
-        String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-        int idManifiestoPrimero=Integer.parseInt(array[0]);
+        String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+
+        int idManifiestoPrimero = Integer.parseInt(array[0]);
         if (!firmaUsuario.equals("")) {
             Bitmap imagen = Utils.StringToBitMap(firmaUsuario);
             txtFirmaPlanta.setVisibility(View.GONE);
@@ -181,12 +227,12 @@ public class TabFirmaLotePlanta extends LinearLayout {
             firmaConfirmada = imagen;
             btnAgregarFirma.setEnabled(false);
             firma = true;
-            if (array.length>1){
+            if (array.length > 1) {
                 for (String s : array) {
-                    int idManifiestoConsulta = Integer.parseInt(s.replace(" ",""));
+                    int idManifiestoConsulta = Integer.parseInt(s.replace(" ", ""));
                     MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiestoConsulta, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(imagen), MyConstant.STATUS_RECEPCION_PLANTA);
                 }
-            }else {
+            } else {
                 MyApp.getDBO().manifiestoFileDao().saveOrUpdate(idManifiestoPrimero, ManifiestoFileDao.FOTO_FIRMA_RECEPCION_PLATA, Utils.encodeTobase64(imagen), MyConstant.STATUS_RECEPCION_PLANTA);
             }
 
@@ -201,6 +247,12 @@ public class TabFirmaLotePlanta extends LinearLayout {
                 firma = true;
             }
         }
+
+        double pesoTaraVehiculo = recepcionQrPlantaEntity.getPesoTaraVehiculo();
+        double sumatoriaPesos = recepcionQrPlantaEntity.getPesoTotalLote().doubleValue() + pesoTaraVehiculo;
+        txtPesoSumatoriaRutaTara.setText(obtieneDosDecimales(sumatoriaPesos));
+
+
     }
 
     public void setMakePhoto(Integer code) {
@@ -210,17 +262,17 @@ public class TabFirmaLotePlanta extends LinearLayout {
     }
 
     public void guardarObservaciones() {
-        String[] array= recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
-        int idManifiestoPrimero=Integer.parseInt(array[0]);
-        if (array.length>1){
+        String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
+        int idManifiestoPrimero = Integer.parseInt(array[0]);
+        if (array.length > 1) {
             for (String s : array) {
-                int idManifiestoConsulta = Integer.parseInt(s.replace(" ",""));
+                int idManifiestoConsulta = Integer.parseInt(s.replace(" ", ""));
                 DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
                 p.setIdManifiesto(idManifiestoConsulta);
                 p.setObservacionOtra(txtotraNovedad.getText().toString());
                 MyApp.getDBO().manifiestoPlantaObservacionesDao().saveOrUpdate(p);
             }
-        }else {
+        } else {
             DtoManifiestoPlantaObservacion p = new DtoManifiestoPlantaObservacion();
             p.setIdManifiesto(idManifiestoPrimero);
             p.setObservacionOtra(txtotraNovedad.getText().toString());
@@ -243,6 +295,13 @@ public class TabFirmaLotePlanta extends LinearLayout {
         return observacion;
     }
 
+ /*   public boolean validarNovedadPeso(){
+        String txtObservacionPeso = txtPesoCamionBascula.getText().toString();
+        if  (txtObservacionPeso.equals("")){
+
+        }
+    }
+*/
     public boolean validarInformacion() {
         if (firma) {
             info = true;
@@ -253,5 +312,38 @@ public class TabFirmaLotePlanta extends LinearLayout {
     public String sendObservacion() {
         return txtotraNovedad.getText().toString();
     }
+
+    public String sendObservacionPeso() {
+        return txtNovedadPeso.getText().toString();
+    }
+
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(valor);
+    }
+
+    InputFilter filter = new InputFilter() {
+        final int maxDigitsBeforeDecimalPoint = 4;
+        final int maxDigitsAfterDecimalPoint = 2;
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            StringBuilder builder = new StringBuilder(dest);
+            builder.replace(dstart, dend, source
+                    .subSequence(start, end).toString());
+            if (!builder.toString().matches(
+                    "(([0-9]{1})([0-9]{0," + (maxDigitsBeforeDecimalPoint - 1) + "})?)?(\\.[0-9]{0," + maxDigitsAfterDecimalPoint + "})?"
+
+            )) {
+                if (source.length() == 0)
+                    return dest.subSequence(dstart, dend);
+                return "";
+            }
+
+            return null;
+
+        }
+    };
 
 }

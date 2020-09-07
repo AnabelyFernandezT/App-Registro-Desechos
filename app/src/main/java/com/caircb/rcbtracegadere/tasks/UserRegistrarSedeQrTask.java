@@ -91,6 +91,7 @@ public class UserRegistrarSedeQrTask extends MyRetrofitApi implements RetrofitCa
         rq.setFlagPlantaSede(2);
         rq.setIdLoteContenedor(loteContenedor);
         rq.setIdDestinatarioFinRutaCatalogo(0);
+        rq.setObservacionPeso("");
         return rq;
     }
 

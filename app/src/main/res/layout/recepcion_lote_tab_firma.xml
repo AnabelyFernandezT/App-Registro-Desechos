@@ -13,15 +13,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:fontFamily="@font/quicksand_bold"
-            android:text="OBSERVACION:"
+            android:text="Observación:"
             android:textColor="@color/app_gadere"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="horizontal">
 
             <EditText
@@ -31,7 +34,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/border_imput_text"
                 android:inputType="text|textMultiLine|textCapCharacters"
-                android:textSize="22dp" />
+                android:textSize="15dp" />
 
             <LinearLayout
                 android:id="@+id/btnEvidenciaObservacion"
@@ -76,6 +79,75 @@
 
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Observación de peso:"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/app_gadere"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtNovedadPeso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/border_imput_text"
+            android:inputType="text|textMultiLine|textCapCharacters"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Peso de camión en báscula:"
+            android:textColor="@color/app_gadere"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtPesoCamionBascula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:inputType="numberDecimal"
+            android:background="@drawable/border_imput_text"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Sumatoria de pesos de ruta + tara:"
+            android:textColor="@color/app_gadere"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtPesoSumatoriaRutaTara"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+
+
 
         <LinearLayout
             android:id="@+id/btnAgregarFirma"

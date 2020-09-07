@@ -41,6 +41,7 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy/MM/dd");
     UserUploadFileTask userUploadFileTask;
     String observacion;
+    String observacionPeso;
 
 
     public interface OnRegisterListener {
@@ -49,10 +50,11 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
 
     private OnRegisterListener mOnRegisterListener;
 
-    public UserRegistrarPlantaQrTask(Context context, RecepcionQrPlantaEntity recepcionQrPlantaEntity, String observacion) {
+    public UserRegistrarPlantaQrTask(Context context, RecepcionQrPlantaEntity recepcionQrPlantaEntity, String observacion, String observacionPeso) {
         super(context);
         this.recepcionQrPlantaEntity = recepcionQrPlantaEntity;
         this.observacion = observacion;
+        this.observacionPeso = observacionPeso;
     }
 
     @Override
@@ -166,6 +168,7 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
         rq.setFlagPlantaSede(1);
         rq.setIdLoteContenedor(0);
         rq.setIdDestinatarioFinRutaCatalogo(0);
+        rq.setObservacionPeso(observacionPeso);
         return rq;
     }
 

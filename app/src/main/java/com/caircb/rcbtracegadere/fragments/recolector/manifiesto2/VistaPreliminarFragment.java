@@ -344,7 +344,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                             final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                             if (tipoSubruta.equals("2")) {
                                 builder = new DialogBuilder(getActivity());
-                                builder.setMessage("¿Desea volver a imprimir la etiqueta?");
+                                builder.setMessage("¿Desea volver a imprimir otro recibo?");
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("SI", new View.OnClickListener() {
                                     @Override
