@@ -31,6 +31,7 @@ public class RequestManifiesto {
     private List<RequestNovedadPesoPromedio> fotosManifiestoPromedio;
     private String textoEvidenciaPromedio;
     private Integer flagManifiestoSede;
+    private List<RequestManifiestoPadreGestores> gestores;
 
     public Integer getIdAppManifiesto() {
         return idAppManifiesto;
@@ -246,5 +247,13 @@ public class RequestManifiesto {
 
     public void setFlagManifiestoSede(Integer flagManifiestoSede) {
         this.flagManifiestoSede = flagManifiestoSede;
+    }
+
+    public List<RequestManifiestoPadreGestores> getGestores() {
+        return gestores;
+    }
+
+    public void setGestores(List<RequestManifiestoPadreGestores> gestores) {
+        this.gestores = gestores;
     }
 }

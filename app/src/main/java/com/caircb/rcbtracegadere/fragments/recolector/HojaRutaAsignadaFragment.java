@@ -205,7 +205,24 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         if(parametros!=null && parametro_sede_planta.getValor().equals("1")){
                             setNavegate(ManifiestoLoteFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1,2));
                         } else if(entity.getCategoria().equals(MyConstant.ID_ENTREGA_GESTOR)) {
-                            setNavegate(HomeGestorAlternoFragment.create());
+                            final DialogBuilder gestoresBuilder = new DialogBuilder(getActivity());
+                            gestoresBuilder.setMessage("El manifiesto es de tipo ENTREGA A GESTOR.\n" +
+                                    "¿Desea continuar?");
+                            gestoresBuilder.setCancelable(false);
+                            gestoresBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    gestoresBuilder.dismiss();
+                                    setNavegate(HomeGestorAlternoFragment.create());
+                                }
+                            });
+                            gestoresBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    gestoresBuilder.dismiss();
+                                }
+                            });
+                            gestoresBuilder.show();
                         }else {
                             menu(position);
                         }

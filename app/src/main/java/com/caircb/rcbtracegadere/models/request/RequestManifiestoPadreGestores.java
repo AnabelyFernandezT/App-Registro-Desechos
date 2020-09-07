@@ -1,38 +1,23 @@
-package com.caircb.rcbtracegadere.models;
+package com.caircb.rcbtracegadere.models.request;
 
-public class RowItemManifiestosDetalleGestores {
-
-    private Integer idManifiestoPadre;
+public class RequestManifiestoPadreGestores {
 
     private Integer idManifiestosHijo;
-
     private Integer idManifiestoDetalleHijo;
-
     private Integer idManifiestoDetallePadre;
-
     private Integer idDesecho;
-
     private Double peso;
-
     private Double bultos;
 
-    private String numeroManifiestoPadre;
 
-    private Boolean checkHijo;
+    public RequestManifiestoPadreGestores(Integer idManifiestosHijo, Integer idManifiestoDetalleHijo, Integer idManifiestoDetallePadre, Integer idDesecho, Double peso, Double bultos) {
+        this.idManifiestosHijo = idManifiestosHijo;
+        this.idManifiestoDetalleHijo = idManifiestoDetalleHijo;
+        this.idManifiestoDetallePadre = idManifiestoDetallePadre;
+        this.idDesecho = idDesecho;
+        this.peso = peso;
+        this.bultos = bultos;
 
-    private String cliente;
-
-    private String numeroManifiestoHijo;
-
-    public RowItemManifiestosDetalleGestores() {
-    }
-
-    public Integer getIdManifiestoPadre() {
-        return idManifiestoPadre;
-    }
-
-    public void setIdManifiestoPadre(Integer idManifiestoPadre) {
-        this.idManifiestoPadre = idManifiestoPadre;
     }
 
     public Integer getIdManifiestosHijo() {
@@ -83,35 +68,5 @@ public class RowItemManifiestosDetalleGestores {
         this.bultos = bultos;
     }
 
-    public String getNumeroManifiestoPadre() {
-        return numeroManifiestoPadre;
-    }
 
-    public void setNumeroManifiestoPadre(String numeroManifiestoPadre) {
-        this.numeroManifiestoPadre = numeroManifiestoPadre;
-    }
-
-    public Boolean getCheckHijo() {
-        return checkHijo;
-    }
-
-    public void setCheckHijo(Boolean checkHijo) {
-        this.checkHijo = checkHijo;
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getNumeroManifiestoHijo() {
-        return numeroManifiestoHijo;
-    }
-
-    public void setNumeroManifiestoHijo(String numeroManifiestoHijo) {
-        this.numeroManifiestoHijo = numeroManifiestoHijo;
-    }
 }

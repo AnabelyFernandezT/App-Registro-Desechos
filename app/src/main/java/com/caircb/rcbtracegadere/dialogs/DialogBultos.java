@@ -340,16 +340,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
 
         //Probar sin impresiora
-        /************************************
+        /************************************/
 
-         //bultos.clear();
-         //subtotal= BigDecimal.ZERO;
+        //bultos.clear();
+        //subtotal= BigDecimal.ZERO;
 
-         MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
-         item.setImpresion(true);
-         listaValoresAdapter.notifyDataSetChanged();
-         //loadData();
-         **************************************/
+        MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
+        item.setImpresion(true);
+        listaValoresAdapter.notifyDataSetChanged();
+        //loadData();
+
+        /**************************************/
 
         //Probar con impresiora
 
@@ -378,6 +379,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             messageBox("No hay conexion con la impresora");
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
+
 
 
     }
@@ -524,17 +526,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             dato = "0";
                             BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
                             //MyApp.getDBO().parametroDao().saveOrUpdate("idValidacion_"+idManifiestoDetalle,""+idManifiestoDetalle);
-                            MyApp.getDBO().pesoExtraDao().saveOrUpdate(idManifiesto, idManifiestoDetalle, 0.0, 0);
-                            createBulto(imput);
                             MyApp.getDBO().pesoExtraDao().saveOrUpdate(idManifiesto,idManifiestoDetalle,0.0,0);
                             //createBulto(imput);
                             btn_add.setEnabled(false);
                             btn_ok.setEnabled(false);
-                            // DialogBultos.this.dismiss();
+                           // DialogBultos.this.dismiss();
                             //addBulto(imput,tipo);
-                            if (mOnBultoListener != null) {
-                                mOnBultoListener.onCanceled(faltaImpresos);
-                            }
+                            if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos);}
                         }
 
                         @Override

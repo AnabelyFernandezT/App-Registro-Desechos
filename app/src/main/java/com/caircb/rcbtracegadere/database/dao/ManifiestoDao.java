@@ -49,8 +49,12 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idChoferRecolector ")
     public abstract int contarHojaRutaAsignadasPara(Integer idChoferRecolector);
 
-    @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idChoferRecolector and categoria=103 ")
-    public abstract int contarHojaRutaAsignadasParaGestor(Integer idChoferRecolector);
+    @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idChoferRecolector and categoria=:categoria")
+    public abstract int contarHojaRutaAsignadasParaGestor(Integer idChoferRecolector, Integer categoria);
+
+    @Query("SELECT m.idAppManifiesto as idManifiestosHijo , d.idAppManifiestoDetalle as idManifiestoDetalleHijo, d.idTipoDesecho as  idDesecho, d.pesoUnidad as peso, d.cantidadBulto as bultos, m.numeroManifiesto as numeroManifiestoHijo, m.nombreCliente as cliente from tb_manifiestos_detalle d "+
+            "INNER JOIN tb_manifiestos m where m.categoria!=:categoria AND d.idAppManifiesto = m.idAppManifiesto AND m.estado = 2")
+    public abstract List<RowItemManifiestosDetalleGestores> copiaManifiestosRecolectados(Integer categoria);
 
     @Query("select count(*) from tb_manifiestos where estado<>1 ")
     public abstract int contarHojaRutaProcesada();
@@ -58,8 +62,8 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado=2 and idTransporteVehiculo =:idVehiculo") /*** se quito and estadoFinRuta=0  ****/
     public abstract int contarHojaRutaProcesadaPlanta(Integer idVehiculo);
 
-    @Query("Select m.idAppManifiesto as idManifiesto , numeroManifiesto as numeroManifiesto, nombreCliente as cliente, m.peso, d.cantidadDesecho as cantidadBulto from tb_manifiestos_detalle d "+
-           "INNER JOIN tb_manifiestos m on d.idAppManifiesto = m.idAppManifiesto and m.idAppManifiesto!=:idManifiesto where idTipoDesecho =:idTipoDesecho")
+    @Query("Select m.idAppManifiesto as idManifiesto , numeroManifiesto as numeroManifiestoHijo, nombreCliente as cliente, d.pesoUnidad as peso, d.cantidadBulto as bultos, d.idAppManifiestoDetalle as idManifiestoDetalleHijo from tb_manifiestos_detalle d "+
+           "INNER JOIN tb_manifiestos m on d.idAppManifiesto = m.idAppManifiesto and m.idAppManifiesto!=:idManifiesto where idTipoDesecho =:idTipoDesecho and m.estado = 2")
     public abstract List<RowItemManifiestosDetalleGestores> manifiestosHijos (Integer idTipoDesecho, Integer idManifiesto);
 
     @Query("select count(*) from tb_manifiestos where estado<>1 and idSubRuta=:idSubruta and idChoferRecolector=:idChoferRecolector ")
@@ -83,9 +87,9 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,referencia,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete, identificacionCliente as identificacion,pesoPromedio from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector and categoria=103 order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,referencia,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete, identificacionCliente as identificacion,pesoPromedio from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector and categoria=:categoria order by nombreCliente")
     @Transaction
-    public abstract List<ItemManifiesto> fetchManifiestoGestor(Integer idSubRuta, Integer idChoferRecolector);
+    public abstract List<ItemManifiesto> fetchManifiestoGestor(Integer idSubRuta, Integer idChoferRecolector, Integer categoria);
 
     @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado=1 and idTransporteVehiculo=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
     @Transaction

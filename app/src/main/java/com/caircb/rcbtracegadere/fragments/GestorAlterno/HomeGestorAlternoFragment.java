@@ -12,9 +12,13 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.RowItemManifiestosDetalleGestores;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarLotePadreTask;
+
+import java.util.List;
 
 public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
 
@@ -23,6 +27,7 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     TextView lblListaManifiestoAsignadoGestor;
     ImageButton regionBuscar;
     UserConsultarLotePadreTask consultarLotePadre;
+    private List<RowItemManifiestosDetalleGestores> copia;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,11 +40,12 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     }
 
     private void init() {
+
         lblListaManifiestoAsignadoGestor = getView().findViewById(R.id.lblListaManifiestoAsignadoGestor);
         btnSincManifiestos = getView().findViewById(R.id.btnSincLotePadre);
         btnListaAsignadaTransportista = getView().findViewById(R.id.btnListaAsignadaTransportista);
         btnMenu = getView().findViewById(R.id.btnMenu);
-
+        datosManifiestosAsignados();
         btnListaAsignadaTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +82,7 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
         consultarLotePadre.execute();*/
 
         manifiestosAsignados();
+        loadCopiaManifiestos();
     }
 
     private void initBuscador(){
@@ -90,10 +97,19 @@ public class HomeGestorAlternoFragment extends MyFragment implements OnHome {
     }
 
     private void manifiestosAsignados(){
-        lblListaManifiestoAsignadoGestor.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasParaGestor(MySession.getIdUsuario()));
+        lblListaManifiestoAsignadoGestor.setText("" + MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasParaGestor(MySession.getIdUsuario(), MyConstant.ID_ENTREGA_GESTOR));
     }
 
     public static HomeGestorAlternoFragment create(){
         return new HomeGestorAlternoFragment();
+    }
+
+    private void loadCopiaManifiestos (){
+        copia = MyApp.getDBO().manifiestoDao().copiaManifiestosRecolectados(MyConstant.ID_ENTREGA_GESTOR);
+        if(copia.size()>0){
+                MyApp.getDBO().lotePadreDao().saveOrUpdate(copia);
+
+        }
+
     }
 }
