@@ -66,7 +66,7 @@ import java.util.List;
  * Use the {@link HojaRutaAsignadaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClickListener {
+public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClickListener, OnBarcodeListener {
 
 
     LinearLayout btnRetornarListHojaRuta;
