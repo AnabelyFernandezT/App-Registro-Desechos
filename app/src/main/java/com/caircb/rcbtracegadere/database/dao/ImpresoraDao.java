@@ -33,6 +33,9 @@ import java.util.List;
     @Query("Select address from tb_impresora where  useActive=1 and type=:tipo limit 1")
     public abstract String searchMac(Integer tipo);
 
+    @Query("Select _id as id, code as nombre from tb_impresora where printID=:uuid limit 1")
+    public abstract ItemGeneric searchCodigoUUID(String uuid);
+
     @Query("Delete from tb_impresora where printID =:uuid")
     public abstract void deleteImpresoraById(String uuid);
 
