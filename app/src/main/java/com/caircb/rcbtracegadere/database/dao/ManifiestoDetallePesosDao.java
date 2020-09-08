@@ -124,7 +124,7 @@ public abstract class ManifiestoDetallePesosDao {
     public  abstract ItemEtiquetaHospitalario consultaCabeceraHospitalario(Integer idAppManifiesto);
 
 
-    @Query("Select nombreDesecho as descripcionDesecho,codigoMAE as codigoMai," +
+    @Query("Select nombreCortoTicket as descripcionDesecho,codigoMAE as codigoMai," +
             "cantidadBulto as numeroBultos, pesoUnidad as peso ,tipoPaquete "+
             "from tb_manifiestos_detalle mdt"+
             " where mdt.idAppManifiesto=:idAppManifiesto and numeroBultos>0 and tipoMostrar = 1" )

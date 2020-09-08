@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.MainActivity;
@@ -34,13 +36,13 @@ import java.util.List;
 public class DialogManifiestoCliente extends MyDialog {
     Activity _activity;
     EditText txtManifiestoCliente;
-    LinearLayout btnIniciaRutaCancel,btnIniciaRutaAplicar, btnNewText;
+    LinearLayout btnIniciaRutaCancel,btnIniciaRutaAplicar, btnNewText,btnNumManifiestoClienteAdd;
     VistaPreliminarFragment vistaPreliminarFragment;
 
     Manifiesto2Fragment principal = new Manifiesto2Fragment();
     Integer idManifiesto, tipoPaquete;
     String identificacion;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewManifietoCliente;
     private TextoAdapter recyclerviewAdapter;
     private Integer tipoRecoleccion;
     private List<String> textList = new ArrayList<>();
@@ -67,25 +69,39 @@ public class DialogManifiestoCliente extends MyDialog {
     private void init() {
 
         ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        recyclerView = getView().findViewById(R.id.recyclerviewTexto);
-        recyclerviewAdapter = new TextoAdapter(getActivity());
-/*        txtManifiestoCliente = getView().findViewById(R.id.txtManifiestoCliente);
+
+        recyclerViewManifietoCliente = getView().findViewById(R.id.recyclerviewTexto);
+
+        /*txtManifiestoCliente = getView().findViewById(R.id.txtManifiestoCliente);
           int type = InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS| InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
         txtManifiestoCliente.setInputType(type);
         txtManifiestoCliente.setText(manifiesto.getNumManifiestoCliente());*/
         btnIniciaRutaAplicar = getView().findViewById(R.id.btnIniciaRutaAplicar);
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);
+        btnNumManifiestoClienteAdd = getView().findViewById(R.id.btnNumManifiestoClienteAdd);
       //  btnNewText = getView().findViewById(R.id.btnAgregarText);
-        textList.add("");
-        recyclerviewAdapter.setTaskList(textList);
-        recyclerView.setAdapter(recyclerviewAdapter);
-
-       /* btnNewText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recyclerviewAdapter.addText("");
+        if(manifiesto.getNumManifiestoCliente()!=null){
+            String[] data = manifiesto.getNumManifiestoCliente().split(",");
+            if(data.length>0){
+                for (int x=0;x<data.length;x++){
+                    textList.add(data[x]);
+                }
+            }else{
+                textList.add("");
             }
-        });*/
+        }else{
+            textList.add("");
+        }
+
+        recyclerViewManifietoCliente.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewManifietoCliente.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+        recyclerviewAdapter = new TextoAdapter(getActivity());
+        recyclerviewAdapter.setTaskList(textList);
+
+        recyclerViewManifietoCliente.setAdapter(recyclerviewAdapter);
+
+
         btnIniciaRutaCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,15 +112,37 @@ public class DialogManifiestoCliente extends MyDialog {
         btnIniciaRutaAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String data = recyclerviewAdapter.totalString();
+                //validar si falta ingresar datos en los imput...
+                if(data!=null && data.trim().length()==0){
+                    messageBox("No ingresó un número de manifiesto del cliente!");
+                    return;
+                }
 
-                if(recyclerviewAdapter.totalString().equals("")){
-                    messageBox("No ingresó un número de manifiesto cliente!");
-                }else{
-                    MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,recyclerviewAdapter.totalString());
+                boolean isFaltantes=false;
+                int pos =1;
+                String[] lista = data.split(",",-1);
+                for(String txt:lista){
+                    if(txt!=null && txt.trim().length()==0){
+                        isFaltantes = true;
+                        messageBox("en el item ["+pos+"], NO ingresó un número de manifiesto del cliente!");
+                        return;
+                    }
+                    pos++;
+                }
+
+                if(!isFaltantes){
+                    MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idManifiesto,data);
                     if (mOnRegisterListener!=null){
                         mOnRegisterListener.onSucessfull();
                     }
                 }
+            }
+        });
+        btnNumManifiestoClienteAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerviewAdapter.addText("");
             }
         });
 
