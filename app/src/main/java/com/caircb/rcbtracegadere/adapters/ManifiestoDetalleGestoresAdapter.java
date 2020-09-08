@@ -38,7 +38,7 @@ public class ManifiestoDetalleGestoresAdapter extends RecyclerView.Adapter<Manif
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final RowItemManifiesto it = manifiestosDtList.get(position);
 
-        holder.txtItemTratamiento.setText(it.getTratamiento());
+        holder.txtItemTratamiento.setText(it.getCodigoMAE());
         holder.txtItemDescripcion.setText(it.getCodigoMAE()+"-"+ it.getDescripcion());
         holder.txtItemCantidadBulto.setText(""+it.getCantidadBulto());
         holder.txtItemPeso.setText(""+it.getPeso());
