@@ -80,7 +80,18 @@ public class DialogManifiestoCliente extends MyDialog {
         btnIniciaRutaCancel = getView().findViewById(R.id.btnIniciaRutaCancel);
         btnNumManifiestoClienteAdd = getView().findViewById(R.id.btnNumManifiestoClienteAdd);
       //  btnNewText = getView().findViewById(R.id.btnAgregarText);
-        textList.add("");
+        if(manifiesto.getNumManifiestoCliente()!=null){
+            String[] data = manifiesto.getNumManifiestoCliente().split(",");
+            if(data.length>0){
+                for (int x=0;x<data.length;x++){
+                    textList.add(data[0]);
+                }
+            }else{
+                textList.add("");
+            }
+        }else{
+            textList.add("");
+        }
 
         recyclerViewManifietoCliente.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewManifietoCliente.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
