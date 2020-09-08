@@ -84,7 +84,7 @@ public class DialogManifiestoCliente extends MyDialog {
             String[] data = manifiesto.getNumManifiestoCliente().split(",");
             if(data.length>0){
                 for (int x=0;x<data.length;x++){
-                    textList.add(data[0]);
+                    textList.add(data[x]);
                 }
             }else{
                 textList.add("");
