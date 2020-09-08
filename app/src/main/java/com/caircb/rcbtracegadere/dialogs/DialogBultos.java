@@ -699,10 +699,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             }
                         }*/
                         /* if (contPesosTara==0){*/
-                        BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
-                        createBulto(imputValor);
+                        /*BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                        createBulto(imputValor);*/
                         faltaImpresos = verificarTodosBultosImpresos();
-
                         if (!faltaImpresos) {
                             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                             if (mOnBultoListener != null) {
@@ -765,31 +764,55 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         btn_ok.setEnabled(true);
                     }
                 }*/
+                String tipoSubRutaAdd = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
+                if (tipoSubRutaAdd.equals("2")) {
 
-                final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+                    final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
 
-                if (imput.compareTo(BigDecimal.ZERO) > 0) {
-                    createBulto(imput);
-                } else {
-                    final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                    dialogBuilder2.setMessage("¿Desea ingresar un bulto con peso cero?");
-                    dialogBuilder2.setTitle("CONFIRMACIÓN");
-                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder2.dismiss();
-                            createBulto(imput);
-                        }
-                    });
-                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder2.dismiss();
-                        }
-                    });
-                    dialogBuilder2.show();
+                    if (imput.compareTo(BigDecimal.ZERO) > 0) {
+                        createBulto(imput);
+                    } else {
+                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                        dialogBuilder2.setMessage("¿Debe ingresar un peso mayor a cero?");
+                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                        dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder2.dismiss();
+                            }
+                        });
+                        dialogBuilder2.show();
+                    }
+                    break;
+
+                }else {
+                    final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+
+                    if (imput.compareTo(BigDecimal.ZERO) > 0) {
+                        createBulto(imput);
+                    } else {
+                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                        dialogBuilder2.setMessage("¿Desea ingresar un bulto con peso cero?");
+                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                        dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder2.dismiss();
+                                createBulto(imput);
+                            }
+                        });
+                        dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder2.dismiss();
+                            }
+                        });
+                        dialogBuilder2.show();
+                    }
+                    break;
                 }
-                break;
+
+
             case R.id.btn_cancel:
                 bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
                 String tipoSubRuta2 = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
