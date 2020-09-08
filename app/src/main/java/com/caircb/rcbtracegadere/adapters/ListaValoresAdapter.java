@@ -494,53 +494,55 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             String qtyString = s.toString();
             double pesoTara = qtyString.equals("") ? 0.0 : Double.parseDouble(qtyString);
 
-
-            if (pesoTara == pesoBulto) {
-                dialogBuilder = new DialogBuilder(getContext());
-                dialogBuilder.setMessage("El peso de la tara no puede ser igual al peso del bulto!");
-                dialogBuilder.setCancelable(false);
-                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
-                        txtPesoTara.setText("");
+            String checkTara = registraTara.toString();
+            if (checkTara.equals("1")) {
+                if (pesoTara == pesoBulto) {
+                    dialogBuilder = new DialogBuilder(getContext());
+                    dialogBuilder.setMessage("El peso de la tara no puede ser igual al peso del bulto!");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                            txtPesoTara.setText("");
+                        }
+                    });
+                    dialogBuilder.show();
+                }
+                if (pesoTara < pesoBulto) {
+                    if (!qtyString.equals("")) {
+                        MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), pesoTara);
+                        MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), true);
+                        row.setImpresion(true);
+                        if (entradaConstructor == 1) {
+                            pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
+                        }
+                    } else {
+                        MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), pesoTara);
+                        MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), false);
+                        row.setImpresion(false);
+                        if (entradaConstructor == 1) {
+                            pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
+                        }
                     }
-                });
-                dialogBuilder.show();
-            }
-            if (pesoTara < pesoBulto) {
-                if (!qtyString.equals("")) {
-                    MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), pesoTara);
-                    MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), true);
-                    row.setImpresion(true);
-                    if (entradaConstructor == 1) {
-                        pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
-                    }
-                } else {
-                    MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), pesoTara);
+                } else if (pesoTara > pesoBulto) {
+                    MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), 0.0);
                     MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), false);
                     row.setImpresion(false);
-                    if (entradaConstructor == 1) {
-                        pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
-                    }
-                }
-            } else if (pesoTara > pesoBulto) {
-                MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), 0.0);
-                MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), false);
-                row.setImpresion(false);
-                txtPesoTara.setText("");
-                pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
-                dialogBuilder = new DialogBuilder(getContext());
-                dialogBuilder.setMessage("El peso de la tara no puede sobrepasar el peso del bulto!");
-                dialogBuilder.setCancelable(false);
-                dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
+                    txtPesoTara.setText("");
+                    pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
+                    dialogBuilder = new DialogBuilder(getContext());
+                    dialogBuilder.setMessage("El peso de la tara no puede sobrepasar el peso del bulto!");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
 
-                    }
-                });
-                dialogBuilder.show();
+                        }
+                    });
+                    dialogBuilder.show();
+                }
             }
         }
     }*/
