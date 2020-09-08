@@ -563,8 +563,9 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                 public void onFinished(double valor, Integer code, Integer idManifiestoDet, Integer idManifiestoDetValores) {
                     final CatalogoItemValor row = listaItems.get(position);
                     final double pesoBulto = Double.parseDouble(row.getValor());
+                    double valorTara=Double.parseDouble(obtieneDosDecimales(valor));
 
-                    if (valor == pesoBulto) {
+                    if (valorTara == pesoBulto) {
                         dialogBuilder = new DialogBuilder(getContext());
                         dialogBuilder.setMessage("El peso de la tara no puede ser igual al peso del bulto!");
                         dialogBuilder.setCancelable(false);
@@ -577,9 +578,9 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                         });
                         dialogBuilder.show();
                     }
-                    if (valor < pesoBulto) {
+                    if (valorTara < pesoBulto) {
                        /* if (!valor.equals("")) {*/
-                            MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), valor);
+                            MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), valorTara);
                             MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), true);
                             row.setImpresion(true);
                             if (entradaConstructor == 1) {
@@ -593,11 +594,10 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                                 pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
                             }
                         }*/
-                    } else if (valor > pesoBulto) {
+                    } else if (valorTara > pesoBulto) {
                         MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), 0.0);
                         MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), false);
                         row.setImpresion(false);
-                        textbox("");
                         pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
                         dialogBuilder = new DialogBuilder(getContext());
                         dialogBuilder.setMessage("El peso de la tara no puede sobrepasar el peso del bulto!");
@@ -606,7 +606,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                             @Override
                             public void onClick(View v) {
                                 dialogBuilder.dismiss();
-
+                                textbox("");
                             }
                         });
                         dialogBuilder.show();
