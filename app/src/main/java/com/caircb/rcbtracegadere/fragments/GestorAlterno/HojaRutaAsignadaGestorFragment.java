@@ -33,6 +33,7 @@ import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fra
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemLotePadre;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
@@ -109,7 +110,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestoGestor(idSubRuta, MySession.getIdUsuario());
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestoGestor(idSubRuta, MySession.getIdUsuario(), MyConstant.ID_ENTREGA_GESTOR);
         adapterList();
 
     }

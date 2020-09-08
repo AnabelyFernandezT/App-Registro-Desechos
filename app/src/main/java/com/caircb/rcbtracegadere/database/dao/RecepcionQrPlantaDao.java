@@ -28,6 +28,7 @@ public abstract class RecepcionQrPlantaDao {
             entity.setCantidadTotalBultos(manifiesto.getCantidadTotalBultos());
             entity.setCantidadTotalManifiestos(manifiesto.getCantidadTotalManifiestos());
             entity.setNumerosManifiesto(manifiesto.getNumerosManifiesto());
+            entity.setPesoTaraVehiculo(manifiesto.getPesoTaraVehiculo().doubleValue());
 
         }else {
             entity.set_id(0);
@@ -35,6 +36,7 @@ public abstract class RecepcionQrPlantaDao {
             entity.setCantidadTotalBultos(manifiesto.getCantidadTotalBultos());
             entity.setCantidadTotalManifiestos(manifiesto.getCantidadTotalManifiestos());
             entity.setNumerosManifiesto(manifiesto.getNumerosManifiesto());
+            entity.setPesoTaraVehiculo(manifiesto.getPesoTaraVehiculo().doubleValue());
         }
         createManifiesto(entity);
     }

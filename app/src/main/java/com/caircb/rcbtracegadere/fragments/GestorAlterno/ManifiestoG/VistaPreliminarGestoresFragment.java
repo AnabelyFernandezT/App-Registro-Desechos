@@ -1,6 +1,6 @@
-package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
+package com.caircb.rcbtracegadere.fragments.GestorAlterno.ManifiestoG;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,37 +10,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
-import android.app.Fragment;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionCapacidadCamion;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
+import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.Manifiesto2Fragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.MyPrint;
+import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
-import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
-import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
-import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccionGestores;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
-import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
@@ -52,10 +48,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link VistaPreliminarFragment#newInstance} factory method to
+ * Use the {@link VistaPreliminarGestoresFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VistaPreliminarFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
+public class VistaPreliminarGestoresFragment extends MyFragment implements OnCameraListener, View.OnClickListener {
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -68,7 +64,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     ProgressDialog dialog;
     PDFView pdfView;
     MyManifiesto myManifiesto;
-    UserRegistrarRecoleccion userRegistrarRecoleccion;
+    UserRegistrarRecoleccionGestores userRegistrarRecoleccion;
     UserRegistrarRuteoRecoleccion userRegistrarRuteoRecoleccion;
     DialogBuilder dialogBuilder;
     DialogBuilder dialogBuilder2;
@@ -85,8 +81,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     UserConsultarCatalogosTask consultarCatalogosTask;
     MyPrint print;
 
-    public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
-        VistaPreliminarFragment fragment = new VistaPreliminarFragment();
+    public static VistaPreliminarGestoresFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
+        VistaPreliminarGestoresFragment fragment = new VistaPreliminarGestoresFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, manifiestoID);
         args.putString(ARG_PARAM3, identificacion);
@@ -294,7 +290,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnVistaPreviaCancelar:
-                setNavegate(Manifiesto2Fragment.newInstance(idAppManifiesto, 2, 1));
+                setNavegate(ManifiestoGestoresFragment.newInstance(idAppManifiesto, 2, 1));
                 break;
             case R.id.btnVistaPreviaGuardar:
                 builder = new DialogBuilder(getActivity());
@@ -323,8 +319,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             messageBox("Debe ingresar fotografías, justificando Peso Promedio");
             return;
         } else {
-            userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(),null);
-            userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
+            userRegistrarRecoleccion = new UserRegistrarRecoleccionGestores(getActivity(), idAppManifiesto, getLocation(),null);
+            userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccionGestores.OnRegisterListener() {
                 @Override
                 public void onSuccessful(final Date fechaRecol) {
 
@@ -344,7 +340,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                             final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                             if (tipoSubruta.equals("2")) {
                                 builder = new DialogBuilder(getActivity());
-                                builder.setMessage("¿Desea volver a imprimir otro recibo?");
+                                builder.setMessage("¿Desea volver a imprimir la etiqueta?");
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("SI", new View.OnClickListener() {
                                     @Override
@@ -537,8 +533,9 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         }
     };
     private String obtieneDosDecimales(double valor) {
-        DecimalFormat df = new DecimalFormat("#.00");
-        return df.format(valor);
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
     }
 
     private void imprimirEtiquetaHospitalario(final Integer idAppManifiesto) {

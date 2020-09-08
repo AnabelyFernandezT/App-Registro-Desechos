@@ -16,8 +16,6 @@ import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogManifiestoCliente;
 import com.caircb.rcbtracegadere.fragments.GestorAlterno.HojaRutaAsignadaGestorFragment;
-import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
-import com.caircb.rcbtracegadere.fragments.recolector.manifiesto2.VistaPreliminarFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
@@ -42,7 +40,7 @@ public class ManifiestoGestoresFragment extends MyFragment implements OnCameraLi
     TabHost tabs;
     FloatingActionButton mensajes;
     Integer idAppManifiesto,estadoPantalla,tipoRecoleccion;
-    VistaPreliminarFragment vistaPreliminarFragment;
+    VistaPreliminarGestoresFragment VistaPreliminarGestoresFragment;
     DialogManifiestoCliente manifiestoCliente;
     DialogBuilder dialogBuilder;
     DialogBultos bultos;
@@ -371,7 +369,7 @@ public class ManifiestoGestoresFragment extends MyFragment implements OnCameraLi
                         manifiestoCliente.dismiss();
 
                         if (tipoRecoleccion==1){
-                            setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
+                            setNavegate(VistaPreliminarGestoresFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
                         }else {
                             final DialogBuilder dialogBuilder2=new DialogBuilder(getActivity());
                             dialogBuilder2.setMessage("¿Está seguro que desea guardar?");
@@ -380,7 +378,7 @@ public class ManifiestoGestoresFragment extends MyFragment implements OnCameraLi
                             dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
+                                    setNavegate(VistaPreliminarGestoresFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
                                     dialogBuilder2.dismiss();
                                     //registarDatos();
                                 }
@@ -405,7 +403,7 @@ public class ManifiestoGestoresFragment extends MyFragment implements OnCameraLi
                 dialogBuilder.dismiss();
                 MyApp.getDBO().manifiestoDao().updateManifiestoCliente(idAppManifiesto,"");
                 if (tipoRecoleccion==1){
-                    setNavegate(VistaPreliminarFragment.newInstance(
+                    setNavegate(VistaPreliminarGestoresFragment.newInstance(
                             idAppManifiesto,
                             tabManifiestoGeneral.getTipoPaquete(),
                             identifiacion
@@ -419,7 +417,7 @@ public class ManifiestoGestoresFragment extends MyFragment implements OnCameraLi
                         @Override
                         public void onClick(View v) {
                             dialogBuilder2.dismiss();
-                            setNavegate(VistaPreliminarFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
+                            setNavegate(VistaPreliminarGestoresFragment.newInstance(idAppManifiesto, tabManifiestoGeneral.getTipoPaquete(),identifiacion));
                             //registarDatos();
                         }
                     });
@@ -453,83 +451,5 @@ public class ManifiestoGestoresFragment extends MyFragment implements OnCameraLi
 
         builder.show();
     }
-
-    /*
-    private void registarDatos(){
-        MyApp.getDBO().manifiestoDao().updateManifiestoFechaRecoleccion(idAppManifiesto,new Date());
-        userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(),idAppManifiesto,getLocation());
-        userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
-            @Override
-            public void onSuccessful(final Date fechaRecol) {
-                //setNavegate(HojaRutaAsignadaFragment.newInstance());
-
-                //Registro el ruteo en estado en 1
-                Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
-                RuteoRecoleccionEntity dtoSendServicio = MyApp.getDBO().ruteoRecoleccion().dtoSendServicio(_id, idAppManifiesto);
-
-                userRegistrarRuteoRecoleccion = new UserRegistrarRuteoRecoleccion(getActivity(), dtoSendServicio);
-                userRegistrarRuteoRecoleccion.setOnRegisterRuteoRecollecionListenner(new UserRegistrarRuteoRecoleccion.OnRegisterRuteroRecoleecionListener() {
-                    @Override
-                    public void onSuccessful() {
-
-                        //List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
-                        Integer _id = MyApp.getDBO().ruteoRecoleccion().searchRegistroLlegada(idAppManifiesto);
-                        if(_id !=null && _id >=0){
-                            MyApp.getDBO().ruteoRecoleccion().updateEstadoByPuntoLLegada(_id, idAppManifiesto);
-                        }
-                        //List<RuteoRecoleccionEntity> enty2 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); ///////////
-
-                        if(MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() >0 ){
-
-                            dialogBuilder = new DialogBuilder(getActivity());
-                            dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
-                            dialogBuilder.setCancelable(false);
-                            dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder.dismiss();
-                                    //Guardo la nueva fecha de inicio y puntoParitda;
-                                    MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
-                                    //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
-                                    setNavegate(HojaRutaAsignadaFragment.newInstance());
-                                }
-                            });
-                            dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder.dismiss();
-                                    //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                                    MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
-                                    //setNavegate(HojaRutaAsignadaFragment.newInstance());
-                                    //Se envia al home ya que el usuario No desea recolectar
-                                    setNavegate(HomeTransportistaFragment.create());
-
-                                }
-                            });
-                            dialogBuilder.show();
-                        }else{
-                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol,idAppManifiesto,null,null,false));
-                            setNavegate(HomeTransportistaFragment.create());
-                        }
-                    }
-
-                    @Override
-                    public void onFail() {
-                        setNavegate(HojaRutaAsignadaFragment.newInstance());
-                    }
-                });
-                userRegistrarRuteoRecoleccion.execute();
-            }
-
-            @Override
-            public void onFail() {
-                setNavegate(HojaRutaAsignadaFragment.newInstance());
-                messageBox("No se encontro impresora, Datos Guardados");
-            }
-        });
-        userRegistrarRecoleccion.execute();
-    }*/
 
 }

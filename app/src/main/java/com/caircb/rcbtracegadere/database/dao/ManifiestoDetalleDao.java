@@ -44,7 +44,7 @@ public abstract class ManifiestoDetalleDao {
             " where idAppManifiesto=:idManifiesto and (tipoMostrar=1 or tipoMostrar=3) ")
     public abstract List<RowItemManifiesto> fetchHojaRutaDetallebyIdManifiesto(Integer idManifiesto);
 
-    @Query("select d.idAppManifiestoDetalle as id, cd.nombre as descripcion,'' as unidad,cd.codigo,d.codigoMAE, d.pesoUnidad as peso, d.cantidadBulto,d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial, faltaImpresiones,tipoMostrar, d.idTipoDesecho as idTipoDesecho" +
+    @Query("select d.idAppManifiestoDetalle as id, cd.nombre as descripcion,'' as unidad,cd.codigo,d.codigoMAE, d.pesoUnidad as peso, d.cantidadBulto, d.estadoChek as estado, tratamiento, tipoItem,tipoPaquete , tipoBalanza, pesoReferencial, faltaImpresiones,tipoMostrar, d.idTipoDesecho as idTipoDesecho" +
             " from tb_manifiestos_detalle d" +
             " inner join tb_catalogos cd on d.idTipoDesecho=cd.idSistema and cd.tipo=2" +
             " where idAppManifiesto=:idManifiesto and (tipoMostrar=1 or tipoMostrar=3) ")
@@ -83,6 +83,9 @@ public abstract class ManifiestoDetalleDao {
     public void updatePesoManifiestoDetalle(Integer idManifiestoDetalle, double pesoUnidad){
         actualizarPesoManifiestoDetalle(idManifiestoDetalle,pesoUnidad,pesoUnidad>0);
     }
+
+    @Query("update tb_manifiestos_detalle set estadoChek=:check where idAppManifiestoDetalle=:idManifiestoDetalle")
+    public abstract void actualizarCheckGestores(Boolean check, Integer idManifiestoDetalle);
 
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle LIMIT 1")
     public abstract ManifiestoDetalleEntity fecthConsultarManifiestoDetallebyID(Integer idManifiesto, Integer idManifiestoDetalle);

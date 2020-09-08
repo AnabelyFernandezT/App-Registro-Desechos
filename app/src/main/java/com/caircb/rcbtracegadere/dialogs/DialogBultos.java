@@ -47,7 +47,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     AlertDialog.Builder alertDialog;
     AlertDialog alert;
     String valor = null;
-    ParametroEntity para,idDetalleValidacion;
+    ParametroEntity para, idDetalleValidacion;
     NotificacionPesoExtraEntity pesoExtraEntity;
     String dato = "0";
     String inputDefault = "0";
@@ -60,8 +60,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     Integer idManifiesto;
     Integer idManifiestoDetalle;
     Integer tipoPaquete;
-    Integer autorizacion=0;
-    String idManifiestoValidacion="";
+    Integer autorizacion = 0;
+    String idManifiestoValidacion = "";
     PaqueteEntity pkg;
     ManifiestoDetalleEntity detalle;
     List<String> itemsCategoriaPaquete;
@@ -105,7 +105,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         this.tipoPaquete = tipoPaquete;
         this.codigoDetalle = codigoDetalle;
         this.tipoGestion = tipoGestion;
-        this.registraTara=registraTara;
+        this.registraTara = registraTara;
     }
 
 
@@ -124,9 +124,11 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     private void initBotones() {
         para = MyApp.getDBO().parametroDao().fetchParametroEspecifico("notif_value");
-        pesoExtraEntity = MyApp.getDBO().pesoExtraDao().fetchPesoExtra(idManifiesto,idManifiestoDetalle);
-        idDetalleValidacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico("idValidacion_"+idManifiestoDetalle);
-        if(idDetalleValidacion!=null){idManifiestoValidacion = idDetalleValidacion.getValor();}
+        pesoExtraEntity = MyApp.getDBO().pesoExtraDao().fetchPesoExtra(idManifiesto, idManifiestoDetalle);
+        idDetalleValidacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico("idValidacion_" + idManifiestoDetalle);
+        if (idDetalleValidacion != null) {
+            idManifiestoValidacion = idDetalleValidacion.getValor();
+        }
         listViewBultos = getView().findViewById(R.id.listViewBultos);
         txtpantalla = getView().findViewById(R.id.txtpantalla);
         txtTotal = (TextView) getView().findViewById(R.id.txtTotal);
@@ -162,16 +164,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         btn_decimal.setOnClickListener(this);
         btn_add.setOnClickListener(this);
 
-        if(pesoExtraEntity!=null){
-            if(pesoExtraEntity.getAutorizacion().toString().equals("0")){
+        if (pesoExtraEntity != null) {
+            if (pesoExtraEntity.getAutorizacion().toString().equals("0")) {
                 btn_add.setEnabled(false);
                 btn_ok.setEnabled(false);
                 autorizacion = 0;
-            }else if (pesoExtraEntity.getAutorizacion().toString().equals("1")) {
+            } else if (pesoExtraEntity.getAutorizacion().toString().equals("1")) {
                 autorizacion = 1;
                 btn_add.setEnabled(true);
                 btn_ok.setEnabled(true);
-            }else if(pesoExtraEntity.getAutorizacion().toString().equals("3")){
+            } else if (pesoExtraEntity.getAutorizacion().toString().equals("3")) {
                 btn_add.setEnabled(true);
                 btn_ok.setEnabled(true);
             }
@@ -219,16 +221,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         if (bultos.size() > 0) {
             List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
-            double totalPesoTaraManifiestoDetalle=0.0;
-            for (int i=0;i<listaPesos.size();i++){
-                totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
+            double totalPesoTaraManifiestoDetalle = 0.0;
+            for (int i = 0; i < listaPesos.size(); i++) {
+                totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
             }
 
             for (CatalogoItemValor r : bultos) {
                 subtotal = subtotal.add(new BigDecimal(r.getValor()));
             }
 
-            double pesoTotal=subtotal.doubleValue()-totalPesoTaraManifiestoDetalle;
+            double pesoTotal = subtotal.doubleValue() - totalPesoTaraManifiestoDetalle;
             double pesoTotalMostrar = Double.parseDouble(obtieneDosDecimales(pesoTotal));
             txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
         }
@@ -237,11 +239,11 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
     }
 
-    private void initAdapterBultos(){
-        if(pesoExtraEntity!=null){
-            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,pesoExtraEntity.getAutorizacion(),txtTotal);
-        }else {
-            listaValoresAdapter = new ListaValoresAdapter(getActivity(),bultos,idManifiesto, idManifiestoDetalle,registraTara,3,txtTotal);
+    private void initAdapterBultos() {
+        if (pesoExtraEntity != null) {
+            listaValoresAdapter = new ListaValoresAdapter(getActivity(), bultos, idManifiesto, idManifiestoDetalle, registraTara, pesoExtraEntity.getAutorizacion(), txtTotal);
+        } else {
+            listaValoresAdapter = new ListaValoresAdapter(getActivity(), bultos, idManifiesto, idManifiestoDetalle, registraTara, 3, txtTotal);
         }
 
         listaValoresAdapter.setOnItemBultoImpresion(new ListaValoresAdapter.OnItemBultoImpresionListener() {
@@ -250,23 +252,22 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 CatalogoItemValor item = bultos.get(pos);
                 ////DESCOMENTAR PARA IMPRIMIR CON IMPRESORA
                 String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
-                if (tipoSubRuta.equals("2")){
-                    checkEtiquetaTara(idManifiesto, idManifiestoDetalle, item);
-                    MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), pesoTaraBulto);
-                }else {
+                if (tipoSubRuta.equals("2")) {
+                 /*   checkEtiquetaTara(idManifiesto, idManifiestoDetalle, item);
+                    MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, item.getIdCatalogo(), pesoTaraBulto);*/
+                } else {
                     imprimirEtiquetaIndividual(idManifiesto, idManifiestoDetalle, item);
                 }
 
 
-
                 List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
-                double totalPesoTaraManifiestoDetalle=0.0;
-                double pesoTotalValor=0.0;
-                for (int i=0;i<listaPesos.size();i++){
-                    totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
-                    pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
+                double totalPesoTaraManifiestoDetalle = 0.0;
+                double pesoTotalValor = 0.0;
+                for (int i = 0; i < listaPesos.size(); i++) {
+                    totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
+                    pesoTotalValor = pesoTotalValor + listaPesos.get(i).getValor();
                 }
-                double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
+                double pesoTotal = pesoTotalValor - totalPesoTaraManifiestoDetalle;
                 DecimalFormat df = new DecimalFormat("000.00");
                 double pesoTotalMostrar = Double.parseDouble(df.format(pesoTotal));
                 txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
@@ -282,13 +283,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     MyApp.getDBO().manifiestoPaqueteDao().quitarPaquete(idManifiesto, tipoPaquete, item.getTipo());
 
                 List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
-                double totalPesoTaraManifiestoDetalle=0.0;
-                double pesoTotalValor=0.0;
-                for (int i=0;i<listaPesos.size();i++){
-                    totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
-                    pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
+                double totalPesoTaraManifiestoDetalle = 0.0;
+                double pesoTotalValor = 0.0;
+                for (int i = 0; i < listaPesos.size(); i++) {
+                    totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
+                    pesoTotalValor = pesoTotalValor + listaPesos.get(i).getValor();
                 }
-                double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
+                double pesoTotal = pesoTotalValor - totalPesoTaraManifiestoDetalle;
 
 
                 subtotal = subtotal.subtract(new BigDecimal(item.getValor()));
@@ -329,15 +330,17 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         initAdapterBultos();
 
     }
+
     private void checkEtiquetaTara(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
         MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
         item.setImpresion(true);
         listaValoresAdapter.notifyDataSetChanged();
     }
+
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
 
         //Probar sin impresiora
-        /************************************
+        /************************************/
 
         //bultos.clear();
         //subtotal= BigDecimal.ZERO;
@@ -347,7 +350,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         listaValoresAdapter.notifyDataSetChanged();
         //loadData();
 
-        **************************************/
+        /**************************************/
 
         //Probar con impresiora
 
@@ -364,12 +367,15 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     listaValoresAdapter.notifyDataSetChanged();
                     //loadData();
                 }
+
                 @Override
-                public void onFailure(String message) { messageBox(message); }
+                public void onFailure(String message) {
+                    messageBox(message);
+                }
             });
             print.printerIndividual(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             messageBox("No hay conexion con la impresora");
             //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
         }
@@ -401,8 +407,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             if (tipoPaquete != null) {
 
                 //if (!pkg.getFlagAdicionales() && pkg.getPaquetePorRecolccion().toString().equals("1") && bultos.size()>0){
-                    //messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
-                    //return;
+                //messageBox("Usted no puede aplicar mas de un paquete para esta recoleción");
+                //return;
                 //}else {
 
                 // showTipoPaquete(imput);  //ANTES
@@ -486,16 +492,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         return MyApp.getDBO().manifiestoDetallePesosDao().existeBultoCategoriaPaquete(idManifiesto, idManifiestoDetalle, categoria);
     }
 
-    public void addBulto(final BigDecimal imput, final String tipo){
+    public void addBulto(final BigDecimal imput, final String tipo) {
 
         subtotal = subtotal.add(imput);
         Double _subTmp = subtotal.doubleValue();
 
-        if(Double.compare(_subTmp,pesoReferencial) > 0){
+        if (Double.compare(_subTmp, pesoReferencial) > 0) {
             autorizacion = 0;
         }
 
-        if( vreferencial.equals("SI") && subtotal.doubleValue() > pesoReferencial && autorizacion.equals(0)){
+        if (vreferencial.equals("SI") && subtotal.doubleValue() > pesoReferencial && autorizacion.equals(0)) {
             if (builder != null) {
                 builder.dismiss();
                 builder = null;
@@ -517,7 +523,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         public void onSuccessful() {
                             txtpantalla.setText("0");
                             subtotal = subtotal.subtract(imput);
-                            dato="0";
+                            dato = "0";
                             BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
                             //MyApp.getDBO().parametroDao().saveOrUpdate("idValidacion_"+idManifiestoDetalle,""+idManifiestoDetalle);
                             MyApp.getDBO().pesoExtraDao().saveOrUpdate(idManifiesto,idManifiestoDetalle,0.0,0);
@@ -544,7 +550,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     builder.dismiss();
                     txtpantalla.setText("0");
                     subtotal = subtotal.subtract(imput);
-                    dato="0";
+                    dato = "0";
                 }
             });
             builder.show();
@@ -569,18 +575,18 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, false, ultimoBultoByIdDet, 0.0);
                     banderaImpresion = false;
                 }
-            }else {
+            } else {
                 banderaImpresion = true;
                 id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, true, ultimoBultoByIdDet, 0.0);
             }
-        }else {
+        } else {
             if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
                 banderaImpresion = true;
-                id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, true, ultimoBultoByIdDet, 0.0);
             } else {
-                id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, false, ultimoBultoByIdDet, 0.0);
                 banderaImpresion = false;
             }
+
+            id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto, idManifiestoDetalle, imput.doubleValue(), tipo, tipoPaquete, codigoDetalle, banderaImpresion, ultimoBultoByIdDet, 0.0);
         }
 
         //Long id = MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idManifiesto,idManifiestoDetalle,imput.doubleValue(),tipo,tipoPaquete,codigoDetalle, false, ultimoBultoByIdDet);
@@ -594,13 +600,13 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
         listaValoresAdapter.notifyDataSetChanged();
 
         List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
-        double totalPesoTaraManifiestoDetalle=0.0;
-        double pesoTotalValor=0.0;
-        for (int i=0;i<listaPesos.size();i++){
-            totalPesoTaraManifiestoDetalle=totalPesoTaraManifiestoDetalle+listaPesos.get(i).getPesoTaraBulto();
-            pesoTotalValor=pesoTotalValor+listaPesos.get(i).getValor();
+        double totalPesoTaraManifiestoDetalle = 0.0;
+        double pesoTotalValor = 0.0;
+        for (int i = 0; i < listaPesos.size(); i++) {
+            totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
+            pesoTotalValor = pesoTotalValor + listaPesos.get(i).getValor();
         }
-        double pesoTotal=pesoTotalValor-totalPesoTaraManifiestoDetalle;
+        double pesoTotal = pesoTotalValor - totalPesoTaraManifiestoDetalle;
         double pesoTotalMostrar = Double.parseDouble(obtieneDosDecimales(pesoTotal));
         txtTotal.setText("Peso Neto " + pesoTotalMostrar + " KG");
         dato = "0";
@@ -682,37 +688,35 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
             case R.id.btn_ok:
                 bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
                 String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
-                if (tipoSubRuta.equals("2")){
+                if (tipoSubRuta.equals("2")) {
                     String checkTara = registraTara.toString();
-                    if (checkTara.equals("1")){
-                        List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+                    if (checkTara.equals("1")) {
+                        /*List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                         int contPesosTara=0;
                         for (int i=0;i<listaPesos.size();i++){
                             if (listaPesos.get(i).getPesoTaraBulto()==0){
                                 contPesosTara++;
                             }
-                        }
-                        if (contPesosTara==0){
-                            BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
-                            if(!(txtpantalla.getText().toString().equals("0")))
-                                createBulto(imputValor);
-                            faltaImpresos = verificarTodosBultosImpresos();
-
-                            if (!faltaImpresos){
-                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                                if (mOnBultoListener != null) {
-                                    aplicar();
-                                    //autorizacion=0;
-                                    //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
-                                }
-                            } else {
-                                messageBox("Debe registrar todas las taras!!!");
+                        }*/
+                        /* if (contPesosTara==0){*/
+                        /*BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                        createBulto(imputValor);*/
+                        faltaImpresos = verificarTodosBultosImpresos();
+                        if (!faltaImpresos) {
+                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                            if (mOnBultoListener != null) {
+                                aplicar();
+                                //autorizacion=0;
+                                //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
                             }
-                            break;
-                        }else {
+                        } else {
                             messageBox("Debe registrar todas las taras!!!");
                         }
-                    }else {
+                        break;
+                    /*    }else {
+                            messageBox("Debe registrar todas las taras!!!");
+                        }*/
+                    } else {
                         BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
                         if(!(txtpantalla.getText().toString().equals("0")))
                             createBulto(imputValor);
@@ -730,7 +734,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         }
                         break;
                     }
-                }else {
+                } else {
                     BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
                     if(!(txtpantalla.getText().toString().equals("0")))
                         createBulto(imputValor);
@@ -749,6 +753,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     }
                     break;
                 }
+
+
             case R.id.btn_add:
                 /*if(para!=null){
                     valor = para.getValor();
@@ -758,33 +764,55 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         btn_ok.setEnabled(true);
                     }
                 }*/
+                String tipoSubRutaAdd = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
+                if (tipoSubRutaAdd.equals("2")) {
 
-                final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+                    final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
 
-                if(imput.compareTo(BigDecimal.ZERO) > 0)
-                {
-                    createBulto(imput);
+                    if (imput.compareTo(BigDecimal.ZERO) > 0) {
+                        createBulto(imput);
+                    } else {
+                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                        dialogBuilder2.setMessage("¿Debe ingresar un peso mayor a cero?");
+                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                        dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder2.dismiss();
+                            }
+                        });
+                        dialogBuilder2.show();
+                    }
+                    break;
+
+                }else {
+                    final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+
+                    if (imput.compareTo(BigDecimal.ZERO) > 0) {
+                        createBulto(imput);
+                    } else {
+                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                        dialogBuilder2.setMessage("¿Desea ingresar un bulto con peso cero?");
+                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                        dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder2.dismiss();
+                                createBulto(imput);
+                            }
+                        });
+                        dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder2.dismiss();
+                            }
+                        });
+                        dialogBuilder2.show();
+                    }
+                    break;
                 }
-                else {
-                    final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                    dialogBuilder2.setMessage("¿Desea ingresar un bulto con peso cero?");
-                    dialogBuilder2.setTitle("CONFIRMACIÓN");
-                    dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder2.dismiss();
-                            createBulto(imput);
-                        }
-                    });
-                    dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder2.dismiss();
-                        }
-                    });
-                    dialogBuilder2.show();
-                }
-                break;
+
+
             case R.id.btn_cancel:
                 bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
                 String tipoSubRuta2 = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
@@ -792,49 +820,54 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 if (tipoSubRuta2.equals("2")) {
                     String checkTara = registraTara.toString();
                     if (checkTara.equals("1")) {
-                        List<ManifiestoDetallePesosEntity> listaPesos2 = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+                        /*List<ManifiestoDetallePesosEntity> listaPesos2 = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                         int contPesosTara2=0;
                         for (int i=0;i<listaPesos2.size();i++){
                             if (listaPesos2.get(i).getPesoTaraBulto()==0){
                                 contPesosTara2++;
                             }
                         }
-                        if (contPesosTara2==0){
-                            //limpiarBultosNoConfirmados();
-                            faltaImpresos = verificarTodosBultosImpresos();
-                            if (faltaImpresos) {
-                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
-                            } else {
-                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                            }
-                            if (mOnBultoListener != null) {
-                                mOnBultoListener.onCanceled(faltaImpresos);
-                            }
-                            //if(btn_add.isEnabled() && btn_ok.isEnabled()){
-                            aplicar();
-                            //}
-                            break;
-                        }else {
-                            messageBox("Debe registrar todas las taras!!!");
-                            break;
-                        }
-                    }else {
+                        if (contPesosTara2==0){*/
                         //limpiarBultosNoConfirmados();
                         faltaImpresos = verificarTodosBultosImpresos();
                         if (faltaImpresos) {
                             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                            messageBox("Debe registrar todas las taras!!!");
                         } else {
                             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                            if (mOnBultoListener != null) {
+                                mOnBultoListener.onCanceled(faltaImpresos);
+                            }
+                            aplicar();
                         }
-                        if (mOnBultoListener != null) {
-                            mOnBultoListener.onCanceled(faltaImpresos);
+
+/*                            if (mOnBultoListener != null) {
+                                mOnBultoListener.onCanceled(faltaImpresos);
+                            }*/
+                        //if(btn_add.isEnabled() && btn_ok.isEnabled()){
+                        //aplicar();
+                        //}
+                        break;
+
+                        /*}else {
+                            messageBox("Debe registrar todas las taras!!!");
+                            break;
+                        }*/
+                    } else {
+                        //limpiarBultosNoConfirmados();
+                        faltaImpresos = verificarTodosBultosImpresos();
+                        if (faltaImpresos) {
+                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                            messageBox("Debe registrar todas las taras!!!");
+                        } else {
+                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                            aplicar();
                         }
                         //if(btn_add.isEnabled() && btn_ok.isEnabled()){
-                        aplicar();
                         //}
                         break;
                     }
-                }else {
+                } else {
                     //limpiarBultosNoConfirmados();
                     faltaImpresos = verificarTodosBultosImpresos();
                     if (faltaImpresos) {
@@ -850,7 +883,6 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     //}
                     break;
                 }
-
 
 
             case R.id.btn_decimal:

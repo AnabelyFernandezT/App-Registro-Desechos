@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.database.entity;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.security.PrivateKey;
 import java.util.Date;
 
 @Entity(tableName = (LotePadreEntity.TABLE))
@@ -10,29 +11,40 @@ public class LotePadreEntity {
     public static final String TABLE = "tb_lotes_padre";
 
     @PrimaryKey(autoGenerate = true)
-    private Integer idLotePadre;
+    private Integer _id;
 
     private Integer idManifiestoPadre;
 
-    private String manifiestos;
+    private Integer idManifiestosHijo;
 
-    private Double total;
+    private Integer idManifiestoDetalleHijo;
 
-    private String nombreCliente;
+    private Integer idManifiestoDetallePadre;
+
+    private Integer idDesecho;
+
+    private Double peso;
+
+    private Double bultos;
 
     private String numeroManifiestoPadre;
 
-    private String placaVehiculo;
+    private Boolean checkHijo;
+
+    private String cliente;
+
+    private String numeroManifiestoHijo;
+
 
     public LotePadreEntity() {
     }
 
-    public Integer getIdLotePadre() {
-        return idLotePadre;
+    public Integer get_id() {
+        return _id;
     }
 
-    public void setIdLotePadre(Integer idLotePadre) {
-        this.idLotePadre = idLotePadre;
+    public void set_id(Integer _id) {
+        this._id = _id;
     }
 
     public Integer getIdManifiestoPadre() {
@@ -43,28 +55,36 @@ public class LotePadreEntity {
         this.idManifiestoPadre = idManifiestoPadre;
     }
 
-    public String getManifiestos() {
-        return manifiestos;
+    public Integer getIdManifiestosHijo() {
+        return idManifiestosHijo;
     }
 
-    public void setManifiestos(String manifiestos) {
-        this.manifiestos = manifiestos;
+    public void setIdManifiestosHijo(Integer idManifiestosHijo) {
+        this.idManifiestosHijo = idManifiestosHijo;
     }
 
-    public Double getTotal() {
-        return total;
+    public Integer getIdDesecho() {
+        return idDesecho;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setIdDesecho(Integer idDesecho) {
+        this.idDesecho = idDesecho;
     }
 
-    public String getNombreCliente() {
-        return nombreCliente;
+    public Double getPeso() {
+        return peso;
     }
 
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
+
+    public Double getBultos() {
+        return bultos;
+    }
+
+    public void setBultos(Double bultos) {
+        this.bultos = bultos;
     }
 
     public String getNumeroManifiestoPadre() {
@@ -75,11 +95,43 @@ public class LotePadreEntity {
         this.numeroManifiestoPadre = numeroManifiestoPadre;
     }
 
-    public String getPlacaVehiculo() {
-        return placaVehiculo;
+    public Integer getIdManifiestoDetallePadre() {
+        return idManifiestoDetallePadre;
     }
 
-    public void setPlacaVehiculo(String placaVehiculo) {
-        this.placaVehiculo = placaVehiculo;
+    public void setIdManifiestoDetallePadre(Integer idManifiestoDetallePadre) {
+        this.idManifiestoDetallePadre = idManifiestoDetallePadre;
+    }
+
+    public Boolean getCheckHijo() {
+        return checkHijo;
+    }
+
+    public void setCheckHijo(Boolean checkHijo) {
+        this.checkHijo = checkHijo;
+    }
+
+    public Integer getIdManifiestoDetalleHijo() {
+        return idManifiestoDetalleHijo;
+    }
+
+    public void setIdManifiestoDetalleHijo(Integer idManifiestoDetalleHijo) {
+        this.idManifiestoDetalleHijo = idManifiestoDetalleHijo;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getNumeroManifiestoHijo() {
+        return numeroManifiestoHijo;
+    }
+
+    public void setNumeroManifiestoHijo(String numeroManifiestoHijo) {
+        this.numeroManifiestoHijo = numeroManifiestoHijo;
     }
 }

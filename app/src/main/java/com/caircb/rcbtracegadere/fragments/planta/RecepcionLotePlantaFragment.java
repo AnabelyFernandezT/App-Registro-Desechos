@@ -194,7 +194,8 @@ public class RecepcionLotePlantaFragment extends MyFragment implements View.OnCl
             public void onClick(View v) {
                 dialogBuilder.dismiss();
                 String observacion = tabFirma.sendObservacion() == null ? "" : tabFirma.sendObservacion();
-                userRegistrarPlantaQrTask = new UserRegistrarPlantaQrTask(myContext, recepcionQrPlantaEntity, observacion);
+                String observacionPeso = tabFirma.sendObservacionPeso() == null ? "" : tabFirma.sendObservacionPeso();
+                userRegistrarPlantaQrTask = new UserRegistrarPlantaQrTask(myContext, recepcionQrPlantaEntity, observacion, observacionPeso);
                 userRegistrarPlantaQrTask.setOnRegisterListener(new UserRegistrarPlantaQrTask.OnRegisterListener() {
                     @Override
                     public void onSuccessful() {
@@ -202,7 +203,7 @@ public class RecepcionLotePlantaFragment extends MyFragment implements View.OnCl
                         int idManifiestoPrimero = Integer.parseInt(array[0]);
                         if (array.length > 1) {
                             for (String s : array) {
-                                int idManifiestoConsulta = Integer.parseInt(s.replace(" ",""));
+                                int idManifiestoConsulta = Integer.parseInt(s.replace(" ", ""));
                                 MyApp.getDBO().manifiestoPlantaObservacionesDao().eliminarObtenerObservaciones(idManifiestoConsulta);
                                 MyApp.getDBO().manifiestoFileDao().deleteFotoByIdAppManifistoCatalogo(idManifiestoConsulta, -1);
                             }
@@ -223,8 +224,8 @@ public class RecepcionLotePlantaFragment extends MyFragment implements View.OnCl
                             userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
                                 @Override
                                 public void onSuccessful() {
-                                    String idVehiculo=MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_vehiculo")== null ? "" :MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_vehiculo");
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta"+idVehiculo,""+0);
+                                    String idVehiculo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_vehiculo") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_vehiculo");
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("vehiculo_planta" + idVehiculo, "" + 0);
                                     setNavegate(HomePlantaFragment.create());
                                 }
 

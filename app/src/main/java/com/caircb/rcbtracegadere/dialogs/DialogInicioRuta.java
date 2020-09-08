@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
@@ -44,6 +45,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +65,7 @@ public class DialogInicioRuta extends MyDialog {
     String placaInfoModulos;
     long idRegistro;
     int idTipoSubruta,impresoraID=0;
+    List<ItemGeneric> listaImpresoras = new ArrayList<>();
 
     UserRegistrarInicioRutaTask registroInicioRuta;
     UserConsultarRutasTask consultarPlacasInicioRutaDisponible;
@@ -74,7 +77,7 @@ public class DialogInicioRuta extends MyDialog {
     List<DtoFindRutas> listaPlacasDisponibles;
     List<RowRutas> listaRutas;
     TextView txtBuscar, txtSincronizar, txtManifiestos;
-
+    Cursor cursor;
     private OnSuccessListener mOnSuccessListener;
 
     public interface OnSuccessListener {
@@ -192,9 +195,13 @@ public class DialogInicioRuta extends MyDialog {
         spinnerImpresoras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Cursor cursor = (Cursor) spinnerImpresoras.getSelectedItem();
+                     cursor = (Cursor) spinnerImpresoras.getSelectedItem();
+                     Object s = spinnerImpresoras.getSelectedItem();
+                     System.out.print(s);
+                     System.out.print(cursor);
                     if(cursor!=null && cursor.getCount()>0) {
                         impresoraID = cursor.getInt(cursor.getColumnIndex("_id"));
+                        System.out.print(impresoraID);
                     }
             }
 
@@ -217,9 +224,9 @@ public class DialogInicioRuta extends MyDialog {
 
     private void loadImpresorabyRuta(Integer tipoSubRuta){
         if(tipoSubRuta!=null){
-           List<ItemGeneric> lista = MyApp.getDBO().impresoraDao().searchListImpresorabyTipoRuta(tipoSubRuta);
-           if(lista.size()>0) {
-               cargarSpinner(spinnerImpresoras, lista, true);
+            listaImpresoras = MyApp.getDBO().impresoraDao().searchListImpresorabyTipoRuta(tipoSubRuta);
+           if(listaImpresoras.size()>0) {
+               cargarSpinner(spinnerImpresoras, listaImpresoras, true);
                lblImpresora.setVisibility(View.VISIBLE);
                spinnerImpresoras.setVisibility(View.VISIBLE);
            }
@@ -290,7 +297,29 @@ public class DialogInicioRuta extends MyDialog {
 
     public void setScanCode(String barcode){
         //programar metodo para consultar y setear valores de inpresora capturada por lector...
+        ItemGeneric item = MyApp.getDBO().impresoraDao().searchCodigoUUID(barcode);
+        System.out.print(impresoraID);
+        if(item ==null){
+            messageBox("Impresora no encontrada");
+        }else{
+            //MatrixCursor extras = new MatrixCursor(new String[] { "_id", "nombre"});
+            //extras.addRow(new String[] { item.getId().toString(), item.getNombre() });
+            //cursor = (Cursor) extras;
+            Integer id = getIndexByname(item.getNombre());
+            impresoraID = item.getId();
+            spinnerImpresoras.setSelection(id+1);
+        }
 
+    }
+
+    public int getIndexByname(String pName)
+    {
+        for(ItemGeneric _item : listaImpresoras)
+        {
+            if(_item.getNombre().equals(pName))
+                return listaImpresoras.indexOf(_item);
+        }
+        return -1;
     }
 
    /* public Spinner cargarSpinnerPalca(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar){

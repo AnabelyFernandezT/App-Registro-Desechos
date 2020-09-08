@@ -33,7 +33,8 @@ public abstract class ManifiestoSedeDetalleValorDao {
     @Transaction
     public abstract Boolean verificarBultoEstado(String codigoQR);
 
-    @Query("UPDATE tb_manifiestos_sede_det_valor SET estado = :check and estadoEnvio = 1 where codigoQR = :codigoQR ")
+    //@Query("UPDATE tb_manifiestos_sede_det_valor SET estado = :check and estadoEnvio = 1 where codigoQR = :codigoQR ")
+    @Query("UPDATE tb_manifiestos_sede_det_valor SET estado = :check, estadoEnvio = 1 where codigoQR = :codigoQR ")
     @Transaction
     public abstract void actualizarBultoEstado(String codigoQR, boolean check);
 

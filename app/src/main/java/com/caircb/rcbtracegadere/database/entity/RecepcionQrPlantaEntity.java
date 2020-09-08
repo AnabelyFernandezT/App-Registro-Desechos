@@ -3,6 +3,8 @@ package com.caircb.rcbtracegadere.database.entity;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.math.BigDecimal;
+
 @Entity(tableName = (RecepcionQrPlantaEntity.TABLE))
 public class RecepcionQrPlantaEntity {
     public static final String TABLE = "tb_recepcion_qr_planta";
@@ -13,6 +15,7 @@ public class RecepcionQrPlantaEntity {
     private Integer cantidadTotalBultos;
     private Integer cantidadTotalManifiestos;
     private String numerosManifiesto;
+    private double pesoTaraVehiculo;
 
     public RecepcionQrPlantaEntity(){
 
@@ -56,5 +59,13 @@ public class RecepcionQrPlantaEntity {
 
     public void setNumerosManifiesto(String numerosManifiesto) {
         this.numerosManifiesto = numerosManifiesto;
+    }
+
+    public double getPesoTaraVehiculo() {
+        return pesoTaraVehiculo;
+    }
+
+    public void setPesoTaraVehiculo(double pesoTaraVehiculo) {
+        this.pesoTaraVehiculo = pesoTaraVehiculo;
     }
 }

@@ -40,7 +40,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-
+        new MyExceptionHandler(this);
             try {
                 // Google Play will install latest OpenSSL
                 ProviderInstaller.installIfNeeded(getApplicationContext());

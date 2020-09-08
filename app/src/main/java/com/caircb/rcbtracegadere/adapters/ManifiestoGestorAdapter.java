@@ -64,6 +64,7 @@ public class ManifiestoGestorAdapter extends RecyclerView.Adapter<ManifiestoGest
         }
 
         holder.txtEstado.setText(estadoString.toString());
+        holder.btnViewPdfManifiesto.setVisibility(View.GONE);
 
     }
 

@@ -10,6 +10,7 @@ public class DtoRecepcionQrPlanta {
     private Integer cantidadTotalManifiestos;
     private String numerosManifiesto;
     private List<DtoHojaRutaDetallePlantaLote> hojaRutaDetallePlantaLote;
+    private BigDecimal pesoTaraVehiculo;
 
     public DtoRecepcionQrPlanta(){
 
@@ -53,5 +54,13 @@ public class DtoRecepcionQrPlanta {
 
     public void setHojaRutaDetallePlantaLote(List<DtoHojaRutaDetallePlantaLote> hojaRutaDetallePlantaLote) {
         this.hojaRutaDetallePlantaLote = hojaRutaDetallePlantaLote;
+    }
+
+    public BigDecimal getPesoTaraVehiculo() {
+        return pesoTaraVehiculo;
+    }
+
+    public void setPesoTaraVehiculo(BigDecimal pesoTaraVehiculo) {
+        this.pesoTaraVehiculo = pesoTaraVehiculo;
     }
 }

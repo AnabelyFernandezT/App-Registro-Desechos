@@ -13,6 +13,7 @@ public class RequestManifiestoQrPlanta {
     private Integer flagPlantaSede;
     private Integer idLoteContenedor;
     private Integer  idDestinatarioFinRutaCatalogo;
+    private String observacionPeso;
 
 
     public String getNumeroManifiesto() {
@@ -93,5 +94,13 @@ public class RequestManifiestoQrPlanta {
 
     public void setIdDestinatarioFinRutaCatalogo(Integer idDestinatarioFinRutaCatalogo) {
         this.idDestinatarioFinRutaCatalogo = idDestinatarioFinRutaCatalogo;
+    }
+
+    public String getObservacionPeso() {
+        return observacionPeso;
+    }
+
+    public void setObservacionPeso(String observacionPeso) {
+        this.observacionPeso = observacionPeso;
     }
 }

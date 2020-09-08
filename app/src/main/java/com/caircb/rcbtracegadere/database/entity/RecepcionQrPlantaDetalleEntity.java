@@ -39,4 +39,5 @@ public class RecepcionQrPlantaDetalleEntity {
     public void setPesoDesecho(Double pesoDesecho) {
         this.pesoDesecho = pesoDesecho;
     }
+
 }
