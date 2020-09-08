@@ -46,7 +46,7 @@ public class ManifiestoDetalleAdapterProcesado extends RecyclerView.Adapter<Mani
         holder.txtPeso.setText(""+it.getPeso());
         holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
         holder.txtDescripcion.setText(it.getDescripcion());
-        holder.txtTratamiento.setText(it.getTratamiento());
+        holder.txtTratamiento.setText(it.getCodigoMAE());
         holder.chkEstado.setChecked(it.isEstado());
         holder.chkEstado.setClickable(false);
 

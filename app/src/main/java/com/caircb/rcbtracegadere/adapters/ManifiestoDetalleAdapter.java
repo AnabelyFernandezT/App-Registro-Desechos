@@ -67,7 +67,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         holder.txtPeso.setText(""+it.getPeso());
         holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
         holder.txtDescripcion.setText(it.getCodigoMAE()+"-"+ it.getDescripcion());
-        holder.txtTratamiento.setText(it.getTratamiento());
+        holder.txtTratamiento.setText(it.getCodigoMAE());
         holder.chkEstado.setChecked(it.isEstado());
         holder.txtTipoBalanza.setText(it.getTipoBalanza()== 0 ? "" : it.getTipoBalanza()== 1 ? "Gadere" :"Cliente");
         holder.txtPesoReferencial.setText(String.valueOf(it.getPesoReferencial()));
