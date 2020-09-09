@@ -388,7 +388,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
 
         if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() > 0) {
             if (tipoSubruta.equals("2")) {//SI ES TIPO DE RUTA HOSPITALARIA
-                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                       /* MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
                         dialogBuilder = new DialogBuilder(getActivity());
                         dialogBuilder.setMessage("¿El camión llegó a su máxima capacidad?");
                         dialogBuilder.setCancelable(false);
@@ -417,8 +417,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         });
                         dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
+                            public void onClick(View v) {*/
+                                //dialogBuilder.dismiss();
                                 dialogBuilder2 = new DialogBuilder(getActivity());
                                 dialogBuilder2.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
                                 dialogBuilder2.setCancelable(false);
@@ -426,7 +426,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                                     @Override
                                     public void onClick(View v) {
                                         dialogBuilder2.dismiss();
-                                        dialogBuilder.dismiss();
+                                        //dialogBuilder.dismiss();
                                         //Guardo la nueva fecha de inicio y puntoParitda;
                                         MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
                                         RuteoRecoleccionEntity dto;
@@ -443,7 +443,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                                     @Override
                                     public void onClick(View v) {
                                         dialogBuilder2.dismiss();
-                                        dialogBuilder.dismiss();
+                                        //dialogBuilder.dismiss();
                                         //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
                                         MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
                                         RuteoRecoleccionEntity dto;
@@ -456,9 +456,9 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                                     }
                                 });
                                 dialogBuilder2.show();
-                            }
+                        /*    }
                         });
-                        dialogBuilder.show();
+                        dialogBuilder.show();*/
             } else if (tipoSubruta.equals("1")) { // SI ES TIPO DE RUTA INDUSTRIAL
                 dialogBuilder = new DialogBuilder(getActivity());
                 dialogBuilder.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
