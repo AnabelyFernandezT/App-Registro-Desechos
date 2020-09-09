@@ -17,7 +17,7 @@ public abstract class CatalogoDao {
 
 
 
-    @Query("select nombre ,codigo from tb_catalogos where tipo=:tipo AND idSistema in (1,4)")
+    @Query("select nombre ,codigo from tb_catalogos where tipo=:tipo AND idSistema in (1,4,6)")
     public  abstract List<DtoCatalogo> fetchConsultarCatalogo(Integer tipo);
 
     @Query("select idSistema as id,  nombre,codigo from tb_catalogos where tipo=:tipo")

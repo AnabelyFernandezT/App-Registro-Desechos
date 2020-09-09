@@ -26,6 +26,9 @@ public abstract  class NotificacionDao {
     @Query("Delete from tb_notificaciones where idNotificacion = :idNotificacion")
     public abstract void deleteNotification(Integer idNotificacion);
 
+    @Query("Delete from tb_notificaciones where tipoNotificacion = :tipoNotificacion")
+    public abstract void deleteNotificationTipoCierreLote(String tipoNotificacion);
+
     public void saveOrUpdate(ItemNotificacion notificacion){
         NotificacionEntity newNotificacion;
         newNotificacion = new NotificacionEntity();

@@ -276,6 +276,7 @@ public class CierreLoteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
+                        MyApp.getDBO().notificacionDao().deleteNotificationTipoCierreLote("12");
                         onBackPressed();
                     }
                 });
