@@ -46,6 +46,7 @@ import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
@@ -56,6 +57,7 @@ import java.util.List;
 
 public class TabManifiestoDetalle extends LinearLayout {
 
+    /*private List<ItemManifiesto> rowItems;*/
     private List<RowItemManifiesto> detalles;
     private RecyclerView recyclerView;
     ManifiestoDetalleAdapter recyclerviewAdapter;
@@ -87,6 +89,8 @@ public class TabManifiestoDetalle extends LinearLayout {
     private boolean isChangeTotalCreateBultos = false;
     CheckBox chkRegistrarTara;
     MyPrint print;
+    /*Integer idSubRuta;*/
+
 
     public TabManifiestoDetalle(Context context,
                                 Integer manifiestoID,
@@ -114,6 +118,9 @@ public class TabManifiestoDetalle extends LinearLayout {
     }
 
     private void init() {
+      /*  idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        rowItems=MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(idSubRuta, MySession.getIdUsuario());*/
+
 
         mensajes = this.findViewById(R.id.fab);
         mensajes.setOnClickListener(new View.OnClickListener() {
@@ -130,53 +137,54 @@ public class TabManifiestoDetalle extends LinearLayout {
 
         String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
         if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
-            sectionRegistrarTara.setVisibility(VISIBLE);
-            final String checkTara = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara");
+            if (tipoPaquete==null){
+                sectionRegistrarTara.setVisibility(VISIBLE);
+                final String checkTara = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara");
 
-            if (checkTara.equals("1")) {
-                chkRegistrarTara.setChecked(true);
-            } else {
-                chkRegistrarTara.setChecked(false);
-            }
+                if (checkTara.equals("1")) {
+                    chkRegistrarTara.setChecked(true);
+                } else {
+                    chkRegistrarTara.setChecked(false);
+                }
 
-            // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
-            int contManifiestosPesos = 0;
-            List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
-            for (int i = 0; i < manifiestosDetalle.size(); i++) {
-                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
-                for (int j = 0; j < pesosDetalle.size(); j++) {
-                    if (pesosDetalle.get(j).getPesoTaraBulto() > 0) {
-                        contManifiestosPesos++;
+                // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
+                int contManifiestosPesos = 0;
+                List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
+                for (int i = 0; i < manifiestosDetalle.size(); i++) {
+                    List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
+                    for (int j = 0; j < pesosDetalle.size(); j++) {
+                        if (pesosDetalle.get(j).getPesoTaraBulto() > 0) {
+                            contManifiestosPesos++;
+                        }
                     }
                 }
-            }
-            if (contManifiestosPesos > 0) {
-                chkRegistrarTara.setEnabled(false);
-            } else {
-                chkRegistrarTara.setEnabled(true);
-            }
-            // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA }
+                if (contManifiestosPesos > 0) {
+                    chkRegistrarTara.setEnabled(false);
+                } else {
+                    chkRegistrarTara.setEnabled(true);
+                }
+                // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA }
 
 
-            chkRegistrarTara.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (chkRegistrarTara.isChecked()) {
-                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
-                        int contManifiestosPesos = 0;
-                        List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
-                        for (int i = 0; i < manifiestosDetalle.size(); i++) {
-                            List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
-                            for (int j = 0; j < pesosDetalle.size(); j++) {
-                                if (pesosDetalle.get(j).isImpresion() == true) {
-                                    contManifiestosPesos++;
+                chkRegistrarTara.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (chkRegistrarTara.isChecked()) {
+                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
+                            int contManifiestosPesos = 0;
+                            List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
+                            for (int i = 0; i < manifiestosDetalle.size(); i++) {
+                                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
+                                for (int j = 0; j < pesosDetalle.size(); j++) {
+                                    if (pesosDetalle.get(j).isImpresion() == true) {
+                                        contManifiestosPesos++;
+                                    }
                                 }
                             }
-                        }
-                        if (contManifiestosPesos == 0) {
-                            chkRegistrarTara.setChecked(true);
-                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
-                        }
+                            if (contManifiestosPesos == 0) {
+                                chkRegistrarTara.setChecked(true);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
+                            }
 
                    /* if (contManifiestosPesos > 0) {
                         final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
@@ -216,59 +224,62 @@ public class TabManifiestoDetalle extends LinearLayout {
                         MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
                     }*/
 
-                    } else {
-                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                        } else {
+                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
 
-                        int contManifiestosConTara = 0;
-                        List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
-                        for (int i = 0; i < manifiestosDetalle.size(); i++) {
-                            List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
-                            for (int j = 0; j < pesosDetalle.size(); j++) {
-                                if (pesosDetalle.get(j).getPesoTaraBulto() != 0.0) {
-                                    contManifiestosConTara++;
+                            int contManifiestosConTara = 0;
+                            List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
+                            for (int i = 0; i < manifiestosDetalle.size(); i++) {
+                                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
+                                for (int j = 0; j < pesosDetalle.size(); j++) {
+                                    if (pesosDetalle.get(j).getPesoTaraBulto() != 0.0) {
+                                        contManifiestosConTara++;
+                                    }
                                 }
                             }
-                        }
-                        if (contManifiestosConTara > 0) {
-                            final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                            dialogBuilder2.setMessage("Ya existen bultos con peso de tara, se eliminarán los pesos de tara!");
-                            dialogBuilder2.setTitle("CONFIRMACIÓN");
-                            dialogBuilder2.setPositiveButton("SI", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder2.dismiss();
-                                    List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
-                                    double pesoTotalSinTara = 0.0;
-                                    for (int i = 0; i < manifiestosDetalle.size(); i++) {
-                                        MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTaraXManifiestoDetalle(idAppManifiesto, manifiestosDetalle.get(i).getIdAppManifiestoDetalle(), 0.0);
-                                        List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
-                                        for (int j = 0; j < pesosDetalle.size(); j++) {
-                                            pesoTotalSinTara = pesoTotalSinTara + pesosDetalle.get(j).getValor();
+                            if (contManifiestosConTara > 0) {
+                                final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                                dialogBuilder2.setMessage("Ya existen bultos con peso de tara, se eliminarán los pesos de tara!");
+                                dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                dialogBuilder2.setPositiveButton("SI", new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
+                                        double pesoTotalSinTara = 0.0;
+                                        for (int i = 0; i < manifiestosDetalle.size(); i++) {
+                                            MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTaraXManifiestoDetalle(idAppManifiesto, manifiestosDetalle.get(i).getIdAppManifiestoDetalle(), 0.0);
+                                            List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
+                                            for (int j = 0; j < pesosDetalle.size(); j++) {
+                                                pesoTotalSinTara = pesoTotalSinTara + pesosDetalle.get(j).getValor();
+                                            }
+                                            MyApp.getDBO().manifiestoDetalleDao().updatePesoTotal(manifiestosDetalle.get(i).getIdAppManifiestoDetalle(), pesoTotalSinTara);
+                                            pesoTotalSinTara = 0.0;
                                         }
-                                        MyApp.getDBO().manifiestoDetalleDao().updatePesoTotal(manifiestosDetalle.get(i).getIdAppManifiestoDetalle(), pesoTotalSinTara);
-                                        pesoTotalSinTara = 0.0;
+                                        chkRegistrarTara.setChecked(false);
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                        reloadData();
                                     }
-                                    chkRegistrarTara.setChecked(false);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
-                                    reloadData();
-                                }
-                            });
-                            dialogBuilder2.setNegativeButton("NO", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder2.dismiss();
-                                    chkRegistrarTara.setChecked(true);
-                                    MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
-                                }
-                            });
-                            dialogBuilder2.show();
-                        } else {
-                            chkRegistrarTara.setChecked(false);
-                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                });
+                                dialogBuilder2.setNegativeButton("NO", new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                        chkRegistrarTara.setChecked(true);
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
+                                    }
+                                });
+                                dialogBuilder2.show();
+                            } else {
+                                chkRegistrarTara.setChecked(false);
+                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                            }
                         }
                     }
-                }
-            });
+                });
+            }else {
+                sectionRegistrarTara.setVisibility(GONE);
+            }
         }else {
             sectionRegistrarTara.setVisibility(GONE);
         }

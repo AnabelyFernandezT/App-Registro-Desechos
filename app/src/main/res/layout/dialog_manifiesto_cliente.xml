@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="5dp">
-
 
     <LinearLayout
         android:id="@+id/fragment_list"
@@ -16,8 +14,6 @@
         android:padding="15dp"
 
         android:orientation="vertical">
-
-
         <TextView
             android:textSize="20dp"
             android:textColor="@color/app_gadere"
@@ -25,38 +21,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Número Manifiesto Cliente:" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewTexto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/footer"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchViewLotes">
-        </androidx.recyclerview.widget.RecyclerView>
-
-
     </LinearLayout>
-
- <!--   <androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewTexto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="5dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/footer"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/fragment_list">
+    </androidx.recyclerview.widget.RecyclerView>
 
-    </androidx.recyclerview.widget.RecyclerView>-->
-
+    <LinearLayout
+        android:id="@+id/btnNumManifiestoClienteAdd"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_height="30dp">
+        <ImageButton
+            android:background="@android:color/transparent"
+            android:src="@mipmap/ic_add"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_weight="1"
+            android:text="Agregar numero de manifiesto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <!--FOOTER-->
     <LinearLayout

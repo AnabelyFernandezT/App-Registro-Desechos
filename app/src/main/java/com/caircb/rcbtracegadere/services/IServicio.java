@@ -6,6 +6,7 @@ import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
 import com.caircb.rcbtracegadere.models.request.RequestCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.request.RequestDataCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestEnviarCorreoNuevoDesecho;
+import com.caircb.rcbtracegadere.models.request.RequestExcepcion;
 import com.caircb.rcbtracegadere.models.request.RequestFinLote;
 import com.caircb.rcbtracegadere.models.request.RequestFinLotePadreHotelTask;
 import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
@@ -211,4 +212,6 @@ public interface IServicio {
     @PUT("Registro/saveHojaRutaGestor")
     Call<DtoInfo> registrarRecoleccionGestor(@Body RequestManifiesto model);
 
+    @PUT("Registro/registroLoteContenedor")
+    Call<DtoInfo>registrarExcepcion(@Body RequestExcepcion model);
 }

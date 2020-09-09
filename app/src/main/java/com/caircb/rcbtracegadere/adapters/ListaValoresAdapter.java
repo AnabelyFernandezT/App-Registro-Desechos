@@ -10,8 +10,10 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -28,12 +30,14 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
+import com.caircb.rcbtracegadere.dialogs.DialogKeyBoardPlanta;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,6 +64,10 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
     DialogBultos dialogBultos;
     TextView pesoNeto;
     int entradaConstructor = 0;
+    DialogKeyBoardPlanta dialogKeyBoardPlanta;
+    View viewHolder2;
+
+
 
     public interface OnItemBultoListener {
         public void onEliminar(Integer position);
@@ -122,7 +130,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
         final CatalogoItemValor row = listaItems.get(position);
         String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
-
+        viewHolder2=convertView;
         int cont = position + 1;
         LayoutInflater minflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         /*  if (convertView == null) {*/
@@ -157,7 +165,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             holder.sectionTaraBulto.setVisibility(View.GONE);
             //holder.chkRegistrarTaraBulto.setVisibility(View.GONE);
         }
-        holder.txtPesoTara.addTextChangedListener(new MyTextWatcher(convertView, position));
+        //holder.txtPesoTara.addTextChangedListener(new MyTextWatcher(convertView, position));
         convertView.setTag(holder);
        /* } else {
             holder = (ListaValoresAdapter.ViewHolder) convertView.getTag();
@@ -181,24 +189,16 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
 
         final ViewHolder finalHolder = holder;
 
-  /*      holder.txtPesoTara.addTextChangedListener(new TextWatcher() {
+        holder.txtPesoTara.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public boolean onTouch(View v, MotionEvent event) {
+                openKeyBoard(position, idManifiestoDetalle, 0);
+                return false;
             }
         });
-*/
-        holder.txtPesoTara.setOnKeyListener(new View.OnKeyListener() {
+
+
+       /* holder.txtPesoTara.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
@@ -227,7 +227,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                 }
                 return false;
             }
-        });
+        });*/
 
 
         if (row.getTipo().length() > 0) {
@@ -456,7 +456,12 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         return pesoTotalMostrar;
     }
 
-    private class MyTextWatcher implements TextWatcher {
+    public void setTaskList(List<CatalogoItemValor> listaItems) {
+        this.listaItems = listaItems;
+        notifyDataSetChanged();
+    }
+
+    /*private class MyTextWatcher implements TextWatcher {
         private View view;
         private Integer position;
 
@@ -482,9 +487,9 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
             listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
             final CatalogoItemValor row = listaItems.get(position);
             double pesoBulto = Double.parseDouble(row.getValor());
-            /*final String peroT = txtPesoTara.getText().toString().equals("") ? "0.0" : txtPesoTara.getText().toString();
+            final String peroT = txtPesoTara.getText().toString().equals("") ? "0.0" : txtPesoTara.getText().toString();
             final double pesoTara = Double.parseDouble(peroT);
-            final double pesoBulto = Double.parseDouble(row.getValor());*/
+            final double pesoBulto = Double.parseDouble(row.getValor());
 
             String qtyString = s.toString();
             double pesoTara = qtyString.equals("") ? 0.0 : Double.parseDouble(qtyString);
@@ -540,10 +545,99 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
                 }
             }
         }
-    }
+    }*/
 
     private String obtieneDosDecimales(double valor) {
         DecimalFormat df = new DecimalFormat("#.00");
         return df.format(valor);
     }
+
+
+    private void openKeyBoard(final Integer position, final Integer idManifiestoDetalle, final Integer idManifiestoDetalleValores) {
+        if(dialogKeyBoardPlanta == null){
+            dialogKeyBoardPlanta = new DialogKeyBoardPlanta(context, position, idManifiestoDetalle, idManifiestoDetalleValores);
+            dialogKeyBoardPlanta.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialogKeyBoardPlanta.setCancelable(false);
+            dialogKeyBoardPlanta.setmOnRegisterPesoListener(new DialogKeyBoardPlanta.onRegisterPesoListener() {
+                @Override
+                public void onFinished(double valor, Integer code, Integer idManifiestoDet, Integer idManifiestoDetValores) {
+                    final CatalogoItemValor row = listaItems.get(position);
+                    final double pesoBulto = Double.parseDouble(row.getValor());
+                    double valorTara=Double.parseDouble(obtieneDosDecimales(valor));
+
+                    if (valorTara == pesoBulto) {
+                        dialogBuilder = new DialogBuilder(getContext());
+                        dialogBuilder.setMessage("El peso de la tara no puede ser igual al peso del bulto!");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                textbox("");
+                            }
+                        });
+                        dialogBuilder.show();
+                    }
+                    if (valorTara < pesoBulto) {
+                       /* if (!valor.equals("")) {*/
+                            MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), valorTara);
+                            MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), true);
+                            row.setImpresion(true);
+                            if (entradaConstructor == 1) {
+                                pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
+                            }
+                  /*      } else {
+                            MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), pesoTara);
+                            MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), false);
+                            row.setImpresion(false);
+                            if (entradaConstructor == 1) {
+                                pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
+                            }
+                        }*/
+                    } else if (valorTara > pesoBulto) {
+                        MyApp.getDBO().manifiestoDetallePesosDao().updatePesoTara(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), 0.0);
+                        MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idManifiesto, idManifiestoDetalle, row.getIdCatalogo(), false);
+                        row.setImpresion(false);
+                        pesoNeto.setText("Peso Neto " + consultarPeso() + " KG");
+                        dialogBuilder = new DialogBuilder(getContext());
+                        dialogBuilder.setMessage("El peso de la tara no puede sobrepasar el peso del bulto!");
+                        dialogBuilder.setCancelable(false);
+                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                textbox("");
+                            }
+                        });
+                        dialogBuilder.show();
+                    }
+                    dialogKeyBoardPlanta.dismiss();
+                    dialogKeyBoardPlanta = null;
+                    //setNuevoPeso(valor, code);
+                    listaItems = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
+                    setTaskList(listaItems);
+                }
+
+                @Override
+                public void onCanceled() {
+                    dialogKeyBoardPlanta.dismiss();
+                    dialogKeyBoardPlanta = null;
+                }
+            });
+            dialogKeyBoardPlanta.show();
+
+            Window window = dialogKeyBoardPlanta.getWindow();
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+    }
+
+private void textbox(String texto){
+    final EditText txtPesoTara = (EditText) viewHolder2.findViewById(R.id.txtPesoTara);
+    txtPesoTara.setText(texto);
+}
+
+
+
+
+
 }
