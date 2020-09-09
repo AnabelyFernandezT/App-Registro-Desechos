@@ -141,18 +141,19 @@ public class UserRegistrarRecoleccionGestores extends MyRetrofitApi implements R
     private void register() {
         final RequestManifiesto request = createRequestManifiesto();
         if (request != null) {
+            progressShow("registrando recoleccion...");
             Gson g = new Gson();
             String f = g.toJson(request);
             System.out.println(f);
 
-         /*   WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
+            WebService.api().registrarRecoleccionGestor(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if (response.isSuccessful()) {
                         //actualizar el estado a recibido del manifiesto...
                         if (response.body().getExito()) {
                             //imprimirEtiquetas();
-                            MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                            MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectadoGestor(idAppManifiesto);
 
                             if (mOnRegisterListener != null)
                                 mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
@@ -160,7 +161,7 @@ public class UserRegistrarRecoleccionGestores extends MyRetrofitApi implements R
 
                         } else {
                             progressHide();
-                            message(response.body().getMensaje());
+                            message(response.body().getMensaje()+" "+response.body().getExito());
                         }
 
                     } else {
@@ -174,7 +175,7 @@ public class UserRegistrarRecoleccionGestores extends MyRetrofitApi implements R
                     message("error  " + t);
                     progressHide();
                 }
-            });*/
+            });
             progressHide();
         }
     }
