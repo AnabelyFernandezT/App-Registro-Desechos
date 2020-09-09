@@ -157,7 +157,11 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static String getFieldName(String prefix){
         if(prefix!=null && prefix.length()>0){
-            return prefix+"_"+ System.currentTimeMillis()+".jpg";
+            if(prefix.equals("AUDIO")){
+                return prefix+"_"+ System.currentTimeMillis();
+            }else{
+                return prefix+"_"+ System.currentTimeMillis()+".jpg";
+            }
         }else{
             return "RCB_"+ System.currentTimeMillis()+".jpg";
         }
