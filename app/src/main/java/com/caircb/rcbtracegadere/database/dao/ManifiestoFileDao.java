@@ -147,7 +147,7 @@ public abstract class ManifiestoFileDao {
     }
 
     //metodo para subir archivos tipo audio...
-    public void saveOrUpdate(Integer idAppManifiesto, Integer tipo,String name, String src,String tiempo,Integer status){
+    public void saveOrUpdate(Integer idAppManifiesto, Integer tipo,String name, String tiempo,String src,Integer status){
         ManifiestoFileEntity file = obtenerFotografiaEspecifica(idAppManifiesto,tipo,status);
         if(src==null && file!=null){
            // deleteFile(file);
