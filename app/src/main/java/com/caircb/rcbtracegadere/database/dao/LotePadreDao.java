@@ -36,7 +36,7 @@ public abstract  class LotePadreDao {
     @Query("select * from tb_lotes_padre where idManifiestoPadre=:tipo")
     public abstract LotePadreEntity fetchConsultarCatalogoEspecifico(Integer tipo);
 
-    @Query("Select *from tb_lotes_padre where idManifiestoDetalleHijo=:idManifiestoDetalleHijo")
+    @Query("Select * from tb_lotes_padre where idManifiestoDetalleHijo=:idManifiestoDetalleHijo")
     public abstract LotePadreEntity fetchDetalleHijos(Integer idManifiestoDetalleHijo);
 
     @Query("UPDATE tb_lotes_padre set checkHijo=:check WHERE idManifiestoDetalleHijo=:idManifiestoDetalleHijo")
