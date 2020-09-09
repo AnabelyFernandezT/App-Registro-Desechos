@@ -71,6 +71,7 @@ public class DialogDetallesGestoresNo extends MyDialog {
                     }
                 }else {
                     messageBox("Datos ingresados no validos");
+                    validar = true;
                     return;
                 }
             }

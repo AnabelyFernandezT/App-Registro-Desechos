@@ -176,7 +176,7 @@ public class UserRegistrarRecoleccionGestores extends MyRetrofitApi implements R
                     progressHide();
                 }
             });
-            progressHide();
+            //progressHide();
         }
     }
 

@@ -378,7 +378,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
         
         if(detalles.size()>0){
             for(RowItemManifiesto reg:detalles){
-                if(reg.isEstado() ){
+                if(reg.isEstado() && reg.getCantidadBulto()==0.0){
                    // idDesechos.add(reg.getIdTipoDesecho());
                     pesoT=0.0; cantidadB=0.0;
                     lotePadre = MyApp.getDBO().lotePadreDao().fetchManifiestosRecolectadosByDetalle(reg.getIdTipoDesecho());
