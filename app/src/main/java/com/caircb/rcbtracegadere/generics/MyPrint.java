@@ -677,7 +677,7 @@ public class MyPrint {
                                 "^FS^FO290,347^A0,30,18^FD " + claveManifiestoSap.toUpperCase() +
                                 "^FS^FO430,345^A0,32,20^FD No. clave de Manifiesto:" +
                                 "^FS^FO635,347^A0,30,18^FD " + recorreStringHospitalario(claveManifiesto.toUpperCase(),0,17) +
-                                "^FS^FO430,390^A0,30,18^FD " + recorreStringHospitalario(claveManifiesto.toUpperCase(),17,40) +
+                                "^FS^FO430,375^A0,30,18^FD " + recorreStringHospitalario(claveManifiesto.toUpperCase(),17,40) +
                                 "^FS^FO45,400^A0,32,20^FD Direccion de recoleccion:" +
                                 "^FS^FO260,402^A0,28,16^FD " + DescripcionItem1.toUpperCase() +
                                 "^FS^FO260,432^A0,28,16^FD " + DescripcionItem2.toUpperCase() +
