@@ -36,6 +36,10 @@ public class ResultActivity extends AppCompatActivity {
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
                 mensaje.append(value);
+                if (value.equals("1")){
+                    MyApp.getDBO().parametroDao().saveOrUpdate("flag_refresh_home","true");
+                    MyApp.getDBO().notificacionDao().deleteNotificationTipoCierreLote("1");
+                }
             }
 
         }
