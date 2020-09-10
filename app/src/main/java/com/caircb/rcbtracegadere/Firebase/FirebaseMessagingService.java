@@ -119,22 +119,21 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     public void showNotification(String title, String body, String tipo, Context context) {
 
-        String flagExecuteNotification=MyApp.getDBO().parametroDao().fecthParametroValorByNombre("flag_execute_notification")==null?"true":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("flag_execute_notification");
-        if (flagExecuteNotification.equals("true")){
+
             Intent intent;
             if(tipo.equals("2")||tipo.equals("15")){
                 intent = new Intent(context, ResultKilometraje.class);
             }else if(tipo.equals("7")){
                 intent = new Intent(context, ResultCambioChoferActivity.class);
-            }else if(tipo.equals("8")) {
+            }/*else if(tipo.equals("8")) {
                 intent = new Intent(context, MainActivity.class);
-            }else if (tipo.equals("12")){
+            }*/else if (tipo.equals("12")){
                 intent= new Intent(context, CierreLoteActivity.class);
             }else{
                 intent = new Intent(context, ResultActivity.class);
             }
 
-            if (!tipo.equals("8")){
+
                 intent.putExtra("notification_data",body);
                 intent.putExtra("notification_tipo",tipo);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -168,43 +167,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 }
 
                 notificationManager.notify(0, notificationBuilder.build());
-            }else {
-                intent.putExtra("notification_data",body);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                        context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                String channelId1 = getString(R.string.default_notification_channel_name);
-                Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                        .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentTitle(title)
-                        .setContentText(body)
-                        .setChannelId(channelId1)
-                        .setAutoCancel(true)
-                        .setSound(soundUri)
-                        .setOngoing(true)
-                        .setContentIntent(notifyPendingIntent);
-
-                String channelId = getString(R.string.default_notification_channel_name);
-
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel channel = new NotificationChannel(channelId,
-                            "Channel human readable title",
-                            NotificationManager.IMPORTANCE_DEFAULT);
-                    notificationManager.createNotificationChannel(channel);
-                }
-
-                notificationManager.notify(0, notificationBuilder.build());
-            }
 
 
-        }
+
 
     }
 
