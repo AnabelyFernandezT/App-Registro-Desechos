@@ -2,6 +2,7 @@ package com.caircb.rcbtracegadere.dialogs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -64,6 +66,9 @@ public class DialogMensajes extends MyDialog {
                     novedad = (String) ltsNotificaciones.getSelectedItem();
                     if(position==2){
                         position = position +2;
+                    }
+                    if(position==3){
+                        position = position +3;
                     }
                     idNotificacion=position;
 

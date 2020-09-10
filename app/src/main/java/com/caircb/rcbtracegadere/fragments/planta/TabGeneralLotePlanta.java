@@ -30,7 +30,7 @@ public class TabGeneralLotePlanta extends LinearLayout {
     Window window;
     private RecyclerView recyclerView;
     private PesosAdapterPlantaLote recyclerviewAdapter;
-    TextView txtPesoTotalLote, txtCantidadTotalBultosLote, txtTotalNumeroManifiestosLote, txtNumerosManifiestoLote,txtPruebaLote;
+    TextView txtPesoTotalLote, txtCantidadTotalBultosLote, txtTotalNumeroManifiestosLote, txtPesoTara,txtPruebaLote;
     LinearLayout btnListadoManifiestosPlantaQr;
     private List<ItemQrDetallePlanta> rowItems;
     private RecepcionQrPlantaEntity recepcionQrPlantaEntity;
@@ -56,6 +56,7 @@ public class TabGeneralLotePlanta extends LinearLayout {
         txtPesoTotalLote = (TextView) this.findViewById(R.id.txtPesoTotalLote);
         txtCantidadTotalBultosLote = (TextView) this.findViewById(R.id.txtCantidadTotalBultosLote);
         txtTotalNumeroManifiestosLote = (TextView) this.findViewById(R.id.txtTotalNumeroManifiestosLote);
+        txtPesoTara = (TextView) this.findViewById(R.id.txtPesoTara);
         btnListadoManifiestosPlantaQr = (LinearLayout) this.findViewById(R.id.btnListadoManifiestosPlantaQr);
         btnListadoManifiestosPlantaQr.setOnClickListener(new OnClickListener() {
             @Override
@@ -87,6 +88,7 @@ public class TabGeneralLotePlanta extends LinearLayout {
     private void cargarDatos(){
         txtPesoTotalLote.setText(recepcionQrPlantaEntity.getPesoTotalLote().toString()+" KG");
         txtCantidadTotalBultosLote.setText(recepcionQrPlantaEntity.getCantidadTotalBultos().toString());
+        txtPesoTara.setText(recepcionQrPlantaEntity.getPesoTaraVehiculo()+" KG");
         //txtNumerosManifiestoLote.setText(recepcionQrPlantaEntity.getNumerosManifiesto().toString());
         txtTotalNumeroManifiestosLote.setText(recepcionQrPlantaEntity.getCantidadTotalManifiestos().toString());
     }

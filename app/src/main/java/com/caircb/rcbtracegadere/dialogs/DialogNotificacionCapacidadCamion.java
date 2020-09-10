@@ -37,13 +37,16 @@ public class DialogNotificacionCapacidadCamion extends MyDialog {
 
     public DialogNotificacionCapacidadCamion(@NonNull Context context, Integer idAppManifiesto) {
         super(context, R.layout.dialog_mensaje_capacidad);
-        this._activity = (Activity)context;
-        this.idAppManifiesto=idAppManifiesto;
+        this._activity = (Activity) context;
+        this.idAppManifiesto = idAppManifiesto;
     }
+
     public interface OnRegisterListener {
         public void onSuccessful();
+
         public void onFailure();
     }
+
     private DialogNotificacionCapacidadCamion.OnRegisterListener mOnRegisterListener;
 
     @Override
@@ -54,19 +57,19 @@ public class DialogNotificacionCapacidadCamion extends MyDialog {
 
     private void init() {
         catalogos = new ArrayList<>();
-        btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
-        btnIngresarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaAplicar);
+        btnCancelarApp = (LinearLayout) getView().findViewById(R.id.btnIniciaRutaCancel);
+        btnIngresarApp = (LinearLayout) getView().findViewById(R.id.btnIniciaRutaAplicar);
         txtMensaje = getView().findViewById(R.id.txtMensaje);
         ltsNotificaciones = getView().findViewById(R.id.lista_notificacion);
         ltsNotificaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0){
+                if (position > 0) {
                     btnIngresarApp.setEnabled(true);
-                    catalogos.get(position-1);
+                    catalogos.get(position - 1);
                     novedad = (String) ltsNotificaciones.getSelectedItem();
-                    idNotificacion=6;
-                }else {
+                    idNotificacion = 6;
+                } else {
                     btnIngresarApp.setEnabled(false);
                 }
             }
@@ -80,23 +83,23 @@ public class DialogNotificacionCapacidadCamion extends MyDialog {
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mOnRegisterListener!=null)mOnRegisterListener.onFailure();
+                if (mOnRegisterListener != null) mOnRegisterListener.onFailure();
                 dismiss();
             }
         });
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(),idAppManifiesto,
+                UserNotificacionTask notificacionTask = new UserNotificacionTask(getContext(), idAppManifiesto,
                         txtMensaje.getText().toString(),
                         idNotificacion,
-                        "",0.0);
+                        "", 0.0);
                 notificacionTask.setOnRegisterListener(new UserNotificacionTask.OnNotificacionListener() {
                     @Override
                     public void onSuccessful() {
                         DialogNotificacionCapacidadCamion.this.dismiss();
-                        MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
-                        if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                        MyApp.getDBO().parametroDao().saveOrUpdate("notif_value", "" + "0");
+                        if (mOnRegisterListener != null) mOnRegisterListener.onSuccessful();
                         dismiss();
                     }
                 });
@@ -106,18 +109,17 @@ public class DialogNotificacionCapacidadCamion extends MyDialog {
         });
 
 
-
     }
 
-    public Spinner loadSpinner (Spinner spinner , List<DtoCatalogo> catalogos, boolean bhabilitar){
+    public Spinner loadSpinner(Spinner spinner, List<DtoCatalogo> catalogos, boolean bhabilitar) {
 
         ArrayAdapter<String> adapter;
         Spinner defaulSpiner = spinner;
         ArrayList<String> listaData = new ArrayList<String>();
 
         listaData.add("SELECCIONE");
-        if(catalogos.size() > 0){
-            for (DtoCatalogo r : catalogos){
+        if (catalogos.size() > 0) {
+            for (DtoCatalogo r : catalogos) {
                 listaData.add(r.getCodigo());
             }
         }
@@ -130,13 +132,13 @@ public class DialogNotificacionCapacidadCamion extends MyDialog {
 
     }
 
-    private void cargarNovedades(){
-        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(6,7);
+    private void cargarNovedades() {
+        catalogos = MyApp.getDBO().catalogoDao().fetchConsultarCatalogobyTipoId(6, 7);
 
-        loadSpinner(ltsNotificaciones,catalogos,true);
+        loadSpinner(ltsNotificaciones, catalogos, true);
     }
 
-    public void setOnRegisterListener(@NonNull DialogNotificacionCapacidadCamion.OnRegisterListener l){
-        mOnRegisterListener =l;
+    public void setOnRegisterListener(@NonNull DialogNotificacionCapacidadCamion.OnRegisterListener l) {
+        mOnRegisterListener = l;
     }
 }

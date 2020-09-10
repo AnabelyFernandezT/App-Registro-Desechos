@@ -54,10 +54,7 @@ public class ManifiestoDetalleGestoresAdapter extends RecyclerView.Adapter<Manif
                     v.setSelected(false);
                     it.setEstado(false);
                 }
-
                 MyApp.getDBO().manifiestoDetalleDao().actualizarCheckGestores(it.isEstado(),it.getId());
-
-
             }
         });
     }

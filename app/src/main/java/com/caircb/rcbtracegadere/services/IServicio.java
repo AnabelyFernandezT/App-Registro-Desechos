@@ -209,6 +209,9 @@ public interface IServicio {
     @POST ("Registro/registroManifiestoSedePlantaFin")
     Call<DtoInfo> registrarManifiestoSedePlanta (@Body RequestManifiestoPendienteSede model);
 
+    @PUT("Registro/saveHojaRutaGestor")
+    Call<DtoInfo> registrarRecoleccionGestor(@Body RequestManifiesto model);
+
     @PUT("Registro/registroLoteContenedor")
     Call<DtoInfo>registrarExcepcion(@Body RequestExcepcion model);
 }

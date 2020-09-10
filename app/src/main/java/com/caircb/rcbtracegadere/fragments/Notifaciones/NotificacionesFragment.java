@@ -37,6 +37,7 @@ import com.caircb.rcbtracegadere.ResultActivity;
 import com.caircb.rcbtracegadere.ResultKilometraje;
 import com.caircb.rcbtracegadere.adapters.NotificationAdapter;
 import com.caircb.rcbtracegadere.components.SearchView;
+import com.caircb.rcbtracegadere.database.entity.NotificacionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogInicioMovilizacion;
 import com.caircb.rcbtracegadere.fragments.Sede.HomeSedeFragment;
@@ -61,6 +62,7 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
     private OnRecyclerTouchListener touchListener;
     private List<ItemNotificacion> notificationList = new ArrayList<>();
     private FragmentActivity myContext;
+    List<NotificacionEntity> notificacionEntities;
 
 
     public static NotificacionesFragment newInstance() {
@@ -99,6 +101,7 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
 
     private  void cargarNotificaciones(){
            notificationList.clear();
+           notificacionEntities=MyApp.getDBO().notificacionDao().fetchNotificaciones();
         for(int i = 0; i< MyApp.getDBO().notificacionDao().fetchNotificaciones().size(); i++){
             ItemNotificacion it = new ItemNotificacion();
             it.setIdNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getIdNotificacion());
@@ -138,7 +141,9 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
                     recyclerviewAdapter.notifyDataSetChanged();
                     intent = new Intent(myContext, MainActivity.class);//solo notificacion
                 }else if (notificationList.get(position).getTipoNotificacion().equals("12")){
+                    setNavegate(HomeTransportistaFragment.create());
                     intent= new Intent(myContext, CierreLoteActivity.class);
+
                 } else{
                     MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
                     cargarNotificaciones();
@@ -148,6 +153,7 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
                 intent.putExtra("notification_data",notificationList.get(position).getEstadoNotificacion());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
 
             }
 
