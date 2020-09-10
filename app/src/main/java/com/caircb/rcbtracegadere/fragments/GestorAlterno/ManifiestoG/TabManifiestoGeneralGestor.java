@@ -132,7 +132,7 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
                 int estado=0;
                 TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtRespEntregaIdentificacion.getText().toString());
                 //txtRespEntregaNombre.setEnabled(true);
-                if(tecnico!=null){
+                if(tecnico!=null && !tecnico.getNombre().equals("")){
                     txtRespEntregaNombre.setText(tecnico.getNombre());
                     txtRespEntregaCorreo.setText(tecnico.getCorreo());
                     txtRespEntregaTelefono.setText(tecnico.getTelefono());
@@ -150,8 +150,8 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
 
                 }else{
                     //consultar en servicio remoto...
-                    boolean estadoCedula = validadorDeCedula(txtRespEntregaIdentificacion.getText().toString());
-                    if(estadoCedula) {
+                    //boolean estadoCedula = validadorDeCedula(txtRespEntregaIdentificacion.getText().toString());
+                    //if(estadoCedula) {
                         userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(), txtRespEntregaIdentificacion.getText().toString());
                         userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
                             @Override
@@ -207,7 +207,7 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
                             }
                         });
                         userConsultarCedulaTask.execute();
-                    }
+                    //}
                 }
                 if (txtRespEntregaNombre.getText().length()<=0){
                     txtRespEntregaNombre.setEnabled(true);
@@ -383,8 +383,10 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
                     }
 
                 if(!hasFocus){
-                    MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                    Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
                             txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+
+                    MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
                 }
             }
         });
@@ -392,8 +394,9 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                    Long idTecnico =  MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
                             txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+                    MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
                 }
             }
         });
@@ -413,7 +416,9 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                Long idTecnico =  MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                        txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+                MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
             }
         });
 
@@ -748,7 +753,7 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
 
 
 
-    public boolean validadorDeCedula(String cedula) {
+   /* public boolean validadorDeCedula(String cedula) {
         boolean cedulaCorrecta = false;
 
         try {
@@ -795,7 +800,7 @@ public class TabManifiestoGeneralGestor extends LinearLayout {
             messageBox("La Cédula ingresada es Incorrecta");
         }
         return cedulaCorrecta;
-    }
+    }*/
 
     public void messageBox(String message)
     {
