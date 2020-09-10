@@ -105,9 +105,9 @@ public class TabManifiestoDetalle extends LinearLayout {
         this.idAppManifiesto = manifiestoID;
         this.tipoPaquete = tipoPaquete;
         //this.detalles = detalles;
-        this.identificacion=identificacion;
-        this.nombreCliente=nombreCliente;
-        this.sucursal=sucursal;
+        this.identificacion = identificacion;
+        this.nombreCliente = nombreCliente;
+        this.sucursal = sucursal;
         this.estadoManifiesto = estado;
         this.numeroManifiesto = numeroManifiesto;
         this.tipoRecoleccion = tipoRecoleccion;
@@ -126,7 +126,7 @@ public class TabManifiestoDetalle extends LinearLayout {
         mensajes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogNotificacionDetalle dialogMensajes = new DialogNotificacionDetalle(getContext(), idAppManifiesto,identificacion,nombreCliente,sucursal,numeroManifiesto);
+                DialogNotificacionDetalle dialogMensajes = new DialogNotificacionDetalle(getContext(), idAppManifiesto, identificacion, nombreCliente, sucursal, numeroManifiesto);
                 dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogMensajes.setCancelable(false);
                 dialogMensajes.show();
@@ -137,15 +137,17 @@ public class TabManifiestoDetalle extends LinearLayout {
 
         String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
         if (tipoSubRuta.equals("2")) {//SI EL TIPO DE SUBRUTA ES HOSPITALARIA
-            if (tipoPaquete==null){
+            if (tipoPaquete == null) {
                 sectionRegistrarTara.setVisibility(VISIBLE);
-                final String checkTara = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara");
+                final String checkTara = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara"+idAppManifiesto) == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara"+idAppManifiesto);
+
 
                 if (checkTara.equals("1")) {
                     chkRegistrarTara.setChecked(true);
                 } else {
                     chkRegistrarTara.setChecked(false);
                 }
+
 
                 // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
                 int contManifiestosPesos = 0;
@@ -170,7 +172,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                     @Override
                     public void onClick(View v) {
                         if (chkRegistrarTara.isChecked()) {
-                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
+                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara" + idAppManifiesto, "1");
                             int contManifiestosPesos = 0;
                             List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
                             for (int i = 0; i < manifiestosDetalle.size(); i++) {
@@ -183,49 +185,10 @@ public class TabManifiestoDetalle extends LinearLayout {
                             }
                             if (contManifiestosPesos == 0) {
                                 chkRegistrarTara.setChecked(true);
-                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
+                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara" + idAppManifiesto, "1");
                             }
-
-                   /* if (contManifiestosPesos > 0) {
-                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                        dialogBuilder2.setMessage("¿Está seguro de borrar todos los registros de bultos?");
-                        dialogBuilder2.setTitle("CONFIRMACIÓN");
-                        dialogBuilder2.setPositiveButton("SI", new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder2.dismiss();
-                                List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
-                                for (int i = 0; i < manifiestosDetalle.size(); i++) {
-                                    MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValores(idAppManifiesto, manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
-                                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(manifiestosDetalle.get(i).getIdAppManifiestoDetalle(),0.0,0.0,0,false);
-                                    MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idAppManifiesto, manifiestosDetalle.get(i).getIdAppManifiestoDetalle(), false);
-                                }
-                                chkRegistrarTara.setChecked(true);
-                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
-                                reloadData();
-                                *//*recyclerviewAdapter = new ManifiestoDetalleAdapter(getContext(), numeroManifiesto, estadoManifiesto, idAppManifiesto, tipoRecoleccion);
-                                detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
-                                recyclerviewAdapter.setTaskList(detalles);
-                                recyclerviewAdapter.notifyDataSetChanged();*//*
-
-                            }
-                        });
-                        dialogBuilder2.setNegativeButton("No", new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder2.dismiss();
-                                chkRegistrarTara.setChecked(false);
-                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
-                            }
-                        });
-                        dialogBuilder2.show();
-                    } else {
-                        chkRegistrarTara.setChecked(true);
-                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
-                    }*/
-
                         } else {
-                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                            MyApp.getDBO().parametroDao().saveOrUpdate("checkTara" + idAppManifiesto, "2");
 
                             int contManifiestosConTara = 0;
                             List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
@@ -257,7 +220,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                                             pesoTotalSinTara = 0.0;
                                         }
                                         chkRegistrarTara.setChecked(false);
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara" + idAppManifiesto, "2");
                                         reloadData();
                                     }
                                 });
@@ -266,21 +229,21 @@ public class TabManifiestoDetalle extends LinearLayout {
                                     public void onClick(View v) {
                                         dialogBuilder2.dismiss();
                                         chkRegistrarTara.setChecked(true);
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "1");
+                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara" + idAppManifiesto, "1");
                                     }
                                 });
                                 dialogBuilder2.show();
                             } else {
                                 chkRegistrarTara.setChecked(false);
-                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                MyApp.getDBO().parametroDao().saveOrUpdate("checkTara" + idAppManifiesto, "2");
                             }
                         }
                     }
                 });
-            }else {
+            } else {
                 sectionRegistrarTara.setVisibility(GONE);
             }
-        }else {
+        } else {
             sectionRegistrarTara.setVisibility(GONE);
         }
 
@@ -515,75 +478,77 @@ public class TabManifiestoDetalle extends LinearLayout {
                         contManifiestosConTara++;
                     }
                 }
-                String checkTaraGeneral = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara");
-                System.out.println(checkTaraGeneral);
-                if (checkTaraGeneral.equals("1")) {
-                    if (contManifiestosConTara > 0) {
+                String checkTaraGeneral = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara"+idAppManifiesto) == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara"+idAppManifiesto);
+
+
+                    if (checkTaraGeneral.equals("1")) {
+                        if (contManifiestosConTara > 0) {
+                            MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
+                            tipoBalanza = 1;
+                            if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
+                                openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
+                            } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                                openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
+                            } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                                openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
+                            } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
+                                showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
+                            }
+                        } else {
+                            final DialogBuilder dialogBuilder = new DialogBuilder(getContext());
+                            dialogBuilder.setMessage("¿Registrar Tara?");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setTitle("CONFIRMACIÓN");
+                            dialogBuilder.setPositiveButton("SI", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
+                                    tipoBalanza = 1;
+                                    if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
+                                        openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                                        openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                                        openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
+                                        showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
+                                    }
+                                }
+                            });
+                            dialogBuilder.setNegativeButton("NO", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
+                                    tipoBalanza = 1;
+                                    if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
+                                        openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                                        openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                                        openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
+                                        showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
+                                    }
+                                }
+                            });
+                            dialogBuilder.show();
+                        }
+                    } else {
                         MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
                         tipoBalanza = 1;
                         if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                            openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
+                            openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
                         } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                            openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
+                            openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
                         } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                            openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
+                            openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
                         } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                            showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
+                            showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
                         }
-                    } else {
-                        final DialogBuilder dialogBuilder = new DialogBuilder(getContext());
-                        dialogBuilder.setMessage("¿Registrar Tara?");
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setTitle("CONFIRMACIÓN");
-                        dialogBuilder.setPositiveButton("SI", new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
-                                tipoBalanza = 1;
-                                if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                                    openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                                    openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                                    openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                                    showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
-                                }
-                            }
-                        });
-                        dialogBuilder.setNegativeButton("NO", new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
-                                tipoBalanza = 1;
-                                if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                                    openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                                    openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                                    openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                                    showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
-                                }
-                            }
-                        });
-                        dialogBuilder.show();
                     }
-                } else {
-                    MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 1);
-                    tipoBalanza = 1;
-                    if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                        openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
-                    } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                        openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
-                    } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                        openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
-                    } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                        showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
-                    }
-                }
+
 
 
             }
@@ -599,78 +564,79 @@ public class TabManifiestoDetalle extends LinearLayout {
                         contManifiestosConTara++;
                     }
                 }
-                String checkTaraGeneral = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara")==null? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara");
+                String checkTaraGeneral = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara"+idAppManifiesto) == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("checkTara"+idAppManifiesto);
 
-                if (checkTaraGeneral.equals("1")) {
-                    if (contManifiestosConTara > 0) {
-                        MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
+                    if (checkTaraGeneral.equals("1")) {
+                        if (contManifiestosConTara > 0) {
+                            MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
+                            tipoBalanza = 2;
+                            //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
+                            if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
+                                openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
+                            } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                                openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
+                            } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                                openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
+                            } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
+                                showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
+                            }
+                        } else {
+                            final DialogBuilder dialogBuilder = new DialogBuilder(getContext());
+                            dialogBuilder.setMessage("¿Registrar Tara?");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setTitle("CONFIRMACIÓN");
+                            dialogBuilder.setPositiveButton("SI", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
+                                    tipoBalanza = 2;
+                                    //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
+                                    if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
+                                        openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                                        openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                                        openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
+                                        showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
+                                    }
+                                }
+                            });
+                            dialogBuilder.setNegativeButton("NO", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
+                                    tipoBalanza = 2;
+                                    //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
+                                    if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
+                                        openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
+                                        openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
+                                        openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
+                                    } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
+                                        showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
+                                    }
+                                }
+                            });
+                            dialogBuilder.show();
+                        }
+                    } else{
                         tipoBalanza = 2;
                         //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
                         if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                            openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
+                            openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
                         } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                            openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
+                            openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
                         } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                            openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
+                            openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
                         } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                            showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
+                            showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
                         }
-                    } else {
-                        final DialogBuilder dialogBuilder = new DialogBuilder(getContext());
-                        dialogBuilder.setMessage("¿Registrar Tara?");
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setTitle("CONFIRMACIÓN");
-                        dialogBuilder.setPositiveButton("SI", new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
-                                tipoBalanza = 2;
-                                //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
-                                if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                                    openDialogBultos(positionItem, 0, 1);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                                    openDialogBultos(positionItem, 100, 1);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                                    openDialogBultos(positionItem, 101, 1);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                                    showTipoPaquete(positionItem, 1);//Registra tara 1 = SI ; 2 = NO
-                                }
-                            }
-                        });
-                        dialogBuilder.setNegativeButton("NO", new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                                MyApp.getDBO().manifiestoDetalleDao().updateTipoBalanzaByDetalleId(idAppManifiesto, idDetManifiesto, 2);
-                                tipoBalanza = 2;
-                                //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
-                                if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                                    openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                                    openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                                    openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
-                                } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                                    showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
-                                }
-                            }
-                        });
-                        dialogBuilder.show();
                     }
-                } else {
-                    tipoBalanza = 2;
-                    //List<ManifiestoDetalleEntity> lista =  MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetallebyID(idAppManifiesto);
-                    if (detalles.get(positionItem).getTipoPaquete() == null || detalles.get(positionItem).getTipoPaquete().equals(0)) {// NORMAL
-                        openDialogBultos(positionItem, 0, 2);//Registra tara 1 = SI ; 2 = NO
-                    } else if (detalles.get(positionItem).getTipoPaquete() == 1) {//INFECCIOSO
-                        openDialogBultos(positionItem, 100, 2);//Registra tara 1 = SI ; 2 = NO
-                    } else if (detalles.get(positionItem).getTipoPaquete() == 2) {// CORTOPUNZANTE
-                        openDialogBultos(positionItem, 101, 2);//Registra tara 1 = SI ; 2 = NO
-                    } else if (detalles.get(positionItem).getTipoPaquete() == 3) {// SELECCIONA SI ES CORTOPUNZANTE O INFECCIOSO
-                        showTipoPaquete(positionItem, 2);//Registra tara 1 = SI ; 2 = NO
-                    }
-                }
+
 
             }
         });
@@ -766,7 +732,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                         totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
                     }
                     double pesoTotalMenosTara = (valor.doubleValue()) - totalPesoTaraManifiestoDetalle;
-                    double pesoTotalMostrar=Double.parseDouble(obtieneDosDecimales(pesoTotalMenosTara));
+                    double pesoTotalMostrar = Double.parseDouble(obtieneDosDecimales(pesoTotalMenosTara));
                     row.setPeso(pesoTotalMostrar);
                     row.setTipoBalanza(tipoBalanza);
 
@@ -777,7 +743,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                         row.setCantidadBulto(Double.valueOf(cantidad)); //otros cantida = peso...
                     //else if(row.getTipoItem()==3) row.setCantidadBulto(row.getPeso()); //otros cantida = peso...
 
-                    if(cantidad == 0)
+                    if (cantidad == 0)
                         row.setEstado(false);
                     else
                         row.setEstado(true);
@@ -944,9 +910,10 @@ public class TabManifiestoDetalle extends LinearLayout {
                 @Override
                 public void onSuccessful() {
                     //Impresion finalizada
-                    MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresionLote(idAppManifiesto, idManifiestoDetalle,  true);
+                    MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresionLote(idAppManifiesto, idManifiestoDetalle, true);
                     reloadData();
                 }
+
                 @Override
                 public void onFailure(String message) {
                     final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
@@ -964,7 +931,7 @@ public class TabManifiestoDetalle extends LinearLayout {
             });
             print.printerIndividualLote(idAppManifiesto, idManifiestoDetalle, totalEtiquetas);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
             dialogBuilder2.setMessage("No hay conexion con la impresora");
             dialogBuilder2.setCancelable(false);

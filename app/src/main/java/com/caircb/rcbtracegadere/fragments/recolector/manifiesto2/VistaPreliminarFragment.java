@@ -323,6 +323,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             messageBox("Debe ingresar fotografías, justificando Peso Promedio");
             return;
         } else {
+
             userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(),null);
             userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
                 @Override
@@ -367,6 +368,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         }
                         @Override
                         public void onFail() {
+
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
                         }
                     });
@@ -385,7 +387,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     }
 
     public void registrarDatos (final Date fechaRecol, final String tipoSubruta){
-
         if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() > 0) {
             if (tipoSubruta.equals("2")) {//SI ES TIPO DE RUTA HOSPITALARIA
                        /* MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
@@ -435,7 +436,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                                             MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
                                         }
                                         //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                        MyApp.getDBO().parametroDao().eliminarChecksTara("checkTara"+idAppManifiesto);
                                         setNavegate(HojaRutaAsignadaFragment.newInstance());
                                     }
                                 });
@@ -451,7 +452,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                                         if (dto != null) {
                                             MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
                                         }
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
+                                        MyApp.getDBO().parametroDao().eliminarChecksTara("checkTara"+idAppManifiesto);
                                         setNavegate(HomeTransportistaFragment.create());
                                     }
                                 });

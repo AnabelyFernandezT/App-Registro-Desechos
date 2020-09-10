@@ -297,7 +297,7 @@ public class DialogInicioRuta extends MyDialog {
 
     public void setScanCode(String barcode){
         //programar metodo para consultar y setear valores de inpresora capturada por lector...
-        ItemGeneric item = MyApp.getDBO().impresoraDao().searchCodigoUUID(barcode);
+        ItemGeneric item = MyApp.getDBO().impresoraDao().searchCodigoUUID(barcode,idTipoSubruta);
         System.out.print(impresoraID);
         if(item ==null){
             messageBox("Impresora no encontrada");

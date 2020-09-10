@@ -2,7 +2,9 @@ package com.caircb.rcbtracegadere.fragments.recolector;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.caircb.rcbtracegadere.CierreLoteActivity;
 import com.caircb.rcbtracegadere.MainActivity;
@@ -51,6 +55,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class HomeTransportistaFragment extends MyFragment implements OnHome, OnBarcodeListener {
+    private static String datoPickUp;
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,btnMenu, btnInicioRuta, btnFinRuta;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     TextView lblListaManifiestoAsignado, lblpickUpTransportista, lblDropOffTransportista;
@@ -90,6 +95,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     public static HomeTransportistaFragment create() {
         return new HomeTransportistaFragment();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -528,6 +534,27 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     public void reciveData(String data) {
         if(dialogInicioRuta!=null && dialogInicioRuta.isShowing()){
             dialogInicioRuta.setScanCode(data);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("flag_refresh_home")+"");
+        String flagHomeCierreLote=MyApp.getDBO().parametroDao().fecthParametroValorByNombre("flag_refresh_home")==null?"false":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("flag_refresh_home");
+        if (flagHomeCierreLote.equals("true")){
+            List<Integer> listaCatalogos = new ArrayList<>();
+            listaCatalogos.add(2);
+
+            consultarHojaRutaTask = new UserConsultarHojaRutaTask(getActivity(), listenerHojaRuta);
+            try {
+                consultarHojaRutaTask.execute();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
+            consultarCatalogosTask.execute();
+            MyApp.getDBO().parametroDao().saveOrUpdate("flag_refresh_home","false");
         }
     }
 }

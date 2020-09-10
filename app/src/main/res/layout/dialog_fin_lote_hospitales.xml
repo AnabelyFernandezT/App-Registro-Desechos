@@ -125,7 +125,13 @@
 
         </LinearLayout>
 
-
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/myfragment"
+            android:layout_width="0px"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
         <!--FOOTER-->
         <LinearLayout
             android:id="@+id/footer"
