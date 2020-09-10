@@ -368,6 +368,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         }
                         @Override
                         public void onFail() {
+                            MyApp.getDBO().parametroDao().saveOrUpdate("flag_execute_notification","true");
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
                         }
                     });
@@ -377,6 +378,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
 
                 @Override
                 public void onFail() {
+                    MyApp.getDBO().parametroDao().saveOrUpdate("flag_execute_notification","true");
                     setNavegate(HojaRutaAsignadaFragment.newInstance());
                     messageBox("No se encontro impresora, Datos Guardados");
                 }

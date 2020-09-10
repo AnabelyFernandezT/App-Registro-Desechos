@@ -134,6 +134,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         initBorrarCache();
         autorizacionSinImpresion();
 
+
         if(getIntent().getExtras()!=null){
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
@@ -142,15 +143,14 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 dialogBuilder.setMessage(value);
                 dialogBuilder.setCancelable(false);
                 dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
 
-                    }
-                });
+                        }
+                    });
                 dialogBuilder.show();
             }
-
         }
     }
 
