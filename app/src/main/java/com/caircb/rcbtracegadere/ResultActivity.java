@@ -40,6 +40,11 @@ public class ResultActivity extends AppCompatActivity {
                     MyApp.getDBO().parametroDao().saveOrUpdate("flag_refresh_home","true");
                     MyApp.getDBO().notificacionDao().deleteNotificationTipoCierreLote("1");
                 }
+                if (value.equals("3")||value.equals("4")||value.equals("5")||value.equals("6")||value.equals("8")||value.equals("9")||value.equals("10")||value.equals("11")||value.equals("13")||value.equals("14")||value.equals("16")){
+                    String valueBorrar=value;
+                    MyApp.getDBO().notificacionDao().deleteNotificationTipoCierreLote(valueBorrar);
+                }
+
             }
 
         }

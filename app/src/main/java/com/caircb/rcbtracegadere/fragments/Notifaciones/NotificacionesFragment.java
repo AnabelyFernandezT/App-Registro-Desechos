@@ -102,16 +102,18 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
     private  void cargarNotificaciones(){
            notificationList.clear();
            notificacionEntities=MyApp.getDBO().notificacionDao().fetchNotificaciones();
-        for(int i = 0; i< MyApp.getDBO().notificacionDao().fetchNotificaciones().size(); i++){
-            ItemNotificacion it = new ItemNotificacion();
-            it.setIdNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getIdNotificacion());
-            it.setNombreNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getNombreNotificacion());
-            it.setEstadoNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getEstadoNotificacion());
-            it.setPeso(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getPeso());
-            it.setIdManifiesto(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getIdManifiesto());
-            it.setTipoNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getTipoNotificacion());
-            notificationList.add(it);
-        }
+           if (notificacionEntities.size()>0){
+               for(int i = 0; i< MyApp.getDBO().notificacionDao().fetchNotificaciones().size(); i++){
+                   ItemNotificacion it = new ItemNotificacion();
+                   it.setIdNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getIdNotificacion());
+                   it.setNombreNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getNombreNotificacion());
+                   it.setEstadoNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getEstadoNotificacion());
+                   it.setPeso(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getPeso());
+                   it.setIdManifiesto(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getIdManifiesto());
+                   it.setTipoNotificacion(MyApp.getDBO().notificacionDao().fetchNotificaciones().get(i).getTipoNotificacion());
+                   notificationList.add(it);
+               }
+           }
 
         recyclerviewAdapter.setTaskList(notificationList);
         recyclerView.setAdapter(recyclerviewAdapter);
@@ -126,6 +128,7 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
+                System.out.println(position);
               //  firebaseMessagingService.showNotification(notificationList.get(position).getNombreNotificacion(), notificationList.get(position).getEstadoNotificacion(), notificationList.get(position).getTipoNotificacion(), MyApp.getsInstance().getApplicationContext());
                 //Toast.makeText(getActivity(),String.valueOf(notificationList.get(position).getTipoNotificacion()), Toast.LENGTH_SHORT).show();
                 System.out.println(notificationList.get(position).getTipoNotificacion());
@@ -135,20 +138,19 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
                 }else if(notificationList.get(position).getTipoNotificacion().equals("7")){
                     intent = new Intent(myContext, ResultCambioChoferActivity.class);
                 }else if(notificationList.get(position).getTipoNotificacion().equals("8")) {
-
-                    MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
-                    cargarNotificaciones();
-                    recyclerviewAdapter.notifyDataSetChanged();
                     intent = new Intent(myContext, MainActivity.class);//solo notificacion
+                    MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
+
+
                 }else if (notificationList.get(position).getTipoNotificacion().equals("12")){
                     setNavegate(HomeTransportistaFragment.create());
                     intent= new Intent(myContext, CierreLoteActivity.class);
 
                 } else{
-                    MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
-                    cargarNotificaciones();
-                    recyclerviewAdapter.notifyDataSetChanged();
                     intent = new Intent(myContext, ResultActivity.class);//solo notificacion
+                    MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
+
+
                 }
                 intent.putExtra("notification_data",notificationList.get(position).getEstadoNotificacion());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
