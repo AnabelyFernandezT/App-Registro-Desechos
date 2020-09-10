@@ -276,7 +276,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
                 int x = 0;
                 validador = MyApp.getDBO().manifiestoDao().manifiestosHijos(detalles.get(position).getIdTipoDesecho(), idAppManifiesto);
                  builder = new DialogBuilder(getContext());
-                 builder.setMessage("Desea obtener datos de manifiestos");
+                builder.setMessage("¿Desea buscar y asociar bultos en manifiestos recolectados para los desechos seleccionados?");
                  builder.setCancelable(false);
                  builder.setTitle("CONFIRMACIÓN");
                 builder.setPositiveButton("SI", new OnClickListener() {

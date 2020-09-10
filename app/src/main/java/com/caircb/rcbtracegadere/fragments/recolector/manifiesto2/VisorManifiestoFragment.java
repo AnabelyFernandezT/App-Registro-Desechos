@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaBuscarFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaProcesadaFragment;
@@ -70,8 +73,10 @@ public class VisorManifiestoFragment extends MyFragment implements View.OnClickL
     }
 
     private void cargarPdf(){
+        ManifiestoEntity entity = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
+        Integer estado = entity.getEstado();
 
-        userConsultarNombreManifiestoTask = new UserConsultarNombreManifiestoTask(getActivity(),idAppManifiesto,2);
+        userConsultarNombreManifiestoTask = new UserConsultarNombreManifiestoTask(getActivity(),idAppManifiesto,estado);
         userConsultarNombreManifiestoTask.setmOnNombreManifiestoListenner(new UserConsultarNombreManifiestoTask.OnNombreManifiestoListenner() {
             @Override
             public void onSuccessful(String nombrePdfManifiesto_url) {
