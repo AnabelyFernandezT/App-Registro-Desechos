@@ -22,6 +22,7 @@ import com.caircb.rcbtracegadere.adapters.ManifiestoHijoGestorAdapter;
 import com.caircb.rcbtracegadere.generics.MyDialog;
 import com.caircb.rcbtracegadere.models.RowItemManifiestosDetalleGestores;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class DialogManifiestosHijosGestores extends MyDialog {
@@ -107,8 +108,14 @@ public class DialogManifiestosHijosGestores extends MyDialog {
                     MyApp.getDBO().lotePadreDao().asociarManifiestoPadre(idManifiesto,idManifiestoDetalle,numeroManifiesto,idTipoDesecho);
                 }
             }
+            obtieneDosDecimales(cantidadBultos);
         }
 
+    }
+
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(valor);
     }
 
     public void setmOnRegistrarBultoListener(@Nullable OnRegistrarBultoListener l) {
