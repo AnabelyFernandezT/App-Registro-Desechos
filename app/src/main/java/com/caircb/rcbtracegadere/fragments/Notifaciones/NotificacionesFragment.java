@@ -143,6 +143,7 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
                 }else if (notificationList.get(position).getTipoNotificacion().equals("12")){
                     setNavegate(HomeTransportistaFragment.create());
                     intent= new Intent(myContext, CierreLoteActivity.class);
+
                 } else{
                     MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
                     cargarNotificaciones();
@@ -152,6 +153,7 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
                 intent.putExtra("notification_data",notificationList.get(position).getEstadoNotificacion());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
 
             }
 

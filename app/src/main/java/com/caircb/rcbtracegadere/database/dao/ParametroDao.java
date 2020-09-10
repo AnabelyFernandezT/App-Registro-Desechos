@@ -26,6 +26,10 @@ public abstract class ParametroDao {
     @Query("delete from tb_parametros where nombre=:parametro")
     public abstract void eliminarLotes(String parametro);
 
+    @Query("delete from tb_parametros where nombre=:nombreCheck")
+    public abstract void eliminarChecksTara(String nombreCheck);
+
+
     @Query("delete from tb_parametros")
     public abstract void eliminar();
 

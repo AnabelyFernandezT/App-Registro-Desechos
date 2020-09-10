@@ -1,5 +1,6 @@
 package com.caircb.rcbtracegadere;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -28,12 +29,15 @@ import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
+import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
 import com.caircb.rcbtracegadere.tasks.UserObtenerLotePadreHotelTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHospitalesTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioFinLoteHotelTask;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +60,8 @@ public class CierreLoteActivity extends AppCompatActivity {
     Integer finHotel = 3, idRuta;
     ParametroEntity parametro;
     Integer idSubtura;
+    UserConsultarHojaRutaTask consultarHojaRutaTask;
+    UserConsultarCatalogosTask consultarCatalogosTask;
 
     public Fragment fragment;
     FragmentTransaction fragmentTransaction;
@@ -68,6 +74,7 @@ public class CierreLoteActivity extends AppCompatActivity {
         this._activity = this;
         this.setFinishOnTouchOutside(false);
         init();
+
 
     }
 
@@ -277,7 +284,9 @@ public class CierreLoteActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         dialogBuilder.dismiss();
                         MyApp.getDBO().notificacionDao().deleteNotificationTipoCierreLote("12");
+                        MyApp.getDBO().parametroDao().saveOrUpdate("flag_refresh_home","true");
                         onBackPressed();
+                       // finish();
                     }
                 });
                 dialogBuilder.show();
@@ -308,4 +317,8 @@ public class CierreLoteActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+
+
+
 }
