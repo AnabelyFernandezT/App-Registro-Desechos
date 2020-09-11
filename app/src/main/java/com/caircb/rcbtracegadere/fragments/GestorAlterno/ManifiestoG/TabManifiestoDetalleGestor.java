@@ -389,6 +389,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
                                 MyApp.getDBO().lotePadreDao().asociarManifiestoPadre(idAppManifiesto, reg.getId(), numeroManifiesto, reg.getIdTipoDesecho());
                                 MyApp.getDBO().lotePadreDao().updateCheck(lp.getIdManifiestoDetalleHijo(),true);
                         }
+                        obtieneDosDecimales(pesoT);
                         MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(reg.getId(), cantidadB, pesoT, 0, true);
                         MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto,reg.getId(),pesoT,"",null,"",false,cantidadB.intValue(),0.0);
                     }else{
@@ -400,6 +401,11 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
         }
 
 
+    }
+
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(valor);
     }
 
 }

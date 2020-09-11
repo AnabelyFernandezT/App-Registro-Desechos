@@ -108,7 +108,7 @@ public class DialogManifiestosHijosGestores extends MyDialog {
                     MyApp.getDBO().lotePadreDao().asociarManifiestoPadre(idManifiesto,idManifiestoDetalle,numeroManifiesto,idTipoDesecho);
                 }
             }
-            obtieneDosDecimales(cantidadBultos);
+            obtieneDosDecimales(peso);
         }
 
     }
