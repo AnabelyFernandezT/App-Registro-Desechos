@@ -807,11 +807,30 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
 
                 @Override
-                public void onCanceled(boolean faltaImpresos) {
+                public void onCanceled(boolean faltaImpresos, int position) {
                     if (dialogBultos != null) {
-                        if (faltaImpresos) {
+                        if (!faltaImpresos) {
                             //detalles.clear();
-                            reloadData();
+                            //reloadData();
+                            RowItemManifiesto row = detalles.get(position);
+                            List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(row.getId());
+
+                            double totalPesoTaraManifiestoDetalle = 0.0;
+                            double totalPesos=0.0;
+                            for (int i = 0; i < listaPesos.size(); i++) {
+                                totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
+                                totalPesos=totalPesos+listaPesos.get(i).getValor();
+                            }
+                            double pesoTotalMenosTara = totalPesos - totalPesoTaraManifiestoDetalle;
+                            double pesoTotalMostrar = Double.parseDouble(obtieneDosDecimales(pesoTotalMenosTara));
+
+                            row.setPeso(pesoTotalMostrar);
+                            row.setCantidadBulto(Double.valueOf(listaPesos.size()));
+
+
+                            recyclerviewAdapter.notifyDataSetChanged();
+                            MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), listaPesos.size(), pesoTotalMostrar, listaPesos.size(), row.isEstado());
+
 
                             // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
                             int contManifiestosPesos = 0;

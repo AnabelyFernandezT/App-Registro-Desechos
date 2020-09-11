@@ -83,7 +83,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 boolean faltaImpresiones,
                 boolean isChangeTotalBultos);
 
-        void onCanceled(boolean falataImpresos);
+        void onCanceled(boolean falataImpresos, int position);
     }
 
     private OnBultoListener mOnBultoListener;
@@ -532,7 +532,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             btn_ok.setEnabled(false);
                            // DialogBultos.this.dismiss();
                             //addBulto(imput,tipo);
-                            if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos);}
+                            if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos, position);}
                         }
 
                         @Override
@@ -691,6 +691,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 if (tipoSubRuta.equals("2")) {
                     String checkTara = registraTara.toString();
                     if (checkTara.equals("1")) {
+
                         /*List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                         int contPesosTara=0;
                         for (int i=0;i<listaPesos.size();i++){
@@ -705,9 +706,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         if (!faltaImpresos) {
                             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                             if (mOnBultoListener != null) {
-                                aplicar();
-                                //autorizacion=0;
-                                //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                                mOnBultoListener.onCanceled(faltaImpresos,position);
                             }
                         } else {
                             messageBox("Debe registrar todas las taras!!!");
@@ -820,6 +819,18 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 if (tipoSubRuta2.equals("2")) {
                     String checkTara = registraTara.toString();
                     if (checkTara.equals("1")) {
+
+                        List<ManifiestoDetallePesosEntity> listaPesos2 = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
+                        for (int i=0;i<listaPesos2.size();i++){
+                            if (listaPesos2.get(i).isImpresion()==false){
+                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresById(listaPesos2.get(i).get_id());
+                            }
+                        }
+                        MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                        if (mOnBultoListener != null) {
+                            mOnBultoListener.onCanceled(faltaImpresos,position);
+                        }
+                        //aplicar();
                         /*List<ManifiestoDetallePesosEntity> listaPesos2 = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                         int contPesosTara2=0;
                         for (int i=0;i<listaPesos2.size();i++){
@@ -829,7 +840,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         }
                         if (contPesosTara2==0){*/
                         //limpiarBultosNoConfirmados();
-                        faltaImpresos = verificarTodosBultosImpresos();
+                      /*  faltaImpresos = verificarTodosBultosImpresos();
                         if (faltaImpresos) {
                             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
                             messageBox("Debe registrar todas las taras!!!");
@@ -839,7 +850,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                                 mOnBultoListener.onCanceled(faltaImpresos);
                             }
                             aplicar();
-                        }
+                        }*/
 
 /*                            if (mOnBultoListener != null) {
                                 mOnBultoListener.onCanceled(faltaImpresos);
@@ -876,7 +887,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                     }
                     if (mOnBultoListener != null) {
-                        mOnBultoListener.onCanceled(faltaImpresos);
+                        mOnBultoListener.onCanceled(faltaImpresos,position);
                     }
                     //if(btn_add.isEnabled() && btn_ok.isEnabled()){
                     aplicar();
