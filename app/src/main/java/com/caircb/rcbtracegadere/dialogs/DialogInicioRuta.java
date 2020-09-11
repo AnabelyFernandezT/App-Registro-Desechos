@@ -202,6 +202,7 @@ public class DialogInicioRuta extends MyDialog {
                     if(cursor!=null && cursor.getCount()>0) {
                         impresoraID = cursor.getInt(cursor.getColumnIndex("_id"));
                         System.out.print(impresoraID);
+                        MyApp.getDBO().parametroDao().saveOrUpdate("id_impresora",""+impresoraID);
                     }
             }
 
@@ -387,7 +388,7 @@ public class DialogInicioRuta extends MyDialog {
         ///////////////
 
         //notificar inicia ruta al servidor...
-        registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro);
+        registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro,impresoraID);
         registroInicioRuta.setOnIniciaRutaListener(new UserRegistrarInicioRutaTask.OnIniciaRutaListener() {
             @Override
             public void onSuccessful() {
