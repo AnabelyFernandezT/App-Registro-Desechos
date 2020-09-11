@@ -316,7 +316,7 @@ public class TabManifiestoDetalleLote extends LinearLayout {
                 }
 
                 @Override
-                public void onCanceled(boolean faltaImpresos) {
+                public void onCanceled(boolean faltaImpresos, int position) {
                     if (dialogBultos != null) {
                         if (faltaImpresos) {
                             //detalles.clear();
