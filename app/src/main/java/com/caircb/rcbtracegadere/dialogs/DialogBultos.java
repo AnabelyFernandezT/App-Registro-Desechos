@@ -706,9 +706,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         if (!faltaImpresos) {
                             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
                             if (mOnBultoListener != null) {
-                                aplicar();
-                                //autorizacion=0;
-                                //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                                mOnBultoListener.onCanceled(faltaImpresos,position);
                             }
                         } else {
                             messageBox("Debe registrar todas las taras!!!");

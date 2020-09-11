@@ -296,7 +296,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                             if (imp.equals("1"))
                                                 flag = true;
 
-                                            if (!checkImpresora() || flag) {
+                                            if (checkImpresora() || flag) {
 
                                                 Date fecha = AppDatabase.getDateTime();
                                                 ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -384,7 +384,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                     if (imp.equals("1"))
                                         flag = true;
 
-                                    if (!checkImpresora() || flag) {
+                                    if (checkImpresora() || flag) {
 
                                         Date fecha = AppDatabase.getDateTime();
                                         ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -751,7 +751,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                         if (imp.equals("1"))
                                             flag = true;
 
-                                        if (!checkImpresora() || flag) {
+                                        if (checkImpresora() || flag) {
 
                                             Date fecha = AppDatabase.getDateTime();
                                             ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -838,7 +838,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                 if (imp.equals("1"))
                                     flag = true;
 
-                                if (!checkImpresora() || flag) {
+                                if (checkImpresora() || flag) {
 
                                     Date fecha = AppDatabase.getDateTime();
                                     ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
