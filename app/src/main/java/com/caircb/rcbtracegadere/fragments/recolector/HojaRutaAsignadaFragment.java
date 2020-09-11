@@ -567,10 +567,13 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                         List<ItemManifiesto> rowItems_aux = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(MySession.getIdSubRuta(), MySession.getIdUsuario());
                         if(rowItems_aux.size()>0){ idManifiesto_aux = rowItems_aux.get(position).getIdAppManifiesto(); }
                         final ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto_aux);
-                        if(manifiesto != null && manifiesto.getMensaje().equals("") && parametros!=null){
-                            MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems_aux.get(position).getIdAppManifiesto(),"1");
-                        }else{
-                            MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems_aux.get(position).getIdAppManifiesto(),"0");
+                        if(manifiesto != null && manifiesto.getMensaje()!=null && parametros!=null){
+                            if(manifiesto.getMensaje().equals("")){
+                                MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems_aux.get(position).getIdAppManifiesto(),"1");
+                            }else{
+                                MyApp.getDBO().parametroDao().saveOrUpdate("manifiesto_SEDE_PLANTA_"+rowItems_aux.get(position).getIdAppManifiesto(),"0");
+                            }
+
                         }
                         parametro_sede_planta = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_SEDE_PLANTA_"+rowItems_aux.get(position).getIdAppManifiesto());
 
