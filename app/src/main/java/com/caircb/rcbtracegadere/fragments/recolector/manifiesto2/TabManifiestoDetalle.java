@@ -835,11 +835,14 @@ public class TabManifiestoDetalle extends LinearLayout {
 
 
                             MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), listaPesos.size(), pesoTotalMostrar, listaPesos.size(), row.isEstado());
-
-                            recyclerView.removeAllViews();
                             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
                             recyclerviewAdapter.setTaskList(detalles);
-                            recyclerView.setAdapter(recyclerviewAdapter);
+                            recyclerviewAdapter.notifyDataSetChanged();
+                            /*recyclerView.removeAllViews();
+                            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+                            recyclerviewAdapter.setTaskList(detalles);
+                            recyclerView.setAdapter(recyclerviewAdapter);*/
+
 
                             // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
                             int contManifiestosPesos = 0;
@@ -910,13 +913,17 @@ public class TabManifiestoDetalle extends LinearLayout {
                             }
 
 
-
+                       /*     recyclerviewAdapter.notifyDataSetChanged();*/
                             MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), listaPesos.size(), pesoTotalMostrar, listaPesos.size(), row.isEstado());
-
-                            recyclerView.removeAllViews();
                             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
                             recyclerviewAdapter.setTaskList(detalles);
-                            recyclerView.setAdapter(recyclerviewAdapter);
+                            recyclerviewAdapter.notifyDataSetChanged();
+
+                            /*recyclerView.removeAllViews();
+                            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+                            recyclerviewAdapter.setTaskList(detalles);
+                            recyclerView.setAdapter(recyclerviewAdapter);*/
+
 
                             // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
                             int contManifiestosPesos = 0;
