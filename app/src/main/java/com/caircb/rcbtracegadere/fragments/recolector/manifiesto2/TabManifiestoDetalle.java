@@ -826,6 +826,11 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                             row.setPeso(pesoTotalMostrar);
                             row.setCantidadBulto(Double.valueOf(listaPesos.size()));
+                            if (listaPesos.size()==0){
+                                row.setEstado(false);
+                            }else {
+                                row.setEstado(true);
+                            }
 
 
                             recyclerviewAdapter.notifyDataSetChanged();

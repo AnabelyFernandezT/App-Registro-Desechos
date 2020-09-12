@@ -121,6 +121,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         LinearLayout sectionTaraBulto;
         EditText txtPesoTara;
         CheckBox chkRegistrarTaraBulto;
+
     }
 
     @Override

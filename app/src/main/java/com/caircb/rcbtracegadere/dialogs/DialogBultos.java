@@ -698,6 +698,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             if (listaPesos.get(i).getPesoTaraBulto()==0){
                                 contPesosTara++;
                             }
+
                         }*/
                         /* if (contPesosTara==0){*/
                         /*BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
