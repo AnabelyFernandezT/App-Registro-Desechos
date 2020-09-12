@@ -833,9 +833,13 @@ public class TabManifiestoDetalle extends LinearLayout {
                             }
 
 
-                            recyclerviewAdapter.notifyDataSetChanged();
+
                             MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), listaPesos.size(), pesoTotalMostrar, listaPesos.size(), row.isEstado());
 
+                            recyclerView.removeAllViews();
+                            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+                            recyclerviewAdapter.setTaskList(detalles);
+                            recyclerView.setAdapter(recyclerviewAdapter);
 
                             // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
                             int contManifiestosPesos = 0;
@@ -853,6 +857,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                             } else {
                                 chkRegistrarTara.setEnabled(true);
                             }
+
                             // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA }
 
 
@@ -883,6 +888,53 @@ public class TabManifiestoDetalle extends LinearLayout {
                                 novedadPesoPromedio.setVisibility(GONE);
                             }
 */
+                        }else {
+                            RowItemManifiesto row = detalles.get(position);
+                            List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(row.getId());
+
+                            double totalPesoTaraManifiestoDetalle = 0.0;
+                            double totalPesos=0.0;
+                            for (int i = 0; i < listaPesos.size(); i++) {
+                                totalPesoTaraManifiestoDetalle = totalPesoTaraManifiestoDetalle + listaPesos.get(i).getPesoTaraBulto();
+                                totalPesos=totalPesos+listaPesos.get(i).getValor();
+                            }
+                            double pesoTotalMenosTara = totalPesos - totalPesoTaraManifiestoDetalle;
+                            double pesoTotalMostrar = Double.parseDouble(obtieneDosDecimales(pesoTotalMenosTara));
+
+                            row.setPeso(pesoTotalMostrar);
+                            row.setCantidadBulto(Double.valueOf(listaPesos.size()));
+                            if (listaPesos.size()==0){
+                                row.setEstado(false);
+                            }else {
+                                row.setEstado(true);
+                            }
+
+
+
+                            MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), listaPesos.size(), pesoTotalMostrar, listaPesos.size(), row.isEstado());
+
+                            recyclerView.removeAllViews();
+                            detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+                            recyclerviewAdapter.setTaskList(detalles);
+                            recyclerView.setAdapter(recyclerviewAdapter);
+
+                            // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
+                            int contManifiestosPesos = 0;
+                            List<ManifiestoDetalleEntity> manifiestosDetalle = MyApp.getDBO().manifiestoDetalleDao().fecthConsultarManifiestoDetalleByIdManifiesto(idAppManifiesto);
+                            for (int i = 0; i < manifiestosDetalle.size(); i++) {
+                                List<ManifiestoDetallePesosEntity> pesosDetalle = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(manifiestosDetalle.get(i).getIdAppManifiestoDetalle());
+                                for (int j = 0; j < pesosDetalle.size(); j++) {
+                                    if (pesosDetalle.get(j).getPesoTaraBulto() > 0) {
+                                        contManifiestosPesos++;
+                                    }
+                                }
+                            }
+                            if (contManifiestosPesos > 0) {
+                                chkRegistrarTara.setEnabled(false);
+                            } else {
+                                chkRegistrarTara.setEnabled(true);
+                            }
+
                         }
                         dialogBultos.dismiss();
                         dialogBultos = null;
@@ -893,6 +945,7 @@ public class TabManifiestoDetalle extends LinearLayout {
 
             window = dialogBultos.getWindow();
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
         }
     }
 

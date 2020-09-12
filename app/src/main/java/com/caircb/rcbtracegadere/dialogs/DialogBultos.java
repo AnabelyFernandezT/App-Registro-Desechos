@@ -614,6 +614,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         if (closable && mOnBultoListener != null)
             mOnBultoListener.onSuccessful(subtotal, position, bultos.size() == 0 ? 1 : bultos.size(), pkg, true, faltaImpresos, cantidaBultosInitial > 0 ? (cantidaBultosInitial != bultos.size() ? true : false) : false);
+        bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
+        listaValoresAdapter.clear();
+        listaValoresAdapter.addAll(bultos);
+        listaValoresAdapter.notifyDataSetChanged();
     }
 
     /////////////////////////
@@ -710,7 +714,16 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                                 mOnBultoListener.onCanceled(faltaImpresos,position);
                             }
                         } else {
-                            messageBox("Debe registrar todas las taras!!!");
+                            final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                            dialogBuilder2.setMessage("Debe registrar todas las taras!!!");
+                            dialogBuilder2.setTitle("CONFIRMACIÓN");
+                            dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder2.dismiss();
+                                }
+                            });
+                            dialogBuilder2.show();
                         }
                         break;
                     /*    }else {
@@ -783,6 +796,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         });
                         dialogBuilder2.show();
                     }
+
                     break;
 
                 }else {
