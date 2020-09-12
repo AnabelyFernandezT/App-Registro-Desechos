@@ -308,9 +308,12 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg, false, faltaImpresos, cantidaBultosInitial > 0 ? (cantidaBultosInitial != bultos.size() ? true : false) : false);
                     }
                 });
+                bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
+                listaValoresAdapter.clear();
+                listaValoresAdapter.addAll(bultos);
+                listaValoresAdapter.notifyDataSetChanged();
             }
         });
-
         listViewBultos.setAdapter(listaValoresAdapter);
     }
 
