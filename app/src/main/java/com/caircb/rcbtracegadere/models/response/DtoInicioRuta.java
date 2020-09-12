@@ -11,7 +11,7 @@ public class DtoInicioRuta {
     private String kilometrajeInicio;
     private String kilometrajeFin;
     private Integer tiposubruta;
-
+    private Integer idImpresora;
 
     public DtoInicioRuta() {
     }
@@ -94,5 +94,13 @@ public class DtoInicioRuta {
 
     public void setTiposubruta(Integer tiposubruta) {
         this.tiposubruta = tiposubruta;
+    }
+
+    public Integer getIdImpresora() {
+        return idImpresora;
+    }
+
+    public void setIdImpresora(Integer idImpresora) {
+        this.idImpresora = idImpresora;
     }
 }

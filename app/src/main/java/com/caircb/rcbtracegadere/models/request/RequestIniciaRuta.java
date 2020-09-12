@@ -10,6 +10,7 @@ public class RequestIniciaRuta {
     private Date fechaDispositivo;
     private String kilometraje;
     private Integer tipo;
+    private Integer idImpresora;
 
     public Integer getIdTransporteRecolector() {
         return idTransporteRecolector;
@@ -57,5 +58,13 @@ public class RequestIniciaRuta {
 
     public void setIdTransportistaRecolector(Integer idTransportistaRecolector) {
         this.idTransportistaRecolector = idTransportistaRecolector;
+    }
+
+    public Integer getIdImpresora() {
+        return idImpresora;
+    }
+
+    public void setIdImpresora(Integer idImpresora) {
+        this.idImpresora = idImpresora;
     }
 }

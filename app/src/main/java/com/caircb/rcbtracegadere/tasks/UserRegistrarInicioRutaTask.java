@@ -34,11 +34,13 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     private OnIniciaRutaListener mOnIniciaRutaListener;
     private Long idRegistro;
     private RutaInicioFinEntity model;
+    private Integer idImpresora;
 
 
-    public UserRegistrarInicioRutaTask(Context context,long idRegistro) {
+    public UserRegistrarInicioRutaTask(Context context,long idRegistro, Integer idImpresora) {
         super(context);
         this.idRegistro = idRegistro;
+        this.idImpresora = idImpresora;
     }
 
     @Override
@@ -85,6 +87,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     private RequestIniciaRuta createRequestInicio (){
         RequestIniciaRuta rq=null;
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+
         if (model!=null){
             rq =new RequestIniciaRuta();
             rq.setIdTransporteRecolector(model.getIdTransporteRecolector());
@@ -93,6 +96,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
             rq.setKilometraje(model.getKilometrajeInicio());
             rq.setTipo(1);
             rq.setIdTransportistaRecolector(model.getIdTransporteRecolector());
+            rq.setIdImpresora(idImpresora);
         }
         return rq;
     }
