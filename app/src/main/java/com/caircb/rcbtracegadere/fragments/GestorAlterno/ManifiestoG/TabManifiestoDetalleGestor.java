@@ -223,7 +223,7 @@ public class TabManifiestoDetalleGestor extends LinearLayout {
             @Override
             public void onClick(View v) {
                 final DialogBuilder builder = new DialogBuilder(getContext());
-                builder.setMessage("Se va asocira manifiestos en lote");
+                builder.setMessage("Se van a buscar los desechos seleccionados en sus manifiestos recolectados");
                 builder.setCancelable(false);
                 builder.setPositiveButton("SI", new OnClickListener() {
                     @Override
