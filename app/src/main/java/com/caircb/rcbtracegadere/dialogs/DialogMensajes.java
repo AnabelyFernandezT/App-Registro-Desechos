@@ -20,6 +20,7 @@ import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarNoRecoleccion;
@@ -49,8 +50,8 @@ public class DialogMensajes extends MyDialog {
     }
 
     private void init() {
-
-        entity = MyApp.getDBO().manifiestoDao().fetchHojaRuta();
+       Integer idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+        entity = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaNotific(idSubRuta,MySession.getIdUsuario());
 
         catalogos = new ArrayList<>();
         btnCancelarApp = (LinearLayout)getView().findViewById(R.id.btnIniciaRutaCancel);
