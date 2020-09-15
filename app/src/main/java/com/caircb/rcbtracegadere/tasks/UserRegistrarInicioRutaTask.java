@@ -16,6 +16,7 @@ import com.caircb.rcbtracegadere.services.WebService;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -35,12 +36,19 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     private Long idRegistro;
     private RutaInicioFinEntity model;
     private Integer idImpresora;
+    Integer idVehiculo;
+    Date fechaInicio;
+    String kilometrajeInicio;
+    Integer idTipoSubruta;
 
-
-    public UserRegistrarInicioRutaTask(Context context,long idRegistro, Integer idImpresora) {
+    public UserRegistrarInicioRutaTask(Context context, /*long idRegistro,*/ Integer idImpresora, Integer idVehiculo, Date fechaInicio, String kilometrajeInicio,Integer idTipoSubruta) {
         super(context);
-        this.idRegistro = idRegistro;
         this.idImpresora = idImpresora;
+        this.idVehiculo=idVehiculo;
+        this.fechaInicio=fechaInicio;
+        this.kilometrajeInicio=kilometrajeInicio;
+        this.idTipoSubruta=idTipoSubruta;
+
     }
 
     @Override
@@ -85,8 +93,12 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     }
 
     private RequestIniciaRuta createRequestInicio (){
+        System.out.println(MySession.getIdUsuario()+"iddddddd");
+        Integer idUsuario=MySession.getIdUsuario();
+        System.out.println(idUsuario);
+        idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, idUsuario,idVehiculo,fechaInicio,null,kilometrajeInicio,null,1,idTipoSubruta);
         RequestIniciaRuta rq=null;
-        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
+        model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idUsuario);
 
         if (model!=null){
             rq =new RequestIniciaRuta();

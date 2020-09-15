@@ -75,8 +75,8 @@ public abstract class RutaInicioFinDao {
 
 
 
-    @Query("select * from tb_rutaInicioFin where idRutaInicioFin=:idRutaInicioFin limit 1")
-    public abstract RutaInicioFinEntity fechConsultaInicioFinRutas(Integer idRutaInicioFin );
+    @Query("select * from tb_rutaInicioFin where idTransporteRecolector=:idTransporteRecolector limit 1")
+    public abstract RutaInicioFinEntity fechConsultaInicioFinRutas(Integer idTransporteRecolector );
 
     @Query("select * from tb_rutaInicioFin where idSubRuta=:idSubruta limit 1")
     public abstract RutaInicioFinEntity fechConsultaInicioFinRutasbySubRuta(Integer idSubruta );

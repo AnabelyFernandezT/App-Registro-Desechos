@@ -374,7 +374,8 @@ public class DialogInicioRuta extends MyDialog {
         RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarId(placa);
         int idVehiculo = r!=null?r.getCodigo():-1;
         Date fechaInicio = AppDatabase.getDateTime();
-        idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1,idTipoSubruta);
+        System.out.println(MySession.getIdUsuario()+"iddddddd");
+        //idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1,idTipoSubruta);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
         //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
         //MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
@@ -388,7 +389,7 @@ public class DialogInicioRuta extends MyDialog {
         ///////////////
 
         //notificar inicia ruta al servidor...
-        registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),idRegistro,impresoraID);
+        registroInicioRuta = new UserRegistrarInicioRutaTask(getActivity(),impresoraID,idVehiculo,fechaInicio,kilometrajeInicio,idTipoSubruta);
         registroInicioRuta.setOnIniciaRutaListener(new UserRegistrarInicioRutaTask.OnIniciaRutaListener() {
             @Override
             public void onSuccessful() {
