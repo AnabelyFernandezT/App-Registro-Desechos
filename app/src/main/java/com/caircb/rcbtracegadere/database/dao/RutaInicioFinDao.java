@@ -27,7 +27,7 @@ public abstract class RutaInicioFinDao {
     abstract long createRegistro(RutaInicioFinEntity entity);
 
     public long saveOrUpdateInicioRuta(Integer idRutaInicioFin, Integer idTransporteRecolector, Integer IdTransporteVehiculo, Date fechaInicio, Date fechaFin, String kilometrajeInicio, String kilometrajeFin, int estado, int tiposubruta ){
-        RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutas(idRutaInicioFin);
+        RutaInicioFinEntity registroInicio = fechConsultaInicioFinRutas(idTransporteRecolector);
         if(registroInicio==null) {
             registroInicio = new RutaInicioFinEntity(
                     idRutaInicioFin,

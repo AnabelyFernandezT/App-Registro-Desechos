@@ -73,7 +73,12 @@ public class UserConsultarHojaRutaTask extends MyRetrofitApi implements Retrofit
         parametroLote = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote_"+idManifiesto);
         ParametroEntity fechaActualiza = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion);
         RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-        MySession.setIdSubruta(Integer.parseInt(entity.getValor()));
+        if (!entity.getValor().equals("-1")){
+            MySession.setIdSubruta(Integer.parseInt(entity.getValor()));
+        }else {
+            MySession.setIdSubruta(rut.getIdSubRuta());
+        }
+
         String valor = entity == null ?(rut.getIdSubRuta()!=null?String.valueOf(rut.getIdSubRuta()):null) : entity.getValor();
         final Integer idRuta = valor==null?-1:Integer.parseInt(valor);
         if(fechaActualiza!=null){fechaSincronizacion = MyApp.getDBO().parametroDao().fetchParametroEspecifico(obfechaActualizacion).getValor();

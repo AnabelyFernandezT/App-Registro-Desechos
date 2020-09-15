@@ -415,6 +415,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
 
             }
         });
+        loadCantidadManifiestoAsignado();
+        loadCantidadManifiestoProcesado();
     }
 
 

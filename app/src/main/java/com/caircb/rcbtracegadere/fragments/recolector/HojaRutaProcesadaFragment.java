@@ -110,7 +110,7 @@ public class HojaRutaProcesadaFragment extends MyFragment implements View.OnClic
     private void initItems() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
+        Integer idSub=MySession.getIdUsuario();
         rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosProcesados(rut.getIdSubRuta(),MySession.getIdUsuario());
         adapterList();
 

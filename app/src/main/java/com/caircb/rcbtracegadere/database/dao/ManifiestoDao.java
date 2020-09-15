@@ -43,7 +43,7 @@ public abstract class ManifiestoDao {
     @Query("select count(*) from tb_manifiestos where estado=2 and idChoferRecolector=:idConductor ")
     public abstract int contarHojaRutaAsignadasP(Integer idConductor);
 
-    @Query("select count(*) from tb_manifiestos where estado=2 or estado= 6 and idChoferRecolector=:idConductor  and idSubRuta=:idSubRuta ")
+    @Query("select count(*) from tb_manifiestos where idChoferRecolector=:idConductor  and idSubRuta=:idSubRuta and estado=2 or estado= 6")
     public abstract int contarHojaRutaAsignadasByIdConductorAndRuta(Integer idConductor, Integer idSubRuta);
 
     @Query("select count(*) from tb_manifiestos where estado=1 and idChoferRecolector=:idChoferRecolector ")
@@ -108,7 +108,7 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosBuscarDataByRuta(Integer SubRuta,Integer idChoferRecolector);
 
-    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where estado in(2) or estado in(6) and idSubRuta=:Subruta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select idAppManifiesto,nombreCliente as cliente,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado,apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete from tb_manifiestos where idSubRuta=:Subruta and idChoferRecolector=:idChoferRecolector and estado in(2) or estado in(6)  order by nombreCliente")
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosProcesados(Integer Subruta, Integer idChoferRecolector);
 

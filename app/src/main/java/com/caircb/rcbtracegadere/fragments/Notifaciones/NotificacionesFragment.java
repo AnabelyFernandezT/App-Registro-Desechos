@@ -140,13 +140,16 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
                 }else if(notificationList.get(position).getTipoNotificacion().equals("8")) {
                     intent = new Intent(myContext, MainActivity.class);//solo notificacion
                     MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
-
-
                 }else if (notificationList.get(position).getTipoNotificacion().equals("12")){
                     setNavegate(HomeTransportistaFragment.create());
                     intent= new Intent(myContext, CierreLoteActivity.class);
 
-                } else{
+                }else if (notificationList.get(position).getTipoNotificacion().equals("16")){
+                    setNavegate(HomeTransportistaFragment.create());
+                    intent = new Intent(myContext, ResultActivity.class);//solo notificacion
+                    MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
+
+                }  else{
                     intent = new Intent(myContext, ResultActivity.class);//solo notificacion
                     MyApp.getDBO().notificacionDao().deleteNotification(notificationList.get(position).getIdNotificacion());
 
