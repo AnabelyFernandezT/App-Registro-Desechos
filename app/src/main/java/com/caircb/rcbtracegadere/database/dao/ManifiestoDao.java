@@ -87,7 +87,7 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
-    @Query("select * from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Query("select * from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente LIMIT 1")
     @Transaction
     public abstract ManifiestoEntity fetchManifiestosAsigandobySubRutaNotific(Integer idSubRuta, Integer idChoferRecolector);
 
