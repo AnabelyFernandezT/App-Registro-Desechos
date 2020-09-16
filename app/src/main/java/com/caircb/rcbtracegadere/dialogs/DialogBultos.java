@@ -747,6 +747,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             }
                         } else {
                             messageBox("Debe imprimir todos los bultos para continuar...!");
+                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
                         }
                         break;
                     }
@@ -766,6 +767,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     } else {
                         aplicar();
                         messageBox("Debe imprimir todos los bultos para continuar...!");
+                        MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
                     }
                     break;
                 }
