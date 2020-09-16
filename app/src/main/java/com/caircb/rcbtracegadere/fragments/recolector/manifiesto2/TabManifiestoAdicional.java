@@ -42,6 +42,7 @@ import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
+import com.itextpdf.text.log.SysoCounter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -269,6 +270,20 @@ public class TabManifiestoAdicional extends LinearLayout {
             pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(idAppTipoPaquete);
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
             listaPaquetes = new ArrayList<>();
+
+           if(manifiestoPkg!=null) {
+               if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
+                   Integer iner = 0;
+                   if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() > 0) {
+                       iner=1;
+                       System.out.println("fndas: " + iner);
+                   }
+                   if (manifiestoPkg.getAdGuardianes().equals(0) && manifiestoPkg.getDatosFundas() > 0) {
+                       iner=1;
+                       System.out.println("guardianes: " + iner);
+                   }
+               }
+           }
 
             //if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas():0, manifiestoPkg.getDatosFundasPendientes()!=null ? manifiestoPkg.getDatosFundasPendientes() : 0, 1));
             //if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes():0, manifiestoPkg.getDatosGuardianesPendientes()!=null ? manifiestoPkg.getDatosGuardianesPendientes():0, 2));
