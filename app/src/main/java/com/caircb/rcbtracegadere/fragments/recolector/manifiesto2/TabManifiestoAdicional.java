@@ -272,15 +272,19 @@ public class TabManifiestoAdicional extends LinearLayout {
             listaPaquetes = new ArrayList<>();
 
            if(manifiestoPkg!=null) {
-               if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
-                   Integer iner = 0;
-                   if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() > 0) {
-                       iner=1;
-                       System.out.println("fndas: " + iner);
-                   }
-                   if (manifiestoPkg.getAdGuardianes().equals(0) && manifiestoPkg.getDatosFundas() > 0) {
-                       iner=1;
-                       System.out.println("guardianes: " + iner);
+               if(manifiestoPkg!=null) {
+                   if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
+                       if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() > 1) {
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,1);
+                       }else if(manifiestoPkg.getDatosFundas().equals(1)&& manifiestoPkg.getDatosGuardianes().equals(0)){
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                       }
+                       if (manifiestoPkg.getAdGuardianes().equals(0) && manifiestoPkg.getDatosFundas() > 1 ) {
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,1);
+                       }else if(manifiestoPkg.getDatosGuardianes().equals(1) && manifiestoPkg.getDatosFundas().equals(0)){
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                       }
+                       manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
                    }
                }
            }
@@ -347,7 +351,23 @@ public class TabManifiestoAdicional extends LinearLayout {
 
                 //listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas() : 0);
                 //listaPaquetes.get(1).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes() : 0);
-                 for(RowItemPaquete p:listaPaquetes) {
+            if(manifiestoPkg!=null) {
+                if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
+                    if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() > 1) {
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,1);
+                    }else if(manifiestoPkg.getDatosFundas().equals(1)&& manifiestoPkg.getDatosGuardianes().equals(0)){
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                    }
+                    if (manifiestoPkg.getAdGuardianes().equals(0) && manifiestoPkg.getDatosFundas() > 1 ) {
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,1);
+                    }else if(manifiestoPkg.getDatosGuardianes().equals(1) && manifiestoPkg.getDatosFundas().equals(0)){
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                    }
+                    manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
+                }
+            }
+
+            for(RowItemPaquete p:listaPaquetes) {
                      if(p.getTipo()==1) p.setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0);
                      //listaPaquetes.get(0).set
                      else if(p.getTipo()==2)p.setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0);
@@ -358,7 +378,6 @@ public class TabManifiestoAdicional extends LinearLayout {
             //    if(pkg.getEntregaSoloFundas())listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0);
             //    else if(pkg.getEntregaSoloGuardianes())listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0);
             //}
-
             if(pkg.getFlagAdicionales() && manifiestoPkg !=null){
                 txtItemPaqueteADGuardianes.setText(manifiestoPkg!=null?manifiestoPkg.getAdGuardianes().toString():"0");
                 txtItemPaqueteADFunda.setText(manifiestoPkg!=null?manifiestoPkg.getAdFundas().toString():"0");

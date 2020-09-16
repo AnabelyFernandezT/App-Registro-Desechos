@@ -44,6 +44,14 @@ public abstract class ManifiestoPaqueteDao {
         updatePendientesGuardianes(idPaquete, datosGuardianesPendientes, datosGuardianesDiferencia);
     }
 
+    //Validacion igualar a 1
+
+    @Query("update tb_manifiestos_paquete set datosFundas=:cantidad where idAppManifiesto =:manifiestoID and idPaquete=:paqueteID")
+    public abstract void updateDatoFundas(Integer manifiestoID, Integer paqueteID, Integer cantidad);
+
+    @Query("update tb_manifiestos_paquete set datosGuardianes=:cantidad where idAppManifiesto =:manifiestoID and idPaquete=:paqueteID")
+    public abstract void updateDatoGuardianes(Integer manifiestoID, Integer paqueteID, Integer cantidad);
+
     public void quitarPaquete(Integer idAppManifiesto, Integer idAppPaquete,String descripcion){
         ManifiestoPaquetesEntity pkg = fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppPaquete);
         if(pkg!=null){
