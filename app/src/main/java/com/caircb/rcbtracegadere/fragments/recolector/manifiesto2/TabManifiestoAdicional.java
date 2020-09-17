@@ -364,7 +364,7 @@ public class TabManifiestoAdicional extends LinearLayout {
                         MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,1);
                         validadorGuardianes=true;
                     }else if(manifiestoPkg.getDatosGuardianes().equals(1) && manifiestoPkg.getDatosFundas().equals(0)){
-                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,0);
                     }
                 }
             }
@@ -374,7 +374,7 @@ public class TabManifiestoAdicional extends LinearLayout {
                 validadorFundas=false;
             }
             if(validadorGuardianes && manifiestoPkg.getDatosFundas()>1 && manifiestoPkg.getDatosGuardianes()>1){
-                MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosGuardianes()-1));
+                MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosGuardianes()-1));
                 validadorGuardianes=false;
             }
 
