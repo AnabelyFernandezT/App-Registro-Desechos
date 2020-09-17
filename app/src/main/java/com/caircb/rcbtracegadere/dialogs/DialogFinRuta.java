@@ -22,11 +22,17 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.AppDatabase;
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.generics.MyDialog;
+import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowItemFinRuta;
+import com.caircb.rcbtracegadere.models.RowItemPaquete;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
 import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
@@ -38,6 +44,7 @@ import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioFinLoteHotelTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +83,17 @@ public class DialogFinRuta extends MyDialog {
     ImageButton btnSincManifiestos,btnListaAsignadaTransportista,regionBuscar;
     ImageView btnPickUpTransportista, btnDropOffTransportista,btnScanQr;
     TextView txtBuscar, txtSincronizar, txtManifiestos, lblpickUpTransportista,lblListaManifiestoAsignado;
+
+
+///////////////////////////// IMPRESION FIN RUTA HOSPITALARIO
+    private List<ItemManifiesto> rowItems;
+    PaqueteEntity pkg;
+    ManifiestoPaquetesEntity manifiestoPkg;
+    List<RowItemPaquete> listaPaquetes;
+    List<RowItemFinRuta> listaFinRuta;
+    Integer fundas50 = 0,fundas63=0, paquetes1=0, paquete2=0, paquete3=0 ;
+    MyPrint print;
+///////////////////////////// IMPRESION FIN RUTA HOSPITALARIO
 
     public DialogFinRuta(@NonNull Context context) {
         super(context, R.layout.dialog_final_ruta);
@@ -238,7 +256,6 @@ public class DialogFinRuta extends MyDialog {
         CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
         final int idDestino = c!=null?c.getIdSistema():-1;
 
-        //MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
 
         if(idDestino!=-1){
             MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+idDestino);
@@ -256,19 +273,41 @@ public class DialogFinRuta extends MyDialog {
             @Override
             public void onSuccessful() {
 
-               /* if(finHotel.equals(0)){
+                if(finHotel.equals(0)){
                     inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
                     inicioFinLoteHotelTask.execute();
-                }*/
+                }
 
                // MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
                 lblpickUpTransportista.setText("0");
                 lblListaManifiestoAsignado.setText("0");
 
-                MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
 
-                DialogFinRuta.this.dismiss();
+
+                String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+                if (tipoSubruta.equals("2")) {//TIPO SUBRUTA HOSPITALARIA
+                    final DialogBuilder builderw = new DialogBuilder(getContext());
+                    builderw.setMessage("¿Desea volver a imprimir otro recibo?");
+                    builderw.setCancelable(false);
+                    builderw.setPositiveButton("SI", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            imprimirEtiquetaFinRutaHospitalaria();
+                        }
+                    });
+                    builderw.setNegativeButton("NO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            builderw.dismiss();
+                            MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+                            DialogFinRuta.this.dismiss();
+                        }
+                    });
+                    builderw.show();
+                    imprimirEtiquetaFinRutaHospitalaria();
+                }
+
             }
 
 
@@ -455,5 +494,90 @@ public class DialogFinRuta extends MyDialog {
     }
     public void setmOnFinLotePadreListener(@NonNull OnFinLoteHotel l){mOnFinLotePadreListener =l;
     }
+
+
+    private void imprimirEtiquetaFinRutaHospitalaria(){
+        Integer idSubruta = MySession.getIdSubRuta();
+        loadDataPaquetes(idSubruta);
+        List<RowItemFinRuta> ListaEnviar=listaFinRuta;
+        System.out.println("");
+        try {
+            print = new MyPrint(getActivity());
+            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                @Override
+                public void onSuccessful() {
+                    //Impresion finalizada
+                    System.out.print("Compleado correctamente");
+                }
+                @Override
+                public void onFailure(String message) {
+                    messageBox(message);
+                }
+            });
+            print.printerFinRuta(idSubruta,ListaEnviar);
+        }catch (Exception e){
+            messageBox("No hay conexion con la impresora");
+        }
+        System.out.println("");
+    }
+
+    private void loadDataPaquetes(Integer idSubruta){
+
+        listaFinRuta = new ArrayList<>();
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
+        for (int i=0; i<rowItems.size();i++){
+            fundas50 = 0;
+            fundas63 = 0;
+            paquetes1 = 0;
+            paquete2 = 0;
+            paquete3 = 0;
+            if(rowItems.get(i).getTipoPaquete()!=null) {
+                pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(rowItems.get(i).getTipoPaquete());
+                manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(rowItems.get(i).getIdAppManifiesto(), rowItems.get(i).getTipoPaquete());
+                listaPaquetes = new ArrayList<>();
+                if(pkg!=null && manifiestoPkg!=null) {
+                    if (pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(),
+                            manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0,
+                            manifiestoPkg != null ? (manifiestoPkg.getDatosFundasPendientes() != null ? manifiestoPkg.getDatosFundasPendientes() : 0) : 0,
+                            manifiestoPkg != null ? manifiestoPkg.getDatosFundasPendientes() : null,
+                            manifiestoPkg != null ? (manifiestoPkg.getDatosFundasDiferencia() != null ? manifiestoPkg.getDatosFundasDiferencia() : 0) : 0,
+                            1));
+
+                    if (pkg.getEntregaSoloGuardianes())
+                        listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(),
+                                manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0,
+                                manifiestoPkg != null ? (manifiestoPkg.getDatosGuardianesPendientes() != null ? manifiestoPkg.getDatosGuardianesPendientes() : 0) : 0,
+                                manifiestoPkg != null ? manifiestoPkg.getDatosGuardianesPendientes() : null,
+                                manifiestoPkg != null ? (manifiestoPkg.getDatosGuardianesDiferencia() != null ? manifiestoPkg.getDatosGuardianesDiferencia() : 0) : 0,
+                                2));
+                }
+            }else {
+                listaPaquetes=null;
+            }
+            if(listaPaquetes!=null && listaPaquetes.size()>0) {
+
+                for (RowItemPaquete it : listaPaquetes) {
+                    listaPaquetes.get(0);
+                    if (it.getNombre().equals("55x50")) {
+                        fundas50 = fundas50+ (it.getCantidad() );
+                    }
+                    if (it.getNombre().equals("63x76")){
+                        fundas63 = fundas63+(it.getCantidad() );
+                    }
+                    if(it.getNombre().equals("PC 1")){
+                        paquetes1 = paquetes1+ (it.getCantidad() );
+                    }else if(it.getNombre().equals("PC 2")) {
+                        paquete2 = paquete2+(it.getCantidad() );
+                    }else if(it.getNombre().equals("PC 4")) {
+                        paquete3 = paquete3+ (it.getCantidad() );
+                    }
+                }
+                String fecha=(new SimpleDateFormat("dd/MM/yyyy")).format(new Date());
+                listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3));
+                System.out.println("");
+            }
+        }
+    }
+
 
 }

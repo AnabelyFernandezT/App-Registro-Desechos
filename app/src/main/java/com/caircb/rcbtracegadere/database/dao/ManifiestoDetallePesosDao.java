@@ -10,6 +10,7 @@ import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.ItemEtiqueta;
+import com.caircb.rcbtracegadere.models.ItemEtiquetaFinRuta;
 import com.caircb.rcbtracegadere.models.ItemEtiquetaHospitalario;
 import com.caircb.rcbtracegadere.models.ItemEtiquetaHospitalarioDetalleRecolecion;
 import com.caircb.rcbtracegadere.models.request.RequestManifiesto;
@@ -122,6 +123,22 @@ public abstract class ManifiestoDetallePesosDao {
             " where m.idAppManifiesto=:idAppManifiesto " +
             " order by m.idAppManifiesto")
     public  abstract ItemEtiquetaHospitalario consultaCabeceraHospitalario(Integer idAppManifiesto);
+
+
+
+    @Query("select  m.fechaRecoleccion as fechaRecolecion," +
+            "       m.nombreDestinatario as destinatario,"+
+            "       m.nombreOperadorRecolector as firmaNombreGenerador,"+
+            "       m.conductorNombre as firmaNombreTransportista,"+
+            "       m.identificacionOperadorRecolector as firmaCedulaGenerador,"+
+            "       m.conductorIdentificacion as firmaCedulaTransportista,"+
+            "       m.auxiliarNombre as firmaNombreGenerador2,"+
+            "       t.nombre as subRuta,"+
+            "       m.numeroPlacaVehiculo as placaVehiculo"+
+            " from  tb_manifiestos m left join tb_rutas t on t.codigo=m.idSubRuta "+
+            " where m.idSubRuta=:idSubRuta "  +
+            " order by m.idAppManifiesto")
+    public  abstract ItemEtiquetaFinRuta consultaCabeceraFinRuta(Integer idSubRuta);
 
 
     @Query("Select nombreCortoTicket as descripcionDesecho,codigoMAE as codigoMai," +

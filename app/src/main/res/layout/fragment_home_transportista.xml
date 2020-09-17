@@ -210,6 +210,19 @@
 
             </LinearLayout>
 
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/btnPrueba"
+                android:clickable="true"
+                android:background="@mipmap/ic_manifiesto_"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+            </LinearLayout>
+
 
            <!-- <LinearLayout
                 android:layout_width="0dp"

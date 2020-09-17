@@ -226,6 +226,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             novedadPesoPromedio.setVisibility(View.GONE);
             txtPesoPromedio.setText("");
         }
+
+        desbloquearBotones();
     }
 
 
@@ -323,7 +325,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             messageBox("Debe ingresar fotografías, justificando Peso Promedio");
             return;
         } else {
-
+            bloquearBotones();
             userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(),null);
             userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
                 @Override
@@ -368,8 +370,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         }
                         @Override
                         public void onFail() {
-
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
+                            messageBox("No se pudo guardar los datos");
                         }
                     });
                     userRegistrarRuteoRecoleccion.execute();
@@ -379,7 +381,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                 @Override
                 public void onFail() {
                     setNavegate(HojaRutaAsignadaFragment.newInstance());
-                    messageBox("No se encontro impresora, Datos Guardados");
+                    messageBox("No se pudo guardar los datos");
                 }
             });
             userRegistrarRecoleccion.execute();
@@ -564,6 +566,19 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         }
     }
 
+    public void bloquearBotones(){
+        btnEvidenciaNovedadFrecuente.setEnabled(false);
+        btnEliminarFotos.setEnabled(false);
+        btnVistaPreviaCancelar.setEnabled(false);
+        btnVistaPreviaGuardar.setEnabled(false);
+    }
+
+    public void desbloquearBotones(){
+        btnEvidenciaNovedadFrecuente.setEnabled(true);
+        btnEliminarFotos.setEnabled(true);
+        btnVistaPreviaCancelar.setEnabled(true);
+        btnVistaPreviaGuardar.setEnabled(true);
+    }
 
 
 }

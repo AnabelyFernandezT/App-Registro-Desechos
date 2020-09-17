@@ -167,7 +167,7 @@ public class ManifiestoNoRecoleccionFragment extends MyFragment implements OnCam
                 //tab genearl...
                 MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValoresByIdManifiesto(idAppManifiesto);
                 MyApp.getDBO().manifiestoDetalleDao().updateNoRecolectado(idAppManifiesto,0.0,0.0);
-                MyApp.getDBO().manifiestoPaqueteDao().deleteTablePaquetes();
+                //MyApp.getDBO().manifiestoPaqueteDao().deleteTablePaquetes();
                 boolean aplicaNoRecoleccion= tabManifiestoAdicional.validaExisteNovedadesNoRecoleccion();
                 int i=tabs.getCurrentTab();
                 if (i==0){

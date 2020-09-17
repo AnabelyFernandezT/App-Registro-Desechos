@@ -11,8 +11,11 @@ import androidx.annotation.NonNull;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemEtiqueta;
+import com.caircb.rcbtracegadere.models.ItemEtiquetaFinRuta;
 import com.caircb.rcbtracegadere.models.ItemEtiquetaHospitalario;
 import com.caircb.rcbtracegadere.models.ItemEtiquetaHospitalarioDetalleRecolecion;
+import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.RowItemFinRuta;
 import com.zebra.android.comm.BluetoothPrinterConnection;
 import com.zebra.android.comm.ZebraPrinterConnection;
 import com.zebra.android.comm.ZebraPrinterConnectionException;
@@ -42,6 +45,18 @@ public class MyPrint {
     private boolean connected=false;
     private boolean saltoLinea = false;
     private int totalNumeroEtiquetas = 10; //25 para una sola linea y 10 para doble linea en la descripcion
+    private List<ItemManifiesto> rowItems;
+    private Integer fundas50 = 0;
+    private Integer fundas63 = 0;
+    private Integer paquetes1 = 0;
+    private Integer paquete2 = 0;
+    private Integer paquete3 = 0;
+
+    private Integer fundas50Recibida = 100;
+    private Integer fundas63Recibida  = 80;
+    private Integer paquetes1Recibida  = 60;
+    private Integer paquete2Recibida = 75;
+    private Integer paquete3Recibida  = 69;
 
     public interface OnPrinterListener {
         public void onSuccessful();
@@ -699,6 +714,7 @@ public class MyPrint {
     }
 
 
+
     public String eliminarAcentos(String str) {
 
         final String ORIGINAL = "ÁáÉéÍíÓóÚúÑñÜü";
@@ -934,6 +950,235 @@ public class MyPrint {
             disconnect("Impresora no encontrada");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void printerFinRuta(Integer idSubRuta, List<RowItemFinRuta> listaFinRutaIngreso){
+        if(checkImpresora()) {
+
+            Integer idSubruta = idSubRuta;
+            rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
+
+            final ItemEtiquetaFinRuta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaCabeceraFinRuta(idSubruta);
+            final List<RowItemFinRuta> listaFinRuta = listaFinRutaIngreso;
+            if(printEtiqueta != null && listaFinRuta.size() > 0){
+                dialog.show();
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (Looper.myLooper() == null)
+                        {
+                            Looper.prepare();
+                        }
+                        doConnectionTestFinRuta(printEtiqueta,listaFinRuta);
+                        Looper.loop();
+                        Looper.myLooper().quit();
+                    }
+                });
+
+            } else {
+                //mensaje...
+                Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+                disconnect("No cumple la estructura");
+            }
+        }else {
+            Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
+            disconnect("Impresora no encontrada");
+        }
+    }
+
+    private void doConnectionTestFinRuta(ItemEtiquetaFinRuta printEtiqueta, List<RowItemFinRuta> listaFinRuta) {
+        printer = connect();
+        if (printer != null) {
+            sendTestLabelFinRuta(printEtiqueta,listaFinRuta);
+        } else {
+            disconnect("No existe conexion con la impresora");
+        }
+    }
+
+
+
+    private void sendTestLabelFinRuta(ItemEtiquetaFinRuta printEtiqueta, List<RowItemFinRuta> listaFinRuta) {
+        boolean complete=false;
+        ItemEtiquetaFinRuta row = printEtiqueta;
+        try {
+            byte[] configLabel;
+            configLabel = getTramaFinRuta(
+                    printer,
+                    "OP-RE-01",
+                    "123",
+                    (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),
+                    eliminarNulos(row.getSubRuta()),
+                    eliminarNulos(row.getPlacaVehiculo()),
+                    eliminarNulos(row.getFirmaNombreGenerador()),
+                    eliminarNulos(row.getFirmaNombreGenerador2()),
+                    eliminarNulos(row.getFirmaNombreTransportista()),
+                    eliminarNulos(row.getFirmaCedulaGenerador()),
+                    eliminarNulos(row.getFirmaCedulaTransportista()),
+                    listaFinRuta
+            );
+            zebraPrinterConnection.write(configLabel);
+            MyThread.sleep(500);
+            complete=true;
+
+        }catch (ZebraPrinterConnectionException e) {
+            //setStatus(e.getMessage(), Color.RED);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }finally {
+            if(complete)finalized();
+            if(complete){
+                if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+            }
+            else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
+        }
+    }
+
+    public String getDetalleRecoleccionFinRuta (List<RowItemFinRuta> listaFinRuta){
+     // Codigo para imprimir en dos lineas el la descripcion solo entran 10 items en la etiqueta
+        String detalle ="";
+        int valorDescripcion1=635;
+        for(RowItemFinRuta item : listaFinRuta){
+            valorDescripcion1=valorDescripcion1+75;
+            detalle= detalle  +
+                    "^FS^FO60,"+valorDescripcion1+"^A0,26,14^FD" + item.getFecha()+
+                    "^FS^FO160,"+valorDescripcion1+"^A0,26,14^FD" + item.getManifiesto()+
+                    "^FS^FO300,"+valorDescripcion1+"^A0,26,14^FD" + item.getF55x50()+
+                    "^FS^FO400,"+valorDescripcion1+"^A0,26,14^FD" + item.getF63x76()+
+                    "^FS^FO500,"+valorDescripcion1+"^A0,26,14^FD" + item.getfPc1() +
+                    "^FS^FO600,"+valorDescripcion1+"^A0,26,14^FD" + item.getfPc2()+
+                    "^FS^FO700,"+valorDescripcion1+"^A0,26,14^FD" + item.getfPc3();
+            fundas50=fundas50+item.getF55x50();
+            fundas63=fundas63+item.getF63x76();
+            paquetes1=paquetes1+item.getfPc1();
+            paquete2=paquete2+item.getfPc2();
+            paquete3=paquete3+item.getfPc3();
+        }
+        return detalle;
+    }
+
+    private byte[] getTramaFinRuta(
+            ZebraPrinter printer,
+            String codigo,
+            String numero,
+            String fechaLiquidacin,
+            String subRuta,
+            String placaVehiculo,
+            String firmaNombreOperador,
+            String firmaNombreOperador2,
+            String firmaNombreTransportista,
+            String firmaCedulaOperador,
+            String firmaCedulaTransportista,
+            List<RowItemFinRuta> listaFinRuta) {
+
+        PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
+        String cpclConfigLabel="";
+        String detalle = getDetalleRecoleccionFinRuta(listaFinRuta);
+        byte[] configLabel = null;
+        if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
+            // cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
+        }else {
+            cpclConfigLabel =
+                    "^XA^CFD ^POI" +
+                            "^FO45,170^A0,29,17^FD No:" +
+                            "^FS^FO230,172^A0,28,16^FD "+numero+"" +
+                            "^FS^FO430,170^A0,29,17^FD COD: \n" +
+                            "^FS^FO560,172^A0,28,16^FD "+codigo+"" +
+                            "^FS^FO700,172^A0,28,16^FD PAG 1/1" +
+
+                            "^FS^FO45,205^A0,29,17^FD FECHA LIQUIDACION: " +
+                            "^FS^FO230,207^A0,28,16^FD "+fechaLiquidacin+"" +
+                            "^FS^FO430,205^A0,29,17^FD CHOFER:" +
+                            "^FS^FO560,207^A0,28,16^FD "+eliminarAcentos(firmaNombreTransportista)+"" +
+
+                            "^FS^FO45,240^A0,29,17^FD SUBRUTA: " +
+                            "^FS^FO230,242^A0,28,16^FD "+subRuta+"" +
+                            "^FS^FO430,240^A0,29,17^FD OPERADOR 1:" +
+                            "^FS^FO560,242^A0,28,16^FD "+eliminarAcentos(firmaNombreOperador)+"" +
+
+                            "^FS^FO45,275^A0,29,17^FD PLACA VEHICULO:" +
+                            "^FS^FO230,277^A0,28,16^FD "+placaVehiculo+"" +
+                            "^FS^FO430,275^A0,29,17^FD OPERADOR 2:" +
+                            "^FS^FO560,277^A0,28,16^FD "+eliminarAcentos(firmaNombreOperador2)+"" +
+
+                            "^FS^FO45,280^A0,30,18^FD____________________________" +
+                            "^FS^FO370,318^A0,25,13^FD TOTALES" +
+
+                            "^FS^FO45,315^A0,30,18^FD____________________________" +
+                            "^FS^FO60,355^A0,26,14^FD INSUMO" +
+                            "^FS^FO190,355^A0,26,14^FD RECIBO(u)" +
+                            "^FS^FO340,355^A0,26,14^FD USADO(u)" +
+                            "^FS^FO490,355^A0,26,14^FD DEVUELTO(u)" +
+                            "^FS^FO640,355^A0,26,14^FD PENDIENTE(u)" +
+                            "^FS^FO45,355^A0,30,18^FD____________________________" +
+
+                            "^FS^FO60,400^A0,26,14^FD f55*50\n" +
+                            "^FS^FO190,400^A0,26,14^FD " +fundas50Recibida+
+                            "^FS^FO340,400^A0,26,14^FD "+fundas50 +
+                            "^FS^FO490,400^A0,26,14^FD " +(fundas50Recibida-fundas50)+
+                            "^FS^FO640,400^A0,26,14^FD 0" +
+
+                            "^FS^FO60,425^A0,26,14^FD f63*76" +
+                            "^FS^FO190,425^A0,26,14^FD " +fundas63Recibida+
+                            "^FS^FO340,425^A0,26,14^FD " +fundas63+
+                            "^FS^FO490,425^A0,26,14^FD " +(fundas63Recibida-fundas63)+
+                            "^FS^FO640,425^A0,26,14^FD 0" +
+
+                            "^FS^FO60,450^A0,26,14^FD PC-1" +
+                            "^FS^FO190,450^A0,26,14^FD " +paquetes1Recibida+
+                            "^FS^FO340,450^A0,26,14^FD " +paquetes1+
+                            "^FS^FO490,450^A0,26,14^FD " +(paquetes1Recibida-paquetes1)+
+                            "^FS^FO640,450^A0,26,14^FD 0" +
+
+                            "^FS^FO60,475^A0,26,14^FD PC-2" +
+                            "^FS^FO190,475^A0,26,14^FD " +paquete2Recibida+
+                            "^FS^FO340,475^A0,26,14^FD " +paquete2+
+                            "^FS^FO490,475^A0,26,14^FD " +(paquete2Recibida-paquete2)+
+                            "^FS^FO640,475^A0,26,14^FD 0" +
+
+                            "^FS^FO60,500^A0,26,14^FD PC-4" +
+                            "^FS^FO190,500^A0,26,14^FD " +paquete3Recibida+
+                            "^FS^FO340,500^A0,26,14^FD " +paquete3+
+                            "^FS^FO490,500^A0,26,14^FD " +(paquete3Recibida-paquete3)+
+                            "^FS^FO640,500^A0,26,14^FD 0" +
+
+                            "^FS^FO60,660^A0,26,14^FD Fecha" +
+                            "^FS^FO160,660^A0,26,14^FD No. Manifiesto" +
+                            "^FS^FO300,660^A0,26,14^FD F.55*50" +
+                            "^FS^FO400,660^A0,26,14^FD F.63*76" +
+                            "^FS^FO500,660^A0,26,14^FD PC-1" +
+                            "^FS^FO600,660^A0,26,14^FD PC-2" +
+                            "^FS^FO700,660^A0,26,14^FD PC-4" +
+                            "^FS^FO40,660^A0,30,18^FD_____________________________" +
+                            detalle+
+                            "^FS^FO100,1650^A0,40,30^FD______________" +
+                            "^FS^FO450,1650^A0,40,30^FD______________" +
+                            "^FS^FO100,1715^A0,26,16^FB300,3,0,C,018^FD "+eliminarAcentos(firmaNombreTransportista) +
+                            "^FS^FO450,1715^A0,26,16^FB300,3,0,C,018^FD "+eliminarAcentos(firmaNombreOperador) +
+                            "^FS^FO100,1745^A0,26,16^FB300,3,0,C,0^FD  CI: "+firmaCedulaTransportista+
+                            "^FS^FO450,1745^A0,26,16^FB300,3,0,C,0^FD CI: "+firmaCedulaOperador+
+                            "^FS^FO60,1800^A0,43,28^FD REPORTE DETALLADO DE INSUMOS USADOS POR RUTA" +
+                            "^FS ^XZ";
+        }
+
+        configLabel = cpclConfigLabel.getBytes();
+        return configLabel;
+
+    }
+
+
 
 
 }
