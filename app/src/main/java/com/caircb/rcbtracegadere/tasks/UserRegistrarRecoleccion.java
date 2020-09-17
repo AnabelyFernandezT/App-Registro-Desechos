@@ -129,6 +129,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
             public void onFailure(String message) {
                 progressHide();
                 message(message);
+                mOnRegisterListener.onFail();
             }
         });
         userUploadFileTask.uploadRecoleccion(listaFileDefauld, idAppManifiesto);

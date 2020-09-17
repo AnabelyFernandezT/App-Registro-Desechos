@@ -22,9 +22,13 @@ import com.caircb.rcbtracegadere.CierreLoteActivity;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
+import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
+import com.caircb.rcbtracegadere.database.entity.PaqueteEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
+import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogFinRuta;
@@ -32,23 +36,32 @@ import com.caircb.rcbtracegadere.dialogs.DialogInicioRuta;
 import com.caircb.rcbtracegadere.fragments.Hoteles.HomeHotelFragment;
 import com.caircb.rcbtracegadere.dialogs.DialogQrLoteTransportista;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
+import com.caircb.rcbtracegadere.models.ItemEtiquetaFinRuta;
+import com.caircb.rcbtracegadere.models.ItemEtiquetaHospitalario;
+import com.caircb.rcbtracegadere.models.RowItemFinRuta;
+import com.caircb.rcbtracegadere.models.RowItemPaquete;
+import com.caircb.rcbtracegadere.models.response.DtoFindRutas;
 import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrValidadorTask;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,13 +76,24 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     DialogInicioRuta dialogInicioRuta;
     DialogQrLoteTransportista dialogQrLoteTransportista;
     DialogFinRuta dialogFinRuta;
-    LinearLayout lnlIniciaRuta,lnlFinRuta,txtQr,sectionQrLote;
+    LinearLayout lnlIniciaRuta,lnlFinRuta,txtQr,sectionQrLote,btnPrueba;
     RutaInicioFinEntity rut;
     UserConsultarInicioRutaTask verificarInicioRutaTask;
     Integer idSubRuta, flag=0;
     UserConsultarCatalogosTask consultarCatalogosTask;
     Integer cont=0;
+    private List<ItemManifiesto> rowItems;
+    private List<ManifiestoDetalleEntity> rowItemDetalle;
 
+
+/////////////////////////////
+    PaqueteEntity pkg;
+    ManifiestoPaquetesEntity manifiestoPkg;
+    List<RowItemPaquete> listaPaquetes;
+    List<RowItemFinRuta> listaFinRuta;
+    Integer fundas50 = 0,fundas63=0, paquetes1=0, paquete2=0, paquete3=0 ;
+    MyPrint print;
+/////////////////////////////
 
     //public Context mContext;
 
@@ -141,6 +165,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         btnScanQr = getView().findViewById(R.id.btnScanQr);
         txtQr = getView().findViewById(R.id.txtQr);
 
+
+
         txtBuscar = getView().findViewById(R.id.txtBuscar);
         txtSincronizar = getView().findViewById(R.id.txtSincronizar);
         txtManifiestos = getView().findViewById(R.id.txtManifiestos);
@@ -154,6 +180,15 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 dialogQrLoteTransportista.setCancelable(false);
                 UserConsultaCodigoQrTask consultaCodigoQrTask = new UserConsultaCodigoQrTask(getActivity(), dialogQrLoteTransportista);
                 consultaCodigoQrTask.execute();
+            }
+        });
+
+        btnPrueba = getView().findViewById(R.id.btnPrueba);
+        btnPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer idSubruta = MySession.getIdSubRuta();
+                imprimirEtiquetaFinRutaHospitalaria();
             }
         });
 
@@ -559,4 +594,89 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
             MyApp.getDBO().parametroDao().saveOrUpdate("flag_refresh_home","false");
         }
     }
+
+
+
+    private void imprimirEtiquetaFinRutaHospitalaria(){
+        Integer idSubruta = MySession.getIdSubRuta();
+        loadDataPaquetes(idSubruta);
+        List<RowItemFinRuta> ListaEnviar=listaFinRuta;
+        try {
+            print = new MyPrint(getActivity());
+            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                @Override
+                public void onSuccessful() {
+                    //Impresion finalizada
+                    System.out.print("Compleado correctamente");
+                }
+                @Override
+                public void onFailure(String message) {
+                    messageBox(message);
+                }
+            });
+            print.printerFinRuta(idSubruta,ListaEnviar);
+        }catch (Exception e){
+            messageBox("No hay conexion con la impresora");
+        }
+        System.out.println("");
+    }
+
+    private void loadDataPaquetes(Integer idSubruta){
+
+        listaFinRuta = new ArrayList<>();
+        rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
+        for (int i=0; i<rowItems.size();i++){
+            fundas50 = 0;
+            fundas63 = 0;
+            paquetes1 = 0;
+            paquete2 = 0;
+            paquete3 = 0;
+            if(rowItems.get(i).getTipoPaquete()!=null) {
+                pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(rowItems.get(i).getTipoPaquete());
+                manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(rowItems.get(i).getIdAppManifiesto(), rowItems.get(i).getTipoPaquete());
+                listaPaquetes = new ArrayList<>();
+                if(pkg!=null && manifiestoPkg!=null) {
+                    if (pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(),
+                            manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0,
+                            manifiestoPkg != null ? (manifiestoPkg.getDatosFundasPendientes() != null ? manifiestoPkg.getDatosFundasPendientes() : 0) : 0,
+                            manifiestoPkg != null ? manifiestoPkg.getDatosFundasPendientes() : null,
+                            manifiestoPkg != null ? (manifiestoPkg.getDatosFundasDiferencia() != null ? manifiestoPkg.getDatosFundasDiferencia() : 0) : 0,
+                            1));
+
+                    if (pkg.getEntregaSoloGuardianes())
+                        listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(),
+                                manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0,
+                                manifiestoPkg != null ? (manifiestoPkg.getDatosGuardianesPendientes() != null ? manifiestoPkg.getDatosGuardianesPendientes() : 0) : 0,
+                                manifiestoPkg != null ? manifiestoPkg.getDatosGuardianesPendientes() : null,
+                                manifiestoPkg != null ? (manifiestoPkg.getDatosGuardianesDiferencia() != null ? manifiestoPkg.getDatosGuardianesDiferencia() : 0) : 0,
+                                2));
+                }
+            }else {
+                listaPaquetes=null;
+            }
+            if(listaPaquetes!=null && listaPaquetes.size()>0) {
+
+                for (RowItemPaquete it : listaPaquetes) {
+                    listaPaquetes.get(0);
+                    if (it.getNombre().equals("55x50")) {
+                        fundas50 = fundas50+ (it.getCantidad() );
+                    }
+                    if (it.getNombre().equals("63x76")){
+                        fundas63 = fundas63+(it.getCantidad() );
+                    }
+                    if(it.getNombre().equals("PC 1")){
+                        paquetes1 = paquetes1+ (it.getCantidad() );
+                    }else if(it.getNombre().equals("PC 2")) {
+                        paquete2 = paquete2+(it.getCantidad() );
+                    }else if(it.getNombre().equals("PC 4")) {
+                        paquete3 = paquete3+ (it.getCantidad() );
+                    }
+                }
+                String fecha=(new SimpleDateFormat("dd/MM/yyyy")).format(new Date());
+                listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3));
+                System.out.println("");
+            }
+        }
+    }
+
 }

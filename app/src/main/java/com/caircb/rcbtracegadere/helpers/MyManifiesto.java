@@ -66,7 +66,7 @@ public class MyManifiesto {
     Context context;
     Integer idManifiesto,idAppTipoPaquete;
     ManifiestoEntity manifiesto;
-    String fundas50 = "0",fundas63="0", paquetes1="0", paquete2="0", pg = "0" , pf = "0" ;
+    String fundas50 = "0",fundas63="0", paquetes1="0", paquete2="0", pg = "0" , pf = "0", paquete3="0" ;
     TecnicoEntity tecnicoEntity;
     Bitmap logoMAE;
     Bitmap imagenCheck;
@@ -989,7 +989,8 @@ public class MyManifiesto {
         PdfPTable tb2 = new PdfPTable(1);
         PdfPCell cell = new PdfPCell(regionAdicionales(f3));
         PdfPCell cell2 = new PdfPCell(regionAdicionales2(f3));
-        tb2.addCell(new PdfPCell(new Phrase("PC-4",f3)));
+        PdfPCell cell3 = new PdfPCell(regionAdicionales3(f3));
+        //tb2.addCell(new PdfPCell(new Phrase("PC-4",f3)));
        /* tb2.addCell(new PdfPCell(new Phrase("0",f3)));
         tb2.addCell(new PdfPCell(new Phrase("PC1",f3)));
         tb2.addCell(new PdfPCell(new Phrase("0",f3)));
@@ -1000,6 +1001,7 @@ public class MyManifiesto {
         tb2.completeRow();*/
         tb2.addCell(cell);
         tb2.addCell(cell2);
+        tb2.addCell(cell3);
         tb2.completeRow();
 
 
@@ -1224,7 +1226,28 @@ public class MyManifiesto {
 
         return det;
     }
+    private PdfPTable regionAdicionales3(Font f3)  {
 
+        PdfPTable det = new PdfPTable(new float[]{10,10,10,10,10});
+
+        if(listaPaquetes!=null && listaPaquetes.size()>0){
+            det.addCell(new PdfPCell(new Phrase("PC-4", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(paquete3, f3, null));
+
+            det.addCell(new PdfPCell(new Phrase("", f3)));
+
+        }else {
+            det.addCell(new PdfPCell(new Phrase("PC-4", f3)));
+            det.addCell(createCell_NO_BORDER_SINGLE(" ", f3, null));
+
+            det.addCell(new PdfPCell(new Phrase("", f3)));
+
+
+        }
+        det.completeRow();
+
+        return det;
+    }
 
     private PdfPTable createObservacionesFrecuentes(Font f3) throws Exception {
 
@@ -1451,6 +1474,9 @@ public class MyManifiesto {
                     pg = it.getPendiente().toString();
                 }else if(it.getNombre().equals("PC 2")) {
                     paquete2 = String.valueOf(it.getCantidad() - it.getPendiente());
+                    pg = it.getPendiente().toString();
+                }else if(it.getNombre().equals("PC 4")) {
+                    paquete3 = String.valueOf(it.getCantidad() - it.getPendiente());
                     pg = it.getPendiente().toString();
                 }
             }

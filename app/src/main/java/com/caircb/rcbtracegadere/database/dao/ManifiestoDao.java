@@ -87,6 +87,10 @@ public abstract class ManifiestoDao {
     @Transaction
     public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRuta(Integer idSubRuta, Integer idChoferRecolector);
 
+    @Query("select idAppManifiesto,nombreCliente as cliente,referencia,numeroManifiesto as numero,'' as sucursal, direccionCliente as direccion,provincia as provincia, canton as canton, estado, apertura1 as Apertura1,apertura2 as Apertura2,cierre1 as Cierre1,cierre2 as Cierre2, sucursal as sucursal, tecnicoTelefono as telefono, frecuencia as frecuencia, tipoPaquete as tipoPaquete, identificacionCliente as identificacion,pesoPromedio from tb_manifiestos where idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente")
+    @Transaction
+    public abstract List<ItemManifiesto> fetchManifiestosAsigandobySubRutaImpresion(Integer idSubRuta, Integer idChoferRecolector);
+
     @Query("select * from tb_manifiestos where estado=1 and idSubRuta=:idSubRuta and idChoferRecolector=:idChoferRecolector order by nombreCliente LIMIT 1")
     @Transaction
     public abstract ManifiestoEntity fetchManifiestosAsigandobySubRutaNotific(Integer idSubRuta, Integer idChoferRecolector);
