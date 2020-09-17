@@ -372,10 +372,12 @@ public class TabManifiestoAdicional extends LinearLayout {
             if(validadorFundas && manifiestoPkg.getDatosFundas()>1 && manifiestoPkg.getDatosGuardianes()>1){
                 MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosFundas()-1));
                 validadorFundas=false;
+
             }
             if(validadorGuardianes && manifiestoPkg.getDatosFundas()>1 && manifiestoPkg.getDatosGuardianes()>1){
                 MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosGuardianes()-1));
                 validadorGuardianes=false;
+                
             }
 
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
