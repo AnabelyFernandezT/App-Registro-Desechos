@@ -42,6 +42,7 @@ import com.caircb.rcbtracegadere.models.ItemFile;
 import com.caircb.rcbtracegadere.models.RowItemHojaRutaCatalogo;
 import com.caircb.rcbtracegadere.models.RowItemNoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemPaquete;
+import com.itextpdf.text.log.SysoCounter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     LinearLayout lnyTipoManifiestoPaquete;
 
     int tipoRecoleccion=0;
+    Boolean validadorFundas=false, validadorGuardianes=false;
 
     View focusView;
 
@@ -270,6 +272,24 @@ public class TabManifiestoAdicional extends LinearLayout {
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
             listaPaquetes = new ArrayList<>();
 
+           if(manifiestoPkg!=null) {
+               if(manifiestoPkg!=null) {
+                   if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
+                       if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() > 1) {
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,1);
+                       }else if(manifiestoPkg.getDatosFundas().equals(1)&& manifiestoPkg.getDatosGuardianes().equals(0)){
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                       }
+                       if (manifiestoPkg.getAdGuardianes().equals(0) && manifiestoPkg.getDatosFundas() > 1 ) {
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,1);
+                       }else if(manifiestoPkg.getDatosGuardianes().equals(1) && manifiestoPkg.getDatosFundas().equals(0)){
+                           MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                       }
+                       manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
+                   }
+               }
+           }
+
             //if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas():0, manifiestoPkg.getDatosFundasPendientes()!=null ? manifiestoPkg.getDatosFundasPendientes() : 0, 1));
             //if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes():0, manifiestoPkg.getDatosGuardianesPendientes()!=null ? manifiestoPkg.getDatosGuardianesPendientes():0, 2));
 
@@ -332,7 +352,37 @@ public class TabManifiestoAdicional extends LinearLayout {
 
                 //listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas() : 0);
                 //listaPaquetes.get(1).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes() : 0);
-                 for(RowItemPaquete p:listaPaquetes) {
+            if(manifiestoPkg!=null) {
+                if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
+                    if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() > 1) {
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,1);
+                        validadorFundas=true;
+                    }else if(manifiestoPkg.getDatosFundas().equals(1)&& manifiestoPkg.getDatosGuardianes().equals(0)){
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
+                    }
+                    if (manifiestoPkg.getAdGuardianes().equals(0) && manifiestoPkg.getDatosFundas() > 1 ) {
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,1);
+                        validadorGuardianes=true;
+                    }else if(manifiestoPkg.getDatosGuardianes().equals(1) && manifiestoPkg.getDatosFundas().equals(0)){
+                        MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,0);
+                    }
+                }
+            }
+
+            if(validadorFundas && manifiestoPkg.getDatosFundas()>1 && manifiestoPkg.getDatosGuardianes()>1){
+                MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosFundas()-1));
+                validadorFundas=false;
+
+            }
+            if(validadorGuardianes && manifiestoPkg.getDatosFundas()>1 && manifiestoPkg.getDatosGuardianes()>1){
+                MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosGuardianes()-1));
+                validadorGuardianes=false;
+                
+            }
+
+            manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
+
+            for(RowItemPaquete p:listaPaquetes) {
                      if(p.getTipo()==1) p.setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0);
                      //listaPaquetes.get(0).set
                      else if(p.getTipo()==2)p.setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0);
@@ -343,7 +393,6 @@ public class TabManifiestoAdicional extends LinearLayout {
             //    if(pkg.getEntregaSoloFundas())listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosFundas() : 0);
             //    else if(pkg.getEntregaSoloGuardianes())listaPaquetes.get(0).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianes() : 0);
             //}
-
             if(pkg.getFlagAdicionales() && manifiestoPkg !=null){
                 txtItemPaqueteADGuardianes.setText(manifiestoPkg!=null?manifiestoPkg.getAdGuardianes().toString():"0");
                 txtItemPaqueteADFunda.setText(manifiestoPkg!=null?manifiestoPkg.getAdFundas().toString():"0");
