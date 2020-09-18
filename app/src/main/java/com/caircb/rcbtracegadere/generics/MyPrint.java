@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemEtiqueta;
 import com.caircb.rcbtracegadere.models.ItemEtiquetaFinRuta;
@@ -28,6 +29,7 @@ import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +53,7 @@ public class MyPrint {
     private Integer paquetes1 = 0;
     private Integer paquete2 = 0;
     private Integer paquete3 = 0;
+    private Integer pendienteF55x50=0,pendienteF63x76=0,pendienteFPc1=0,pendienteFPc2=0,pendienteFPc3=0;
 
     private Integer fundas50Recibida = 100;
     private Integer fundas63Recibida  = 80;
@@ -972,6 +975,7 @@ public class MyPrint {
             Integer idSubruta = idSubRuta;
             rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
 
+            final RutasEntity rutasEntity=MyApp.getDBO().rutasDao().fetchConsultarRuta(idSubruta);
             final ItemEtiquetaFinRuta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaCabeceraFinRuta(idSubruta);
             final List<RowItemFinRuta> listaFinRuta = listaFinRutaIngreso;
             if(printEtiqueta != null && listaFinRuta.size() > 0){
@@ -982,7 +986,7 @@ public class MyPrint {
                         {
                             Looper.prepare();
                         }
-                        doConnectionTestFinRuta(printEtiqueta,listaFinRuta);
+                        doConnectionTestFinRuta(printEtiqueta,listaFinRuta,rutasEntity);
                         Looper.loop();
                         Looper.myLooper().quit();
                     }
@@ -999,10 +1003,10 @@ public class MyPrint {
         }
     }
 
-    private void doConnectionTestFinRuta(ItemEtiquetaFinRuta printEtiqueta, List<RowItemFinRuta> listaFinRuta) {
+    private void doConnectionTestFinRuta(ItemEtiquetaFinRuta printEtiqueta, List<RowItemFinRuta> listaFinRuta,RutasEntity rutasEntity) {
         printer = connect();
         if (printer != null) {
-            sendTestLabelFinRuta(printEtiqueta,listaFinRuta);
+            sendTestLabelFinRuta(printEtiqueta,listaFinRuta,rutasEntity);
         } else {
             disconnect("No existe conexion con la impresora");
         }
@@ -1010,7 +1014,7 @@ public class MyPrint {
 
 
 
-    private void sendTestLabelFinRuta(ItemEtiquetaFinRuta printEtiqueta, List<RowItemFinRuta> listaFinRuta) {
+    private void sendTestLabelFinRuta(ItemEtiquetaFinRuta printEtiqueta, List<RowItemFinRuta> listaFinRuta,RutasEntity rutasEntity) {
         boolean complete=false;
         ItemEtiquetaFinRuta row = printEtiqueta;
         try {
@@ -1018,8 +1022,8 @@ public class MyPrint {
             configLabel = getTramaFinRuta(
                     printer,
                     "OP-RE-01",
-                    "123",
-                    (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),
+                    eliminarNulos(rutasEntity.getFechaEntrega()),
+                    eliminarNulos(rutasEntity.getFechaLiquidacion()),
                     eliminarNulos(row.getSubRuta()),
                     eliminarNulos(row.getPlacaVehiculo()),
                     eliminarNulos(row.getFirmaNombreGenerador()),
@@ -1027,7 +1031,12 @@ public class MyPrint {
                     eliminarNulos(row.getFirmaNombreTransportista()),
                     eliminarNulos(row.getFirmaCedulaGenerador()),
                     eliminarNulos(row.getFirmaCedulaTransportista()),
-                    listaFinRuta
+                    listaFinRuta,
+                    rutasEntity.getFunda55(),
+                    rutasEntity.getFunda63(),
+                    rutasEntity.getPc1(),
+                    rutasEntity.getPc2(),
+                    rutasEntity.getPc4()
             );
             zebraPrinterConnection.write(configLabel);
             MyThread.sleep(500);
@@ -1065,6 +1074,12 @@ public class MyPrint {
             paquetes1=paquetes1+item.getfPc1();
             paquete2=paquete2+item.getfPc2();
             paquete3=paquete3+item.getfPc3();
+            pendienteF55x50=pendienteF55x50+item.getPendienteF55x50();
+            pendienteF63x76=pendienteF63x76+item.getPendienteF63x76();
+            pendienteFPc1=pendienteFPc1+item.getPendienteFPc1();
+            pendienteFPc2=pendienteFPc2+item.getPendienteFPc2();
+            pendienteFPc3=pendienteFPc3+item.getPendienteFPc3();
+
         }
         return detalle;
     }
@@ -1072,7 +1087,7 @@ public class MyPrint {
     private byte[] getTramaFinRuta(
             ZebraPrinter printer,
             String codigo,
-            String numero,
+            String fechaEntrega,
             String fechaLiquidacin,
             String subRuta,
             String placaVehiculo,
@@ -1081,20 +1096,27 @@ public class MyPrint {
             String firmaNombreTransportista,
             String firmaCedulaOperador,
             String firmaCedulaTransportista,
-            List<RowItemFinRuta> listaFinRuta) {
+            List<RowItemFinRuta> listaFinRuta,
+            Integer pendienteFunda55,
+            Integer pendienteFunda63,
+            Integer pendienteFundaPc1,
+            Integer pendienteFundaPc2,
+            Integer pendienteFundaPc4) {
 
+        Integer idSubruta = MySession.getIdSubRuta();
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
         String detalle = getDetalleRecoleccionFinRuta(listaFinRuta);
+        RutasEntity rutasEntity=MyApp.getDBO().rutasDao().fetchConsultarRuta(idSubruta);
         byte[] configLabel = null;
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             // cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
         }else {
             cpclConfigLabel =
                     "^XA^CFD ^POI" +
-                            "^FO45,170^A0,29,17^FD No:" +
-                            "^FS^FO230,172^A0,28,16^FD "+numero+"" +
-                            "^FS^FO430,170^A0,29,17^FD COD: \n" +
+                            "^FO45,170^A0,29,17^FD FECHA ENTREGA:" +
+                            "^FS^FO230,172^A0,28,16^FD "+fechaEntrega+"" +
+                            "^FS^FO430,170^A0,29,17^FD COD: " +
                             "^FS^FO560,172^A0,28,16^FD "+codigo+"" +
                             "^FS^FO700,172^A0,28,16^FD PAG 1/1" +
 
@@ -1113,46 +1135,46 @@ public class MyPrint {
                             "^FS^FO430,275^A0,29,17^FD OPERADOR 2:" +
                             "^FS^FO560,277^A0,28,16^FD "+eliminarAcentos(firmaNombreOperador2)+"" +
 
-                            "^FS^FO45,280^A0,30,18^FD____________________________" +
+                            "^FS^FO45,280^A0,30,18^FD__________________________________________________________________________" +
                             "^FS^FO370,318^A0,25,13^FD TOTALES" +
 
-                            "^FS^FO45,315^A0,30,18^FD____________________________" +
+                            "^FS^FO45,315^A0,30,18^FD__________________________________________________________________________" +
                             "^FS^FO60,355^A0,26,14^FD INSUMO" +
                             "^FS^FO190,355^A0,26,14^FD RECIBO(u)" +
                             "^FS^FO340,355^A0,26,14^FD USADO(u)" +
                             "^FS^FO490,355^A0,26,14^FD DEVUELTO(u)" +
                             "^FS^FO640,355^A0,26,14^FD PENDIENTE(u)" +
-                            "^FS^FO45,355^A0,30,18^FD____________________________" +
+                            "^FS^FO45,355^A0,30,18^FD__________________________________________________________________________" +
 
-                            "^FS^FO60,400^A0,26,14^FD f55*50\n" +
-                            "^FS^FO190,400^A0,26,14^FD " +fundas50Recibida+
-                            "^FS^FO340,400^A0,26,14^FD "+fundas50 +
-                            "^FS^FO490,400^A0,26,14^FD " +(fundas50Recibida-fundas50)+
-                            "^FS^FO640,400^A0,26,14^FD 0" +
+                            "^FS^FO60,400^A0,26,14^FD f55*50" +
+                            "^FS^FO190,400^A0,26,14^FD " +pendienteFunda55+
+                            "^FS^FO340,400^A0,26,14^FD " +fundas50 +
+                            "^FS^FO490,400^A0,26,14^FD " +(pendienteFunda55-fundas50)+
+                            "^FS^FO640,400^A0,26,14^FD " +pendienteF55x50+
 
                             "^FS^FO60,425^A0,26,14^FD f63*76" +
-                            "^FS^FO190,425^A0,26,14^FD " +fundas63Recibida+
+                            "^FS^FO190,425^A0,26,14^FD " +pendienteFunda63+
                             "^FS^FO340,425^A0,26,14^FD " +fundas63+
-                            "^FS^FO490,425^A0,26,14^FD " +(fundas63Recibida-fundas63)+
-                            "^FS^FO640,425^A0,26,14^FD 0" +
+                            "^FS^FO490,425^A0,26,14^FD " +(pendienteFunda63-fundas63)+
+                            "^FS^FO640,425^A0,26,14^FD " +pendienteF63x76+
 
                             "^FS^FO60,450^A0,26,14^FD PC-1" +
-                            "^FS^FO190,450^A0,26,14^FD " +paquetes1Recibida+
+                            "^FS^FO190,450^A0,26,14^FD " +pendienteFundaPc1+
                             "^FS^FO340,450^A0,26,14^FD " +paquetes1+
-                            "^FS^FO490,450^A0,26,14^FD " +(paquetes1Recibida-paquetes1)+
-                            "^FS^FO640,450^A0,26,14^FD 0" +
+                            "^FS^FO490,450^A0,26,14^FD " +(pendienteFundaPc1-paquetes1)+
+                            "^FS^FO640,450^A0,26,14^FD " +pendienteFPc1+
 
                             "^FS^FO60,475^A0,26,14^FD PC-2" +
-                            "^FS^FO190,475^A0,26,14^FD " +paquete2Recibida+
+                            "^FS^FO190,475^A0,26,14^FD " +pendienteFundaPc2+
                             "^FS^FO340,475^A0,26,14^FD " +paquete2+
-                            "^FS^FO490,475^A0,26,14^FD " +(paquete2Recibida-paquete2)+
-                            "^FS^FO640,475^A0,26,14^FD 0" +
+                            "^FS^FO490,475^A0,26,14^FD " +(pendienteFundaPc2-paquete2)+
+                            "^FS^FO640,475^A0,26,14^FD " +pendienteFPc2+
 
                             "^FS^FO60,500^A0,26,14^FD PC-4" +
-                            "^FS^FO190,500^A0,26,14^FD " +paquete3Recibida+
+                            "^FS^FO190,500^A0,26,14^FD " +pendienteFundaPc4+
                             "^FS^FO340,500^A0,26,14^FD " +paquete3+
-                            "^FS^FO490,500^A0,26,14^FD " +(paquete3Recibida-paquete3)+
-                            "^FS^FO640,500^A0,26,14^FD 0" +
+                            "^FS^FO490,500^A0,26,14^FD " +(pendienteFundaPc4-paquete3)+
+                            "^FS^FO640,500^A0,26,14^FD " +pendienteFPc3+
 
                             "^FS^FO60,660^A0,26,14^FD Fecha" +
                             "^FS^FO160,660^A0,26,14^FD No. Manifiesto" +
@@ -1161,7 +1183,7 @@ public class MyPrint {
                             "^FS^FO500,660^A0,26,14^FD PC-1" +
                             "^FS^FO600,660^A0,26,14^FD PC-2" +
                             "^FS^FO700,660^A0,26,14^FD PC-4" +
-                            "^FS^FO40,660^A0,30,18^FD_____________________________" +
+                            "^FS^FO40,660^A0,30,18^FD___________________________________________________________________________" +
                             detalle+
                             "^FS^FO100,1650^A0,40,30^FD______________" +
                             "^FS^FO450,1650^A0,40,30^FD______________" +

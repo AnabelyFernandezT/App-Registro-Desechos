@@ -92,6 +92,7 @@ public class DialogFinRuta extends MyDialog {
     List<RowItemPaquete> listaPaquetes;
     List<RowItemFinRuta> listaFinRuta;
     Integer fundas50 = 0,fundas63=0, paquetes1=0, paquete2=0, paquete3=0 ;
+    private Integer pendienteF55x50,pendienteF63x76,pendienteFPc1,pendienteFPc2,pendienteFPc3;
     MyPrint print;
 ///////////////////////////// IMPRESION FIN RUTA HOSPITALARIO
 
@@ -282,7 +283,6 @@ public class DialogFinRuta extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
                 lblpickUpTransportista.setText("0");
                 lblListaManifiestoAsignado.setText("0");
-
 
 
                 String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
@@ -531,6 +531,11 @@ public class DialogFinRuta extends MyDialog {
             paquetes1 = 0;
             paquete2 = 0;
             paquete3 = 0;
+            pendienteF55x50=0;
+            pendienteF63x76=0;
+            pendienteFPc1=0;
+            pendienteFPc2=0;
+            pendienteFPc3=0;
             if(rowItems.get(i).getTipoPaquete()!=null) {
                 pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(rowItems.get(i).getTipoPaquete());
                 manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(rowItems.get(i).getIdAppManifiesto(), rowItems.get(i).getTipoPaquete());
@@ -560,20 +565,25 @@ public class DialogFinRuta extends MyDialog {
                     listaPaquetes.get(0);
                     if (it.getNombre().equals("55x50")) {
                         fundas50 = fundas50+ (it.getCantidad() );
+                        pendienteF55x50=pendienteF55x50+it.getPendiente();
                     }
                     if (it.getNombre().equals("63x76")){
                         fundas63 = fundas63+(it.getCantidad() );
+                        pendienteF63x76=pendienteF63x76+it.getPendiente();
                     }
                     if(it.getNombre().equals("PC 1")){
                         paquetes1 = paquetes1+ (it.getCantidad() );
+                        pendienteFPc1=pendienteFPc1+it.getPendiente();
                     }else if(it.getNombre().equals("PC 2")) {
                         paquete2 = paquete2+(it.getCantidad() );
+                        pendienteFPc2=pendienteFPc2+it.getPendiente();
                     }else if(it.getNombre().equals("PC 4")) {
                         paquete3 = paquete3+ (it.getCantidad() );
+                        pendienteFPc3=pendienteFPc3+it.getPendiente();
                     }
                 }
                 String fecha=(new SimpleDateFormat("dd/MM/yyyy")).format(new Date());
-                listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3));
+                listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3,pendienteF55x50,pendienteF63x76,pendienteFPc1,pendienteFPc2,pendienteFPc3));
                 System.out.println("");
             }
         }
