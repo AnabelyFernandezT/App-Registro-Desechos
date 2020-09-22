@@ -343,7 +343,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final CatalogoItemValor item) {
 
         //Probar sin impresiora
-        /************************************/
+        /************************************
 
         //bultos.clear();
         //subtotal= BigDecimal.ZERO;

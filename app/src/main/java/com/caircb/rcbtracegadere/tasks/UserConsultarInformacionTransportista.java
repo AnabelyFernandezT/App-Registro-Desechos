@@ -23,7 +23,7 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
 
     @Override
     public void execute() {
-
+        progressShow("Consultando...");
         WebService.api().informacionTransportista(new RequestInformacionTransportista(MySession.getIdUsuario())).enqueue(new Callback<DtoInformacionTransportista>() {
             @Override
             public void onResponse(Call<DtoInformacionTransportista> call, Response<DtoInformacionTransportista> response) {
@@ -31,13 +31,13 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+response.body().getIdFinRutaCatalogo());
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+response.body().getIdFinRutaCatalogo());
                     MySession.setDestinoEspecifico(response.body().getNombreCorto());
-
+                    progressHide();
                 }
             }
 
             @Override
             public void onFailure(Call<DtoInformacionTransportista> call, Throwable t) {
-
+                progressHide();
             }
         });
 

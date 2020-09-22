@@ -40,11 +40,12 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
 
     @Override
     public void execute() {
-
+        progressShow("Consultando inicio de sesion previa...");
         WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoInicioRuta>() {
             @Override
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
                 if(response.isSuccessful()){
+                    progressHide();
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().getPlaca());
                     MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte",""+response.body().getEstado());
                     MyApp.getDBO().parametroDao().saveOrUpdate("tipoSubRuta",""+response.body().getTiposubruta());
@@ -71,13 +72,14 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                         }
                     }else {
                        // if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                        progressHide();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<DtoInicioRuta> call, Throwable t) {
-
+                progressHide();
             }
         });
 
