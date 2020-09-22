@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +51,9 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
         progressShow("Sincronizando con servidor el final de ruta");
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
         RequestFinRuta requestFinRuta = createRequestFin();
+        Gson g = new Gson();
+        String f = g.toJson(requestFinRuta);
+        System.out.println(f);
         if(requestFinRuta!=null){
             WebService.api().putFin(requestFinRuta).enqueue(new Callback<DtoInfo>() {
                 @Override
