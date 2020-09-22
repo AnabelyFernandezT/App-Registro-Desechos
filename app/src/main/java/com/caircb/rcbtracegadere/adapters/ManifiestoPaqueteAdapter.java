@@ -28,14 +28,15 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
 
     private Context mContext;
     private List<RowItemPaquete> paquetesList ;
-    Integer idPaquete, estadoManifiesto;
+    Integer idPaquete, estadoManifiesto, idAppManifiesto;
     AlertDialog.Builder messageBox;
 
-    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete, Integer estadoManifiesto){
+    public ManifiestoPaqueteAdapter(Context context,Integer idPaquete, Integer estadoManifiesto, Integer idAppManifiesto){
         mContext = context;
         paquetesList = new ArrayList<>();
         this.idPaquete = idPaquete;
         this.estadoManifiesto = estadoManifiesto;
+        this.idAppManifiesto=idAppManifiesto;
     }
 
     @NonNull
@@ -98,9 +99,9 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
 
                             if(it.getCantidad()==valor) valorDiferencia=it.getCantidad();
                             if(it.getTipo() == 1){ //fundas
-                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, valor, valorDiferencia);
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, valor, valorDiferencia,idAppManifiesto);
                             }else if(it.getTipo()==2){ // guardianes
-                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, valor, valorDiferencia);
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, valor, valorDiferencia,idAppManifiesto);
                             }
 
                             it.setPendiente(valor);
@@ -111,12 +112,12 @@ public class ManifiestoPaqueteAdapter extends RecyclerView.Adapter<ManifiestoPaq
                         holder.txtPkgPendiente.setText("" + v.getTag().toString());
                         if (it.getInitPendiente() == null) {
                             if(it.getTipo() == 1) {
-                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, 0, 0);
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idPaquete, 0, 0,idAppManifiesto);
                                 it.setPendiente(0);
                                 it.setInitPendiente(0);
                             }
                             else if(it.getTipo() == 2) {
-                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0);
+                                MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idPaquete, 0, 0,idAppManifiesto);
                                 it.setPendiente(0);
                                 it.setInitPendiente(0);
                             }

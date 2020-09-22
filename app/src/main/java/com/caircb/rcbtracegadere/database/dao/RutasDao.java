@@ -35,6 +35,9 @@ public abstract class RutasDao {
     @Query("select * from tb_rutas where codigo=:id")
     public  abstract RutasEntity fetchConsultarNombre(int id);
 
+    @Query("select * from tb_rutas where codigo=:idSubRuta")
+    public  abstract RutasEntity fetchConsultarRuta(int idSubRuta);
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createRuta(RutasEntity entity);
@@ -43,11 +46,19 @@ public abstract class RutasDao {
         RutasEntity catalogo = fetchConsultarCatalogoEspecifico(catalogos.getIdSubRuta());
 
             if (catalogo == null) {
-                catalogo = new RutasEntity(catalogos.getIdSubRuta(),catalogos.getNombreRuta(),catalogos.getTiposubruta());
+                catalogo = new RutasEntity(catalogos.getIdSubRuta(),catalogos.getNombreRuta(), catalogos.getIdInsumo(),catalogos.getTiposubruta(),catalogos.getFechaEntrega(),catalogos.getFechaLiquidacion(),catalogos.getFunda63(),catalogos.getFunda55(),catalogos.getPc1(),catalogos.getPc2(),catalogos.getPc4());
             } else {
                 catalogo.setCodigo(catalogos.getIdSubRuta());
                 catalogo.setNombre(catalogos.getNombreRuta());
                 catalogo.setTiposubruta(catalogos.getTiposubruta());
+                catalogo.setFechaEntrega(catalogos.getFechaEntrega());
+                catalogo.setFechaLiquidacion(catalogos.getFechaLiquidacion());
+                catalogo.setFunda55(catalogos.getFunda55());
+                catalogo.setFunda63(catalogos.getFunda63());
+                catalogo.setPc1(catalogos.getPc1());
+                catalogo.setPc2(catalogos.getPc2());
+                catalogo.setPc4(catalogos.getPc4());
+                catalogo.setIdInsumo(catalogos.getIdInsumo());
             }
 
             createRuta(catalogo);

@@ -92,7 +92,9 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     List<RowItemPaquete> listaPaquetes;
     List<RowItemFinRuta> listaFinRuta;
     Integer fundas50 = 0,fundas63=0, paquetes1=0, paquete2=0, paquete3=0 ;
+    private Integer pendienteF55x50,pendienteF63x76,pendienteFPc1,pendienteFPc2,pendienteFPc3;
     MyPrint print;
+    UserConsultarRutasTask consultarPlacasInicioRutaDisponible;
 /////////////////////////////
 
     //public Context mContext;
@@ -187,8 +189,15 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         btnPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer idSubruta = MySession.getIdSubRuta();
-                imprimirEtiquetaFinRutaHospitalaria();
+                /*Integer idSubruta = MySession.getIdSubRuta();
+                imprimirEtiquetaFinRutaHospitalaria();*/
+              /*  consultarPlacasInicioRutaDisponible = new UserConsultarRutasTask(getActivity());
+                consultarPlacasInicioRutaDisponible.setOnVehiculoListener(new UserConsultarRutasTask.OnPlacaListener() {
+                    @Override
+                    public void onSuccessful(List<DtoFindRutas> catalogos) {
+                    }
+                });
+                consultarPlacasInicioRutaDisponible.execute();*/
             }
         });
 
@@ -631,6 +640,11 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
             paquetes1 = 0;
             paquete2 = 0;
             paquete3 = 0;
+            pendienteF55x50=0;
+            pendienteF63x76=0;
+            pendienteFPc1=0;
+            pendienteFPc2=0;
+            pendienteFPc3=0;
             if(rowItems.get(i).getTipoPaquete()!=null) {
                 pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(rowItems.get(i).getTipoPaquete());
                 manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(rowItems.get(i).getIdAppManifiesto(), rowItems.get(i).getTipoPaquete());
@@ -673,7 +687,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                     }
                 }
                 String fecha=(new SimpleDateFormat("dd/MM/yyyy")).format(new Date());
-                listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3));
+                listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3,pendienteF55x50,pendienteF63x76,pendienteFPc1,pendienteFPc2,pendienteFPc3));
                 System.out.println("");
             }
         }

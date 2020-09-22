@@ -10,6 +10,7 @@ public class RequestFinRuta {
     private Integer tipo;
     private Integer idDestinatarioFinRutaCatalogo;
     private Integer idLote;
+    private Integer idInsumo;
 
     public Integer getIdSubRuta() {
         return idSubRuta;
@@ -65,5 +66,13 @@ public class RequestFinRuta {
 
     public void setIdLote(Integer idLote) {
         this.idLote = idLote;
+    }
+
+    public Integer getIdInsumo() {
+        return idInsumo;
+    }
+
+    public void setIdInsumo(Integer idInsumo) {
+        this.idInsumo = idInsumo;
     }
 }

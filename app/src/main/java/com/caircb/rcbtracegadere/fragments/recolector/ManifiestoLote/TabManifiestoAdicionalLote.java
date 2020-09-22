@@ -282,7 +282,7 @@ public class TabManifiestoAdicionalLote extends LinearLayout {
                     2));
 
             recyclerLtsPaquetes.setLayoutManager(new LinearLayoutManager(getContext()));
-            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete, estadoManifiesto);
+            manifiestoPaqueteAdapter = new ManifiestoPaqueteAdapter(getContext(),idAppTipoPaquete, estadoManifiesto,idAppManifiesto);
             manifiestoPaqueteAdapter.setTaskList(listaPaquetes);
             recyclerLtsPaquetes.setAdapter(manifiestoPaqueteAdapter);
 
@@ -302,13 +302,13 @@ public class TabManifiestoAdicionalLote extends LinearLayout {
             //actualizar los pendientes a 0...
             for(RowItemPaquete it:listaPaquetes) {
                 if(it.getTipo() == 1) {
-                    MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idAppTipoPaquete, 0, 0);
+                    MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesFundas(idAppTipoPaquete, 0, 0,idAppManifiesto);
                     it.setPendiente(0);
                     it.setDiferencia(0);
                     it.setInitPendiente(0);
                 }
                 else if(it.getTipo() == 2) {
-                    MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idAppTipoPaquete, 0, 0);
+                    MyApp.getDBO().manifiestoPaqueteDao().UpdatePaquetesPendientesGuardianes(idAppTipoPaquete, 0, 0,idAppManifiesto);
                     it.setPendiente(0);
                     it.setDiferencia(0);
                     it.setInitPendiente(0);
