@@ -104,6 +104,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
         });
         rowItems = MyApp.getDBO().manifiestoSedeDao().fetchManifiestosAsigByClienteOrNumManif();
         System.out.println("");
+/*
 
         String banderaValidacion = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_bandera_validacion");
         if (banderaValidacion.equals("0")) {
@@ -141,7 +142,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
                                     System.out.println(idSubRuta);
                                     if (!idSubRuta.equals("0")) {
                                         int idSubRutaEnviar = Integer.parseInt(idSubRuta);
-                                        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(getActivity(), idSubRutaEnviar, 0, 4);
+                                        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(getActivity(), idSubRutaEnviar, 0, 4,0);
                                         userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
                                             @Override
                                             public void onSuccessful() {
@@ -173,6 +174,7 @@ public class HojaRutaAsignadaSedeFragment extends MyFragment implements View.OnC
 
             }
         }
+*/
 
     }
 

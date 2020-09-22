@@ -73,7 +73,7 @@ public class MyPrint {
         this.activity = activity;
 
         //inicialize spinner...
-        dialog = new ProgressDialog(activity);
+        dialog = new ProgressDialog(mContext);
         dialog.setMessage("Imprimiendo "+ System.getProperty("line.separator")+"esto puede tardar varios segundos...");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(false);
@@ -976,7 +976,7 @@ public class MyPrint {
 
     public void printerFinRuta(Integer idSubRuta, List<RowItemFinRuta> listaFinRutaIngreso){
         if(checkImpresora()) {
-
+            dialog.show();
             Integer idSubruta = idSubRuta;
             rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
 

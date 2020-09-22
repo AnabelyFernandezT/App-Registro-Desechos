@@ -9,6 +9,7 @@ public class RequestFinRuta {
     private String kilometraje;
     private Integer tipo;
     private Integer idDestinatarioFinRutaCatalogo;
+    private Integer idTransportistaRecolector;
     private Integer idLote;
     private Integer idInsumo;
 
@@ -74,5 +75,13 @@ public class RequestFinRuta {
 
     public void setIdInsumo(Integer idInsumo) {
         this.idInsumo = idInsumo;
+    }
+
+    public Integer getIdTransportistaRecolector() {
+        return idTransportistaRecolector;
+    }
+
+    public void setIdTransportistaRecolector(Integer idTransportistaRecolector) {
+        this.idTransportistaRecolector = idTransportistaRecolector;
     }
 }
