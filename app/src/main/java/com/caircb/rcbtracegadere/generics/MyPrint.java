@@ -1050,7 +1050,6 @@ public class MyPrint {
             if(complete)finalized();
             if(complete){
                 if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
-                dialog.dismiss();
             }
             else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
         }
