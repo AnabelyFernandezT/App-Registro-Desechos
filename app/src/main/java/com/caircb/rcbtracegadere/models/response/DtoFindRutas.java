@@ -1,5 +1,7 @@
 package com.caircb.rcbtracegadere.models.response;
 
+import com.itextpdf.text.pdf.PRIndirectReference;
+
 public class DtoFindRutas {
 
     private Integer idSubRuta;
@@ -10,6 +12,7 @@ public class DtoFindRutas {
     private String nombreConductor;
     private String nombreRuta;
     private Integer tiposubruta;
+    private Integer idInsumo;
     private String fechaEntrega;
     private String fechaLiquidacion;
     private Integer funda63;
@@ -63,6 +66,14 @@ public class DtoFindRutas {
 
     public void setTiposubruta(Integer tiposubruta) {
         this.tiposubruta = tiposubruta;
+    }
+
+    public Integer getIdInsumo() {
+        return idInsumo;
+    }
+
+    public void setIdInsumo(Integer idInsumo) {
+        this.idInsumo = idInsumo;
     }
 
     public String getFechaEntrega() {

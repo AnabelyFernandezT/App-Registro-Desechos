@@ -203,8 +203,8 @@ public class DialogFinRuta extends MyDialog {
 
             }
         });
+        desbloqueoBotones();
         traerDatosAnteriores();
-
         traerDestinos();
     }
 
@@ -252,7 +252,7 @@ public class DialogFinRuta extends MyDialog {
 
     private void guardarDatos()
     {
-
+        bloqueoBotones();
         Date dia = AppDatabase.getDateTime();
         CatalogoEntity c = MyApp.getDBO().catalogoDao().fetchConsultarCatalogo(destino,12);
         final int idDestino = c!=null?c.getIdSistema():-1;
@@ -284,7 +284,6 @@ public class DialogFinRuta extends MyDialog {
                 lblpickUpTransportista.setText("0");
                 lblListaManifiestoAsignado.setText("0");
 
-
                 String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                 if (tipoSubruta.equals("2")) {//TIPO SUBRUTA HOSPITALARIA
                     final DialogBuilder builderw = new DialogBuilder(getContext());
@@ -306,6 +305,9 @@ public class DialogFinRuta extends MyDialog {
                     });
                     builderw.show();
                     imprimirEtiquetaFinRutaHospitalaria();
+                }else {
+                    MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+                    DialogFinRuta.this.dismiss();
                 }
 
             }
@@ -314,6 +316,7 @@ public class DialogFinRuta extends MyDialog {
 
             @Override
             public void onFailure() {
+                desbloqueoBotones();
                 DialogFinRuta.this.dismiss();
             }
         });
@@ -588,6 +591,14 @@ public class DialogFinRuta extends MyDialog {
             }
         }
     }
-
-
+    private void bloqueoBotones(){
+        btnFinApp.setEnabled(false);
+        listaDestino.setEnabled(false);
+        listaDestinoParticular.setEnabled(false);
+    }
+    private void desbloqueoBotones(){
+        btnFinApp.setEnabled(true);
+        listaDestino.setEnabled(true);
+        listaDestinoParticular.setEnabled(true);
+    }
 }
