@@ -82,7 +82,7 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     @Override
     public void execute() {
         //Subir Fotos
-        progressShow("registrando ...");
+        progressShow("Registrando ...");
         model = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         //images por defecto

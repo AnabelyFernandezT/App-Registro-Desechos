@@ -81,7 +81,7 @@ public class UserRegistrarRecoleccionGestores extends MyRetrofitApi implements R
     @Override
     public void execute() {
         //Subir Fotos
-        progressShow("registrando ...");
+        progressShow("Registrando ...");
         model = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
 
         //images por defecto
