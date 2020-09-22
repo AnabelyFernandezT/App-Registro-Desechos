@@ -490,7 +490,12 @@ public class MyPrint {
             String tratamiento,
             String destinatario,
             boolean aplicaDevolucion) {
-
+        String pesoI="";
+        if(peso<=0.0){
+            pesoI="PESO EN PLANTA";
+        }else{
+            pesoI=String.valueOf(peso);
+        }
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
         byte[] configLabel = null;
@@ -509,7 +514,7 @@ public class MyPrint {
                                 "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
                                 "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
                                 "^FS^FO60,120^AD^FD FECHA: " + fecha +
-                                "^FS^FO60,150^AD^FD PESO:" + peso +
+                                "^FS^FO60,150^AD^FD PESO:" + pesoI +
                                 //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                                 //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
                                 "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
@@ -527,7 +532,7 @@ public class MyPrint {
                                 "^FS^FO60,60^AD^FD " + (cliente.length() > 32 ? cliente.substring(0, 32) : cliente) +
                                 "^FS^FO60,90^AD^FD #M.U.E: " + manifiesto.trim() +
                                 "^FS^FO60,120^AD^FD FECHA: " + fecha +
-                                "^FS^FO60,150^AD^FD PESO:" + peso +
+                                "^FS^FO60,150^AD^FD PESO:" + pesoI +
                                 //"^FS^FO40,150^AD^FD UNIDAD: "+row.getUnidad()+
                                 //"^FS^FO280,150^AD^FD PESO:"+row.getPeso()+
                                 "^FS^FO60,180^AD^FD RESPONSABLE: " + MySession.getUsuarioNombre().toUpperCase() +
