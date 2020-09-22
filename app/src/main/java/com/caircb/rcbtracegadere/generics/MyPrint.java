@@ -971,7 +971,7 @@ public class MyPrint {
 
     public void printerFinRuta(Integer idSubRuta, List<RowItemFinRuta> listaFinRutaIngreso){
         if(checkImpresora()) {
-
+            dialog.show();
             Integer idSubruta = idSubRuta;
             rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
 
@@ -1050,6 +1050,7 @@ public class MyPrint {
             if(complete)finalized();
             if(complete){
                 if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+                dialog.dismiss();
             }
             else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
         }
