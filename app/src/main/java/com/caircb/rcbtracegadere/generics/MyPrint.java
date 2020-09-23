@@ -73,7 +73,7 @@ public class MyPrint {
         this.activity = activity;
 
         //inicialize spinner...
-        dialog = new ProgressDialog(mContext);
+        dialog = new ProgressDialog(activity);
         dialog.setMessage("Imprimiendo "+ System.getProperty("line.separator")+"esto puede tardar varios segundos...");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(false);
