@@ -15,6 +15,7 @@ import com.caircb.rcbtracegadere.models.request.RequestFinRuta;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.response.DtoInfo;
 import com.caircb.rcbtracegadere.services.WebService;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +51,9 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
         progressShow("Sincronizando con servidor el final de ruta");
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
         RequestFinRuta requestFinRuta = createRequestFin();
+        Gson g = new Gson();
+        String f = g.toJson(requestFinRuta);
+        System.out.println(f);
         if(requestFinRuta!=null){
             WebService.api().putFin(requestFinRuta).enqueue(new Callback<DtoInfo>() {
                 @Override
@@ -86,9 +90,11 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
 
     private RequestFinRuta createRequestFin(){
         RequestFinRuta rq=null;
+        Integer idTransportistaRecolector=MySession.getIdUsuario();
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
         parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote");
+        Integer idInsumo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("idInsumo")==null?0:Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("idInsumo"));
         if(parametro!=null){idLote =Integer.parseInt(parametro.getValor());}else{idLote=0;}
 
         if (model!=null){
@@ -99,7 +105,9 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
             rq.setKilometraje(model.getKilometrajeFin());
             rq.setTipo(2);
             rq.setIdDestinatarioFinRutaCatalogo(idDestino);
+            rq.setIdTransportistaRecolector(idTransportistaRecolector);
             rq.setIdLote(idLote);
+            rq.setIdInsumo(idInsumo);
         }
         return rq;
     }

@@ -971,7 +971,7 @@ public class MyPrint {
 
     public void printerFinRuta(Integer idSubRuta, List<RowItemFinRuta> listaFinRutaIngreso){
         if(checkImpresora()) {
-
+            dialog.show();
             Integer idSubruta = idSubRuta;
             rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
 

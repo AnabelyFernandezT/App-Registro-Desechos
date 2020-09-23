@@ -112,7 +112,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion" + MySession.getIdUsuario(), "1");
             MyApp.getDBO().manifiestoDetallePesosDao().updateImpresionByIdUsuarioRecolector(MySession.getIdUsuario(), true);
         }
-        if (remoteMessage.getData().get("idCatalogoRespuesta").equals("11")) {//no
+        if (remoteMessage.getData().get("idCatalogoRespuesta").equals("11") || remoteMessage.getData().get("idCatalogoRespuesta").equals("17")) {//no
             MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion" + MySession.getIdUsuario(), "0");
         }
     }

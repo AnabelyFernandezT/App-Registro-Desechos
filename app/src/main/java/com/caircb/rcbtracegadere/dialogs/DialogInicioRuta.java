@@ -164,6 +164,8 @@ public class DialogInicioRuta extends MyDialog {
                     placa = (String) spinnerPlacas.getSelectedItem();
                     lblPlaca.setText(listaPlacasDisponibles.get(position-1).getPlaca());
                     placaInfoModulos=listaPlacasDisponibles.get(position-1).getPlaca();
+                    Integer idInsumo = listaPlacasDisponibles.get(position-1).getIdInsumo();
+                    MyApp.getDBO().parametroDao().saveOrUpdate("idInsumo",""+idInsumo);
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);
                     lblTransportistaRecolector.setText(listaPlacasDisponibles.get(position-1).getNombreChofer());
                     lblAuxiliarRecoleccion1.setText(listaPlacasDisponibles.get(position-1).getNombreAuxiliar());
@@ -399,7 +401,7 @@ public class DialogInicioRuta extends MyDialog {
                     MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                     MyApp.getDBO().impresoraDao().updateDefaulImpresoraWorked(impresoraID);
                 }
-                //DialogInicioRuta.this.dismiss();
+                DialogInicioRuta.this.dismiss();
                 if(mOnSuccessListener!=null)mOnSuccessListener.isSuccessful();
             }
 

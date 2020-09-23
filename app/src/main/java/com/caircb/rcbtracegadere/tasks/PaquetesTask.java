@@ -31,21 +31,22 @@ public class PaquetesTask extends MyRetrofitApi implements RetrofitCallbacks {
 
     @Override
     public void execute() {
-
         WebService.api().getPaquetes().enqueue(new Callback<List<DtoPaquetes>>() {
             @Override
             public void onResponse(Call<List<DtoPaquetes>> call, Response<List<DtoPaquetes>> response) {
+                progressShow("Consultando...");
                 if(response.isSuccessful()){
 
                     for (DtoPaquetes reg:response.body()){
                         MyApp.getDBO().paqueteDao().saveOrUpdate(reg);
                     }
+                    progressHide();
                 }
             }
 
             @Override
             public void onFailure(Call<List<DtoPaquetes>> call, Throwable t) {
-
+                progressHide();
             }
         });
 

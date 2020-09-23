@@ -36,10 +36,10 @@ public class UserConsultaFirmaUsuarioTask extends MyRetrofitApi implements Retro
 
     @Override
     public void execute()  {
+        progressShow("Cargando datos...");
         WebService.api().obtenerFirmaUsuario(new RequestFirmaUsuario(idTransportistaRecolector)).enqueue(new Callback<DtoFirmaUsuario>() {
             @Override
             public void onResponse(Call<DtoFirmaUsuario> call, Response<DtoFirmaUsuario> response) {
-                progressShow("Cargando datos...");
                 if (response.isSuccessful()) {
                     MyApp.getDBO().consultarFirmaUsuarioDao().saveOrUpdate(response.body());
                     if(onFirmaListener!=null)onFirmaListener.onSuccessful();

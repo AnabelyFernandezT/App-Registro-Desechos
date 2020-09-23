@@ -15,6 +15,7 @@ public class RutasEntity {
 
     private String nombre;
     private Integer tiposubruta;
+    private Integer idInsumo;
     private String fechaEntrega;
     private String fechaLiquidacion;
     private Integer funda63;
@@ -24,10 +25,11 @@ public class RutasEntity {
     private Integer pc4;
 
 
-    public RutasEntity(Integer codigo, String nombre, Integer tiposubruta, String fechaEntrega, String fechaLiquidacion, Integer funda63, Integer funda55, Integer pc1, Integer pc2, Integer pc4) {
+    public RutasEntity(Integer codigo, String nombre, Integer tiposubruta, Integer idInsumo, String fechaEntrega, String fechaLiquidacion, Integer funda63, Integer funda55, Integer pc1, Integer pc2, Integer pc4) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.tiposubruta = tiposubruta;
+        this.idInsumo = idInsumo;
         this.fechaEntrega = fechaEntrega;
         this.fechaLiquidacion = fechaLiquidacion;
         this.funda55 = funda55;
@@ -67,6 +69,14 @@ public class RutasEntity {
 
     public void setTiposubruta(Integer tiposubruta) {
         this.tiposubruta = tiposubruta;
+    }
+
+    public Integer getIdInsumo() {
+        return idInsumo;
+    }
+
+    public void setIdInsumo(Integer idInsumo) {
+        this.idInsumo = idInsumo;
     }
 
     public String getFechaEntrega() {

@@ -30,21 +30,22 @@ public abstract class ManifiestoPaqueteDao {
     public abstract void actualiarPaquete(ManifiestoPaquetesEntity entity);
 
     @Query("update tb_manifiestos_paquete set datosFundasPendientes=:datosFundasPendientes, datosFundasDiferencia =:datosfundasDiferencia " +
-            " where idPaquete =:idPaquete")
-    abstract void updatePendientesFundas (Integer idPaquete, Integer datosFundasPendientes, Integer datosfundasDiferencia);
+            " where idAppManifiesto=:idManifiesto and idPaquete =:idPaquete")
+    abstract void updatePendientesFundas (Integer idPaquete, Integer datosFundasPendientes, Integer datosfundasDiferencia, Integer idManifiesto);
 
-    @Query("update tb_manifiestos_paquete set datosGuardianesPendientes =:datosGuardianesPendientes, datosGuardianesDiferencia =:datosGuardianesDiferencia where  idPaquete =:idPaquete")
-    abstract void updatePendientesGuardianes (Integer idPaquete,  Integer datosGuardianesPendientes, Integer datosGuardianesDiferencia);
+    @Query("update tb_manifiestos_paquete set datosGuardianesPendientes =:datosGuardianesPendientes, datosGuardianesDiferencia =:datosGuardianesDiferencia " +
+            "where idAppManifiesto=:idManifiesto and  idPaquete =:idPaquete")
+    abstract void updatePendientesGuardianes (Integer idPaquete,  Integer datosGuardianesPendientes, Integer datosGuardianesDiferencia, Integer idManifiesto);
 
     @Query("delete from tb_manifiestos_paquete")
     public abstract void deleteTablePaquetes();
 
-    public void UpdatePaquetesPendientesFundas (Integer idPaquete, Integer datosFundasPendientes, Integer datosfundasDiferencia){
-        updatePendientesFundas(idPaquete,datosFundasPendientes, datosfundasDiferencia);
+    public void UpdatePaquetesPendientesFundas (Integer idPaquete, Integer datosFundasPendientes, Integer datosfundasDiferencia, Integer idManifiesto){
+        updatePendientesFundas(idPaquete,datosFundasPendientes, datosfundasDiferencia, idManifiesto);
     }
 
-    public void UpdatePaquetesPendientesGuardianes(Integer idPaquete, Integer datosGuardianesPendientes, Integer datosGuardianesDiferencia){
-        updatePendientesGuardianes(idPaquete, datosGuardianesPendientes, datosGuardianesDiferencia);
+    public void UpdatePaquetesPendientesGuardianes(Integer idPaquete, Integer datosGuardianesPendientes, Integer datosGuardianesDiferencia, Integer idManifiesto){
+        updatePendientesGuardianes(idPaquete, datosGuardianesPendientes, datosGuardianesDiferencia, idManifiesto);
     }
 
     //Validacion igualar a 1

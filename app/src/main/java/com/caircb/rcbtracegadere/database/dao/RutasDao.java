@@ -46,7 +46,7 @@ public abstract class RutasDao {
         RutasEntity catalogo = fetchConsultarCatalogoEspecifico(catalogos.getIdSubRuta());
 
             if (catalogo == null) {
-                catalogo = new RutasEntity(catalogos.getIdSubRuta(),catalogos.getNombreRuta(),catalogos.getTiposubruta(),catalogos.getFechaEntrega(),catalogos.getFechaLiquidacion(),catalogos.getFunda63(),catalogos.getFunda55(),catalogos.getPc1(),catalogos.getPc2(),catalogos.getPc4());
+                catalogo = new RutasEntity(catalogos.getIdSubRuta(),catalogos.getNombreRuta(), catalogos.getIdInsumo(),catalogos.getTiposubruta(),catalogos.getFechaEntrega(),catalogos.getFechaLiquidacion(),catalogos.getFunda63(),catalogos.getFunda55(),catalogos.getPc1(),catalogos.getPc2(),catalogos.getPc4());
             } else {
                 catalogo.setCodigo(catalogos.getIdSubRuta());
                 catalogo.setNombre(catalogos.getNombreRuta());
@@ -58,6 +58,7 @@ public abstract class RutasDao {
                 catalogo.setPc1(catalogos.getPc1());
                 catalogo.setPc2(catalogos.getPc2());
                 catalogo.setPc4(catalogos.getPc4());
+                catalogo.setIdInsumo(catalogos.getIdInsumo());
             }
 
             createRuta(catalogo);
