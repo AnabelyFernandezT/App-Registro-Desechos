@@ -86,6 +86,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
 
     private RequestFinRuta createRequestFin(){
         RequestFinRuta rq=null;
+        Integer idTransportistaRecolector=MySession.getIdUsuario();
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
         Integer idDestino = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
         parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("manifiesto_lote");
@@ -100,6 +101,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
             rq.setKilometraje(model.getKilometrajeFin());
             rq.setTipo(2);
             rq.setIdDestinatarioFinRutaCatalogo(idDestino);
+            rq.setIdTransportistaRecolector(idTransportistaRecolector);
             rq.setIdLote(idLote);
             rq.setIdInsumo(idInsumo);
         }
