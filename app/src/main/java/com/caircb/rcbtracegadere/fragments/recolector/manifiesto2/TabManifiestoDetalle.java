@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.strictmode.UnbufferedIoViolation;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +93,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     CheckBox chkRegistrarTara;
     MyPrint print;
     /*Integer idSubRuta;*/
+    ProgressDialog dialog;
 
 
     public TabManifiestoDetalle(Context context,
@@ -1018,46 +1021,61 @@ public class TabManifiestoDetalle extends LinearLayout {
 
     private void imprimirEtiquetaIndividual(final Integer idAppManifiesto, final Integer idManifiestoDetalle, final Integer totalEtiquetas) {
 
-        try {
-            print = new MyPrint((Activity) getContext());
-            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                @Override
-                public void onSuccessful() {
-                    //Impresion finalizada
-                    MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresionLote(idAppManifiesto, idManifiestoDetalle, true);
-                    reloadData();
-                }
 
-                @Override
-                public void onFailure(String message) {
+        final ProgressDialog progress = ProgressDialog.show(this.getContext(), "", "Imprimiendo...", true);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    dialog = new ProgressDialog(getContext());
+                    print = new MyPrint((Activity) getContext());
+                    print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            //Impresion finalizada
+                            progress.dismiss();
+                            MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresionLote(idAppManifiesto, idManifiestoDetalle, true);
+                            reloadData();
+                        }
+
+                        @Override
+                        public void onFailure(String message) {
+                            final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                            dialogBuilder2.setMessage(message);
+                            dialogBuilder2.setCancelable(false);
+                            dialogBuilder2.setTitle("CONFIRMACIÓN");
+                            dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    progress.dismiss();
+                                    dialogBuilder2.dismiss();
+                                }
+                            });
+                            dialogBuilder2.show();
+                        }
+                    });
+                    print.printerIndividualLote(idAppManifiesto, idManifiestoDetalle, totalEtiquetas);
+
+                } catch (Exception e) {
                     final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                    dialogBuilder2.setMessage(message);
+                    dialogBuilder2.setMessage("No hay conexion con la impresora");
                     dialogBuilder2.setCancelable(false);
                     dialogBuilder2.setTitle("CONFIRMACIÓN");
                     dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            progress.dismiss();
                             dialogBuilder2.dismiss();
                         }
                     });
                     dialogBuilder2.show();
                 }
-            });
-            print.printerIndividualLote(idAppManifiesto, idManifiestoDetalle, totalEtiquetas);
+            }
+        }, 1000);
 
-        } catch (Exception e) {
-            final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-            dialogBuilder2.setMessage("No hay conexion con la impresora");
-            dialogBuilder2.setCancelable(false);
-            dialogBuilder2.setTitle("CONFIRMACIÓN");
-            dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialogBuilder2.dismiss();
-                }
-            });
-            dialogBuilder2.show();
-        }
+
 
     }
 

@@ -3,10 +3,12 @@ package com.caircb.rcbtracegadere.fragments.recolector;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,6 +109,8 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
     ImageButton regionBuscar;
     TextView txtBuscar, txtSincronizar, txtManifiestos;
     DialogBuilder dialogBuilder;
+
+    ProgressDialog dialog;
 
 
     UserConsultarHojaRutaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaTask.TaskListener() {
@@ -607,27 +611,40 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
 
 
     private void imprimirEtiquetaFinRutaHospitalaria(){
-        Integer idSubruta = MySession.getIdSubRuta();
-        loadDataPaquetes(idSubruta);
-        List<RowItemFinRuta> ListaEnviar=listaFinRuta;
-        try {
-            print = new MyPrint(getActivity());
-            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                @Override
-                public void onSuccessful() {
-                    //Impresion finalizada
-                    System.out.print("Compleado correctamente");
+        final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Integer idSubruta = MySession.getIdSubRuta();
+                loadDataPaquetes(idSubruta);
+                List<RowItemFinRuta> ListaEnviar=listaFinRuta;
+                try {
+                    dialog = new ProgressDialog(getActivity());
+                    print = new MyPrint(getActivity());
+                    print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            //Impresion finalizada
+                            progress.dismiss();
+                            System.out.print("Compleado correctamente");
+                        }
+                        @Override
+                        public void onFailure(String message) {
+                            progress.dismiss();
+                            messageBox(message);
+                        }
+                    });
+                    print.printerFinRuta(idSubruta,ListaEnviar);
+                }catch (Exception e){
+                    progress.dismiss();
+                    messageBox("No hay conexion con la impresora");
                 }
-                @Override
-                public void onFailure(String message) {
-                    messageBox(message);
-                }
-            });
-            print.printerFinRuta(idSubruta,ListaEnviar);
-        }catch (Exception e){
-            messageBox("No hay conexion con la impresora");
-        }
-        System.out.println("");
+                System.out.println("");
+            }
+        }, 1000);
+
+
     }
 
     private void loadDataPaquetes(Integer idSubruta){
