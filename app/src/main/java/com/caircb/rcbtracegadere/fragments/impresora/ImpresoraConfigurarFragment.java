@@ -83,7 +83,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
         btnCambiarImpresora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
             }
         });
     }
