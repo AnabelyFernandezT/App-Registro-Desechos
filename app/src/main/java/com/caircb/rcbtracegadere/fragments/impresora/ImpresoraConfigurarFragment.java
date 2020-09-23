@@ -5,7 +5,9 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caircb.rcbtracegadere.adapters.RecyclerViewPrinterAdapter;
+import com.caircb.rcbtracegadere.database.entity.ImpresoraEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
@@ -34,8 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImpresoraConfigurarFragment extends MyFragment implements View.OnClickListener {
-    LinearLayout btn_search, btn_back;
+    LinearLayout btn_search, btn_back,lnlNOImpresora,lnlImpresoraPredeterminada;
     View progressOverlay;
+    Button btnCambiarImpresora;
+    TextView txtImpresoraCodigo,txtImpresoraAdress;
     DialogBuilder builder;
     private String selectedPrinter;
     private static DiscoveryHandler btDiscoveryHandler = null;
@@ -53,6 +58,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                              Bundle savedInstanceState) {
         setView(inflater.inflate(R.layout.fragment_impresora, container, false));
         init();
+        initImpresoraPredeterminada();
         initPairedPrinters();
         return getView();
     }
@@ -67,6 +73,46 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
         rvPairedPrinters = getView().findViewById(R.id.rvPairedPrinters);
         touchListenerAP = new OnRecyclerTouchListener(getActivity(),rvAvailablePrinters);
         touchListenerPP = new OnRecyclerTouchListener(getActivity(),rvPairedPrinters);
+
+        lnlNOImpresora =  getView().findViewById(R.id.lnlNOImpresora);
+        lnlImpresoraPredeterminada = getView().findViewById(R.id.lnlImpresoraPredeterminada);
+        btnCambiarImpresora = getView().findViewById(R.id.btnCambiarImpresora);
+        txtImpresoraAdress = getView().findViewById(R.id.txtImpresoraAdress);
+        txtImpresoraCodigo = getView().findViewById(R.id.txtImpresoraCodigo);
+
+        btnCambiarImpresora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    private boolean checkImpresora(){
+        String data = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        return MyApp.getDBO().impresoraDao().existeImpresora(data!=null && data.length()>0?Integer.parseInt(data):0);
+    }
+
+    private void initImpresoraPredeterminada(){
+        if(checkImpresora()){
+            //obtener el data de la impresora seleccionada...
+            ImpresoraEntity imp = MyApp.getDBO().impresoraDao().searchImpresoraPredeterminada();
+            if(imp!=null){
+                lnlNOImpresora.setVisibility(View.GONE);
+                lnlImpresoraPredeterminada.setVisibility(View.VISIBLE);
+                txtImpresoraCodigo.setText(imp.getCode());
+                txtImpresoraAdress.setText(imp.getAddress());
+                btnCambiarImpresora.setEnabled(true);
+            }else{
+                txtImpresoraCodigo.setText("");
+                txtImpresoraAdress.setText("");
+            }
+        }else{
+            lnlNOImpresora.setVisibility(View.VISIBLE);
+            lnlImpresoraPredeterminada.setVisibility(View.GONE);
+            txtImpresoraCodigo.setText("");
+            txtImpresoraAdress.setText("");
+        }
     }
 
     private void initPairedPrinters(){

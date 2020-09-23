@@ -49,8 +49,10 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().getPlaca());
                     MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte",""+response.body().getEstado());
                     MyApp.getDBO().parametroDao().saveOrUpdate("tipoSubRuta",""+response.body().getTiposubruta());
+
                     MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                     MyApp.getDBO().impresoraDao().updateDefaulImpresoraWorked(response.body().getIdImpresora());
+
                     if (!verificarInicioRuta()){
                         if(response.body().getEstado()){
                             MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
