@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.services;
 
 
+import com.caircb.rcbtracegadere.models.request.RequestCambioImpresora;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
 import com.caircb.rcbtracegadere.models.request.RequestCodigoQrTransportista;
@@ -138,6 +139,9 @@ public interface IServicio {
 
     @PUT("Registro/registroLoteContenedor")
     Call<DtoInfo>registrarFinLote(@Body RequestFinLote model);
+
+    @PUT("Registro/saveCambioImpresoraInicioRuta")
+    Call<DtoInfo>registrarCambioImpresoraInicioRuta(@Body RequestCambioImpresora model);
 
     @POST("HojaRuta/obtenerListLoteContenedorHotel")
     Call<List<DtoLotesHoteles>> traerLotesHoteles(@Body RequestLotesHoteles model);
