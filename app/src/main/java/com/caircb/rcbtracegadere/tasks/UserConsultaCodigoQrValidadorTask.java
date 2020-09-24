@@ -38,10 +38,11 @@ public class UserConsultaCodigoQrValidadorTask  extends MyRetrofitApi implements
         String idSubRuta = MySession.getIdSubRuta() + "";
         System.out.println(idSubRuta);
         if (!idSubRuta.equals("-1")) {
+            progressShow("Cargando datos...");
             WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta))).enqueue(new Callback<DtoCodigoQrTransportista>() {
                 @Override
                 public void onResponse(Call<DtoCodigoQrTransportista> call, Response<DtoCodigoQrTransportista> response) {
-                    progressShow("Cargando datos...");
+
                     if (response.isSuccessful()) {
                         if (!response.body().getCogigoQr().equals("")) {
                             MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(response.body());

@@ -34,6 +34,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
     private String numeroManifiesto;
     private Integer estadoManifiesto,idAppManifiesto;
     private Integer tipoProceso;
+    Double pesoServicio=0.0;
 
     public ManifiestoDetalleAdapter(Context context,String numeroManifiesto,Integer estadoManifiesto, Integer idAppManifiesto, Integer tipoProceso){
         this.mContext = context;
@@ -55,7 +56,6 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
     public void onBindViewHolder(final @NonNull MyViewHolder holder, int position) {
         final RowItemManifiesto it = manifiestosDtList.get(position);
         //holder.txtUnidad.setText(it.getUnidad());
-
         if (it.getTipoMostrar()==3){
             holder.lnlManifiestoDetalle.setEnabled(false);
             holder.chkEstado.setEnabled(false);
@@ -63,9 +63,18 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             holder.lnlManifiestoDetalle.setEnabled(true);
             holder.chkEstado.setEnabled(true);
         }
+        if(it.getDescripcion().equals("Servicio de transporte (srv)")){
+            holder.txtCantidadBulto.setText("1");
+            holder.txtPeso.setText(""+pesoServicio);
+           MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(it.getId(),1, pesoServicio, 0, false);
+            pesoServicio=0.0;
+        }else{
+            holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
+            holder.txtPeso.setText(""+it.getPeso());
+            pesoServicio = pesoServicio + it.getPeso();
+        }
         holder.txtUnidad.setText("KG");
-        holder.txtPeso.setText(""+it.getPeso());
-        holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
+
         holder.txtDescripcion.setText(it.getCodigoMAE()+"-"+ it.getDescripcion());
         holder.txtTratamiento.setText(it.getCodigoMAE());
         holder.chkEstado.setChecked(it.isEstado());

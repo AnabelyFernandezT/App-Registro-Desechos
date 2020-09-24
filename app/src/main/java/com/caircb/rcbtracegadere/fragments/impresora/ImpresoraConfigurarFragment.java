@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caircb.rcbtracegadere.adapters.RecyclerViewPrinterAdapter;
 import com.caircb.rcbtracegadere.database.entity.ImpresoraEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogCambioImpresoras;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -49,6 +50,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
     private RecyclerView rvAvailablePrinters, rvPairedPrinters;
     private RecyclerViewPrinterAdapter rvAvailablePrintersAdapter, rvPairedPrintersAdapter;
     private OnRecyclerTouchListener touchListenerAP,touchListenerPP;
+    DialogCambioImpresoras dialogCambioImpresoras;
     public static ImpresoraConfigurarFragment create() {
         return new ImpresoraConfigurarFragment();
     }
@@ -83,7 +85,15 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
         btnCambiarImpresora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                dialogCambioImpresoras = new DialogCambioImpresoras(getActivity());
+                dialogCambioImpresoras.setCancelable(false);
+                dialogCambioImpresoras.setOnRegisterListener(new DialogCambioImpresoras.OnRegisterListener() {
+                    @Override
+                    public void onSuccessful() {
+                        initImpresoraPredeterminada();
+                    }
+                });
+                dialogCambioImpresoras.show();
             }
         });
     }
@@ -298,4 +308,12 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
                 break;
         }
     }
+
+    //@Override
+    public void reciveData(String data) {
+        if(dialogCambioImpresoras!=null && dialogCambioImpresoras.isShowing()){
+            dialogCambioImpresoras.setScanCode(data);
+        }
+    }
+
 }

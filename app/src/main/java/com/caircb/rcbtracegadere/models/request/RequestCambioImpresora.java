@@ -5,6 +5,11 @@ public class RequestCambioImpresora {
     private Integer idInicioFinRuta;
     private Integer idImpresora;
 
+    public RequestCambioImpresora(Integer idInicioFinRuta, Integer idImpresora) {
+        this.idInicioFinRuta = idInicioFinRuta;
+        this.idImpresora = idImpresora;
+    }
+
     public Integer getIdInicioFinRuta() {
         return idInicioFinRuta;
     }
