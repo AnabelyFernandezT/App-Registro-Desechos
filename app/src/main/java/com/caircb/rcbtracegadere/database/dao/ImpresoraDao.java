@@ -18,7 +18,7 @@ import java.util.List;
     @Query("SELECT code,address  FROM tb_impresora")
     public abstract List<RowPrinters> getListaImpresora();
 
-    @Query("select count(*) from tb_impresora where useActive=1 and type=:tipo limit 1")
+    @Query("select count(*) from tb_impresora where type=:tipo and useActive=1 limit 1")
     public abstract Boolean existeImpresora(Integer tipo);
 
     @Query("select count(*) from tb_impresora limit 1")
