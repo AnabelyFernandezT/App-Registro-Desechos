@@ -136,7 +136,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
         rvPairedPrintersAdapter.setTaskList(pairedPrinters);
         rvPairedPrinters.setAdapter(rvPairedPrintersAdapter);
 
-        touchListenerPP.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
+        /*touchListenerPP.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
                 final String pName = pairedPrinters.get(position).getName();
@@ -171,7 +171,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
             public void onIndependentViewClicked(int independentViewID, int position) {
 
             }
-        });
+        });*/
 
         //dbHelper.close();
     }
