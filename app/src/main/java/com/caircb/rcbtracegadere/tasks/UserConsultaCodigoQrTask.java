@@ -35,11 +35,9 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
 
         String idSubRuta = MySession.getIdSubRuta() + "";
         Integer idTransportistaRecolector = MySession.getIdUsuario();
-        System.out.println(idSubRuta);
         if (idSubRuta.equals("-1")){
             idSubRuta="0";
         }
-        System.out.println(idSubRuta);
         /*if (!idSubRuta.equals("-1")) {*/
             progressShow("Cargando datos...");
             WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta),idTransportistaRecolector,new Date())).enqueue(new Callback<DtoCodigoQrTransportista>() {

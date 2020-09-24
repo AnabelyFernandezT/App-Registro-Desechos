@@ -215,7 +215,6 @@ public class TabFirmaLotePlanta extends LinearLayout {
 
     private void loadData() {
         String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
-        System.out.println(firmaUsuario);
         String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
 
         int idManifiestoPrimero = Integer.parseInt(array[0]);

@@ -365,7 +365,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
 
                 }
-                System.out.println(tabs.getCurrentTab());
                 break;
         }
     }

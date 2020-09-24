@@ -267,7 +267,6 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
                 dialogBuilder.show();
             }
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
             messageBox("El código escaneado no es de tipo Lote.");
         }
     }

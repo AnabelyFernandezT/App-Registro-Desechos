@@ -341,12 +341,7 @@ public class ManifiestoGestoresFragment extends MyFragment implements OnCameraLi
                     messageBox("Las novedades de no recoleccion seleccionadas deben contener al menos una fotografia de evidencia");
                     return;
                 }*/
-
-
-
-
                 }
-                System.out.println(tabs.getCurrentTab());
                 break;
         }
     }

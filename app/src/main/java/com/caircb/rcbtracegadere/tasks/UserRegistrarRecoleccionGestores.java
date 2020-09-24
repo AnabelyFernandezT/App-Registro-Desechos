@@ -142,9 +142,8 @@ public class UserRegistrarRecoleccionGestores extends MyRetrofitApi implements R
         final RequestManifiesto request = createRequestManifiesto();
         if (request != null) {
             progressShow("registrando recoleccion...");
-            Gson g = new Gson();
-            String f = g.toJson(request);
-            System.out.println(f);
+            /*Gson g = new Gson();
+            String f = g.toJson(request);*/
 
             WebService.api().registrarRecoleccionGestor(request).enqueue(new Callback<DtoInfo>() {
                 @Override

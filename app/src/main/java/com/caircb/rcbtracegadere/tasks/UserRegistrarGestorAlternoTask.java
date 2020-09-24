@@ -73,7 +73,6 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
         if(firmaRecoleccion!=null && !firmaRecoleccion.isSincronizado())listaFileDefauld.add(firmaRecoleccion);
 
         path = path + "/" + getPath() + "/" + model.getNumeroManifiestoPadre();
-        System.out.println(path);
 
         userUploadFileTask= new UserUploadFileTask(getActivity(),path);
         userUploadFileTask.setOnUploadFileListener(new UserUploadFileTask.OnUploadFileListener() {
@@ -101,7 +100,6 @@ public class UserRegistrarGestorAlternoTask extends MyRetrofitApi implements Ret
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
-                        System.out.println("Success ----------");
                         //message(response.body().getMensaje());
                         progressHide();
                         if(mOnRegisterAlternoListener!=null){mOnRegisterAlternoListener.onSussfull();}

@@ -50,6 +50,8 @@ public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements Retrofit
         String json = gson.toJson(request);
 
         if(request!=null){
+            progressShow("Registrando...");
+
             WebService.api().registrarmovilizacionLoteSede(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -67,7 +69,7 @@ public class UserRegistrarLoteSedeTask extends MyRetrofitApi implements Retrofit
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
 

@@ -338,7 +338,6 @@ public class ManifiestoLoteFragment extends MyFragment implements OnCameraListen
 
 
                 }
-                System.out.println(tabs.getCurrentTab());
                 break;
         }
     }

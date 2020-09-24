@@ -41,6 +41,7 @@ public class UserRegistrarExcepcionTask extends MyRetrofitApi implements Retrofi
         final RequestExcepcion requestRegistrar = RequestExcepcion();
 
         if (requestRegistrar!=null){
+            progressShow("Registrando...");
             WebService.api().registrarExcepcion(requestRegistrar).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -57,7 +58,7 @@ public class UserRegistrarExcepcionTask extends MyRetrofitApi implements Retrofi
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

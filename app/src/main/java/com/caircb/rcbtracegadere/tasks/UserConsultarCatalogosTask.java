@@ -42,6 +42,7 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
 
 
         for (final Integer catalogoID:ids) {
+            progressShow("Consultando...");
             WebService.api().getCatalogos(new RequestCatalogo(catalogoID, new Date())).enqueue(new Callback<List<DtoCatalogo>>() {
                 @Override
                 public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
@@ -50,14 +51,17 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
 
                         //insertar catalogos obtenidos...
                         MyApp.getDBO().catalogoDao().saveOrUpdate(response.body(), catalogoID);
+                        progressHide();
                     }
                     else {
                         message("No hay catalogos  " + response);
+                        progressHide();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<DtoCatalogo>> call, Throwable t) {
+                    progressHide();
                     message(t +" No hay catalogos");
 
                 }

@@ -52,9 +52,9 @@ public class UserNotificacionTask extends MyRetrofitApi implements RetrofitCallb
         progressShow("Enviado Mensaje");
         RequestNotificacion request = createRequestNotificador();
         if(request!= null){
-            Gson g = new Gson();
-            String f = g.toJson(request);
-            System.out.println(f);
+            /*Gson g = new Gson();
+            String f = g.toJson(request);*/
+
             WebService.api().registrarNotificacion(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {

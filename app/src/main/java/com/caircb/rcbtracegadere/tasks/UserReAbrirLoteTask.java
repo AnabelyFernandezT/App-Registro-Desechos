@@ -39,6 +39,7 @@ public class UserReAbrirLoteTask extends MyRetrofitApi implements RetrofitCallba
         final RequestFinLote requestFinLote = requestFinLote();
 
         if (requestFinLote!=null){
+            progressShow("Abriendo lote...");
             WebService.api().registrarFinLote(requestFinLote).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -57,7 +58,7 @@ public class UserReAbrirLoteTask extends MyRetrofitApi implements RetrofitCallba
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

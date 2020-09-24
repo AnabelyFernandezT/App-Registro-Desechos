@@ -51,9 +51,9 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
         progressShow("Sincronizando con servidor el final de ruta");
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idRegistro.intValue());
         RequestFinRuta requestFinRuta = createRequestFin();
-        Gson g = new Gson();
-        String f = g.toJson(requestFinRuta);
-        System.out.println(f);
+        /*Gson g = new Gson();
+        String f = g.toJson(requestFinRuta);*/
+
         if(requestFinRuta!=null){
             WebService.api().putFin(requestFinRuta).enqueue(new Callback<DtoInfo>() {
                 @Override

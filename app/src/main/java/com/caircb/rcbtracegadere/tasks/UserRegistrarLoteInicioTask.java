@@ -38,6 +38,7 @@ public class UserRegistrarLoteInicioTask extends MyRetrofitApi implements Retrof
 
         RequestInicioLoteSede requestInicioLoteSede = requestInicioLoteSede();
         if(requestInicioLoteSede!=null){
+            progressShow("Registrando...");
             WebService.api().registrarLoteinicio(requestInicioLoteSede).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -53,7 +54,7 @@ public class UserRegistrarLoteInicioTask extends MyRetrofitApi implements Retrof
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

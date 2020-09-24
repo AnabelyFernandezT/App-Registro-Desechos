@@ -195,9 +195,6 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_INFECCIOSO);
             if (pkg.getEntregaSoloGuardianes())
                 itemsCategoriaPaquete.add(ManifiestoPaqueteDao.ARG_CORTOPUNZANTE);
-
-            System.out.println("nombre");
-
             //showTipoPaquete();
             /*if(pkg!=null && (
                     pkg.getPaquetePorRecolccion().toString().equals("1")

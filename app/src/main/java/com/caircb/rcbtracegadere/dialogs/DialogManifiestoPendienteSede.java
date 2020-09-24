@@ -72,7 +72,6 @@ public class DialogManifiestoPendienteSede extends MyDialog {
                 if (position>0){
                     listaDestinos.get(position - 1);
                     idDestino = listaDestinos.get(position-1).getId();
-                    System.out.println(idDestino);
                 }
                 else
                     idDestino = 0;

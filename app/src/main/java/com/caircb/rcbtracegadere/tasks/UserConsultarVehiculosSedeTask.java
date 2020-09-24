@@ -40,9 +40,8 @@ public class UserConsultarVehiculosSedeTask extends MyRetrofitApi implements Ret
     public void execute() {
         progressShow("Consultando vihiculos disponibles...");
         RequestDataCatalogo requestDataCatalogo = requestDataCatalogo();
-        Gson gson = new Gson();
-        String json = gson.toJson(requestDataCatalogo);
-        System.out.println(requestDataCatalogo);
+        /*Gson gson = new Gson();
+        String json = gson.toJson(requestDataCatalogo);*/
 
         if (requestDataCatalogo!= null){
 

@@ -135,9 +135,7 @@ public class ManifiestoSedeFragment extends MyFragment implements OnCameraListen
                         }
                     }
                     if (contEstadosGuardados == contGuardadosLocal) {
-                        System.out.println("No ha agregado mas");
                     } else {
-                        System.out.println("Ha guardado mas");
                         contDetallesCambiados++;
                     }
                 }

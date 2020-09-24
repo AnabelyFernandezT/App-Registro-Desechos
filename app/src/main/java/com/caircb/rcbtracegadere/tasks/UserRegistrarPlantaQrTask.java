@@ -117,9 +117,8 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
     private void register() {
 
         final RequestManifiestoQrPlanta request = createRequestManifiestoQrPlanta();
-        Gson g = new Gson();
-        String f = g.toJson(request);
-        System.out.println(f);
+        /*Gson g = new Gson();
+        String f = g.toJson(request);*/
 
         if (request != null) {
             WebService.api().registroManifiestoQrPlanta(request).enqueue(new Callback<DtoInfo>() {

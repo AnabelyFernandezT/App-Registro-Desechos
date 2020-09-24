@@ -41,20 +41,23 @@ public class UserRegistrarInicioFinLoteHotelTask extends MyRetrofitApi implement
     public void execute() {
         final RequestInicioLoteHotel request = requestInicioLoteHotel();
         if(request!=null){
-            Gson g = new Gson();
-            String f = g.toJson(request);
-
+            //Gson g = new Gson();
+            //String f = g.toJson(request);
+            progressShow("Registrando...");
            WebService.api().inicioFinLoteHotel(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if(response.isSuccessful()){
                         if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                        progressHide();
+                    }else{
+                        progressHide();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
 

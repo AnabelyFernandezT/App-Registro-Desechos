@@ -39,12 +39,12 @@ public class UserRegistrarManifiestosPendientesSedeTask extends MyRetrofitApi im
     @Override
     public void execute(){
         final RequestManifiestoPendienteSede request = requestManifiestoPendienteSede();
-        Gson gson = new Gson();
+        /*Gson gson = new Gson();
         String json = gson.toJson(request);
-        System.out.println(json);
+        System.out.println(json);*/
 
         if (request!=null){
-            progressShow("Enviando documento");
+            progressShow("Enviando documento...");
             WebService.api().registrarManifiestoSedePlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {

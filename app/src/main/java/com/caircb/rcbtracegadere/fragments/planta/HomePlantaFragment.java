@@ -172,7 +172,6 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 Integer banderaUno = MyApp.getDBO().manifiestoDao().contarHojaRutaProcesadaPlanta(idVehiculo);
                 Integer banderaDos = MyApp.getDBO().manifiestoPlantaDao().contarHojaRutaProcesada(idVehiculo);
                 String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta" + idVehiculo);
-                System.out.println(bandera);
                 if (bandera != null) {
                     if (bandera.equals("1")) {
                         if (banderaDos > 0) {
@@ -255,7 +254,6 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
         }
         catch (Exception e)
         {
-            System.out.println(e.getStackTrace());
             messageBox("El código escaneado no es de tipo Lote.");
         }
     }
@@ -270,7 +268,6 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 Toast.makeText(getActivity(), result.getContents(),Toast.LENGTH_LONG).show();
                 String codigoQr=result.getContents();
                 String[] array= codigoQr.split("\\$");
-                System.out.println(array[4]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+array[4]);//destino
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo",""+array[5]);//idvehiculo
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
@@ -303,7 +300,6 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
         String valor = parametro == null ? "-1" : parametro.getValor();
         Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
         String bandera = MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo)==null?"0":MyApp.getDBO().parametroDao().fecthParametroValor("vehiculo_planta"+idVehiculo);
-        System.out.println(bandera);
         if(bandera.equals("1")){
             cargarXNOManifiesto();
 

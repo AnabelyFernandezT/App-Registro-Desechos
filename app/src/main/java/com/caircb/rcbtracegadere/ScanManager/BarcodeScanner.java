@@ -54,7 +54,7 @@ public class BarcodeScanner implements EMDKManager.EMDKListener, Scanner.StatusL
         EMDKResults results = EMDKManager.getEMDKManager(context, this);
         // Check the return status of getEMDKManager
         if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) {
-            System.out.println (TAG + "EMDKManager Request Failed");
+            //System.out.println (TAG + "EMDKManager Request Failed");
         }
         // create Handler to move data from Scanner object to an object on the UI thread
         // i.e.: Handler (android.os.Handler) {beeae42}
@@ -124,7 +124,7 @@ public class BarcodeScanner implements EMDKManager.EMDKListener, Scanner.StatusL
                         scanner.read();
                     }
                 } catch (ScannerException e) {
-                    System.out.println (TAG + "onStatus() - ScannerException " + e.getMessage());
+                   // System.out.println (TAG + "onStatus() - ScannerException " + e.getMessage());
                     e.printStackTrace();
                     statusStr = e.getMessage();
                 }
@@ -169,11 +169,11 @@ public class BarcodeScanner implements EMDKManager.EMDKListener, Scanner.StatusL
             scanner.triggerType = Scanner.TriggerType.HARD; //The trigger type is set to HARD by default
             scanner.enable(); //Enable the scanner
         } catch (ScannerException e) {
-            System.out.println (TAG + "initializeScanner() - ScannerException " + e.getMessage());
+            //System.out.println (TAG + "initializeScanner() - ScannerException " + e.getMessage());
             e.printStackTrace();
         }
         catch (Exception ex) {
-            System.out.println (TAG + "initializeScanner() - Exception " + ex.getMessage());
+            //System.out.println (TAG + "initializeScanner() - Exception " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -188,12 +188,12 @@ public class BarcodeScanner implements EMDKManager.EMDKListener, Scanner.StatusL
             config.decoderParams.i2of5.enabled=true;  // enable barcode code-2of5 Interleaved
             scanner.setConfig(config);
         } catch (ScannerException e) {
-            System.out.println (TAG + "setScannerParameters() - ScannerException " + e.getMessage());
+            //System.out.println (TAG + "setScannerParameters() - ScannerException " + e.getMessage());
             e.printStackTrace();
             callIOnScannerEvent(I_ON_ERROR, null, null);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            System.out.println (TAG + "setScannerParameters() - RuntimeException " + e.getMessage());
+            //System.out.println (TAG + "setScannerParameters() - RuntimeException " + e.getMessage());
             callIOnScannerEvent(I_ON_ERROR, null, null);
         }
     }
@@ -210,7 +210,7 @@ public class BarcodeScanner implements EMDKManager.EMDKListener, Scanner.StatusL
                 scanner.removeStatusListener(mBarcodeScanner);
                 scanner.release();
             } catch (ScannerException e) {
-                System.out.println (TAG + "deInitScanner() - ScannerException " + e.getMessage());
+                //System.out.println (TAG + "deInitScanner() - ScannerException " + e.getMessage());
                 e.printStackTrace();
             }
             scanner = null;

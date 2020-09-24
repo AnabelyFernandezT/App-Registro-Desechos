@@ -224,7 +224,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
             entity.setObservacionResiduos(dt.getObservacionResiduos());
             entity.setNombreCortoTicket(dt.getNombreCortoTicket());
-            System.out.println(dt.getNombreCortoTicket());
+            //System.out.println(dt.getNombreCortoTicket());
         }else{
             entity.setIdTipoDesecho(dt.getIdTipoDesecho());
             entity.setIdTipoUnidad(dt.getIdTipoUnidad());
@@ -252,7 +252,7 @@ public abstract class ManifiestoDetalleDao {
             entity.setRequiereIncineracionPresenciada(dt.getRequiereIncineracionPresenciada());
             entity.setObservacionResiduos(dt.getObservacionResiduos());
             entity.setNombreCortoTicket(dt.getNombreCortoTicket());
-            System.out.println(dt.getNombreCortoTicket());
+            //System.out.println(dt.getNombreCortoTicket());
         }
 
         createManifiestoDetalle(entity);

@@ -58,19 +58,17 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
         String tipoProcesoInfo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info");
         String placaInfo = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_placa_transportista");
         int idTransportistaInfo = MySession.getIdUsuario();
-        System.out.println(idTransportistaInfo + "---"+tipoProcesoInfo+"---"+placaInfo);
+        //System.out.println(idTransportistaInfo + "---"+tipoProcesoInfo+"---"+placaInfo);
         AlertDialog.Builder builder;
 
         if (tipoProcesoInfo!=null && placaInfo!=null){
-            System.out.println(tipoProcesoInfo);
-            System.out.println(placaInfo);
+           // System.out.println(tipoProcesoInfo);
+           // System.out.println(placaInfo);
+            progressShow("Cargando datos...");
 
             WebService.api().traerInformacionModulos(new RequestInformacionModulos(new Date(), placaInfo, idTransportistaInfo, Integer.parseInt(tipoProcesoInfo))).enqueue(new Callback<List<DtoInformacionModulos>>() {
-
-                AlertDialog.Builder builder2;
                 @Override
                 public void onResponse(Call<List<DtoInformacionModulos>> call,final Response<List<DtoInformacionModulos>> response) {
-                    progressShow("Cargando datos...");
                     if(response.isSuccessful()){
                         if(response.body().size()!=0){
                             MyApp.getDBO().informacionModulosDao().saveOrUpdate(response.body());
@@ -79,28 +77,13 @@ public class UserInformacionModulosTask extends MyRetrofitApi implements Retrofi
                             }else {
                                 dialogInformacionModulos.show();
                             }
-
                             progressHide();
                         }else {
-
                             message("No hay datos para mostrar...");
-
-                            /*
-                            builder2 = new AlertDialog.Builder(getContext());
-                            builder2.setMessage("No hay datos para mostrar...");
-                            builder2.setCancelable(false);
-                            builder2.setNegativeButton("Regresar", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog dialog = builder2.create();
-                            dialog.show();
-                             */
                             progressHide();
                         }
                     }else {
-
+                        progressHide();
                     }
                 }
 

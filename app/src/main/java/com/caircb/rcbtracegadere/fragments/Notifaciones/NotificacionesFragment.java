@@ -128,10 +128,9 @@ public class  NotificacionesFragment extends MyFragment implements View.OnClickL
         touchListener.setClickable(new OnRecyclerTouchListener.OnRowClickListener() {
             @Override
             public void onRowClicked(int position) {
-                System.out.println(position);
               //  firebaseMessagingService.showNotification(notificationList.get(position).getNombreNotificacion(), notificationList.get(position).getEstadoNotificacion(), notificationList.get(position).getTipoNotificacion(), MyApp.getsInstance().getApplicationContext());
                 //Toast.makeText(getActivity(),String.valueOf(notificationList.get(position).getTipoNotificacion()), Toast.LENGTH_SHORT).show();
-                System.out.println(notificationList.get(position).getTipoNotificacion());
+
                 Intent intent;
                 if(notificationList.get(position).getTipoNotificacion().equals("2")||notificationList.get(position).getTipoNotificacion().equals("15")){
                     intent = new Intent(myContext, ResultKilometraje.class);

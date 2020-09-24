@@ -143,9 +143,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
     private void register() {
         final RequestManifiesto request = createRequestManifiesto();
         if (request != null) {
-            Gson g = new Gson();
-            String f = g.toJson(request);
-            System.out.println(f);
+           /* Gson g = new Gson();
+            String f = g.toJson(request);*/
 
             WebService.api().registrarRecoleccion(request).enqueue(new Callback<DtoInfo>() {
                 @Override

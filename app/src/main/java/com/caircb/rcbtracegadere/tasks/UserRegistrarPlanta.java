@@ -91,9 +91,8 @@ public class UserRegistrarPlanta extends MyRetrofitApi implements RetrofitCallba
     private void register(){
 
        final RequestManifiestoPlanta request = createRequestManifiestoPlanta();
-        Gson g = new Gson();
-        String f = g.toJson(request);
-        System.out.println(f);
+        /*Gson g = new Gson();
+        String f = g.toJson(request);*/
 
         if(request!=null){
             WebService.api().registrarPlanta(request).enqueue(new Callback<DtoInfo>() {

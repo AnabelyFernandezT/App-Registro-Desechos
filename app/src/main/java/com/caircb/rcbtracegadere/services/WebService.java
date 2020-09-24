@@ -87,7 +87,6 @@ public class WebService {
             Gson gson = builder.create();
             //OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             OkHttpClient.Builder httpClient = getNewHttpClient();
-            System.out.println(MySession.getId());
             httpClient.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {

@@ -33,17 +33,22 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
 
     @Override
     public void execute(){
+        progressShow("Enviando correo...");
         final RequestNotificacionComercial request = requestNotificacionComercial();
 
         WebService.api().enviarCorreoComercial(request).enqueue(new Callback<DtoInfo>() {
             @Override
             public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
-
+                if (response.isSuccessful()){
+                    progressHide();
+                }else{
+                    progressHide();
+                }
             }
 
             @Override
             public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                progressHide();
             }
         });
 
@@ -68,7 +73,6 @@ public class UserEnviarCorreoComercialTask extends MyRetrofitApi implements Retr
         }
         catch (Exception e) {
             rq.setPesoSolicitado("" + pesoExtra);
-            System.out.println(e.getStackTrace());
         }
 
         Integer tpk = entity.getTipoPaquete();
