@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
@@ -505,43 +506,47 @@ public class DialogFinRuta extends MyDialog {
 
     private void imprimirEtiquetaFinRutaHospitalaria(){
 
-
-        final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        final Handler handler=new Handler();
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                Integer idSubruta = MySession.getIdSubRuta();
-                loadDataPaquetes(idSubruta);
-                List<RowItemFinRuta> ListaEnviar=listaFinRuta;
-                System.out.println("");
-                try {
-                    dialog = new ProgressDialog(getActivity());
-                    print = new MyPrint(getActivity());
-                    print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                        @Override
-                        public void onSuccessful() {
-                            //Impresion finalizada
+                Looper.prepare();
+                final ProgressDialog progress = ProgressDialog.show(getActivity(), "", "Imprimiendo...", true);
+                progress.setCancelable(false);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Integer idSubruta = MySession.getIdSubRuta();
+                        loadDataPaquetes(idSubruta);
+                        List<RowItemFinRuta> ListaEnviar=listaFinRuta;
+                        System.out.println("");
+                        try {
+                            dialog = new ProgressDialog(getActivity());
+                            print = new MyPrint(getActivity());
+                            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                                @Override
+                                public void onSuccessful() {
+                                    //Impresion finalizada
+                                    progress.dismiss();
+                                    System.out.print("Compleado correctamente");
+                                }
+                                @Override
+                                public void onFailure(String message) {
+                                    progress.dismiss();
+                                    messageBox(message);
+                                }
+                            });
+                            print.printerFinRuta(idSubruta,ListaEnviar);
+                        }catch (Exception e){
                             progress.dismiss();
-                            System.out.print("Compleado correctamente");
+                            messageBox("No hay conexion con la impresora");
                         }
-                        @Override
-                        public void onFailure(String message) {
-                            progress.dismiss();
-                            messageBox(message);
-                        }
-                    });
-                    print.printerFinRuta(idSubruta,ListaEnviar);
-                }catch (Exception e){
-                    progress.dismiss();
-                    messageBox("No hay conexion con la impresora");
-                }
-                System.out.println("");
+                        System.out.println("");
+                    }
+                });
+                Looper.loop();
             }
-        }, 1000);
-
-
+        }).start();
     }
 
     private void loadDataPaquetes(Integer idSubruta){

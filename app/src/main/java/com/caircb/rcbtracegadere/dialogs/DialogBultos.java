@@ -360,7 +360,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
         //Probar con impresiora
 
-        final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
+   /*     final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -395,7 +395,53 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                 }
             }
-        }, 1000);
+        }, 1000);*/
+
+
+        final Handler handler=new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                final ProgressDialog progress = ProgressDialog.show(getActivity(), "", "Imprimiendo...", true);
+                progress.setCancelable(false);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            dialog = new ProgressDialog(getActivity());
+                            print = new MyPrint(getActivity());
+                            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                                @Override
+                                public void onSuccessful() {
+                                    //Impresion finalizada
+                                    //bultos.clear();
+                                    //subtotal= BigDecimal.ZERO;
+                                    MyApp.getDBO().manifiestoDetallePesosDao().updateBanderaImpresion(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), true);
+                                    item.setImpresion(true);
+                                    listaValoresAdapter.notifyDataSetChanged();
+                                    //loadData();
+                                    progress.dismiss();
+                                }
+
+                                @Override
+                                public void onFailure(String message) {
+                                    progress.dismiss();
+                                    messageBox(message);
+                                }
+                            });
+                            print.printerIndividual(idAppManifiesto, idManifiestoDetalle, item.getIdCatalogo(), item.getNumeroBulto());
+
+                        } catch (Exception e) {
+                            progress.dismiss();
+                            messageBox("No hay conexion con la impresora");
+                            //if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                        }
+                    }
+                });
+                Looper.loop();
+            }
+        }).start();
 
     }
 
