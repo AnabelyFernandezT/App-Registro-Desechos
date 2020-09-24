@@ -21,6 +21,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogCambioImpresoras;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnRecyclerTouchListener;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.RowPrinters;
@@ -37,7 +38,7 @@ import com.zebra.android.discovery.DiscoveryHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImpresoraConfigurarFragment extends MyFragment implements View.OnClickListener {
+public class ImpresoraConfigurarFragment extends MyFragment implements View.OnClickListener, OnBarcodeListener {
     LinearLayout btn_search, btn_back,lnlNOImpresora,lnlImpresoraPredeterminada;
     View progressOverlay;
     Button btnCambiarImpresora;
@@ -309,7 +310,7 @@ public class ImpresoraConfigurarFragment extends MyFragment implements View.OnCl
         }
     }
 
-    //@Override
+    @Override
     public void reciveData(String data) {
         if(dialogCambioImpresoras!=null && dialogCambioImpresoras.isShowing()){
             dialogCambioImpresoras.setScanCode(data);
