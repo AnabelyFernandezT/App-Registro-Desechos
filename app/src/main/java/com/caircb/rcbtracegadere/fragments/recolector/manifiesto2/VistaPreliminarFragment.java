@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,10 +198,9 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     pesoTotal += itemManifiestoDetalleBultos.get(j).getValor();
                 }
             }
-            pesoTotal=Double.parseDouble(obtieneDosDecimales(pesoTotal));
-            double pesoMostrarMensaje=pesoTotal - pesoPromedio;
-            if(pesoPromedio > 0)
-            {
+            pesoTotal = Double.parseDouble(obtieneDosDecimales(pesoTotal));
+            double pesoMostrarMensaje = pesoTotal - pesoPromedio;
+            if (pesoPromedio > 0) {
                 if (pesoTotal > (pesoPromedio + (pesoPromedio * 0.20)) || pesoTotal < (pesoPromedio - (pesoPromedio * 0.20))) {
                     txtPesoPromedio.setText("PESO TOTAL MANIFIESTOS (" + pesoTotal + " KG), DIFERENCIA DE +-20% PROMEDIO (" + obtieneDosDecimales(pesoMostrarMensaje) + " KG)");
                     MyApp.getDBO().parametroDao().saveOrUpdate("textoPesoPromedio", "" + txtPesoPromedio.getText());
@@ -214,7 +214,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     novedadPesoPromedio.setVisibility(View.GONE);
                     txtPesoPromedio.setText("");
                 }
-            }else{
+            } else {
                 novedadPesoPromedio.setVisibility(View.GONE);
                 txtPesoPromedio.setText("");
             }
@@ -320,7 +320,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             messageBox("Debe ingresar fotografías, justificando Peso Promedio");
             return;
         } else {
-            userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(),null);
+            userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(), null);
             userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
                 @Override
                 public void onSuccessful(final Date fechaRecol) {
@@ -358,10 +358,11 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                                 });
                                 builder.show();
                                 imprimirEtiquetaHospitalario(idAppManifiesto);
-                            }else{
+                            } else {
                                 registrarDatos(fechaRecol, tipoSubruta);
                             }
                         }
+
                         @Override
                         public void onFail() {
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
@@ -382,7 +383,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         }
     }
 
-    public void registrarDatos (final Date fechaRecol, final String tipoSubruta){
+    public void registrarDatos(final Date fechaRecol, final String tipoSubruta) {
         if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadas() > 0) {
             if (tipoSubruta.equals("2")) {//SI ES TIPO DE RUTA HOSPITALARIA
                        /* MyApp.getDBO().parametroDao().saveOrUpdate("checkTara", "2");
@@ -415,44 +416,44 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {*/
-                                //dialogBuilder.dismiss();
-                                dialogBuilder2 = new DialogBuilder(getActivity());
-                                dialogBuilder2.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
-                                dialogBuilder2.setCancelable(false);
-                                dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder2.dismiss();
-                                        //dialogBuilder.dismiss();
-                                        //Guardo la nueva fecha de inicio y puntoParitda;
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
-                                        RuteoRecoleccionEntity dto;
-                                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                        if (dto != null) {
-                                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
-                                        }
-                                        //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
-                                        MyApp.getDBO().parametroDao().eliminarChecksTara("checkTara"+idAppManifiesto);
-                                        setNavegate(HojaRutaAsignadaFragment.newInstance());
-                                    }
-                                });
-                                dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder2.dismiss();
-                                        //dialogBuilder.dismiss();
-                                        //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
-                                        RuteoRecoleccionEntity dto;
-                                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
-                                        if (dto != null) {
-                                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
-                                        }
-                                        MyApp.getDBO().parametroDao().eliminarChecksTara("checkTara"+idAppManifiesto);
-                                        setNavegate(HomeTransportistaFragment.create());
-                                    }
-                                });
-                                dialogBuilder2.show();
+                //dialogBuilder.dismiss();
+                dialogBuilder2 = new DialogBuilder(getActivity());
+                dialogBuilder2.setMessage("¿Desea iniciar traslado al próximo punto de recolección ?");
+                dialogBuilder2.setCancelable(false);
+                dialogBuilder2.setPositiveButton("SI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder2.dismiss();
+                        //dialogBuilder.dismiss();
+                        //Guardo la nueva fecha de inicio y puntoParitda;
+                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                        RuteoRecoleccionEntity dto;
+                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                        if (dto != null) {
+                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+                        }
+                        //List<RuteoRecoleccionEntity> enty3 = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion(); //////////
+                        MyApp.getDBO().parametroDao().eliminarChecksTara("checkTara" + idAppManifiesto);
+                        setNavegate(HojaRutaAsignadaFragment.newInstance());
+                    }
+                });
+                dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder2.dismiss();
+                        //dialogBuilder.dismiss();
+                        //Update parametro en NO para levantar el modal para verificar si empieza con el trazlado
+                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "NO");
+                        RuteoRecoleccionEntity dto;
+                        dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
+                        if (dto != null) {
+                            MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fechaRecol, dto.getPuntoLlegada(), null, null, false));
+                        }
+                        MyApp.getDBO().parametroDao().eliminarChecksTara("checkTara" + idAppManifiesto);
+                        setNavegate(HomeTransportistaFragment.create());
+                    }
+                });
+                dialogBuilder2.show();
                         /*    }
                         });
                         dialogBuilder.show();*/
@@ -507,13 +508,13 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         String estadoAuxiliar = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaAuxiliar");
         String estadoOperador = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estadoFirmaOperador");
 
-        if (estadotransportista.equals("1") || estadoAuxiliar.equals("1") || estadoOperador.equals("1")){
+        if (estadotransportista.equals("1") || estadoAuxiliar.equals("1") || estadoOperador.equals("1")) {
             sincronizarManifiestos();
         }
 
     }
 
-    private void sincronizarManifiestos(){
+    private void sincronizarManifiestos() {
         List<Integer> listaCatalogos = new ArrayList<>();
         listaCatalogos.add(2);
 
@@ -533,6 +534,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
 
         }
     };
+
     private String obtieneDosDecimales(double valor) {
         DecimalFormat df = new DecimalFormat("#.00");
         return df.format(valor);
@@ -542,25 +544,45 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         //print = new MyPrint(getActivity());
         //print.printerHospitalario(idAppManifiesto);
 
-        final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
-        progress.setCancelable(false);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    print = new MyPrint(getActivity());
-                    print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                        @Override
-                        public void onSuccessful() {
-                            //Impresion finalizada
-                            progress.dismiss();
-                            System.out.print("Compleado correctamente");
-                        }
-                        @Override
-                        public void onFailure(String message) {
+                Looper.prepare();
+                final ProgressDialog progress = ProgressDialog.show(getActivity(), "", "Imprimiendo...", true);
+                progress.setCancelable(false);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            print = new MyPrint(getActivity());
+                            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                                @Override
+                                public void onSuccessful() {
+                                    //Impresion finalizada
+                                    progress.dismiss();
+                                    System.out.print("Compleado correctamente");
+                                }
+
+                                @Override
+                                public void onFailure(String message) {
+                                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                                    dialogBuilder.setMessage(message);
+                                    dialogBuilder.setCancelable(false);
+                                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder.dismiss();
+                                            progress.dismiss();
+                                        }
+                                    });
+                                    dialogBuilder.show();
+                                }
+                            });
+                            print.printerHospitalario(idAppManifiesto);
+                        } catch (Exception e) {
                             final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
-                            dialogBuilder.setMessage(message);
+                            dialogBuilder.setMessage("No hay conexión con la impresora");
                             dialogBuilder.setCancelable(false);
                             dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
                                 @Override
@@ -571,43 +593,29 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                             });
                             dialogBuilder.show();
                         }
-                    });
-                    print.printerHospitalario(idAppManifiesto);
-                }catch (Exception e){
-                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
-                    dialogBuilder.setMessage("No hay conexión con la impresora");
-                    dialogBuilder.setCancelable(false);
-                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                            progress.dismiss();
-                        }
-                    });
-                    dialogBuilder.show();
-                }
+                    }
+                });
+                Looper.loop();
             }
-        }, 1000);
-
+        }).start();
 
 
     }
 
 
-    public void bloquearBotones(){
+    public void bloquearBotones() {
         btnEvidenciaNovedadFrecuente.setEnabled(false);
         btnEliminarFotos.setEnabled(false);
         btnVistaPreviaCancelar.setEnabled(false);
         btnVistaPreviaGuardar.setEnabled(false);
     }
 
-    public void desbloquearBotones(){
+    public void desbloquearBotones() {
         btnEvidenciaNovedadFrecuente.setEnabled(true);
         btnEliminarFotos.setEnabled(true);
         btnVistaPreviaCancelar.setEnabled(true);
         btnVistaPreviaGuardar.setEnabled(true);
     }
-
 
 
 }

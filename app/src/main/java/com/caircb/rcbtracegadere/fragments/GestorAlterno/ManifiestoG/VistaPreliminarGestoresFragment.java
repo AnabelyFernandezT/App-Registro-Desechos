@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -543,35 +544,41 @@ public class VistaPreliminarGestoresFragment extends MyFragment implements OnCam
         //print = new MyPrint(getActivity());
         //print.printerHospitalario(idAppManifiesto);
 
-        final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        final Handler handler=new Handler();
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    print = new MyPrint(getActivity());
-                    print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                        @Override
-                        public void onSuccessful() {
-                            //Impresion finalizada
+                Looper.prepare();
+                final ProgressDialog progress = ProgressDialog.show(getActivity(), "", "Imprimiendo...", true);
+                progress.setCancelable(false);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            print = new MyPrint(getActivity());
+                            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                                @Override
+                                public void onSuccessful() {
+                                    //Impresion finalizada
+                                    progress.dismiss();
+                                    System.out.print("Compleado correctamente");
+                                }
+                                @Override
+                                public void onFailure(String message) {
+                                    progress.dismiss();
+                                    messageBox(message);
+                                }
+                            });
+                            print.printerHospitalario(idAppManifiesto);
+                        }catch (Exception e){
                             progress.dismiss();
-                            System.out.print("Compleado correctamente");
+                            messageBox("No hay conexion con la impresora");
                         }
-                        @Override
-                        public void onFailure(String message) {
-                            progress.dismiss();
-                            messageBox(message);
-                        }
-                    });
-                    print.printerHospitalario(idAppManifiesto);
-                }catch (Exception e){
-                    progress.dismiss();
-                    messageBox("No hay conexion con la impresora");
-                }
+                    }
+                });
+                Looper.loop();
             }
-        }, 1000);
-
-
+        }).start();
 
     }
 

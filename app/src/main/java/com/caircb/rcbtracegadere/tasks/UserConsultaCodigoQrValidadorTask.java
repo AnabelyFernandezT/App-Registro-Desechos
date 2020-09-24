@@ -40,7 +40,10 @@ public class UserConsultaCodigoQrValidadorTask  extends MyRetrofitApi implements
         String idSubRuta = MySession.getIdSubRuta() + "";
         Integer idTransportistaRecolector = MySession.getIdUsuario();
         System.out.println(idSubRuta);
-        if (!idSubRuta.equals("-1")) {
+        if (idSubRuta.equals("-1")){
+            idSubRuta="0";
+        }
+       /* if (!idSubRuta.equals("-1")) {*/
             progressShow("Cargando datos...");
             WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta),idTransportistaRecolector,new Date())).enqueue(new Callback<DtoCodigoQrTransportista>() {
                 @Override
@@ -69,10 +72,10 @@ public class UserConsultaCodigoQrValidadorTask  extends MyRetrofitApi implements
                     if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
                 }
             });
-        } else {
+      /*  } else {
             //message("No ha iniciado una Ruta...");
             if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
-        }
+        }*/
 
     }
     public void setOnCodigoQrListener(@NonNull UserConsultaCodigoQrValidadorTask.OnCodigoQrListener l) {
