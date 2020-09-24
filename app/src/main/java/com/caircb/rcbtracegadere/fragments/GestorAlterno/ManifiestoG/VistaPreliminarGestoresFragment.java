@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -541,23 +542,37 @@ public class VistaPreliminarGestoresFragment extends MyFragment implements OnCam
     private void imprimirEtiquetaHospitalario(final Integer idAppManifiesto) {
         //print = new MyPrint(getActivity());
         //print.printerHospitalario(idAppManifiesto);
-        try {
-            print = new MyPrint(getActivity());
-            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                @Override
-                public void onSuccessful() {
-                    //Impresion finalizada
-                    System.out.print("Compleado correctamente");
+
+        final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    print = new MyPrint(getActivity());
+                    print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            //Impresion finalizada
+                            progress.dismiss();
+                            System.out.print("Compleado correctamente");
+                        }
+                        @Override
+                        public void onFailure(String message) {
+                            progress.dismiss();
+                            messageBox(message);
+                        }
+                    });
+                    print.printerHospitalario(idAppManifiesto);
+                }catch (Exception e){
+                    progress.dismiss();
+                    messageBox("No hay conexion con la impresora");
                 }
-                @Override
-                public void onFailure(String message) {
-                    messageBox(message);
-                }
-            });
-            print.printerHospitalario(idAppManifiesto);
-        }catch (Exception e){
-            messageBox("No hay conexion con la impresora");
-        }
+            }
+        }, 1000);
+
+
+
     }
 
 

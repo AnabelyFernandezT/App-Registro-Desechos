@@ -73,11 +73,11 @@ public class MyPrint {
         this.activity = activity;
 
         //inicialize spinner...
-        dialog = new ProgressDialog(activity);
-        dialog.setMessage("Imprimiendo "+ System.getProperty("line.separator")+"esto puede tardar varios segundos...");
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setCancelable(false);
 
+       /* this.dialog.setMessage("Imprimiendo "+ System.getProperty("line.separator")+"esto puede tardar varios segundos...");
+        this.dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        this.dialog.setCancelable(false);
+        this.dialog.show();*/
         onCreatePrint();
     }
 
@@ -94,7 +94,7 @@ public class MyPrint {
             final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividual(idManifiesto, idManifiestoDetalle, idCatalogo);
             if(printEtiqueta != null){
                 System.out.println(printEtiqueta);
-                dialog.show();
+                //dialog.show();
 
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
@@ -124,7 +124,7 @@ public class MyPrint {
             final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividualLote(idManifiesto, idManifiestoDetalle);
             if(printEtiqueta != null){
                 System.out.println(printEtiqueta);
-                dialog.show();
+                //dialog.show();
 
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
@@ -159,7 +159,7 @@ public class MyPrint {
             final List<ItemEtiqueta> etiquetas = MyApp.getDBO().manifiestoDetallePesosDao().consultarBultosImpresion(idAppManifiesto);
 
             if (etiquetas != null && etiquetas.size() > 0) {
-                dialog.show();
+                //dialog.show();
                 //recorrer array para setear numero de bulto...
                 Integer manifiestoDetalleID = 0, index = 0;
                 for (ItemEtiqueta it : etiquetas) {
@@ -225,7 +225,7 @@ public class MyPrint {
             msg = e.getMessage();
         } finally {
             if(mOnPrinterListener!=null)mOnPrinterListener.onFailure(message!=null && message.length()>0?message:msg);
-            dialog.dismiss();
+            //dialog.dismiss();
         }
     }
 
@@ -239,7 +239,7 @@ public class MyPrint {
         } catch (ZebraPrinterConnectionException e) {
             //setStatus("Error de conexión! Desconectando", Color.RED);
         } finally {
-            dialog.dismiss();
+            //dialog.dismiss();
             if(mOnPrinterListener!=null)mOnPrinterListener.onSuccessful();
         }
     }
@@ -935,7 +935,7 @@ public class MyPrint {
             final ItemEtiquetaHospitalario printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaCabeceraHospitalario(idAppManifiesto);
             final List<ItemEtiquetaHospitalarioDetalleRecolecion> listaDetalle = MyApp.getDBO().manifiestoDetallePesosDao().consultaDetalleHospitalario(idAppManifiesto);
             if(printEtiqueta != null && listaDetalle.size() > 0){
-                dialog.show();
+                //dialog.show();
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
                         if (Looper.myLooper() == null)
@@ -976,7 +976,7 @@ public class MyPrint {
 
     public void printerFinRuta(Integer idSubRuta, List<RowItemFinRuta> listaFinRutaIngreso){
         if(checkImpresora()) {
-            dialog.show();
+            //dialog.show();
             Integer idSubruta = idSubRuta;
             rowItems = MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRutaImpresion(idSubruta, MySession.getIdUsuario());
 
@@ -984,7 +984,7 @@ public class MyPrint {
             final ItemEtiquetaFinRuta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaCabeceraFinRuta(idSubruta);
             final List<RowItemFinRuta> listaFinRuta = listaFinRutaIngreso;
             if(printEtiqueta != null && listaFinRuta.size() > 0){
-                dialog.show();
+                //dialog.show();
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
                         if (Looper.myLooper() == null)
@@ -1000,7 +1000,7 @@ public class MyPrint {
             } else {
                 //mensaje...
                 Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();
-                disconnect("No cumple la estructura");
+                disconnect("No cumple la estructura o no existen datos para imprimir");
             }
         }else {
             Toast.makeText(mContext, "Impresora no encontrada", Toast.LENGTH_SHORT).show();

@@ -1,10 +1,10 @@
 package com.caircb.rcbtracegadere.fragments.recolector.manifiesto2;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +13,14 @@ import android.widget.LinearLayout;
 import android.app.Fragment;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.database.dao.ManifiestoFileDao;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetallePesosEntity;
-import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.RuteoRecoleccionEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
-import com.caircb.rcbtracegadere.dialogs.DialogNotificacionCapacidadCamion;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -31,13 +28,10 @@ import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
-import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
-import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
-import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
@@ -66,6 +60,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     Integer idAppManifiesto, idAppTipoPaquete;
     LinearLayout btnVistaPreviaCancelar, btnVistaPreviaGuardar;
     ProgressDialog dialog;
+    ProgressDialog progress;
     PDFView pdfView;
     MyManifiesto myManifiesto;
     UserRegistrarRecoleccion userRegistrarRecoleccion;
@@ -84,6 +79,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     UserConsultarCatalogosTask consultarCatalogosTask;
     MyPrint print;
+
 
     public static VistaPreliminarFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
         VistaPreliminarFragment fragment = new VistaPreliminarFragment();
@@ -227,7 +223,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             txtPesoPromedio.setText("");
         }
 
-        desbloquearBotones();
     }
 
 
@@ -305,8 +300,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                 builder.setPositiveButton("SI", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        registarDatos();
                         builder.dismiss();
+                        registarDatos();
                     }
                 });
                 builder.setNegativeButton("NO", new View.OnClickListener() {
@@ -325,7 +320,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             messageBox("Debe ingresar fotografías, justificando Peso Promedio");
             return;
         } else {
-            bloquearBotones();
             userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(),null);
             userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
                 @Override
@@ -547,24 +541,58 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     private void imprimirEtiquetaHospitalario(final Integer idAppManifiesto) {
         //print = new MyPrint(getActivity());
         //print.printerHospitalario(idAppManifiesto);
-        try {
-            print = new MyPrint(getActivity());
-            print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
-                @Override
-                public void onSuccessful() {
-                    //Impresion finalizada
-                    System.out.print("Compleado correctamente");
+
+        final ProgressDialog progress = ProgressDialog.show(this.getActivity(), "", "Imprimiendo...", true);
+        progress.setCancelable(false);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    print = new MyPrint(getActivity());
+                    print.setOnPrinterListener(new MyPrint.OnPrinterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            //Impresion finalizada
+                            progress.dismiss();
+                            System.out.print("Compleado correctamente");
+                        }
+                        @Override
+                        public void onFailure(String message) {
+                            final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                            dialogBuilder.setMessage(message);
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    progress.dismiss();
+                                }
+                            });
+                            dialogBuilder.show();
+                        }
+                    });
+                    print.printerHospitalario(idAppManifiesto);
+                }catch (Exception e){
+                    final DialogBuilder dialogBuilder = new DialogBuilder(getActivity());
+                    dialogBuilder.setMessage("No hay conexión con la impresora");
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                            progress.dismiss();
+                        }
+                    });
+                    dialogBuilder.show();
                 }
-                @Override
-                public void onFailure(String message) {
-                    messageBox(message);
-                }
-            });
-            print.printerHospitalario(idAppManifiesto);
-        }catch (Exception e){
-            messageBox("No hay conexion con la impresora");
-        }
+            }
+        }, 1000);
+
+
+
     }
+
 
     public void bloquearBotones(){
         btnEvidenciaNovedadFrecuente.setEnabled(false);
@@ -579,6 +607,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         btnVistaPreviaCancelar.setEnabled(true);
         btnVistaPreviaGuardar.setEnabled(true);
     }
+
 
 
 }

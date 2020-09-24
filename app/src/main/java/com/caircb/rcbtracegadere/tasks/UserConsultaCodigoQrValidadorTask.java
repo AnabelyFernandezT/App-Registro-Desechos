@@ -13,6 +13,8 @@ import com.caircb.rcbtracegadere.models.request.RequestCodigoQrTransportista;
 import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
 import com.caircb.rcbtracegadere.services.WebService;
 
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,13 +38,14 @@ public class UserConsultaCodigoQrValidadorTask  extends MyRetrofitApi implements
     public void execute() {
 
         String idSubRuta = MySession.getIdSubRuta() + "";
+        Integer idTransportistaRecolector = MySession.getIdUsuario();
         System.out.println(idSubRuta);
         if (!idSubRuta.equals("-1")) {
             progressShow("Cargando datos...");
-            WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta))).enqueue(new Callback<DtoCodigoQrTransportista>() {
+            WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta),idTransportistaRecolector,new Date())).enqueue(new Callback<DtoCodigoQrTransportista>() {
                 @Override
                 public void onResponse(Call<DtoCodigoQrTransportista> call, Response<DtoCodigoQrTransportista> response) {
-
+                    progressShow("Cargando datos...");
                     if (response.isSuccessful()) {
                         if (!response.body().getCogigoQr().equals("")) {
                             MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(response.body());
