@@ -314,7 +314,6 @@ public class DialogFinRuta extends MyDialog {
                     MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                     DialogFinRuta.this.dismiss();
                 }
-
             }
 
 

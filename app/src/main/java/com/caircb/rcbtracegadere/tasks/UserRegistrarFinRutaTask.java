@@ -65,7 +65,7 @@ public class UserRegistrarFinRutaTask extends MyRetrofitApi implements RetrofitC
                         MyApp.getDBO().rutaInicioFinDao().eliminarInicioFin();
                         MyApp.getDBO().parametroDao().eliminarLotes("manifiesto_lote");
 
-                        MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+                        //MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                         progressHide();
 
                         if(mOnIniciaRutaListener!=null)mOnIniciaRutaListener.onSuccessful();

@@ -85,6 +85,8 @@ public class MyPrint {
 
     private boolean checkImpresora(){
         String data = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
+        boolean bool = MyApp.getDBO().impresoraDao().existeImpresora(data!=null && data.length()>0?Integer.parseInt(data):0);
+        System.out.println(bool);
         return MyApp.getDBO().impresoraDao().existeImpresora(data!=null && data.length()>0?Integer.parseInt(data):0);
     }
 
