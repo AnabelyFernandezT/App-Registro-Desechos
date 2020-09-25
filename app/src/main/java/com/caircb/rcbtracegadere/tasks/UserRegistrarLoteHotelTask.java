@@ -39,23 +39,27 @@ public class UserRegistrarLoteHotelTask extends MyRetrofitApi implements Retrofi
     @Override
     public void execute() {
         RequestRegistarLotePadreHotel request = requestRegistarLotePadreHotel();
-        Gson gson = new Gson();
-        String json = gson.toJson(request);
-        System.out.println(json);
+        //Gson gson = new Gson();
+        //String json = gson.toJson(request);
+        //System.out.println(json);
 
         if(request!=null){
+            progressShow("Registrando...");
             WebService.api().registrarHotelLote(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if (response.isSuccessful()){
                         MyApp.getDBO().loteHotelesDao().eliminarLotes();
                         if(mOnRegisterSesscesullListener!=null)mOnRegisterSesscesullListener.onSucessfull();
+                        progressHide();
+                    }else{
+                        progressHide();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

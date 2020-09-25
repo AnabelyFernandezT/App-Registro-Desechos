@@ -323,7 +323,6 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                                     public void onClick(View v) {
                                         dialogBuilder2.dismiss();
                                         int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
-                                        System.out.println(tipoRecoleccion + " SI");
                                         if (tipoRecoleccion == 1) {
                                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                             MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "1");
@@ -361,7 +360,6 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                                     public void onClick(View v) {
                                         dialogBuilder2.dismiss();
                                         int tipoRecoleccion = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("currentTipoRecoleccion"));
-                                        System.out.println(tipoRecoleccion + " NO");
                                         if (tipoRecoleccion == 2) {
                                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                             MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "2");

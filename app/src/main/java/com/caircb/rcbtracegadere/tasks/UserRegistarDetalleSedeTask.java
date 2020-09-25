@@ -39,6 +39,7 @@ public class UserRegistarDetalleSedeTask extends MyRetrofitApi implements Retrof
         if (requestDetalle!=null){
             Gson g = new Gson();
             String f = g.toJson(requestDetalle);
+            progressShow("Registrando...");
             WebService.api().registrarDetalleRecolectado(requestDetalle).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {

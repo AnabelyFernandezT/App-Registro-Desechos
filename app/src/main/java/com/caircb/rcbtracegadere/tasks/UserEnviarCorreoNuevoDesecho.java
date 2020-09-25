@@ -39,15 +39,20 @@ public class UserEnviarCorreoNuevoDesecho extends MyRetrofitApi implements Retro
     public void execute()  {
         RequestEnviarCorreoNuevoDesecho requestEnviarCorreoNuevoDesecho = createRequestEnviarCorreoNuevoDesecho();
         if (requestEnviarCorreoNuevoDesecho != null) {
+            progressShow("Enviando correo...");
             WebService.api().enviarCorreo(requestEnviarCorreoNuevoDesecho).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
-
+                    if(response.isSuccessful()){
+                        progressHide();
+                    }else{
+                        progressHide();
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

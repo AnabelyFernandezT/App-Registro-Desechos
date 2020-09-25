@@ -48,9 +48,9 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
     public void execute() {
         progressShow("Sincronizando con servidor el final de ruta");
         RequestFinRuta requestFinRuta = createRequestFin();
-        Gson g = new Gson();
-        String f = g.toJson(requestFinRuta);
-        System.out.println(f);
+        /*Gson g = new Gson();
+        String f = g.toJson(requestFinRuta);*/
+
         if (requestFinRuta != null) {
             if (mOnFinLoteListener != null) mOnFinLoteListener.onSuccessful();
             WebService.api().putFinLoteHospitales(requestFinRuta).enqueue(new Callback<DtoInfo>() {

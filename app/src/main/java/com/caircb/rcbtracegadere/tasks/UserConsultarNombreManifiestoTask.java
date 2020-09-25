@@ -36,15 +36,16 @@ public class UserConsultarNombreManifiestoTask extends MyRetrofitApi implements 
             @Override
             public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                 if(response.isSuccessful()){
-                    if(mOnNombreManifiestoListenner!=null){
-                        mOnNombreManifiestoListenner.onSuccessful(response.body().getMensaje());
-                    }
+                    if(mOnNombreManifiestoListenner!=null){mOnNombreManifiestoListenner.onSuccessful(response.body().getMensaje());}
+                    progressHide();
+                }else {
+                    progressHide();
                 }
             }
 
             @Override
             public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                progressHide();
             }
         });
 

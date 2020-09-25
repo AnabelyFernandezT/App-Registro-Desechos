@@ -399,7 +399,7 @@ public class ListaValoresAdapter extends ArrayAdapter<CatalogoItemValor> {
         holder.btnImpresionOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("no hace nada");
+               // System.out.println("no hace nada");
             }
         });
 

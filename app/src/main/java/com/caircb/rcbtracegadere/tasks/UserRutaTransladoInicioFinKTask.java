@@ -42,20 +42,23 @@ public class UserRutaTransladoInicioFinKTask extends MyRetrofitApi implements Re
         final RequestNuevoKilometraje request = requestNuevoKilometraje();
 
         if(request!=null){
+            progressShow("Registrando...");
             WebService.api().registroReasignacionVehiculo(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
                     if (response.isSuccessful()){
                         if (response.body().getExito()){
                             if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
+                            progressHide();
                         }
-
+                    }else{
+                        progressHide();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
         }

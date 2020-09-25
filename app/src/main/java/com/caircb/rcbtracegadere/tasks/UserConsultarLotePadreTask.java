@@ -42,7 +42,6 @@ public class UserConsultarLotePadreTask extends MyRetrofitApi implements Retrofi
         ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico");
         String valor = parametro == null ? "-1" : parametro.getValor();
         Integer idDestinatario = Integer.parseInt(valor.equals("null") ? "-1":valor);
-        System.out.println(MySession.getIdUsuario()+"--"+new Date()+"--"+idDestinatario);
         MyApp.getDBO().lotePadreDao().eliminarLotes();
 
             /***CAMBIAR PARAMETRO TRES DEL REQUEST ESTA UN DATO QUEMADO ***/

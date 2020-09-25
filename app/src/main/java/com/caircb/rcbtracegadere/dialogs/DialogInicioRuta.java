@@ -376,7 +376,6 @@ public class DialogInicioRuta extends MyDialog {
         RutasEntity r = MyApp.getDBO().rutasDao().fetchConsultarId(placa);
         int idVehiculo = r!=null?r.getCodigo():-1;
         Date fechaInicio = AppDatabase.getDateTime();
-        System.out.println(MySession.getIdUsuario()+"iddddddd");
         //idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, MySession.getIdUsuario(),idVehiculo,fechaInicio,null,kilometrajeInicio,null,1,idTipoSubruta);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+idVehiculo);
         //MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+placaInfoModulos);

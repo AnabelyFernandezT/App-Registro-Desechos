@@ -95,7 +95,6 @@ public class MyPrint {
         if(checkImpresora()) {
             final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividual(idManifiesto, idManifiestoDetalle, idCatalogo);
             if(printEtiqueta != null){
-                System.out.println(printEtiqueta);
                 //dialog.show();
 
                 activity.runOnUiThread(new Runnable() {
@@ -125,7 +124,6 @@ public class MyPrint {
         if(checkImpresora()) {
             final ItemEtiqueta printEtiqueta = MyApp.getDBO().manifiestoDetallePesosDao().consultaBultoIndividualLote(idManifiesto, idManifiestoDetalle);
             if(printEtiqueta != null){
-                System.out.println(printEtiqueta);
                 //dialog.show();
 
                 activity.runOnUiThread(new Runnable() {

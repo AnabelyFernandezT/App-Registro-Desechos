@@ -217,7 +217,6 @@ public class RecepcionLotePlantaFragment extends MyFragment implements View.OnCl
                         }
 
                         String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
-                        System.out.println(idSubRuta);
                         if (!idSubRuta.equals("0")) {
                             int idSubRutaEnviar = Integer.parseInt(idSubRuta);
                             Integer idTransportistaRecolector = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idTransportistaRecolector")==null?0:Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idTransportistaRecolector"));
@@ -256,7 +255,6 @@ public class RecepcionLotePlantaFragment extends MyFragment implements View.OnCl
         consultaFirmaUsuarioTask.execute();
         ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity = MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
         String firmaUsuario = consultarFirmaUsuarioEntity == null ? "" : (consultarFirmaUsuarioEntity.getFirmaBase64() == null ? "" : consultarFirmaUsuarioEntity.getFirmaBase64());
-        System.out.println(firmaUsuario);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario", firmaUsuario);
     }
 }

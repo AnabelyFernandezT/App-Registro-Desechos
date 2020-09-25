@@ -32,6 +32,8 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+response.body().getIdFinRutaCatalogo());
                     MySession.setDestinoEspecifico(response.body().getNombreCorto());
                     progressHide();
+                }else{
+                    progressHide();
                 }
             }
 

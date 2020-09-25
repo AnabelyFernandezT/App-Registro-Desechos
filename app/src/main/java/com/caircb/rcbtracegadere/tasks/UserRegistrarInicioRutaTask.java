@@ -59,9 +59,9 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     private void  register(){
         progressShow("Sincronizando con el servidor el inicio de ruta");
         RequestIniciaRuta requestRutaIniciFin = createRequestInicio();
-        Gson g = new Gson();
-        String f = g.toJson(requestRutaIniciFin);
-        System.out.println(f);
+        /*Gson g = new Gson();
+        String f = g.toJson(requestRutaIniciFin);*/
+
         if(requestRutaIniciFin!=null){
             WebService.api().putInicioFin(requestRutaIniciFin).enqueue(new Callback<DtoInfo>() {
                 @Override
@@ -93,9 +93,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     }
 
     private RequestIniciaRuta createRequestInicio (){
-        System.out.println(MySession.getIdUsuario()+"iddddddd");
         Integer idUsuario=MySession.getIdUsuario();
-        System.out.println(idUsuario);
         idRegistro =  MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(1, idUsuario,idVehiculo,fechaInicio,null,kilometrajeInicio,null,1,idTipoSubruta);
         RequestIniciaRuta rq=null;
         model = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(idUsuario);

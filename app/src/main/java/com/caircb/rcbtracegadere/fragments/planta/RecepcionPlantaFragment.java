@@ -255,7 +255,6 @@ public class RecepcionPlantaFragment extends LinearLayout {
     private void load() {
 
         String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
-        System.out.println(firmaUsuario);
         if (!firmaUsuario.equals("")) {
             Bitmap imagen = Utils.StringToBitMap(firmaUsuario);
             txtFirmaPlanta.setVisibility(View.GONE);

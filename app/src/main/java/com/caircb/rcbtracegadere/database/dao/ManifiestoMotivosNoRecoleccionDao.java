@@ -26,7 +26,7 @@ public abstract class ManifiestoMotivosNoRecoleccionDao {
 
     @Query("select count(*) " +
             " from tb_catalogos c" +
-            " inner join tb_manifiestos_motivo_norecoleccion mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=6 and estadoChek=1" +
+            " inner join tb_manifiestos_motivo_norecoleccion mnf on c.idSistema=mnf.idCatalogo and idAppManifiesto=:idManifiesto and c.tipo=6 and estadoChek=1 and codigo=1" +
             " where (select count(*) from tb_manifiestos_file ff where ff.idAppManifiesto=:idManifiesto and ff.idCatalogo=c.idSistema and ff.tipo=2)=0")
     public  abstract long existeNovedadNoRecoleccionPendienteFoto(Integer idManifiesto);
 

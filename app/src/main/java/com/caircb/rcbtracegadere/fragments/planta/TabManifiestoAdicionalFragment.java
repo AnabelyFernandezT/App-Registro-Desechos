@@ -238,7 +238,6 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
 
     private void loadData() {
         String firmaUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_firma_usuario");
-        System.out.println(firmaUsuario);
         if (!firmaUsuario.equals("")) {
             Bitmap imagen = Utils.StringToBitMap(firmaUsuario);
             txtFirmaPlanta.setVisibility(View.GONE);

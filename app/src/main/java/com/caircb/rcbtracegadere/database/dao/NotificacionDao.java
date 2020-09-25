@@ -38,7 +38,7 @@ public abstract  class NotificacionDao {
         newNotificacion.setIdManifiesto(notificacion.getIdManifiesto());
         newNotificacion.setPeso(notificacion.getPeso());
         createNotificacion(newNotificacion);
-        System.out.println("Lista notificaciones");
+        /*/System.out.println("Lista notificaciones");
         System.out.println(newNotificacion.getEstadoNotificacion());
         System.out.println(newNotificacion.getIdManifiesto());
         System.out.println(newNotificacion.getIdNotificacion());
@@ -47,7 +47,7 @@ public abstract  class NotificacionDao {
         System.out.println(newNotificacion.getTipoNotificacion());
 
 
-        System.out.println(fetchNotificaciones());
+        System.out.println(fetchNotificaciones());*/
         }
 
 

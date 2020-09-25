@@ -40,11 +40,11 @@ public class UserRegistrarSedeQrTask extends MyRetrofitApi implements RetrofitCa
     @Override
     public void execute() {
         final RequestManifiestoQrPlanta request = createRequestManifiestoQrPlanta();
-        Gson g = new Gson();
-        String f = g.toJson(request);
-        System.out.println(f);
+        /*Gson g = new Gson();
+        String f = g.toJson(request);*/
 
         if (request != null) {
+            progressShow("Registrando...");
             WebService.api().registroManifiestoQrPlanta(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {

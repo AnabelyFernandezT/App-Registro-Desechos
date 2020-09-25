@@ -606,7 +606,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         dialogInformacionModulos = new DialogInformacionModulos(this);
         boolean estadoProceso = Boolean.parseBoolean(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("estado_transporte"));
         int idTipoEspiecifico = Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_info"));
-        System.out.println("RUTA " + estadoProceso + "--" + idTipoEspiecifico);
+        //System.out.println("RUTA " + estadoProceso + "--" + idTipoEspiecifico);
 
         if (idTipoEspiecifico == 1 || idTipoEspiecifico == 0) {
             if (estadoProceso == true) {
@@ -714,7 +714,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                         if (mdialog != null) {
                             mdialog.dismiss();
                             //MyApp.getDBO().parametroDao().saveOrUpdate("auto_impresion"+MySession.getIdUsuario(), "1");
-                            System.out.println("idUsuario:" + MySession.getIdUsuario());
+                            //System.out.println("idUsuario:" + MySession.getIdUsuario());
                             mensajes();
                         }
                     }
@@ -743,9 +743,9 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private void initBorrarCache() {
         File dir = this.getCacheDir();
         if (deleteDir(dir)) {
-                System.out.println("CACHE BORRADA");
+                //System.out.println("CACHE BORRADA");
             } else {
-                System.out.println("FALLO BORRADO");
+                //System.out.println("FALLO BORRADO");
             }
         }
 

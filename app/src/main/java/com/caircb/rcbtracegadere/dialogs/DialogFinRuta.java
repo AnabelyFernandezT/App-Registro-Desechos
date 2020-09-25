@@ -518,7 +518,6 @@ public class DialogFinRuta extends MyDialog {
                         Integer idSubruta = MySession.getIdSubRuta();
                         loadDataPaquetes(idSubruta);
                         List<RowItemFinRuta> ListaEnviar=listaFinRuta;
-                        System.out.println("");
                         try {
                             dialog = new ProgressDialog(getActivity());
                             print = new MyPrint(getActivity());
@@ -540,7 +539,6 @@ public class DialogFinRuta extends MyDialog {
                             progress.dismiss();
                             messageBox("No hay conexion con la impresora");
                         }
-                        System.out.println("");
                     }
                 });
                 Looper.loop();
@@ -611,7 +609,7 @@ public class DialogFinRuta extends MyDialog {
                 }
                 String fecha=(new SimpleDateFormat("dd/MM/yyyy")).format(new Date());
                 listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3,pendienteF55x50,pendienteF63x76,pendienteFPc1,pendienteFPc2,pendienteFPc3));
-                System.out.println("");
+                //System.out.println("");
             }
         }
     }

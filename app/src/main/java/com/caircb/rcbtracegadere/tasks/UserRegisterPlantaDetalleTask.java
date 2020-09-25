@@ -85,9 +85,8 @@ public class UserRegisterPlantaDetalleTask extends MyRetrofitApi implements Retr
 
     private void register(){
         final  RequestRegisterPlantaDetalle request = createRequestPlantaDetalle();
-        Gson g = new Gson();
-        String f = g.toJson(request);
-        System.out.println(f);
+        /*Gson g = new Gson();
+        String f = g.toJson(request);*/
 
         if(request !=null){
             WebService.api().registroManifiestoDetallePlanta(request).enqueue(new Callback<DtoInfo>() {

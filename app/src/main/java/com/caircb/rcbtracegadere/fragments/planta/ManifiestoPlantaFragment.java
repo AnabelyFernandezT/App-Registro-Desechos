@@ -178,7 +178,6 @@ public class ManifiestoPlantaFragment extends MyFragment implements OnCameraList
         consultaFirmaUsuarioTask.execute();
         ConsultarFirmaUsuarioEntity consultarFirmaUsuarioEntity= MyApp.getDBO().consultarFirmaUsuarioDao().fetchFirmaUsuario2();
         String firmaUsuario=consultarFirmaUsuarioEntity==null?"":(consultarFirmaUsuarioEntity.getFirmaBase64()==null?"":consultarFirmaUsuarioEntity.getFirmaBase64());
-        System.out.println(firmaUsuario);
         MyApp.getDBO().parametroDao().saveOrUpdate("current_firma_usuario",firmaUsuario);
     }
 

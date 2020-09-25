@@ -100,7 +100,6 @@ public class HojaRutaQrLoteFragment extends MyFragment {
                             @Override
                             public void onSuccessful() {
                                 String idSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta") == null ? "0" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idSubruta");
-                                System.out.println(idSubRuta);
                                 if (!idSubRuta.equals("0")) {
                                     int idSubRutaEnviar = Integer.parseInt(idSubRuta);
                                     Integer idTransportistaRecolector = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idTransportistaRecolector")==null?0:Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idTransportistaRecolector"));

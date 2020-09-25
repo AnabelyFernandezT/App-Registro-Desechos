@@ -32,19 +32,22 @@ public class UserObtenerLotePadreHotelTask extends MyRetrofitApi implements Retr
 
     @Override
     public void execute() {
+        progressShow("Consultando...");
         WebService.api().getLotePadreHotel(new RequestHotelPadre(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoLotePadreHotel>() {
             @Override
             public void onResponse(Call<DtoLotePadreHotel> call, Response<DtoLotePadreHotel> response) {
                 if(response.isSuccessful()){
                     MyApp.getDBO().hotelLotePadreDao().saveOrUpdare(response.body(),MySession.getIdUsuario());
                     if(mOnLoteHotelPadreListener!=null)mOnLoteHotelPadreListener.onSuccessful();
-
+                    progressHide();
+                }else{
+                    progressHide();
                 }
             }
 
             @Override
             public void onFailure(Call<DtoLotePadreHotel> call, Throwable t) {
-
+                progressHide();
             }
         });
     }

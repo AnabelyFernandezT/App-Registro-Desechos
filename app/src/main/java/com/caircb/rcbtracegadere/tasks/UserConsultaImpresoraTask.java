@@ -39,6 +39,7 @@ public class UserConsultaImpresoraTask extends MyRetrofitApi implements Retrofit
     public void execute() {
         //progressShow("Consultado datos...");
         //obtener fecha de sincronizacion...
+        progressShow("Consultando...");
         fecha = MyApp.getDBO().parametroDao().fecthParametroValor("fechaSincImpresoras");
 
         WebService.api().traerImpresoras(new RequestImpresora(fecha!=null?fecha:"")).enqueue(new Callback<List<DtoImpresora>>() {
@@ -52,13 +53,13 @@ public class UserConsultaImpresoraTask extends MyRetrofitApi implements Retrofit
                     }
                     //actualizar fecha ultima sincronizacion...
                     MyApp.getDBO().parametroDao().saveOrUpdate("fechaSincImpresoras",fecha);
-                    //progressHide();
+                    progressHide();
                 }
             }
 
             @Override
             public void onFailure(Call<List<DtoImpresora>> call, Throwable t) {
-                //progressHide();
+                progressHide();
             }
         });
     }

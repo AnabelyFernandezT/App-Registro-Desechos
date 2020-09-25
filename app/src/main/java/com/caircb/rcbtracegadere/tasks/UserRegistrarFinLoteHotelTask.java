@@ -37,6 +37,7 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
     public void execute() {
         final RequestFinLotePadreHotelTask request = finLotePadreHotelTask();
         if(request!= null){
+            progressShow("Registrando...");
             WebService.api().registrarFinLotePadreHotel(request).enqueue(new Callback<DtoInfo>() {
                 @Override
                 public void onResponse(Call<DtoInfo> call, Response<DtoInfo> response) {
@@ -44,12 +45,15 @@ public class UserRegistrarFinLoteHotelTask extends MyRetrofitApi implements Retr
                         if (response.body().getExito()) {
                             if (mOnRegisterListener != null) mOnRegisterListener.onSuccessful();
                         }
+                        progressHide();
+                    }else{
+                        progressHide();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
-
+                    progressHide();
                 }
             });
 

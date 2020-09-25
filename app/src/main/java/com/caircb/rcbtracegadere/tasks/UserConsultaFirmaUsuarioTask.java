@@ -44,6 +44,8 @@ public class UserConsultaFirmaUsuarioTask extends MyRetrofitApi implements Retro
                     MyApp.getDBO().consultarFirmaUsuarioDao().saveOrUpdate(response.body());
                     if(onFirmaListener!=null)onFirmaListener.onSuccessful();
                     progressHide();
+                }else{
+                    progressHide();
                 }
             }
 
