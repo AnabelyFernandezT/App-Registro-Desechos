@@ -272,7 +272,7 @@ public class TabManifiestoAdicional extends LinearLayout {
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
             listaPaquetes = new ArrayList<>();
 
-           if(manifiestoPkg!=null) {
+           /*if(manifiestoPkg!=null) {
                if(manifiestoPkg!=null) {
                    if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
                        if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() >=1) {
@@ -288,7 +288,7 @@ public class TabManifiestoAdicional extends LinearLayout {
                        manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);
                    }
                }
-           }
+           }*/
 
             //if(pkg.getEntregaSoloFundas()) listaPaquetes.add(new RowItemPaquete(pkg.getFunda(), manifiestoPkg!=null? manifiestoPkg.getDatosFundasDiferencia()!=null ? manifiestoPkg.getDatosFundasDiferencia() : manifiestoPkg.getDatosFundas():0, manifiestoPkg.getDatosFundasPendientes()!=null ? manifiestoPkg.getDatosFundasPendientes() : 0, 1));
             //if(pkg.getEntregaSoloGuardianes())listaPaquetes.add(new RowItemPaquete(pkg.getGuardian(), manifiestoPkg!=null? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes():0, manifiestoPkg.getDatosGuardianesPendientes()!=null ? manifiestoPkg.getDatosGuardianesPendientes():0, 2));
@@ -346,6 +346,7 @@ public class TabManifiestoAdicional extends LinearLayout {
     public void reloadDataPaquetes(){
        // loadDataPaquetes();
 
+        Double cantidadInfecciosos=0.0,cantidadGuardianes=0.0;
         if(listaPaquetes!=null && listaPaquetes.size()>0) {
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, idAppTipoPaquete);
             //if(listaPaquetes.size()==2) {
@@ -354,32 +355,39 @@ public class TabManifiestoAdicional extends LinearLayout {
                 //listaPaquetes.get(1).setCantidad(manifiestoPkg != null ? manifiestoPkg.getDatosGuardianesDiferencia()!=null ? manifiestoPkg.getDatosGuardianesDiferencia() : manifiestoPkg.getDatosGuardianes() : 0);
 
             //VALIDACION IGUALAR A 1 EN PAQUETES
+            ParametroEntity parametoInfeccioso = MyApp.getDBO().parametroDao().fetchParametroEspecifico("infeccioso_data");
+            ParametroEntity parametoCortopunzante = MyApp.getDBO().parametroDao().fetchParametroEspecifico("cortopunzante_data");
+            if(parametoInfeccioso!=null){
+                cantidadInfecciosos = Double.parseDouble(MyApp.getDBO().parametroDao().fecthParametroValor("infeccioso_data"));
+            }
+            if(parametoCortopunzante!=null){
+                cantidadGuardianes = Double.parseDouble(MyApp.getDBO().parametroDao().fecthParametroValor("cortopunzante_data"));
+            }
+
              if(manifiestoPkg!=null) {
                 if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
-                    if (manifiestoPkg.getDatosFundas().equals(0) && manifiestoPkg.getDatosGuardianes() >= 1) {
+                    if (cantidadInfecciosos.equals(0.0) && cantidadGuardianes >= 1) {
                         MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,1);
                         validadorFundas=true;
-                    }else if(manifiestoPkg.getDatosFundas().equals(1)&& manifiestoPkg.getDatosGuardianes().equals(0)){
+                    }else if(cantidadGuardianes.equals(0.0) && cantidadInfecciosos.equals(0.0)){
                         MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,0);
                     }
-                    if (manifiestoPkg.getAdGuardianes().equals(0) && manifiestoPkg.getDatosFundas() >= 1 ) {
+                    if (cantidadGuardianes.equals(0.0) && cantidadInfecciosos>= 1.0 ) {
                         MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,1);
                         validadorGuardianes=true;
-                    }else if(manifiestoPkg.getDatosGuardianes().equals(1) && manifiestoPkg.getDatosFundas().equals(0)){
+                    }else if(cantidadGuardianes.equals(0.0) && cantidadInfecciosos.equals(0.0)){
                         MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,0);
                     }
                 }
             }
 
-            if(validadorFundas && manifiestoPkg.getDatosFundas()>1 && manifiestoPkg.getDatosGuardianes()>1){
+            if(validadorFundas && cantidadInfecciosos>=1.0 && cantidadGuardianes>=1.0){
                 MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosFundas()-1));
                 validadorFundas=false;
-
             }
-            if(validadorGuardianes && manifiestoPkg.getDatosFundas()>1 && manifiestoPkg.getDatosGuardianes()>1){
+            if(validadorGuardianes && cantidadInfecciosos>=1.0 && cantidadGuardianes>=1.0){
                 MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosGuardianes()-1));
                 validadorGuardianes=false;
-
             }
 
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto,idAppTipoPaquete);

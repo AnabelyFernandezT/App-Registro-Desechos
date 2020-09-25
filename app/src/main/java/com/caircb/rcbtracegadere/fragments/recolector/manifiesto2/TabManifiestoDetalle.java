@@ -785,7 +785,12 @@ public class TabManifiestoDetalle extends LinearLayout {
                     recyclerviewAdapter.notifyDataSetChanged();
                     //actualizar datos en dbo local...
                     MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), row.getCantidadBulto(), row.getPeso(), cantidad, row.isEstado());
-
+                    if(tipoGestion.equals(100)){
+                        MyApp.getDBO().parametroDao().saveOrUpdate("infeccioso_data",""+row.getCantidadBulto());
+                    }
+                    if(tipoGestion.equals(101)){
+                        MyApp.getDBO().parametroDao().saveOrUpdate("cortopunzante_data",""+row.getCantidadBulto());
+                    }
 
                     // VALIDACI[ON SI HAY PESOS CON TARA INGRESADOS BLOQUEAR CHECK GENERAL DE TARA {
                     int contManifiestosPesos = 0;
