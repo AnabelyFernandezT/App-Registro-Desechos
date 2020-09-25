@@ -108,11 +108,11 @@ public class TabManifiestoAdicionalFragment extends LinearLayout {
 
         btnEvidenciaObservacion.setVisibility(View.GONE);
 
-        if (pesajePendiente.equals("SI")) {
+/*        if (pesajePendiente.equals("SI")) {
             btnAgregarFirma.setVisibility(GONE);
         } else {
             btnAgregarFirma.setVisibility(VISIBLE);
-        }
+        }*/
 
         Integer numeroFotos = MyApp.getDBO().manifiestoFileDao().obtenerCantidadFotografiabyManifiestoCatalogo(idAppManifiesto, -1, ManifiestoFileDao.FOTO_FOTO_ADICIONAL_PLANTA);
         if (numeroFotos != null && numeroFotos > 0) {
