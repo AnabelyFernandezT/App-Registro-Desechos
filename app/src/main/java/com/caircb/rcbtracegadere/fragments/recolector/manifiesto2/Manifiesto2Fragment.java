@@ -549,4 +549,5 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
         userRegistrarRecoleccion.execute();
     }*/
 
+
 }

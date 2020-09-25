@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.os.strictmode.UnbufferedIoViolation;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosNo;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
+import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.MyPrint;
 import com.caircb.rcbtracegadere.helpers.MyCalculoPaquetes;
 import com.caircb.rcbtracegadere.helpers.MyConstant;
@@ -95,6 +97,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     MyPrint print;
     /*Integer idSubRuta;*/
     ProgressDialog dialog;
+    private long mLastClickTime = 0;
 
 
     public TabManifiestoDetalle(Context context,
@@ -347,68 +350,72 @@ public class TabManifiestoDetalle extends LinearLayout {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(int position, View v) {
-
-                int x = 0;
-                if (estadoManifiesto == 1) {
-                    if (tipoRecoleccion == 1) {
-                        String tipoBalanza = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoBalanza"+idAppManifiesto)==null?"0":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoBalanza"+idAppManifiesto);
-                        Integer manifiestosConPesos=contManifiestosConPesos();
-                        if  (tipoBalanza.equals("gadere")&&manifiestosConPesos>0){
-                            selectBalanzaGadere(position, detalles.get(position).getId());
-                        }else if(tipoBalanza.equals("cliente")&&manifiestosConPesos>0){
-                            selectBalanzaCliente(position, detalles.get(position).getId());
-                        }else {
-                            openOpcionesItems(position, detalles.get(position).getId());
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                    int x = 0;
+                    if (estadoManifiesto == 1) {
+                        if (tipoRecoleccion == 1) {
+                            String tipoBalanza = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoBalanza"+idAppManifiesto)==null?"0":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoBalanza"+idAppManifiesto);
+                            Integer manifiestosConPesos=contManifiestosConPesos();
+                            if  (tipoBalanza.equals("gadere")&&manifiestosConPesos>0){
+                                selectBalanzaGadere(position, detalles.get(position).getId());
+                            }else if(tipoBalanza.equals("cliente")&&manifiestosConPesos>0){
+                                selectBalanzaCliente(position, detalles.get(position).getId());
+                            }else {
+                                openOpcionesItems(position, detalles.get(position).getId());
+                            }
                         }
-                    }
-                    if (tipoRecoleccion == 2) {
-                        final DialogBultosNo dialogBultosNo = new DialogBultosNo(getContext(), idAppManifiesto, detalles.get(position).getId());
-                        dialogBultosNo.setCancelable(false);
-                        dialogBultosNo.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialogBultosNo.setmOnRegistrarBultoListener(new DialogBultosNo.OnRegistrarBultoListener() {
-                            @Override
-                            public void onSuccesfull(String numeroBultos, Integer idDetalle) {
-                                MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValores(idAppManifiesto, idDetalle);
-                                if (numeroBultos.equals("") || numeroBultos.equals("0")) {
-                                    final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                                    dialogBuilder2.setMessage("Ingrese un número mayor a cero");
-                                    dialogBuilder2.setCancelable(false);
-                                    dialogBuilder2.setTitle("CONFIRMACIÓN");
-                                    dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuilder2.dismiss();
+                        if (tipoRecoleccion == 2) {
+                            final DialogBultosNo dialogBultosNo = new DialogBultosNo(getContext(), idAppManifiesto, detalles.get(position).getId());
+                            dialogBultosNo.setCancelable(false);
+                            dialogBultosNo.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialogBultosNo.setmOnRegistrarBultoListener(new DialogBultosNo.OnRegistrarBultoListener() {
+                                @Override
+                                public void onSuccesfull(String numeroBultos, Integer idDetalle) {
+                                    MyApp.getDBO().manifiestoDetallePesosDao().deleteTableValores(idAppManifiesto, idDetalle);
+                                    if (numeroBultos.equals("") || numeroBultos.equals("0")) {
+                                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                                        dialogBuilder2.setMessage("Ingrese un número mayor a cero");
+                                        dialogBuilder2.setCancelable(false);
+                                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                        dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuilder2.dismiss();
+                                            }
+                                        });
+                                        //MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idDetalle,0.0,0,0,false);
+                                        dialogBuilder2.show();
+                                    } else {
+                                        MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idDetalle, numeroBultos.equals("") ? 0.0 : Double.parseDouble(numeroBultos), 0, 0, true);
+                                        for (int i = 1; i <= Integer.parseInt(numeroBultos); i++) {
+                                            MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto, idDetalle, 0.0, "", null, "", false, i, 0.0);
                                         }
-                                    });
-                                    //MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idDetalle,0.0,0,0,false);
-                                    dialogBuilder2.show();
-                                } else {
-                                    MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(idDetalle, numeroBultos.equals("") ? 0.0 : Double.parseDouble(numeroBultos), 0, 0, true);
-                                    for (int i = 1; i <= Integer.parseInt(numeroBultos); i++) {
-                                        MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto, idDetalle, 0.0, "", null, "", false, i, 0.0);
-                                    }
-                                    //detalles.clear();
-                                    reloadData();
-                                    dialogBultosNo.dismiss();
-                                    if (!MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
-                                        imprimirEtiquetaIndividual(idAppManifiesto, idDetalle, Integer.parseInt(numeroBultos));
+                                        //detalles.clear();
+                                        reloadData();
+                                        dialogBultosNo.dismiss();
+                                        if (!MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
+                                            imprimirEtiquetaIndividual(idAppManifiesto, idDetalle, Integer.parseInt(numeroBultos));
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        dialogBultosNo.setmOnCancelarBultoListener(new DialogBultosNo.OnCancelarBultoListener() {
-                            @Override
-                            public void onSuccesfull() {
-                                dialogBultosNo.dismiss();
-                            }
-                        });
-                        dialogBultosNo.show();
+                            });
+                            dialogBultosNo.setmOnCancelarBultoListener(new DialogBultosNo.OnCancelarBultoListener() {
+                                @Override
+                                public void onSuccesfull() {
+                                    dialogBultosNo.dismiss();
+                                }
+                            });
+                            dialogBultosNo.show();
 
 
                        /* DialogAgregarBultos dialogAgregarBultos=new DialogAgregarBultos(getContext(),detalles.get(position).getId(),idAppManifiesto);
                         dialogAgregarBultos.show();*/
+                        }
                     }
-                }
+
             }
         });
 
