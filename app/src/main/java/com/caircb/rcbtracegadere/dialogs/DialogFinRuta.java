@@ -288,7 +288,6 @@ public class DialogFinRuta extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
                 lblpickUpTransportista.setText("0");
                 lblListaManifiestoAsignado.setText("0");
-
                 String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                 if (tipoSubruta.equals("2")) {//TIPO SUBRUTA HOSPITALARIA
                     final DialogBuilder builderw = new DialogBuilder(getContext());

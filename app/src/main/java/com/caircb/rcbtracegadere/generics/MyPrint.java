@@ -385,7 +385,7 @@ public class MyPrint {
                 System.out.print(listNew);
                 configLabel = getTramaHospitalario(
                         printer,
-                        eliminarNulos(row.getNombreGenerador()) ,
+                        eliminarNulos(row.getNombreGenerador()),
                         eliminarNulos(row.getPuntoRecoleccion()),
                         eliminarNulos(row.getRucGenerador()),
                         (new SimpleDateFormat("dd/MM/yyyy")).format(row.getFechaRecolecion()),
@@ -1022,42 +1022,59 @@ public class MyPrint {
     private void sendTestLabelFinRuta(ItemEtiquetaFinRuta printEtiqueta, List<RowItemFinRuta> listaFinRuta,RutasEntity rutasEntity) {
         boolean complete=false;
         ItemEtiquetaFinRuta row = printEtiqueta;
-        try {
-            byte[] configLabel;
-            configLabel = getTramaFinRuta(
-                    printer,
-                    "OP-RE-01",
-                    eliminarNulos(rutasEntity.getFechaEntrega()),
-                    eliminarNulos(rutasEntity.getFechaLiquidacion()),
-                    eliminarNulos(row.getSubRuta()),
-                    eliminarNulos(row.getPlacaVehiculo()),
-                    eliminarNulos(row.getFirmaNombreGenerador()),
-                    eliminarNulos(row.getFirmaNombreGenerador2()),
-                    eliminarNulos(row.getFirmaNombreTransportista()),
-                    eliminarNulos(row.getFirmaCedulaGenerador()),
-                    eliminarNulos(row.getFirmaCedulaTransportista()),
-                    listaFinRuta,
-                    rutasEntity.getFunda55(),
-                    rutasEntity.getFunda63(),
-                    rutasEntity.getPc1(),
-                    rutasEntity.getPc2(),
-                    rutasEntity.getPc4()
-            );
-            zebraPrinterConnection.write(configLabel);
-            MyThread.sleep(500);
-            complete=true;
 
-        }catch (ZebraPrinterConnectionException e) {
-            //setStatus(e.getMessage(), Color.RED);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }finally {
-            if(complete)finalized();
-            if(complete){
-                if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+            try {
+                int numeEtiquetas= dividirEtiquetas(listaFinRuta.size());
+                int inicioList=0;
+                int finList=0;
+                int totalLista;
+                for (int i = 1; i <= numeEtiquetas; i++) {
+                    totalLista = listaFinRuta.size();
+                    inicioList = (i == 1 ? 0 : inicioList + totalNumeroEtiquetas);
+                    finList = finList + totalNumeroEtiquetas;
+                    finList = (finList < totalLista ? finList : totalLista);
+                    List<RowItemFinRuta> listNew = listaFinRuta.subList(inicioList, finList);
+                    byte[] configLabel;
+                    configLabel = getTramaFinRuta(
+                            printer,
+                            "OP-RE-01",
+                            eliminarNulos(rutasEntity==null?"":rutasEntity.getFechaEntrega()),
+                            eliminarNulos(rutasEntity==null?"":rutasEntity.getFechaLiquidacion()),
+                            eliminarNulos(row.getSubRuta()),
+                            eliminarNulos(row.getPlacaVehiculo()),
+                            eliminarNulos(row.getFirmaNombreGenerador()),
+                            eliminarNulos(row.getFirmaNombreGenerador2()),
+                            eliminarNulos(row.getFirmaNombreTransportista()),
+                            eliminarNulos(row.getFirmaCedulaGenerador()),
+                            eliminarNulos(row.getFirmaCedulaTransportista()),
+                            listNew,
+                            rutasEntity==null?0:rutasEntity.getFunda55(),
+                            rutasEntity==null?0:rutasEntity.getFunda63(),
+                            rutasEntity==null?0:rutasEntity.getPc1(),
+                            rutasEntity==null?0:rutasEntity.getPc2(),
+                            rutasEntity==null?0:rutasEntity.getPc4(),
+                            numeEtiquetas,
+                            i
+                    );
+                    zebraPrinterConnection.write(configLabel);
+                    MyThread.sleep(500);
+                    complete=true;
+                }
+
+            }catch (ZebraPrinterConnectionException e) {
+                //setStatus(e.getMessage(), Color.RED);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }finally {
+                if(complete)finalized();
+                if(complete){
+                    if(mOnPrinterListener != null){mOnPrinterListener.onSuccessful();}
+                }
+                else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
             }
-            else disconnect("Se presento un problema al realizar la estructura de la etiqueta");
-        }
+
+
+
     }
 
     public String getDetalleRecoleccionFinRuta (List<RowItemFinRuta> listaFinRuta){
@@ -1106,7 +1123,9 @@ public class MyPrint {
             Integer pendienteFunda63,
             Integer pendienteFundaPc1,
             Integer pendienteFundaPc2,
-            Integer pendienteFundaPc4) {
+            Integer pendienteFundaPc4,
+            Integer numEtiquetas,
+            Integer cont) {
 
         Integer idSubruta = MySession.getIdSubRuta();
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
@@ -1123,7 +1142,7 @@ public class MyPrint {
                             "^FS^FO230,172^A0,28,16^FD "+fechaEntrega+"" +
                             "^FS^FO430,170^A0,29,17^FD COD: " +
                             "^FS^FO560,172^A0,28,16^FD "+codigo+"" +
-                            "^FS^FO700,172^A0,28,16^FD PAG 1/1" +
+                            "^FS^FO700,172^A0,28,16^FD PAG "+cont+"/"+numEtiquetas+
 
                             "^FS^FO45,205^A0,29,17^FD FECHA LIQUIDACION: " +
                             "^FS^FO230,207^A0,28,16^FD "+fechaLiquidacin+"" +
