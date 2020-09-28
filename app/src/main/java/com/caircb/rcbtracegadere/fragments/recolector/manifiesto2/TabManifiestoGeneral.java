@@ -642,7 +642,12 @@ public class TabManifiestoGeneral extends LinearLayout {
                     imgFirmaOperador1.setImageBitmap(imagen);
                     //firmaTransportista=true;
                 }else{
-                    MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaAuxiliar",""+1);//ESTADO  SIN FIRMA
+                    if (manifiesto.getAuxiliarNombre()==null){
+                        MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaAuxiliar",""+2);//NO HAY AUXILIAR RECOLECTOR
+                    }else {
+                        MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaAuxiliar",""+1);//ESTADO  SIN FIRMA
+                    }
+
                 }
             }
 //OPERADOR 2
@@ -673,7 +678,12 @@ public class TabManifiestoGeneral extends LinearLayout {
                     imgFirmaOperadorRecolector.setImageBitmap(imagen);
                     //firmaTransportista=true;
                 }else {
-                    MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaOperador",""+1);//ESTADO  SIN FIRMA
+                    if(manifiesto.getNombreOperadorRecolector()==null){
+                        MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaOperador",""+2);//NO HAY OPERADOR RECOLECTOR
+                    }else {
+                        MyApp.getDBO().parametroDao().saveOrUpdate("estadoFirmaOperador",""+1);//ESTADO  SIN FIRMA
+                    }
+
                 }
 
             }
