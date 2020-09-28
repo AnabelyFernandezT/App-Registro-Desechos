@@ -154,6 +154,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         if (response.body().getExito()) {
                             //imprimirEtiquetas();
                             MyApp.getDBO().manifiestoDao().updateManifiestoToRecolectado(idAppManifiesto);
+                            MyApp.getDBO().parametroDao().eliminarLotes("infeccioso_data");
+                            MyApp.getDBO().parametroDao().eliminarLotes("cortopunzante_data");
 
                             if (mOnRegisterListener != null)
                                 mOnRegisterListener.onSuccessful(request.getFechaRecoleccion());
