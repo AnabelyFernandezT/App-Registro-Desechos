@@ -34,9 +34,7 @@ import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
-import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
-import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccionGestores;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
 import com.joanzapata.pdfview.PDFView;
@@ -80,7 +78,6 @@ public class VistaPreliminarGestoresFragment extends MyFragment implements OnCam
     DialogAgregarFotografias dialogAgregarFotografias;
     Window window;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
-    UserConsultarCatalogosTask consultarCatalogosTask;
     MyPrint print;
 
     public static VistaPreliminarGestoresFragment newInstance(Integer manifiestoID, Integer idAppTipoPaquete, String identificacion) {
@@ -524,8 +521,6 @@ public class VistaPreliminarGestoresFragment extends MyFragment implements OnCam
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
-        consultarCatalogosTask.execute();
     }
 
     UserConsultarHojaRutaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaTask.TaskListener() {

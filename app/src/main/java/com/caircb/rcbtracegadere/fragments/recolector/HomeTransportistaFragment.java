@@ -216,7 +216,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
 
         int x = MySession.getIdUsuario();
         rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
-        System.out.println(rut);
+        //System.out.println(rut);
         if (rut != null) {
             inicioFinRuta = rut.getEstado();
             IdTransporteRecolector = MySession.getIdUsuario();
@@ -603,8 +603,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
-            consultarCatalogosTask.execute();
             MyApp.getDBO().parametroDao().saveOrUpdate("flag_refresh_home","false");
         }
     }
@@ -634,7 +632,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                                 public void onSuccessful() {
                                     //Impresion finalizada
                                     progress.dismiss();
-                                    System.out.print("Compleado correctamente");
                                 }
                                 @Override
                                 public void onFailure(String message) {
@@ -647,7 +644,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                             progress.dismiss();
                             messageBox("No hay conexion con la impresora");
                         }
-                        System.out.println("");
                     }
                 });
                 Looper.loop();

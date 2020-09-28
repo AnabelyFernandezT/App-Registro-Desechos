@@ -31,7 +31,6 @@ import com.caircb.rcbtracegadere.helpers.MyManifiesto;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
-import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRecoleccion;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarRuteoRecoleccion;
@@ -78,7 +77,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     DialogAgregarFotografias dialogAgregarFotografias;
     Window window;
     UserConsultarHojaRutaTask consultarHojaRutaTask;
-    UserConsultarCatalogosTask consultarCatalogosTask;
     MyPrint print;
 
 
@@ -524,8 +522,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        consultarCatalogosTask = new UserConsultarCatalogosTask(getActivity(), listaCatalogos);
-        consultarCatalogosTask.execute();
     }
 
     UserConsultarHojaRutaTask.TaskListener listenerHojaRuta = new UserConsultarHojaRutaTask.TaskListener() {

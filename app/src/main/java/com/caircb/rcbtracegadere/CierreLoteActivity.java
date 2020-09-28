@@ -1,43 +1,31 @@
 package com.caircb.rcbtracegadere;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.caircb.rcbtracegadere.MyApp;
-import com.caircb.rcbtracegadere.R;
+
 import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.database.entity.ParametroEntity;
 import com.caircb.rcbtracegadere.database.entity.RutaInicioFinEntity;
 import com.caircb.rcbtracegadere.database.entity.RutasEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
-import com.caircb.rcbtracegadere.fragments.impresora.ImpresoraConfigurarFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HomeTransportistaFragment;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.response.DtoCatalogo;
-import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarDestinosTask;
-import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserDestinoEspecificoTask;
-import com.caircb.rcbtracegadere.tasks.UserObtenerLotePadreHotelTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHospitalesTask;
-import com.caircb.rcbtracegadere.tasks.UserRegistrarInicioFinLoteHotelTask;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +48,8 @@ public class CierreLoteActivity extends AppCompatActivity {
     Integer finHotel = 3, idRuta;
     ParametroEntity parametro;
     Integer idSubtura;
-    UserConsultarHojaRutaTask consultarHojaRutaTask;
-    UserConsultarCatalogosTask consultarCatalogosTask;
 
     public Fragment fragment;
-    FragmentTransaction fragmentTransaction;
-    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +63,6 @@ public class CierreLoteActivity extends AppCompatActivity {
     }
 
     private void init() {
-      /*  parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_hotel");
-        if(parametro!=null){
-            inicioHotel = parametro.getValor();
-        }*/
-        //lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
-
         btnFinApp = (LinearLayout) findViewById(R.id.btnFinalizarLoteHospital);
         btnFinApp.setOnClickListener(new View.OnClickListener() {
             @Override
