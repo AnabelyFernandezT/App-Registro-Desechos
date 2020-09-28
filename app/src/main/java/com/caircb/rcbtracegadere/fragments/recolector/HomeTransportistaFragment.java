@@ -558,10 +558,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
             @Override
             public void onSuccessful() {
-                // messageBox("Ha iniciado previamente sesion");
                 setNavegate(HomeTransportistaFragment.create());
-                //  loadCantidadManifiestoAsignado();
-                // loadCantidadManifiestoProcesado();
             }
         });
         verificarInicioRutaTask.execute();

@@ -26,12 +26,11 @@ public class PaquetesTask extends MyRetrofitApi implements RetrofitCallbacks {
     public PaquetesTask(Context context, TaskListener listener) {
         super(context);
         this.taskListener = listener;
-
+        progressShow("Consultando...");
     }
 
     @Override
     public void execute() {
-        progressShow("Consultando...");
         WebService.api().getPaquetes().enqueue(new Callback<List<DtoPaquetes>>() {
             @Override
             public void onResponse(Call<List<DtoPaquetes>> call, Response<List<DtoPaquetes>> response) {

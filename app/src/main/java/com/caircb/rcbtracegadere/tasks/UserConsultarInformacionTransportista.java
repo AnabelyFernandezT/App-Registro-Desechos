@@ -19,11 +19,11 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
 
     public UserConsultarInformacionTransportista(Context context) {
         super(context);
+        progressShow("Consultando...");
     }
 
     @Override
     public void execute() {
-        progressShow("Consultando...");
         WebService.api().informacionTransportista(new RequestInformacionTransportista(MySession.getIdUsuario())).enqueue(new Callback<DtoInformacionTransportista>() {
             @Override
             public void onResponse(Call<DtoInformacionTransportista> call, Response<DtoInformacionTransportista> response) {

@@ -24,6 +24,7 @@ public class UserConsultarRutasTask extends MyRetrofitApi implements RetrofitCal
 
     public UserConsultarRutasTask(Context context) {
         super(context);
+        progressShow("Consultando sub-rutas disponibles...");
     }
 
     public interface OnPlacaListener {
@@ -37,7 +38,7 @@ public class UserConsultarRutasTask extends MyRetrofitApi implements RetrofitCal
     public void execute() {
         //System.out.println(MySession.getIdUsuario());
         //System.out.println(new Date());
-        progressShow("Consultando sub-rutas disponibles...");
+
         WebService.api().traerRutas(new RequestFindRutas(MySession.getIdUsuario(), new Date())).enqueue(new Callback<List<DtoFindRutas>>() {
             @Override
             public void onResponse(Call<List<DtoFindRutas>> call, Response<List<DtoFindRutas>> response) {

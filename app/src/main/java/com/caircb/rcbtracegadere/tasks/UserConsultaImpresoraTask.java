@@ -33,13 +33,14 @@ public class UserConsultaImpresoraTask extends MyRetrofitApi implements Retrofit
     private TaskListener mOnRegisterListener;
     public UserConsultaImpresoraTask(Context context) {
         super(context);
+        progressShow("Consultando...");
     }
 
     @Override
     public void execute() {
         //progressShow("Consultado datos...");
         //obtener fecha de sincronizacion...
-        progressShow("Consultando...");
+
         fecha = MyApp.getDBO().parametroDao().fecthParametroValor("fechaSincImpresoras");
 
         WebService.api().traerImpresoras(new RequestImpresora(fecha!=null?fecha:"")).enqueue(new Callback<List<DtoImpresora>>() {

@@ -30,6 +30,7 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
     public UserConsultarCatalogosTask(Context context, List<Integer> ids) {
         super(context);
         this.ids=ids;
+        progressShow("Descargando catalogo...");
     }
 
     @Override
@@ -42,7 +43,6 @@ public class UserConsultarCatalogosTask extends MyRetrofitApi implements Retrofi
 
 
         for (final Integer catalogoID:ids) {
-            progressShow("Descargando catalogo...");
             WebService.api().getCatalogos(new RequestCatalogo(catalogoID, new Date())).enqueue(new Callback<List<DtoCatalogo>>() {
                 @Override
                 public void onResponse(Call<List<DtoCatalogo>> call, Response<List<DtoCatalogo>> response) {
