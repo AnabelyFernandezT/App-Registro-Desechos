@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
@@ -39,6 +40,7 @@ public class DialogQrLoteTransportista extends MyDialog {
     Activity _activity;
     ImageView imgQrLoteTransportista;
     LinearLayout btnCancelQr;
+    TextView txtPlacaLote;
 
 
     public DialogQrLoteTransportista(@NonNull Context context ) {
@@ -73,6 +75,9 @@ public class DialogQrLoteTransportista extends MyDialog {
             imgQrLoteTransportista.setVisibility(View.GONE);
         }
 
+        String[] array= qr.split("\\$");
+        txtPlacaLote = (TextView)findViewById(R.id.txtPlacaLote);
+        txtPlacaLote.setText(array[6]);
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
