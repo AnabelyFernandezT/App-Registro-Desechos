@@ -106,12 +106,9 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     JSONObject json;
     JSONArray jsonLugares;
 
-    //UserUpdateAppTask updateAppTask;
-
     FragmentTransaction fragmentTransaction;
     FragmentManager fm;
 
-    UserInformacionModulosTask userInformacionModulosTask;
     UserUpdateAppTask userUpdateAppTask;
     UserConsultarCatalogosTask consultarCatalogosTask;
     PaquetesTask paquetesTask;
@@ -124,7 +121,6 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //consultarInicioFinRuta();
         initMenuLateral();
         existeCatalogos();
         existePaquetes();
@@ -162,10 +158,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
 
     }
     private void validateInitFragment() {
-        //if(1==1){
-        //initFragment((HomeTransportistaFragment.create()));
-        //initFragment(HomePlantaFragment.create());
-        //}
+
         switch (MySession.getIdPerfil()) {
 
             case 3136:
@@ -783,19 +776,5 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
                 }
             }
         }
-
-        private void consultarInicioFinRuta(){
-            verificarInicioRutaTask = new UserConsultarInicioRutaTask(MainActivity.this);
-            verificarInicioRutaTask.setOnRegisterListener(new UserConsultarInicioRutaTask.OnRegisterListener() {
-                @Override
-                public void onSuccessful() {
-                    //message("Ha iniciado previamente sesion");
-                    navegate(HomeTransportistaFragment.create());
-
-            }
-        });
-        verificarInicioRutaTask.execute();
-    }
-
 
 }

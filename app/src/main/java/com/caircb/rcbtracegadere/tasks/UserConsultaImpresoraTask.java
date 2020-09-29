@@ -33,7 +33,7 @@ public class UserConsultaImpresoraTask extends MyRetrofitApi implements Retrofit
     private TaskListener mOnRegisterListener;
     public UserConsultaImpresoraTask(Context context) {
         super(context);
-        progressShow("Consultando...");
+        progressShow("Consultando impresora...");
     }
 
     @Override

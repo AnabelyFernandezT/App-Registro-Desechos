@@ -70,7 +70,7 @@ public class DialogDetallesGestoresNo extends MyDialog {
                         mOnRegistrarBultoListener.onSuccesfull(txtCantidadBultos.getText().toString(), idManifiestoDetalle, txtPesoBultos.getText().toString());
                     }
                 }else {
-                    messageBox("Datos ingresados no validos");
+                    messageBox("Debe ingresar cantidad de bultos y peso para continuar.");
                     validar = true;
                     return;
                 }
