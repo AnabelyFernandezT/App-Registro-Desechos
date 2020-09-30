@@ -108,7 +108,6 @@ public class DialogInfoCodigoQR extends MyDialog {
 
     private void obtenerItemManifiesto(){
         ItemManifiestoPlantaCodigoQR item = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosBultos(codigoQR);
-        System.out.print(item);
         txtCliente.setText(item.getNombreCliente());
         txtManifiesto.setText(item.getNumeroManifiesto());
         txtNumBultos.setText(item.getBultosSelecionado()+"/"+item.getTotalBultos());

@@ -23,14 +23,18 @@ import com.caircb.rcbtracegadere.database.entity.CatalogoEntity;
 import com.caircb.rcbtracegadere.database.entity.ConsultarFirmaUsuarioEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPlantaEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
+import com.caircb.rcbtracegadere.dialogs.DialogInfoCodigoQR;
 import com.caircb.rcbtracegadere.dialogs.DialogManifiestoPendienteSede;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoAdicionalFragment;
 import com.caircb.rcbtracegadere.fragments.planta.TabManifiestoDetalleFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
+import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.ItemManifiestoPlantaCodigoQR;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaFirmaUsuarioTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestoSedeLoteTask;
@@ -46,7 +50,7 @@ import java.util.List;
  * Use the {@link ManifiestoFragmentTabs#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListener, View.OnClickListener {
+public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListener, View.OnClickListener, OnBarcodeListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,6 +73,8 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
     DialogBuilder builder;
     ManifiestoPlantaEntity manifiestoPlanta;
     Integer idLoteSede;
+    DialogInfoCodigoQR dialogCodigoQR;
+    private List<ItemManifiestoSede> rowItems;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -319,4 +325,54 @@ public class ManifiestoFragmentTabs extends MyFragment implements OnCameraListen
         manifiestoSedeLoteTask.execute();
     }
 
+    @Override
+    public void reciveData(String data) {
+        Boolean estadoBulto = MyApp.getDBO().manifiestoPlantaDetalleValorDao().verificarBultoEstado(data);
+
+        if(estadoBulto==null){
+            messageBox("CODIGO QR NO EXISTE..!");
+        }else{
+            final ItemManifiestoPlantaCodigoQR item = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosBultos(data);
+
+            if (estadoBulto){
+                messageBox("EL BULTO YA SE ENCUENTRA REGISTRADO..!");
+            }else if (!estadoBulto){
+                if(manifiestoID.equals(item.getIdAppManifiesto())){
+                dialogCodigoQR = new DialogInfoCodigoQR(getActivity(),data);
+                dialogCodigoQR.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogCodigoQR.setCancelable(false);
+                dialogCodigoQR.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
+                    @Override
+                    public void onSucefull() {
+                        rowItems = MyApp.getDBO().manifiestoPlantaDao().fetchManifiestosAsigByClienteOrNumManifCodigoQR();
+                        //adapterList();
+                    }
+                });
+                dialogCodigoQR.show();
+                window = dialogCodigoQR.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            }else{
+                    //messageBox("BULTO NO PERTENECE A ESTE MANIFIESTO");
+                    final DialogBuilder builder =  new DialogBuilder(getActivity());
+                    builder.setTitle("BULTO NO PERTENECE A ESTE MANIFIESTO");
+                    builder.setMessage("Mover al manifiesto correcto?");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Mover", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            builder.dismiss();
+                            setNavegate(ManifiestoFragmentTabs.newInstance(item.getIdAppManifiesto(),item.getNumeroManifiesto(), "NO"));
+                        }
+                    });
+                    builder.setNegativeButton("Cancelar", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            builder.dismiss();
+                        }
+                    });
+                    builder.show();
+                }
+            }
+        }
+    }
 }
