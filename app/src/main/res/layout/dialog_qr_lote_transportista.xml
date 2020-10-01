@@ -16,6 +16,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CÓDIGO QR LOTE" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:text="Número de Placa: ">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:id="@+id/txtPlacaLote">
+
+        </TextView>
+
+    </LinearLayout>
+
+
     <ImageView
 
         android:id="@+id/imgQrLoteTransportista"

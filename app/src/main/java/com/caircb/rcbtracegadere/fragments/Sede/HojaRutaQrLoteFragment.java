@@ -19,6 +19,7 @@ import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.adapters.PesosAdapterPlantaLote;
 import com.caircb.rcbtracegadere.database.entity.RecepcionQrPlantaEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
+import com.caircb.rcbtracegadere.dialogs.DialogListadoManifiestosPlantaQr;
 import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.planta.RecepcionLotePlantaFragment;
 import com.caircb.rcbtracegadere.generics.MyFragment;
@@ -35,8 +36,8 @@ public class HojaRutaQrLoteFragment extends MyFragment {
     Window window;
     private RecyclerView recyclerView;
     private PesosAdapterPlantaLote recyclerviewAdapter;
-    TextView txtPesoTotalLote, txtCantidadTotalBultosLote, txtTotalNumeroManifiestosLote, txtNumerosManifiestoLote,txtPruebaLote;
-    LinearLayout btnRegistrarSede;
+    TextView txtPesoTotalLote, txtCantidadTotalBultosLote, txtTotalNumeroManifiestosLote;
+    LinearLayout btnRegistrarSede,btnListadoManifiestosSedeQr;
     private List<ItemQrDetallePlanta> rowItems;
     private RecepcionQrPlantaEntity recepcionQrPlantaEntity;
     UserRegistrarSedeQrTask userRegistrarSedeQrTask;
@@ -82,7 +83,6 @@ public class HojaRutaQrLoteFragment extends MyFragment {
         txtPesoTotalLote = (TextView) getView().findViewById(R.id.txtPesoTotalLote);
         txtCantidadTotalBultosLote = (TextView) getView().findViewById(R.id.txtCantidadTotalBultosLote);
         txtTotalNumeroManifiestosLote = (TextView) getView().findViewById(R.id.txtTotalNumeroManifiestosLote);
-        txtNumerosManifiestoLote = (TextView) getView().findViewById(R.id.txtNumerosManifiestoLote);
         btnRegistrarSede = (LinearLayout) getView().findViewById(R.id.btnManifiestoNext);
         btnRegistrarSede.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +133,22 @@ public class HojaRutaQrLoteFragment extends MyFragment {
                 dialogBuilder.show();
             }
         });
+        btnListadoManifiestosSedeQr = (LinearLayout) getView().findViewById(R.id.btnListadoManifiestosSedeQr);
+        btnListadoManifiestosSedeQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final DialogListadoManifiestosPlantaQr dialogListadoManifiestosPlantaQr = new DialogListadoManifiestosPlantaQr(getActivity(),recepcionQrPlantaEntity);
+                dialogListadoManifiestosPlantaQr.setTitle("LISTADO DE MANIFIESTOS");
+                dialogListadoManifiestosPlantaQr.setCanceledOnTouchOutside(false);
+                dialogListadoManifiestosPlantaQr.setPositiveButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogListadoManifiestosPlantaQr.dismiss();
+                    }
+                });
+                dialogListadoManifiestosPlantaQr.show();
+            }
+        });
     }
     private void initItems() {
         rowItems = MyApp.getDBO().recepcionQrPlantaDetalleDao().fetchHojaRutaQrPlantaDetalle2();
@@ -146,7 +162,6 @@ public class HojaRutaQrLoteFragment extends MyFragment {
     private void cargarDatos(){
         txtPesoTotalLote.setText(recepcionQrPlantaEntity.getPesoTotalLote().toString()+" KG");
         txtCantidadTotalBultosLote.setText(recepcionQrPlantaEntity.getCantidadTotalBultos().toString());
-        txtNumerosManifiestoLote.setText(recepcionQrPlantaEntity.getNumerosManifiesto().toString());
         txtTotalNumeroManifiestosLote.setText(recepcionQrPlantaEntity.getCantidadTotalManifiestos().toString());
     }
 

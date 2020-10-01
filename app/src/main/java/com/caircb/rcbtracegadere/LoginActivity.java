@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import com.caircb.rcbtracegadere.generics.MyAppCompatActivity;
 import com.caircb.rcbtracegadere.helpers.MyAuthorization;
 import com.caircb.rcbtracegadere.helpers.MySession;
+import com.caircb.rcbtracegadere.tasks.UserUpdateAppTask;
 import com.caircb.rcbtracegadere.utils.Utility;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseApp;
@@ -34,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     View focusView;
     LinearLayout btnlogin;
     Intent myIntent;
+    UserUpdateAppTask userUpdateAppTask;
+    ImageView btnUpdateApp;
 
     String userStr,passStr;
     boolean cancel = false;
@@ -91,6 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                         login();
                     }
                 });
+
+        btnUpdateApp = (ImageView) findViewById(R.id.btnUpdateApp);
+        btnUpdateApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onUpdateApp();
+            }
+        });
 
 
     }
@@ -192,5 +204,10 @@ public class LoginActivity extends AppCompatActivity {
         if(mAuthorization!=null){
             mAuthorization.Destroy();
         }
+    }
+
+    private void onUpdateApp() {
+        userUpdateAppTask = new UserUpdateAppTask(LoginActivity.this);
+        userUpdateAppTask.execute();
     }
 }
