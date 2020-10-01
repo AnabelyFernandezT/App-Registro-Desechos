@@ -90,7 +90,7 @@ public abstract class ManifiestoDetalleDao {
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and idAppManifiestoDetalle=:idManifiestoDetalle LIMIT 1")
     public abstract ManifiestoDetalleEntity fecthConsultarManifiestoDetallebyID(Integer idManifiesto, Integer idManifiestoDetalle);
 
-    @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and estadoChek=1")
+    @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto and estadoChek=1 and cantidadBulto>0")
     public abstract List<ManifiestoDetalleEntity> fecthConsultarManifiestoDetalleSeleccionados(Integer idManifiesto);
 
     @Query("select * from tb_manifiestos_detalle where idAppManifiesto=:idManifiesto")
