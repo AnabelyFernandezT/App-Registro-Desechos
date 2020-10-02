@@ -38,7 +38,7 @@ public class UserRegistrarCambioImpresoraIniciaRuta extends MyRetrofitApi implem
     @Override
     public void execute(){
         RutaInicioFinEntity entity = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutas(MySession.getIdUsuario());
-        idInicioFinRuta = entity.get_id();
+        idInicioFinRuta = entity.getIdRutaInicioFin();
         RequestCambioImpresora model = new RequestCambioImpresora(idInicioFinRuta,idImpresora);
 
         progressShow("Registrando..");
