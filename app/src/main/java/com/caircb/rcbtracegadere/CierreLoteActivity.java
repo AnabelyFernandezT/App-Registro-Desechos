@@ -248,7 +248,7 @@ public class CierreLoteActivity extends AppCompatActivity {
     private void guardarDatos() {
 
         Integer idTransportistaRecolector = MySession.getIdUsuario();
-        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(_activity, idSubtura, idDestino,2,idTransportistaRecolector);
+        userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(_activity, idSubtura, idDestino,2,idTransportistaRecolector,0);
         userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
             @Override
             public void onSuccessful() {

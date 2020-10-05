@@ -38,15 +38,24 @@
     </LinearLayout>
 
 
-    <ImageView
+    <!--<ImageView
 
         android:id="@+id/imgQrLoteTransportista"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ImageView>
+    </ImageView>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchViewManifiestos">
+    </androidx.recyclerview.widget.RecyclerView>
     <LinearLayout
         android:id="@+id/footer"
         app:layout_constraintEnd_toEndOf="parent"

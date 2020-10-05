@@ -35,13 +35,15 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
     private Integer idDestinatarioFinLote;
     private Integer tipoFinLote;
     private Integer idTransportistaRecolector;
+    private Integer tipo;
 
-    public UserRegistrarFinLoteHospitalesTask(Context context, Integer idSubruta, Integer idDestinatarioFinLote, Integer tipoFinLote,Integer idTransportistaRecolector) {
+    public UserRegistrarFinLoteHospitalesTask(Context context, Integer idSubruta, Integer idDestinatarioFinLote, Integer tipoFinLote,Integer idTransportistaRecolector, Integer tipo) {
         super(context);
         this.idSubtura = idSubruta;
         this.idDestinatarioFinLote = idDestinatarioFinLote;
         this.tipoFinLote = tipoFinLote;
         this.idTransportistaRecolector=idTransportistaRecolector;
+        this.tipo = tipo;
     }
 
     @Override
@@ -89,6 +91,7 @@ public class UserRegistrarFinLoteHospitalesTask extends MyRetrofitApi implements
         rq.setTipo(tipoFinLote);
         rq.setIdDestinatarioFinRutaCatalogo(idDestinatarioFinLote);
         rq.setIdTransportistaRecolector(idTransportistaRecolector);
+        rq.setLoteProcesoId(tipo);
         return rq;
     }
 

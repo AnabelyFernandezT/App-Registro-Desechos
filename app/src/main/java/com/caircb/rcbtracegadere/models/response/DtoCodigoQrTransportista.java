@@ -1,17 +1,35 @@
 package com.caircb.rcbtracegadere.models.response;
 
 public class DtoCodigoQrTransportista {
-    private String cogigoQr;
+    private String codigoQr;
+    private String loteProcesoId;
+    private String fechaCierreLote;
 
     public DtoCodigoQrTransportista(){
 
     }
 
-    public String getCogigoQr() {
-        return cogigoQr;
+    public String getCodigoQr() {
+        return codigoQr;
     }
 
-    public void setCogigoQr(String cogigoQr) {
-        this.cogigoQr = cogigoQr;
+    public void setCodigoQr(String codigoQr) {
+        this.codigoQr = codigoQr;
+    }
+
+    public String getLoteProcesoId() {
+        return loteProcesoId;
+    }
+
+    public void setLoteProcesoId(String loteProcesoId) {
+        this.loteProcesoId = loteProcesoId;
+    }
+
+    public String getFechaCierreLote() {
+        return fechaCierreLote;
+    }
+
+    public void setFechaCierreLote(String fechaCierreLote) {
+        this.fechaCierreLote = fechaCierreLote;
     }
 }

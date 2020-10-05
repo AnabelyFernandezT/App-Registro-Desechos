@@ -230,6 +230,7 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_vehiculo", "" + array[5]);//idvehiculo
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista", "" + array[6]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta", "" + array[7]);
+                MyApp.getDBO().parametroDao().saveOrUpdate("current_idLoteCerrado",""+array[8]);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr", "1");
                 String destinoUsuario = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario");
                 if (array[4].equals(destinoUsuario)) {

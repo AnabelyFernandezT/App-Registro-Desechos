@@ -40,13 +40,15 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
         }
         /*if (!idSubRuta.equals("-1")) {*/
             progressShow("Cargando datos...");
-            WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta),idTransportistaRecolector,new Date())).enqueue(new Callback<DtoCodigoQrTransportista>() {
+            WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta),idTransportistaRecolector,new Date())).enqueue(new Callback<List<DtoCodigoQrTransportista>>() {
                 @Override
-                public void onResponse(Call<DtoCodigoQrTransportista> call, Response<DtoCodigoQrTransportista> response) {
-
+                public void onResponse(Call<List<DtoCodigoQrTransportista>> call, Response<List<DtoCodigoQrTransportista>> response) {
                     if (response.isSuccessful()) {
-                        if (!response.body().getCogigoQr().equals("")) {
-                            MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(response.body());
+                        if (response.body().size()>0) {
+                            final List<DtoCodigoQrTransportista> respuesta = response.body();
+                            for(DtoCodigoQrTransportista reg:respuesta){
+                                MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(reg);
+                            }
                             dialogQrLoteTransportista.show();
                             progressHide();
                         } else {
@@ -60,11 +62,11 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
                 }
 
                 @Override
-                public void onFailure(Call<DtoCodigoQrTransportista> call, Throwable t) {
+                public void onFailure(Call<List<DtoCodigoQrTransportista>> call, Throwable t) {
                     progressHide();
-
                 }
             });
+
         /*} else {
             message("No ha iniciado una ruta, o si ya ha iniciado ruta por favor sincronice...");
         }*/

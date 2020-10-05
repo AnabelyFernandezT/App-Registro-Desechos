@@ -12,6 +12,7 @@ public class RequestFinRuta {
     private Integer idTransportistaRecolector;
     private Integer idLote;
     private Integer idInsumo;
+    private Integer loteProcesoId;
 
     public Integer getIdSubRuta() {
         return idSubRuta;
@@ -83,5 +84,13 @@ public class RequestFinRuta {
 
     public void setIdTransportistaRecolector(Integer idTransportistaRecolector) {
         this.idTransportistaRecolector = idTransportistaRecolector;
+    }
+
+    public Integer getLoteProcesoId() {
+        return loteProcesoId;
+    }
+
+    public void setLoteProcesoId(Integer loteProcesoId) {
+        this.loteProcesoId = loteProcesoId;
     }
 }

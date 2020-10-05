@@ -14,6 +14,7 @@ import com.caircb.rcbtracegadere.models.response.DtoCodigoQrTransportista;
 import com.caircb.rcbtracegadere.services.WebService;
 
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,32 +45,33 @@ public class UserConsultaCodigoQrValidadorTask  extends MyRetrofitApi implements
         }
        /* if (!idSubRuta.equals("-1")) {*/
             progressShow("Cargando datos...");
-            WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta),idTransportistaRecolector,new Date())).enqueue(new Callback<DtoCodigoQrTransportista>() {
-                @Override
-                public void onResponse(Call<DtoCodigoQrTransportista> call, Response<DtoCodigoQrTransportista> response) {
-                    if (response.isSuccessful()) {
-                        if (!response.body().getCogigoQr().equals("")) {
-                            MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(response.body());
-                            progressHide();
-                            if (mOnCodigoQrListener != null) mOnCodigoQrListener.onSuccessful();
-                        } else {
-                            progressHide();
-                            if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
-                            //message("No existen lotes cerrados...");
+        WebService.api().traerCodigoQrTransportista(new RequestCodigoQrTransportista(Integer.parseInt(idSubRuta),idTransportistaRecolector,new Date())).enqueue(new Callback<List<DtoCodigoQrTransportista>>() {
+            @Override
+            public void onResponse(Call<List<DtoCodigoQrTransportista>> call, Response<List<DtoCodigoQrTransportista>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().size()>0) {
+                        final List<DtoCodigoQrTransportista> respuesta = response.body();
+                        for(DtoCodigoQrTransportista reg:respuesta){
+                            MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(reg);
                         }
+                        progressHide();
+                        if (mOnCodigoQrListener != null) mOnCodigoQrListener.onSuccessful();
                     } else {
                         progressHide();
                         if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
-                        //message("No existen lotes cerrados...");
                     }
-                }
-
-                @Override
-                public void onFailure(Call<DtoCodigoQrTransportista> call, Throwable t) {
+                } else {
                     progressHide();
                     if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
                 }
-            });
+            }
+
+            @Override
+            public void onFailure(Call<List<DtoCodigoQrTransportista>> call, Throwable t) {
+                progressHide();
+                if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();
+            }
+        });
       /*  } else {
             //message("No ha iniciado una Ruta...");
             if (mOnCodigoQrListener != null) mOnCodigoQrListener.onFailure();

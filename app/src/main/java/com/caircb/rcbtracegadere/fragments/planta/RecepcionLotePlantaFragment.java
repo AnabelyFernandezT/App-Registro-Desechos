@@ -220,7 +220,8 @@ public class RecepcionLotePlantaFragment extends MyFragment implements View.OnCl
                         if (!idSubRuta.equals("0")) {
                             int idSubRutaEnviar = Integer.parseInt(idSubRuta);
                             Integer idTransportistaRecolector = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idTransportistaRecolector")==null?0:Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idTransportistaRecolector"));
-                            userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(myContext, idSubRutaEnviar, 0, 4,idTransportistaRecolector);
+                            Integer idLoteCerrado = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idLoteCerrado")==null?0:Integer.parseInt(MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_idLoteCerrado"));
+                            userRegistrarFinLoteHospitales = new UserRegistrarFinLoteHospitalesTask(myContext, idSubRutaEnviar, 0, 4,idTransportistaRecolector,idLoteCerrado);
                             userRegistrarFinLoteHospitales.setOnFinLoteListener(new UserRegistrarFinLoteHospitalesTask.OnFinLoteListener() {
                                 @Override
                                 public void onSuccessful() {

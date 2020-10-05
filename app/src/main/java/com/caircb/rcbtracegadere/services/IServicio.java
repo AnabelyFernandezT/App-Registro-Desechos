@@ -199,7 +199,7 @@ public interface IServicio {
     Call<DtoInfo> registroReasignacionVehiculo (@Body RequestNuevoKilometraje model);
 
     @POST("HojaRuta/obtenerCodigoQRLoteProceso")
-    Call<DtoCodigoQrTransportista> traerCodigoQrTransportista(@Body RequestCodigoQrTransportista model);
+    Call<List<DtoCodigoQrTransportista>> traerCodigoQrTransportista(@Body RequestCodigoQrTransportista model);
 
     @POST ("Notificacion/enviarCorreoComercialDesecho")
     Call<DtoInfo> enviarCorreo(@Body RequestEnviarCorreoNuevoDesecho model);

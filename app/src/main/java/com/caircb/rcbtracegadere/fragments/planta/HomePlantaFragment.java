@@ -227,6 +227,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
             MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+array[6]);//Placa para consulta de información modulos
             MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_Planta",""+array[6]);
             MyApp.getDBO().parametroDao().saveOrUpdate("current_idSubruta",""+array[7]);
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_idLoteCerrado",""+array[8]);
             MyApp.getDBO().parametroDao().saveOrUpdate("current_estadoCodigoQr","1");
             placa=array[6];
             String destinoUsuario=MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario")==null?"":MyApp.getDBO().parametroDao().fecthParametroValorByNombre("current_destino_usuario");

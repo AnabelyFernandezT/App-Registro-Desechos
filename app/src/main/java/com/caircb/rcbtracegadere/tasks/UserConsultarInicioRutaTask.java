@@ -44,7 +44,7 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
         WebService.api().obtenerRutainicioFin(new RequestObtenerInicioFin(MySession.getIdUsuario(),new Date())).enqueue(new Callback<DtoInicioRuta>() {
             @Override
             public void onResponse(Call<DtoInicioRuta> call, Response<DtoInicioRuta> response) {
-                if(response.isSuccessful()){
+                 if(response.isSuccessful()){
                     progressHide();
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_placa_transportista",""+response.body().getPlaca());
                     MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte",""+response.body().getEstado());

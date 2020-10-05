@@ -33,7 +33,6 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
     int cNaranja;
     private List<ItemManifiestoSede> manifiestosList;
     private LinearLayout borderVerificacion;
-    UserRegistrarFinLoteHospitalesTask userRegistrarFinLoteHospitales;
 
     public ManifiestoAdapterSede(Context context) {
         mContext = context;

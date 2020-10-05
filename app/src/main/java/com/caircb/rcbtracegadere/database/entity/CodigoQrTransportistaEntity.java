@@ -9,7 +9,12 @@ public class CodigoQrTransportistaEntity {
 
     @PrimaryKey(autoGenerate = true)
     private Integer idCodigoQr;
+
     private String codigoQr;
+
+    private String fechaCierre;
+
+    private String idLote;
 
     public CodigoQrTransportistaEntity(){
 
@@ -29,5 +34,21 @@ public class CodigoQrTransportistaEntity {
 
     public void setCodigoQr(String codigoQr) {
         this.codigoQr = codigoQr;
+    }
+
+    public String getFechaCierre() {
+        return fechaCierre;
+    }
+
+    public void setFechaCierre(String fechaCierre) {
+        this.fechaCierre = fechaCierre;
+    }
+
+    public String getIdLote() {
+        return idLote;
+    }
+
+    public void setIdLote(String idLote) {
+        this.idLote = idLote;
     }
 }
