@@ -25,6 +25,7 @@ import com.caircb.rcbtracegadere.CierreLoteActivity;
 import com.caircb.rcbtracegadere.MainActivity;
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
+import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoDetalleEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoEntity;
 import com.caircb.rcbtracegadere.database.entity.ManifiestoPaquetesEntity;
@@ -311,60 +312,94 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 RutaInicioFinEntity rut = MyApp.getDBO().rutaInicioFinDao().fechConsultaInicioFinRutasE(MySession.getIdUsuario());
                 String valor = entity == null ? String.valueOf(rut.getIdSubRuta()) : entity.getValor();
                 //Integer idRuta = Integer.parseInt(valor.equals("null") ? "-1":valor);
+                HotelLotePadreEntity lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
 
-                UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(getActivity());
-                consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
-                    @Override
-                    public void onSuccessful() {
-                        final DialogBuilder dialogBuilder;
-                        dialogBuilder = new DialogBuilder(getActivity());
-                        dialogBuilder.setMessage("Lote cerrado, no ha descargado en el destino!!");
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                            }
-                        });
-                        dialogBuilder.show();
-                    }
-                    @Override
-                    public void onFailure() {
-                        // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
-                        if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) > 0) {
-                            List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
-                            if (MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion") != null && MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")) {
-
-                                dialogBuilder = new DialogBuilder(getActivity());
-                                dialogBuilder.setCancelable(false);
-                                dialogBuilder.setMessage("¿Iniciar traslado al próximo punto de recolección?");
-                                dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder.dismiss();
-                                        MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
-                                        setNavegate(HojaRutaAsignadaFragment.newInstance());
-                                    }
-                                });
-                                dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogBuilder.dismiss();
-                                    }
-                                });
-                                dialogBuilder.show();
-
-                            } else {
-                                setNavegate(HojaRutaAsignadaFragment.newInstance());
-                            }
-                        } else {
-                            messageBox("No dispone de manifiestos para recolectar.!");
+                if (lotePadre == null) {
+                    UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(getActivity());
+                    consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
+                        @Override
+                        public void onSuccessful() {
+                            final DialogBuilder dialogBuilder;
+                            dialogBuilder = new DialogBuilder(getActivity());
+                            dialogBuilder.setMessage("Lote cerrado, no ha descargado en el destino!!");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                }
+                            });
+                            dialogBuilder.show();
                         }
+
+                        @Override
+                        public void onFailure() {
+                            // idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
+                            if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) > 0) {
+                                List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                                if (MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion") != null && MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")) {
+
+                                    dialogBuilder = new DialogBuilder(getActivity());
+                                    dialogBuilder.setCancelable(false);
+                                    dialogBuilder.setMessage("¿Iniciar traslado al próximo punto de recolección?");
+                                    dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder.dismiss();
+                                            MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                        }
+                                    });
+                                    dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuilder.dismiss();
+                                        }
+                                    });
+                                    dialogBuilder.show();
+
+                                } else {
+                                    setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                }
+                            } else {
+                                messageBox("No dispone de manifiestos para recolectar.!");
+                            }
+                        }
+                    });
+                    consultaCodigoQrValidadorTask.execute();
+
+
+                }else{
+                    if (MyApp.getDBO().manifiestoDao().contarHojaRutaAsignadasPara(MySession.getIdUsuario()) > 0) {
+                        List<RuteoRecoleccionEntity> enty = MyApp.getDBO().ruteoRecoleccion().searchRuteoRecoleccion();
+                        if (MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion") != null && MyApp.getDBO().parametroDao().fecthParametroValorByNombre("ruteoRecoleccion").equals("NO")) {
+
+                            dialogBuilder = new DialogBuilder(getActivity());
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setMessage("¿Iniciar traslado al próximo punto de recolección?");
+                            dialogBuilder.setPositiveButton("SI", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                    MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
+                                    setNavegate(HojaRutaAsignadaFragment.newInstance());
+                                }
+                            });
+                            dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                }
+                            });
+                            dialogBuilder.show();
+
+                        } else {
+                            setNavegate(HojaRutaAsignadaFragment.newInstance());
+                        }
+                    } else {
+                        messageBox("No dispone de manifiestos para recolectar.!");
                     }
-                });
-                consultaCodigoQrValidadorTask.execute();
-
-
+                }
             }
         });
 
@@ -387,47 +422,63 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         btnInicioRuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(getActivity());
-                consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
-                    @Override
-                    public void onSuccessful() {
-                        final DialogBuilder dialogBuilder;
-                        dialogBuilder = new DialogBuilder(getActivity());
-                        dialogBuilder.setMessage("Lote cerrado, no ha descargado en el destino!!");
-                        dialogBuilder.setCancelable(false);
-                        dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                            }
-                        });
-                        dialogBuilder.show();
-                    }
-                    @Override
-                    public void onFailure() {
-                        dialogInicioRuta = new DialogInicioRuta(getActivity());
-                        dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialogInicioRuta.setCancelable(false);
-                        dialogInicioRuta.setOnSuccessListener(new DialogInicioRuta.OnSuccessListener() {
-                            @Override
-                            public void isSuccessful() {
-                                dialogInicioRuta.dismiss();
-                                dialogInicioRuta = null;
-                            }
-                        });
-                        dialogInicioRuta.show();
-                    }
-                });
-                consultaCodigoQrValidadorTask.execute();
+                HotelLotePadreEntity lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
 
-            }
-            // openDialog_InicioApp(getMain().getInicioSesion());
+                if (lotePadre==null) {
+                    UserConsultaCodigoQrValidadorTask consultaCodigoQrValidadorTask = new UserConsultaCodigoQrValidadorTask(getActivity());
+                    consultaCodigoQrValidadorTask.setOnCodigoQrListener(new UserConsultaCodigoQrValidadorTask.OnCodigoQrListener() {
+                        @Override
+                        public void onSuccessful() {
+                            final DialogBuilder dialogBuilder;
+                            dialogBuilder = new DialogBuilder(getActivity());
+                            dialogBuilder.setMessage("Lote cerrado, no ha descargado en el destino!!");
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setPositiveButton("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                }
+                            });
+                            dialogBuilder.show();
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            dialogInicioRuta = new DialogInicioRuta(getActivity());
+                            dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialogInicioRuta.setCancelable(false);
+                            dialogInicioRuta.setOnSuccessListener(new DialogInicioRuta.OnSuccessListener() {
+                                @Override
+                                public void isSuccessful() {
+                                    dialogInicioRuta.dismiss();
+                                    dialogInicioRuta = null;
+                                }
+                            });
+                            dialogInicioRuta.show();
+                        }
+                    });
+                    consultaCodigoQrValidadorTask.execute();
+
+                }else{
+                    dialogInicioRuta = new DialogInicioRuta(getActivity());
+                    dialogInicioRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialogInicioRuta.setCancelable(false);
+                    dialogInicioRuta.setOnSuccessListener(new DialogInicioRuta.OnSuccessListener() {
+                        @Override
+                        public void isSuccessful() {
+                            dialogInicioRuta.dismiss();
+                            dialogInicioRuta = null;
+                        }
+                    });
+                    dialogInicioRuta.show();
+                }
+                // openDialog_InicioApp(getMain().getInicioSesion());
                 /*
                 btnInicioRuta.setVisibility(View.GONE);
                 txtinicioRuta.setVisibility(View.GONE);
                 btnFinRuta.setVisibility(View.VISIBLE);
                 txtFinRuta.setVisibility(View.VISIBLE);*/
-
+            }
         });
 
         btnFinRuta.setOnClickListener(new View.OnClickListener() {

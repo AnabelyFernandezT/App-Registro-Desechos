@@ -279,10 +279,10 @@ public class DialogFinRuta extends MyDialog {
             @Override
             public void onSuccessful() {
 
-                if(finHotel.equals(0)){
+                /*if(finHotel.equals(0)){
                     inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
                     inicioFinLoteHotelTask.execute();
-                }
+                }*/
 
                // MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+0);
                 MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+0);
@@ -313,6 +313,29 @@ public class DialogFinRuta extends MyDialog {
                     MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                     DialogFinRuta.this.dismiss();
                 }
+
+                if(finHotel.equals(1) && parametro!=null){
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
+                    inicioFinLoteHotelTask.execute();
+                }
+
+                if (finHotel.equals(0)){
+                    inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),0);
+                    inicioFinLoteHotelTask.setOnRegisterListener(new UserRegistrarInicioFinLoteHotelTask.OnRegisterListener() {
+                        @Override
+                        public void onSuccessful() {
+                            finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
+                            finLotePadreHotelTask.setOnRegisterListener(new UserRegistrarFinLoteHotelTask.OnRegisterListener() {
+                                @Override
+                                public void onSuccessful() {
+                                    if (mOnFinLotePadreListener != null) mOnFinLotePadreListener.onSuccessful();
+                                }
+                            });
+                            finLotePadreHotelTask.execute();
+                        }
+                    });
+                    inicioFinLoteHotelTask.execute();
+                }
             }
 
 
@@ -325,29 +348,6 @@ public class DialogFinRuta extends MyDialog {
         });
 
         registroFinRuta.execute();
-
-        if(finHotel.equals(1)){
-            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),idDestino);
-            inicioFinLoteHotelTask.execute();
-        }
-
-        if (finHotel.equals(0)){
-            inicioFinLoteHotelTask =new UserRegistrarInicioFinLoteHotelTask(getActivity(),0);
-            inicioFinLoteHotelTask.setOnRegisterListener(new UserRegistrarInicioFinLoteHotelTask.OnRegisterListener() {
-                @Override
-                public void onSuccessful() {
-                    finLotePadreHotelTask = new UserRegistrarFinLoteHotelTask(getActivity());
-                    finLotePadreHotelTask.setOnRegisterListener(new UserRegistrarFinLoteHotelTask.OnRegisterListener() {
-                        @Override
-                        public void onSuccessful() {
-                            if (mOnFinLotePadreListener != null) mOnFinLotePadreListener.onSuccessful();
-                        }
-                    });
-                    finLotePadreHotelTask.execute();
-                }
-            });
-            inicioFinLoteHotelTask.execute();
-        }
 
         finRuta();
     }
@@ -450,12 +450,12 @@ public class DialogFinRuta extends MyDialog {
             validarHoteles();
 
         }else {
-            finHotel = 0;
+            finHotel = 1;
             lotePadreHotelTask = new UserObtenerLotePadreHotelTask(getActivity());
             lotePadreHotelTask.setmOnLoteHotelPadreListener(new UserObtenerLotePadreHotelTask.OnLoteHotelPadreListener() {
                 @Override
                 public void onSuccessful() {
-                    if(finHotel.equals(0)){
+                    if(finHotel.equals(1)){
                         inicioFinLote();
                     }
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_hotel",""+1);

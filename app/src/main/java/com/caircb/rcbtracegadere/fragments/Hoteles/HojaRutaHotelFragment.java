@@ -89,7 +89,7 @@ public class HojaRutaHotelFragment extends MyFragment implements View.OnClickLis
         dialogFinRuta.setOnRegisterMovilizarListener(new DialogFinRutaHoteles.onRegisterMOvilizacionListenner() {
             @Override
             public void onSuccessful() {
-                setNavegate(HomeHotelFragment.create());
+                setNavegate(HomeTransportistaFragment.create());
             }
         });
         dialogFinRuta.requestWindowFeature(Window.FEATURE_NO_TITLE);

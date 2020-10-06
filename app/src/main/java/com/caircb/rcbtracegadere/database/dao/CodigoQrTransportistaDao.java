@@ -18,6 +18,9 @@ public abstract class CodigoQrTransportistaDao {
     @Query("select * from tb_codigoqrtransportista")
     public abstract CodigoQrTransportistaEntity fetchCodigoQr();
 
+    @Query("select * from tb_codigoqrtransportista where idLote=:idLote")
+    public abstract CodigoQrTransportistaEntity fetchCodigoQrLote(String idLote);
+
     @Query("select idCodigoQr,codigoQr from tb_codigoqrtransportista")
     @Transaction
     public abstract CodigoQrTransportistaEntity fetchCodigoQr2();
@@ -25,12 +28,15 @@ public abstract class CodigoQrTransportistaDao {
     @Query("select idCodigoQr,codigoQr, fechaCierre as fecha  from tb_codigoqrtransportista")
     public abstract List<ItemQrLote> fetchListaLote();
 
+    @Query("delete from tb_codigoqrtransportista")
+    public abstract void deleteTable();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createCodigoQr(CodigoQrTransportistaEntity entity);
 
     public void saveOrUpdate(DtoCodigoQrTransportista codigoQrTransportistas) {
 
-        CodigoQrTransportistaEntity codigoQrTransportistasEntity = fetchCodigoQr();
+        CodigoQrTransportistaEntity codigoQrTransportistasEntity = fetchCodigoQrLote(codigoQrTransportistas.getLoteProcesoId());
         if (codigoQrTransportistasEntity == null) {
             codigoQrTransportistasEntity = new CodigoQrTransportistaEntity();
             codigoQrTransportistasEntity.setCodigoQr(codigoQrTransportistas.getCodigoQr());

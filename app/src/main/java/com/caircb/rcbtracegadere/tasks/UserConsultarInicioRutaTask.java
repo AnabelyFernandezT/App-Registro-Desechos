@@ -14,6 +14,7 @@ import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.request.RequestIniciaRuta;
 import com.caircb.rcbtracegadere.models.request.RequestObtenerInicioFin;
 import com.caircb.rcbtracegadere.models.response.DtoInicioRuta;
+import com.caircb.rcbtracegadere.models.response.DtoLotePadreHotel;
 import com.caircb.rcbtracegadere.models.response.DtoLotesHoteles;
 import com.caircb.rcbtracegadere.services.WebService;
 
@@ -27,6 +28,7 @@ import retrofit2.Response;
 public class UserConsultarInicioRutaTask extends MyRetrofitApi implements RetrofitCallbacks {
     private RutaInicioFinEntity model;
     Date fechaInicio = AppDatabase.getDateTime();
+    DtoLotePadreHotel hotel;
 
     public UserConsultarInicioRutaTask(Context context) {
         super(context);
@@ -53,8 +55,10 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                     MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                     MyApp.getDBO().impresoraDao().updateDefaulImpresoraWorked(response.body().getIdImpresora());
 
+
                     if (!verificarInicioRuta()){
                         if(response.body().getEstado()){
+
                             MyApp.getDBO().rutaInicioFinDao().saveOrUpdateInicioRuta(response.body().getIdRutaInicioFin(),
                                     MySession.getIdUsuario(),
                                     response.body().getIdSubRuta(),
@@ -64,6 +68,11 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                     response.body().getKilometrajeFin(),
                                     1,
                                     response.body().getTiposubruta());
+
+                            if(response.body().getIdHotel()>0){
+                                hoteles(response.body());
+                                MyApp.getDBO().hotelLotePadreDao().saveOrUpdare(hotel,MySession.getIdUsuario());
+                            }
 
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
                             MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");
@@ -76,7 +85,9 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                        // if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessful();
                         progressHide();
                     }
-                }
+                }else{
+                     progressHide();
+                 }
             }
 
             @Override
@@ -96,6 +107,19 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
             return false;
         }
 
+    }
+
+    private DtoLotePadreHotel hoteles (DtoInicioRuta inicio){
+        hotel = new DtoLotePadreHotel();
+        hotel.setCodigo("");
+        hotel.setEstado(1);
+        hotel.setIdLoteContenedorHotel(inicio.getIdHotel());
+
+        if(inicio.getIdHotel()>0){
+            MyApp.getDBO().parametroDao().saveOrUpdate("current_hotel",""+1);
+        }
+
+        return hotel;
     }
     public void setOnRegisterListener(@NonNull OnRegisterListener l){
         mOnRegisterListener =l;

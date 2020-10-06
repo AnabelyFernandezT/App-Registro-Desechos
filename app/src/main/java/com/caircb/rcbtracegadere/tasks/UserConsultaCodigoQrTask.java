@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.tasks;
 import android.content.Context;
 
 import com.caircb.rcbtracegadere.MyApp;
+import com.caircb.rcbtracegadere.database.entity.HotelLotePadreEntity;
 import com.caircb.rcbtracegadere.dialogs.DialogQrLoteTransportista;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -24,6 +25,7 @@ import retrofit2.Response;
 public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitCallbacks {
 
     DialogQrLoteTransportista dialogQrLoteTransportista;
+    HotelLotePadreEntity lotePadre = MyApp.getDBO().hotelLotePadreDao().fetchConsultarHotelLote(MySession.getIdUsuario());
 
     public UserConsultaCodigoQrTask(Context context, DialogQrLoteTransportista dialogQrLoteTransportista) {
         super(context);
@@ -35,7 +37,7 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
 
         String idSubRuta = MySession.getIdSubRuta() + "";
         Integer idTransportistaRecolector = MySession.getIdUsuario();
-        if (idSubRuta.equals("-1")){
+        if (idSubRuta.equals("-1")|| lotePadre!=null){
             idSubRuta="0";
         }
         /*if (!idSubRuta.equals("-1")) {*/
@@ -47,6 +49,7 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
                         if (response.body().size()>0) {
                             final List<DtoCodigoQrTransportista> respuesta = response.body();
                             for(DtoCodigoQrTransportista reg:respuesta){
+                               // MyApp.getDBO().codigoQrTransportistaDao().deleteTable();
                                 MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(reg);
                             }
                             dialogQrLoteTransportista.show();
