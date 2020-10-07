@@ -270,6 +270,7 @@ public class DialogInicioRuta extends MyDialog {
                     }
 
                     try {
+                        btnIngresarApp.setEnabled(false);
                         guardarDatos();
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -409,6 +410,7 @@ public class DialogInicioRuta extends MyDialog {
                 MyApp.getDBO().parametroDao().saveOrUpdate("estado_transporte","false");
                 mensaje("error "+String.valueOf(error)+" al registrar inicio ruta en el servidor datos registrados en la base de datos local");
                 DialogInicioRuta.this.dismiss();
+                btnIngresarApp.setEnabled(true);
             }
         });
         registroInicioRuta.execute();

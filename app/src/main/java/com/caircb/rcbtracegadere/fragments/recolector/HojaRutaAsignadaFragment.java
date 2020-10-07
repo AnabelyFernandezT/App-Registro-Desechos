@@ -54,6 +54,7 @@ import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.caircb.rcbtracegadere.models.RowPrinters;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarActualizarEstadoTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,6 +90,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     UserConsultarHojaRutaTask consultarHojaRutaTask;
     Integer cont=-1;
     DialogBuilder dialogBuilderScan;
+    UserRegistrarActualizarEstadoTask actualizarEstadoTask;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -462,6 +464,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                         Toast.makeText(getActivity(), "Impresora no Encontrada, Debe Configurar la Impresora.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+
+                                actualizarEstadoTask = new UserRegistrarActualizarEstadoTask(getActivity(),rowItems.get(position).getIdAppManifiesto(),0);
+                                actualizarEstadoTask.execute();
 
                                 /********************************************************/
                                 /*
@@ -943,6 +948,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
 
                             dialogBuilder.dismiss();
                             setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1));
+
+                            actualizarEstadoTask = new UserRegistrarActualizarEstadoTask(getActivity(),rowItems.get(position).getIdAppManifiesto(),0);
+                            actualizarEstadoTask.execute();
                         }
                     });
                     dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {

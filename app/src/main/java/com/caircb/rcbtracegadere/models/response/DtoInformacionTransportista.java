@@ -3,6 +3,7 @@ package com.caircb.rcbtracegadere.models.response;
 public class DtoInformacionTransportista {
     private Integer idFinRutaCatalogo;
     private String nombreCorto;
+    private String apkVersion;
 
     public Integer getIdFinRutaCatalogo() {
         return idFinRutaCatalogo;
@@ -18,5 +19,13 @@ public class DtoInformacionTransportista {
 
     public void setNombreCorto(String nombreCorto) {
         this.nombreCorto = nombreCorto;
+    }
+
+    public String getApkVersion() {
+        return apkVersion;
+    }
+
+    public void setApkVersion(String apkVersion) {
+        this.apkVersion = apkVersion;
     }
 }

@@ -48,6 +48,7 @@ public class UserConsultaCodigoQrTask extends MyRetrofitApi implements RetrofitC
                     if (response.isSuccessful()) {
                         if (response.body().size()>0) {
                             final List<DtoCodigoQrTransportista> respuesta = response.body();
+                            MyApp.getDBO().codigoQrTransportistaDao().deleteTable();
                             for(DtoCodigoQrTransportista reg:respuesta){
                                // MyApp.getDBO().codigoQrTransportistaDao().deleteTable();
                                 MyApp.getDBO().codigoQrTransportistaDao().saveOrUpdate(reg);

@@ -43,6 +43,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.DtoRuteoRecoleccion;
 import com.caircb.rcbtracegadere.models.ItemLotePadre;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.tasks.UserRegistrarActualizarEstadoTask;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,6 +66,7 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
     private SearchView searchView;
     Integer idSubRuta;
     DialogBuilder dialogBuilder, dialogBuilder2;
+    UserRegistrarActualizarEstadoTask actualizarEstadoTask;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -193,6 +195,8 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
                             public void onClick(View v) {
                                 dialogBuilder.dismiss();
                                 setNavegate(ManifiestoGestoresFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),1,1));
+                                actualizarEstadoTask = new UserRegistrarActualizarEstadoTask(getActivity(),rowItems.get(position).getIdAppManifiesto(),0);
+                                actualizarEstadoTask.execute();
                             }
                         });
                         dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
@@ -226,6 +230,8 @@ public class HojaRutaAsignadaGestorFragment extends MyFragment implements View.O
                                 MyApp.getDBO().ruteoRecoleccion().saverOrUpdate(new DtoRuteoRecoleccion(MySession.getIdSubRuta(), fecha,  rowItems.get(position).getIdAppManifiesto(),null,null,false));
                             }
 
+                            actualizarEstadoTask = new UserRegistrarActualizarEstadoTask(getActivity(),rowItems.get(position).getIdAppManifiesto(),0);
+                            actualizarEstadoTask.execute();
                             dialogBuilder.dismiss();
                             setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1));
                         }

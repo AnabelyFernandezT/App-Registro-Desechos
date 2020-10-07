@@ -84,7 +84,7 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
     private ListView mDrawerMenuItems, mDialogMenuItems;
     private DrawerLayout mDrawer;
     AlertDialog.Builder builder;
-    private TextView txtUserNombre, txtnombreLugarTrabajo, nombreLugarTrabajo;
+    private TextView txtUserNombre, txtnombreLugarTrabajo, nombreLugarTrabajo, txtVersion;
     UserInformacionModulosTask informacionModulosTaskl;
     List<DtoCatalogo> listaDestinos, destinosEspecificos;
     UserConsultarDestinosTask consultarDetino;
@@ -198,10 +198,12 @@ public class MainActivity extends MyAppCompatActivity implements AdapterView.OnI
         txtUserNombre = (TextView) findViewById(R.id.nombreUsuario);
         txtnombreLugarTrabajo = (TextView) findViewById(R.id.txtNombreLugarTrabajo);
         nombreLugarTrabajo = (TextView) findViewById(R.id.nombreLugarTrabajo);
+        txtVersion = (TextView) findViewById(R.id.version);
 
         txtUserNombre.setText(MySession.getUsuarioNombre());
         txtnombreLugarTrabajo.setText(MySession.getLugarNombre());
         nombreLugarTrabajo.setText(MySession.getDestinoEspecifico());
+        txtVersion.setText("Version "+MyConstant.APP_VERSION);
 
 
         rowItems = new ArrayList<>();

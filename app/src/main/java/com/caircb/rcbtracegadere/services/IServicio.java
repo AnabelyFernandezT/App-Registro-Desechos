@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.services;
 
 
+import com.caircb.rcbtracegadere.models.request.RequestActualizacionEstado;
 import com.caircb.rcbtracegadere.models.request.RequestCambioImpresora;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogo;
 import com.caircb.rcbtracegadere.models.request.RequestCatalogoDestino;
@@ -218,4 +219,7 @@ public interface IServicio {
 
     @PUT("Registro/registroLoteContenedor")
     Call<DtoInfo>registrarExcepcion(@Body RequestExcepcion model);
+
+    @POST("Registro/cambioEstadoManifiesto")
+    Call<DtoInfo>cambiarEstado(@Body RequestActualizacionEstado model);
 }

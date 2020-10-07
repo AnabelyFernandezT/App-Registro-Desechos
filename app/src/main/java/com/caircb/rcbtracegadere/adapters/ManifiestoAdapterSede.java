@@ -18,6 +18,7 @@ import com.caircb.rcbtracegadere.fragments.planta.HomePlantaFragment;
 import com.caircb.rcbtracegadere.fragments.recolector.HojaRutaAsignadaFragment;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.caircb.rcbtracegadere.models.ItemManifiestoSede;
 import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrValidadorTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarFinLoteHospitalesTask;
@@ -32,7 +33,8 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
     int cVerde;
     int cNaranja;
     private List<ItemManifiestoSede> manifiestosList;
-    private LinearLayout borderVerificacion;
+    List<ItemManifiestoDetalleValorSede> detalleValor;
+    int cantidadPeso=0;
 
     public ManifiestoAdapterSede(Context context) {
         mContext = context;
@@ -63,6 +65,21 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
         } else {
             holder.borderVerificacion.setBackgroundResource(cRojo);
         }
+        detalleValor = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManif(it.getIdAppManifiesto());
+        for(ItemManifiestoDetalleValorSede dv: detalleValor){
+            if((dv.getPeso().equals(0.0))){
+                cantidadPeso++;
+            }
+        }
+
+
+        if(it.getTotalBultos().equals(cantidadPeso)){
+            holder.observacion.setVisibility(View.VISIBLE);
+            holder.txtObservacion.setText("Pesaje en Planta");
+        }else{
+            holder.txtObservacion.setText("");
+        }
+        cantidadPeso=0;
     }
 
     @Override
@@ -80,12 +97,16 @@ public class ManifiestoAdapterSede extends RecyclerView.Adapter<ManifiestoAdapte
         TextView txtNumManifiesto;
         TextView txtCliente;
         LinearLayout borderVerificacion;
+        TextView txtObservacion;
+        LinearLayout observacion;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             txtNumManifiesto = itemView.findViewById(R.id.itm_num_manifiesto);
             txtCliente = itemView.findViewById(R.id.itm_cliente);
+            txtObservacion = itemView.findViewById(R.id.itm_observacion);
             borderVerificacion = (LinearLayout) itemView.findViewById(R.id.rowFG);
+            observacion = itemView.findViewById(R.id.observacion);
         }
     }
 }

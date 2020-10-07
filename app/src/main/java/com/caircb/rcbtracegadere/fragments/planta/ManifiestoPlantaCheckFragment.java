@@ -100,7 +100,7 @@ public class ManifiestoPlantaCheckFragment extends MyFragment implements OnCamer
         btnManifiestoCancel = getView().findViewById(R.id.btnRetornarDetalleSede);
         btnManifiestoCancel.setOnClickListener(this);
         recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getActivity(),idAppManifiesto.toString(),1);
+        recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getActivity(),idAppManifiesto.toString(),1,idAppManifiesto);
         manifiestoGestor = new RecepcionGestorFragment(getActivity(),idAppManifiesto);
         btnRegistrar = getView().findViewById(R.id.btnRegistrar);
         btnRegistrar.setOnClickListener(new View.OnClickListener() {

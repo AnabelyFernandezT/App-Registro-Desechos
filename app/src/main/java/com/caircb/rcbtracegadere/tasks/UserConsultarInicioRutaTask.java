@@ -54,7 +54,10 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
 
                     MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                     MyApp.getDBO().impresoraDao().updateDefaulImpresoraWorked(response.body().getIdImpresora());
-
+                     if(response.body().getIdHotel()>0){
+                         hoteles(response.body());
+                         MyApp.getDBO().hotelLotePadreDao().saveOrUpdare(hotel,MySession.getIdUsuario());
+                     }
 
                     if (!verificarInicioRuta()){
                         if(response.body().getEstado()){
@@ -69,10 +72,6 @@ public class UserConsultarInicioRutaTask extends MyRetrofitApi implements Retrof
                                     1,
                                     response.body().getTiposubruta());
 
-                            if(response.body().getIdHotel()>0){
-                                hoteles(response.body());
-                                MyApp.getDBO().hotelLotePadreDao().saveOrUpdare(hotel,MySession.getIdUsuario());
-                            }
 
                             MyApp.getDBO().parametroDao().saveOrUpdate("current_ruta",""+response.body().getIdSubRuta());
                             MyApp.getDBO().parametroDao().saveOrUpdate("ruteoRecoleccion", "SI");

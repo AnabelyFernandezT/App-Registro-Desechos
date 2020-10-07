@@ -8,6 +8,7 @@ public class ItemManifiestoDetalleSede {
     private Integer totalBultos;
     private Integer bultosSelecionado;
 
+
     public ItemManifiestoDetalleSede() {
     }
 

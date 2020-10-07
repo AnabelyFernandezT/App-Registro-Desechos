@@ -65,7 +65,7 @@ public class TabManifiestoDetalleFragment extends LinearLayout {
     public void init(){
         recyclerView = this.findViewById(R.id.recyclerview);
         recyclerView.requestFocus();
-        recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getContext(),idAppManifiesto.toString(),1);
+        recyclerviewAdapter = new ManifiestoDetalleAdapterPlanta(getContext(),idAppManifiesto.toString(),1,idAppManifiesto);
         manifiestoGestor = new RecepcionGestorFragment(getContext(),idAppManifiesto);
     }
 

@@ -83,57 +83,59 @@
     </LinearLayout>
 
     <LinearLayout
-        android:padding="10dp"
-        android:background="@drawable/shape_card_border"
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/shape_card_border"
         android:clickable="false"
         android:elevation="4dp"
         android:focusable="true"
         android:orientation="horizontal"
+        android:padding="10dp"
         android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackground">
+
             <LinearLayout
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/expandedListItem_detalle_Manifiesto"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/expandedListItem_detalle_Manifiesto">
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:layout_weight="1">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <LinearLayout
                         android:layout_width="350dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
                         <TextView
+                            style="@style/TextViewTitleItem"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="3dp"
-                            android:text="NUMERO MANIFIESTO"
-                            style="@style/TextViewTitleItem"
                             android:paddingBottom="3dp"
-                            />
+                            android:text="NUMERO MANIFIESTO" />
+
                         <TextView
                             android:id="@+id/itm_num_manifiesto"
                             android:layout_width="match_parent"
-                            android:textColor="#737373"
                             android:layout_height="match_parent"
                             android:paddingBottom="3dp"
-                            />
+                            android:textColor="#737373" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -141,16 +143,18 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:clickable="true">
+
                         <LinearLayout
-                            android:gravity="center"
                             android:layout_width="50dp"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
                             <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginRight="-4dp"
                                 android:clickable="false"
-                                android:src="@mipmap/icons_info_64"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:src="@mipmap/icons_info_64" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -160,145 +164,140 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:layout_weight="1">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <LinearLayout
                         android:layout_width="350dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
+                            style="@style/TextViewTitleItem"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="3dp"
-                            android:text="CLIENTE"
-                            style="@style/TextViewTitleItem"
                             android:paddingBottom="3dp"
-                            />
+                            android:text="CLIENTE" />
 
                         <TextView
                             android:id="@+id/itm_cliente"
                             android:layout_width="match_parent"
-                            android:textColor="#737373"
                             android:layout_height="match_parent"
-                            android:paddingBottom="3dp" />
+                            android:paddingBottom="3dp"
+                            android:textColor="#737373" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:visibility="visible"
                         android:id="@+id/btnViewPdfManifiesto"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:clickable="true">
+                        android:clickable="true"
+                        android:visibility="visible">
+
                         <LinearLayout
-                            android:gravity="center"
                             android:layout_width="50dp"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
                             <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginRight="-4dp"
                                 android:clickable="false"
-                                android:src="@mipmap/icon_view_manifiesto_pdf"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:src="@mipmap/icon_view_manifiesto_pdf" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
                 <TextView
+                    style="@style/TextViewTitleItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="SUCURSAL"
-                    style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
-                    />
+                    android:text="SUCURSAL" />
 
                 <TextView
                     android:id="@+id/itm_sucursal"
                     android:layout_width="match_parent"
-                    android:textColor="#737373"
                     android:layout_height="match_parent"
                     android:paddingBottom="3dp"
-                    />
+                    android:textColor="#737373" />
 
                 <TextView
+                    style="@style/TextViewTitleItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="DIRECCIÓN"
-                    style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
-                    />
+                    android:text="DIRECCIÓN" />
 
                 <TextView
                     android:id="@+id/itm_Direccion"
                     android:layout_width="match_parent"
-                    android:textColor="#737373"
-                    android:maxLines="2"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
                     android:paddingBottom="3dp"
-                    />
+                    android:textColor="#737373" />
+
                 <TextView
+                    style="@style/TextViewTitleItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="REFERENCIA"
-                    android:visibility="gone"
-                    style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
-                    />
+                    android:text="REFERENCIA"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/itm_Referencia"
                     android:layout_width="match_parent"
-                    android:textColor="#737373"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:paddingBottom="3dp"
-                    />
+                    android:textColor="#737373"
+                    android:visibility="gone" />
+
                 <TextView
+                    style="@style/TextViewTitleItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="PROVINCIA"
-                    style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
-                    />
+                    android:text="PROVINCIA" />
 
                 <TextView
                     android:id="@+id/itm_Provincia"
                     android:layout_width="match_parent"
-                    android:textColor="#737373"
                     android:layout_height="wrap_content"
                     android:paddingBottom="3dp"
-                    />
+                    android:textColor="#737373" />
 
                 <TextView
+                    style="@style/TextViewTitleItem"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="CIUDAD"
-                    style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
-                    />
+                    android:text="CIUDAD" />
 
                 <TextView
                     android:id="@+id/itm_Ciudad"
                     android:layout_width="match_parent"
-                    android:textColor="#737373"
                     android:layout_height="wrap_content"
                     android:paddingBottom="3dp"
-                    />
+                    android:textColor="#737373" />
+
                 <TextView
+                    style="@style/TextViewTitleItem"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="ESTADO"
-                    style="@style/TextViewTitleItem"
                     android:paddingBottom="3dp"
-                    />
+                    android:text="ESTADO" />
 
                 <TextView
                     android:id="@+id/itm_Estado"
@@ -306,6 +305,29 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="3dp"
                     android:textColor="#737373" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewTitleItem"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:text="OBSERVACION" />
+
+                    <TextView
+                        android:id="@+id/itm_observacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="3dp"
+                        android:textColor="#737373" />
+                </LinearLayout>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

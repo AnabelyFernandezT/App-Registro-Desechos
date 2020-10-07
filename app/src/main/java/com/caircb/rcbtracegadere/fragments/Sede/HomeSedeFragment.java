@@ -39,6 +39,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultaFirmaUsuarioTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultaLotes;
 import com.caircb.rcbtracegadere.tasks.UserConsultaQrPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInformacionTransportista;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosSedeTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistarFinLoteTask;
 import com.caircb.rcbtracegadere.tasks.UserRegistrarLoteInicioTask;
@@ -59,11 +60,11 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
     Integer finLote;
     UserRegistarFinLoteTask registarFinLoteTask;
     TextView lblListaManifiestoAsignado;
-    LinearLayout lnlIniciaLote, lnlFinLote;
+    LinearLayout lnlIniciaLote, lnlFinLote, txtVersion;
     ImageButton regionBuscar;
     DialogPlacaSede dialogPlacas;
     DialogPlacaSedeRecolector dialogPlacasRecolector;
-    TextView txtMovilizar, txtSincronizar, txtManifiesto;
+    TextView txtMovilizar, txtSincronizar, txtManifiesto,txtInicioLote;
     DialogConfirmarCierreLote dialogConfirmarCierreLote;
     UserRegistrarLoteInicioTask registrarLoteInicioTask;
     DialogBuilder builder;
@@ -101,6 +102,8 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         txtSincronizar = getView().findViewById(R.id.txtSincronizar);
         txtManifiesto = getView().findViewById(R.id.txtManifiesto);
         txtMovilizar = getView().findViewById(R.id.txtMovilizar);
+        txtVersion = getView().findViewById(R.id.txtVersion);
+        txtInicioLote = getView().findViewById(R.id.txtInicioLote);
 
         btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
         btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
@@ -115,6 +118,7 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         regionBuscar.setEnabled(false);
 
         verificarInicioLote();
+        consultarVersion();
 
         btnListaAsignadaSede.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -468,4 +472,38 @@ public class HomeSedeFragment extends MyFragment implements OnCameraListener, On
         consultaFirmaUsuarioTask.execute();
 
     }
+    private void consultarVersion(){
+        UserConsultarInformacionTransportista info =new UserConsultarInformacionTransportista(getActivity());
+        info.setOnRegisterListener(new UserConsultarInformacionTransportista.OnRegisterListener() {
+            @Override
+            public void onSuccessfull(String version) {
+                if(version.equals(MyConstant.APP_VERSION)){
+                }else{
+                    txtVersion.setVisibility(View.VISIBLE);
+
+
+                    btnListaAsignadaSede.setEnabled(false);
+                    btnSincManifiestos.setEnabled(false);
+                    regionBuscar.setEnabled(false);
+                    btnInciaLote.setEnabled(false);
+                    btnFinLote.setEnabled(false);
+
+                    btnListaAsignadaSede.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+                    btnSincManifiestos.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+
+                    txtManifiesto.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+                    txtSincronizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+
+                    regionBuscar.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+                    btnInciaLote.setColorFilter(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+
+                    txtMovilizar.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+                    txtInicioLote.setTextColor(Color.rgb(Integer.valueOf(getString(R.string.btnDisabled1)), Integer.valueOf(getString(R.string.btnDisabled2)), Integer.valueOf(getString(R.string.btnDisabled3))));
+                    sectionQrLoteSede.setAlpha(0.3f);
+                }
+            }
+        });
+        info.execute();
+    }
+
 }

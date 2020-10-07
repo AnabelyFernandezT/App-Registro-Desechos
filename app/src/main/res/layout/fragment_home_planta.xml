@@ -35,6 +35,26 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/txtVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="LA APLICACION DEBE ACTUALIZARCE"
+                    style="@style/TextViewTitleItem"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:paddingBottom="3dp"
+                    android:textSize="23dp"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -324,6 +344,7 @@
             android:layout_gravity="center_horizontal"
             android:clickable="true"
             android:layout_weight="1"
+            android:id="@+id/lblSincronizar"
             android:orientation="vertical">
 
             <ImageButton
@@ -354,6 +375,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:clickable="true"
+            android:id="@+id/lblManifiesto"
             android:orientation="vertical">
 
             <ImageButton

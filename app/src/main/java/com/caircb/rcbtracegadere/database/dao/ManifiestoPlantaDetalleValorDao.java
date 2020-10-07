@@ -40,6 +40,9 @@ public abstract class ManifiestoPlantaDetalleValorDao {
     @Transaction
     public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByNumManif(Integer idManifiesto);
 
+    @Query("select idManifiestoDetalle,idManifiestoDetalleValor as idManifiestoDetalleValores,peso,codigoQR,nombreBulto,estado,nuevoPeso from tb_manifiestos_planta_det_valor where idManifiesto=:idManifiesto and idManifiestoDetalle=:idManifiestoDetalle" )
+    @Transaction
+    public abstract List<ItemManifiestoDetalleValorSede> fetchManifiestosAsigByNumManifAndDet(Integer idManifiesto,Integer idManifiestoDetalle);
 
     @Query("update tb_manifiestos_planta_det_valor set estado=:check where idManifiestoDetalle=:idManifiestoDetalle and idManifiestoDetalleValor=:idManifiestoDetalleValores  ")
     public abstract void updateManifiestoDetalleValorSedebyId(Integer idManifiestoDetalle, boolean check, Integer idManifiestoDetalleValores);

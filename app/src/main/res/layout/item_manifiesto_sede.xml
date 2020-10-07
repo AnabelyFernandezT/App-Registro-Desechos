@@ -99,7 +99,7 @@
         android:background="@drawable/shape_card_border_red"
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:elevation="4dp"
         android:focusable="true"
@@ -148,6 +148,29 @@
                     android:textColor="#737373"
                     android:layout_height="wrap_content"
                     />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:id="@+id/observacion"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:text="OBSERVACION"
+                    style="@style/TextViewTitleItem"
+                    android:paddingBottom="3dp"
+                    />
+                <TextView
+                    android:id="@+id/itm_observacion"
+                    android:layout_width="match_parent"
+                    android:textColor="#737373"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

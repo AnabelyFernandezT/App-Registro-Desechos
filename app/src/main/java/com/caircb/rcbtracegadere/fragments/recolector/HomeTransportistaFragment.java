@@ -56,6 +56,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultaCodigoQrValidadorTask;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
 import com.caircb.rcbtracegadere.tasks.UserConsultarCatalogosTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInformacionTransportista;
 import com.caircb.rcbtracegadere.tasks.UserConsultarInicioRutaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRutasTask;
 import com.caircb.rcbtracegadere.tasks.UserNotificacionTask;
@@ -248,7 +249,7 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
         }
         
 
-
+    consultarVersion();
 
 
   /*      if (inicioFinRuta=="0"){
@@ -762,6 +763,26 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 System.out.println("");
             }
         }
+    }
+
+    private void consultarVersion(){
+        UserConsultarInformacionTransportista info =new UserConsultarInformacionTransportista(getActivity());
+        info.setOnRegisterListener(new UserConsultarInformacionTransportista.OnRegisterListener() {
+            @Override
+            public void onSuccessfull(String version) {
+                if(version.equals(MyConstant.APP_VERSION)){
+                }else{
+                    txtQr.setVisibility(View.VISIBLE);
+                    bloqueo_botones();
+                    btnFinRuta.setEnabled(false);
+                    btnInicioRuta.setEnabled(false);
+                    btnFinRuta.setAlpha(0.3f);
+                    btnInicioRuta.setAlpha(0.3f);
+                    lnlIniciaRuta.setAlpha(0.3f);
+                }
+            }
+        });
+        info.execute();
     }
 
 }

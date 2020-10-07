@@ -1,6 +1,7 @@
 package com.caircb.rcbtracegadere.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.util.StringUtil;
 
+import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleValorSede;
 import com.itextpdf.text.pdf.StringUtils;
 
 import java.util.ArrayList;
@@ -27,18 +30,25 @@ public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<Manifie
     private List<ItemManifiestoDetalleSede> manifiestosDtList;
     private String numeroManifiesto;
     private Integer estadoManifiesto;
+    private Integer idManidiesto;
+    int cAzul;
+    List<ItemManifiestoDetalleValorSede> detalleValor;
+    int cantidadPeso=0;
 
-    public ManifiestoDetalleAdapterPlanta(Context context, String numeroManifiesto, Integer estadoManifiesto){
+
+    public ManifiestoDetalleAdapterPlanta(Context context, String numeroManifiesto, Integer estadoManifiesto, Integer idManifiesto){
         this.mContext = context;
         this.manifiestosDtList = new ArrayList<>();
         this.numeroManifiesto=numeroManifiesto;
         this.estadoManifiesto =estadoManifiesto;
+        this.idManidiesto = idManifiesto;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_sede,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_planta,parent,false);
+        cAzul = R.drawable.shape_card_border_blue;
         return new MyViewHolder(view);
     }
 
@@ -56,7 +66,20 @@ public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<Manifie
             holder.chkEstado.setChecked(true);
         }else{
             holder.chkEstado.setChecked(false);
+
         }
+        detalleValor = MyApp.getDBO().manifiestoPlantaDetalleValorDao().fetchManifiestosAsigByNumManifAndDet(idManidiesto,it.getIdManifiestoDetalle());
+        for(ItemManifiestoDetalleValorSede dv: detalleValor){
+            if((dv.getPeso()>0.0)){
+                cantidadPeso++;
+            }
+        }
+
+        if(it.getTotalBultos()!=cantidadPeso) {
+            holder.borderVerificacion.setBackgroundResource(cAzul);
+        }
+        cantidadPeso=0;
+
     }
 
     @Override
@@ -76,6 +99,7 @@ public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<Manifie
         TextView totalBultos;
         LinearLayout btnEleminarItem;
         CheckBox chkEstado;
+        LinearLayout borderVerificacion;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +109,7 @@ public class ManifiestoDetalleAdapterPlanta extends RecyclerView.Adapter<Manifie
             btnEleminarItem = itemView.findViewById(R.id.btnEleminarItem);
             totalBultos= itemView.findViewById(R.id.txtTotalBultos);
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
+            borderVerificacion = itemView.findViewById(R.id.rowFG);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

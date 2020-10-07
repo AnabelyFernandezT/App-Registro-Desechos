@@ -48,7 +48,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
         this.fechaInicio=fechaInicio;
         this.kilometrajeInicio=kilometrajeInicio;
         this.idTipoSubruta=idTipoSubruta;
-
+        progressShow("Sincronizando con el servidor el inicio de ruta");
     }
 
     @Override
@@ -57,7 +57,7 @@ public class UserRegistrarInicioRutaTask extends MyRetrofitApi implements Retrof
     }
 
     private void  register(){
-        progressShow("Sincronizando con el servidor el inicio de ruta");
+
         RequestIniciaRuta requestRutaIniciFin = createRequestInicio();
         /*Gson g = new Gson();
         String f = g.toJson(requestRutaIniciFin);*/

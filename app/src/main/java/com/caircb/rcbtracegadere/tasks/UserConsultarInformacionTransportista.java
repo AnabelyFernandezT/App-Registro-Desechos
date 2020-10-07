@@ -2,6 +2,8 @@ package com.caircb.rcbtracegadere.tasks;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.generics.MyRetrofitApi;
 import com.caircb.rcbtracegadere.generics.RetrofitCallbacks;
@@ -22,6 +24,11 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
         progressShow("Consultando...");
     }
 
+    public interface OnRegisterListener{
+        public void onSuccessfull(String version);
+    }
+
+    private OnRegisterListener mOnRegisterListener;
     @Override
     public void execute() {
         WebService.api().informacionTransportista(new RequestInformacionTransportista(MySession.getIdUsuario())).enqueue(new Callback<DtoInformacionTransportista>() {
@@ -31,6 +38,7 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_especifico",""+response.body().getIdFinRutaCatalogo());
                     MyApp.getDBO().parametroDao().saveOrUpdate("current_destino_info",""+response.body().getIdFinRutaCatalogo());
                     MySession.setDestinoEspecifico(response.body().getNombreCorto());
+                    if(mOnRegisterListener!=null)mOnRegisterListener.onSuccessfull(response.body().getApkVersion());
                     progressHide();
                 }else{
                     progressHide();
@@ -43,5 +51,8 @@ public class UserConsultarInformacionTransportista extends MyRetrofitApi impleme
             }
         });
 
+    }
+    public void setOnRegisterListener(@NonNull OnRegisterListener l) {
+        mOnRegisterListener = l;
     }
 }

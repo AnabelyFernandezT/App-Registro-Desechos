@@ -102,9 +102,9 @@
 
             <TextView
                 android:textSize="12sp"
+                android:id="@+id/version"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:text="Versión 1.15"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"/>

@@ -50,7 +50,10 @@ public class UserConsultarRutasTask extends MyRetrofitApi implements RetrofitCal
                     }
 
                     progressHide();
+                }else{
+                    progressHide();
                 }
+
             }
 
             @Override

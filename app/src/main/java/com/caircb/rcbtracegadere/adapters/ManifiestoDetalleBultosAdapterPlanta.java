@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     private Integer estadoManifiesto,idManifiestoDetalle;
     DialogKeyBoardPlanta dialogKeyBoardPlanta;
     List<ItemManifiestoDetalleValorSede> detalles = new ArrayList<>();
+    int cAzul;
 
     public ManifiestoDetalleBultosAdapterPlanta(Context context, Integer idManifiestoDetalle, Integer estadoManifiesto){
         this.mContext = context;
@@ -49,6 +51,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.lista_items_manifiesto_bultos_planta,parent,false);
+        cAzul = R.drawable.shape_card_border_blue;
         return new ManifiestoDetalleBultosAdapterPlanta.MyViewHolder(view);
     }
 
@@ -100,6 +103,9 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
         holder.txtNombre.setText(it.getNombreBulto());
         holder.chkEstado.setChecked(it.getEstado());
         holder.txtNuevoPeso.setText(it.getNuevoPeso()==null ? "":it.getNuevoPeso().toString());
+        if(it.getPeso().equals(0.0)){
+            holder.borderVerificacion.setBackgroundResource(cAzul);
+        }
 
       }
 
@@ -127,6 +133,8 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
         TextView txtPeso;
         CheckBox chkEstado;
         EditText txtNuevoPeso;
+        LinearLayout borderVerificacion;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -134,6 +142,7 @@ public class ManifiestoDetalleBultosAdapterPlanta extends RecyclerView.Adapter<M
             txtPeso = itemView.findViewById(R.id.txtBultos);
             chkEstado = itemView.findViewById(R.id.chkEstadoItemDetalle);
             txtNuevoPeso = (EditText)itemView.findViewById(R.id.txtIgnBultos);
+            borderVerificacion = itemView.findViewById(R.id.rowFG);
 
         }
 

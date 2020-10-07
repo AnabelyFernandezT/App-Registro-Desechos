@@ -42,17 +42,18 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:visibility="invisible">
+                android:visibility="gone">
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
-                    android:text="ESCANEANDO LOTE DE SEDE..."
+                    android:text="LA APLICACION DEBE ACTUALIZARCE"
                     style="@style/TextViewTitleItem"
-                    android:paddingBottom="3dp"
-                    android:textSize="18dp"/>
+                    android:textColor="@android:color/holo_red_dark"
+                android:paddingBottom="3dp"
+                    android:textSize="23dp"/>
             </LinearLayout>
 
 

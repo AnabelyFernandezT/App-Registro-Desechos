@@ -34,6 +34,7 @@ import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.OnBarcodeListener;
 import com.caircb.rcbtracegadere.generics.OnCameraListener;
 import com.caircb.rcbtracegadere.generics.OnHome;
+import com.caircb.rcbtracegadere.helpers.MyConstant;
 import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.response.DtoManifiestoPlanta;
@@ -43,6 +44,7 @@ import com.caircb.rcbtracegadere.tasks.UserConsultaQrPlantaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaPlacaXNoTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarHojaRutaTask;
+import com.caircb.rcbtracegadere.tasks.UserConsultarInformacionTransportista;
 import com.caircb.rcbtracegadere.tasks.UserConsultarManifiestosPendientesPesarTask;
 import com.caircb.rcbtracegadere.tasks.UserConsultarRecolectadosTask;
 import com.google.zxing.client.android.BeepManager;
@@ -66,7 +68,7 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
     TextView lblDropOffTransportista;
     public Context mContext;
     private Integer controlDropOff = 0;
-    LinearLayout sectionQrLotePlanta;
+    LinearLayout sectionQrLotePlanta,txtVersion,lblSincronizar,lblManifiesto;
 
     UserConsultarHojaRutaPlacaTask consultarHojaRutaTask;
     UserConsultarHojaRutaPlacaXNoTask consultarHojaRutaTaskXNO;
@@ -112,8 +114,12 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
         btnFinRuta = getView().findViewById(R.id.btnFinRuta);
         lblDropOffTransportista = getView().findViewById(R.id.lblDropOffTransportista);
         sectionQrLotePlanta = (LinearLayout) getView().findViewById(R.id.sectionQrLotePlanta);
+        txtVersion=getView().findViewById(R.id.txtVersion);
+        lblSincronizar = getView().findViewById(R.id.lblSincronizar);
+        lblManifiesto = getView().findViewById(R.id.lblManifiesto);
         cargarLabelCantidad();
         cargarLbael();
+        consultarVersion();
 
         btnDropOffTransportista.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -462,6 +468,26 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
         consultaFirmaUsuarioTask.execute();
 
     }
-
+    private void consultarVersion(){
+        UserConsultarInformacionTransportista info =new UserConsultarInformacionTransportista(getActivity());
+        info.setOnRegisterListener(new UserConsultarInformacionTransportista.OnRegisterListener() {
+            @Override
+            public void onSuccessfull(String version) {
+                if(version.equals(MyConstant.APP_VERSION)){
+                }else{
+                    txtVersion.setVisibility(View.VISIBLE);
+                    lblManifiesto.setEnabled(false);
+                    lblSincronizar.setEnabled(false);
+                    lblDropOffTransportista.setEnabled(false);
+                    btnDropOffTransportista.setEnabled(false);
+                    lblManifiesto.setAlpha(0.3f);
+                    lblSincronizar.setAlpha(0.3f);
+                    lblDropOffTransportista.setAlpha(0.3f);
+                    btnDropOffTransportista.setAlpha(0.3f);
+                }
+            }
+        });
+        info.execute();
+    }
 
 }
