@@ -56,7 +56,7 @@ public class UserConsultarManifiestoSedeLoteTask extends MyRetrofitApi implement
                             if (mOnRegistro != null) mOnRegistro.onSuccessful();
                         }else {
                             progressHide();
-                            message("No se encontraron datos");
+                            //message("No se encontraron datos");
                         }
                     }
                 }

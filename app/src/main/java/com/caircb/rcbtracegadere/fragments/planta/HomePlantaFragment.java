@@ -477,11 +477,13 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
                 }else{
                     txtVersion.setVisibility(View.VISIBLE);
                     lblManifiesto.setEnabled(false);
-                    lblSincronizar.setEnabled(false);
+                    btnSincManifiestosPlanta.setEnabled(false);
+
                     lblDropOffTransportista.setEnabled(false);
                     btnDropOffTransportista.setEnabled(false);
+
                     lblManifiesto.setAlpha(0.3f);
-                    lblSincronizar.setAlpha(0.3f);
+                    btnSincManifiestosPlanta.setAlpha(0.3f);
                     lblDropOffTransportista.setAlpha(0.3f);
                     btnDropOffTransportista.setAlpha(0.3f);
                 }
