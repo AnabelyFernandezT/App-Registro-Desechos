@@ -149,7 +149,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
                 noRecoleccion.setOnRegisterListener(new UserRegistrarNoRecoleccion.OnRegisterListener() {
                     @Override
                     public void onSuccessful(final Date fechaRecol) {
-                        messageBox("Datos Guardados");
+                        //messageBox("Datos Guardados");
 
                         RuteoRecoleccionEntity dto;
                         dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();

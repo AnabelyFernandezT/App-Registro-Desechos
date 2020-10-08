@@ -85,7 +85,8 @@ public abstract class ManifiestoDetallePesosDao {
     public  abstract List<ItemEtiqueta> consultarBultosImpresion(Integer idAppManifiesto);
 
     @Query("select dt.idAppManifiestoDetalle,m.nombreCliente as cliente,m.numeroManifiesto,rif.fechaInicio as fechaRecoleccion," +
-            "c.nombre as residuo,dt.tratamiento,valor as peso, b.codeQr as codigoQr,0 as indexEtiqueta, dt.cantidadTotalEtiqueta as totalEtiqueta, dt.nombreDestinatario as destinatario " +
+            "c.nombre as residuo,dt.tratamiento,valor as peso, b.codeQr as codigoQr,0 as indexEtiqueta, dt.cantidadTotalEtiqueta as totalEtiqueta, " +
+            "dt.nombreDestinatario as destinatario, requiereIncineracionPresenciada as incineracion " +
             " from tb_manifiesto_detalle_pesos b" +
             " inner join tb_manifiestos_detalle dt on b.idAppManifiestoDetalle=dt.idAppManifiestoDetalle  " +
             " inner join tb_manifiestos m on dt.idAppManifiesto=m.idAppManifiesto " +
@@ -96,7 +97,8 @@ public abstract class ManifiestoDetallePesosDao {
     public  abstract ItemEtiqueta consultaBultoIndividual(Integer idAppManifiesto, Integer idManifiestoDetalle, Integer idCatalogo);
 
     @Query("select dt.idAppManifiestoDetalle,m.nombreCliente as cliente,m.numeroManifiesto,rif.fechaInicio as fechaRecoleccion," +
-            "c.nombre as residuo,dt.tratamiento,valor as peso, b.codeQr as codigoQr,0 as indexEtiqueta, dt.cantidadTotalEtiqueta as totalEtiqueta, dt.nombreDestinatario as destinatario " +
+            "c.nombre as residuo,dt.tratamiento,valor as peso, b.codeQr as codigoQr,0 as indexEtiqueta, dt.cantidadTotalEtiqueta as totalEtiqueta, " +
+            "dt.nombreDestinatario as destinatario , requiereIncineracionPresenciada as incineracion" +
             " from tb_manifiesto_detalle_pesos b" +
             " inner join tb_manifiestos_detalle dt on b.idAppManifiestoDetalle=dt.idAppManifiestoDetalle  " +
             " inner join tb_manifiestos m on dt.idAppManifiesto=m.idAppManifiesto " +

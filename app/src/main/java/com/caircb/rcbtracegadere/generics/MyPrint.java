@@ -298,7 +298,8 @@ public class MyPrint {
                     String.valueOf(numeroBulto),
                     row.getTratamiento(),
                     row.getDestinatario(),
-                    false
+                    false,
+                    row.getIncineracion()
             );
             zebraPrinterConnection.write(configLabel);
             MyThread.sleep(50);
@@ -336,7 +337,8 @@ public class MyPrint {
                         String.valueOf(i),
                         eliminarAcentos(row.getTratamiento()),
                         eliminarAcentos(row.getDestinatario()),
-                        false
+                        false,
+                        row.getIncineracion()
                 );
                 if(configLabel!=null) {
                     zebraPrinterConnection.write(configLabel);
@@ -489,12 +491,21 @@ public class MyPrint {
             String numeroBulto,
             String tratamiento,
             String destinatario,
-            boolean aplicaDevolucion) {
+            boolean aplicaDevolucion,
+            Integer incineracion) {
         String pesoI="";
         if(peso<=0.0){
             pesoI="PESO EN PLANTA";
         }else{
             pesoI=String.valueOf(peso);
+        }
+        String incineracionP="";
+        if(incineracion.equals(1)){
+            incineracionP = "SI";
+        }else if(incineracion.equals(2)){
+            incineracionP="NO";
+        }else{
+            incineracionP="";
         }
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
@@ -523,7 +534,8 @@ public class MyPrint {
 
                                  "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }else{
                 cpclConfigLabel =
@@ -541,7 +553,8 @@ public class MyPrint {
 
                                 "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
+                                "^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }
         }
@@ -562,7 +575,17 @@ public class MyPrint {
             String numeroBulto,
             String tratamiento,
             String destinatario,
-            boolean aplicaDevolucion) {
+            boolean aplicaDevolucion,
+            Integer incineracion) {
+
+        String incineracionP="";
+        if(incineracion.equals(1)){
+            incineracionP = "SI";
+        }else if(incineracion.equals(2)){
+            incineracionP="NO";
+        }else{
+            incineracionP="";
+        }
 
         PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
         String cpclConfigLabel="";
@@ -591,7 +614,8 @@ public class MyPrint {
 
                                 "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }else{
                 cpclConfigLabel =
@@ -609,7 +633,8 @@ public class MyPrint {
 
                                 "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +
+                                "^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
+                                "^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }
         }

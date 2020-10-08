@@ -15,6 +15,7 @@ public class ItemEtiqueta {
     private Integer indexEtiqueta;
     private Integer totalEtiqueta;
     private String destinatario;
+    private Integer incineracion;
 
 
 
@@ -104,5 +105,13 @@ public class ItemEtiqueta {
 
     public void setDestinatario(String destinatario) {
         this.destinatario = destinatario;
+    }
+
+    public Integer getIncineracion() {
+        return incineracion;
+    }
+
+    public void setIncineracion(Integer incineracion) {
+        this.incineracion = incineracion;
     }
 }

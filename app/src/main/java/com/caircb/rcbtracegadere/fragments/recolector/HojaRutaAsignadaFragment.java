@@ -947,10 +947,11 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             }
 
                             dialogBuilder.dismiss();
-                            setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1));
-
                             actualizarEstadoTask = new UserRegistrarActualizarEstadoTask(getActivity(),rowItems.get(position).getIdAppManifiesto(),0);
                             actualizarEstadoTask.execute();
+                            setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1));
+
+
                         }
                     });
                     dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
