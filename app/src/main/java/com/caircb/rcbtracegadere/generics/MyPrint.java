@@ -534,8 +534,9 @@ public class MyPrint {
 
                                  "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
-                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase()  +
+                                //"^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
+                                //"^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }else{
                 cpclConfigLabel =
@@ -553,8 +554,9 @@ public class MyPrint {
 
                                 "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
-                                "^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase()+
+                                //"^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
+                                //"^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }
         }
@@ -614,8 +616,9 @@ public class MyPrint {
 
                                 "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
-                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase()  +
+                                //"^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
+                                //"^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }else{
                 cpclConfigLabel =
@@ -633,8 +636,9 @@ public class MyPrint {
 
                                 "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
-                                "^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase()+
+                                //"^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
+                                //"^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }
         }
