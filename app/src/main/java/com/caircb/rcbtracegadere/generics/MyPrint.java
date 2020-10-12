@@ -511,7 +511,7 @@ public class MyPrint {
         String cpclConfigLabel="";
         byte[] configLabel = null;
         tratamiento = tratamiento == null ? "" : recorreString(tratamiento, 19, "590");
-        String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "710":"680");
+        String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "740":"710");
 
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
@@ -534,9 +534,9 @@ public class MyPrint {
 
                                  "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase()  +
-                                //"^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
-                                //"^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                //"^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase()  +
+                                "^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }else{
                 cpclConfigLabel =
@@ -554,9 +554,9 @@ public class MyPrint {
 
                                 "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase()+
-                                //"^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
-                                //"^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                //"^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase()+
+                                "^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
+                                "^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }
         }
@@ -593,7 +593,7 @@ public class MyPrint {
         String cpclConfigLabel="";
         byte[] configLabel = null;
         tratamiento = tratamiento == null ? "" : recorreString(tratamiento, 19, "590");
-        String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "710":"680");
+        String ItemDescripcion = recorreString(residuo,27, saltoLinea ? "740":"710");
 
         if (DEFAULT_PRINTER_MAC.equals("AC:3F:A4:8D:25:53")){
             cpclConfigLabel = "^XA^LH30,30^FO140,230^BQN,2,10,H^FDMM,A"+codigoQr.trim()+"^FS^FO50,60^AD^FD "+ cliente+"^FS^FO50,90^AD^FD #M.U.E: "+manifiesto.trim()+"^FS^FO50,120^AD^FD FECHA: "+fecha+"^FS^FO50,180^AD^FD RESPONSABLE: "+ MySession.getUsuarioNombre().toUpperCase()+"^FS ^XZ";
@@ -616,9 +616,9 @@ public class MyPrint {
 
                                 "^FS^FO60,590^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,620^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase()  +
-                                //"^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
-                                //"^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                //"^FS^FO60,650^AD^FD ITEM:" + ItemDescripcion.toUpperCase()  +
+                                "^FS^FO60,650^AD^FD INCINERACION PRESENCIADA:" + incineracionP +
+                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }else{
                 cpclConfigLabel =
@@ -636,9 +636,9 @@ public class MyPrint {
 
                                 "^FS^FO60,620^AD^FD DESTINATARIO:" + destinatario.toUpperCase() +
                                 "^FS^FO60,650^AD^FD DEVOLUCION RECIPIENTE:" + (aplicaDevolucion ? "SI" : "NO") +
-                                "^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase()+
-                                //"^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
-                                //"^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
+                                //"^FS^FO60,680^AD^FD ITEM:" + ItemDescripcion.toUpperCase()+
+                                "^FS^FO60,680^AD^FD INCINERACION PRESENCIADA:" +incineracionP +
+                                "^FS^FO60,710^AD^FD ITEM:" + ItemDescripcion.toUpperCase() +//
                                 "^FS ^XZ";
             }
         }
