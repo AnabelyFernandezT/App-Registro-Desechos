@@ -842,7 +842,7 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                     final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
 
-                    if (imput.compareTo(BigDecimal.ZERO) > 0) {
+                    if (imput.compareTo(BigDecimal.ZERO) > 0.0) {
                         createBulto(imput);
                     } else {
                         final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
