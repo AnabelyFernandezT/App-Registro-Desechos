@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 public class TabManifiestoGeneral extends LinearLayout {
 
     private Integer idAppManifiesto ,estadoManifiesto;
+    ManifiestoEntity manifiesto;
 
     private Boolean bloquear;
     private  Integer tipoPaquete=null;
@@ -511,7 +512,7 @@ public class TabManifiestoGeneral extends LinearLayout {
 
 
     private void loadDataManifiesto(){
-        ManifiestoEntity manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
+        manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idAppManifiesto);
         TecnicoEntity tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyManifiesto(idAppManifiesto);
         if(manifiesto!=null){
             txtClienteNombre.setText(manifiesto.getNombreCliente());
@@ -883,7 +884,7 @@ public class TabManifiestoGeneral extends LinearLayout {
         return true;
     }
 
-    public String getIdentificacion(){ return txtRespEntregaIdentificacion.getText().toString();}
+    public String getIdentificacion(){ return manifiesto.getIdentificacionCliente();}
     public String getNombreCliente(){return txtClienteNombre.getText().toString();}
     public String getSucursal(){return sucursal;}
 
