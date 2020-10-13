@@ -338,24 +338,28 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         public void onSuccessful() {
                             final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                             if (tipoSubruta.equals("2")) {
-                                builder = new DialogBuilder(getActivity());
-                                builder.setMessage("¿Desea volver a imprimir otro recibo?");
-                                builder.setCancelable(false);
-                                builder.setPositiveButton("SI", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        imprimirEtiquetaHospitalario(idAppManifiesto);
-                                    }
-                                });
-                                builder.setNegativeButton("NO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        builder.dismiss();
-                                        registrarDatos(fechaRecol, tipoSubruta);
-                                    }
-                                });
-                                builder.show();
-                                imprimirEtiquetaHospitalario(idAppManifiesto);
+                                if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("0")) {
+                                    builder = new DialogBuilder(getActivity());
+                                    builder.setMessage("¿Desea volver a imprimir otro recibo?");
+                                    builder.setCancelable(false);
+                                    builder.setPositiveButton("SI", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            imprimirEtiquetaHospitalario(idAppManifiesto);
+                                        }
+                                    });
+                                    builder.setNegativeButton("NO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            builder.dismiss();
+                                            registrarDatos(fechaRecol, tipoSubruta);
+                                        }
+                                    });
+                                    builder.show();
+                                    imprimirEtiquetaHospitalario(idAppManifiesto);
+                                }else{
+                                    registrarDatos(fechaRecol, tipoSubruta);
+                                }
                             } else {
                                 registrarDatos(fechaRecol, tipoSubruta);
                             }
@@ -557,7 +561,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                                 public void onSuccessful() {
                                     //Impresion finalizada
                                     progress.dismiss();
-                                    System.out.print("Compleado correctamente");
                                 }
 
                                 @Override

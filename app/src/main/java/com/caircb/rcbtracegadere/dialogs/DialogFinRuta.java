@@ -290,25 +290,30 @@ public class DialogFinRuta extends MyDialog {
                 lblListaManifiestoAsignado.setText("0");
                 String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                 if (tipoSubruta.equals("2")) {//TIPO SUBRUTA HOSPITALARIA
-                    final DialogBuilder builderw = new DialogBuilder(getContext());
-                    builderw.setMessage("¿Desea volver a imprimir otro recibo?");
-                    builderw.setCancelable(false);
-                    builderw.setPositiveButton("SI", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            imprimirEtiquetaFinRutaHospitalaria();
-                        }
-                    });
-                    builderw.setNegativeButton("NO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            builderw.dismiss();
-                            MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
-                            DialogFinRuta.this.dismiss();
-                        }
-                    });
-                    builderw.show();
-                    imprimirEtiquetaFinRutaHospitalaria();
+                    if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("0")) {
+                        final DialogBuilder builderw = new DialogBuilder(getContext());
+                        builderw.setMessage("¿Desea volver a imprimir otro recibo?");
+                        builderw.setCancelable(false);
+                        builderw.setPositiveButton("SI", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                imprimirEtiquetaFinRutaHospitalaria();
+                            }
+                        });
+                        builderw.setNegativeButton("NO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                builderw.dismiss();
+                                MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+                                DialogFinRuta.this.dismiss();
+                            }
+                        });
+                        builderw.show();
+                        imprimirEtiquetaFinRutaHospitalaria();
+                    }else{
+                        MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
+                        DialogFinRuta.this.dismiss();
+                    }
                 }else {
                     MyApp.getDBO().impresoraDao().updateDisabledAllImpresoraWorked();
                     DialogFinRuta.this.dismiss();
