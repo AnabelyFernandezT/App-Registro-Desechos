@@ -751,6 +751,24 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                 bultos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarValores(idManifiesto, idManifiestoDetalle);
                 String tipoSubRuta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");//1 ES INDUSTRIAL, 2 ES HOSPITALARIA
                 if (tipoSubRuta.equals("2")) {
+                    final BigDecimal imput = new BigDecimal(txtpantalla.getText().toString());
+
+                    if (imput.compareTo(BigDecimal.ZERO) > 0.0) {
+                        createBulto(imput);
+                    } else {
+                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                        dialogBuilder2.setMessage("¿Debe ingresar un peso mayor a cero?");
+                        dialogBuilder2.setTitle("CONFIRMACIÓN");
+                        dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder2.dismiss();
+                            }
+                        });
+                        dialogBuilder2.show();
+                        return;
+                    }
+
                     String checkTara = registraTara.toString();
                     if (checkTara.equals("1")) {
 
