@@ -756,17 +756,9 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                     if (imput.compareTo(BigDecimal.ZERO) > 0.0) {
                         createBulto(imput);
                     } else {
-                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                        dialogBuilder2.setMessage("¿Debe ingresar un peso mayor a cero?");
-                        dialogBuilder2.setTitle("CONFIRMACIÓN");
-                        dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder2.dismiss();
-                            }
-                        });
-                        dialogBuilder2.show();
-                        return;
+                        if (mOnBultoListener != null) {
+                            mOnBultoListener.onCanceled(faltaImpresos,position);
+                        }
                     }
 
                     String checkTara = registraTara.toString();
