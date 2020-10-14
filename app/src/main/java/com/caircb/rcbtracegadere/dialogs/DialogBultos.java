@@ -755,22 +755,8 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
 
                     if (imput.compareTo(BigDecimal.ZERO) > 0.0) {
                         createBulto(imput);
-                    } else {
-                        final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                        dialogBuilder2.setMessage("¿Debe ingresar un peso mayor a cero?");
-                        dialogBuilder2.setTitle("CONFIRMACIÓN");
-                        dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder2.dismiss();
-                            }
-                        });
-                        dialogBuilder2.show();
-                        return;
-                    }
-
-                    String checkTara = registraTara.toString();
-                    if (checkTara.equals("1")) {
+                        String checkTara = registraTara.toString();
+                        if (checkTara.equals("1")) {
 
                         /*List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
                         int contPesosTara=0;
@@ -780,50 +766,56 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             }
 
                         }*/
-                        /* if (contPesosTara==0){*/
+                            /* if (contPesosTara==0){*/
                         /*BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
                         createBulto(imputValor);*/
-                        faltaImpresos = verificarTodosBultosImpresos();
-                        if (!faltaImpresos) {
-                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                            if (mOnBultoListener != null) {
-                                mOnBultoListener.onCanceled(faltaImpresos,position);
-                            }
-                        } else {
-                            final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
-                            dialogBuilder2.setMessage("Debe registrar todas las taras!!!");
-                            dialogBuilder2.setTitle("CONFIRMACIÓN");
-                            dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder2.dismiss();
+                            faltaImpresos = verificarTodosBultosImpresos();
+                            if (!faltaImpresos) {
+                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                                if (mOnBultoListener != null) {
+                                    mOnBultoListener.onCanceled(faltaImpresos,position);
                                 }
-                            });
-                            dialogBuilder2.show();
-                        }
-                        break;
+                            } else {
+                                final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
+                                dialogBuilder2.setMessage("Debe registrar todas las taras!!!");
+                                dialogBuilder2.setTitle("CONFIRMACIÓN");
+                                dialogBuilder2.setPositiveButton("OK", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogBuilder2.dismiss();
+                                    }
+                                });
+                                dialogBuilder2.show();
+                            }
+                            break;
                     /*    }else {
                             messageBox("Debe registrar todas las taras!!!");
                         }*/
-                    } else {
-                        BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
-                        if(!(txtpantalla.getText().toString().equals("0")))
-                            createBulto(imputValor);
-                        faltaImpresos = verificarTodosBultosImpresos();
-
-                        if (!faltaImpresos) {
-                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                            if (mOnBultoListener != null) {
-                                aplicar();
-                                //autorizacion=0;
-                                //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
-                            }
                         } else {
-                            messageBox("Debe imprimir todos los bultos para continuar...!");
-                            MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                            BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
+                            if(!(txtpantalla.getText().toString().equals("0")))
+                                createBulto(imputValor);
+                            faltaImpresos = verificarTodosBultosImpresos();
+
+                            if (!faltaImpresos) {
+                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
+                                if (mOnBultoListener != null) {
+                                    aplicar();
+                                    //autorizacion=0;
+                                    //MyApp.getDBO().parametroDao().saveOrUpdate("notif_value",""+"0");
+                                }
+                            } else {
+                                messageBox("Debe imprimir todos los bultos para continuar...!");
+                                MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, true);
+                            }
+                            break;
                         }
+                    } else {
+                        if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos, position);}
                         break;
                     }
+
+
                 } else {
                     BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
                     if(!(txtpantalla.getText().toString().equals("0")))
