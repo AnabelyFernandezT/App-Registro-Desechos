@@ -38,8 +38,9 @@ public class UserConsultaQrPlantaTask extends MyRetrofitApi implements RetrofitC
     public void execute() throws ParseException {
         Integer idDestinatario = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_destino_especifico").getValor());
         Integer idVehiculo = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo").getValor());
+        Integer idLoteProceso = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_idLoteCerrado").getValor());
 
-        WebService.api().getHojaRutaQrPlanta(new RequestRecepcionQrPlanta(idDestinatario, idVehiculo)).enqueue(new Callback<DtoRecepcionQrPlanta>() {
+        WebService.api().getHojaRutaQrPlanta(new RequestRecepcionQrPlanta(idDestinatario, idVehiculo,idLoteProceso)).enqueue(new Callback<DtoRecepcionQrPlanta>() {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onResponse(Call<DtoRecepcionQrPlanta> call, Response<DtoRecepcionQrPlanta> response) {

@@ -4,11 +4,13 @@ public class RequestRecepcionQrPlanta {
 
     private Integer idDestinatarioFinRuta;
     private Integer idTransportistaVehiculo;
+    private Integer idLoteProceso;
 
 
-    public RequestRecepcionQrPlanta(Integer idDestinatarioFinRuta, Integer idTransportistaVehiculo){
-        this.idDestinatarioFinRuta=idDestinatarioFinRuta;
-        this.idTransportistaVehiculo=idTransportistaVehiculo;
+    public RequestRecepcionQrPlanta(Integer idDestinatarioFinRuta, Integer idTransportistaVehiculo, Integer idLoteProceso) {
+        this.idDestinatarioFinRuta = idDestinatarioFinRuta;
+        this.idTransportistaVehiculo = idTransportistaVehiculo;
+        this.idLoteProceso = idLoteProceso;
     }
 
     public Integer getIdDestinatarioFinRuta() {
@@ -25,5 +27,13 @@ public class RequestRecepcionQrPlanta {
 
     public void setIdTransportistaVehiculo(Integer idTransportistaVehiculo) {
         this.idTransportistaVehiculo = idTransportistaVehiculo;
+    }
+
+    public Integer getIdLoteProceso() {
+        return idLoteProceso;
+    }
+
+    public void setIdLoteProceso(Integer idLoteProceso) {
+        this.idLoteProceso = idLoteProceso;
     }
 }
