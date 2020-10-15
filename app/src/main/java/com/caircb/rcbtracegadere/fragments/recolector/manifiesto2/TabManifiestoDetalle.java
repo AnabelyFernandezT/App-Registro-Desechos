@@ -64,7 +64,8 @@ import java.util.List;
 public class TabManifiestoDetalle extends LinearLayout {
 
     /*private List<ItemManifiesto> rowItems;*/
-    private List<RowItemManifiesto> detalles;
+    List<RowItemManifiesto> detalles;
+    private List<RowItemManifiesto> ordenados = new ArrayList<>();
     private RecyclerView recyclerView;
     ManifiestoDetalleAdapter recyclerviewAdapter;
     private List<ManifiestoDetallePesosEntity> itemManifiestoDetalleBultos;
@@ -342,7 +343,23 @@ public class TabManifiestoDetalle extends LinearLayout {
             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresionesByIdManifiesto(idAppManifiesto, false);
         }
         detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
-
+        RowItemManifiesto aux = new RowItemManifiesto();
+        Double totalSRV = 0.00;
+        ordenados = new ArrayList<>();
+        for(RowItemManifiesto it : detalles)
+        {
+            if(it.getDescripcion().equals("Servicio de transporte (srv)")){
+                aux=it;
+            }else{
+                if(it != null){
+                    ordenados.add(it);
+                    totalSRV = totalSRV + it.getPeso();
+                }
+            }
+        }
+        aux.setPeso(totalSRV);
+        ordenados.add(aux);
+        detalles = ordenados;
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
 
@@ -450,13 +467,29 @@ public class TabManifiestoDetalle extends LinearLayout {
     }
 
     public void reloadData() {
-
         if (MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion" + MySession.getIdUsuario()).equals("1")) {
             MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresionesByIdManifiesto(idAppManifiesto, false);
             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
         } else {
             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
         }
+        RowItemManifiesto aux = new RowItemManifiesto();
+        Double totalSRV = 0.00;
+        ordenados = new ArrayList<>();
+        for(RowItemManifiesto it : detalles)
+        {
+            if(it.getDescripcion().equals("Servicio de transporte (srv)")){
+                aux=it;
+            }else{
+                if(it != null){
+                    ordenados.add(it);
+                    totalSRV = totalSRV + it.getPeso();
+                }
+            }
+        }
+        aux.setPeso(totalSRV);
+        ordenados.add(aux);
+        detalles = ordenados;
         recyclerviewAdapter.setTaskList(detalles);
         recyclerviewAdapter.notifyDataSetChanged();
     }
@@ -611,6 +644,8 @@ public class TabManifiestoDetalle extends LinearLayout {
             }
         }
     }
+
+
 
     public void selectBalanzaCliente(final Integer positionItem, final Integer idDetManifiesto){
         MyApp.getDBO().parametroDao().saveOrUpdate("tipoBalanza"+idAppManifiesto, "cliente");
@@ -857,6 +892,7 @@ public class TabManifiestoDetalle extends LinearLayout {
                     if (pkg != null) {
                         calculoPaquetes.algoritmo(pkg);
                     }
+                    reloadData();
                 }
 
                 @Override
@@ -895,6 +931,23 @@ public class TabManifiestoDetalle extends LinearLayout {
                                 MyApp.getDBO().parametroDao().saveOrUpdate("cortopunzante_data",""+row.getCantidadBulto());
                             }
                             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+                            RowItemManifiesto aux = new RowItemManifiesto();
+                            Double totalSRV = 0.00;
+                            ordenados = new ArrayList<>();
+                            for(RowItemManifiesto it : detalles)
+                            {
+                                if(it.getDescripcion().equals("Servicio de transporte (srv)")){
+                                    aux=it;
+                                }else{
+                                    if(it != null){
+                                        ordenados.add(it);
+                                        totalSRV = totalSRV + it.getPeso();
+                                    }
+                                }
+                            }
+                            aux.setPeso(totalSRV);
+                            ordenados.add(aux);
+                            detalles = ordenados;
                             recyclerviewAdapter.setTaskList(detalles);
                             recyclerviewAdapter.notifyDataSetChanged();
                             /*recyclerView.removeAllViews();
@@ -975,6 +1028,23 @@ public class TabManifiestoDetalle extends LinearLayout {
                        /*     recyclerviewAdapter.notifyDataSetChanged();*/
                             MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), listaPesos.size(), pesoTotalMostrar, listaPesos.size(), row.isEstado());
                             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
+                            RowItemManifiesto aux = new RowItemManifiesto();
+                            Double totalSRV = 0.00;
+                            ordenados = new ArrayList<>();
+                            for(RowItemManifiesto it : detalles)
+                            {
+                                if(it.getDescripcion().equals("Servicio de transporte (srv)")){
+                                    aux=it;
+                                }else{
+                                    if(it != null){
+                                        ordenados.add(it);
+                                        totalSRV = totalSRV + it.getPeso();
+                                    }
+                                }
+                            }
+                            aux.setPeso(totalSRV);
+                            ordenados.add(aux);
+                            detalles = ordenados;
                             recyclerviewAdapter.setTaskList(detalles);
                             recyclerviewAdapter.notifyDataSetChanged();
 

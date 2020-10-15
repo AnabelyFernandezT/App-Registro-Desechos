@@ -140,6 +140,7 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
                             progressHide();
                         } else {
                             message(response.body().getMensaje());
+                            progressHide();
                         }
                     } else {
                         message(response.body().getMensaje());
