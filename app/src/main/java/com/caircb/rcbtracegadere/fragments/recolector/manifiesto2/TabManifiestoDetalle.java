@@ -846,6 +846,13 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                     //si cambia los item(add/remove) de la calculadora se resetea los valores pendientes ingresados por el usuario...
                     isChangeTotalCreateBultos = isChangeTotalBultos;
+                    double pesoTotalIngresado=0;
+                    for (int i=0; i<detalles.size();i++){
+                        pesoTotalIngresado+= detalles.get(i).getPeso();
+                        if(detalles.get(i).getDescripcion().equals("Servicio de transporte (srv)")){
+                            pesoTotalIngresado-=detalles.get(i).getPeso();
+                        }
+                    }
                     //calculo de paquetes...
                     if (pkg != null) {
                         calculoPaquetes.algoritmo(pkg);
@@ -881,6 +888,12 @@ public class TabManifiestoDetalle extends LinearLayout {
 
 
                             MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(row.getId(), listaPesos.size(), pesoTotalMostrar, listaPesos.size(), row.isEstado());
+                            if(tipoGestion.equals(100)){
+                                MyApp.getDBO().parametroDao().saveOrUpdate("infeccioso_data",""+row.getCantidadBulto());
+                            }
+                            if(tipoGestion.equals(101)){
+                                MyApp.getDBO().parametroDao().saveOrUpdate("cortopunzante_data",""+row.getCantidadBulto());
+                            }
                             detalles = MyApp.getDBO().manifiestoDetalleDao().fetchHojaRutaDetallebyIdManifiesto(idAppManifiesto);
                             recyclerviewAdapter.setTaskList(detalles);
                             recyclerviewAdapter.notifyDataSetChanged();
@@ -995,6 +1008,11 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
             });
             dialogBultos.show();
+
+            //calculo de paquetes...
+            if (pkg != null) {
+                calculoPaquetes.algoritmo(pkg);
+            }
 
             window = dialogBultos.getWindow();
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
