@@ -357,8 +357,10 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
             }
         }
-        aux.setPeso(totalSRV);
-        ordenados.add(aux);
+        if(aux.getDescripcion() != null){
+            aux.setPeso(totalSRV);
+            ordenados.add(aux);
+        }
         detalles = ordenados;
         recyclerviewAdapter.setTaskList(detalles);
         recyclerView.setAdapter(recyclerviewAdapter);
@@ -487,8 +489,10 @@ public class TabManifiestoDetalle extends LinearLayout {
                 }
             }
         }
-        aux.setPeso(totalSRV);
-        ordenados.add(aux);
+        if(aux.getDescripcion() != null){
+            aux.setPeso(totalSRV);
+            ordenados.add(aux);
+        }
         detalles = ordenados;
         recyclerviewAdapter.setTaskList(detalles);
         recyclerviewAdapter.notifyDataSetChanged();
@@ -945,8 +949,10 @@ public class TabManifiestoDetalle extends LinearLayout {
                                     }
                                 }
                             }
-                            aux.setPeso(totalSRV);
-                            ordenados.add(aux);
+                            if(aux.getDescripcion() != null){
+                                aux.setPeso(totalSRV);
+                                ordenados.add(aux);
+                            }
                             detalles = ordenados;
                             recyclerviewAdapter.setTaskList(detalles);
                             recyclerviewAdapter.notifyDataSetChanged();
@@ -1042,8 +1048,10 @@ public class TabManifiestoDetalle extends LinearLayout {
                                     }
                                 }
                             }
-                            aux.setPeso(totalSRV);
-                            ordenados.add(aux);
+                            if(aux.getDescripcion() != null){
+                                aux.setPeso(totalSRV);
+                                ordenados.add(aux);
+                            }
                             detalles = ordenados;
                             recyclerviewAdapter.setTaskList(detalles);
                             recyclerviewAdapter.notifyDataSetChanged();
