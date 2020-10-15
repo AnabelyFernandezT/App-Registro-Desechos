@@ -25,6 +25,9 @@ public abstract class RecepcionQrPlantaDetalleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void createManifiestoDetalle(RecepcionQrPlantaDetalleEntity entity);
 
+    @Query("delete from tb_recepcion_qr_detalle_planta")
+    public abstract void deleteTable();
+
     public void saveOrUpdate(DtoHojaRutaDetallePlantaLote manifiesto, int idDetalle){
         RecepcionQrPlantaDetalleEntity entity;
         entity = fetchHojaRutaQrPlantaDetalle();

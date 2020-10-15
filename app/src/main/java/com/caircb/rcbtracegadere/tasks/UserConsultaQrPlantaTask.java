@@ -52,6 +52,7 @@ public class UserConsultaQrPlantaTask extends MyRetrofitApi implements RetrofitC
                             Integer pos = 0;
                             MyApp.getDBO().recepcionQrPlantaDao().saveOrUpdate(respuesta);
                             int contDetalle = 0;
+                            MyApp.getDBO().recepcionQrPlantaDetalleDao().deleteTable();
                             for (DtoHojaRutaDetallePlantaLote mdet : respuesta.getHojaRutaDetallePlantaLote()) {
                                 MyApp.getDBO().recepcionQrPlantaDetalleDao().saveOrUpdate(mdet, contDetalle);
                                 contDetalle++;
