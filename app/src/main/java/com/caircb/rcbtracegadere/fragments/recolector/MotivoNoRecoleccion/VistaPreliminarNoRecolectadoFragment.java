@@ -144,6 +144,8 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
                 setNavegate(ManifiestoNoRecoleccionFragment.newInstance(idAppManifiesto,1));
                 break;
             case R.id.btnVistaPreviaGuardar:
+                System.out.println("click");
+                btnVistaPreviaGuardar.setEnabled(false);
 
                 noRecoleccion = new UserRegistrarNoRecoleccion(getActivity(),idAppManifiesto,getLocation());
                 noRecoleccion.setOnRegisterListener(new UserRegistrarNoRecoleccion.OnRegisterListener() {
@@ -224,11 +226,11 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
 
                     @Override
                     public void onFail() {
+                        btnVistaPreviaGuardar.setEnabled(true);
                         messageBox("No se guardo en el servidor");
                     }
                 });
                 noRecoleccion.execute();
-
                 break;
         }
     }
