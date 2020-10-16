@@ -360,6 +360,8 @@ public class TabManifiestoDetalle extends LinearLayout {
         if(aux.getDescripcion() != null){
             aux.setPeso(totalSRV);
             ordenados.add(aux);
+            MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(aux.getId(),1, totalSRV, 0, true);
+            MyApp.getDBO().manifiestoDetallePesosDao().saveOrUpdate(idAppManifiesto, aux.getId(), totalSRV, "", null, "", false, 1, 0.0);
         }
         detalles = ordenados;
         recyclerviewAdapter.setTaskList(detalles);
@@ -492,6 +494,8 @@ public class TabManifiestoDetalle extends LinearLayout {
         if(aux.getDescripcion() != null){
             aux.setPeso(totalSRV);
             ordenados.add(aux);
+            MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(aux.getId(),1, totalSRV, 0, true);
+            MyApp.getDBO().manifiestoDetallePesosDao().saveOrUpdate(idAppManifiesto, aux.getId(), totalSRV, "", null, "", false, 1, 0.0);
         }
         detalles = ordenados;
         recyclerviewAdapter.setTaskList(detalles);
@@ -885,13 +889,6 @@ public class TabManifiestoDetalle extends LinearLayout {
 
                     //si cambia los item(add/remove) de la calculadora se resetea los valores pendientes ingresados por el usuario...
                     isChangeTotalCreateBultos = isChangeTotalBultos;
-                    double pesoTotalIngresado=0;
-                    for (int i=0; i<detalles.size();i++){
-                        pesoTotalIngresado+= detalles.get(i).getPeso();
-                        if(detalles.get(i).getDescripcion().equals("Servicio de transporte (srv)")){
-                            pesoTotalIngresado-=detalles.get(i).getPeso();
-                        }
-                    }
                     //calculo de paquetes...
                     if (pkg != null) {
                         calculoPaquetes.algoritmo(pkg);
@@ -952,6 +949,8 @@ public class TabManifiestoDetalle extends LinearLayout {
                             if(aux.getDescripcion() != null){
                                 aux.setPeso(totalSRV);
                                 ordenados.add(aux);
+                                MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(aux.getId(),1, totalSRV, 0, true);
+                                MyApp.getDBO().manifiestoDetallePesosDao().saveOrUpdate(idAppManifiesto, aux.getId(), totalSRV, "", null, "", false, 1, 0.0);
                             }
                             detalles = ordenados;
                             recyclerviewAdapter.setTaskList(detalles);
@@ -1051,6 +1050,8 @@ public class TabManifiestoDetalle extends LinearLayout {
                             if(aux.getDescripcion() != null){
                                 aux.setPeso(totalSRV);
                                 ordenados.add(aux);
+                                MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(aux.getId(),1, totalSRV, 0, true);
+                                MyApp.getDBO().manifiestoDetallePesosDao().saveOrUpdate(idAppManifiesto, aux.getId(), totalSRV, "", null, "", false, 1, 0.0);
                             }
                             detalles = ordenados;
                             recyclerviewAdapter.setTaskList(detalles);
