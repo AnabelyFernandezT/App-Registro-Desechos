@@ -327,7 +327,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
             userRegistrarRecoleccion.setOnRegisterListener(new UserRegistrarRecoleccion.OnRegisterListener() {
                 @Override
                 public void onSuccessful(final Date fechaRecol) {
-
+                    btnVistaPreviaGuardar.setEnabled(true);
                     RuteoRecoleccionEntity dto;
                     dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
                     if (dto != null) {
@@ -341,8 +341,6 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     userRegistrarRuteoRecoleccion.setOnRegisterRuteoRecollecionListenner(new UserRegistrarRuteoRecoleccion.OnRegisterRuteroRecoleecionListener() {
                         @Override
                         public void onSuccessful() {
-                            btnVistaPreviaGuardar.setEnabled(true);
-
                             final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                             if (tipoSubruta.equals("2")) {
                                 if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("0")) {
@@ -376,16 +374,14 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         public void onFail() {
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
                             messageBox("No se pudo guardar los datos");
-
-                            btnVistaPreviaGuardar.setEnabled(true);
                         }
                     });
                     userRegistrarRuteoRecoleccion.execute();
-
                 }
 
                 @Override
                 public void onFail() {
+                    btnVistaPreviaGuardar.setEnabled(true);
                     setNavegate(HojaRutaAsignadaFragment.newInstance());
                     messageBox("No se pudo guardar los datos");
                 }

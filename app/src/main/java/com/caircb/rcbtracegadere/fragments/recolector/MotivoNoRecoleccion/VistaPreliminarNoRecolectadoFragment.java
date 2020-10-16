@@ -152,7 +152,7 @@ public class VistaPreliminarNoRecolectadoFragment extends MyFragment implements 
                     @Override
                     public void onSuccessful(final Date fechaRecol) {
                         //messageBox("Datos Guardados");
-
+                        btnVistaPreviaGuardar.setEnabled(true);
                         RuteoRecoleccionEntity dto;
                         dto = MyApp.getDBO().ruteoRecoleccion().searchUltimoRegistro();
                         if(dto!=null){

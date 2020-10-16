@@ -164,6 +164,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                         } else {
                             progressHide();
                             message(response.body().getMensaje());
+                            if(mOnRegisterListener != null)
+                                mOnRegisterListener.onFail();
                         }
 
                     } else {
@@ -176,6 +178,8 @@ public class UserRegistrarRecoleccion extends MyRetrofitApi implements RetrofitC
                 public void onFailure(Call<DtoInfo> call, Throwable t) {
                     message("error  " + t);
                     progressHide();
+                    if(mOnRegisterListener != null)
+                        mOnRegisterListener.onFail();
                 }
             });
         }
