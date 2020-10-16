@@ -263,6 +263,10 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             public void onClick(View v) {
                                 dialogBuilder.dismiss();
 
+                                if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("1")) {
+                                    Toast.makeText(getActivity(), "Recolección sin Impresora: " + MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()), Toast.LENGTH_SHORT).show();
+                                }
+
                                 if(rowItems.get(position).getIdentificacion().equals(MyConstant.ID_GADERE) ){
                                     final DialogBuilder dialogBuilder;
                                     dialogBuilder = new DialogBuilder(getActivity());

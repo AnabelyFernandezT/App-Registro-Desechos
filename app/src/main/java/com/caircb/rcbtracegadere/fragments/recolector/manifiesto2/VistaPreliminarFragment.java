@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.app.Fragment;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caircb.rcbtracegadere.MyApp;
 import com.caircb.rcbtracegadere.R;
@@ -343,6 +344,10 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         public void onSuccessful() {
                             final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                             if (tipoSubruta.equals("2")) {
+                                if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("1")) {
+                                    Toast.makeText(getActivity(), "Recolección sin Impresora: " + MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()), Toast.LENGTH_SHORT).show();
+                                }
+                                
                                 if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("0")) {
                                     builder = new DialogBuilder(getActivity());
                                     builder.setMessage("¿Desea volver a imprimir otro recibo?");
