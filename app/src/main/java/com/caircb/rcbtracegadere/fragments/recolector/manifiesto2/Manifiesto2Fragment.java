@@ -413,6 +413,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     }
                 });
                 manifiestoCliente.show();
+                btnManifiestoNext.setEnabled(true);
             }
         });
         dialogBuilder.setNegativeButton("NO", new View.OnClickListener() {
@@ -447,7 +448,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                     });
                     dialogBuilder2.show();
                 }
-
+                btnManifiestoNext.setEnabled(true);
             }
         });
         dialogBuilder.show();
