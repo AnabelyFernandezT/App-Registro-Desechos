@@ -59,7 +59,7 @@ public class UserRegistrarPlantaQrTask extends MyRetrofitApi implements Retrofit
 
     @Override
     public void execute() {
-        progressShow("Registrando recoleccion...");
+        progressShow("Registrando recepcion...");
 
         String[] array = recepcionQrPlantaEntity.getNumerosManifiesto().split(",");
         int idManifiestoPrimero = Integer.parseInt(array[0]);

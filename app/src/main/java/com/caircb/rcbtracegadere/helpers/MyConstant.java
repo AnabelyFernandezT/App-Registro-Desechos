@@ -5,7 +5,7 @@ package com.caircb.rcbtracegadere.helpers;
  */
 public final class MyConstant {
 
-    public static final String APP_VERSION="1.19";
+    public static final String APP_VERSION="1.20";
     public static final int DBO_VERSION=2;
     public static final String DBO_NAME="TraceGadereDev.db";
     public static final String DEFAULD_SELECCIONE="SELECCIONE";
