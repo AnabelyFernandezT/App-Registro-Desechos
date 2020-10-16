@@ -35,6 +35,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
     private Integer estadoManifiesto,idAppManifiesto;
     private Integer tipoProceso;
     Double pesoServicio=0.0;
+    Double acctualizar=0.0;
 
     public ManifiestoDetalleAdapter(Context context,String numeroManifiesto,Integer estadoManifiesto, Integer idAppManifiesto, Integer tipoProceso){
         this.mContext = context;
@@ -64,17 +65,19 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             holder.chkEstado.setEnabled(true);
         }
         if(it.getDescripcion().equals("Servicio de transporte (srv)")){
-            holder.txtCantidadBulto.setText("1");
+            holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
+            holder.txtPeso.setText(""+it.getPeso());
+            /*holder.txtCantidadBulto.setText("1");
             holder.txtPeso.setText(""+pesoServicio);
            MyApp.getDBO().manifiestoDetalleDao().updateCantidadBultoManifiestoDetalle(it.getId(),1, pesoServicio, 0, false);
-            pesoServicio=0.0;
+           MyApp.getDBO().manifiestoDetallePesosDao().saveValores(idAppManifiesto, it.getId(), pesoServicio, "", null, "", false, 1, 0.0);
+            acctualizar=0.0;*/
         }else{
             holder.txtCantidadBulto.setText(""+it.getCantidadBulto());
             holder.txtPeso.setText(""+it.getPeso());
-            pesoServicio = pesoServicio + it.getPeso();
+            /*acctualizar = acctualizar + it.getPeso();*/
         }
         holder.txtUnidad.setText("KG");
-
         holder.txtDescripcion.setText(it.getCodigoMAE()+"-"+ it.getDescripcion());
         holder.txtTratamiento.setText(it.getCodigoMAE());
         holder.chkEstado.setChecked(it.isEstado());
