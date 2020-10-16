@@ -236,7 +236,6 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
                 }
                 break;
             case R.id.btnManifiestoNext:
-
                 final String identifiacion = tabManifiestoGeneral.getIdentificacion();
 
                 int i=tabs.getCurrentTab();
@@ -352,6 +351,7 @@ public class Manifiesto2Fragment extends MyFragment implements OnCameraListener,
 
                     }
                 }else {
+                    btnManifiestoNext.setEnabled(false);
                     continuarToVistaPreliminar(identifiacion);
                 }
 

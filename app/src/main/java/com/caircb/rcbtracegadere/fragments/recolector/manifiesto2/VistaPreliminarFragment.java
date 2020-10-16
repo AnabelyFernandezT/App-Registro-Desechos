@@ -292,6 +292,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                 setNavegate(Manifiesto2Fragment.newInstance(idAppManifiesto, 2, 1));
                 break;
             case R.id.btnVistaPreviaGuardar:
+                System.out.println("click");
+                btnVistaPreviaGuardar.setEnabled(false);
                 builder = new DialogBuilder(getActivity());
                 builder.setMessage("¿Esta seguro que desea continuar?");
                 builder.setCancelable(false);
@@ -306,6 +308,7 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     @Override
                     public void onClick(View v) {
                         builder.dismiss();
+                        btnVistaPreviaGuardar.setEnabled(true);
                     }
                 });
                 builder.show();
@@ -316,6 +319,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
     private void registarDatos() {
         if (validaPesoReferencial() == true) {
             messageBox("Debe ingresar fotografías, justificando Peso Promedio");
+            btnVistaPreviaGuardar.setEnabled(true);
+
             return;
         } else {
             userRegistrarRecoleccion = new UserRegistrarRecoleccion(getActivity(), idAppManifiesto, getLocation(), null);
@@ -336,6 +341,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                     userRegistrarRuteoRecoleccion.setOnRegisterRuteoRecollecionListenner(new UserRegistrarRuteoRecoleccion.OnRegisterRuteroRecoleecionListener() {
                         @Override
                         public void onSuccessful() {
+                            btnVistaPreviaGuardar.setEnabled(true);
+
                             final String tipoSubruta = MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta") == null ? "" : MyApp.getDBO().parametroDao().fecthParametroValorByNombre("tipoSubRuta");
                             if (tipoSubruta.equals("2")) {
                                 if(MyApp.getDBO().parametroDao().fecthParametroValor("auto_impresion"+ MySession.getIdUsuario()).equals("0")) {
@@ -369,6 +376,8 @@ public class VistaPreliminarFragment extends MyFragment implements OnCameraListe
                         public void onFail() {
                             setNavegate(HojaRutaAsignadaFragment.newInstance());
                             messageBox("No se pudo guardar los datos");
+
+                            btnVistaPreviaGuardar.setEnabled(true);
                         }
                     });
                     userRegistrarRuteoRecoleccion.execute();
