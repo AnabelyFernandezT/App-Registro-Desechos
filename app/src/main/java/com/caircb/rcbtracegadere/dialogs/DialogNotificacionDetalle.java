@@ -61,6 +61,12 @@ public class DialogNotificacionDetalle extends MyDialog {
         init();
     }
 
+    public interface onclickNotifiListener {
+        public void onSucefull();
+    }
+
+    private onclickNotifiListener mOnclickNotifiListener;
+
     private void init() {
 
         catalogos = new ArrayList<>();
@@ -92,13 +98,14 @@ public class DialogNotificacionDetalle extends MyDialog {
         btnCancelarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mOnclickNotifiListener.onSucefull();
                 dismiss();
             }
         });
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mOnclickNotifiListener.onSucefull();
                 if(txtMensaje.getText().toString().equals("")){
                     messageBox("Debe ingresar la descripción del nuevo desecho");
                 }else {
@@ -181,4 +188,8 @@ public class DialogNotificacionDetalle extends MyDialog {
 
         loadSpinner(ltsNotificaciones,catalogos,true);
     }
+
+    public void setmOnclickNotifiListener(@NonNull onclickNotifiListener l){
+        mOnclickNotifiListener = l;
+    };
 }

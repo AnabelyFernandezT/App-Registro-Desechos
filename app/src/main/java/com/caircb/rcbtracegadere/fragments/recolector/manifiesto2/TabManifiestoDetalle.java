@@ -42,6 +42,7 @@ import com.caircb.rcbtracegadere.dialogs.DialogAgregarFotografias;
 import com.caircb.rcbtracegadere.dialogs.DialogBuilder;
 import com.caircb.rcbtracegadere.dialogs.DialogBultos;
 import com.caircb.rcbtracegadere.dialogs.DialogBultosNo;
+import com.caircb.rcbtracegadere.dialogs.DialogBultosPlanta;
 import com.caircb.rcbtracegadere.dialogs.DialogNotificacionDetalle;
 import com.caircb.rcbtracegadere.generics.MyFragment;
 import com.caircb.rcbtracegadere.generics.MyPrint;
@@ -51,6 +52,7 @@ import com.caircb.rcbtracegadere.helpers.MySession;
 import com.caircb.rcbtracegadere.models.CalculoPaqueteResul;
 import com.caircb.rcbtracegadere.models.CatalogoItemValor;
 import com.caircb.rcbtracegadere.models.ItemManifiesto;
+import com.caircb.rcbtracegadere.models.ItemManifiestoDetalleSede;
 import com.caircb.rcbtracegadere.models.RowItemManifiesto;
 import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -134,10 +136,17 @@ public class TabManifiestoDetalle extends LinearLayout {
         mensajes = this.findViewById(R.id.fab);
         mensajes.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                v.setEnabled(false);
                 DialogNotificacionDetalle dialogMensajes = new DialogNotificacionDetalle(getContext(), idAppManifiesto, identificacion, nombreCliente, sucursal, numeroManifiesto);
                 dialogMensajes.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogMensajes.setCancelable(false);
+                dialogMensajes.setmOnclickNotifiListener(new DialogNotificacionDetalle.onclickNotifiListener() {
+                    @Override
+                    public void onSucefull() {
+                        v.setEnabled(true);
+                    }
+                });
                 dialogMensajes.show();
             }
         });
