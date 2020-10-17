@@ -1007,7 +1007,13 @@ public class TabManifiestoDetalle extends LinearLayout {
                             }else {
                                 novedadPesoPromedio.setVisibility(GONE);
                             }
+
 */
+                            //calculo de paquetes...
+                            if (pkg != null) {
+                                calculoPaquetes.algoritmo(pkg);
+                            }
+
                         }else {
                             RowItemManifiesto row = detalles.get(position);
                             List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(row.getId());
