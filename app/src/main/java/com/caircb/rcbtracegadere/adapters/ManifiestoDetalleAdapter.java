@@ -81,6 +81,7 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
         holder.txtDescripcion.setText(it.getCodigoMAE()+"-"+ it.getDescripcion());
         holder.txtTratamiento.setText(it.getCodigoMAE());
         holder.chkEstado.setChecked(it.isEstado());
+        holder.chkEstado.setClickable(false);
         holder.txtTipoBalanza.setText(it.getTipoBalanza()== 0 ? "" : it.getTipoBalanza()== 1 ? "Gadere" :"Cliente");
         holder.txtPesoReferencial.setText(String.valueOf(it.getPesoReferencial()));
 
@@ -108,19 +109,21 @@ public class ManifiestoDetalleAdapter extends RecyclerView.Adapter<ManifiestoDet
             holder.chkEstado.setClickable(false);
         }
         if(estadoManifiesto ==1) {
-            holder.chkEstado.setOnClickListener(new View.OnClickListener() {
+            holder.chkEstado.setClickable(false);
+           /* holder.chkEstado.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (((CheckBox) v).isChecked()) {
-                        v.setSelected(true);
-                        it.setEstado(true);
+                        //v.setSelected(true);
+                        //it.setEstado(true);
                     } else {
-                        v.setSelected(false);
-                        it.setEstado(false);
+                        //v.setSelected(false);
+                        //it.setEstado(false);
                     }
+
                     MyApp.getDBO().manifiestoDetalleDao().updateManifiestoDetallebyId(it.getId(), it.isEstado(), it.isEstado() ? AppDatabase.getUUID(numeroManifiesto) : "");
                 }
-            });
+            });*/
         }
 
         /*if(Double.parseDouble(holder.txtPesoReferencial.getText().toString()) > Double.parseDouble(holder.txtPeso.getText().toString())){
