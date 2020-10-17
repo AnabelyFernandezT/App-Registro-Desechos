@@ -451,7 +451,7 @@ public class DialogInicioRuta extends MyDialog {
         btnPickUpTransportista.setEnabled(true);
         btnDropOffTransportista.setEnabled(true);
         btnScanQr.setEnabled(true);
-
+        lnlFinRuta.setVisibility(View.VISIBLE);
 
         regionBuscar.setColorFilter(Color.TRANSPARENT);
         btnSincManifiestos.setColorFilter(Color.TRANSPARENT);
