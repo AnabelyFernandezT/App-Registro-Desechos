@@ -760,7 +760,6 @@ public class HomeTransportistaFragment extends MyFragment implements OnHome, OnB
                 }
                 String fecha=(new SimpleDateFormat("dd/MM/yyyy")).format(new Date());
                 listaFinRuta.add(new RowItemFinRuta( fecha,rowItems.get(i).getNumero(),fundas50,fundas63,paquetes1,paquete2,paquete3,pendienteF55x50,pendienteF63x76,pendienteFPc1,pendienteFPc2,pendienteFPc3));
-                System.out.println("");
             }
         }
     }
