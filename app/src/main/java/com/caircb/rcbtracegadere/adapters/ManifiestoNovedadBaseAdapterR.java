@@ -179,6 +179,7 @@ public class ManifiestoNovedadBaseAdapterR extends RecyclerView.Adapter<Manifies
                                         MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idManifiesto, "Pesaje en planta");
                                         novedades.setText("Pesaje en planta");
                                     } else {
+                                        MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(idManifiesto, "");
                                         novedades.setText("");
                                     }
                                 }

@@ -91,6 +91,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
     Integer cont=-1;
     DialogBuilder dialogBuilderScan;
     UserRegistrarActualizarEstadoTask actualizarEstadoTask;
+    private String pesajePlanta ="Pesaje en planta ";
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -336,6 +337,8 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                                 MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "1");
                                                                 setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 1));
 
+                                                                String texto = buscarTexto(rowItems.get(position).getIdAppManifiesto());
+                                                                MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), texto);
                                                             }
                                                         });
                                                         dialogBuilder2.setNegativeButton("NO", new View.OnClickListener() {
@@ -345,7 +348,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                                 //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                                                 MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "2");
                                                                 setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                                                MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
+
+                                                                String texto = buscarTexto(rowItems.get(position).getIdAppManifiesto());
+                                                                MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), pesajePlanta +texto);
                                                             }
                                                         });
                                                         dialogBuilder2.show();
@@ -433,7 +438,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                         //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                                         MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "2");
                                                         setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                                        MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
+
+                                                        String texto = buscarTexto(rowItems.get(position).getIdAppManifiesto());
+                                                        MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), pesajePlanta +texto);
                                                     }
                                                 });
                                                 dialogBuilder2.show();
@@ -654,7 +661,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                 //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                                 MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion","2");
                                                 setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                                MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
+
+                                                String texto = buscarTexto(rowItems.get(position).getIdAppManifiesto());
+                                                MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), pesajePlanta +texto);
                                             }else if(tipoRecoleccion==1) {
                                                 dialogBuilder = new DialogBuilder(getActivity());
                                                 dialogBuilder.setMessage("Usted seleccionó anteriormente, SI recolección en sitio. ¿Está seguro de continuar, se borrará los pesos?");
@@ -803,7 +812,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                                             MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "2");
                                                             setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                                            MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
+
+                                                            String texto = buscarTexto(rowItems.get(position).getIdAppManifiesto());
+                                                            MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), pesajePlanta+texto);
                                                         }
                                                     });
                                                     dialogBuilder2.show();
@@ -890,7 +901,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                                                     //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                                                     MyApp.getDBO().parametroDao().saveOrUpdate("currentTipoRecoleccion", "2");
                                                     setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto(), 1, 2));
-                                                    MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "Pesaje en planta");
+
+                                                    String texto = buscarTexto(rowItems.get(position).getIdAppManifiesto());
+                                                    MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), pesajePlanta+texto);
                                                 }
                                             });
                                             dialogBuilder2.show();
@@ -938,6 +951,9 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
                             MyApp.getDBO().parametroDao().saveOrUpdate("seleccionMenuRecoleccion","2"); // No recoleccion
                             //Guardo la fecha de inicio recoleccion
                             Date fecha = AppDatabase.getDateTime();
+
+                            //String texto = buscarTexto(rowItems.get(position).getIdAppManifiesto());
+                            MyApp.getDBO().manifiestoDao().updateNovedadEncontrada(rowItems.get(position).getIdAppManifiesto(), "");
                             //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
                             MyApp.getDBO().manifiestoDao().saveOrUpdateFechaInicioRecoleccion(rowItems.get(position).getIdAppManifiesto(), fecha);
                             //ManifiestoEntity man1 = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
@@ -1145,5 +1161,15 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
             System.out.println(e.getStackTrace());
             messageBox("El código escaneado no es de tipo Lote.");
         }
+    }
+
+    public String buscarTexto (int idManifiesto){
+        ManifiestoEntity manifiesto = new ManifiestoEntity();
+        String texto ="";
+        manifiesto =MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
+        if (manifiesto!=null){
+            texto= manifiesto.getNovedadEncontrada().replace("Pesaje en planta","");
+        }
+        return texto;
     }
 }
