@@ -159,7 +159,20 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                     case R.id.btn_manifiesto_view:
                         //setNavegate(ManifiestoFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),false));
                         //setNavegate(Manifiesto2Fragment.newInstance(rowItems.get(position).getIdAppManifiesto()));
-                        menu(position);
+                        switch (rowItems.get(position).getEstado()){
+                            case 1:
+                                menu(position);
+                                break;
+                            case 2 :
+                                setNavegate(Manifiesto2FragmentProcesada.newInstance(rowItems.get(position).getIdAppManifiesto(),rowItems.get(position).getEstado(),1));
+                                break;
+                            case 3:
+                                setNavegate(ManifiestoNoRecoleccionFragment.newInstance(rowItems.get(position).getIdAppManifiesto(),3));
+                                break;
+                            case 6:
+                                setNavegate(Manifiesto2FragmentProcesada.newInstance(rowItems.get(position).getIdAppManifiesto(),rowItems.get(position).getEstado(),1));
+                                break;
+                        }
                         break;
 
 
@@ -220,7 +233,7 @@ public class HojaRutaBuscarFragment extends MyFragment implements View.OnClickLi
                                 if (imp.equals("1"))
                                     flag = true;
 
-                                if (!checkImpresora() || flag) {
+                                if (checkImpresora() || flag) {
 
                                     Date fecha = AppDatabase.getDateTime();
                                     //ManifiestoEntity man = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(rowItems.get(position).getIdAppManifiesto());
