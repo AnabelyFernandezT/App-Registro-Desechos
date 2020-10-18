@@ -389,6 +389,10 @@ visible();
             txtTransRecoAux.setText(manifiesto.getAuxiliarNombre());
 
 
+            if(txtOperadorRecolector.getText().equals("")){btmAgregarOperador2.setEnabled(false);}
+            if(txtTransReco.getText().equals("")){btnAgregarFirmaTransportista.setEnabled(false);}
+            if(txtTransRecoAux.getText().equals("")){btnAgregarFirmaOperador1.setEnabled(false);}
+
             txtempresaTransportista.setText("GADERE");
             txtOperadorRecolector.setText(manifiesto.getNombreOperadorRecolector());
 
