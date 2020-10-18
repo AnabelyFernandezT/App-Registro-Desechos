@@ -89,7 +89,7 @@ public class TabManifiestoDetalle extends LinearLayout {
     AlertDialog.Builder alertDialog;
     List<String> itemsCategoriaPaquete;
     Integer tipoGestion;
-    PaqueteEntity pkg;
+    PaqueteEntity pkg= null;
     Integer tipoBalanza = 0;
     Integer tipoRecoleccion;
     String identificacion;
@@ -132,7 +132,7 @@ public class TabManifiestoDetalle extends LinearLayout {
       /*  idSubRuta = Integer.parseInt(MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_ruta").getValor());
         rowItems=MyApp.getDBO().manifiestoDao().fetchManifiestosAsigandobySubRuta(idSubRuta, MySession.getIdUsuario());*/
 
-
+        pkg = MyApp.getDBO().paqueteDao().fechConsultaPaqueteEspecifico(tipoPaquete);
         mensajes = this.findViewById(R.id.fab);
         mensajes.setOnClickListener(new View.OnClickListener() {
             @Override
