@@ -152,14 +152,21 @@ public class HomePlantaFragment extends MyFragment implements OnCameraListener, 
 
         btnSincManifiestosPlanta.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                v.setEnabled(false);
                 dialogPlacas = new DialogPlacas(getActivity());
                 dialogPlacas.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogPlacas.setCancelable(false);
-                dialogPlacas.setmOnclickSedeListener(new DialogBultosPlanta.onclickSedeListener() {
+                dialogPlacas.setmOnclickPlacaListener(new DialogPlacas.onclickPlacaListener() {
                     @Override
                     public void onSucefull() {
                         cargarLabelCantidad();
+                    }
+                });
+                dialogPlacas.setmOnclickPlacaBotonListener(new DialogPlacas.onclickPlacaBotonListener() {
+                    @Override
+                    public void onSucefull() {
+                        v.setEnabled(true);
                     }
                 });
                 dialogPlacas.show();
