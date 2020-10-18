@@ -757,24 +757,10 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                         createBulto(imput);
                         String checkTara = registraTara.toString();
                         if (checkTara.equals("1")) {
-
-                        /*List<ManifiestoDetallePesosEntity> listaPesos = MyApp.getDBO().manifiestoDetallePesosDao().fecthConsultarBultosManifiestoDet(idManifiestoDetalle);
-                        int contPesosTara=0;
-                        for (int i=0;i<listaPesos.size();i++){
-                            if (listaPesos.get(i).getPesoTaraBulto()==0){
-                                contPesosTara++;
-                            }
-
-                        }*/
-                            /* if (contPesosTara==0){*/
-                        /*BigDecimal imputValor = new BigDecimal(txtpantalla.getText().toString());
-                        createBulto(imputValor);*/
                             faltaImpresos = verificarTodosBultosImpresos();
                             if (!faltaImpresos) {
                                 MyApp.getDBO().manifiestoDetalleDao().updateFlagFaltaImpresiones(idManifiesto, idManifiestoDetalle, false);
-                                if (mOnBultoListener != null) {
-                                    mOnBultoListener.onCanceled(faltaImpresos,position);
-                                }
+                                if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos,position);}
                             } else {
                                 final DialogBuilder dialogBuilder2 = new DialogBuilder(getContext());
                                 dialogBuilder2.setMessage("Debe registrar todas las taras!!!");
@@ -811,7 +797,11 @@ public class DialogBultos extends MyDialog implements View.OnClickListener {
                             break;
                         }
                     } else {
-                        if (mOnBultoListener != null) {mOnBultoListener.onCanceled(faltaImpresos, position);}
+                        if (mOnBultoListener != null)
+                            mOnBultoListener.onSuccessful(subtotal, position, bultos.size(), pkg, false, faltaImpresos, cantidaBultosInitial > 0 ? (cantidaBultosInitial != bultos.size() ? true : false) : false);
+                        if (mOnBultoListener != null) {
+                            mOnBultoListener.onCanceled(faltaImpresos,position);
+                        }
                         break;
                     }
 

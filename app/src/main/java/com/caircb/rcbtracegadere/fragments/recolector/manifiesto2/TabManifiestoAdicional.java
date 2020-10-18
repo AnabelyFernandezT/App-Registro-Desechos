@@ -347,7 +347,7 @@ public class TabManifiestoAdicional extends LinearLayout {
        // loadDataPaquetes();
 
         Double cantidadInfecciosos=0.0,cantidadGuardianes=0.0;
-        if(listaPaquetes!=null && listaPaquetes.size()>0) {
+        if(listaPaquetes!=null && listaPaquetes.size()>0 && estadoManifiesto.equals(1)) {
             manifiestoPkg = MyApp.getDBO().manifiestoPaqueteDao().fetchConsultarManifiestoPaquetebyId(idAppManifiesto, idAppTipoPaquete);
             //if(listaPaquetes.size()==2) {
 
@@ -382,11 +382,11 @@ public class TabManifiestoAdicional extends LinearLayout {
             }
 
             if(validadorFundas && cantidadInfecciosos>=1.0 && cantidadGuardianes>=1.0){
-                MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosFundas()-1));
+                MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,(cantidadInfecciosos.intValue()));
                 validadorFundas=false;
             }
             if(validadorGuardianes && cantidadInfecciosos>=1.0 && cantidadGuardianes>=1.0){
-                MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,(manifiestoPkg.getDatosGuardianes()-1));
+                MyApp.getDBO().manifiestoPaqueteDao().updateDatoGuardianes(idAppManifiesto,idAppTipoPaquete,cantidadGuardianes.intValue());
                 validadorGuardianes=false;
             }
 

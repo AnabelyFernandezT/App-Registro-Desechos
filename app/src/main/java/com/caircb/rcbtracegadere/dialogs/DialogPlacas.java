@@ -57,11 +57,17 @@ public class DialogPlacas extends MyDialog {
         init();
     }
 
-    public interface onclickSedeListener {
+    public interface onclickPlacaListener {
         public void onSucefull();
     }
 
-    private DialogBultosPlanta.onclickSedeListener mOnclickSedeListener;
+    private onclickPlacaListener mOnclickPlacaListener;
+
+    public interface onclickPlacaBotonListener {
+        public void onSucefull();
+    }
+
+    private onclickPlacaBotonListener mOnclickPlacaBotonListener;
 
     private void init() {
         listaPlacasDisponibles = new ArrayList<>();
@@ -98,12 +104,17 @@ public class DialogPlacas extends MyDialog {
             @Override
             public void onClick(View v) {
                 DialogPlacas.this.dismiss();
-
+                if(mOnclickPlacaBotonListener!=null){
+                    mOnclickPlacaBotonListener.onSucefull();
+                }
             }
         });
         btnIngresarApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mOnclickPlacaBotonListener!=null){
+                    mOnclickPlacaBotonListener.onSucefull();
+                }
                 ParametroEntity parametro = MyApp.getDBO().parametroDao().fetchParametroEspecifico("current_vehiculo");
                 String valor = parametro == null ? "-1" : parametro.getValor();
                 Integer idVehiculo = Integer.parseInt(valor.equals("null") ? "-1":valor);
@@ -203,8 +214,8 @@ public class DialogPlacas extends MyDialog {
         @Override
         public void onSuccessful() {
             //loadCantidadManifiestoAsignado();
-            if(mOnclickSedeListener!=null){
-                mOnclickSedeListener.onSucefull();
+            if(mOnclickPlacaListener!=null){
+                mOnclickPlacaListener.onSucefull();
             }
         }
     };
@@ -212,8 +223,8 @@ public class DialogPlacas extends MyDialog {
         @Override
         public void onSuccessful() {
             //loadCantidadManifiestoAsignado();
-            if(mOnclickSedeListener!=null){
-                mOnclickSedeListener.onSucefull();
+            if(mOnclickPlacaListener!=null){
+                mOnclickPlacaListener.onSucefull();
             }
         }
     };
@@ -254,10 +265,13 @@ public class DialogPlacas extends MyDialog {
 
 
 
-    public void setmOnclickSedeListener(@NonNull DialogBultosPlanta.onclickSedeListener l){
-        mOnclickSedeListener = l;
+    public void setmOnclickPlacaListener(@NonNull onclickPlacaListener l){
+        mOnclickPlacaListener = l;
     };
 
+    public void setmOnclickPlacaBotonListener(@NonNull onclickPlacaBotonListener l){
+        mOnclickPlacaBotonListener = l;
+    };
 
 
 }

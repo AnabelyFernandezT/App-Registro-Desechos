@@ -18,7 +18,7 @@ public abstract class TecnicoDao {
     @Query("select * from tb_tecnicos where _id=:idTecnico")
     public abstract TecnicoEntity fechConsultaTecnicobyIdTecnico(Integer idTecnico);
 
-    @Query("select * from tb_tecnicos where idManifiesto=:idManifiesto")
+    @Query("select * from tb_tecnicos where idManifiesto=:idManifiesto  ORDER by nombre DESC")
     public abstract TecnicoEntity fechConsultaTecnicobyManifiesto(Integer idManifiesto);
 
     @Query("select * from tb_tecnicos where idManifiesto=:idManifiesto and identificacion=:identificacion")

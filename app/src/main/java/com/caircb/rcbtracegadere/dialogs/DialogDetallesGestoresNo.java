@@ -93,10 +93,17 @@ public class DialogDetallesGestoresNo extends MyDialog {
     }
 
     private Boolean validar (){
-        if(txtPesoBultos.getText().toString().equals("")||txtPesoBultos.getText().toString().equals("0")){
+        if(txtPesoBultos.getText().toString().equals(".")){
+            return validar = false;
+        }else{
+        double  peso = Double.parseDouble(txtPesoBultos.getText().toString());
+        System.out.println(peso);
+        double cero =0.0;
+        if(txtPesoBultos.getText().toString().equals("")||txtPesoBultos.getText().toString().equals("0")||peso == cero){
             return validar = false;
         }else if(txtCantidadBultos.getText().toString().equals("") || txtCantidadBultos.getText().toString().equals("0")){
             return  validar = false;
+        }
         }
         return validar;
     }
