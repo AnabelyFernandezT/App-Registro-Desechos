@@ -533,9 +533,13 @@ public class TabManifiestoGeneral extends LinearLayout {
             if(manifiesto.getCorreos()!=null){
                 if(manifiesto.getCorreos().equals("I")){
                     chkCorreoPrincipal.setChecked(true);
+                    correoPrincipal = "I";
                 }else if (manifiesto.getCorreos().equals("H")){
                     chkCorreoAlterno.setChecked(true);
+                    correoAlterno = "H";
                 }else  if (manifiesto.getCorreos().equals("H,I")){
+                    correoPrincipal = "I";
+                    correoAlterno = "H";
                     chkCorreoAlterno.setChecked(true);
                     chkCorreoPrincipal.setChecked(true);
                 }
@@ -722,8 +726,8 @@ public class TabManifiestoGeneral extends LinearLayout {
                     }else{
                         correoEnvio="";
                     }
-
                     MyApp.getDBO().manifiestoDao().updateManifiestoCorreos(idAppManifiesto,correoEnvio);
+
                 } else {
                     correoPrincipal ="";
                     if(correoPrincipal.equals("I")&&correoAlterno.equals("H")){

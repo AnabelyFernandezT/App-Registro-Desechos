@@ -66,6 +66,10 @@ public class MyManifiesto {
     Context context;
     Integer idManifiesto,idAppTipoPaquete;
     ManifiestoEntity manifiesto;
+
+    TecnicoEntity tecM;
+    ManifiestoEntity manifiestoM;
+
     String fundas50 = "0",fundas63="0", paquetes1="0", paquete2="0", pg = "0" , pf = "0", paquete3="0" ;
     TecnicoEntity tecnicoEntity;
     Bitmap logoMAE;
@@ -105,6 +109,10 @@ public class MyManifiesto {
 
             tecnicoEntity = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(identificacion);
             manifiesto = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
+
+            manifiestoM = MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
+            tecM = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdTecnico(manifiestoM.getIdTecnicoGenerador());
+
             catalogo = MyApp.getDBO().catalogoDao().fetchConsultarCatalogoId(manifiesto.getNumeroPlacaVehiculo(),4);
             //RECOLECCION
             fileFirmaTecnico = MyApp.getDBO().manifiestoFileDao().consultarFile(idManifiesto, ManifiestoFileDao.FOTO_FIRMA_TECNICO_GENERADOR,MyConstant.STATUS_RECOLECCION);
@@ -411,10 +419,14 @@ public class MyManifiesto {
         tb9.addCell(cell);
 
         Paragraph para3 = new Paragraph();
-        if(tecnicoEntity!=null) {
-            para3.add(new Chunk(tecnicoEntity.getNombre() + "   " + tecnicoEntity.getIdentificacion(), f6));
+        //if(tecnicoEntity!=null) {
+        if(tecM!=null) {
+            //para3.add(new Chunk(tecnicoEntity.getNombre() + "   " + tecnicoEntity.getIdentificacion(), f6));
+            para3.add(new Chunk(tecM.getNombre() + "   " + tecM.getIdentificacion(), f6));
+
             para3.add(Chunk.NEWLINE);
-            para3.add(new Chunk(tecnicoEntity.getTelefono() + "   " + tecnicoEntity.getCorreo(), f6));
+            //para3.add(new Chunk(tecnicoEntity.getTelefono() + "   " + tecnicoEntity.getCorreo(), f6));
+            para3.add(new Chunk(tecM.getTelefono() + "   " + tecM.getCorreo(), f6));
             para3.add(Chunk.NEWLINE);
 
         }else{
@@ -424,12 +436,36 @@ public class MyManifiesto {
             para3.add(new Chunk("", f6));
             para3.add(Chunk.NEWLINE);
         }
+
+        if(manifiesto.getCorreos() != null){
+            if(!manifiesto.getCorreos().equals("")){
+                if(manifiesto.getCorreos().equals("H,I")){
+                    if(!manifiesto.getTecnicoCorreo().equals("")){
+                        para3.add(new Chunk(","+manifiesto.getTecnicoCorreo(),f6));
+                    }
+                    if(!manifiesto.getCorreoAlterno().equals("")){
+                        para3.add(new Chunk("," + manifiesto.getCorreoAlterno(),f6));
+                    }
+                }else if(manifiesto.getCorreos().equals("I")){
+                    if(!manifiesto.getTecnicoCorreo().equals("")){
+                        para3.add(new Chunk(","+manifiesto.getTecnicoCorreo(),f6));
+                    }
+                }else if(manifiesto.getCorreos().equals("H")){
+                    if(!manifiesto.getCorreoAlterno().equals("")){
+                        para3.add(new Chunk("," + manifiesto.getCorreoAlterno(),f6));
+                    }
+                }
+            }
+        }
+
+        /*
         if(!manifiesto.getTecnicoCorreo().equals("")){
             para3.add(new Chunk(","+manifiesto.getTecnicoCorreo(),f6));
         }
         if(!manifiesto.getCorreoAlterno().equals("")){
             para3.add(new Chunk("," + manifiesto.getCorreoAlterno(),f6));
         }
+        */
 
         //cell = new PdfPCell(new Phrase(manifiesto.getTecnicoResponsable(),f6));
         cell =  new PdfPCell(para3);
