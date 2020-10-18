@@ -191,14 +191,9 @@ public class TabManifiestoGeneral extends LinearLayout {
                                     }
 
                                     @Override
-                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                                    }
-
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) { }
                                     @Override
-                                    public void afterTextChanged(Editable s) {
-
-                                    }
+                                    public void afterTextChanged(Editable s) { }
                                 });
 
                             }
@@ -405,24 +400,42 @@ public class TabManifiestoGeneral extends LinearLayout {
 
         txtRespEntregaNombre.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable s) {
                     Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
                             txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
-
                     MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
             }
         });
 
+        txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                        txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+                MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
+            }
+        });
+
+        txtRespEntregaTelefono.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                        txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+                MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
+            }
+        });
 
         txtRespEntregaCorreo.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -435,9 +448,9 @@ public class TabManifiestoGeneral extends LinearLayout {
                 if(!hasFocus){
                     Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
                             txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
-
                     MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
                 }
+
             }
         });
         txtRespEntregaTelefono.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -452,18 +465,13 @@ public class TabManifiestoGeneral extends LinearLayout {
         });
         txtRespEntregaIdentificacion.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 txtRespEntregaNombre.setText("");
                 txtRespEntregaCorreo.setText("");
                 txtRespEntregaTelefono.setText("");
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                /* Long idTecnico =  MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
@@ -471,12 +479,8 @@ public class TabManifiestoGeneral extends LinearLayout {
                 MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());*/
             }
         });
-
-
-
         visible();
         checkCorreos();
-
     }
 
     private void visible (){
