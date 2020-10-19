@@ -125,32 +125,36 @@ public class TabManifiestoGeneralLote extends LinearLayout {
             @Override
             public void onClick(View v) {
                 //MyApp.getDBO().tecnicoDao().deleteTecnico();
-                InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                inputMethodManager.hideSoftInputFromWindow(txtRespEntregaIdentificacion.getWindowToken(), 0);
-                int estado=0;
-                TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtRespEntregaIdentificacion.getText().toString());
-                //txtRespEntregaNombre.setEnabled(true);
-                if(tecnico!=null && !tecnico.getNombre().equals("")){
-                    txtRespEntregaNombre.setText(tecnico.getNombre());
-                    txtRespEntregaCorreo.setText(tecnico.getCorreo());
-                    txtRespEntregaTelefono.setText(tecnico.getTelefono());
-                    txtRespEntregaCorreo.setError(null);
-                    txtRespEntregaCorreo.setEnabled(tecnico.getCorreo()!=null && tecnico.getCorreo().length()==0);
-                    txtRespEntregaTelefono.setEnabled(tecnico.getTelefono()!=null && tecnico.getTelefono().length()==0);
-                    MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,tecnico.get_id());
-                    //txtRespEntregaNombre.setEnabled(false);
-                    if (txtRespEntregaNombre.getText().length()<=0){
-                        txtRespEntregaNombre.setEnabled(true);
-                    }
-                    if (txtRespEntregaNombre.getText().length()>0){
-                        txtRespEntregaNombre.setEnabled(false);
-                    }
-
+                if(txtRespEntregaIdentificacion.getText().toString().equals("")){
+                    messageBox("Ingrese una identificación para consultar.");
                 }else{
-                    //consultar en servicio remoto...
-                    //boolean estadoCedula = validadorDeCedula(txtRespEntregaIdentificacion.getText().toString());
-                   // if(estadoCedula) {
+                    InputMethodManager inputMethodManager = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                    inputMethodManager.hideSoftInputFromWindow(txtRespEntregaIdentificacion.getWindowToken(), 0);
+                    int estado=0;
+                    TecnicoEntity tecnico = MyApp.getDBO().tecnicoDao().fechConsultaTecnicobyIdentidad(txtRespEntregaIdentificacion.getText().toString());
+                    //txtRespEntregaNombre.setEnabled(true);
+                    if(tecnico!=null && !tecnico.getNombre().equals("")){
+                        txtRespEntregaNombre.setText(tecnico.getNombre());
+                        txtRespEntregaCorreo.setText(tecnico.getCorreo());
+                        txtRespEntregaTelefono.setText(tecnico.getTelefono());
+                        txtRespEntregaCorreo.setError(null);
+                        txtRespEntregaCorreo.setEnabled(tecnico.getCorreo()!=null && tecnico.getCorreo().length()==0);
+                        txtRespEntregaTelefono.setEnabled(tecnico.getTelefono()!=null && tecnico.getTelefono().length()==0);
+                        MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto,tecnico.get_id());
+                        //txtRespEntregaNombre.setEnabled(false);
+                        if (txtRespEntregaNombre.getText().length()<=0){
+                            txtRespEntregaNombre.setEnabled(true);
+                        }
+                        if (txtRespEntregaNombre.getText().length()>0){
+                            txtRespEntregaNombre.setEnabled(false);
+                        }
+
+                    }else{
+                        //consultar en servicio remoto...
+                        //boolean estadoCedula = validadorDeCedula(txtRespEntregaIdentificacion.getText().toString());
+                        // if(estadoCedula) {
                         userConsultarCedulaTask = new UserConsultarCedulaTask(getContext(), txtRespEntregaIdentificacion.getText().toString());
                         userConsultarCedulaTask.setOnResponseListener(new UserConsultarCedulaTask.OnResponseListener() {
                             @Override
@@ -181,16 +185,10 @@ public class TabManifiestoGeneralLote extends LinearLayout {
                                             txtRespEntregaCorreo.setError("Ingrese un correo válido");
                                         }
                                     }
-
                                     @Override
-                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                                    }
-
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) { }
                                     @Override
-                                    public void afterTextChanged(Editable s) {
-
-                                    }
+                                    public void afterTextChanged(Editable s) { }
                                 });
 
                             }
@@ -206,13 +204,14 @@ public class TabManifiestoGeneralLote extends LinearLayout {
                             }
                         });
                         userConsultarCedulaTask.execute();
-                   // }
-                }
-                if (txtRespEntregaNombre.getText().length()<=0){
-                    txtRespEntregaNombre.setEnabled(true);
-                }
-                if (txtRespEntregaNombre.getText().length()>0){
-                    txtRespEntregaNombre.setEnabled(false);
+                        // }
+                    }
+                    if (txtRespEntregaNombre.getText().length()<=0){
+                        txtRespEntregaNombre.setEnabled(true);
+                    }
+                    if (txtRespEntregaNombre.getText().length()>0){
+                        txtRespEntregaNombre.setEnabled(false);
+                    }
                 }
             }
         });
@@ -393,20 +392,40 @@ public class TabManifiestoGeneralLote extends LinearLayout {
 
         txtRespEntregaNombre.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable s) {
                 Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
                         txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
 
+                MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
+            }
+        });
+
+        txtRespEntregaCorreo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                        txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
+                MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
+            }
+        });
+
+        txtRespEntregaTelefono.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Long idTecnico = MyApp.getDBO().tecnicoDao().saveOrUpdate(idAppManifiesto,txtRespEntregaIdentificacion.getText().toString(),
+                        txtRespEntregaNombre.getText().toString(),txtRespEntregaCorreo.getText().toString(),txtRespEntregaTelefono.getText().toString());
                 MyApp.getDBO().manifiestoDao().updateGenerador(idAppManifiesto, idTecnico.intValue());
             }
         });
@@ -437,11 +456,12 @@ public class TabManifiestoGeneralLote extends LinearLayout {
                 }
             }
         });
+
+
+
         txtRespEntregaIdentificacion.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -513,9 +533,13 @@ public class TabManifiestoGeneralLote extends LinearLayout {
             if(manifiesto.getCorreos()!=null){
                 if(manifiesto.getCorreos().equals("I")){
                     chkCorreoPrincipal.setChecked(true);
+                    correoPrincipal = "I";
                 }else if (manifiesto.getCorreos().equals("H")){
                     chkCorreoAlterno.setChecked(true);
+                    correoAlterno = "H";
                 }else  if (manifiesto.getCorreos().equals("H,I")){
+                    correoPrincipal = "I";
+                    correoAlterno = "H";
                     chkCorreoAlterno.setChecked(true);
                     chkCorreoPrincipal.setChecked(true);
                 }

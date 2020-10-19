@@ -1167,7 +1167,7 @@ public class HojaRutaAsignadaFragment extends MyFragment implements View.OnClick
         ManifiestoEntity manifiesto = new ManifiestoEntity();
         String texto ="";
         manifiesto =MyApp.getDBO().manifiestoDao().fetchHojaRutabyIdManifiesto(idManifiesto);
-        if (manifiesto!=null){
+        if (manifiesto!=null && manifiesto.getNovedadEncontrada() != null){
             texto= manifiesto.getNovedadEncontrada().replace("Pesaje en planta","");
         }
         return texto;
