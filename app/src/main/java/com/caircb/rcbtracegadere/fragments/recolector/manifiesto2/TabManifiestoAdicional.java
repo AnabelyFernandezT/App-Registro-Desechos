@@ -364,8 +364,8 @@ public class TabManifiestoAdicional extends LinearLayout {
                 cantidadGuardianes = Double.parseDouble(MyApp.getDBO().parametroDao().fecthParametroValor("cortopunzante_data"));
             }
 
-             if(manifiestoPkg!=null) {
-                if (idAppTipoPaquete > 0 && idAppTipoPaquete < 5 && manifiestoPkg.getPqh().equals(1)) {
+             if(manifiestoPkg!=null && pkg!=null) {
+                if (pkg.getEntregaSoloGuardianes() && pkg.getEntregaSoloGuardianes()) {
                     if (cantidadInfecciosos.equals(0.0) && cantidadGuardianes >= 1) {
                         MyApp.getDBO().manifiestoPaqueteDao().updateDatoFundas(idAppManifiesto,idAppTipoPaquete,1);
                         validadorFundas=true;
